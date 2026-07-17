@@ -65,7 +65,13 @@ def answers_equivalent(pred: str | None, gold: str | None) -> bool:
     try:
         from math_verify import parse, verify  # type: ignore
 
-        return bool(verify(parse(gold), parse(pred)))
+        # Wrap in $...$ so Math-Verify uses its LaTeX parser; without delimiters it
+        # mis-parses many non-scalar answers (fractions, tuples, symbolic), causing
+        # both false negatives (identical answers rejected) and false positives
+        # (parametric answers collapsed to a trivial value).
+        if verify(parse(f"${gold}$"), parse(f"${pred}$")):
+            return True
+        return _normalize(pred) == _normalize(gold)
     except Exception:
         return _normalize(pred) == _normalize(gold)
 

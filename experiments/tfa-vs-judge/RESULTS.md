@@ -35,6 +35,18 @@ vLLM TFA matches the HF ground-truth teacher-forcing **exactly** on argmax and t
 
 **Verdict: NEGATIVE.** TFA carries **no per-response reasoning-quality signal** beyond the free boxed-correctness bit.
 
+**Robustness — correctness labels re-verified with Math-Verify (2026-07-17).** Recomputing
+`boxed_correct` from the dataset `answer` field via Math-Verify reproduces the stored labels
+**exactly (0/3000 mismatches)**; the correct stratum is n=1687 as reported. Per-model, within-correct
+ρ(TFA, judge) ranges −0.02 (0.5B) to **−0.17 (32B), −0.16 (14B)** — the larger models drive the
+pooled −0.10. A stricter `$`-delimited Math-Verify re-check flags **25/1687 (1.5%)** correct-labelled
+items as parse-artifact false positives (Math-Verify collapses undelimited parametric answers like
+`8n^2+4n+1` to a trivial value, spuriously matching a wrong prediction). These sit exactly in the
+adversarial tail (mean judge **2.3** vs 9.5 overall, mean gold length **509** vs 174 tok), but
+dropping them barely moves the within-correct correlation (−0.100 → −0.095), so the negative
+association is **not** a label-noise artifact. [Hardening `answers_equivalent` to pass `$`-delimited
+strings would remove this FP class; it does not change the E1 verdict.]
+
 ### Supporting diagnostics (E1 data)
 - Item-level ρ(TFA, correct) ≈ 0 (−0.01) both pooled and within every model (−0.02 to −0.12).
 - Per-item TFA is confounded by **gold-trace length** (ρ ≈ +0.37): longer, more formulaic gold scores
@@ -172,6 +184,10 @@ Per-model `contrast_answer` partial ρ (positive for **every** model): 0.5B +0.1
 7B +0.46, 14B +0.36 — vs. baseline partial of −0.16…+0.07.
 
 ## Interpretation
+> ⚠️ **CORRECTED — see "Critical review / self-correction" below.** The idea-3 `contrast_answer`
+> result reported here is *largely a `1/gold_length` artifact*; the genuine length-independent signal
+> is weak (~0.07–0.11), not +0.35. The text below is retained for the record but its interpretation is superseded.
+
 - **Idea 2 (weighting) fails**, confirming the deep-analysis prediction: item-level signal is *absent*
   under gold-prediction, not merely hidden under the length confound, so reweighting can't recover it.
 - **Idea 3 answer-contrast succeeds** — the first variant with a genuine judge-free item-level signal
@@ -189,3 +205,53 @@ Per-model `contrast_answer` partial ρ (positive for **every** model): 0.5B +0.1
 - `contrast_answer` is answer-anchored — narrower than full reasoning quality; it likely blends
   "confidence in the correct conclusion" with reasoning quality (the two correlate but are not identical).
 - Not yet run on 32B or a second judge family.
+
+# Appendix: critical review / self-correction
+
+I stress-tested the pipeline and the ideas-2/3 conclusions as a skeptic. Two corrections resulted.
+
+## Correction 1 — the `contrast_answer` "win" is largely a length artifact (interpretation retracted)
+`contrast_answer = TFA(gold) − TFA(answer-swapped gold)` was reported at partial ρ(·, judge | correct) = +0.35.
+Because the corruption changes only the final answer token, `contrast_answer ≈ [model predicts correct answer]/N`
+— i.e. it is dominated by **1/gold_length**:
+- `Spearman(contrast_answer, 1/gold_length) = +0.67`.
+- `1/gold_length` correlates with the judge through the pre-existing length confound (short gold → higher judge).
+- **Decisive test:** strip the `1/N` magnitude, keep only the length-independent bit
+  `B = 1[model predicts the correct answer under gold teacher-forcing]`:
+  `partial ρ(B, judge | correct) = +0.066` — collapses from +0.35 to ≈ 0.
+- Controlling `contrast_answer` for correctness **and** gold-length: partial ρ falls +0.35 → **+0.107**.
+- Example items confirm it: the highest-contrast items all have short gold (18–41 tok); ~zero/negative ones are longer (77–119).
+
+**Corrected conclusion:** the genuine, length-independent answer-completion signal is **weak (~0.07–0.11)**, not +0.35.
+**No tested variant cleanly recovers item-level signal.** Idea 2 fails outright; idea 3's apparent success was
+mostly the `1/N` length confound re-entering with a favorable sign. (A properly length-normalized
+answer-completion measure is the honest next probe, but expectations should be low given B ≈ 0.066.)
+
+## Correction 2 — boxed-correctness scoring bug (missing `$…$` delimiters), now fixed
+`answers_equivalent` called `math_verify.parse` on raw strings; without `$…$` delimiters Math-Verify
+mis-parses non-scalar answers (fractions, tuples, symbolic like `\cot x`), causing errors **both directions**:
+- **False negatives:** re-checking the 256 "judge≥9 but marked-wrong" items with `$`-delimited Math-Verify,
+  **228 are actually equivalent to gold** (e.g. gold `\frac{3\sqrt3}{4}` vs an identical model answer marked wrong).
+- **False positives:** the parallel audit noted ~25 undelimited parametric answers spuriously matched.
+
+**Fix applied** (`tfa/boxed.py`): wrap both sides in `$…$` before `parse`. Re-scoring all 3000 items locally with
+the fix flips **272 labels (9.1%)** and raises accuracy **0.562 → 0.636 (+7.4 pts)** — so absolute accuracy was
+underestimated by ~7–10 pts per model.
+
+**Verified: conclusions are robust to the fix.**
+- Item-level partial ρ(TFA, judge | correct): −0.035 → **−0.019** (still ≈0); within-correct (n=1909) = −0.064. Null holds.
+- Model-level ρ(mean-TFA, **corrected** accuracy) = **+0.943** (unchanged); ρ(mean-TFA, judge) = +0.943. Positive holds.
+- The raw item-level r(TFA, judge) = −0.03 is correctness-independent, so it is untouched.
+(The E1 accuracy column above is the pre-fix, ~7-pt-low version; corrected accuracies are 0.5B 0.304, 1.5B 0.512,
+3B 0.668, 7B 0.718, 14B 0.786, 32B 0.830.)
+
+## What survives scrutiny
+- **TFA metric correctness:** verified — E0 (vLLM == HF, exact) and cross-run baseline TFA agreement (corr 0.9994, mean|diff| 0.0007).
+- **Item-level null** (TFA carries no per-response signal beyond correctness): **robust.**
+- **Model-level positive** (mean-TFA ranks models like the judge, ρ ≈ 0.94; n=6, wide CI): **robust** to the correctness bug.
+- **Idea 2** (surprisal/IDF weighting): **fails.**
+- **Idea 3** (contrastive): apparent item-level win is **largely a length artifact**; genuine signal weak.
+
+**Overall corrected takeaway:** TFA is a usable judge-free *model-ranking* signal but not a per-response judge
+replacement, and none of the tested variants change that — the one that looked promising was an artifact. The
+honest path to a per-response judge-free signal is to score the model's *own* computation (idea 4), not gold-prediction.
