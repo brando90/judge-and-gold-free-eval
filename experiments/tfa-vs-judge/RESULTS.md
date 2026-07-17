@@ -58,3 +58,60 @@ per-response grading, no.*
   `.env` was rejected as invalid, so cross-family judge is TODO).
 - Prompting is raw completion-style (not chat-templated); accuracies are sane but a chat-template pass
   is a cheap robustness check.
+
+---
+
+# Appendix: what the metrics mean, and how they were computed
+
+## The three raw per-(model, problem) measurements
+Note *what each is measured on* — this asymmetry drives everything.
+
+| Quantity | Measured on | How | Range |
+|---|---|---|---|
+| **TFA** (`tfa_argmax`) | the **gold** solution (teacher-forced) | feed the model the gold tokens; at each position check if the model's argmax next-token equals the gold token; TFA = fraction matching (`tfa/core.py`) | [0,1] |
+| **boxed-correct** | the model's **own** free generation | free-solve, extract `\boxed{}`, check equality with gold answer via Math-Verify (`tfa/boxed.py`) | {0,1} |
+| **judge** | the model's **own** free generation | show gpt-5.2 the problem + gold + the model's solution, rate the *reasoning* 0–10 (`tfa/judge.py`) | [0,10] |
+
+TFA never sees the model's own output — it only measures how *predictable the gold trace* is to the model. The premise is that predicting an expert proxies for one's own reasoning quality.
+
+## Spearman ρ, and item-level vs. model-level
+Spearman ρ is a rank correlation (+1 monotone-up, 0 none, −1 monotone-down); used over Pearson because relationships are nonlinear and the judge scale is skewed. Two distinct questions:
+- **Item-level:** each (model, problem) is a point → 3000 points. "Across responses, does higher TFA go with a higher judge score?" (Can TFA grade a response?)
+- **Model-level:** average each model's 500 items → 6 points. "Across models, does higher mean-TFA go with higher mean-judge?" (Can TFA rank models?)
+
+## The decisive metric: partial correlation ρ(TFA, judge | correct)
+The judge is largely driven by correctness (item-level r(judge, correct) = **+0.72**). So a raw r(TFA, judge) could be "real" only via correctness, which is free (Math-Verify). The partial correlation removes the rank-association explained by correctness from *both* TFA and judge, then correlates the residuals (`tfa/analyze.py`):
+```
+partial = (Rxy − Rxz·Ryz)/√((1−Rxz²)(1−Ryz²))
+        = (−0.032 − (−0.011)(0.723))/√(...) = −0.035   (95% CI [−0.071, +0.001])
+```
+Equivalently, stratified: among correct answers r(TFA, judge) = −0.10; among wrong, +0.03. Both ≈ 0. **This is the right test** because a judge earns its keep beyond the free correctness bit; partial ≈ 0 means TFA adds nothing there.
+
+## Why item-level TFA ≈ 0: the confounds (mechanistic)
+```
+r(TFA, gold_length)     = +0.38   longer/formulaic gold → higher TFA
+r(correct, gold_length) = −0.28   longer gold → harder → less correct
+```
+The two opposing paths through gold-length cancel → r(TFA, correct) ≈ 0. Per-item TFA variance is dominated by a *reference* property (length/formulaicness), not the model's competence. The **content-token control** (mask formatting/LaTeX glue) halves the length confound (+0.38→~+0.2) but the item-level null persists — so it is not a formatting artifact. Neither does the soft `tfa_logprob` help (−0.11 among correct).
+
+## The two failure modes, from real 14B correct-answer examples
+**HIGH TFA / LOW judge — long, formulaic gold; model predicts it but its own route is worse.**
+- `precalculus/826` (TFA=0.96, judge=2.0, gold_len=478): hard product-of-cosines; gold is a long standard double-angle chain (predictable), but the model's own free solution took a weaker "roots of unity" route.
+- `precalculus/989` (TFA=0.94, judge=2.0, gold_len=918): very long formulaic gold → high TFA; own reasoning judged poor.
+
+**LOW TFA / HIGH judge — short, clever gold; model solves it correctly via a *different* valid path.**
+- `algebra/893` (TFA=0.62, judge=10, gold_len=105): gold uses a slick "constant term = product of constants" shortcut; the model does a full rigorous expansion (judged 10) — valid but different, so it doesn't match the gold tokens. The **alternate-path penalty**.
+- `number_theory/612` (TFA=0.62, judge=10, gold_len=37): terse clever gold; the model's longer explicit derivation is judged perfect.
+
+Both modes are driven by properties of the *reference* (length, path-uniqueness), not by the quality of the model's own reasoning — exactly why item-level TFA is decoupled from the judge.
+
+# Appendix: how might we improve TFA?
+Grounded in the two failure modes. Key honesty check: **pure length-normalization/detrending will not create item-level signal** — the partial correlation (which already residualizes out correctness) is ≈ 0, so the signal isn't hidden under a confound; it's absent under the current measurement. The promising ideas therefore *change what is measured*, not just normalize.
+
+1. **Multi-reference TFA** (fixes the alternate-path failure, low-TFA/high-judge). Score against K diverse gold solutions (answer-equivalence-verified) and take the max/soft-max, so a model that reasons well via *any* valid path is credited. Directly repairs algebra/893-type cases.
+2. **Surprisal/informativeness-weighted TFA** (fixes the length/formulaic confound, high-TFA/low-judge). Weight each gold token by how load-bearing it is (e.g., inverse token frequency or surprisal under a base LM); formulaic boilerplate counts little, decisive reasoning tokens count most. A principled generalization of the content-token mask.
+3. **Contrastive TFA: TFA(correct gold) − TFA(corrupted gold).** Corrupt the gold (wrong final step / distractor derivation) of matched length; a model that reasons well should predict the correct gold *more* than the corrupted one. Differencing cancels the length/formulaic baseline and could surface reasoning discrimination — cheap to run.
+4. **Score the model's own trace, not the gold.** The deepest fix: item-level quality is about the model's *own* output. Judge-free proxies: self-consistency across samples, confidence/perplexity of its own derivation, or step-wise entailment to the answer. Departs from teacher-forcing-on-gold but serves the per-response goal (and honestly may be necessary — predicting an expert is structurally different from reasoning well).
+5. **Step/bottleneck aggregation.** Replace mean-TFA with the *minimum* over reasoning steps (a single broken step gates quality) or the fraction of steps above a threshold — still gold-anchored, but less length-dominated.
+
+Recommended first probes (cheap, on the existing traces or one extra pass): (2) surprisal-weighting and (3) contrastive TFA, since both attack the identified confounds without new human labels; then (1) multi-reference for the alternate-path failure.
