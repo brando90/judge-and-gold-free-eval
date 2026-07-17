@@ -1,0 +1,11 @@
+# TFA-vs-judge crux experiment. GPU box (SNAP) needs vllm+torch+transformers;
+# analysis-only boxes need just numpy/scipy/datasets.
+vllm>=0.6.3
+torch>=2.4
+transformers>=4.44
+datasets>=2.20
+numpy>=1.26
+scipy>=1.11
+litellm>=1.50          # provider-agnostic frontier judge
+math-verify>=0.5       # symbolic boxed-answer equivalence (falls back to string match if absent)
+pytest>=8

@@ -1,0 +1,45 @@
+{
+  "tfa_vs_judge": {
+    "rho": -0.03163376271778632,
+    "lo": -0.06907206880976237,
+    "hi": 0.006014225723708918,
+    "n": 3000,
+    "method": "spearman"
+  },
+  "tfa_vs_correct": {
+    "rho": -0.01071842167917172,
+    "lo": -0.046520772063566036,
+    "hi": 0.025493355652865462,
+    "n": 3000,
+    "method": "spearman"
+  },
+  "judge_vs_correct": {
+    "rho": 0.7234263625529284,
+    "lo": 0.7018548892240922,
+    "hi": 0.7447232365957195,
+    "n": 3000,
+    "method": "spearman"
+  },
+  "tfa_vs_judge_partial": {
+    "rho": -0.034590226215606784,
+    "lo": -0.07111324346050742,
+    "hi": 0.0010245698177259255,
+    "n": 3000,
+    "method": "partial_spearman"
+  },
+  "tfa_vs_judge_within_correct": {
+    "rho": -0.10046170620484333,
+    "lo": -0.15071899003908854,
+    "hi": -0.05071386442587527,
+    "n": 1687,
+    "method": "spearman"
+  },
+  "tfa_vs_judge_within_wrong": {
+    "rho": 0.026797919763649963,
+    "lo": -0.026770191689328295,
+    "hi": 0.07967956614031131,
+    "n": 1313,
+    "method": "spearman"
+  },
+  "verdict": "NEGATIVE: TFA does not add signal beyond boxed correctness (cheaper exact-match)."
+}

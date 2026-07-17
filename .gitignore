@@ -216,3 +216,7 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# TFA experiment: raw per-item traces (regenerable; large). Keep slim scores + crux json.
+experiments/tfa-vs-judge/runs/math500/
+experiments/tfa-vs-judge/.venv/
