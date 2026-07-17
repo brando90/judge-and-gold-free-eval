@@ -183,6 +183,32 @@ near-oracle) and it is the *variance* in that lift — not its level — that ca
 
 ---
 
+### Scaled result (450 responses) + completer comparison
+Repeated on **150 problems × 3 models = 450 responses** (323 correct / 127 wrong), with **two completers** (mid-strength
+14B and strong 32B) to test wash-out sensitivity:
+
+| completer | `partial \| correct` (95% CI) | `\| correct & V(0)` | **within-correct** (n=323) | within-wrong (n=127) | V(0) base-rate |
+|---|---|---|---|---|---|
+| 32B (strong) | +0.37 [0.27, 0.45] | +0.34 | +0.08 [−0.02, 0.19] (n.s.) | +0.67 | 0.906 |
+| **14B (mid)** | **+0.44 [0.35, 0.51]** | +0.31 / +0.46 (lastV) | **+0.19 [0.09, 0.29]** ✓ | +0.73 | 0.878 |
+
+**Findings.**
+1. **Signal holds at scale and replicates across completers** (partial +0.37→+0.44, tight CIs, survives difficulty
+   control). This is a robust, non-artifact, judge-free item-level signal — the first in the whole investigation.
+2. **Mid-strength (14B) completer beats strong (32B)** — as the wash-out analysis predicted: a less-oracle-y completer
+   is more sensitive to prefix quality (a near-oracle re-solves regardless, saturating V). **Design rule: don't use too
+   strong a completer.**
+3. **The decisive within-correct test flips positive with power + the 14B completer: +0.19 [0.09, 0.29], CI excludes 0.**
+   So the rollout value *does* weakly-but-significantly separate *valid-correct from lucky-correct* — the marquee case
+   TFA and every variant failed at (≈0). It is far weaker than the wrong-stratum (+0.73, near-miss vs. incoherent), so
+   most of the signal is still graded-correctness, but there **is** real signal in the hard case.
+
+**Updated verdict.** The rollout process value *partially solves the underlying "judge-free per-response reasoning
+signal" problem* — robust, difficulty-controlled, replicated, and it even cracks (weakly) the grade-among-correct
+case. It is **not** TFA and **not** cheap (~K·T× cost, sampled), so it's a **process-reward / soft-verifier**, not the
+proposal's cheap deterministic judge-replacement. But as a judge-free signal grounded in an objective answer-oracle, it
+works where every gold-prediction variant failed.
+
 ## 5. Where we are / next steps
 1. **Scale the rollout-PRM** — more problems and models, and step-level cut-points (not just 4 fractions), to tighten
    CIs and get power in the correct stratum.
@@ -194,6 +220,9 @@ near-oracle) and it is the *variance* in that lift — not its level — that ca
 
 ## Standing conclusions
 - **Judge-free model-level ranking: solid** (TFA, ρ ≈ 0.94).
-- **Judge-free item-level grading: unsolved.** No cheap gold-anchored variant works; the rollout process value is the
-  first signal to survive the artifact/difficulty checks, but it lives in the wrong stratum and is a graded-correctness
-  proxy. Whether it becomes a genuine per-response reasoning-quality signal is the open bet.
+- **Judge-free item-level grading: partially solved (by a costly process signal, not by TFA).** No cheap gold-anchored
+  TFA variant works (all ≈0 or artifacts). The **rollout process value** with a mid-strength (14B) completer gives a
+  robust, replicated, difficulty-controlled item-level signal: `partial ρ(·, judge | correct) = +0.44` [0.35, 0.51],
+  and — crucially — a **weak but significant within-correct signal (+0.19 [0.09, 0.29])**, cracking the grade-among-correct
+  case that TFA totally failed. It is a **process-reward / soft-verifier** (judge-free, oracle-grounded), not a cheap
+  deterministic judge-replacement; the bulk of its signal is still near-miss detection in the wrong stratum (+0.73).
