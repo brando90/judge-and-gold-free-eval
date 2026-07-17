@@ -130,6 +130,40 @@ difficulty diagnostic. Features: `meanV`, `lastV = V(.75)`, `lift = meanV − V(
 | lastV | +0.52 | **+0.46 [0.29, 0.61]** | +0.62 | −0.06 | +0.79 |
 | lift  | +0.42 | **+0.33 [0.17, 0.47]** | +0.51 | +0.15 | +0.65 |
 
+**Reading the table.** The value is `V(f) = P(the fixed 32B completer reaches the correct answer | problem + first
+f-fraction of the model's own response)`, estimated from K=8 rollouts. The rows are three summaries of the value
+*trajectory* `V(0), V(.25), V(.5), V(.75)`; the columns are increasingly strict tests against the judge.
+
+*Rows (features of a response's value trajectory):*
+- **meanV** — average value over the non-zero cut-points (.25/.5/.75). "On average, how solvable does this response's
+  reasoning keep the problem?" A level summary.
+- **lastV = V(.75)** — the value after ~75% of the response. "Does the reasoning end *on-track*?" Empirically the
+  strongest single feature — the state near the end of the derivation best summarizes whether it stayed valid.
+- **lift = meanV − V(0)** — the value *net of the problem's base difficulty*. `V(0)` is the completer solving from the
+  problem alone (no prefix); `lift` isolates how much *this response's reasoning* raises (helps) or lowers (misleads)
+  the completer's odds versus starting from scratch. This is the "prefix-specific" effect with base difficulty removed.
+
+*Columns (tests of increasing strictness):*
+- **r(·, judge)** — raw Spearman with the judge over all 150 responses. Inflated: both the feature and the judge
+  partly track correctness, so this over-states the real signal.
+- **partial | correct (95% CI)** — the decisive metric: Spearman controlling for the binary boxed-correct bit, with a
+  bootstrap CI. "Does the feature track the judge *beyond* free correctness?" CI excluding 0 = genuine item-level signal.
+- **partial | correct & V(0)** — additionally control for `V(0)` (the completer's base solve-rate ≈ problem difficulty).
+  This is the **artifact check**: if the signal is really just problem difficulty driving both V and the judge, it dies
+  here. It *strengthens* instead — the opposite of `contrast_answer`, which collapsed under its length control.
+- **within-correct / within-wrong** — Spearman among *only* correct answers (n=110) / *only* wrong answers (n=40).
+  These localize *where* the signal lives: separating good-from-bad reasoning among already-correct answers
+  (within-correct) vs. separating near-miss from incoherent wrong answers (within-wrong).
+
+**What the numbers say.** `lastV` is the best feature (partial +0.46, and +0.62 once difficulty is removed) — being
+*on-track near the end* matters most. The signal is almost entirely in the **wrong stratum** (within-wrong +0.65…+0.79):
+a wrong answer whose prefix a strong completer can still finish correctly (high V) had *coherent* reasoning and the
+judge scores it higher; a wrong answer that derails the completer (low V) was *incoherent* and the judge scores it low.
+Among **correct** answers the value **saturates** (they reach the answer, so V stays high) → within-correct ≈ +0.12
+with a CI that includes 0 → no reliable signal in the hard, valuable case. And `V(0)=0.946` means the 32B nearly always
+solves these problems anyway, so `lift` is mostly slightly negative (a weaker model's prefix marginally *hurts* a
+near-oracle) and it is the *variance* in that lift — not its level — that carries the information.
+
 **This is the first item-level signal that survives scrutiny.**
 - CIs exclude 0.
 - **Survives controlling for problem difficulty** (V(0)) — it *strengthens*, the opposite of `contrast_answer`, which
