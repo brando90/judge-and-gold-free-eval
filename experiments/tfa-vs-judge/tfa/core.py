@@ -78,6 +78,32 @@ def score_tfa(records: list[PosRecord]) -> TFAResult:
     )
 
 
+def weighted_tfa(records: list[PosRecord], weights: list[float]) -> float:
+    """Weighted argmax-match rate: sum_i w_i*1[match_i] / sum_i w_i.
+
+    Lets us down-weight formulaic/boilerplate gold tokens (idea 2). `weights` must
+    align 1:1 with `records`.
+    """
+    if not records:
+        return float("nan")
+    num = sum(w * (1.0 if r.gold_id == r.top1_id else 0.0) for r, w in zip(records, weights))
+    den = sum(weights)
+    return (num / den) if den > 0 else float("nan")
+
+
+def surprisal_weights(records: list[PosRecord]) -> list[float]:
+    """Self-information of each realized gold token under the model: -logprob (nats, >=0).
+
+    High-surprisal tokens are the load-bearing/decisive ones; formulaic tokens the
+    model finds obvious get ~0 weight. Missing logprob -> 0 weight.
+    """
+    return [(-r.gold_logprob if r.gold_logprob is not None else 0.0) for r in records]
+
+
+def surprisal_weighted_tfa(records: list[PosRecord]) -> float:
+    return weighted_tfa(records, surprisal_weights(records))
+
+
 def top1_from_topk(topk: dict[int, float]) -> int:
     """Return the argmax token id from a {token_id: logprob} top-k map.
 

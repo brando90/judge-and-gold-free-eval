@@ -115,3 +115,41 @@ Grounded in the two failure modes. Key honesty check: **pure length-normalizatio
 5. **Step/bottleneck aggregation.** Replace mean-TFA with the *minimum* over reasoning steps (a single broken step gates quality) or the fraction of steps above a threshold — still gold-anchored, but less length-dominated.
 
 Recommended first probes (cheap, on the existing traces or one extra pass): (2) surprisal-weighting and (3) contrastive TFA, since both attack the identified confounds without new human labels; then (1) multi-reference for the alternate-path failure.
+
+# Appendix: deeper analysis — *why* item-level TFA fails (3000 items)
+
+The item-level null is not random decoupling; it is a **structured, adversarial confound**.
+
+## Gold length is a common cause that moves TFA and the judge in opposite directions
+Within the correct stratum (n=1687), Spearman of each property against TFA and against the judge:
+```
+                  r(·, TFA)   r(·, judge)
+ gold_length       +0.34        −0.33     (equal and OPPOSITE)
+ free_gen_length   +0.17        −0.17
+ free/gold sim     +0.12        +0.02
+```
+Longer, more formulaic gold is more predictable → higher TFA; but longer gold means a harder problem
+with more room for reasoning gaps even when the answer is right → lower judge. Length quintiles:
+```
+ gold_len bin     mean-TFA   mean-judge
+ [ 18,  77]         0.764       9.87
+ [ 77, 109]         0.780       9.73
+ [109, 164]         0.801       9.69
+ [164, 242]         0.808       9.59
+ [242,1389]         0.839       8.52
+```
+TFA rises monotonically with gold length while the judge falls — the shared driver pushes them apart,
+which is why r(TFA, judge) is slightly *negative* (−0.10), not merely zero.
+
+## Corroborating cuts
+- **Per-subject** r(TFA, judge | correct): positive where gold is short (algebra +0.11, prealgebra +0.06;
+  ~130 gold tok), negative where gold is long (geometry −0.25, intermediate-algebra −0.09; ~210–250 tok).
+- **Path adherence:** splitting by free-gen↔gold word-overlap, the correlation rises from −0.17 (diverged
+  path) to −0.03 (followed gold) — less negative but still not positive. Even on-path, TFA has no signal.
+- **Variance:** gold-length explains ~12% of TFA's rank variance and ~11% of the judge's, in opposite signs.
+
+## Interpretation
+TFA measures **reference predictability**, dominated by the reference's length/formulaicness — an axis that
+is itself weakly *anti*-correlated with judged reasoning quality. This is the mechanistic root of the
+item-level failure and the direct motivation for surprisal-weighting (idea 2, strip the length axis) and
+contrastive TFA (idea 3, difference out the length baseline).
