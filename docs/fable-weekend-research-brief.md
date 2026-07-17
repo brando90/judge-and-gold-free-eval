@@ -94,9 +94,9 @@ Reproduce and extend the model-level + item-level TFA picture beyond MATH-500.
 Formal math is the cleanest judge-free setting: **the Lean kernel is an objective oracle**, so "correctness"
 needs no judge. Token-TFA on Lean is known-inadequate (alpha-equivalence, definitional equality, hypothesis
 reordering — arXiv:2406.07222), so **do not use naive token-TFA as the primary signal.**
-- **Datasets:** VeriBench (the lab's own Python→Lean benchmark; see `~/veribench` and its SCSC metric / TC1
-  prover-entailment mode), VERINA, MiniF2F (Lean 4), PutnamBench (`github.com/trishullab/PutnamBench`). Verify
-  and pin.
+- **Datasets:** VeriBench (the lab's own Python→Lean benchmark: `github.com/brando90/veribench`, dataset under
+  `veribench_dataset/`, with its SCSC metric / TC1 prover-entailment mode), VERINA, MiniF2F (Lean 4),
+  PutnamBench (`github.com/trishullab/PutnamBench`). Verify and pin exact revisions/commits.
 - **Signals to compare (all judge-free):**
   1. **Prover/compiler pass** = ground-truth item outcome (kernel-verified, no `sorry`). This is the oracle.
   2. **Semantic-equivalence coverage** of predicted vs. gold statements via **bidirectional prover entailment
