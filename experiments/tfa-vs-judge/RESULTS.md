@@ -153,3 +153,39 @@ TFA measures **reference predictability**, dominated by the reference's length/f
 is itself weakly *anti*-correlated with judged reasoning quality. This is the mechanistic root of the
 item-level failure and the direct motivation for surprisal-weighting (idea 2, strip the length axis) and
 contrastive TFA (idea 3, difference out the length baseline).
+
+# Appendix: testing improvement ideas 2 & 3 (results)
+
+Recomputed TFA variants on the 5-model ladder (0.5B–14B × MATH-500) and joined them to the
+**existing** gpt-5.2 judge scores (no re-judging, no new free-gen). Decision metric: item-level
+**partial ρ(variant, judge | correct)** — signal beyond the free correctness bit. Pooled n=2500 (1322 correct).
+
+| variant | pooled partial\|correct | within-correct | notes |
+|---|---|---|---|
+| `tfa_argmax` (baseline) | −0.02 | −0.09 | raw TFA, no item-level signal |
+| `tfa_surprisal` (idea 2) | −0.25 | −0.17 | self-surprisal weighting — **worse** |
+| `tfa_idf` (idea 2) | −0.03 | −0.08 | corpus-IDF weighting — ≈ baseline |
+| **`contrast_answer` (idea 3)** | **+0.35** | **+0.22** | TFA(gold) − TFA(answer-swapped gold) — **works** |
+| `contrast_shuffle` (idea 3) | −0.20 | −0.18 | TFA(gold) − TFA(step-shuffled gold) — fails |
+
+Per-model `contrast_answer` partial ρ (positive for **every** model): 0.5B +0.17, 1.5B +0.34, 3B +0.37,
+7B +0.46, 14B +0.36 — vs. baseline partial of −0.16…+0.07.
+
+## Interpretation
+- **Idea 2 (weighting) fails**, confirming the deep-analysis prediction: item-level signal is *absent*
+  under gold-prediction, not merely hidden under the length confound, so reweighting can't recover it.
+- **Idea 3 answer-contrast succeeds** — the first variant with a genuine judge-free item-level signal
+  (+0.35 pooled, robust across the ladder, holding within the correct stratum). Because the corruption
+  changes only the final answer token, `contrast_answer` effectively measures *"teacher-forced through
+  the gold reasoning, does the model land on the correct answer rather than a wrong one?"* — an
+  answer-consistency/confidence signal that separates confidently-correct from luckily-correct reasoning.
+  The step-shuffle contrast fails, so it is specifically *answer-preference*, not step-ordering, that carries signal.
+- **Direction implied:** a judge-free item-level signal IS achievable, but it comes from a *contrastive /
+  answer-completion* measure of the model's own computation — not from predicting the gold trace. This
+  points to idea 4 (score the model's own trace) as the fruitful axis, with `contrast_answer` as a cheap first instance.
+
+## Caveats
+- Single judge (gpt-5.2); ρ≈0.35 is moderate, not strong.
+- `contrast_answer` is answer-anchored — narrower than full reasoning quality; it likely blends
+  "confidence in the correct conclusion" with reasoning quality (the two correlate but are not identical).
+- Not yet run on 32B or a second judge family.
