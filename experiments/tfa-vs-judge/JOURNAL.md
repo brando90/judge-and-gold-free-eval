@@ -45,6 +45,48 @@ measures predictability of the *reference*, not quality of the model's *own* rea
 | **contrastive TFA (step-shuffle)** | TFA(gold) − TFA(step-shuffled gold) | −0.13 | ❌ fails |
 | **multi-reference TFA** | max TFA over K verified gold solutions | not run | (expected: fixes only the alternate-path half) |
 
+### What each variation actually is (mechanics + why it failed)
+
+Baseline **TFA** = teacher-force the model on the gold solution and score the fraction of gold tokens where the
+model's argmax next-token equals the gold token. All variations below modify *how* or *what* we score.
+
+1. **content-token TFA (shortcut control).** Same as TFA but **mask out "glue" tokens** — whitespace, LaTeX
+   delimiters (`{ } $ \frac …`), punctuation — and score argmax-match only over "content" tokens. *Rationale:* maybe
+   raw TFA is inflated by trivially-predictable boilerplate that drowns the real signal. *Result:* item-level null
+   persists (~0) → the failure is **not** a formatting artifact; the content tokens carry no per-item signal either.
+
+2. **TFA-logprob / BPC.** Replace the hard 0/1 argmax-match with the **soft gold-token log-probability** (how much
+   probability mass the model puts on each gold token), averaged over the trace (equivalently bits-per-token).
+   *Rationale:* argmax is coarse; a soft confidence might carry more. *Result:* ~0 (−0.11 within-correct) → the
+   coarseness of argmax was not the problem; the soft version is no better (slightly worse).
+
+3. **surprisal-weighted TFA.** Weight each gold token's match by its **surprisal** (self-information `−log p` under the
+   model), so *predictable/formulaic* tokens (low surprisal) count little and *surprising* tokens count more.
+   *Rationale:* down-weight boilerplate to isolate load-bearing reasoning tokens. *Result:* **−0.16 (worse).** The
+   high-surprisal tokens are exactly the hard reasoning tokens even good models miss, so up-weighting them adds noise.
+
+4. **IDF-weighted TFA.** Like (3) but weight by **corpus inverse-frequency** — gold tokens that are rare across the
+   whole gold-solution corpus weigh more; frequent ones less. A *model-independent* notion of informativeness.
+   *Rationale:* same "down-weight the boilerplate" idea, without depending on the model's own probabilities.
+   *Result:* ≈ baseline (−0.01) → reweighting frequent tokens doesn't create signal.
+
+5. **contrastive TFA (answer-swap).** `TFA(gold) − TFA(answer-corrupted gold)`, where the corrupted gold is identical
+   except its final `\boxed{}` answer is changed to a wrong value. *Rationale:* a good reasoner should predict the
+   *correct*-answer gold better than a wrong-answer one, and differencing cancels the length/formulaic baseline.
+   *Result:* looked positive (+0.18) but was an **artifact** (retracted; see the cautionary tale below).
+
+6. **contrastive TFA (step-shuffle).** `TFA(gold) − TFA(step-shuffled gold)`, where the corrupted gold has its
+   reasoning lines/sentences **reordered** (length exactly preserved, so no `1/N` artifact). *Rationale:* a coherent
+   reasoner should predict the correctly-ordered gold better than a scrambled one. *Result:* **−0.13.** Shuffling
+   destroys *global* coherence, but next-token prediction is *local* — the model doesn't track global step-order
+   through local logprobs, so the contrast is uninformative.
+
+7. **multi-reference TFA (not run).** Use **K diverse, answer-verified gold solutions** per problem and take
+   `max_k TFA(gold_k)`. *Rationale:* single-gold TFA penalizes valid *alternate* reasoning paths (the
+   low-TFA/high-judge failure mode); crediting the best-matching reference removes that penalty. *Expected:* fixes
+   only **half** the null — the alternate-path (short/clever gold) side — but not the length/formulaic (long gold)
+   side, which is bidirectional. So insufficient alone; not prioritized.
+
 ### The `contrast_answer` cautionary tale (why we now stress-test everything)
 `contrast_answer` first looked like a win (+0.35). On scrutiny it was a **`1/gold_length` artifact**: because the
 corruption changes only the answer token, `contrast_answer ≈ [predicts correct answer]/N`, dominated by inverse gold
