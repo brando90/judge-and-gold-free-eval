@@ -187,18 +187,24 @@ near-oracle) and it is the *variance* in that lift — not its level — that ca
 Repeated on **150 problems × 3 models = 450 responses** (323 correct / 127 wrong), with **two completers** (mid-strength
 14B and strong 32B) to test wash-out sensitivity:
 
-| completer | `partial \| correct` (95% CI) | `\| correct & V(0)` | **within-correct** (n=323) | within-wrong (n=127) | V(0) base-rate |
-|---|---|---|---|---|---|
-| 32B (strong) | +0.37 [0.27, 0.45] | +0.34 | +0.08 [−0.02, 0.19] (n.s.) | +0.67 | 0.906 |
-| **14B (mid)** | **+0.44 [0.35, 0.51]** | +0.31 / +0.46 (lastV) | **+0.19 [0.09, 0.29]** ✓ | +0.73 | 0.878 |
+Completer-strength curve (meanV feature; n=323 correct / 127 wrong):
+
+| completer | V(0) base | `partial \| correct` (95% CI) | **within-correct** (n=323) | within-wrong |
+|---|---|---|---|---|
+| 7B (too weak) | 0.823 | +0.33 [0.24, 0.41] | +0.09 [−0.02, 0.20] (n.s.) | +0.73 |
+| **14B (sweet spot)** | 0.878 | **+0.43 [0.35, 0.51]** | **+0.19 [0.09, 0.29]** ✓ | +0.73 |
+| 32B (too strong) | 0.906 | +0.37 [0.27, 0.45] | +0.08 [−0.02, 0.19] (n.s.) | +0.67 |
 
 **Findings.**
-1. **Signal holds at scale and replicates across completers** (partial +0.37→+0.44, tight CIs, survives difficulty
+1. **Signal holds at scale and replicates across completers** (partial +0.33→+0.44, tight CIs, survives difficulty
    control). This is a robust, non-artifact, judge-free item-level signal — the first in the whole investigation.
-2. **Mid-strength (14B) completer beats strong (32B)** — as the wash-out analysis predicted: a less-oracle-y completer
-   is more sensitive to prefix quality (a near-oracle re-solves regardless, saturating V). **Design rule: don't use too
-   strong a completer.**
-3. **The decisive within-correct test flips positive with power + the 14B completer: +0.19 [0.09, 0.29], CI excludes 0.**
+2. **Completer strength is an inverted-U (Goldilocks); 14B is the sweet spot.** Both *too weak* (7B: fails to finish
+   even good prefixes → noisy V) and *too strong* (32B: re-solves regardless of the prefix → V(0)=0.91 wash-out) are
+   worse than 14B on both overall partial and within-correct. **Design rule: use a *mid-strength* completer — capable
+   enough that success reflects the prefix, not so capable the prefix is irrelevant.**
+3. **The decisive within-correct test flips positive only at the sweet-spot completer: 14B gives +0.19 [0.09, 0.29]
+   (CI excludes 0); 7B and 32B are ≈+0.08 (n.s.).** The grade-among-correct signal is *real but fragile* — it exists,
+   but only at the right completer strength, and even then it is weak (+0.19).
    So the rollout value *does* weakly-but-significantly separate *valid-correct from lucky-correct* — the marquee case
    TFA and every variant failed at (≈0). It is far weaker than the wrong-stratum (+0.73, near-miss vs. incoherent), so
    most of the signal is still graded-correctness, but there **is** real signal in the hard case.
