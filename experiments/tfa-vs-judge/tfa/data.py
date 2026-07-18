@@ -5,6 +5,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from tfa.boxed import extract_boxed
+
 
 @dataclass(frozen=True)
 class Problem:
@@ -21,17 +23,21 @@ DATASETS = {
     "math500": dict(path="HuggingFaceH4/MATH-500", split="test", revision=None),
     "gsm8k": dict(path="openai/gsm8k", name="main", split="test", revision=None),
     "gsm8k-platinum": dict(path="madrylab/gsm8k-platinum", split="test", revision=None),
-    # Putnam-AXIOM: TFA never run here (new territory); expect weak-model floor.
-    "putnam-axiom": dict(path="Putnam-AXIOM/putnam-axiom-dataset-v1", split="train", revision=None),
+    # Putnam-AXIOM (gated; needs HF_TOKEN). TFA never run here — weak-model floor expected.
+    # Splits: 'original' (236), 'variations' (265, functional/contamination test), 'variations_org'.
+    "putnam-axiom": dict(path="Putnam-AXIOM/putnam-axiom-dataset-v1", split="original", revision=None),
+    "putnam-axiom-var": dict(path="Putnam-AXIOM/putnam-axiom-dataset-v1", split="variations", revision=None),
 }
 
 
 def load_problems(dataset: str, limit: int | None = None) -> list[Problem]:
+    import os
     from datasets import load_dataset
 
     cfg = DATASETS[dataset]
     kwargs = {k: v for k, v in cfg.items() if k in ("name", "revision") and v is not None}
-    ds = load_dataset(cfg["path"], split=cfg["split"], **kwargs)
+    token = os.environ.get("HF_TOKEN") or os.environ.get("HUGGING_FACE_HUB_TOKEN")
+    ds = load_dataset(cfg["path"], split=cfg["split"], token=token, **kwargs)
     out: list[Problem] = []
     for i, row in enumerate(ds):
         if limit is not None and i >= limit:
@@ -56,12 +62,15 @@ def _to_problem(dataset: str, i: int, row: dict) -> Problem:
         return Problem(id=str(i), question=row["question"], gold_solution=sol,
                        gold_answer=ans, dataset=dataset, meta={})
     if dataset.startswith("putnam"):
+        sol = row.get("solution", "")
+        # Putnam-AXIOM has no separate answer field; the answer is \boxed{} in the solution.
+        ans = extract_boxed(sol) or ""
         return Problem(
             id=str(row.get("id", i)),
             question=row.get("problem") or row.get("question", ""),
-            gold_solution=row.get("solution", ""),
-            gold_answer=str(row.get("answer", "")),
+            gold_solution=sol,
+            gold_answer=ans,
             dataset=dataset,
-            meta={"variation": row.get("variation")},
+            meta={"variation": row.get("variation"), "answer_type": row.get("answer_type")},
         )
     raise KeyError(dataset)
