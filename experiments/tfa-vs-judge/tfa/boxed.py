@@ -40,9 +40,14 @@ def extract_gsm8k_answer(text: str) -> str | None:
 
 
 def extract_final_answer(text: str, dataset: str) -> str | None:
+    # Predictions are always prompted for \boxed{}, so try that first regardless of
+    # dataset; fall back to the GSM8K `#### N` form (used by GSM8K gold solutions).
+    b = extract_boxed(text)
+    if b is not None:
+        return b
     if dataset.lower().startswith("gsm8k"):
         return extract_gsm8k_answer(text)
-    return extract_boxed(text)
+    return None
 
 
 def _normalize(s: str) -> str:
