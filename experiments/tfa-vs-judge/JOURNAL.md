@@ -215,6 +215,39 @@ case. It is **not** TFA and **not** cheap (~K·T× cost, sampled), so it's a **p
 proposal's cheap deterministic judge-replacement. But as a judge-free signal grounded in an objective answer-oracle, it
 works where every gold-prediction variant failed.
 
+## 4b. Workstream A — TFA baselines across NL-math datasets (MATH, GSM8K, Putnam-AXIOM)
+Extended the TFA picture beyond MATH-500 to **GSM8K** (500) and **Putnam-AXIOM** (236 'original'). Ladder:
+Qwen2.5 {0.5B,1.5B,3B,7B,14B}; judge = gpt-5.2; correctness via `$`-delimited Math-Verify (boxed-first extraction).
+
+| dataset | TFA range | ML ρ(TFA,acc) | ML ρ(TFA,judge) | item-level `partial\|corr` (CI) | `\|corr&len` | within-corr | within-wrong |
+|---|---|---|---|---|---|---|---|
+| MATH (n=3000)  | 0.76–0.82 | +0.94 | +0.94 | **−0.02** [−0.05,+0.02] | +0.08 | −0.06 | +0.08 |
+| GSM8K (n=2500) | 0.81–0.84 | +0.70 | +0.90 | **+0.115** [0.08,0.16] | +0.11 | +0.04 | +0.29 |
+| Putnam (n=1180)| 0.70–0.77 | +1.00 | +1.00 | **+0.218** [0.16,0.27] | +0.24 | +0.28 | +0.21 |
+
+**Findings.**
+1. **Model-level TFA holds and is strong everywhere** (ρ(mean-TFA, judge) = +0.90→+1.00; ρ(mean-TFA, acc) = +0.70→+1.00).
+   Reproduction confirmed and extended. **The "weak-model floor" fear is inverted:** TFA is *least* saturated and *most*
+   discriminative on the *hardest* data (Putnam range 0.70–0.77 vs. GSM8K's 0.81–0.84), so model-level works **best** on
+   Putnam (ρ=+1.0). Harder data gives TFA more range; easy data (GSM8K) saturates it (weakest ML ρ(TFA,acc)=+0.70).
+2. **The item-level null is NOT universal — a difficulty gradient:** MATH ≈0 → GSM8K +0.115 → **Putnam +0.218**, all
+   length-robust (they *strengthen* under length control). As TFA de-saturates on harder problems, whether a model can
+   predict the gold genuinely reflects competence, which the judge rewards. On Putnam the signal appears in **both**
+   strata (within-wrong +0.21 on n≈1059 is the robust, correctness-independent part). Still **modest (≤+0.22)** — a weak
+   per-item signal, not judge-replacing.
+
+**Critic / bugs caught (the "double-check" mandate paid off — all three would have produced bogus results).**
+- **GSM8K acc bogus 0.000:** the prompt asks for `\boxed{}` but the GSM8K extractor only looked for `#### N`. Fixed:
+  extract `\boxed` first, then `####` (`tfa/boxed.py`).
+- **Putnam acc bogus 0.000:** the loader set `gold_answer` from a non-existent `answer` field (→ empty → everything
+  scored wrong). Fixed: `gold_answer = \boxed{}` in the solution (`tfa/data.py`). Re-scored 14B = 0.182.
+- **Env-file corruption:** repeated `HF_TOKEN` shell-appends concatenated onto the no-newline OpenAI-key line → judge
+  auth failure. Rebuilt the env cleanly (recovered the 164-char key) in Python.
+
+**Caveats.** Putnam correct-stratum is small (n=121, acc≈0.10) and Math-Verify is FP-prone on complex Putnam answers, so
+the robust part of the Putnam item-level result is the within-wrong (+0.21, n≈1059); single judge (gpt-5.2); Qwen-only
+responses; Putnam *Variations*, `gsm8k-platinum`, and full `hendrycks_math` not yet run.
+
 ## 5. Where we are / next steps
 1. **Scale the rollout-PRM** — more problems and models, and step-level cut-points (not just 4 fractions), to tighten
    CIs and get power in the correct stratum.

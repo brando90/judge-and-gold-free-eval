@@ -114,6 +114,12 @@ reordering — arXiv:2406.07222), so **do not use naive token-TFA as the primary
 - **Question:** which judge-free FL signal best tracks formalization *quality* (spec faithfulness), and does the
   rollout-value item-level result transfer to FL?
 
+> **Workstream A status (DONE for MATH / GSM8K / Putnam-original; see `JOURNAL.md §4b`).** Model-level TFA holds
+> everywhere (ρ(mean-TFA, judge) +0.90→+1.00); the "weak-model floor" fear is inverted (TFA is *most* discriminative
+> on the *hardest* data, Putnam). Item-level is **not a universal null — a difficulty gradient**: MATH ≈0 → GSM8K
+> +0.115 → Putnam +0.218 (length-robust), still modest. Three correctness/env bugs were caught+fixed. **Still TODO for
+> A:** Putnam *Variations* (contamination test), `madrylab/gsm8k-platinum`, full `hendrycks_math`, and the 32B model.
+
 ### C. Rollout process value — depth (the promising direction)
 - **Completer-strength curve (requested):** run the rollout value with **7B, 14B, 32B** completers on the same
   NL responses. We have 14B/32B (14B > 32B). **Add 7B** — does an even-weaker completer sharpen the
