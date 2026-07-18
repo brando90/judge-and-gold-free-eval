@@ -216,37 +216,53 @@ proposal's cheap deterministic judge-replacement. But as a judge-free signal gro
 works where every gold-prediction variant failed.
 
 ## 4b. Workstream A — TFA baselines across NL-math datasets (MATH, GSM8K, Putnam-AXIOM)
-Extended the TFA picture beyond MATH-500 to **GSM8K** (500) and **Putnam-AXIOM** (236 'original'). Ladder:
-Qwen2.5 {0.5B,1.5B,3B,7B,14B}; judge = gpt-5.2; correctness via `$`-delimited Math-Verify (boxed-first extraction).
+Extended the TFA picture to **6 datasets** × the Qwen2.5 {0.5B,1.5B,3B,7B,14B} ladder (identical 5-model ladder
+everywhere; 32B also run on MATH-500 but dropped from this table for apples-to-apples). Judge = gpt-5.2; correctness via
+`$`-delimited Math-Verify (boxed-first extraction). Human-facing summary + figures in `paper/` (`PAPER.md`, `figs/`,
+`summary.json`); regenerate with `scripts/make_figures.py` + `scripts/analyze_workstream_a2.py`.
 
-| dataset | TFA range | ML ρ(TFA,acc) | ML ρ(TFA,judge) | item-level `partial\|corr` (CI) | `\|corr&len` | within-corr | within-wrong |
-|---|---|---|---|---|---|---|---|
-| MATH (n=3000)  | 0.76–0.82 | +0.94 | +0.94 | **−0.02** [−0.05,+0.02] | +0.08 | −0.06 | +0.08 |
-| GSM8K (n=2500) | 0.81–0.84 | +0.70 | +0.90 | **+0.115** [0.08,0.16] | +0.11 | +0.04 | +0.29 |
-| Putnam (n=1180)| 0.70–0.77 | +1.00 | +1.00 | **+0.218** [0.16,0.27] | +0.24 | +0.28 | +0.21 |
+| dataset | n | acc | TFA range | ML ρ(TFA,acc) | ML ρ(TFA,judge) | item `partial\|corr` (CI) | `\|corr&len` | w-corr | w-wrong |
+|---|---:|---:|---|---|---|---|---|---|---|
+| MATH-500          | 2500 | 0.60 | 0.76–0.82 | +0.90 | +0.90 | **−0.01** [−0.05,+0.04] | +0.08 | −0.05 | +0.06 |
+| MATH-full (alg.)  | 2999 | 0.77 | 0.75–0.80 | +0.60 | +0.60 | **+0.02** [−0.02,+0.05] | +0.04 | +0.02 | +0.08 |
+| GSM8K             | 2500 | 0.75 | 0.81–0.84 | +0.70 | +0.90 | **+0.115** [0.08,0.16] | +0.11 | +0.04 | +0.29 |
+| GSM8K-Platinum    | 2500 | 0.78 | 0.81–0.84 | +0.60 | +0.70 | **+0.063** [0.02,0.10] | +0.09 | +0.03 | +0.22 |
+| Putnam            | 1180 | 0.10 | 0.70–0.77 | +1.00 | +1.00 | **+0.218** [0.16,0.27] | +0.24 | +0.28 | +0.21 |
+| Putnam-Variations | 1325 | 0.12 | 0.68–0.76 | +0.90 | +1.00 | **+0.145** [0.09,0.20] | +0.17 | +0.16 | +0.13 |
 
 **Findings.**
-1. **Model-level TFA holds and is strong everywhere** (ρ(mean-TFA, judge) = +0.90→+1.00; ρ(mean-TFA, acc) = +0.70→+1.00).
-   Reproduction confirmed and extended. **The "weak-model floor" fear is inverted:** TFA is *least* saturated and *most*
-   discriminative on the *hardest* data (Putnam range 0.70–0.77 vs. GSM8K's 0.81–0.84), so model-level works **best** on
-   Putnam (ρ=+1.0). Harder data gives TFA more range; easy data (GSM8K) saturates it (weakest ML ρ(TFA,acc)=+0.70).
-2. **The item-level null is NOT universal — a difficulty gradient:** MATH ≈0 → GSM8K +0.115 → **Putnam +0.218**, all
-   length-robust (they *strengthen* under length control). As TFA de-saturates on harder problems, whether a model can
-   predict the gold genuinely reflects competence, which the judge rewards. On Putnam the signal appears in **both**
-   strata (within-wrong +0.21 on n≈1059 is the robust, correctness-independent part). Still **modest (≤+0.22)** — a weak
-   per-item signal, not judge-replacing.
+1. **Model-level TFA holds everywhere** (ρ(mean-TFA, judge) = +0.60→+1.00). Strongest on the *hardest* data (Putnam
+   ρ=+1.0, range 0.70–0.77) — **the "weak-model floor" fear is inverted.** It can *degrade to +0.60* on saturated
+   single-subject data (MATH-full algebra, GSM8K-Platinum), where the 5 models sit in a ~0.03–0.05 TFA band. Still always
+   positive and usable for ranking.
+2. **Item-level is a FAMILY effect, not a smooth accuracy gradient:** MATH ≈0 (both subsets, CI straddles 0) → GSM8K
+   +0.06…+0.12 → **Putnam +0.15…+0.22**, all length-robust (they *strengthen* under length control). Mechanism =
+   **TFA de-saturation**: range widens 0.03 (easy) → 0.07 (hard), so predicting the gold starts to reflect genuine
+   competence the judge rewards. Note GSM8K (acc 0.75) ≫ MATH-full (acc 0.77) in item-signal despite equal accuracy — so
+   it's dataset family, not accuracy per se. Still **modest (≤+0.22)** — not judge-replacing.
+3. **Label-noise (GSM8K → Platinum):** item signal roughly **halves** (+0.115 → +0.063), CI still >0. Part of GSM8K's
+   per-item signal was coupled to label noise; the rest is real. *Caveat: overlapping-but-not-identical item sets, so
+   directional not a paired ablation.*
+4. **Contamination (Putnam → functional Variations):** item signal attenuates ~⅓ (+0.218 → +0.145) but stays robustly
+   >0 (CI [0.09,0.20]) → **not a memorization/contamination artifact**; genuine competence signal survives functional
+   variation. Model-level stays +1.0.
+5. **Scale (MATH-500 → MATH-full, n≈3000):** the MATH item-null **confirmed at scale** (both ≈0).
 
-**Critic / bugs caught (the "double-check" mandate paid off — all three would have produced bogus results).**
-- **GSM8K acc bogus 0.000:** the prompt asks for `\boxed{}` but the GSM8K extractor only looked for `#### N`. Fixed:
-  extract `\boxed` first, then `####` (`tfa/boxed.py`).
-- **Putnam acc bogus 0.000:** the loader set `gold_answer` from a non-existent `answer` field (→ empty → everything
-  scored wrong). Fixed: `gold_answer = \boxed{}` in the solution (`tfa/data.py`). Re-scored 14B = 0.182.
-- **Env-file corruption:** repeated `HF_TOKEN` shell-appends concatenated onto the no-newline OpenAI-key line → judge
-  auth failure. Rebuilt the env cleanly (recovered the 164-char key) in Python.
+**Critic / bugs caught this batch.**
+- **Judge crash on content filter:** one MATH-full prompt tripped OpenAI `ContentPolicyViolationError`; unhandled, it
+  killed the whole 3000-item judge run (0 rows written). Fixed `scripts/run_judge.py` to catch per-item exceptions → `None`
+  (skipped, already filtered downstream). Re-judged: 0.5B 599/600 (1 flagged item skipped), rest 600/600.
+- **Data-completeness caught by moving analysis local (per user):** the SNAP MATH-500 re-run globbed only 3 of 6 model
+  files (n=1500 → wrong ML/IL); the local copy has the full ladder. Also `math_verify` missing in the fresh local venv
+  silently degraded `answers_equivalent` to string-match (MATH-500 acc 0.64→0.57) until installed. **Lesson: verify
+  `math_verify` present and the full file set before trusting numbers.** Local venv = `.venv-local` (numpy/scipy/
+  matplotlib/math-verify).
+- **Consistency:** 32B only run on MATH-500 → dropped from the cross-dataset table/figures (5-model ladder everywhere).
+- (Earlier, still relevant) GSM8K/Putnam acc-0.000 extractor bugs and env-file OpenAI-key corruption — all fixed; see git.
 
-**Caveats.** Putnam correct-stratum is small (n=121, acc≈0.10) and Math-Verify is FP-prone on complex Putnam answers, so
-the robust part of the Putnam item-level result is the within-wrong (+0.21, n≈1059); single judge (gpt-5.2); Qwen-only
-responses; Putnam *Variations*, `gsm8k-platinum`, and full `hendrycks_math` not yet run.
+**Caveats.** Single judge (gpt-5.2); Qwen-only responses; MATH-full = algebra subject only; Putnam correct-stratum small
+(acc≈0.10, so the robust Putnam part is within-wrong +0.21); Math-Verify FP-prone on complex Putnam answers.
+**Workstream A (breadth) is complete** — all planned NL-math datasets run, judged, analyzed, and figured.
 
 ## 5. Where we are / next steps
 1. **Scale the rollout-PRM** — more problems and models, and step-level cut-points (not just 4 fractions), to tighten

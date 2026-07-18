@@ -1,0 +1,5 @@
+.venv-local/
+# Heavy per-run judged traces (free_gen text); reproducible from /dfs + slim scores.
+# Keep the slim per-item scores committed (runs/scores_*.jsonl).
+runs/*/
+!runs/scores_*.jsonl

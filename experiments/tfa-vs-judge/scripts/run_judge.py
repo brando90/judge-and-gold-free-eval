@@ -30,7 +30,12 @@ def main():
                 print(f"[skip] {fp}: no saved free_gen"); continue
 
             def _j(r):
-                return judge_score(args.judge_model, r["question"], r["gold_solution"], r["free_gen"])
+                # Per-item resilience: a single flagged prompt (ContentPolicyViolation)
+                # or transient API error must NOT kill the whole run — skip it (None).
+                try:
+                    return judge_score(args.judge_model, r["question"], r["gold_solution"], r["free_gen"])
+                except Exception as e:
+                    return None
             with ThreadPoolExecutor(max_workers=args.workers) as ex:
                 scores = list(ex.map(_j, rows))
             for r, s in zip(rows, scores):

@@ -21,6 +21,8 @@ class Problem:
 # Pin these before any run (repro). Verify counts/licences per research-brief.
 DATASETS = {
     "math500": dict(path="HuggingFaceH4/MATH-500", split="test", revision=None),
+    # Full hendrycks MATH (per-subject configs; no 'answer' field, answer is boxed in solution).
+    "math-full": dict(path="EleutherAI/hendrycks_math", name="algebra", split="test", revision=None),
     "gsm8k": dict(path="openai/gsm8k", name="main", split="test", revision=None),
     "gsm8k-platinum": dict(path="madrylab/gsm8k-platinum", split="test", revision=None),
     # Putnam-AXIOM (gated; needs HF_TOKEN). TFA never run here — weak-model floor expected.
@@ -55,6 +57,17 @@ def _to_problem(dataset: str, i: int, row: dict) -> Problem:
             gold_answer=str(row["answer"]),
             dataset=dataset,
             meta={"level": row.get("level"), "subject": row.get("subject")},
+        )
+    if dataset == "math-full":
+        # EleutherAI/hendrycks_math: no 'answer' field; answer is \boxed{} in the solution.
+        sol = row["solution"]
+        return Problem(
+            id=str(i),
+            question=row["problem"],
+            gold_solution=sol,
+            gold_answer=extract_boxed(sol) or "",
+            dataset=dataset,
+            meta={"level": row.get("level"), "subject": row.get("type")},
         )
     if dataset.startswith("gsm8k"):
         sol = row["answer"]
