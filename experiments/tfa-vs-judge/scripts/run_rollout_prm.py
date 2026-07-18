@@ -32,6 +32,8 @@ def main():
     ap.add_argument("--gpu-mem-util", type=float, default=0.9)
     ap.add_argument("--max-model-len", type=int, default=8192)
     ap.add_argument("--max-tokens", type=int, default=1024)
+    ap.add_argument("--seed", type=int, default=0, help="rollout sampling seed (for reproducibility)")
+    ap.add_argument("--save-raw", default=None, help="dir to dump raw per-rollout completions + correctness")
     ap.add_argument("--out", default="runs/prm")
     args = ap.parse_args()
     cuts = [float(x) for x in args.cutpoints.split(",")]
@@ -66,15 +68,28 @@ def main():
             prompts.append(TokensPrompt(prompt_token_ids=ids))
             meta.append((ri, f))
 
-    sp = SamplingParams(n=args.k, temperature=0.8, top_p=0.95, max_tokens=args.max_tokens)
+    sp = SamplingParams(n=args.k, temperature=0.8, top_p=0.95, max_tokens=args.max_tokens, seed=args.seed)
     outs = llm.generate(prompts, sp)
+
+    raw_fh = None
+    if args.save_raw:
+        os.makedirs(args.save_raw, exist_ok=True)
+        raw_fh = open(f"{args.save_raw}/rollouts__{args.completer.replace('/','__')}.jsonl", "w")
 
     V = collections.defaultdict(dict)
     for (ri, f), out in zip(meta, outs):
+        ds = rows[ri].get("dataset", "math500")
         gold = extract_boxed(rows[ri]["gold_solution"])
-        hits = sum(int(answers_equivalent(extract_final_answer(o.text, rows[ri].get("dataset", "math500")), gold))
-                   for o in out.outputs)
-        V[ri][f] = hits / max(1, len(out.outputs))
+        per = [{"pred": extract_final_answer(o.text, ds),
+                "correct": int(answers_equivalent(extract_final_answer(o.text, ds), gold)),
+                "text": o.text[:800]} for o in out.outputs]
+        V[ri][f] = sum(r["correct"] for r in per) / max(1, len(per))
+        if raw_fh:
+            raw_fh.write(json.dumps({"problem_id": rows[ri]["problem_id"], "model": rows[ri]["model"],
+                                     "completer": args.completer, "cut": f, "seed": args.seed,
+                                     "rollouts": per}) + "\n")
+    if raw_fh:
+        raw_fh.close()
 
     os.makedirs(args.out, exist_ok=True)
     path = f"{args.out}/rollout_prm__{args.completer.replace('/','__')}.jsonl"

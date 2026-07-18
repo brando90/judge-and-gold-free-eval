@@ -71,8 +71,13 @@ model's free-gen), correctness via `$`-delimited Math-Verify. Decision metric = 
    string fallback for headline numbers.
 4. **Report negatives honestly and precisely.** A well-scoped negative is a real result. Do not overclaim; do
    not bury caveats. Keep a **claims ledger**: every number → the script/run that produced it.
-5. **Pin dataset revisions and model commits.** Fixed seeds. Save per-item outputs so analyses are re-runnable
-   without GPUs.
+5. **Pin dataset revisions and model commits. Fixed seeds everywhere.** **Save all intermediate artifacts to a
+   persistent location (`/dfs/scratch0/<user>/jfe_raw/`, not ephemeral `/lfs`)** so every run is fully
+   re-derivable without re-running GPUs: the **raw rollout completions + per-rollout correctness** (via
+   `run_rollout_prm.py --save-raw`), the **per-gold-token TFA records** (gold_id, argmax_id, logprob;
+   `run_all.py --save-tokens`), the free-gen traces, and the judge responses. Commit only slim per-item scores +
+   summaries + the exact configs/commands (a `manifest.jsonl` mapping run-id → config → raw-artifact path). Raw
+   artifacts are gitignored but kept on `/dfs`.
 
 ---
 

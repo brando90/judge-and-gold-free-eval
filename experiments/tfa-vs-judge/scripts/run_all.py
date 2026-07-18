@@ -38,6 +38,8 @@ def main():
                     help="no GPU/API: fake backends with a planted signal, to smoke-test the plumbing")
     ap.add_argument("--no-judge", action="store_true",
                     help="E1 mode: compute TFA + free-gen accuracy only, skip the LLM judge")
+    ap.add_argument("--save-tokens", default=None,
+                    help="dir to dump per-gold-token TFA records (gold_id, argmax_id, logprob) for offline variant recompute")
     args = ap.parse_args()
     if not args.dry_run and not args.no_judge and not args.judge_model:
         ap.error("--judge-model is required unless --dry-run or --no-judge is set")
@@ -63,6 +65,16 @@ def main():
         tfa_items = [(p.question, p.gold_solution, p.dataset) for p in problems]
         tfa_recs = tfa_records_vllm_batch(llm, tok, tfa_items)
         tfa_scores = [score_tfa(r) for r in tfa_recs]
+
+        if args.save_tokens:
+            os.makedirs(args.save_tokens, exist_ok=True)
+            tpath = f"{args.save_tokens}/tokens__{args.dataset}__{args.model.replace('/','__')}.jsonl"
+            with open(tpath, "w") as tf:
+                for i, p in enumerate(problems):
+                    toks = [[r.gold_id, r.top1_id, None if r.gold_logprob is None else round(r.gold_logprob, 4),
+                             int(r.is_content)] for r in tfa_recs[i]]
+                    tf.write(json.dumps({"problem_id": p.id, "model": args.model, "dataset": p.dataset, "tokens": toks}) + "\n")
+            print(f"[save] per-token records -> {tpath}")
 
         # 2) Free-generation (the model's own trace) for judge + boxed correctness.
         free = free_generate(llm, tok, [(p.question, p.dataset) for p in problems])
