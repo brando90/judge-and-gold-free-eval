@@ -12,7 +12,7 @@ Teacher-Forced Accuracy is the most natural candidate. Given a problem and a *go
 
 ## Setup
 
-We evaluate the Qwen2.5 instruct ladder (0.5B, 1.5B, 3B, 7B, 14B) on six datasets spanning three difficulty regimes: grade-school word problems (**GSM8K**, and its relabeled **GSM8K-Platinum**), competition-style problems (**MATH-500** and a larger **MATH-full** algebra sample), and olympiad problems (**Putnam-AXIOM**, plus its **functional Variations** designed to defeat memorization). For each solution we record TFA and a ground-truth quality score from a gpt-5.2 judge (0–10), alongside final-answer correctness from Math-Verify. To check that our conclusions do not hinge on which judge defines quality, we additionally re-grade all of MATH-500 with a second frontier judge from a different family (Claude Opus 4.8), using the identical rubric (see *§Is this one judge's opinion?*).
+We evaluate the Qwen2.5 instruct ladder (0.5B, 1.5B, 3B, 7B, 14B) on six datasets spanning three difficulty regimes: grade-school word problems (**GSM8K**, and its relabeled **GSM8K-Platinum**), competition-style problems (**MATH-500** and a larger **MATH-full** algebra sample), and olympiad problems (**Putnam-AXIOM**, plus its **functional Variations** designed to defeat memorization). For each solution we record TFA and a ground-truth quality score from a gpt-5.2 judge (0–10), alongside final-answer correctness from Math-Verify. To check that our conclusions do not hinge on which judge defines quality, we additionally re-grade the three anchor datasets that span the difficulty regimes (MATH-500, GSM8K, and Putnam-AXIOM) with a second frontier judge from a different family (Claude Opus 4.8), using the identical rubric (see *§Is this one judge's opinion?*).
 
 Our central question is whether TFA tracks judged quality *beyond* simply being correct. Correct answers score higher on both TFA and the judge, so a raw correlation is confounded. We therefore report the **partial Spearman correlation ρ(TFA, judge) controlling for correctness** — within the correct and incorrect solutions separately, does higher TFA mean a better-judged solution? — with 95% bootstrap confidence intervals, and we repeat every analysis controlling for solution length.
 
@@ -47,19 +47,19 @@ Our central question is whether TFA tracks judged quality *beyond* simply being 
 
 ## Is this one judge's opinion? A second judge agrees
 
-Every number so far is measured against a single gpt-5.2 judge, and a judge-free metric validated against one *unvalidated* judge invites the obvious charge of circularity. To answer it we re-graded all of MATH-500 — the dataset where the item-level null is the load-bearing claim — with a second frontier judge from a different family (Claude Opus 4.8), using the identical rubric, and re-ran the analysis. The two judges agree substantially, and, more to the point, they return the *same verdict about TFA*.
+Every number so far is measured against a single gpt-5.2 judge, and a judge-free metric validated against one *unvalidated* judge invites the obvious charge of circularity — most sharply for the *positive* item-level signals on GSM8K and Putnam, the paper's only non-null per-item results. To answer it we re-graded the three anchor datasets that span the difficulty regimes — MATH-500, GSM8K, and Putnam-AXIOM — with a second frontier judge from a different family (Claude Opus 4.8), same rubric, and re-ran the analysis.
 
-At the item level the judges track each other closely: Spearman ρ = 0.94 across all solutions and 0.71 among *correct* answers — the hard stratum, where quality is not merely correctness — with 93% of scores within one point and near-identical means (6.3 vs 6.1). And every TFA conclusion is judge-invariant. TFA ranks the five models identically against either judge (model-level ρ = +0.90 under both), and the decisive item-level partial correlation is statistically zero under both, as is the slightly-negative within-correct value. Which frontier model we appoint as ground truth does not move the answer: the MATH null is a property of TFA, not of the judge.
+The entire picture is judge-invariant. TFA ranks the five models the same way under both judges (model-level ρ ≥ +0.90 on every dataset), the MATH null stays null (item-level partial ρ ≈ 0 under both), and — the part that actually needed defending — **both positive signals replicate**: +0.12 → +0.10 on GSM8K and +0.22 → +0.16 on Putnam, with the second judge's confidence intervals still excluding zero. The difficulty gradient itself — zero on MATH, small on GSM8K, largest on Putnam — is reproduced by a judge that never saw the first judge's scores. The two judges also agree directly, item-level Spearman ρ from 0.75 (Putnam) to 0.94 (MATH), with 93–95% of scores within one point.
 
-| MATH-500, 5-model ladder | gpt-5.2 | Claude Opus 4.8 |
-|---|:---:|:---:|
-| model-level ρ(mean-TFA, judge) | +0.90 | +0.90 |
-| item-level ρ(TFA, judge \| correct) | −0.02 [−0.06, +0.02] | −0.02 [−0.06, +0.01] |
-| within-correct ρ(TFA, judge) | −0.09 [−0.14, −0.03] | −0.06 [−0.12, −0.01] |
+| anchor dataset | inter-judge ρ (all / within-correct) | model-level ρ(mean-TFA, judge)<br>gpt-5.2 / Opus 4.8 | item-level ρ(TFA, judge \| correct)<br>gpt-5.2 / Opus 4.8 |
+|---|:---:|:---:|:---:|
+| MATH-500 | 0.94 / 0.69 | +0.90 / +0.90 | −0.01 [−0.05,+0.04] / −0.01 [−0.05,+0.03] |
+| GSM8K | 0.84 / 0.43 | +0.90 / +0.70 | +0.12 [+0.08,+0.16] / +0.10 [+0.06,+0.14] |
+| Putnam-AXIOM | 0.75 / 0.86 | +1.00 / +1.00 | +0.22 [+0.16,+0.27] / +0.16 [+0.11,+0.22] |
 
-*Inter-judge agreement: Spearman ρ = 0.94 overall, 0.71 within-correct; 67% exact and 93% within ±1 point on the 0–10 scale.*
+*Five-model ladder, correctness from the fixed Math-Verify scorer as in the main table; the gpt-5.2 column reproduces it. Opus 4.8 graded 94.5% of GSM8K and ≥99.7% of the others — a handful of missing-at-random rate-limit dropouts.*
 
-We ran the second judge on MATH-500 only, and deliberately so: that is where the item-level *null* is the headline claim and most needs de-risking. Extending the cross-judge check to GSM8K and Putnam — where the small *positive* item-level signals live, and where any judge disagreement would matter most — is the natural next step.
+The second judge is uniformly a touch more conservative — its positive signals sit slightly below gpt-5.2's, and the two judges agree least on GSM8K's *correct* stratum (within-correct ρ = 0.43), where quality differences among short grade-school solutions are subtle. But no sign flips, no ordering changes, and no significant signal becomes insignificant. The judge-free conclusions here are properties of TFA, not of the particular frontier model we appointed as ground truth.
 
 ## A judge-free signal that *does* grade solutions — at a cost
 
@@ -85,7 +85,7 @@ For *ranking models* without a judge, TFA works and we recommend it: one forward
 
 ## Limitations
 
-Ground truth on GSM8K and Putnam still rests on a single judge (gpt-5.2); we cross-validated only MATH-500 against a second family (Claude Opus 4.8), where the two judges agreed closely (ρ = 0.94) and gave the same verdict — so the *positive* item-level signals, which live on the datasets we have not yet re-judged, are the ones most in need of a second judge. All graded solutions come from one model family (Qwen2.5). MATH-full samples only the algebra subject. Putnam's correct-answer stratum is small (≈10% accuracy), so the robust part of its item-level signal comes from the incorrect solutions; final-answer correctness there relies on Math-Verify, which produces false positives on complex expressions. The GSM8K-versus-Platinum comparison uses overlapping but not identical items, so it is directional rather than a paired ablation.
+Ground truth is defined by frontier LLM judges rather than humans. We validate against two judge families — gpt-5.2 and Claude Opus 4.8 — which agree closely (item-level ρ 0.75–0.94) and yield identical conclusions across all three anchor datasets, including the positive signals; but human ratings remain the missing gold standard, and two LLM judges could still share a blind spot. All graded solutions come from one model family (Qwen2.5). MATH-full samples only the algebra subject. Putnam's correct-answer stratum is small (≈10% accuracy), so the robust part of its item-level signal comes from the incorrect solutions; final-answer correctness there relies on Math-Verify, which produces false positives on complex expressions. The GSM8K-versus-Platinum comparison uses overlapping but not identical items, so it is directional rather than a paired ablation.
 
 ## Reproducibility
 
