@@ -21,6 +21,8 @@ what's established, and hold yourself to the rigor rules below (they were learne
 ---
 
 ## 1. Required reading (in the repo, before you touch anything)
+- `experiments/tfa-vs-judge/paper/PAPER.md` — concise human-facing writeup of the completed NL-math breadth study
+  (6 datasets, figures, the saturation mechanism, and the validity controls). Read this first for the current picture.
 - `experiments/tfa-vs-judge/RESULTS.md` — final conclusions.
 - `experiments/tfa-vs-judge/JOURNAL.md` — detailed narrative: every TFA variant tried, why each failed, the
   correctness bug, and the current rollout process-value results.
@@ -56,7 +58,13 @@ model's free-gen), correctness via `$`-delimited Math-Verify. Decision metric = 
   process-reward / soft-verifier (judge-free, oracle-grounded) — **not TFA and not cheap** (~K·T× cost).
 
 **Standing takeaway:** judge-free *model-ranking* is solid (TFA). Judge-free *item-level grading* is only
-*partially* solved, and only by the expensive rollout value — not by any cheap gold-prediction metric.
+*partially* solved, and only by the expensive rollout value — not by any cheap gold-prediction metric. The breadth
+study (Workstream A, now complete on 6 datasets) sharpened *why* TFA fails at the item level: **it saturates.** Where
+the gold is easy enough that all models reproduce it, TFA is pinned near ceiling and carries no per-item information;
+a weak item-level signal appears only on hard, unsaturated data (Putnam), and even there it is too small to act on.
+**This reframes the frontier:** the useful judge-free item signal must stay informative *under saturation*, which
+gold-token agreement structurally cannot. That is the case for process/rollout signals (§C) and for anchoring on the
+model's *own* best solution rather than a fixed gold (see "self-reference" in §C).
 
 ---
 
@@ -114,13 +122,24 @@ reordering — arXiv:2406.07222), so **do not use naive token-TFA as the primary
 - **Question:** which judge-free FL signal best tracks formalization *quality* (spec faithfulness), and does the
   rollout-value item-level result transfer to FL?
 
-> **Workstream A status (DONE for MATH / GSM8K / Putnam-original; see `JOURNAL.md §4b`).** Model-level TFA holds
-> everywhere (ρ(mean-TFA, judge) +0.90→+1.00); the "weak-model floor" fear is inverted (TFA is *most* discriminative
-> on the *hardest* data, Putnam). Item-level is **not a universal null — a difficulty gradient**: MATH ≈0 → GSM8K
-> +0.115 → Putnam +0.218 (length-robust), still modest. Three correctness/env bugs were caught+fixed. **Still TODO for
-> A:** Putnam *Variations* (contamination test), `madrylab/gsm8k-platinum`, full `hendrycks_math`, and the 32B model.
+> **Workstream A status — COMPLETE (6 datasets; see `JOURNAL.md §4b` and the human-facing writeup `paper/PAPER.md`).**
+> Model-level TFA holds everywhere (ρ(mean-TFA, judge) +0.60→+1.00); the "weak-model floor" fear is inverted (TFA is
+> *most* discriminative on the *hardest* data, Putnam ρ=+1.0; it weakens to +0.60 only on near-saturated easy data).
+> Item-level is best described as a **family / saturation effect, not a smooth accuracy gradient**: MATH ≈0 (both
+> MATH-500 and MATH-full-algebra, CIs straddle 0) → GSM8K +0.12 → Putnam +0.22 (length-robust), still modest and not
+> judge-replacing. **Mechanism = TFA de-saturation:** the mean-TFA range across the ladder is ~0.03 on easy data and
+> ~0.07 on Putnam; the item-level signal appears only where TFA has room to move. **Two validity controls confirm the
+> signal is genuine, not an artifact:** contamination (Putnam → functional Variations) attenuates +0.22→+0.15 but stays
+> >0, and label-noise (GSM8K → Platinum) halves +0.12→+0.06 but stays >0. A judge-crash bug (one prompt tripped the
+> OpenAI content filter and killed the whole run) was fixed to skip flagged items. All six datasets use the common
+> 5-model ladder; 32B was run on MATH-500 and dropped for cross-dataset comparability. **Optional A extension (low
+> priority):** full multi-subject `hendrycks_math` and 32B across the whole ladder — neither is expected to change the
+> conclusions (MATH item-null already confirmed at n≈3000).
 
 ### C. Rollout process value — depth (the promising direction)
+*Why this is the frontier:* Workstream A showed the cheap gold-token signal dies under saturation. Rollout value does
+not saturate the same way — it measures whether the *model's own* continuation reaches a correct answer, so it keeps
+resolution even when the gold is easy to predict. This is the signal most likely to grade individual solutions.
 - **Completer-strength curve (requested):** run the rollout value with **7B, 14B, 32B** completers on the same
   NL responses. We have 14B/32B (14B > 32B). **Add 7B** — does an even-weaker completer sharpen the
   within-correct signal (less wash-out) or get too noisy? Find the Goldilocks completer. Report V(0) base-rate,
@@ -131,6 +150,13 @@ reordering — arXiv:2406.07222), so **do not use naive token-TFA as the primary
 - **The hard open question (make real progress):** *can any judge-free signal robustly grade among CORRECT
   answers?* Push within-correct: better completer choice, step-level dips (a step that lowers P(correct) then
   recovers = "lucky"), and multi-sample self-consistency of the response itself. Report the ceiling honestly.
+- **Self-reference — anchor on the model's own solution, not a fixed gold (new, motivated by the saturation
+  finding):** the item-level failure of TFA is fundamentally that a *fixed, easy* gold is uninformative. Instead of
+  teacher-forcing the dataset's reference, teacher-force (or roll out toward) the model's *own* highest-confidence /
+  self-consistent solution, or the majority-vote answer among K samples. The signal becomes "how coherently does this
+  trace agree with the model's own best reasoning," which does not saturate on easy references and needs no gold at
+  all (a bridge toward Plan B). Test it against the judge with the same partial-ρ protocol; compare to fixed-gold TFA
+  and to rollout value on the same items.
 
 ### D. Robustness / validity (do as budget allows)
 - **Cross-family judge:** re-run the judge with a second frontier family (e.g. Claude Opus / Gemini) to bound
