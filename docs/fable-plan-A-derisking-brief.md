@@ -86,18 +86,12 @@ Decision metric = **partial Spearman ρ(signal, judge | correct)** with bootstra
 The central claim is *"a judge-free, reference-grounded signal can evaluate math reasoning — cleanly at the model
 level, and, with a costly process signal, weakly at the item level."* Ranked by how much each threatens that claim:
 
-1. **Is the ground truth real? (judge validity).** Every item-level number is measured against *one* LLM judge. A
-   reviewer's first attack is "you validated a judge-free metric against an unvalidated judge — circular." **De-risk
-   two ways:** (D1) cross-family judge invariance — fully autonomous, cheap, do first; (D5) a human-calibrated subset
-   — needs humans, so Fable *builds the pipeline and picks the sample*, humans grade. **This is the #1 external-validity risk.**
-2. **Is it Qwen-specific? (generalization).** One model family, one tokenizer. TFA is a tokenizer-level statistic, so
-   family-specificity is a live worry. **De-risk:** (D2) cross-family, cross-scale models on the three anchor datasets.
-3. **The open science: grade-among-correct.** The deepest question — can any judge-free signal separate *valid-correct*
+1. **The open science: grade-among-correct.** The deepest question — can any judge-free signal separate *valid-correct*
    from *lucky-correct*? We have a fragile +0.19. **Advance:** (D3) rollout depth (step-level dips) + the **self-reference**
    idea (anchor on the model's own consistent solution, not a fixed gold). Highest reward, highest uncertainty.
-4. **Paper completeness.** (D4) multi-reference TFA (quantify the alternate-path penalty) and the baseline-metric matrix
+2. **Paper completeness.** (D4) multi-reference TFA (quantify the alternate-path penalty) and the baseline-metric matrix
    (position TFA vs. ROSCOE/BERTScore/BPC). Necessary for a submission, lower scientific risk.
-5. **Second-paper frontier.** (D6) the formal-math (Lean-kernel-oracle) track — the only setting with a *true* oracle,
+3. **Second-paper frontier.** (D6) the formal-math (Lean-kernel-oracle) track — the only setting with a *true* oracle,
    so it sidesteps the judge-validity problem entirely. High value, high build cost; scope as a follow-on.
 
 **Execution order for an autonomous agent:** D1 → D2 → D3 in parallel where compute allows (D1 is API-only/GPU-free and
@@ -107,72 +101,6 @@ can run alongside D2's GPU jobs), then D4; prepare D5's artifacts early (it unbl
 
 ## 4. Workstreams (full detail)
 
-### D1 — Cross-family judge invariance: *is the ground truth real?* (do first; cheap, GPU-free)
-
-**Problem.** All item-level conclusions rest on gpt-5.2 as ground truth. If a different judge family reverses them, the
-"judge-free" claim is measured against a mirage. LLM judges are known to be prompt-sensitive and self-preferring
-(Zheng et al. 2023 arXiv:2306.05685; Self-Preference arXiv:2410.21819).
-
-**Hypothesis.** The qualitative item-level picture — **MATH ≈ 0, GSM8K small +, Putnam largest +** — and the
-model-level ranking are **judge-invariant**; different frontier judges agree at the item level well above chance.
-
-**Method.** Re-judge the *already-saved* free-generations (no GPU, no re-generation) with ≥2 more judge families using
-the existing pipeline — it is one flag:
-```
-python scripts/run_judge.py "runs/<ds>/*.jsonl" --judge-model anthropic/claude-opus-4-8   --workers 16 --suffix judged_claude
-python scripts/run_judge.py "runs/<ds>/*.jsonl" --judge-model gemini/gemini-3-pro          --workers 16 --suffix judged_gemini
-```
-Verify current SOTA judge IDs by web-search before pinning (do not hardcode from memory). Use the *same* rubric prompt
-for all judges (it lives in `tfa/judge.py`) so differences are the judge, not the prompt. Run all six datasets × the
-5-model ladder. Reuse `run_judge.py`'s per-item exception handling (a flagged prompt must not kill the run).
-
-**Analysis & decision criteria.**
-- For each judge, recompute the full `analyze_workstream_a2.py` table (model-level ρ, item-level partial ρ | correct,
-  within strata, length control). **Report all three judges side by side.**
-- Compute **inter-judge agreement** at the item level: pairwise Spearman ρ between judges' 0–10 scores, overall and
-  *within-correct* (the hard stratum), per dataset. Also report exact/±1 agreement and Krippendorff's α.
-- **Success (claim holds):** the sign/ordering pattern replicates under all three judges, and inter-judge item-level ρ
-  is substantial (pre-register a bar, e.g. overall ρ ≥ 0.6, within-correct ρ ≥ 0.3). The paper can then say the result
-  is judge-invariant.
-- **Informative failure:** judges disagree at the item level (esp. within-correct) → the "ground truth" is unstable →
-  this *itself* is a headline result ("even frontier judges don't agree on what good reasoning is beyond correctness")
-  and reframes the whole contribution around judge unreliability motivating judge-free signals. Either outcome is a win.
-
-**Cost.** API only. ~2 judges × ~11k traces (6 datasets × 5 models × 500–1180) ≈ 22k calls; a few hours, low $. **This
-is the single best value-per-dollar experiment in the plan — do it first.**
-
----
-
-### D2 — Cross-family & cross-scale generalization: *is it Qwen-specific?* (GPU)
-
-**Problem.** TFA is computed from a model's own tokenizer and logprobs; the model-level correlation and the item-level
-saturation gradient could be idiosyncratic to Qwen2.5's tokenizer and post-training. Plan A wants ≥15 models across
-families for exactly this reason.
-
-**Hypothesis.** Model-level ρ(mean-TFA, judge) stays high (> 0.7) across families, and the item-level pattern
-(≈0 on MATH → +0.2 on Putnam) reproduces family-by-family.
-
-**Method.** Add ≥5 models from ≥4 other families spanning 7B→70B, keeping open-weights + logprob access. Recommended
-starting set (verify availability, licence, and logprob support on the cluster before pinning; web-search current
-open-math SOTA first): **Llama-3.x-{8B,70B}-Instruct, Qwen3-{8B,32B}, Mistral/Mixtral, Gemma-2/3-{9B,27B}, OLMo-2,
-DeepSeek-R1-distill (reasoning-tuned)**. Run on the three **anchor datasets** (MATH-500, GSM8K, Putnam-AXIOM) — the
-cheapest set that spans the difficulty regimes — via the existing `run_all.py` (TFA + free-gen), then judge with the
-D1 judges. Include base vs. instruct vs. reasoning-tuned where a family offers them, to probe the weak-model
-next-token floor and the reasoning-tuned tokenizer effect.
-
-**Analysis & decision criteria.**
-- Model-level: pool all families, recompute ρ(mean-TFA, judge) and ρ(mean-TFA, accuracy) per dataset with the larger n;
-  also report *within-family* to check the correlation is not driven only by cross-family scale.
-- Item-level: recompute partial ρ | correct pooled and **stratified by family** (guard against a Simpson's-paradox
-  pooling artifact — different families at different TFA offsets can manufacture or mask a pooled correlation).
-- **Success:** model-level ρ stays high across and within families; the MATH→Putnam item gradient reproduces. Claim generalizes.
-- **Informative failure:** the pattern is Qwen-specific → scope the claim to "within-family model ranking" and report
-  the tokenizer/family dependence as a limitation and a finding.
-
-**Cost.** GPU. ~8–10 models × 3 datasets × (TFA + free-gen), vLLM; ≈ 1–2 GPU-days on a shared node (right-size per
-GPU-allocation rules in the weekend brief). Then D1-style judging (API).
-
----
 
 ### D3 — The grade-among-correct frontier: rollout depth + self-reference (highest reward)
 
