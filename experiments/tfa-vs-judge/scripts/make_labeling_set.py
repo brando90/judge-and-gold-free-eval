@@ -1,9 +1,19 @@
 # Build a human-labeling set of reasoning traces, over-sampling the cells where a human
 # tiebreak is most informative: within-correct (deterministic checker cannot resolve) and
 # TFA-vs-judge disagreement (high-TFA/low-judge and low-TFA/high-judge). Emits JSONL + CSV
-# (portable) and a self-contained HTML labeler (blind by default). No external deps.
-import json, glob, csv, html, random, collections
+# (portable) and a self-contained HTML labeler with MathJax rendering. No external deps
+# except MathJax (CDN) for math; degrades to raw LaTeX if offline.
+import json, glob, csv, html, random, collections, re
 from tfa.boxed import extract_boxed, extract_final_answer, answers_equivalent
+
+def texify(t, ds):
+    # Convert single-$ and $$ math to \( \) and \[ \] so MathJax (whose defaults do NOT
+    # treat $ as a delimiter) renders MATH/Putnam LaTeX while GSM8K money ($18) stays literal.
+    if ds == "GSM8K":
+        return t
+    t = re.sub(r"\$\$(.+?)\$\$", r"\\[\1\\]", t, flags=re.S)
+    t = re.sub(r"\$([^$\n]+?)\$", r"\\(\1\\)", t)
+    return t
 
 random.seed(0)
 OUTDIR = "human_eval"
@@ -21,10 +31,10 @@ CAPS = {"A": 6, "B": 6, "C": 6, "D": 2, "E": 2, "F": 2}   # per dataset
 CELL_DESC = {
     "A": "correct answer, high TFA, LOW judge  (metric says good, judge flags the reasoning)",
     "B": "correct answer, LOW TFA, high judge  (metric penalizes a valid but different-style solution)",
-    "C": "correct answer, low judge            (lucky-correct? right answer, weak reasoning per judge)",
-    "D": "correct answer, high TFA, high judge  (both agree it is good — calibration anchor)",
-    "E": "wrong answer, high judge              (near-miss: wrong result, coherent reasoning)",
-    "F": "wrong answer, low judge               (incoherent: wrong and unsound)",
+    "C": "lucky-correct? correct answer, low judge  (right answer, weak reasoning per judge)",
+    "D": "correct answer, high TFA, high judge  (both agree it is good, calibration anchor)",
+    "E": "wrong answer, high judge  (near-miss: wrong result, coherent reasoning)",
+    "F": "wrong answer, low judge  (incoherent: wrong and unsound)",
 }
 
 def gold_ans(r, dk):
@@ -62,17 +72,18 @@ for ds, (globs, dk) in POOLS.items():
     for cl, cap in CAPS.items():
         pick = random.sample(buckets[cl], min(cap, len(buckets[cl])))
         for r in pick:
+            ga = str(gold_ans(r, dk))
             rows.append(dict(
                 id=f"{ds[:4]}-{cl}-{r['problem_id']}-{r['model'].split('/')[-1][:8]}",
                 cell=cl, cell_desc=CELL_DESC[cl], dataset=ds, model=r["model"].split("/")[-1],
                 tfa=round(r["tfa_argmax"], 3), judge=r["judge_score"], correct=r["cc"],
-                question=r["question"], gold_solution=r["gold_solution"],
-                gold_answer=str(gold_ans(r, dk)), trace=r["free_gen"]))
+                question=texify(r["question"], ds), gold_solution=texify(r["gold_solution"], ds),
+                gold_answer=ga, gold_answer_disp=(ga if ds == "GSM8K" else "\\(" + ga + "\\)"),
+                trace=texify(r["free_gen"], ds)))
 
-random.shuffle(rows)   # present in mixed order so the labeler is blind to cell
+random.shuffle(rows)   # present in mixed order
 for i, r in enumerate(rows): r["order"] = i + 1
 
-# ---- JSONL + CSV ----
 with open(f"{OUTDIR}/traces_to_label.jsonl", "w") as f:
     for r in rows: f.write(json.dumps(r) + "\n")
 cols = ["order", "id", "dataset", "model", "cell", "cell_desc", "correct", "tfa", "judge",
@@ -85,31 +96,35 @@ print(f"selected {len(rows)} traces")
 cnt = collections.Counter((r["dataset"], r["cell"]) for r in rows)
 for k in sorted(cnt): print(f"  {k[0]:9s} cell {k[1]}: {cnt[k]}")
 
-# ---- self-contained HTML labeler (blind by default; localStorage autosave; CSV export) ----
+# ---- self-contained HTML labeler: MathJax rendering, cell shown per card, CSV/JSON export ----
 DATA = json.dumps(rows)
 HTML = """<!doctype html><html lang=en><head><meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
-<title>TFA trace labeling</title><style>
-:root{--bg:#fff;--fg:#1a1a1a;--mut:#666;--card:#f7f7f8;--bd:#e2e2e5;--acc:#3452b5}
-@media(prefers-color-scheme:dark){:root{--bg:#16171a;--fg:#e8e8ea;--mut:#9a9aa2;--card:#1f2024;--bd:#33343a;--acc:#8ea2ea}}
+<title>TFA trace labeling</title>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" id=MathJax-script async></script>
+<style>
+:root{--bg:#fff;--fg:#1a1a1a;--mut:#666;--card:#f7f7f8;--bd:#e2e2e5;--acc:#3452b5;--warn:#b5462f}
+@media(prefers-color-scheme:dark){:root{--bg:#16171a;--fg:#e8e8ea;--mut:#9a9aa2;--card:#1f2024;--bd:#33343a;--acc:#8ea2ea;--warn:#e08a70}}
 *{box-sizing:border-box}body{margin:0;font:15px/1.55 -apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--fg)}
 header{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--bd);padding:10px 16px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;z-index:9}
 header b{font-size:16px}#prog{color:var(--mut)}
 button{font:inherit;padding:7px 13px;border:1px solid var(--bd);border-radius:8px;background:var(--acc);color:#fff;cursor:pointer}
 button.sec{background:transparent;color:var(--fg)}
-main{max-width:940px;margin:0 auto;padding:16px}
+main{max-width:960px;margin:0 auto;padding:16px}
 .card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:18px;margin:0 0 26px}
-.tag{display:inline-block;font-size:12px;color:var(--mut);border:1px solid var(--bd);border-radius:999px;padding:1px 9px;margin-right:6px}
-h3{margin:.2em 0 .5em}.lbl{font-size:12px;letter-spacing:.03em;text-transform:uppercase;color:var(--mut);margin:14px 0 4px}
-pre{white-space:pre-wrap;word-wrap:break-word;background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:11px;margin:0;font:13px/1.5 ui-monospace,Menlo,Consolas,monospace;max-height:420px;overflow:auto}
+.tag{display:inline-block;font-size:12px;color:var(--mut);border:1px solid var(--bd);border-radius:999px;padding:1px 9px;margin:0 6px 4px 0}
+.cell{font-size:13px;font-weight:600;color:var(--warn);margin:6px 0 2px}
+.scores{color:var(--mut);font-size:12.5px}
+.lbl{font-size:12px;letter-spacing:.03em;text-transform:uppercase;color:var(--mut);margin:14px 0 4px}
+.txt{white-space:pre-wrap;overflow-wrap:anywhere;background:var(--bg);border:1px solid var(--bd);border-radius:8px;padding:11px 13px;margin:0;line-height:1.55;max-height:460px;overflow:auto}
 .rub{margin-top:14px;border-top:1px dashed var(--bd);padding-top:12px}
 .q{margin:10px 0}.q>span{display:block;font-weight:600;margin-bottom:4px}
 .opts label{display:inline-block;margin:0 12px 4px 0;font-weight:400}
 textarea{width:100%;min-height:52px;background:var(--bg);color:var(--fg);border:1px solid var(--bd);border-radius:8px;padding:8px;font:inherit}
-.scores{color:var(--mut);font-size:13px}.hidden{display:none}
+body.blind .meta{display:none}
 </style></head><body>
 <header><b>Reasoning-trace labeling</b><span id=prog></span>
-<label class=scores><input type=checkbox id=reveal> reveal metric scores</label>
+<label class=scores><input type=checkbox id=blind> blind mode (hide cell &amp; scores)</label>
 <span style=flex:1></span>
 <button class=sec onclick=exp('json')>Download JSON</button>
 <button onclick=exp('csv')>Download CSV</button></header>
@@ -122,24 +137,24 @@ const Q=[
  ['answer_correct','Final answer correct?',['yes','no','unsure']],
  ['steps_valid','Are the individual steps valid?',['all valid','minor slip','major error']],
  ['complete','Reasoning complete (no unjustified leaps)?',['complete','minor gap','major gap']],
- ['quality','Overall reasoning quality (0 worst … 10 best)',['0','1','2','3','4','5','6','7','8','9','10']],
+ ['quality','Overall reasoning quality (0 worst to 10 best)',['0','1','2','3','4','5','6','7','8','9','10']],
  ['lucky','Lucky-correct? (right answer, invalid/incomplete reasoning)',['no','yes','n/a']],
 ];
 function esc(s){return (s||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}
 function draw(){
  const app=document.getElementById('app');app.innerHTML='';
  DATA.forEach(d=>{
-  const c=document.createElement('div');c.className='card';
   const done=L[d.id]&&L[d.id].quality!=null;
+  const c=document.createElement('div');c.className='card';
   c.innerHTML=`<div><span class=tag>#${d.order}</span><span class=tag>${d.dataset}</span>
-   <span class="tag rv hidden">${d.model}</span>
-   <span class="tag rv hidden">cell ${d.cell}</span>
-   <span class="scores rv hidden"> TFA=${d.tfa} · judge=${d.judge} · correct=${d.correct} · ${esc(d.cell_desc)}</span>
-   ${done?'<span class=tag style="border-color:var(--acc);color:var(--acc)">labeled</span>':''}</div>
-   <div class=lbl>Problem</div><pre>${esc(d.question)}</pre>
-   <div class=lbl>Reference solution (gold, answer = ${esc(d.gold_answer)})</div><pre>${esc(d.gold_solution)}</pre>
-   <div class=lbl>Model trace to grade</div><pre>${esc(d.trace)}</pre>
-   <div class=rub></div>`;
+   <span class="tag meta">${d.model}</span>
+   ${done?'<span class=tag style="border-color:var(--acc);color:var(--acc)">labeled</span>':''}
+   <div class="cell meta">Cell ${d.cell}: ${esc(d.cell_desc)}</div>
+   <div class="scores meta">TFA=${d.tfa} &middot; judge=${d.judge}/10 &middot; answer ${d.correct?'correct':'wrong'} (by checker)</div>
+   <div class=lbl>Problem</div><div class=txt>${esc(d.question)}</div>
+   <div class=lbl>Reference solution (gold, answer = ${d.gold_answer_disp?esc(d.gold_answer_disp):esc(d.gold_answer)})</div><div class=txt>${esc(d.gold_solution)}</div>
+   <div class=lbl>Model trace to grade</div><div class=txt>${esc(d.trace)}</div>
+   <div class=rub></div></div>`;
   const rub=c.querySelector('.rub');
   Q.forEach(([k,q,opts])=>{
    const qd=document.createElement('div');qd.className='q';
@@ -153,24 +168,22 @@ function draw(){
   app.appendChild(c);
  });
  document.querySelectorAll('input[type=radio]').forEach(r=>r.onchange=e=>{
-   const [id,k]=e.target.name.split('__');(L[id]=L[id]||{})[k]=e.target.value;save();});
+   const [id,k]=e.target.name.split('__');(L[id]=L[id]||{})[k]=e.target.value;localStorage.setItem(KEY,JSON.stringify(L));prog();});
  document.querySelectorAll('textarea').forEach(t=>t.oninput=e=>{
-   const id=e.target.dataset.id;(L[id]=L[id]||{}).notes=e.target.value;save(true);});
- document.getElementById('reveal').onchange=e=>document.querySelectorAll('.rv').forEach(x=>x.classList.toggle('hidden',!e.target.checked));
- prog();
+   const id=e.target.dataset.id;(L[id]=L[id]||{}).notes=e.target.value;localStorage.setItem(KEY,JSON.stringify(L));});
+ prog();mj();
 }
 function prog(){const n=DATA.filter(d=>L[d.id]&&L[d.id].quality!=null).length;
  document.getElementById('prog').textContent=`${n} / ${DATA.length} labeled`;}
-let t;function save(soft){localStorage.setItem(KEY,JSON.stringify(L));if(!soft)prog();
- if(soft){clearTimeout(t);t=setTimeout(prog,400);} draw_badges();}
-function draw_badges(){}
+function mj(){if(window.MathJax&&MathJax.typesetPromise){MathJax.typesetPromise();}else{setTimeout(mj,200);}}
+document.getElementById('blind').onchange=e=>document.body.classList.toggle('blind',e.target.checked);
 function exp(fmt){
  const rows=DATA.map(d=>Object.assign({id:d.id,order:d.order,dataset:d.dataset,model:d.model,cell:d.cell,tfa:d.tfa,judge:d.judge,machine_correct:d.correct},L[d.id]||{}));
  let blob;
  if(fmt==='json'){blob=new Blob([JSON.stringify(rows,null,2)],{type:'application/json'});}
  else{const keys=['id','order','dataset','model','cell','tfa','judge','machine_correct','answer_correct','steps_valid','complete','quality','lucky','notes'];
-  const esc=v=>('"'+String(v==null?'':v).replace(/"/g,'""')+'"');
-  blob=new Blob([keys.join(',')+'\\n'+rows.map(r=>keys.map(k=>esc(r[k])).join(',')).join('\\n')],{type:'text/csv'});}
+  const q=v=>('"'+String(v==null?'':v).replace(/"/g,'""')+'"');
+  blob=new Blob([keys.join(',')+'\\n'+rows.map(r=>keys.map(k=>q(r[k])).join(',')).join('\\n')],{type:'text/csv'});}
  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='tfa_human_labels.'+fmt;a.click();
 }
 draw();

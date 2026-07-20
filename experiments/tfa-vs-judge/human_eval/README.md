@@ -24,13 +24,15 @@ Cells A, B, C are the within-correct / disagreement region and make up 30 of the
 
 ## How to label
 
-Open `label.html` in any browser (double-click, no server needed). For each trace you see the problem,
-the reference solution, and the model trace to grade, then answer a short rubric (step validity,
-completeness, overall quality 0 to 10, lucky-correct). Labels autosave to the browser and you can
-`Download CSV` at any time.
+Open `label.html` in any browser (double-click, no server needed). Math in the problem, reference, and
+trace is rendered with MathJax; if you are offline the LaTeX shows as source, which is still readable.
+For each trace you see the problem, the reference solution, and the model trace to grade, then answer a
+short rubric (step validity, completeness, overall quality 0 to 10, lucky-correct). Labels autosave to
+the browser and you can `Download CSV` or `Download JSON` at any time.
 
-Label **blind**: the TFA and judge scores and the cell label are hidden by default so they do not anchor
-you. Toggle `reveal metric scores` only after you have formed a view, or for a researcher review pass.
+Each card shows its **cell** (for example, "lucky-correct? correct answer, low judge") along with the TFA
+and judge scores, so you know what kind of case you are looking at. If you prefer to label without that
+context, tick **blind mode** in the header to hide the cell and scores.
 
 ## Fields
 
