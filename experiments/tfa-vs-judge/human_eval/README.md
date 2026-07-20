@@ -40,6 +40,29 @@ context, tick **blind mode** in the header to hide the cell and scores.
 final-answer correctness), `tfa` (teacher-forced accuracy), `judge` (gpt-5.2 reasoning score 0 to 10),
 `gold_answer, question, gold_solution, trace`. Regenerate with `scripts/make_labeling_set.py`.
 
+## Shareable version (no repo needed)
+
+`label_artifact.html` is a self-contained, CDN-free copy published as an Artifact:
+https://claude.ai/code/artifact/b50024f9-6198-4e9c-8520-0d13cb14faca
+
+Math is pre-rendered to native MathML, so it renders with no external libraries (works under the Artifact
+content-security policy). It is private until you share it from the page's share menu. Rebuild it with
+`scripts/build_label_artifact.py` after regenerating the sample.
+
+## How the labels come back to you
+
+Artifacts cannot post to a server, so collection is by file, not by submission:
+
+1. Each labeler opens the link, enters their name/initials in the header, and grades the traces. Progress
+   autosaves in their own browser.
+2. When done (or partway), they click **Download CSV** (or JSON) and send you the file.
+3. You concatenate the returned CSVs. Every row carries `labeler` and the trace `id`, so multiple people
+   and multiple passes deduplicate cleanly. The `machine_correct`, `tfa`, and `judge` columns are carried
+   through for the analysis below.
+
+If you would rather collect automatically, the alternative is to give labelers the CSV file and have them
+fill it in a shared spreadsheet, but the download-and-send flow above needs no setup.
+
 ## Analysis after labeling
 
 With human labels `h`, the questions are: does the LLM judge agree with humans (`ρ(judge, h)`), and does
