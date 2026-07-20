@@ -264,6 +264,54 @@ everywhere; 32B also run on MATH-500 but dropped from this table for apples-to-a
 (acc≈0.10, so the robust Putnam part is within-wrong +0.21); Math-Verify FP-prone on complex Putnam answers.
 **Workstream A (breadth) is complete** — all planned NL-math datasets run, judged, analyzed, and figured.
 
+## 4c. Workstream D2 — cross-family / cross-tokenizer generalization (is it Qwen-specific?)
+Added three instruction-tuned families with **distinct tokenizers** — `mistralai/Mistral-7B-Instruct-v0.3`,
+`microsoft/phi-4` (14B), `allenai/OLMo-2-1124-13B-Instruct` — on the three anchor datasets (MATH-500, GSM8K,
+Putnam-AXIOM original), same harness, judge = gpt-5.2. Analysis: `scripts/analyze_d2.py` (pooled + family-stratified),
+figure `paper/figs/fig6_cross_family.png` (`scripts/make_d2_fig.py`), slim scores `runs/scores_d2.jsonl`.
+Llama/Gemma are HF-gated (403 on the current token) → deferred; Qwen3 deferred (default *thinking* mode is not
+comparable to the non-thinking Instruct baseline).
+
+**Model-level ρ(mean-TFA, judge): cross-family ranking is saturation-limited.**
+
+| dataset | within-Qwen | pooled cross-family (4 families) |
+|---|---|---|
+| MATH-500 | +0.94 | **+0.90** |
+| Putnam   | +1.00 | **+0.88** |
+| GSM8K    | +0.90 | **−0.07** (collapse) |
+
+On hard/unsaturated data cross-family ranking survives; on **saturated GSM8K it collapses** — all models pin into a
+narrow TFA band (0.79–0.84) with a **family-specific offset**. Mistral is the poster child: TFA 0.80 (Qwen-like) but
+judge 6.6 / acc 0.56, vs Phi-4 TFA 0.79 but judge 9.7 / acc 0.94. TFA measures reference-predictability-under-the-model,
+which carries a family baseline that only stays negligible when the data de-saturates the models. **This qualifies the
+"judge-free model ranking is solved" claim → solved *within a family*, or across families only on unsaturated data.**
+
+**Item-level partial ρ(TFA, judge | correct), family-stratified.**
+
+| family (n per dataset) | MATH-500 | GSM8K | Putnam |
+|---|---|---|---|
+| Qwen2.5 | −0.02 | +0.115 | +0.218 |
+| Mistral | −0.01 | **+0.103** [0.03,0.18] | +0.118 [−0.00,0.24] |
+| OLMo    | −0.14 | +0.03 (n.s.) | +0.04 (n.s.) |
+| Phi-4   | −0.13 | −0.05 (n.s.) | +0.03 (n.s.) |
+
+- **The MATH null is family-robust** (every family ≈0 to slightly negative; none positive). ✓
+- **The GSM8K positive reproduces in Qwen (+0.115) and Mistral (+0.103)** but **vanishes in Phi-4/OLMo**, which are
+  accuracy-*saturated* on GSM8K (0.94/0.91) → no within-correct spread to grade.
+- **The Putnam +0.22 is essentially a Qwen result**; new families have tiny correct strata (acc 0.03–0.19) → wide CIs,
+  cannot confirm. So the difficulty-gradient positives need *both* an unsaturated dataset *and* enough correct-varied
+  solutions — conditions Qwen meets best.
+
+**Critic / bug caught (double-check mandate again).** The first pooled ρ read −0.87 on GSM8K — an **artifact**: the old
+Qwen `.judged.jsonl` files store the pre-fix buggy `boxed_correct=0` (the ####-extraction bug) for GSM8K/Putnam.
+Recomputing correctness with the fixed scorer (`answers_equivalent`/`extract_final_answer`) for **every** model gives the
+clean numbers above; the qualitative collapse (GSM8K) and survival (MATH/Putnam) are unchanged. Also verified the
+non-Qwen TFA is mechanically sound (healthy 0.44–0.96 ranges; Mistral's low acc is real, not an extraction failure —
+spot-checked wrong items). MATH-500 finalized on the **complete local** ladder (cluster had only 3 of 6 Qwen files).
+
+**Deferred D2 extensions:** gated Llama-3.x / Gemma-2 (need license acceptance), non-thinking Qwen3, and a second size
+per new family (to test *within-new-family* model-level ρ, impossible with one model each).
+
 ## 5. Where we are / next steps
 1. **Scale the rollout-PRM** — more problems and models, and step-level cut-points (not just 4 fractions), to tighten
    CIs and get power in the correct stratum.
