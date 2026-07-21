@@ -81,13 +81,33 @@ def report(name, P, target="acc"):
         ci = {k: boot_ci(tfa[mask], tgt[mask], (lambda a, b, kk=k: allcorr(a, b)[kk])) for k in c}
         print(f"  {label:13s} pearson={c['pearson']:+.2f}[{ci['pearson'][0]:+.2f},{ci['pearson'][1]:+.2f}] "
               f"spearman={c['spearman']:+.2f} kendall={c['kendall']:+.2f} icc={c['icc']:+.2f}")
-    # outliers: standardized residual of target ~ tfa (OLS)
+    # outliers: standardized residual of target ~ tfa (OLS). |z|>1.5 flagged.
     b = np.polyfit(tfa, tgt, 1); resid = tgt - np.polyval(b, tfa); rz = resid / (resid.std() + 1e-12)
-    outl = [(names[i], P[names[i]]["fam"], round(P[names[i]]["tfa"], 3), round(P[names[i]][target], 3), round(rz[i], 2))
-            for i in np.argsort(-np.abs(rz))[:4]]
-    print("  biggest off-line models (name/family/TFA/%s/std-resid): %s" % (target, outl))
-    ms = [names[i] for i in range(len(names)) if P[names[i]]["fam"] in MATH_SPECIALIZED]
-    if ms: print("  math-specialized present:", ms)
+    THR = 1.5
+    out_idx = [i for i in range(len(names)) if abs(rz[i]) > THR]
+    if out_idx:
+        print("  OUTLIERS (|std-resid|>%.1f), the models off the TFA->%s line:" % (THR, target))
+        for i in sorted(out_idx, key=lambda j: -abs(rz[j])):
+            direction = ("TFA INFLATED: high gold-token match for its accuracy -> training-style / tokenizer "
+                         "familiarity with the reference, not ability" if rz[i] < 0
+                         else "TFA UNDERSTATES: solves well but predicts the gold poorly -> different solution style")
+            print(f"     {names[i]:34s} family={P[names[i]]['fam']:13s} TFA={P[names[i]]['tfa']:.3f} "
+                  f"{target}={P[names[i]][target]:.3f} z={rz[i]:+.2f}  [{direction}]")
+        keep = np.array([i not in out_idx for i in range(len(names))])
+        c2 = allcorr(tfa[keep], tgt[keep])
+        drop_fams = sorted(set(P[names[i]]["fam"] for i in out_idx))
+        print(f"  POOLED minus |z|-outliers ({', '.join(drop_fams)}; n={keep.sum()}): "
+              f"pearson={c2['pearson']:+.2f} spearman={c2['spearman']:+.2f} kendall={c2['kendall']:+.2f} icc={c2['icc']:+.2f}")
+    else:
+        print("  no |std-resid|>%.1f outliers." % THR)
+    # Named removal: the math-specialized family (interpretable "remove the outlier family").
+    ms_mask = np.array([P[names[i]]["fam"] in MATH_SPECIALIZED for i in range(len(names))])
+    if ms_mask.any() and (~ms_mask).sum() >= 3:
+        c3 = allcorr(tfa[~ms_mask], tgt[~ms_mask])
+        ms_fams = sorted(set(P[names[i]]["fam"] for i in range(len(names)) if ms_mask[i]))
+        print(f"  POOLED minus MATH-SPECIALIZED family ({', '.join(ms_fams)}; n={(~ms_mask).sum()}): "
+              f"pearson={c3['pearson']:+.2f} spearman={c3['spearman']:+.2f} kendall={c3['kendall']:+.2f} icc={c3['icc']:+.2f}"
+              f"   [reason: math-tuned models reproduce the gold style (high TFA) beyond their solving ability]")
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()

@@ -91,6 +91,25 @@ The contrast with MATH-500 and Putnam follows from the same account. Their refer
 
 The account makes a testable prediction. If stylistic distance from a single reference is the cause, then scoring each model against several valid solutions, or against its own verified solution, should remove the family baseline and restore the GSM8K ranking. That multi-reference test is the natural next step, and a positive result would also give a practical fix for cross-family use.
 
+## How this squares with the original TFA paper
+
+The paper that introduced teacher-forced accuracy reports its correlation with boxed accuracy as 0.66 on MATH across fifteen models, and 0.52 on Putnam rising to 0.62 once two outliers are dropped, and reads these as validation of the metric. Our within-family Spearman is higher, +0.90 on MATH and +1.00 on Putnam, which looks at first like a disagreement. It is not. Two choices reconcile the numbers, and both fall out of the account above.
+
+The first is the correlation metric. Kendall tau, the honest choice for ranking a handful of models, is far less generous than Spearman. Pooled across four general families on MATH, our Spearman +0.86 becomes Kendall +0.64, which is their 0.66.
+
+The second is the model set. When we add math-specialized models (Qwen2.5-Math, DeepSeek-Math, Mathstral) the pooled correlation drops sharply. Two of them score high teacher-forced accuracy relative to how much they actually solve: DeepSeek-Math solves 38 percent of MATH while reproducing the gold at 0.79, and Mathstral solves 51 percent at 0.82. They were trained on MATH-style solutions, so they predict the reference style beyond their ability to solve the problems, and they fall off the accuracy line. This is the same training-style offset that collapses the GSM8K ranking. Qwen2.5-Math is the mirror image: it solves 84 percent but predicts the verbose gold at only 0.79, because it answers in its own concise style, so the metric understates it.
+
+| model-level TFA vs boxed accuracy | Pearson | Spearman | Kendall | ICC |
+|---|---:|---:|---:|---:|
+| MATH-500, all 11 models (with math-specialized) | +0.54 | +0.55 | +0.38 | +0.56 |
+| MATH-500, general families only (drop math-specialized) | +0.77 | +0.86 | +0.64 | +0.79 |
+| Putnam, all 11 models (with math-specialized) | +0.68 | +0.68 | +0.51 | +0.70 |
+| Putnam, general families only | +0.85 | +0.88 | +0.71 | +0.86 |
+
+*Outlier families and why: DeepSeek-Math and Mathstral have teacher-forced accuracy inflated by math-training familiarity with the reference style; Qwen2.5-Math is understated because it solves well in a different, concise style. Removing the math-specialized family recovers the general-family correlation.*
+
+The two studies then agree. Their MATH 0.66 matches our general-family Kendall of +0.64. Their Putnam 0.52 matches our Kendall with the math-specialized models included, +0.51, and their "0.62 without two outliers" is the same lift we get by removing them, to +0.71 Kendall and +0.88 Spearman. The model-level result reproduces once the metric and the model set are matched. The one claim we could not reproduce is at the item level: the original paper states that teacher-forced accuracy gives step-level insight and penalizes a right answer reached by wrong reasoning, but it never tested that against a judge or against people, and our item-level analysis shows it does not hold on MATH.
+
 ## A judge-free signal that *does* grade solutions, at a cost
 
 If token agreement with a fixed reference cannot grade a solution, what can? We changed the object being measured. Rather than asking how well the model reproduces a gold trace, we ask whether the model's *own* partial reasoning stays on track toward a correct answer. Concretely, we truncate a response at several points (after 0%, 25%, 50%, and 75% of its tokens), hand each prefix to a fixed *completer* model, let it continue eight times, and record V(f), the fraction of continuations that reach the correct final answer, checked by the same symbolic oracle, still with no judge in the loop. A response whose prefixes keep the problem solvable was reasoning well; one that derails the completer was not. We summarize each response's value trajectory by its mean and its late value V(75%). This is Math-Shepherd-style *process value*, and it is deliberately not cheap: it costs many sampled completions per response rather than one teacher-forcing pass.
