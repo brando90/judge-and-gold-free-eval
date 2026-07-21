@@ -195,6 +195,8 @@ Within-family ranking is not universal. Mistral and Qwen rank cleanly on every d
 
 **Full six-dataset cross-family pooling** (all 17 models across seven families, boxed-accuracy target, Spearman): MATH-500 +0.35, MATH-full +0.21, GSM8K −0.37, GSM8K-Platinum −0.38, Putnam +0.60, Putnam-Variations +0.38. Cross-family, TFA ranks weakly on the hard data and is negative on the saturated GSM8K sets, consistent with the anchor-dataset results below.
 
+**Olympiad extreme (Omni-MATH).** As a check at the very top of the difficulty range we ran seven models (the Qwen ladder, Mistral-7B, Phi-4) on 500 Omni-MATH problems. Accuracy is floored, 2 to 6 percent, the weak-model floor one expects on olympiad problems, yet TFA still ranks the models by that thin accuracy signal (Spearman +0.86 pooled, +0.90 within Qwen), and its range widens to 0.69 to 0.75, the widest of any dataset here. Model-level TFA becomes more discriminative, not less, as the data gets harder, so the weak-model-floor worry is inverted even at the olympiad extreme. Item-level is not estimable here: with 2 to 6 percent accuracy the correct stratum is far too small. A caveat on coverage: models with short context windows (OLMo-2, the math-specialized models) hung on Omni-MATH's long problem-plus-solution sequences and are excluded from this seven-model cut.
+
 **Qwen2.5 ladder, all six datasets.** The main table reports Spearman. Below are Pearson, Spearman, Kendall tau-b, and ICC, for both the boxed-accuracy target and the judge target.
 
 | dataset | target | Pearson | Spearman | Kendall | ICC |
