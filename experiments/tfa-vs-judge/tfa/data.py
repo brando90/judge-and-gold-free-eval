@@ -29,6 +29,8 @@ DATASETS = {
     # Splits: 'original' (236), 'variations' (265, functional/contamination test), 'variations_org'.
     "putnam-axiom": dict(path="Putnam-AXIOM/putnam-axiom-dataset-v1", split="original", revision=None),
     "putnam-axiom-var": dict(path="Putnam-AXIOM/putnam-axiom-dataset-v1", split="variations", revision=None),
+    # Omni-MATH (olympiad, IMO-hard). Full gold solutions + human difficulty levels. answer field present.
+    "omni-math": dict(path="KbsdJames/Omni-MATH", split="test", revision=None),
 }
 
 
@@ -49,6 +51,16 @@ def load_problems(dataset: str, limit: int | None = None) -> list[Problem]:
 
 
 def _to_problem(dataset: str, i: int, row: dict) -> Problem:
+    if dataset == "omni-math":
+        ans = row.get("answer") or extract_boxed(row.get("solution", "")) or ""
+        return Problem(
+            id=str(i),
+            question=row["problem"],
+            gold_solution=row["solution"],
+            gold_answer=str(ans),
+            dataset=dataset,
+            meta={"difficulty": row.get("difficulty"), "domain": row.get("domain")},
+        )
     if dataset.startswith("math500"):
         return Problem(
             id=str(row.get("unique_id", i)),
