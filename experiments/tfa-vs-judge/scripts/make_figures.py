@@ -95,7 +95,7 @@ ax.set_ylabel("item-level partial ρ(TFA, judge | correct)")
 ax.set_ylim(-0.16, 0.30)
 ax.set_title("Per-item TFA→judge signal by family: ~0 on MATH, small on GSM8K, largest on Putnam", fontsize=11)
 ax.grid(axis="y", alpha=0.3)
-fig.tight_layout(); fig.savefig(f"{OUT}/fig1_difficulty_gradient.png", dpi=150); plt.close(fig)
+fig.tight_layout(); fig.savefig(f"{OUT}/fig2_difficulty_gradient.png", dpi=150); plt.close(fig)
 
 # ---- Fig 2: model-level scatter mean-TFA vs accuracy across ladder ----
 fig, ax = plt.subplots(figsize=(7, 5))
@@ -104,7 +104,7 @@ for d in present:
 ax.set_xlabel("mean TFA (argmax gold-token match)"); ax.set_ylabel("free-gen accuracy")
 ax.set_title("Model-level: mean-TFA tracks accuracy across the ladder (ρ = +0.6 to +1.0)")
 ax.legend(fontsize=8, loc="lower right"); ax.grid(alpha=0.3)
-fig.tight_layout(); fig.savefig(f"{OUT}/fig2_model_level.png", dpi=150); plt.close(fig)
+fig.tight_layout(); fig.savefig(f"{OUT}/fig1_model_level.png", dpi=150); plt.close(fig)
 
 # ---- Fig 3: TFA saturation — range bars vs accuracy ----
 fig, ax = plt.subplots(figsize=(8, 4))

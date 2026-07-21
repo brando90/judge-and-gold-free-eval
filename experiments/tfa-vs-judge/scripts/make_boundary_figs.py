@@ -70,20 +70,32 @@ def rho(pm):
     t = np.array([v["tfa"] for v in pm.values()]); s = np.array([v["acc"] for v in pm.values()])
     return stats.spearmanr(t, s).statistic
 
+def rho_ci(pm, nb=4000):
+    # bootstrap the cross-family Spearman by resampling models (the units), 95% percentile CI
+    t = np.array([v["tfa"] for v in pm.values()]); s = np.array([v["acc"] for v in pm.values()])
+    n = len(t); vals = []
+    rng = np.random.default_rng(0)
+    for _ in range(nb):
+        idx = rng.integers(0, n, n)
+        if len(set(t[idx])) < 2: continue
+        vals.append(stats.spearmanr(t[idx], s[idx]).statistic)
+    return np.nanpercentile(vals, 2.5), np.nanpercentile(vals, 97.5)
+
 # ---- Figure 6: boundary-map lollipop --------------------------------------
-stat = sorted([(lab, rho(pm), len(pm)) for lab, pm in permodel.items()], key=lambda x: x[1])
-fig, ax = plt.subplots(figsize=(9.4, 5.4))
+stat = sorted([(lab, rho(pm), len(pm), rho_ci(pm)) for lab, pm in permodel.items()], key=lambda x: x[1])
+fig, ax = plt.subplots(figsize=(9.8, 5.4))
 ys = np.arange(len(stat))
-for y, (lab, r, n) in zip(ys, stat):
+for y, (lab, r, n, ci) in zip(ys, stat):
     c = RCOL[regime[lab]]
     ax.plot([0, r], [y, y], color=c, lw=2.6, zorder=2, solid_capstyle="round")
+    ax.plot([ci[0], ci[1]], [y, y], color=c, lw=1.0, alpha=0.55, zorder=2)   # 95% bootstrap CI
+    for b in ci: ax.plot([b, b], [y - 0.13, y + 0.13], color=c, lw=1.0, alpha=0.55, zorder=2)
     ax.scatter([r], [y], s=160, color=c, zorder=3, edgecolors="white", linewidths=1.3)
-    ax.text(r + (0.03 if r >= 0 else -0.03), y, f"{r:+.2f}", va="center",
-            ha="left" if r >= 0 else "right", fontsize=10, color=c, fontweight="bold")
+    ax.text(ci[1] + 0.04, y, f"{r:+.2f}", va="center", ha="left", fontsize=10, color=c, fontweight="bold")
 ax.axvline(0, color="#333", lw=1.0, zorder=1)
-ax.set_yticks(ys); ax.set_yticklabels([f"{lab}  (n={n})" for lab, _, n in stat], fontsize=10.5)
-ax.set_xlabel("cross-family Spearman ρ(mean TFA, mean task success)", fontsize=11)
-ax.set_xlim(-0.62, 1.12); ax.set_ylim(-0.6, len(stat) - 0.4)
+ax.set_yticks(ys); ax.set_yticklabels([f"{lab}  (n={n})" for lab, _, n, _ in stat], fontsize=10.5)
+ax.set_xlabel("cross-family Spearman ρ(mean TFA, mean task success), with 95% bootstrap CI over models", fontsize=10.5)
+ax.set_xlim(-0.85, 1.15); ax.set_ylim(-0.6, len(stat) - 0.4)
 ax.grid(axis="x", alpha=0.25)
 for sp in ("top", "right", "left"): ax.spines[sp].set_visible(False)
 ax.tick_params(left=False)
@@ -95,7 +107,7 @@ ax.set_title("Judge-free TFA ranks models by quality only on hard, constrained r
 fig.tight_layout()
 fig.savefig(f"{OUT}/fig6_cross_family.png", dpi=150, bbox_inches="tight"); plt.close(fig)
 print("WROTE fig6_cross_family.png")
-for lab, r, n in reversed(stat): print(f"   {lab:24s} rho={r:+.2f} n={n}")
+for lab, r, n, ci in reversed(stat): print(f"   {lab:24s} rho={r:+.2f} [{ci[0]:+.2f},{ci[1]:+.2f}] n={n}")
 
 # ---- Figure 7: mechanism (MATH-500 holds vs GSM8K scrambles) --------------
 fig, axes = plt.subplots(1, 2, figsize=(13.5, 5.7))
