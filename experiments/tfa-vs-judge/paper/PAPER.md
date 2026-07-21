@@ -167,3 +167,41 @@ Before adopting the expensive rollout value, we tried to squeeze a per-item sign
 **The cautionary tale that changed how we work.** The answer-swap contrast first looked like a genuine win at ρ ≈ +0.35. It was a `1/gold_length` artifact: because the corruption changes only the final answer token, the contrast reduces to roughly "predicts the correct answer, divided by solution length," and inverse gold-length (Spearman +0.67 with the contrast) re-imported the very length confound TFA already suffers from, this time with a flattering sign. Stripping the length magnitude dropped it to +0.01; controlling for correctness *and* length drove it to −0.02. We retracted it. The lesson is now a rule: **no positive item-level result is believed until it survives controlling for its plausible confounds, length and difficulty.** The rollout value in the main text passes that test (it strengthens under difficulty control); these TFA variants do not.
 
 The deeper takeaway from this appendix is that the failure is not a hidden confound one can reweight away, the item-level signal is genuinely absent under gold-prediction. Recovering it requires changing *what is measured*, which is exactly what the rollout process value does.
+
+## Appendix: model-level correlations across metrics and model families
+
+This appendix backs the main table with all four correlation metrics, and shows how the picture depends on the metric and on the model set. The cross-family rows currently cover the three anchor datasets; a within-family ladder for each of Mistral, Phi, and OLMo and the full six-dataset cross-family table are being generated and will be added.
+
+**Qwen2.5 ladder, all six datasets.** The main table reports Spearman. Below are Pearson, Spearman, Kendall tau-b, and ICC, for both the boxed-accuracy target and the judge target.
+
+| dataset | target | Pearson | Spearman | Kendall | ICC |
+|---|---|---:|---:|---:|---:|
+| MATH-500 | accuracy | +0.94 | +0.90 | +0.80 | +0.95 |
+| MATH-500 | judge | +0.93 | +0.90 | +0.80 | +0.94 |
+| MATH-full | accuracy | +0.85 | +0.60 | +0.40 | +0.88 |
+| MATH-full | judge | +0.83 | +0.60 | +0.40 | +0.86 |
+| GSM8K | accuracy | +0.84 | +0.70 | +0.60 | +0.87 |
+| GSM8K | judge | +0.88 | +0.90 | +0.80 | +0.90 |
+| GSM8K-Platinum | accuracy | +0.86 | +0.60 | +0.40 | +0.89 |
+| GSM8K-Platinum | judge | +0.88 | +0.70 | +0.60 | +0.90 |
+| Putnam-AXIOM | accuracy | +0.97 | +1.00 | +1.00 | +0.98 |
+| Putnam-AXIOM | judge | +0.94 | +1.00 | +1.00 | +0.95 |
+| Putnam-Variations | accuracy | +0.92 | +0.90 | +0.80 | +0.94 |
+| Putnam-Variations | judge | +0.93 | +1.00 | +1.00 | +0.95 |
+
+Two things stand out. Accuracy and judge give almost the same model-level correlation, so at the model level the free boxed-accuracy signal is a faithful stand-in for the judge. And the rank metrics (Spearman, Kendall) fall below the linear ones (Pearson, ICC) whenever one pair of adjacent models is out of order, which with five models moves Kendall sharply: MATH-full is Pearson +0.85 but Kendall +0.40. Kendall is the conservative reading and the one to trust for a small model count.
+
+**Cross-family, the three anchor datasets (boxed-accuracy target).** Pooling four general families with the math-specialized models, and the effect of removing the math-specialized outliers.
+
+| dataset | model set | Pearson | Spearman | Kendall | ICC |
+|---|---|---:|---:|---:|---:|
+| MATH-500 | pooled, all 11 models | +0.54 | +0.55 | +0.38 | +0.56 |
+| MATH-500 | drop math-specialized | +0.77 | +0.86 | +0.64 | +0.79 |
+| MATH-500 | Qwen-only | +0.94 | +0.90 | +0.80 | +0.95 |
+| GSM8K | pooled general families | +0.00 | −0.12 | −0.07 | +0.00 |
+| GSM8K | Qwen-only | +0.84 | +0.70 | +0.60 | +0.87 |
+| Putnam | pooled, all 11 models | +0.68 | +0.68 | +0.51 | +0.70 |
+| Putnam | drop math-specialized | +0.85 | +0.88 | +0.71 | +0.86 |
+| Putnam | Qwen-only | +0.97 | +1.00 | +1.00 | +0.98 |
+
+The math-specialized removal and its reconciliation with the original TFA paper's 0.66 and 0.52 are discussed in "How this squares with the original TFA paper". ICC here is ICC(2,1) on standardized series, so for these cross-scale comparisons it tracks Pearson; its distinct use is same-scale agreement (inter-judge and judge-versus-human), reported with the second-judge check.
