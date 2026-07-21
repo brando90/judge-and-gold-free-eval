@@ -36,16 +36,16 @@ field, and it demotes the benchmark the first draft picked.
 
 | Benchmark | Gold reference | Is it a token-averageable sequence? | Independent success oracle | Fit for a faithful TFA |
 |---|---|---|---|---|
-| **SWE-bench Verified** | merged gold PR diff | **Yes** — a long code+prose diff | Hidden test suite, pass@1 (free, deterministic) | **Best.** Literal lift of the HumanEval result |
-| **TRAJECT-Bench** (tool use, Oct 2025) | reference tool-call trajectory | **Mostly** — function names + JSON args + order, tens to hundreds of tokens | Executable APIs + trajectory match | **Strong**, longer target than a click |
+| **SWE-bench Verified** | merged gold PR diff | **Yes**, a long code+prose diff | Hidden test suite, pass@1 (free, deterministic) | **Best.** Literal lift of the HumanEval result |
+| **TRAJECT-Bench** (tool use, Oct 2025) | reference tool-call trajectory | **Mostly**, function names + JSON args + order, tens to hundreds of tokens | Executable APIs + trajectory match | **Strong**, longer target than a click |
 | **tau2-bench** | canonical action set + task spec | Partial (paraphrasable policy text) | Programmatic final-DB-state reward | Arm 2 (rollout), not TFA |
-| **Mind2Web** (offline web) | `(target element, op∈{CLICK,TYPE,SELECT}, value)` tuple per step | **No** — a categorical element choice; only the TYPE `value` string is token-like, usually a few tokens | Offline step-success floors; online needs the live env | Caveated modality probe only (section 3b) |
+| **Mind2Web** (offline web) | `(target element, op∈{CLICK,TYPE,SELECT}, value)` tuple per step | **No**, a categorical element choice; only the TYPE `value` string is token-like, usually a few tokens | Offline step-success floors; online needs the live env | Caveated modality probe only (section 3b) |
 | **WebArena / OSWorld** | rare human demos | No | Final-state functional check | Reference-free only |
 | **GAIA / BrowseComp / Mind2Web 2** | final answer, no trajectory gold | No | Answer/rubric match | Out of scope for TFA |
 
 ## 3. The plan: two arms, split at the multiplicity boundary
 
-### Arm 1 (the derisk) — TFA on a gold token sequence: SWE-bench patch, then tool-call trajectory
+### Arm 1 (the derisk): TFA on a gold token sequence (SWE-bench patch, then tool-call trajectory)
 
 This is the faithful, cleanly-runnable lift, and it is the derisk **because it is a genuine TFA, not because it is
 cheapest**. Teacher-force the model on the gold token sequence and correlate with a free, independent oracle.
@@ -68,7 +68,7 @@ token sequences but code has high solution multiplicity, A0 should look like Hum
 the multiplicity argument. The control that rules out the trivial explanation: check that patch-TFA adds ranking
 information beyond raw diff length and beyond the fraction of unchanged context lines the model trivially copies.
 
-### 3b. Modality probe (caveated, not the derisk) — Mind2Web
+### 3b. Modality probe (caveated, not the derisk): Mind2Web
 
 Mind2Web is kept only as an honest probe of a *different modality*, with three caveats that stop it from being the
 derisk. First, its gold is a categorical `(element, op, value)` tuple, so there is no long token sequence; the only
@@ -86,7 +86,7 @@ models, so if we use it at all the quality target is published Online-Mind2Web /
 subset of open models that have them, computed by a *different* pipeline than the one producing TFA, to avoid
 correlating a measurement with itself. Given all this, Mind2Web is scheduled after A0/A1, and may be cut.
 
-### Arm 2 (the positive signal) — reference-free rollout process value on executable envs
+### Arm 2 (the positive signal): reference-free rollout process value on executable envs
 
 Where the reference is open-ended, one gold trace cannot represent the solution set, so TFA-on-gold is expected to
 be a poor cross-family ranker (A0 will confirm this as a boundary point). The positive signal is the paper's rollout
@@ -101,10 +101,10 @@ progress-ratio surrogate (`log π_policy − log π_ref`) already scoped in plan
 
 | Phase | Goal | Concrete step | Exit criterion |
 |---|---|---|---|
-| **A0 — derisk** | Genuine TFA on a token-sequence gold | SWE-bench Verified: patch-TFA (oracle-file context) vs pass@1 across a coder ladder | Within-family ρ with bootstrap CI; cross-family near zero = boundary extended |
-| **A1 — longer structured target** | Does a tool trajectory rank better than a patch | TRAJECT-Bench: tool-call TFA + semantic components vs executable success | Which component carries ranking; does multiplicity still wash cross-family |
-| **A1b — modality probe** | Web actions, honestly caveated | Mind2Web 3-component decomposition, within-family, contamination-audited, with the A0-gate | Does value-string TFA beat semantic element-accuracy at all |
-| **B1 — positive signal** | Rollout V where TFA fails | SWE-bench harness: truncate + fixed-completer rollouts, V = P(pass); vs progress-ratio | Does V grade trajectories where TFA cannot, at what cost |
+| **A0, derisk** | Genuine TFA on a token-sequence gold | SWE-bench Verified: patch-TFA (oracle-file context) vs pass@1 across a coder ladder | Within-family ρ with bootstrap CI; cross-family near zero = boundary extended |
+| **A1, longer structured target** | Does a tool trajectory rank better than a patch | TRAJECT-Bench: tool-call TFA + semantic components vs executable success | Which component carries ranking; does multiplicity still wash cross-family |
+| **A1b, modality probe** | Web actions, honestly caveated | Mind2Web 3-component decomposition, within-family, contamination-audited, with the A0-gate | Does value-string TFA beat semantic element-accuracy at all |
+| **B1, positive signal** | Rollout V where TFA fails | SWE-bench harness: truncate + fixed-completer rollouts, V = P(pass); vs progress-ratio | Does V grade trajectories where TFA cannot, at what cost |
 
 **Models.** Open-weight only (teacher forcing is impossible otherwise). SWE-bench: a coder ladder,
 Qwen2.5-Coder 1.5/7/14/32B plus DeepSeek-Coder and one non-Qwen coder family for a cross-family point. Reuse the
