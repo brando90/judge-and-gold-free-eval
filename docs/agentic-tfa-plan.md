@@ -83,6 +83,16 @@ patch is a better cross-family ranker than a gold function, against the multipli
 rules out the trivial explanation: check that changed-line patch-TFA adds ranking information beyond raw diff
 length and beyond the whole-diff copy-through baseline.
 
+**Preliminary check, already run (GPU-free).** We loaded all 500 SWE-bench Verified gold patches and
+measured how much of a diff is the fix versus copy-through, with `scripts/swebench_diff_stats.py` and
+`tfa/diff_mask.py`. The median gold patch is 76 words, of which only 22 are on changed (`+`/`-`) content
+lines: **the median diff is about 70 percent copy-through context and hunk/path headers**, and 66 percent
+of patches change 40 words or fewer. This confirms the estimator design directly. Teacher-forcing the whole
+diff would mostly score trivial copying of the in-context file, so masking TFA to the changed content lines
+is necessary, not optional, and the true fix signal is short (tens of tokens), which is why mask precision
+matters. (Counts are whitespace-word proxies from the local environment; the token ratio holds under a real
+tokenizer.)
+
 ### 3b. Modality probe (caveated, not the derisk): Mind2Web
 
 Mind2Web is kept only as an honest probe of a *different modality*, with three caveats that stop it from being the
