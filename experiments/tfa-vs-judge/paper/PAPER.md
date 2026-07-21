@@ -204,4 +204,46 @@ Two things stand out. Accuracy and judge give almost the same model-level correl
 | Putnam | drop math-specialized | +0.85 | +0.88 | +0.71 | +0.86 |
 | Putnam | Qwen-only | +0.97 | +1.00 | +1.00 | +0.98 |
 
+**Which models are in the pool, and which fall off the line.** The eleven-model pool on MATH-500 and Putnam is the five-model Qwen2.5 ladder (0.5B, 1.5B, 3B, 7B, 14B), one model each from Mistral (Mistral-7B), Phi (Phi-4), and OLMo (OLMo-2-13B), and three math-specialized models (Qwen2.5-Math-7B, DeepSeek-Math-7B, Mathstral-7B). GSM8K currently has the eight general models only; the math-specialized cells for the easy sets are still generating. For each model we give mean TFA, boxed accuracy, and the standardized residual from the fitted TFA-to-accuracy line: a residual near zero means the model sits on the line, and a large one means it is off the line and weakens the correlation. A star marks math-specialized models.
+
+MATH-500, sorted by TFA:
+
+| model | family | TFA | accuracy | residual |
+|---|---|---:|---:|---:|
+| OLMo-2-13B | OLMo | 0.745 | 0.472 | +0.80 |
+| Qwen2.5-0.5B | Qwen | 0.762 | 0.304 | −0.63 |
+| Mistral-7B | Mistral | 0.766 | 0.146 | **−1.61** |
+| Qwen2.5-Math-7B \* | Qwen-Math | 0.787 | 0.838 | **+1.64** |
+| DeepSeek-Math-7B \* | DeepSeek-Math | 0.794 | 0.378 | −1.12 |
+| Qwen2.5-3B | Qwen | 0.795 | 0.668 | +0.45 |
+| Qwen2.5-1.5B | Qwen | 0.796 | 0.512 | −0.44 |
+| Phi-4 | Phi | 0.799 | 0.780 | +0.97 |
+| Qwen2.5-7B | Qwen | 0.801 | 0.718 | +0.57 |
+| Qwen2.5-14B | Qwen | 0.815 | 0.786 | +0.55 |
+| Mathstral-7B \* | Mathstral | 0.823 | 0.514 | −1.19 |
+
+Putnam, sorted by TFA:
+
+| model | family | TFA | accuracy | residual |
+|---|---|---:|---:|---:|
+| Qwen2.5-0.5B | Qwen | 0.699 | 0.013 | −0.02 |
+| OLMo-2-13B | OLMo | 0.707 | 0.081 | +0.96 |
+| DeepSeek-Math-7B \* | DeepSeek-Math | 0.731 | 0.034 | −0.99 |
+| Qwen2.5-1.5B | Qwen | 0.732 | 0.068 | −0.36 |
+| Mistral-7B | Mistral | 0.735 | 0.034 | −1.16 |
+| Qwen2.5-3B | Qwen | 0.741 | 0.089 | −0.34 |
+| Qwen2.5-Math-7B \* | Qwen-Math | 0.752 | 0.233 | **+1.99** |
+| Qwen2.5-7B | Qwen | 0.755 | 0.161 | +0.47 |
+| Phi-4 | Phi | 0.759 | 0.191 | +0.86 |
+| Mathstral-7B \* | Mathstral | 0.765 | 0.076 | **−1.60** |
+| Qwen2.5-14B | Qwen | 0.771 | 0.182 | +0.20 |
+
+**Why they fall off, family by family.**
+- **DeepSeek-Math and Mathstral** are the clearest failures on MATH and Putnam. Their TFA is high for how little they solve, because they are fine-tuned on MATH-style solutions and reproduce the reference style beyond their ability to solve the problem. Mathstral has the highest TFA on MATH (0.823) while solving 51 percent; DeepSeek-Math predicts the gold at 0.79 while solving 38 percent.
+- **Qwen2.5-Math** is the mirror case. It solves the most on MATH (0.838), yet its TFA is only mid-pack (0.787), because it answers in its own compact style and predicts the verbose reference poorly. It is the largest positive residual on Putnam.
+- **Mistral-7B** sits above the line on all three datasets: fluent at reproducing the reference format, weak at the mathematics.
+- **Phi-4 and OLMo-2** are close to the line on MATH and Putnam, which is why dropping the math-specialized models restores the correlation there. On GSM8K they move the other way and drive the collapse (below).
+
+**Why GSM8K collapses, even with no math-specialized models.** On GSM8K the eight general models are compressed into a narrow TFA band (0.79 to 0.84), and each family carries its own offset inside it: Phi-4 and OLMo-2 have the lowest TFA but the highest accuracy (0.94 and 0.91), because they solve in a different register than the terse GSM8K reference, while Mistral-7B has high TFA (0.80) but low accuracy (0.56). No consistent TFA-to-accuracy ordering survives, so the pooled correlation is essentially zero. This is the short-and-stylized-reference effect from "Why the ranking collapses on GSM8K", here at the level of whole families rather than individual items.
+
 The math-specialized removal and its reconciliation with the original TFA paper's 0.66 and 0.52 are discussed in "How this squares with the original TFA paper". ICC here is ICC(2,1) on standardized series, so for these cross-scale comparisons it tracks Pearson; its distinct use is same-scale agreement (inter-judge and judge-versus-human), reported with the second-judge check.
