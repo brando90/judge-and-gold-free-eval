@@ -52,9 +52,21 @@ cheapest**. Teacher-force the model on the gold token sequence and correlate wit
 
 - **A0, SWE-bench Verified.** For each task, teacher-force the model on the **gold PR diff** given the issue and
   the oracle files the patch touches (oracle-file context keeps sequence length feasible and removes any retriever
-  from the loop). Agentic-TFA = fraction of gold-diff tokens predicted by argmax, exactly the paper's estimator.
-  Correlate mean Agentic-TFA with **free-generation pass@1** scored by the hidden tests, across a coder ladder.
-  No live environment, no candidate generator, deterministic oracle.
+  from the loop). The primary estimator is **token-TFA masked to the changed content lines** (the `+` and `-`
+  lines), excluding unchanged context lines, hunk headers such as `@@ -12,7 +12,8 @@`, and file-path headers.
+  This masking is essential and is the direct analog of the paper's content-token variant that stripped LaTeX
+  glue: under teacher forcing with the oracle file in context, the model trivially copies the unchanged context
+  lines and the hunk line-number arithmetic is format noise unrelated to competence, so a whole-diff number is
+  inflated by easy copy-through and depressed by format noise, both varying per family. To further remove the
+  line-number noise we teacher-force a **normalized edit representation** (search/replace blocks over the
+  post-edit region) rather than the raw unified diff. Whole-diff TFA is reported only as a contaminated baseline.
+  For the success target we use a **continuous** signal, the fraction of the instance's hidden tests that pass
+  (FAIL_TO_PASS plus PASS_TO_PASS), which de-floors the binary pass@1 that reads near zero for the small rungs.
+  Free generation uses one fixed single-shot oracle-file patch-prediction harness (issue plus oracle files in
+  context, emit a patch, no localization and no retriever), identical across all models so any scaffold effect is
+  a constant, and we report its cost honestly. A0 is **gated on the target having usable spread** (enough
+  distinguishable points after ties), and we drop the 1.5B rung if it and 7B both floor. No live environment, no
+  candidate generator, deterministic oracle.
 - **A1, TRAJECT-Bench.** Same idea on a longer structured target: teacher-force the gold tool-call trajectory
   (serialized function name + JSON arguments + call order) and correlate with executable success. Report the
   token-TFA and, separately, the semantic components (tool-selection, argument, order accuracy) so we can see
@@ -63,10 +75,13 @@ cheapest**. Teacher-force the model on the gold token sequence and correlate wit
 **Prediction (falsifiable, and distinct from the parent paper).** Because a patch and a tool trajectory are long
 token sequences but code has high solution multiplicity, A0 should look like HumanEval one regime out:
 **within-family positive (expected ≈ +0.6 to +0.8), cross-family washed out (expected ≈ 0 to +0.3)**. That
-*confirms and extends* the code boundary at repo scale, cheaply. What would overturn our model: cross-family
-ρ ≥ 0.6 on SWE-bench, which would mean a gold patch is a better cross-family ranker than a gold function, against
-the multiplicity argument. The control that rules out the trivial explanation: check that patch-TFA adds ranking
-information beyond raw diff length and beyond the fraction of unchanged context lines the model trivially copies.
+*confirms and extends* the code boundary at repo scale, cheaply. A0 estimates the **within-family** correlation on
+the Qwen2.5-Coder ladder, where it is properly powered; the cross-family claim needs additional coder families
+(StarCoder2, CodeLlama, OLMo-2) and is otherwise deferred to A1, since two non-Qwen points cannot carry a
+cross-family correlation. What would overturn our model: cross-family ρ ≥ 0.6 on SWE-bench, which would mean a gold
+patch is a better cross-family ranker than a gold function, against the multiplicity argument. The control that
+rules out the trivial explanation: check that changed-line patch-TFA adds ranking information beyond raw diff
+length and beyond the whole-diff copy-through baseline.
 
 ### 3b. Modality probe (caveated, not the derisk): Mind2Web
 
@@ -134,8 +149,11 @@ not over-interpret Kendall or ICC at n <= 5, the paper already shows those swing
   normalized across families, and report a format-matched control.
 - **Gold provenance.** Use only human or executable-canonical references (SWE-bench merged PRs; verify TRAJECT-Bench
   traces are executable-canonical, not GPT-4-distilled, before trusting cross-family numbers).
-- **Context length.** Whole-episode teacher forcing plus repo or page context can exceed context windows; use
-  oracle-file context (SWE-bench) or per-step targets, not whole-episode.
+- **Context length and non-random task drops.** Whole-episode teacher forcing plus repo or page context can exceed
+  context windows; use oracle-file context (SWE-bench) or per-step targets, not whole-episode. Even oracle-file
+  context can be large for multi-module tasks, so **report per-model task coverage and confirm dropped tasks are not
+  confounded with model size** (the paper's Omni-MATH context-drop failure, where short-context models lost the
+  hardest items non-randomly).
 - **Oracle gaming.** pass@1 and final-state checks can be passed by wrong trajectories; audit, and never present the
   rollout V as truth, only as calibrated progress.
 - **The motivation is credit, not scoring.** Agent benchmarks already ship cheap oracles, so TFA's "avoid the judge"
