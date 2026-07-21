@@ -31,6 +31,9 @@ DATASETS = {
     "putnam-axiom-var": dict(path="Putnam-AXIOM/putnam-axiom-dataset-v1", split="variations", revision=None),
     # Omni-MATH (olympiad, IMO-hard). Full gold solutions + human difficulty levels. answer field present.
     "omni-math": dict(path="KbsdJames/Omni-MATH", split="test", revision=None),
+    # WS5 non-math code: canonical solution (gold for TFA) + unit tests (deterministic oracle, no judge).
+    "humaneval": dict(path="openai/openai_humaneval", split="test", revision=None),
+    "mbpp": dict(path="google-research-datasets/mbpp", name="full", split="test", revision=None),
 }
 
 
@@ -51,6 +54,25 @@ def load_problems(dataset: str, limit: int | None = None) -> list[Problem]:
 
 
 def _to_problem(dataset: str, i: int, row: dict) -> Problem:
+    if dataset == "humaneval":
+        # gold_solution = canonical completion (what TFA teacher-forces); correctness via unit tests in meta.
+        return Problem(
+            id=str(row.get("task_id", i)),
+            question=row["prompt"],
+            gold_solution=row["canonical_solution"],
+            gold_answer="",
+            dataset=dataset,
+            meta={"_code": "humaneval", "test": row["test"], "entry_point": row["entry_point"]},
+        )
+    if dataset == "mbpp":
+        return Problem(
+            id=str(row.get("task_id", i)),
+            question=row["text"],
+            gold_solution=row["code"],
+            gold_answer="",
+            dataset=dataset,
+            meta={"_code": "mbpp", "test_list": row["test_list"]},
+        )
     if dataset == "omni-math":
         ans = row.get("answer") or extract_boxed(row.get("solution", "")) or ""
         return Problem(
