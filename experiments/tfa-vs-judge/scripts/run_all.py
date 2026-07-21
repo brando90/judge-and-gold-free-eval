@@ -114,6 +114,11 @@ def main():
             }) + "\n")
     n_judged = sum(j is not None for j in judge_scores)
     print(f"[done] wrote {path}  (judged {n_judged}/{len(problems)}, acc={sum(correct)/len(correct):.3f})")
+    # vLLM's V1 EngineCore can hang on interpreter shutdown, holding the GPU and blocking any launcher
+    # loop. The output above is already written and flushed, so exit hard instead of unwinding cleanly.
+    import sys
+    sys.stdout.flush(); sys.stderr.flush()
+    os._exit(0)
 
 
 if __name__ == "__main__":
