@@ -116,7 +116,7 @@ progress-ratio surrogate (`log π_policy − log π_ref`) already scoped in plan
 
 | Phase | Goal | Concrete step | Exit criterion |
 |---|---|---|---|
-| **A0, derisk** | Genuine TFA on a token-sequence gold | SWE-bench Verified: patch-TFA (oracle-file context) vs pass@1 across a coder ladder | Within-family ρ with bootstrap CI; cross-family near zero = boundary extended |
+| **A0, derisk** | Genuine TFA on a token-sequence gold | SWE-bench Verified: changed-line patch-TFA (oracle-file context) vs fraction-of-hidden-tests-passed, within the Qwen2.5-Coder ladder | Within-family ρ with bootstrap CI, gated on target spread; cross-family deferred to A1 |
 | **A1, longer structured target** | Does a tool trajectory rank better than a patch | TRAJECT-Bench: tool-call TFA + semantic components vs executable success | Which component carries ranking; does multiplicity still wash cross-family |
 | **A1b, modality probe** | Web actions, honestly caveated | Mind2Web 3-component decomposition, within-family, contamination-audited, with the A0-gate | Does value-string TFA beat semantic element-accuracy at all |
 | **B1, positive signal** | Rollout V where TFA fails | SWE-bench harness: truncate + fixed-completer rollouts, V = P(pass); vs progress-ratio | Does V grade trajectories where TFA cannot, at what cost |
