@@ -1,148 +1,171 @@
 # Does the judge-free signal extend to agents? A plan grounded in the boundary we found
 
-*Planning doc, July 2026. Companion to the TFA-vs-judge paper. This supersedes the scoping in
-[`plan-B-agentic-sparse-feedback.md`](plan-B-agentic-sparse-feedback.md) with concrete, current
-benchmarks and a falsifiable design. Drafted with Opus and to be critiqued by an Opus reviewer before
-any compute is spent.*
+*Planning doc, July 2026. Companion to the TFA-vs-judge paper. Supersedes the scoping in
+[`plan-B-agentic-sparse-feedback.md`](plan-B-agentic-sparse-feedback.md). Revised after two Opus critiques
+that killed an earlier Mind2Web-first version; the reasoning for the change is in section 3.*
 
 ## 1. The thesis, inherited from the math result
 
-The paper's one-line finding is that **TFA measures agreement with a reference's style, and that coincides
-with quality only when two conditions hold: the reference is tightly constrained (low solution multiplicity),
-and the models being ranked share its style.** We watched this play out as a clean boundary: TFA ranks models
-on competition and olympiad math (Putnam +0.60, Omni-MATH +0.86), collapses on saturated grade-school math
-(GSM8K −0.37, a style axis dominating a dead quality axis), and washes out on code (HumanEval +0.24, where one
-gold program cannot stand in for many valid ones).
+The paper's finding is that **TFA measures agreement with a reference's style, and that coincides with quality
+only when two conditions hold: the reference is a long token sequence pinned by the task's own logic (so
+predicting it requires competence, not memorized formatting), and the models being ranked share its style.**
+We watched this as a clean boundary: TFA ranks models on hard, constrained math (Putnam +0.60, Omni-MATH +0.86),
+fades as accuracy saturates (MATH-500 +0.35), is only weakly positive on code where one gold program cannot stand
+in for many valid ones (HumanEval cross-family +0.24, within-Qwen +0.80), and turns negative on saturated
+grade-school math (GSM8K −0.37), where a short, stylized reference lets a family-specific style offset bury the
+quality signal.
 
-Agentic tasks are not a new question for TFA. They are the **far end of the same axis**: solution multiplicity
-is maximal (many action sequences reach a goal), horizons are long (errors compound), and the "style" that TFA
-keys on is now an entire agent scaffold (ReAct prose vs JSON tool-calls vs code). So the honest prior is not
-"will TFA work on agents" but "**the boundary predicts exactly where on the agentic spectrum a reference-anchored
-signal can still rank, and where you must switch to a reference-free one.**" That prediction is testable, and the
-benchmarks to test it now exist with real gold traces. This is the contribution: not "TFA for agents," but
-*mapping the judge-free frontier one regime further and handing off to the right tool at the boundary.*
+Agentic tasks are the far end of the same axis. The contribution is not "TFA for agents." It is to **map the
+judge-free frontier one regime further, and to hand off to the right tool at the boundary.** Two facts about TFA
+constrain the whole plan and were the undoing of the first draft:
 
-## 2. Where gold traces actually come from (the landscape, mid-2026)
+- **TFA needs a gold reference that is a long, task-pinned token sequence.** The entire mechanism (the
+  reference-predictability nuisance is most of item variance; the gold is ~200 tokens on MATH) exists *because
+  there are hundreds of tokens to average over*. A gold that is a short categorical choice (click element #7)
+  has almost no token sequence to teacher-force, so token-TFA has nothing to bite on and degenerates into a
+  grounding/classification accuracy that is not the statistic this paper is about.
+- **TFA only works on open-weight models** (closed API models cannot be teacher-forced), and it is only
+  interesting when it is a *cheap proxy distinct from the quality target* you validate it against. If the
+  teacher-forced signal is literally the benchmark's own metric, correlating them tests nothing.
 
-The blocker Sri flagged, "golden traces are hard to get for multi-step executions," is now only partly true.
-The current benchmarks split cleanly into two kinds, and the split is exactly our constraint axis.
+## 2. Ranking agentic benchmarks by whether TFA can even be defined
 
-| Benchmark | Gold reference available | Constraint on the reference | Success oracle | Fit for TFA |
+The right first question is not "which benchmark is cheapest" but "**where is the gold reference a long,
+task-pinned token sequence with a free, independent success oracle**." That criterion, not GPU cost, orders the
+field, and it demotes the benchmark the first draft picked.
+
+| Benchmark | Gold reference | Is it a token-averageable sequence? | Independent success oracle | Fit for a faithful TFA |
 |---|---|---|---|---|
-| **Mind2Web** (offline web) | Yes: human demo, one gold `(snapshot → target element+op)` per step | **High** (single correct DOM element + operation) | Exact match to gold action (element acc, op F1, step-success) | **Best fit.** It *is* teacher-forced by construction |
-| **TRAJECT-Bench** (tool use, Aug 2025) | Yes: reference tool-call trajectory, fine-grained (selection / arguments / order) | Medium-high (correct tool + args + dependency order) | Executable APIs + trajectory match | **Strong fit** for a graded TFA |
-| **tau2-bench** (customer service) | Partial: ground-truth task spec + canonical action set | Medium (policy-constrained, but paraphrasable) | Programmatic final-DB-state reward | Rollout process value |
-| **SWE-bench Verified** (repo bugfix) | Yes: the merged gold PR diff | Low (many valid patches) | Hidden test suite (pass@1) | Rollout process value; TFA-on-patch as a boundary check |
-| **WebArena / OSWorld** (live web/OS) | Rare (few human demos) | Low (many valid paths) | Final-state functional check | Reference-free only |
-| **GAIA / BrowseComp** (assistant) | No trajectory gold, answer only | n/a | Final-answer match | Out of scope for TFA |
+| **SWE-bench Verified** | merged gold PR diff | **Yes** — a long code+prose diff | Hidden test suite, pass@1 (free, deterministic) | **Best.** Literal lift of the HumanEval result |
+| **TRAJECT-Bench** (tool use, Oct 2025) | reference tool-call trajectory | **Mostly** — function names + JSON args + order, tens to hundreds of tokens | Executable APIs + trajectory match | **Strong**, longer target than a click |
+| **tau2-bench** | canonical action set + task spec | Partial (paraphrasable policy text) | Programmatic final-DB-state reward | Arm 2 (rollout), not TFA |
+| **Mind2Web** (offline web) | `(target element, op∈{CLICK,TYPE,SELECT}, value)` tuple per step | **No** — a categorical element choice; only the TYPE `value` string is token-like, usually a few tokens | Offline step-success floors; online needs the live env | Caveated modality probe only (section 3b) |
+| **WebArena / OSWorld** | rare human demos | No | Final-state functional check | Reference-free only |
+| **GAIA / BrowseComp / Mind2Web 2** | final answer, no trajectory gold | No | Answer/rubric match | Out of scope for TFA |
 
-Two facts make this tractable now. First, **Mind2Web is already a teacher-forced benchmark**: it is offline, it
-scores each predicted next action against a fixed gold trajectory, and its headline metric (step-success rate)
-is precisely "did the model's greedy next action match the gold." That is TFA, in a different modality, with a
-constrained single-token-like target. Second, **SWE-bench Verified ships the gold patch** for every task, so the
-reference exists even though solution multiplicity is high, which is exactly the case we need to probe the boundary.
+## 3. The plan: two arms, split at the multiplicity boundary
 
-## 3. The plan: two arms, split at the boundary
+### Arm 1 (the derisk) — TFA on a gold token sequence: SWE-bench patch, then tool-call trajectory
 
-### Arm 1 — Does a reference-anchored signal still rank agents where the reference is constrained?
+This is the faithful, cleanly-runnable lift, and it is the derisk **because it is a genuine TFA, not because it is
+cheapest**. Teacher-force the model on the gold token sequence and correlate with a free, independent oracle.
 
-**Benchmarks:** Mind2Web (primary, cheapest), then TRAJECT-Bench (tool-call graded matching).
+- **A0, SWE-bench Verified.** For each task, teacher-force the model on the **gold PR diff** given the issue and
+  the oracle files the patch touches (oracle-file context keeps sequence length feasible and removes any retriever
+  from the loop). Agentic-TFA = fraction of gold-diff tokens predicted by argmax, exactly the paper's estimator.
+  Correlate mean Agentic-TFA with **free-generation pass@1** scored by the hidden tests, across a coder ladder.
+  No live environment, no candidate generator, deterministic oracle.
+- **A1, TRAJECT-Bench.** Same idea on a longer structured target: teacher-force the gold tool-call trajectory
+  (serialized function name + JSON arguments + call order) and correlate with executable success. Report the
+  token-TFA and, separately, the semantic components (tool-selection, argument, order accuracy) so we can see
+  which part carries the ranking.
 
-**Signal.** Define **Agentic-TFA** as the teacher-forced next-action agreement: feed the model the gold history
-(instruction + gold observations and gold actions up to step *t*) and measure whether its greedy next action
-matches the gold action at *t*, averaged over steps and tasks. On Mind2Web this is the benchmark's own
-step-success under teacher forcing; on TRAJECT-Bench it is graded over tool selection, arguments, and order.
-This is a faithful lift of TFA: one forward pass per step, no sampling, no judge, no live environment.
+**Prediction (falsifiable, and distinct from the parent paper).** Because a patch and a tool trajectory are long
+token sequences but code has high solution multiplicity, A0 should look like HumanEval one regime out:
+**within-family positive (expected ≈ +0.6 to +0.8), cross-family washed out (expected ≈ 0 to +0.3)**. That
+*confirms and extends* the code boundary at repo scale, cheaply. What would overturn our model: cross-family
+ρ ≥ 0.6 on SWE-bench, which would mean a gold patch is a better cross-family ranker than a gold function, against
+the multiplicity argument. The control that rules out the trivial explanation: check that patch-TFA adds ranking
+information beyond raw diff length and beyond the fraction of unchanged context lines the model trivially copies.
 
-**Measurement.** Across a model ladder (below), correlate mean Agentic-TFA with a *held-out* measure of true
-agent quality: the benchmark's **online / free-run task-success** (Mind2Web-live, or executable pass on
-TRAJECT-Bench), controlling for trajectory length and context length. Report Pearson, Spearman, Kendall, ICC,
-within-family and cross-family, exactly as the paper does.
+### 3b. Modality probe (caveated, not the derisk) — Mind2Web
 
-**Prediction (falsifiable).** Because the Mind2Web target is highly constrained (one right element), Agentic-TFA
-should rank models *within a family* well (like our within-Qwen +0.8 to +1.0) and hold cross-family better than
-code did, because the DOM target admits far less stylistic freedom than a free-form program. If instead it
-collapses cross-family, the "constraint saves it" thesis is wrong for the action modality, and that is itself the
-result. On TRAJECT-Bench, correlation should *degrade* as tasks require longer, more parallel tool chains (more
-valid orderings = more multiplicity), tracing the same curve we saw from Putnam to code.
+Mind2Web is kept only as an honest probe of a *different modality*, with three caveats that stop it from being the
+derisk. First, its gold is a categorical `(element, op, value)` tuple, so there is no long token sequence; the only
+token-TFA component is the TYPE `value` string, and it exists on a minority of steps. We therefore report three
+**separate** numbers, never one conflated "Agentic-TFA": (a) element agreement (a grounding/classification score,
+explicitly *not* TFA), (b) operation agreement (1-of-3), (c) value-string token-TFA (TYPE steps only). Second, by
+the paper's own mechanism a short, near-categorical target with a large family-specific format offset is the
+**GSM8K regime, not the Putnam regime**, so the honest prediction is that cross-family token-match tracks format and
+training exposure, not competence, and can go *negative*, the first draft had this analogy backwards. Third,
+Mind2Web is a common agent-SFT set, so per-family training contamination inflates token-agreement exactly like a
+GSM8K style offset. **A0-gate for this probe:** if value-string token-TFA carries no ranking information beyond a
+pure semantic element-accuracy, Mind2Web has no TFA content beyond its own leaderboard metric and we drop it. This
+probe is **within-family only** for any token-match claim; the offline step-success target floors for small instruct
+models, so if we use it at all the quality target is published Online-Mind2Web / Mind2Web 2 (2025) numbers for the
+subset of open models that have them, computed by a *different* pipeline than the one producing TFA, to avoid
+correlating a measurement with itself. Given all this, Mind2Web is scheduled after A0/A1, and may be cut.
 
-### Arm 2 — Where the reference is open-ended, use reference-free process value
+### Arm 2 (the positive signal) — reference-free rollout process value on executable envs
 
-**Benchmarks:** SWE-bench Verified (primary), tau2-bench (secondary).
+Where the reference is open-ended, one gold trace cannot represent the solution set, so TFA-on-gold is expected to
+be a poor cross-family ranker (A0 will confirm this as a boundary point). The positive signal is the paper's rollout
+process value, lifted to agents: truncate a trajectory at breakpoints, hand each prefix to a fixed **completer
+agent**, let it finish *K* times inside the real harness, and score V = P(the run passes the oracle). A prefix that
+keeps the task solvable was progressing; one that derails the completer was not. This needs no judge and no gold
+trace, only the executable oracle SWE-bench Verified and tau2-bench already provide, and it is the natural
+credit-assignment signal for the RL loops agents are trained with. Compare V against the cheaper single-pass
+progress-ratio surrogate (`log π_policy − log π_ref`) already scoped in plan-B.
 
-Here one gold trace cannot represent the solution set, so TFA-on-gold is expected to be a poor ranker (we will
-*confirm* this cheaply as a boundary point: TFA-on-gold-patch vs pass@1 across a code-model ladder; predicted
-near-zero cross-family, echoing HumanEval). The **positive** signal is the paper's rollout process value, lifted
-to agents: truncate a trajectory at breakpoints, hand each prefix to a fixed **completer agent**, let it finish
-*K* times inside the real harness, and score V = P(the run passes the oracle). A prefix that keeps the task
-solvable was progressing; one that derails the completer was not. This needs no judge and no gold trace, only the
-executable oracle these benchmarks already provide, and it is the natural credit-assignment signal for the RL
-loops that agents are trained with. tau2-bench and SWE-bench Verified both expose the programmatic reward that
-makes V computable.
-
-This arm also connects to the progress-ratio idea already scoped in plan-B (`log π_policy − log π_ref`) as a
-cheaper, single-pass surrogate for the expensive rollout V, to be compared head to head.
-
-## 4. Phasing, models, and compute
+## 4. Phasing, models, compute
 
 | Phase | Goal | Concrete step | Exit criterion |
 |---|---|---|---|
-| **A0 — derisk (days)** | Prove the pipeline on the cheapest constrained benchmark | Mind2Web offline: compute Agentic-TFA (teacher-forced step-success) for the Qwen2.5 ladder; correlate with reported task-success | A working TFA-on-actions number and a within-family correlation |
-| **A1 — constrained arm** | Map constraint → correlation | Add Mistral / Phi / OLMo ladders and TRAJECT-Bench; stratify by trajectory length and tool-chain complexity | Cross-family curve of ρ vs multiplicity; does the math boundary replicate? |
-| **B0 — boundary point** | Confirm TFA fails open-ended | SWE-bench Verified: TFA-on-gold-patch vs pass@1 across a coder ladder (Qwen2.5-Coder 1.5/7/14/32B, DeepSeek-Coder) | Predicted near-zero cross-family = boundary confirmed |
-| **B1 — positive signal** | Rollout process value on agents | SWE-bench Verified harness: truncate + fixed-completer rollouts, V = P(pass); compare to progress-ratio surrogate | Does V grade trajectories where TFA cannot, at what cost |
+| **A0 — derisk** | Genuine TFA on a token-sequence gold | SWE-bench Verified: patch-TFA (oracle-file context) vs pass@1 across a coder ladder | Within-family ρ with bootstrap CI; cross-family near zero = boundary extended |
+| **A1 — longer structured target** | Does a tool trajectory rank better than a patch | TRAJECT-Bench: tool-call TFA + semantic components vs executable success | Which component carries ranking; does multiplicity still wash cross-family |
+| **A1b — modality probe** | Web actions, honestly caveated | Mind2Web 3-component decomposition, within-family, contamination-audited, with the A0-gate | Does value-string TFA beat semantic element-accuracy at all |
+| **B1 — positive signal** | Rollout V where TFA fails | SWE-bench harness: truncate + fixed-completer rollouts, V = P(pass); vs progress-ratio | Does V grade trajectories where TFA cannot, at what cost |
 
-**Models.** Reuse the paper's ladders where the scaffold allows teacher forcing: Qwen2.5 instruct 0.5–14B as the
-spine, plus Mistral, Phi, OLMo for cross-family, and coder models on SWE-bench. All open-weight, so we can teacher-
-force on the gold trace (closed models cannot be teacher-forced, a hard constraint that shapes the whole plan).
+**Models.** Open-weight only (teacher forcing is impossible otherwise). SWE-bench: a coder ladder,
+Qwen2.5-Coder 1.5/7/14/32B plus DeepSeek-Coder and one non-Qwen coder family for a cross-family point. Reuse the
+paper's general ladders where a benchmark's action format admits teacher forcing.
 
-**Compute.** Arm 1 is cheap: teacher forcing is one forward pass per step, no environment, well within 2–3 GPUs.
-Arm 2 B1 is expensive (K rollouts × breakpoints inside a Docker/SWE harness) and is deliberately last.
+**Compute and power.** A0 is cheap and needs no environment: teacher forcing is one forward pass per gold sequence,
+well within 2 to 3 GPUs; only the free-generation pass@1 eval runs the test harness. B1 is expensive (K rollouts x
+breakpoints inside a Docker harness) and is deliberately last. Agent-capable open-weight models are *fewer* than the
+math ladders and small ones floor, so effective n is small: prefer within-ladder Pearson with bootstrap CIs, and do
+not over-interpret Kendall or ICC at n <= 5, the paper already shows those swing hard at small n.
 
 ## 5. Confounds and pitfalls (the senior-researcher checklist)
 
-- **Scaffold/format dominates token match.** Teacher-forcing a tool trajectory only means something if the model
-  is prompted in the *same* action format as the gold (ReAct vs JSON tool-call vs code). Format mismatch tanks TFA
-  for reasons unrelated to competence and would masquerade as a family effect. Mitigation: normalize to a single
-  action schema per benchmark, or restrict cross-family claims to models sharing a scaffold, and report a
-  format-matched control. On Mind2Web this is baked in (fixed action space), which is another reason it goes first.
-- **Gold provenance.** If "gold" traces are model-generated (many training sets distill GPT-4 trajectories), the
-  style confound is fatal and self-fulfilling. Use only human or canonical references: Mind2Web human demos,
-  SWE-bench merged PRs, tau2 task specs. Flag TRAJECT-Bench provenance before trusting it.
-- **The motivation is weaker than in math.** Agent benchmarks already ship cheap programmatic oracles, so TFA's
-  "avoid the expensive judge" selling point is thinner. The real need TFA/process-value serves here is *dense,
-  per-step* credit for RL where only terminal reward is verifiable, so frame the contribution as shaping/credit,
-  not leaderboard scoring.
-- **Context length.** Whole-episode teacher forcing plus repo or DOM context can exceed context windows (this is
-  the exact failure that dropped short-context models from our Omni-MATH cut). Mitigation: per-step TFA (Mind2Web),
-  oracle-file context (SWE-bench), not whole-episode.
-- **Success-oracle gaming.** Pass@1 and final-state checks can be passed by wrong trajectories (weak tests, lucky
-  final state). Audit for it, and never present the rollout V as truth, only as calibrated progress, the same
-  honesty ledger the paper keeps.
-- **Multiplicity is the point, not a bug.** Expect Arm-2 TFA to be a poor ranker. That is a *predicted* boundary
-  observation, not a failed experiment, and it is only interesting because Arm 1 is designed to succeed alongside it.
+- **The gold must be a token sequence, or it is not TFA.** Report token-TFA only where a real token sequence
+  exists (patch, tool trajectory, TYPE value); never conflate a categorical element choice into a "TFA" number.
+- **Self-correlation.** The teacher-forced predictor must be distinct from the quality target. SWE-bench avoids this
+  cleanly (TFA-on-patch vs an independent test oracle); Mind2Web does not (step-success is the benchmark score),
+  which is why it is gated and demoted.
+- **Retriever / grounding recall.** Any pipeline that first ranks DOM candidates injects a recall nuisance
+  orthogonal to reasoning. A0 sidesteps it entirely (oracle-file context, no retriever); if Mind2Web is run, fix one
+  ranker across all models so it is a constant, and list its recall as a confound.
+- **Per-family training contamination.** Mind2Web and popular tool-use sets appear in agent-SFT mixes, so token
+  agreement is inflated per family exactly like a GSM8K style offset. Audit provenance; treat cross-family token
+  numbers on contaminated sets as format/exposure, not competence.
+- **Format / scaffold dominance.** For structured actions, token-match is dominated by emitting the exact template
+  (choice-letter convention, JSON punctuation). Declare Arm-1 token-match within-family unless the action schema is
+  normalized across families, and report a format-matched control.
+- **Gold provenance.** Use only human or executable-canonical references (SWE-bench merged PRs; verify TRAJECT-Bench
+  traces are executable-canonical, not GPT-4-distilled, before trusting cross-family numbers).
+- **Context length.** Whole-episode teacher forcing plus repo or page context can exceed context windows; use
+  oracle-file context (SWE-bench) or per-step targets, not whole-episode.
+- **Oracle gaming.** pass@1 and final-state checks can be passed by wrong trajectories; audit, and never present the
+  rollout V as truth, only as calibrated progress.
+- **The motivation is credit, not scoring.** Agent benchmarks already ship cheap oracles, so TFA's "avoid the judge"
+  selling point is thin here; frame the contribution as dense per-step credit for RL, where a reference-free progress
+  signal is the tool.
 
-## 6. What would change our mind
+## 6. What would change our mind (each tied to a control)
 
-- If Agentic-TFA ranks models cross-family on Mind2Web at ρ ≥ 0.6, the constrained-reference thesis extends to the
-  action modality and TFA becomes a genuinely cheap agent-ranker for constrained-action benchmarks. Strong result.
-- If it collapses even on Mind2Web's constrained targets, then the *action modality itself* (not just multiplicity)
-  breaks reference anchoring, sharpening the theory.
+- If SWE-bench patch-TFA ranks cross-family at ρ >= 0.6 (control: survives removing diff-length and copied-context
+  confounds), then a long gold trace beats a gold function cross-family and the multiplicity argument is wrong.
+  Strong, genuinely new result.
+- If Mind2Web value-string TFA ranks models beyond semantic element-accuracy (control: the A0-gate above), then
+  token agreement carries agentic signal even on a categorical target, sharpening the theory.
 - If rollout process value on SWE-bench separates sound-from-lucky passes (as it did weakly on math), that is the
   reusable agentic verifier the RL people want, independent of TFA.
 
 ## 7. Recommendation
 
-Start with **Mind2Web A0/A1** this cycle: it is the cheapest, it is teacher-forced by construction, it needs no
-environment, and it directly tests whether our boundary extends to actions. Scope **SWE-bench Verified** rollout
-process value (B1) as the higher-cost positive follow-up. Treat WebArena/OSWorld/GAIA as out of scope for a
-reference-anchored signal, and say so in the paper, because that honesty is the contribution.
+Make **SWE-bench Verified patch-TFA vs pass@1 (A0)** the derisk: it is a literal, faithful lift of the paper's code
+result, it needs no live environment and no retriever, its oracle is free and independent of the TFA signal, and it
+extends the math-to-code boundary to repo scale. Run **TRAJECT-Bench (A1)** next for a longer structured target.
+Treat **Mind2Web** as a caveated, within-family modality probe that may be cut, not the derisk. Scope **rollout
+process value (B1)** as the higher-cost positive follow-up. Treat WebArena, OSWorld, GAIA, and Mind2Web 2 as out of
+scope for a reference-anchored signal, and say so in the paper, because that honesty is the contribution.
 
 ## Sources
 
-- Mind2Web (offline web-action prediction, gold trajectories): https://arxiv.org/abs/2306.06070 ; leaderboard notes https://benchmarkingagents.com/mind2web/
-- TRAJECT-Bench (trajectory-aware tool use, Aug 2025): https://arxiv.org/abs/2510.04550 ; code https://github.com/PengfeiHePower/TRAJECT-Bench
+- SWE-bench / SWE-bench Verified (gold PR patches + hidden-test oracle): https://www.swebench.com , https://arxiv.org/abs/2310.06770
+- TRAJECT-Bench (trajectory-aware tool use, arXiv Oct 2025): https://arxiv.org/abs/2510.04550 , code https://github.com/PengfeiHePower/TRAJECT-Bench
 - tau2-bench (tool-agent-user, programmatic reward): https://github.com/sierra-research/tau2-bench
-- SWE-bench Verified (gold PR patches + test oracle): https://www.swebench.com
-- Agentic benchmark landscape 2026 (SWE-bench, WebArena, OSWorld, GAIA, tau2, METR HCAST): https://decodethefuture.org/en/ai-agent-benchmarks-2026/
-- Progress-ratio credit signal (log-prob policy vs reference): arXiv:2606.26080 (see plan-B)
+- Mind2Web (offline web-action prediction; note the live variant Online-Mind2Web (2025) and Mind2Web 2 (2025)): https://arxiv.org/abs/2306.06070
+- Agentic benchmark landscape 2026 (SWE-bench, WebArena, OSWorld, GAIA, tau2): survey at https://link.springer.com/article/10.1007/s10462-026-11571-0
+- Progress-ratio credit signal (log-prob policy vs reference): see plan-B references.
