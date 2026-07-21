@@ -178,7 +178,22 @@ The deeper takeaway from this appendix is that the failure is not a hidden confo
 
 ## Appendix: model-level correlations across metrics and model families
 
-This appendix backs the main table with all four correlation metrics, and shows how the picture depends on the metric and on the model set. The cross-family rows currently cover the three anchor datasets; a within-family ladder for each of Mistral, Phi, and OLMo and the full six-dataset cross-family table are being generated and will be added.
+This appendix backs the main table with all four correlation metrics, and shows how the picture depends on the metric and on the model set.
+
+**Within-family ranking, across four families.** We ran size ladders for Mistral (7B, Ministral-8B, Small-22B), Phi (3.5-mini, 3-medium, Phi-4), and OLMo-2 (7B, 13B, 32B) alongside the Qwen2.5 ladder (0.5B to 14B), so we can ask whether TFA ranks models *inside* each family, and this is the sharpest test of what TFA measures. The answer is family-dependent (Spearman ρ(TFA, accuracy); three models per new family, so read the sign and the Pearson magnitude, not the exact rank value):
+
+| dataset | Qwen (n=5) | Mistral (n=3) | Phi (n=3) | OLMo (n=3) |
+|---|:---:|:---:|:---:|:---:|
+| MATH-500 | +0.90 | +1.00 | +0.50 | +1.00 |
+| MATH-full | +0.60 | +1.00 | −1.00 | +1.00 |
+| GSM8K | +0.70 | +1.00 | −1.00 | −0.50 |
+| GSM8K-Platinum | +0.60 | +1.00 | −1.00 | −0.50 |
+| Putnam-AXIOM | +1.00 | +1.00 | +1.00 | +0.50 |
+| Putnam-Variations | +0.90 | +1.00 | +0.50 | +0.50 |
+
+Within-family ranking is not universal. Mistral and Qwen rank cleanly on every dataset. Phi and OLMo do not: on the easy, saturated sets (MATH-full, GSM8K, GSM8K-Platinum) their within-family correlation goes negative, most sharply for Phi (Pearson −0.97 on GSM8K). The cause is the style divergence already seen across families, now operating inside a family: the higher-capability Phi and OLMo models answer in an increasingly non-reference style, so they predict the terse gold worse even as they solve more. TFA ranks models reliably only where a family's models share a stable solution style close to the reference, which Mistral and Qwen do and Phi and OLMo do not on short, stylized references.
+
+**Full six-dataset cross-family pooling** (all 17 models across seven families, boxed-accuracy target, Spearman): MATH-500 +0.35, MATH-full +0.21, GSM8K −0.37, GSM8K-Platinum −0.38, Putnam +0.60, Putnam-Variations +0.38. Cross-family, TFA ranks weakly on the hard data and is negative on the saturated GSM8K sets, consistent with the anchor-dataset results below.
 
 **Qwen2.5 ladder, all six datasets.** The main table reports Spearman. Below are Pearson, Spearman, Kendall tau-b, and ICC, for both the boxed-accuracy target and the judge target.
 

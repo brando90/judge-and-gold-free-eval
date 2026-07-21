@@ -61,7 +61,9 @@ def load_permodel(globs, dk, drop32b=True):
             R = [r for r in R if r]
             if not R: continue
             m = R[0]["model"]
-            if drop32b and "32B" in m: continue
+            # Drop only Qwen2.5-32B (to match the paper's 5-model Qwen ladder). Keep OLMo-2-32B and
+            # Mistral-Small-22B, which are the tops of their own family ladders.
+            if drop32b and "Qwen2.5-32B" in m: continue
             cc = [int(answers_equivalent(extract_final_answer(r["free_gen"], dk), gold_ans(r, dk))) for r in R]
             js = [r["judge_score"] for r in R if r.get("judge_score") is not None]
             P[m.split("/")[-1]] = dict(fam=fam(m), tfa=float(np.mean([r["tfa_argmax"] for r in R])),
