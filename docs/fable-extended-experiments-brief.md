@@ -147,11 +147,21 @@ anywhere, that localizes what TFA measures.
 **Why.** The Putnam-AXIOM reconciliation shows conclusions move with the metric. Small model counts (5 to 15)
 make Pearson outlier-sensitive and Spearman optimistic. Report all three and say which to trust.
 
-**Method.** For every model-level correlation, report **Spearman, Pearson, and Kendall tau-b**, each with a
-bootstrap 95 percent CI (resample models with replacement). For item-level, keep partial Spearman as the
-primary decision metric, and add partial Pearson and a rank-based check. Add one nonlinear dependence measure
-(distance correlation or mutual information) at the model level, because TFA saturates and the TFA-to-quality
-relation is nonlinear, so a low Pearson with a high distance correlation would itself be a finding.
+**Method.** Report **at least three of these four**: Pearson, Spearman, Kendall tau-b, and ICC. Use each where
+it is meaningful:
+- For TFA against a target on different scales (TFA about 0.7 to 0.85 versus judge 0 to 10 or accuracy 0 to 1),
+  report **Pearson, Spearman, Kendall tau-b**, each with a bootstrap 95 percent CI (resample models with
+  replacement). These three are the meaningful cross-scale metrics; that is already three of the four.
+- Add **ICC (intraclass correlation, two-way, ICC(2,1) or ICC(A,1))** for **same-scale agreement** analyses,
+  where it is the standard tool: inter-judge agreement (gpt-5.2 versus Claude, both 0 to 10, the D1 check) and
+  judge versus human (the D5 calibration, both on the same rubric). For a cross-scale TFA-to-target ICC, first
+  z-score each series; note that standardized ICC then approaches Pearson and is reported only for completeness.
+- Add one nonlinear dependence measure (distance correlation or mutual information) at the model level, because
+  TFA saturates and the TFA-to-quality relation is nonlinear, so a low Pearson with a high distance correlation
+  would itself be a finding.
+Implement ICC in the analyzer (a small variance-components function, or `pingouin.intraclass_corr` in
+`.venv-local`), and report the ICC form used (single-rater, absolute-agreement vs consistency).
+For item-level, keep partial Spearman as the primary decision metric, and add partial Pearson and a rank-based check.
 
 **Confounds.** Ties in TFA (use tau-b, which corrects for ties). Tiny n (report the CI, do not over-read a
 point estimate). Nonlinearity and saturation (this is why Pearson can understate the association).
@@ -195,14 +205,18 @@ the saturation account.
 family and style offset. Extend the family set, include the math-specialized models that reproduce the
 Putnam-AXIOM 0.66, and turn "where TFA fails" into an explicit taxonomy.
 
-**Method.** Add families and types, verifying HF paths, licenses, and log-prob access first:
-- **General families and sizes:** Llama-3.x (8B and 70B, gated, accept the license), Gemma-2 or 3 (gated),
-  Yi-1.5, InternLM or GLM, and a second size for Mistral and Phi so within-new-family ranking is possible.
-- **Math-specialized:** Qwen2.5-Math-7B, deepseek-math-7b-instruct, NuminaMath-7B, Mathstral-7B. These test
-  the training-style offset directly.
-- **Reasoning-tuned:** DeepSeek-R1-Distill (Qwen and Llama variants), run in a comparable non-thinking or
-  thinking mode, to test whether long-CoT style diverges from concise gold references. Note Qwen3 defaults to
-  thinking mode, which is not comparable to the non-thinking instruct baseline, so fix the mode explicitly.
+**Method.** Add families and types, verifying HF paths and log-prob access first. **Priority order: finish the
+current families before reaching for new gated ones.**
+- **Math-specialized (do first, the WS-V reproduction):** Qwen2.5-Math-7B, deepseek-math-7b-instruct,
+  Mathstral-7B, and NuminaMath-7B. All ungated. These test the training-style offset directly and reproduce
+  the Putnam-AXIOM 0.66.
+- **Reasoning-tuned:** DeepSeek-R1-Distill (Qwen and Llama variants), run in a comparable mode, to test whether
+  long-CoT style diverges from concise gold references. Note Qwen3 defaults to thinking mode, which is not
+  comparable to the non-thinking instruct baseline, so fix the mode explicitly. Ungated.
+- **Second sizes for the current families** (Mistral, Phi, OLMo) so within-new-family ranking is possible.
+- **Deferred, optional, only if a reviewer asks for the most popular families:** Llama-3.x and Gemma-2 or 3
+  (gated). Do not add them just for breadth; the math-specialized and reasoning models already cover the
+  failure taxonomy. Reach for these last, if at all.
 Run the three anchors (MATH-500, GSM8K, Putnam) plus WS3 if ready. Compute pooled and per-family, per WS1/WS2.
 
 **Hypothesized failure taxonomy (state it, then test each):**
@@ -303,6 +317,9 @@ correctness or by family.
 
 - Compute: SNAP cluster (skampere1 or skampere2, direct SSH, `/lfs` for HF cache and venv, `/dfs` for
   persistent raw artifacts). Check free GPUs, use `CUDA_VISIBLE_DEVICES`, tensor-parallel for 32B and larger.
+- **GPU budget: use no more than 2 to 3 GPUs at a time** (shared cluster courtesy). Run workstreams and models
+  sequentially through that budget rather than fanning out. The orchestrator must be a sequential queue that
+  never holds more than three GPUs, not a wide parallel launch.
 - Harness: extend `run_all.py` (TFA plus free-gen plus optional judge), `run_judge.py` (GPU-free re-judge of
   saved traces, resilient to per-item content-filter errors), `run_variants.py` (TFA variants, add the
   all-tokens no-mask reproduction mode and multi-reference), `run_rollout_prm.py` (rollout value), and the
