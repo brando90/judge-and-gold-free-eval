@@ -101,9 +101,9 @@ for sp in ("top", "right", "left"): ax.spines[sp].set_visible(False)
 ax.tick_params(left=False)
 handles = [plt.Line2D([0], [0], color=RCOL[k], lw=3, label=k) for k in ("hard math", "saturated", "code")]
 ax.legend(handles=handles, loc="lower right", fontsize=9.5, frameon=False, title="reference type")
-ax.set_title("Judge-free TFA ranks models by quality only on hard, constrained references\n"
-             "Strong on hard math, it fades as accuracy saturates, is weak on code, and turns negative on saturated grade-school math",
-             fontsize=11.5, loc="left")
+ax.set_title("Judge-free TFA ranks models by quality on hard references, and inverts only on saturated grade-school math\n"
+             "Positive on olympiad and competition math and (noisily) on code; fading toward zero as accuracy saturates; negative only on GSM8K",
+             fontsize=11, loc="left")
 fig.tight_layout()
 fig.savefig(f"{OUT}/fig6_cross_family.png", dpi=150, bbox_inches="tight"); plt.close(fig)
 print("WROTE fig6_cross_family.png")
