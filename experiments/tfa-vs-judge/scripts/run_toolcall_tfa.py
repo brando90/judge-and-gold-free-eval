@@ -28,7 +28,8 @@ def build_prompt(tok, sys_txt, user_txt):
     msgs = []
     if sys_txt: msgs.append({"role": "system", "content": sys_txt})
     msgs.append({"role": "user", "content": user_txt})
-    return tok.apply_chat_template(msgs, tokenize=True, add_generation_prompt=True)
+    text = tok.apply_chat_template(msgs, tokenize=False, add_generation_prompt=True)
+    return tok(text, add_special_tokens=False).input_ids
 
 def main():
     ap = argparse.ArgumentParser()
