@@ -110,32 +110,44 @@ print("WROTE fig6_cross_family.png")
 for lab, r, n, ci in reversed(stat): print(f"   {lab:24s} rho={r:+.2f} [{ci[0]:+.2f},{ci[1]:+.2f}] n={n}")
 
 # ---- Figure 7: mechanism (MATH-500 holds vs GSM8K scrambles) --------------
-fig, axes = plt.subplots(1, 2, figsize=(13.5, 5.7))
-for ax, lab, note in [(axes[0], "MATH-500", "holds: better models predict the reference better"),
-                      (axes[1], "GSM8K", "scrambles: each family sits at its own TFA offset")]:
+GEN = {"Qwen2.5", "Mistral", "Phi", "OLMo"}   # general families with real size ladders
+ACOL = {"Qwen2.5": "#1a1a1a", "Mistral": "#C44E52", "Phi": "#4C72B0", "OLMo": "#2f8f4e"}
+# four datasets spanning the boundary, strong-hold -> hold -> weak -> break
+PANELS = [("Putnam-AXIOM", "strongest hold"), ("MATH-500", "holds"),
+          ("MATH (full)", "fades (near-saturated)"), ("GSM8K", "breaks (saturated)")]
+fig, axes = plt.subplots(2, 2, figsize=(12.6, 9.4))
+for ax, (lab, note) in zip(axes.ravel(), PANELS):
     pm = permodel[lab]
     byfam = collections.defaultdict(list)
-    for m, v in pm.items(): byfam[v["fam"]].append((size(m), v["tfa"], v["acc"]))
+    for m, v in pm.items():
+        if v["fam"] in GEN: byfam[v["fam"]].append((size(m), v["tfa"], v["acc"]))
     r = rho(pm)
+    at = np.array([v["tfa"] for v in pm.values()]); aa = np.array([v["acc"] for v in pm.values()])
+    b = np.polyfit(at, aa, 1); xr = np.linspace(at.min(), at.max(), 2)
+    ax.plot(xr, np.polyval(b, xr), color="#cccccc", lw=1.6, ls=":", zorder=1)   # overall trend (sign of rho)
     for f, pts in sorted(byfam.items()):
-        pts = sorted(pts); c = COL.get(f, "#333")
-        xs = [p[1] for p in pts]; yv = [p[2] for p in pts]
-        if len(pts) >= 2:
-            ax.plot(xs, yv, "-o", color=c, ms=7, lw=2.0, label=f, zorder=3)
-            ax.annotate(f, (xs[-1], yv[-1]), fontsize=8.5, color=c, fontweight="bold",
-                        xytext=(4, 4), textcoords="offset points")
-        else:
-            ax.scatter(xs, yv, color=c, marker="*", s=300, edgecolors="black", linewidths=0.6, zorder=4)
-            ax.annotate(f.replace("2.5", ""), (xs[0], yv[0]), fontsize=7.5, color=c,
-                        xytext=(5, -10), textcoords="offset points")
-    ax.set_title(f"{lab}   cross-family ρ = {r:+.2f}\n{note}", fontsize=11.5)
-    ax.set_xlabel("mean TFA on the gold reference", fontsize=11)
-    ax.set_ylabel("accuracy", fontsize=11)
+        pts = sorted(pts); c = ACOL.get(f, "#333")
+        (x0, y0), (x1, y1) = (pts[0][1], pts[0][2]), (pts[-1][1], pts[-1][2])
+        ax.annotate("", xy=(x1, y1), xytext=(x0, y0),
+                    arrowprops=dict(arrowstyle="-|>,head_width=0.45,head_length=0.9", color=c, lw=3.2,
+                                    shrinkA=0, shrinkB=0), zorder=3)
+        ax.scatter([x0], [y0], color=c, s=38, zorder=4)                 # tail = smallest model
+        ax.annotate(f, ((x0 + x1) / 2, (y0 + y1) / 2), fontsize=9.5, color=c, fontweight="bold",
+                    xytext=(7, -1), textcoords="offset points", zorder=5)
+    # annotate-arrows do not autoscale, so set limits from the family points explicitly (heads included)
+    gx = [p[1] for pts in byfam.values() for p in pts]; gy = [p[2] for pts in byfam.values() for p in pts]
+    mx = (max(gx) - min(gx)) * 0.12 + 1e-3; my = (max(gy) - min(gy)) * 0.12 + 1e-3
+    ax.set_xlim(min(gx) - mx, max(gx) + mx * 2.5); ax.set_ylim(min(gy) - my, max(gy) + my)
+    ax.set_title(f"{lab}    cross-family ρ = {r:+.2f}   ({note})", fontsize=11)
+    ax.set_xlabel("mean TFA on the gold reference", fontsize=10)
+    ax.set_ylabel("accuracy", fontsize=10)
     ax.grid(alpha=0.3)
-fig.suptitle("Why ranking holds on hard math and breaks on saturated math. Each line is one family's size ladder "
-             "(small to large model).\nOn MATH stronger models predict the gold better, so TFA tracks accuracy. On "
-             "GSM8K the reference is short and stylized: families separate by style and Phi even inverts.",
-             fontsize=11.5, y=1.02)
+fig.suptitle("Why ranking holds on hard math and fades to broken as accuracy saturates. Each arrow is one family's "
+             "size ladder,\ntail at its smallest model, head at its largest. On hard data (Putnam, MATH) the arrows "
+             "point up-right, so a bigger, better model\nhas higher TFA and the ranking holds; as accuracy saturates "
+             "(MATH-full, GSM8K) the arrows flatten, scatter, and Phi inverts. Dotted line is the overall trend; "
+             "math-specialized models are omitted here (see Figure 6).",
+             fontsize=10.8, y=1.01)
 fig.tight_layout()
 fig.savefig(f"{OUT}/fig7_mechanism.png", dpi=150, bbox_inches="tight"); plt.close(fig)
 print("WROTE fig7_mechanism.png")
