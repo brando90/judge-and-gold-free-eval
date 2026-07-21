@@ -16,16 +16,16 @@ We evaluate the Qwen2.5 instruct ladder (0.5B, 1.5B, 3B, 7B, 14B) on six dataset
 
 Our central question is whether TFA tracks judged quality *beyond* simply being correct. Correct answers score higher on both TFA and the judge, so a raw correlation is confounded. We therefore report the **partial Spearman correlation ρ(TFA, judge) controlling for correctness** (within the correct and incorrect solutions separately, does higher TFA mean a better-judged solution?), with 95% bootstrap confidence intervals, and we repeat every analysis controlling for solution length.
 
-| dataset | n | accuracy | TFA range | model-level ρ(TFA, judge) | item-level ρ(TFA, judge \| correct) |
-|---|---:|---:|:---:|:---:|:---:|
-| MATH-500 | 2500 | 0.60 | 0.76–0.82 | +0.90 | −0.01 [−0.05, +0.04] |
-| MATH-full | 2999 | 0.77 | 0.75–0.80 | +0.60 | +0.02 [−0.02, +0.05] |
-| GSM8K | 2500 | 0.75 | 0.81–0.84 | +0.90 | +0.12 [+0.08, +0.16] |
-| GSM8K-Platinum | 2500 | 0.78 | 0.81–0.84 | +0.70 | +0.06 [+0.02, +0.10] |
-| Putnam-AXIOM | 1180 | 0.10 | 0.70–0.77 | +1.00 | **+0.22 [+0.16, +0.27]** |
-| Putnam-Variations | 1325 | 0.12 | 0.68–0.76 | +1.00 | +0.15 [+0.09, +0.20] |
+| dataset | n | accuracy | TFA range | model-level ρ(TFA, accuracy) | model-level ρ(TFA, judge) | item-level ρ(TFA, judge \| correct) |
+|---|---:|---:|:---:|:---:|:---:|:---:|
+| MATH-500 | 2500 | 0.60 | 0.76–0.82 | +0.90 | +0.90 | −0.01 [−0.05, +0.04] |
+| MATH-full | 2999 | 0.77 | 0.75–0.80 | +0.60 | +0.60 | +0.02 [−0.02, +0.05] |
+| GSM8K | 2500 | 0.75 | 0.81–0.84 | +0.70 | +0.90 | +0.12 [+0.08, +0.16] |
+| GSM8K-Platinum | 2500 | 0.78 | 0.81–0.84 | +0.60 | +0.70 | +0.06 [+0.02, +0.10] |
+| Putnam-AXIOM | 1180 | 0.10 | 0.70–0.77 | +1.00 | +1.00 | **+0.22 [+0.16, +0.27]** |
+| Putnam-Variations | 1325 | 0.12 | 0.68–0.76 | +0.90 | +1.00 | +0.15 [+0.09, +0.20] |
 
-*All rows use the same five-model ladder. A 32B model was also run on MATH-500 and dropped here so the TFA ranges and model-level correlations are comparable across datasets.*
+*All rows use the same five-model Qwen2.5 ladder, Spearman correlation. A 32B model was also run on MATH-500 and dropped here so the TFA ranges and model-level correlations are comparable across datasets. Accuracy and judge correlations agree closely at the model level; where they differ, judge is higher on the easy sets (GSM8K, Platinum) where accuracy is near-saturated. A full breakdown across model families and correlation metrics (Pearson, Spearman, Kendall, ICC) is in the appendix.*
 
 ## What we found
 
