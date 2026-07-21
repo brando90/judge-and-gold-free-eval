@@ -81,6 +81,17 @@ def report(name, P, target="acc"):
         ci = {k: boot_ci(tfa[mask], tgt[mask], (lambda a, b, kk=k: allcorr(a, b)[kk])) for k in c}
         print(f"  {label:13s} pearson={c['pearson']:+.2f}[{ci['pearson'][0]:+.2f},{ci['pearson'][1]:+.2f}] "
               f"spearman={c['spearman']:+.2f} kendall={c['kendall']:+.2f} icc={c['icc']:+.2f}")
+    # within-family correlations: does TFA rank models INSIDE each family (>=3 models)?
+    byfam = collections.defaultdict(list)
+    for m in names: byfam[P[m]["fam"]].append(m)
+    wf = {f: ms for f, ms in byfam.items() if len(ms) >= 3}
+    if wf:
+        print("  within-family rho(TFA, %s) [ladders with >=3 models]:" % target)
+        for f, ms in sorted(wf.items()):
+            ft = np.array([P[m]["tfa"] for m in ms]); fg = np.array([P[m][target] for m in ms])
+            c = allcorr(ft, fg)
+            print(f"    {f:14s} (n={len(ms)}): pearson={c['pearson']:+.2f} spearman={c['spearman']:+.2f} "
+                  f"kendall={c['kendall']:+.2f}")
     # outliers: standardized residual of target ~ tfa (OLS). |z|>1.5 flagged.
     b = np.polyfit(tfa, tgt, 1); resid = tgt - np.polyval(b, tfa); rz = resid / (resid.std() + 1e-12)
     THR = 1.5
@@ -114,10 +125,14 @@ if __name__ == "__main__":
     ap.add_argument("--anchor", action="append", default=[], help="name:glob1,glob2:dskey")
     ap.add_argument("--target", default="acc", choices=["acc", "judge"])
     args = ap.parse_args()
+    A = "runs/all/{0}__*.jsonl"   # all-family cells live here
     DEFAULT = [
-        ("MATH-500", ["runs/math500/*.judged.jsonl", "runs/d2/math500__*.judged.jsonl", "runs/wsv/math500__*.jsonl"], "math500"),
-        ("GSM8K", ["runs/gsm8k/*.judged.jsonl", "runs/d2/gsm8k__*.judged.jsonl"], "gsm8k"),
-        ("Putnam", ["runs/putnam/*.judged.jsonl", "runs/d2/putnam-axiom__*.judged.jsonl", "runs/wsv/putnam-axiom__*.jsonl"], "putnam"),
+        ("MATH-500", ["runs/math500/*.judged.jsonl", "runs/d2/math500__*.judged.jsonl", "runs/wsv/math500__*.jsonl", A.format("math500")], "math500"),
+        ("MATH-full", ["runs/mathfull/*.judged.jsonl", A.format("math-full")], "math500"),
+        ("GSM8K", ["runs/gsm8k/*.judged.jsonl", "runs/d2/gsm8k__*.judged.jsonl", A.format("gsm8k")], "gsm8k"),
+        ("GSM8K-Platinum", ["runs/gsm8kp/*.judged.jsonl", A.format("gsm8k-platinum")], "gsm8k"),
+        ("Putnam", ["runs/putnam/*.judged.jsonl", "runs/d2/putnam-axiom__*.judged.jsonl", "runs/wsv/putnam-axiom__*.jsonl", A.format("putnam-axiom")], "putnam"),
+        ("Putnam-Variations", ["runs/putnamvar/*.judged.jsonl", A.format("putnam-axiom-var")], "putnam"),
     ]
     anchors = DEFAULT if not args.anchor else [(a.split(":")[0], a.split(":")[1].split(","), a.split(":")[2]) for a in args.anchor]
     for name, globs, dk in anchors:
