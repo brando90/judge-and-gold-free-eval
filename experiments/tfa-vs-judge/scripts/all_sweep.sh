@@ -27,7 +27,12 @@ runworker () {   # $1=gpu, then model names
       CUDA_VISIBLE_DEVICES="$gpu" timeout 2400 .venv/bin/python scripts/run_all.py \
         --model "$model" --dataset "$d" --limit "$lim" --no-judge --save-tokens "$TOK" --out runs/all \
         >> "logs/all_${lg}_${d}.log" 2>&1
-      echo "[$(date +%H:%M:%S)] g$gpu END   $model $d rc=$?" >> logs/all_progress.log
+      rc=$?
+      # os._exit(0) in run_all leaves vLLM EngineCore orphaned holding this GPU; kill it so the next
+      # cell can initialize (GPUs 1-3 are ours; GPU4 is untouched).
+      nvidia-smi -i "$gpu" --query-compute-apps=pid --format=csv,noheader 2>/dev/null | xargs -r kill -9 2>/dev/null
+      sleep 4
+      echo "[$(date +%H:%M:%S)] g$gpu END   $model $d rc=$rc" >> logs/all_progress.log
     done
   done
   echo "[$(date +%H:%M:%S)] g$gpu WORKER DONE" >> logs/all_progress.log
