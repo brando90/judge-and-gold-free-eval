@@ -81,8 +81,9 @@ slide("Q1 &middot; step 3 &middot; the boundary","Strong on hard math, weak on c
 
 # 9 reconciliation
 slide("Q1 &middot; step 3 &middot; reconciliation","This reconciles the original TFA paper's 0.66",
- '<p>Putnam-AXIOM reported TFA-vs-accuracy at <b>0.66 (MATH)</b> and <b>0.52 (Putnam)</b>, below our within-family +0.9 to +1.0. Not a disagreement: their numbers fall out once you match <b>the metric</b> (Kendall tau, honest for a handful of models) and <b>the model set</b> (the math-specialized outliers). Shown across four correlation measures.</p>'+
- fig("f7","Figure 7. Our correlation under four metrics x two model sets vs the reported 0.66 / 0.52.")+
+ '<p>Putnam-AXIOM reported TFA-vs-accuracy at <b>0.66 (MATH)</b> and <b>0.52 (Putnam)</b>, below our within-family +0.9 to +1.0. Not a disagreement: their numbers fall out once you match <b>the metric</b> (Kendall tau, the honest choice for a handful of models) and <b>the model set</b>, shown here across all four correlation measures.</p>'+
+ '<p style="font-size:.98rem"><b class="r">All models</b> = the full set <b>including the math-specialized outliers</b> (Qwen-Math, DeepSeek-Math, Mathstral), which reproduce the gold style beyond their solving skill and drag the pooled number down toward their 0.66 / 0.52. <b class="g">General families only</b> = the general-purpose families (Qwen, Mistral, Phi, OLMo) with those outliers dropped, which recovers +0.86 / +0.88. Their headline 0.66 is simply our Kendall value on the full set.</p>'+
+ fig("f7","Figure 7. Our correlation under four metrics x two model sets (all models vs general families only) against the reported 0.66 / 0.52.")+
  '<div class="take">Model-level reproduces exactly; their untested item-level claim (next) does not.</div>')
 
 # 10 agents
