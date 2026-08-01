@@ -1,70 +1,36 @@
-# Next research directions: which one should we take?
+# Judge-free evaluation: which question is worth going after?
 
-Our TFA study is essentially done. A cheap, reference-anchored signal **ranks
-models well but cannot grade an individual solution**, and we can prove why: 89
-to 96 percent of the per-item score is reference nuisance, not competence.
+Our TFA study is essentially done. A cheap, reference-anchored signal ranks
+models well but cannot grade an individual solution, and we can prove why: 89 to
+96 percent of the per-item score is reference nuisance, not competence. The
+signal tracks agreement with the reference's style, not reasoning quality.
 
-Five directions open from there, listed in no particular order. My own read is
-at the very bottom, kept separate on purpose.
+Five questions follow from that. Each is a different bet on what the finding
+generalizes to. Listed in no particular order.
 
----
+### Is scalable oversight bounded by a scaling law?
 
-### The map: finish the reference-anchored picture, or prove the no-go
+Chart oversight reliability against solver capability, not accuracy at parity. In
+a solver-versus-overseer setup, whose method degrades slowest as the solver
+outgrows the overseer and is optimized against it? The output is a curve, not a
+single score.
 
-We ruled out single-reference TFA at the item level, but multi-reference,
-outcome-gated, and per-step variants are untested. We still do not know whether
-*any* reference-anchored signal can grade within the set of correct answers.
+### Do all cheap evaluators measure surface agreement, not quality?
 
-**First test:** outcome-gated multi-reference TFA on the datasets where
-single-reference failed. Either we recover a signal or we close the door
-formally. Reuses the existing TFA pipeline, so this is days, not weeks.
+Is the competence-versus-nuisance decomposition we found for TFA a universal
+property of automatic evaluation, LLM judges and similarity metrics included?
 
-### Certification: check an evaluator before we deploy it, without full ground truth
+### Is verifying quality fundamentally easier than generating it?
 
-Today we find out a judge is hackable only after it fails (a stray colon flips
-GPT-4o up to 35 percent of the time). There is no cheap pre-flight check.
+Or does the generation-versus-verification gap hold only for correctness, not
+for quality, as our item-level null already suggests?
 
-**First test:** run our nuisance decomposition on an LLM judge (quality vs
-length, style, position) from a small human-graded anchor set, and see whether
-the resulting nuisance fraction predicts where the judge gets gamed on
-JudgeBench. The decomposition machinery already exists.
+### Can an evaluator be trusted under optimization pressure?
 
-### Process value: a reference-free signal that grades agents and survives being optimized against
+Which evaluation signals survive being trained against, and can we predict in
+advance which ones get gamed?
 
-Our rollout process value grades solutions, but it needs a gold trace and costs
-roughly 100x TFA. Agentic tasks rarely have gold traces, and any reward signal
-gets gamed once you train against it.
+### Can quality be measured with no reference at all?
 
-**First test:** rollout value grounded in an environment's own success oracle on
-SWE-bench-style tasks, then optimize an agent against it and measure how much
-reward hacking shows up.
-
-### Robustness curves: do oversight signals degrade predictably as the solver gets stronger?
-
-Benchmarks score overseers at parity. Nobody measures how reliability bends as
-the capability gap and the optimization pressure grow, which is the thing that
-actually decides whether a method scales.
-
-**First test:** fix a task, sweep solver scale, plot judge and TFA reliability
-against the capability gap, and check whether the style-offset we already
-measured predicts the slope.
-
-### No oracle: is there any cheap signal where there is no checkable answer at all?
-
-Everything above has a checkable answer. Open-ended work (writing, research
-proposals, open agentic goals) may have no cheap floor beneath human grading or
-debate, and we have not tested it.
-
-**First test:** apply the nuisance decomposition to a subjective-grading dataset
-with human labels, and see whether quality separates from surface at all.
-
----
-
-### My read (last, on purpose)
-
-If it were my call I would open with **certification**. It is the cheapest, it
-reuses the decomposition we already built, and it becomes a concrete result in a
-couple of weeks, which then feeds the bigger swing in **robustness curves**.
-Robustness curves is the higher-ceiling paper but the larger commitment. **The
-map** is the safe finisher for the current work. I would treat **process value**
-and **no oracle** as follow-ons once one of the first two lands.
+Where no gold answer exists (open-ended writing, research, agents), is there any
+cheap signal that tracks quality, or is human judgment the irreducible floor?

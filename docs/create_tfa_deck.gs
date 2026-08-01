@@ -107,15 +107,14 @@ function createTFADeck() {
        'The positive bet: reference-free process value grounded in an environment success oracle, where no gold trace exists.',
        'Hard constraint: frontier API models expose no token log-probabilities, so TFA runs only on open weights.']},
 
-    {type:'menu', kick:'Path forward, the question menu', title:'Five directions to choose between',
-     sub:'Listed in no particular order. My read is last, on purpose.',
+    {type:'menu', kick:'Path forward, the questions', title:'Which question is worth going after?',
+     sub:'Each is a different bet on what our result generalizes to. In no particular order.',
      items:[
-       ['The map','Finish the reference-anchored picture, or prove the no-go: multi-reference, outcome-gated, per-step TFA. Reuses the pipeline, days not weeks.'],
-       ['Certification','Check an evaluator before we deploy it, without full ground truth: run our nuisance decomposition on an LLM judge and see where it gets gamed.'],
-       ['Process value','A reference-free signal that grades agents and survives being optimized against: rollout value grounded in an environment oracle, then measure reward hacking.'],
-       ['Robustness curves','Do oversight signals degrade predictably as the solver gets stronger? Plot reliability vs the capability gap; test whether our style-offset predicts the slope.'],
-       ['No oracle','Is there any cheap signal where there is no checkable answer at all? Apply the decomposition to a subjective-grading dataset with human labels.']],
-     read:'My read: open with Certification. Cheapest, reuses machinery we have, a result in a couple of weeks, and it feeds Robustness curves (higher ceiling, larger bet). The map is the safe finisher; process value and no oracle are follow-ons.'}
+       ['Is scalable oversight bounded by a scaling law?','Chart oversight reliability against solver capability, not accuracy at parity: whose curve degrades slowest as the solver outgrows the overseer and is optimized against it?'],
+       ['Do all cheap evaluators measure surface agreement, not quality?','Is the competence-versus-nuisance split we found for TFA universal, LLM judges and similarity metrics included?'],
+       ['Is verifying quality fundamentally easier than generating it?','Or does the generation-versus-verification gap hold only for correctness, not quality?'],
+       ['Can an evaluator be trusted under optimization pressure?','Which signals survive being trained against, and can we predict in advance which ones get gamed?'],
+       ['Can quality be measured with no reference at all?','Where no gold answer exists, is any cheap signal trustworthy, or is human judgment the floor?']]}
   ];
 
   // remove the default blank first slide once we have added our own
@@ -163,19 +162,21 @@ function renderMenu(slide, s, W, H, M, INK, MUT, ACC) {
   st_(slide.insertTextBox(s.kick.toUpperCase(), M, 20, W-2*M, 18), 10, true, ACC);
   st_(slide.insertTextBox(s.title, M, 38, W-2*M, 40), 22, true, INK);
   st_(slide.insertTextBox(s.sub, M, 78, W-2*M, 20), 11, false, MUT);
-  var gap = 20, colW = (W-2*M-gap)/2, left = M, right = M+colW+gap, top = 104, rowH = 74;
+  var gap = 20, colW = (W-2*M-gap)/2, left = M, right = M+colW+gap, top = 104, rowH = 92;
   s.items.forEach(function(it, i){
     var col = i < 3 ? left : right;
     var idx = i < 3 ? i : i-3;
     var y = top + idx*rowH;
-    st_(slide.insertTextBox(it[0], col, y, colW, 18), 13, true, ACC);
-    st_(slide.insertTextBox(it[1], col, y+18, colW, rowH-20), 9.5, false, INK);
+    st_(slide.insertTextBox(it[0], col, y, colW, 34), 12, true, ACC);
+    st_(slide.insertTextBox(it[1], col, y+34, colW, rowH-38), 9.5, false, INK);
   });
-  var ry = top + 2*rowH + 6;
-  var rb = slide.insertShape(SlidesApp.ShapeType.RECTANGLE, right, ry, colW, H-ry-16);
-  rb.getFill().setSolidFill(ACC, 0.08);
-  rb.getBorder().setTransparent();
-  st_setShape_(rb, s.read, 10, false, INK);
+  if (s.read) {
+    var ry = top + 2*rowH + 6;
+    var rb = slide.insertShape(SlidesApp.ShapeType.RECTANGLE, right, ry, colW, H-ry-16);
+    rb.getFill().setSolidFill(ACC, 0.08);
+    rb.getBorder().setTransparent();
+    st_setShape_(rb, s.read, 10, false, INK);
+  }
 }
 
 function st_(shape, size, bold, color) {

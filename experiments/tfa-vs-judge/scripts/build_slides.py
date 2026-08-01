@@ -174,18 +174,17 @@ S.append('''<section class="slide fwd"><div class="wrap"><div class="kick">Path 
    <div class="take" style="margin-top:12px">Our result is the map: a reference-anchored cheap signal is safe only
    within a family; elsewhere it rewards style. For frontier-API and agentic settings, go output-grounded and reference-free.</div></div></div></section>''')
 
-# 17 the neutral question menu (mirrors docs/research-questions-for-sanmi; detailed agenda moved to appendix)
-slide("Path forward &middot; the question menu","Five directions to choose between",
- '<p>These open up straight from the result above. Listed in <b>no particular order</b>, my own read is last, on purpose. Pick one and we go.</p>'+
+# 17 the questions (high-level research questions to choose between; detail moved to appendix)
+slide("Path forward &middot; the questions","Which question is worth going after?",
+ '<p>Each is a different bet on what our result generalizes to. Listed in <b>no particular order</b>.</p>'+
  '<div class="cols"><div>'+
- '<h3 class="g">The map</h3><p>Finish the reference-anchored picture, or prove the no-go: multi-reference, outcome-gated, and per-step TFA. Reuses the existing pipeline, so days not weeks.</p>'+
- '<h3 class="p">Certification</h3><p>Check an evaluator before we deploy it, without full ground truth: run our nuisance decomposition on an LLM judge and see whether it predicts where the judge gets gamed.</p>'+
- '<h3 class="a">Process value</h3><p>A reference-free signal that grades agents and survives being optimized against: rollout value grounded in an environment oracle, then measure the reward hacking.</p></div>'+
+ '<h3 class="g">Is scalable oversight bounded by a scaling law?</h3><p>Chart oversight reliability against <b>solver capability</b>, not accuracy at parity: whose curve degrades slowest as the solver outgrows the overseer and is optimized against it?</p>'+
+ '<h3 class="p">Do all cheap evaluators measure surface agreement, not quality?</h3><p>Is the competence-versus-nuisance split we found for TFA universal, LLM judges and similarity metrics included?</p>'+
+ '<h3 class="a">Is verifying quality fundamentally easier than generating it?</h3><p>Or does the generation-verification gap hold only for correctness, not quality, as our item-level null already suggests?</p></div>'+
  '<div>'+
- '<h3>Robustness curves</h3><p>Do oversight signals degrade predictably as the solver gets stronger? Sweep solver scale, plot reliability against the capability gap, and test whether our style-offset predicts the slope.</p>'+
- '<h3>No oracle</h3><p>Is there any cheap signal where there is no checkable answer at all? Apply the decomposition to a subjective-grading dataset with human labels.</p>'+
- '<div class="def" style="font-size:.94rem;margin-top:10px"><b>My read, last on purpose.</b> Open with <b>certification</b>: cheapest, reuses machinery we already have, a concrete result in a couple of weeks, and it feeds <b>robustness curves</b>, the higher ceiling but the larger commitment. <b>The map</b> is the safe finisher; process value and no oracle are follow-ons.</div></div></div>'+
- '<div class="take">Full one-pager: docs/research-questions-for-sanmi. The detailed earlier framing (gap, RQs, the bet, why now) is in the appendix.</div>')
+ '<h3>Can an evaluator be trusted under optimization pressure?</h3><p>Which evaluation signals survive being trained against, and can we predict in advance which ones get gamed?</p>'+
+ '<h3>Can quality be measured with no reference at all?</h3><p>Where no gold answer exists (open-ended writing, research, agents), is there any cheap signal that tracks quality, or is human judgment the floor?</p></div></div>'+
+ '<div class="take">The choice: which of these is worth a year. The earlier detailed framing is in the appendix.</div>')
 
 # 21 appendix: judge robustness
 slide("Appendix &middot; robustness to the judge","Not one judge's opinion",

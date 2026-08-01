@@ -1,4 +1,4 @@
-<title>Next research directions: which one should we take?</title>
+<title>Judge-free evaluation: which question is worth going after?</title>
 <style>
 :root{
   --bg:#FBFAF7;--panel:#FFFFFF;--ink:#1C1F26;--mut:#5C6470;--line:#E7E3DB;
@@ -35,92 +35,58 @@ h1{font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;font
   letter-spacing:.08em;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);
   border:1px solid var(--accent-line);border-radius:6px;padding:3px 9px;margin-bottom:11px}
 .q h2{font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;font-weight:700;
-  font-size:1.24rem;line-height:1.3;margin:0 0 .5em;letter-spacing:-.005em;text-wrap:balance}
-.why{font-size:1rem;margin:0 0 .8em;max-width:66ch}
-.test{font-size:.95rem;color:var(--mut);border-left:2px solid var(--accent);padding-left:13px;max-width:66ch}
-.test .lab{font-family:ui-monospace,Menlo,monospace;font-size:.68rem;letter-spacing:.09em;text-transform:uppercase;
-  color:var(--accent);font-weight:700;display:block;margin-bottom:2px}
-.read{background:var(--accent-soft);border:1px solid var(--accent-line);border-radius:14px;padding:20px 22px;margin-top:30px}
-.read .eyebrow{margin-bottom:9px}
-.read p{margin:0;font-size:1rem;max-width:66ch}
-.read b{font-weight:700}
+  font-size:1.3rem;line-height:1.28;margin:0 0 .45em;letter-spacing:-.005em;text-wrap:balance}
+.why{font-size:1rem;margin:0;max-width:66ch}
 .toggle{position:fixed;top:14px;right:16px;background:var(--panel);border:1px solid var(--line);color:var(--mut);
   border-radius:20px;padding:5px 12px;font-size:.76rem;cursor:pointer;box-shadow:var(--shadow)}
 </style>
 <button class="toggle" onclick="var r=document.documentElement,c=r.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');r.setAttribute('data-theme',c==='dark'?'light':'dark')">◐ theme</button>
 <div class="page">
   <div class="eyebrow">Koyejo group &middot; judge-free evaluation</div>
-  <h1>Next research directions: which one should we take?</h1>
-  <p class="lede">The TFA study is essentially done. A cheap, reference-anchored signal <b>ranks models
-  well but cannot grade an individual solution</b>, and we can prove why: 89 to 96 percent of the
-  per-item score is reference nuisance, not competence.</p>
-  <p class="note">Five directions open from there, in no particular order. My own read is at the bottom, kept separate on purpose.</p>
+  <h1>Which question is worth going after?</h1>
+  <p class="lede">The TFA study is essentially done. A cheap, reference-anchored signal <b>ranks models well
+  but cannot grade an individual solution</b>, and we can prove why: 89 to 96 percent of the per-item
+  score is reference nuisance, not competence. The signal tracks agreement with the reference's
+  <b>style</b>, not reasoning <b>quality</b>.</p>
+  <p class="note">Five questions follow. Each is a different bet on what the finding generalizes to. In no particular order.</p>
   <hr class="rule">
   <div class="cards">
 
     <div class="q">
-      <span class="chip">the map</span>
-      <h2>Finish the reference-anchored picture, or prove the no-go</h2>
-      <p class="why">We ruled out single-reference TFA at the item level, but multi-reference,
-      outcome-gated, and per-step variants are untested. We still do not know whether <i>any</i>
-      reference-anchored signal can grade within the set of correct answers.</p>
-      <p class="test"><span class="lab">First test</span>Outcome-gated multi-reference TFA on the
-      datasets where single-reference failed. Either we recover a signal or we close the door
-      formally. Reuses the existing pipeline, so this is days, not weeks.</p>
+      <span class="chip">scaling law</span>
+      <h2>Is scalable oversight bounded by a scaling law?</h2>
+      <p class="why">Chart oversight reliability against solver capability, not accuracy at parity. In a
+      solver-versus-overseer setup, whose method degrades slowest as the solver outgrows the overseer
+      and is optimized against it? The output is a curve, not a single score.</p>
     </div>
 
     <div class="q">
-      <span class="chip">certification</span>
-      <h2>Check an evaluator before we deploy it, without full ground truth</h2>
-      <p class="why">Today we find out a judge is hackable only after it fails (a stray colon flips
-      GPT-4o up to 35 percent of the time). There is no cheap pre-flight check.</p>
-      <p class="test"><span class="lab">First test</span>Run our nuisance decomposition on an LLM
-      judge (quality vs length, style, position) from a small human-graded anchor set, and see
-      whether the nuisance fraction predicts where the judge gets gamed on JudgeBench. The
-      machinery already exists.</p>
+      <span class="chip">generality</span>
+      <h2>Do all cheap evaluators measure surface agreement, not quality?</h2>
+      <p class="why">Is the competence-versus-nuisance decomposition we found for TFA a universal property
+      of automatic evaluation, LLM judges and similarity metrics included?</p>
     </div>
 
     <div class="q">
-      <span class="chip">process value</span>
-      <h2>A reference-free signal that grades agents and survives being optimized against</h2>
-      <p class="why">Our rollout process value grades solutions, but it needs a gold trace and costs
-      roughly 100x TFA. Agentic tasks rarely have gold traces, and any reward signal gets gamed once
-      you train against it.</p>
-      <p class="test"><span class="lab">First test</span>Rollout value grounded in an environment's
-      own success oracle on SWE-bench-style tasks, then optimize an agent against it and measure how
-      much reward hacking shows up.</p>
+      <span class="chip">generate vs verify</span>
+      <h2>Is verifying quality fundamentally easier than generating it?</h2>
+      <p class="why">Or does the generation-versus-verification gap hold only for correctness, not for
+      quality, as our item-level null already suggests?</p>
     </div>
 
     <div class="q">
-      <span class="chip">robustness curves</span>
-      <h2>Do oversight signals degrade predictably as the solver gets stronger?</h2>
-      <p class="why">Benchmarks score overseers at parity. Nobody measures how reliability bends as
-      the capability gap and the optimization pressure grow, which is the thing that actually decides
-      whether a method scales.</p>
-      <p class="test"><span class="lab">First test</span>Fix a task, sweep solver scale, plot judge
-      and TFA reliability against the capability gap, and check whether the style-offset we already
-      measured predicts the slope.</p>
+      <span class="chip">optimization</span>
+      <h2>Can an evaluator be trusted under optimization pressure?</h2>
+      <p class="why">Which evaluation signals survive being trained against, and can we predict in advance
+      which ones get gamed?</p>
     </div>
 
     <div class="q">
-      <span class="chip">no oracle</span>
-      <h2>Is there any cheap signal where there is no checkable answer at all?</h2>
-      <p class="why">Everything above has a checkable answer. Open-ended work (writing, research
-      proposals, open agentic goals) may have no cheap floor beneath human grading or debate, and we
-      have not tested it.</p>
-      <p class="test"><span class="lab">First test</span>Apply the nuisance decomposition to a
-      subjective-grading dataset with human labels, and see whether quality separates from surface
-      at all.</p>
+      <span class="chip">no reference</span>
+      <h2>Can quality be measured with no reference at all?</h2>
+      <p class="why">Where no gold answer exists (open-ended writing, research, agents), is there any cheap
+      signal that tracks quality, or is human judgment the irreducible floor?</p>
     </div>
 
-  </div>
-
-  <div class="read">
-    <div class="eyebrow">My read (last, on purpose)</div>
-    <p>If it were my call I would open with <b>certification</b>. It is the cheapest, it reuses the
-    decomposition we already built, and it becomes a concrete result in a couple of weeks, which then
-    feeds the bigger swing in <b>robustness curves</b>. Robustness curves is the higher-ceiling paper
-    but the larger commitment. <b>The map</b> is the safe finisher for the current work. I would
-    treat <b>process value</b> and <b>no oracle</b> as follow-ons once one of the first two lands.</p>
   </div>
 </div>
