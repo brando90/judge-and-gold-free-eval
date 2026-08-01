@@ -19,7 +19,7 @@ S.append('''<section class="slide title"><div class="wrap">
  <div class="kick">Stanford · Koyejo Group · judge-free evaluation</div>
  <h1>When can a judge-free signal<br><span class="hl">grade reasoning?</span></h1>
  <p class="lede">Teacher-Forced Accuracy (TFA), tested by progressive generalization: within a family, across
- families, across judges, across datasets, and into agents, then flipped from ranking models to grading solutions.</p>
+ families, across datasets, and into agents, then flipped from ranking models to grading solutions.</p>
  <div class="meta">17 models · 7 families · 8 datasets (math · olympiad · code) · 2 frontier judges · + rollout process value · + agentic</div>
  <div class="hint">scroll or press → to advance</div></div></section>''')
 
@@ -39,8 +39,9 @@ slide("How we test it","Two questions, tested by progressive generalization",
  '''<div class="cols"><div>
    <h3 class="g">Q1 &middot; can it rank models?</h3>
    <p>Compare mean TFA to <b>accuracy</b> (judge-free), then push it outward:</p>
-   <ol><li>within one model family (Qwen)</li><li>across families</li><li>across judges</li>
-   <li>across datasets (easy &rarr; hard)</li><li>into agents</li></ol></div>
+   <ol><li>within one model family (Qwen)</li><li>across families</li>
+   <li>across datasets (easy &rarr; hard)</li><li>into agents</li></ol>
+   <p style="font-size:.85rem;color:var(--mut);margin-top:6px">All against <b>accuracy</b> (judge-free); robustness to the choice of judge is in the appendix.</p></div>
    <div><h3 class="p">Q2 &middot; can it grade one solution?</h3>
    <p>Then the harder test: does TFA tell a good solution from a bad one? We show it <b>fails</b>, prove
    <b>why</b>, and show <b>everything we tried</b> to fix it.</p>
@@ -55,41 +56,37 @@ slide("Q1 &middot; step 1 &middot; within a family","TFA tracks accuracy within 
 
 # 5 beyond family
 slide("Q1 &middot; step 2 &middot; beyond one family","It holds across families, on hard math",
- '''<p>Add Mistral, Phi, OLMo, and math-specialized models. On hard math every family's size-ladder points
- <b class="g">up and to the right</b>: a bigger, better model predicts the gold better, so TFA-vs-accuracy holds
- <b>across families</b>, not just within Qwen. The saturated datasets are where the arrows start to scatter.</p>'''+
- fig("f6","Figure 6. Family size-ladders: aligned on hard math, scattering as accuracy saturates.")+
- '<div class="take">Not a Qwen quirk. But is it a quirk of our judge, or of easy data?</div>')
-
-# 6 beyond judge
-slide("Q1 &middot; step 3 &middot; beyond one judge","The conclusions are not an artifact of one judge",
- chips(("0.75-0.94","inter-judge agreement (ρ)"),("2 families","gpt-5.2 &amp; Claude Opus 4.8"))+
- '<p>Every number so far used one gpt-5.2 judge, which invites a circularity charge. We re-graded the three anchor datasets with a <b>second frontier judge from a different family</b> (Opus 4.8), same rubric. Same picture: MATH null stays null, the small GSM8K and Putnam signals replicate.</p>'+
- fig("judge","Judge generalization: item-level partial ρ under two judges, same pattern under both.")+
- '<div class="take">The signal is a property of TFA, not of the judge we appointed as ground truth.</div>')
+ '''<p>Add Mistral, Phi, OLMo, and math-specialized models. On hard math (Putnam, MATH) every family's
+ size-ladder points <b class="g">up and to the right</b>: a bigger, better model predicts the gold better, so it
+ holds <b>across families</b>, not just Qwen. On easy, saturated data (GSM8K) some families <b class="r">invert</b>:
+ Phi's and OLMo's stronger models solve more but answer in a fuller, labeled style than the short, terse gold, so
+ they predict it <b>worse</b> and the arrow points down. There the gold is so stylized that family <b>style</b>,
+ not skill, drives the score.</p>'''+
+ fig("f6","Figure 6. Family size-ladders: aligned on hard math, scattering and inverting as accuracy saturates.")+
+ '<div class="take">Whether it holds or inverts depends on the data, which points straight to saturation, next.</div>')
 
 # 7 saturation proof
-slide("Q1 &middot; step 4 &middot; beyond one dataset","Why it saturates on easy data and holds on hard",
+slide("Q1 &middot; step 3 &middot; beyond one dataset","Why it saturates on easy data and holds on hard",
  chips(("~0.03","TFA range on GSM8K (easy)"),("~0.08","TFA range on Putnam (hard)"))+
  '<p>The proof is saturation. On easy, near-ceiling data the whole ladder is squeezed into a tiny TFA band, so there is no room to separate models; on hard data the range widens. TFA\'s discriminating power is a direct function of how far the reference pushes models from ceiling.</p>'+
  fig("f3","Figure 3. TFA compresses on easy data and spreads out on hard data.")+
  '<div class="take">So on saturated data a family style-offset can dominate, and the ranking can even invert.</div>')
 
 # 8 boundary
-slide("Q1 &middot; step 4 &middot; the boundary","Strong on hard math, weak on code, <span class='a'>negative</span> on saturated GSM8K",
+slide("Q1 &middot; step 3 &middot; the boundary","Strong on hard math, weak on code, <span class='a'>negative</span> on saturated GSM8K",
  chips(("+0.86","Omni-MATH"),("+0.60","Putnam"),("+0.43","code"),("&minus;0.37","GSM8K"))+
  '<p>Pooling all families across all eight datasets gives one boundary map. It holds on hard, constrained references, weakens on code (many valid programs), and <b class="a">inverts</b> on saturated grade-school math.</p>'+
  fig("f5","Figure 5. Cross-family boundary: strong on hard/olympiad math, weak on code, negative on saturated GSM8K.")+
  '<div class="take">One rule: TFA ranks by quality only when the reference is a long, constrained trace and models share its style.</div>')
 
 # 9 reconciliation
-slide("Q1 &middot; step 4 &middot; reconciliation","This reconciles the original TFA paper's 0.66",
+slide("Q1 &middot; step 3 &middot; reconciliation","This reconciles the original TFA paper's 0.66",
  '<p>Putnam-AXIOM reported TFA-vs-accuracy at <b>0.66 (MATH)</b> and <b>0.52 (Putnam)</b>, below our within-family +0.9 to +1.0. Not a disagreement: their numbers fall out once you match <b>the metric</b> (Kendall tau, honest for a handful of models) and <b>the model set</b> (the math-specialized outliers). Shown across four correlation measures.</p>'+
  fig("f7","Figure 7. Our correlation under four metrics x two model sets vs the reported 0.66 / 0.52.")+
  '<div class="take">Model-level reproduces exactly; their untested item-level claim (next) does not.</div>')
 
 # 10 agents
-slide("Q1 &middot; step 5 &middot; to agents","The whole boundary reaches coding agents",
+slide("Q1 &middot; step 4 &middot; to agents","The whole boundary reaches coding agents",
  chips(("+1.00","within Qwen-Coder (by scale)"),("+0.00","across four coder families"))+
  '<p>On SWE-bench, teacher-forcing the human gold patch ranks one coder family\'s sizes by skill <b class="g">perfectly</b>, but says <b class="r">nothing</b> across families. CodeLlama reproduces the gold-patch style best while writing some of the worst code, the repository-patch version of the GSM8K offset.</p>'+
  fig("f9","Figure 9. SWE-bench patch-TFA: within-family +1.00, cross-family +0.00, CodeLlama the high-TFA/low-skill outlier.")+
@@ -109,11 +106,27 @@ slide("Q2 &middot; why, with proof","Because per-item TFA is 89-96% reference nu
  fig("f10","Figure 10. Variance decomposition: per-item TFA is 89-96% a model-invariant reference nuisance.")+
  '<div class="take">This predicts no reweighting of TFA can recover the signal. So we tried them all.</div>')
 
+# 13a the fixes explained
+slide("Q2 &middot; what we tried &middot; the fixes","Seven cheap fixes, each removing one nuisance",
+ '<p>If the per-item quality signal is merely <i>buried</i> under the reference nuisance, then reweighting or contrasting TFA should dig it out. Each fix targets one coordinate of that nuisance.</p>'+
+ '''<div class="cols"><div>
+   <p><b class="a">content-token TFA</b> &mdash; mask formatting and LaTeX glue; score only content tokens.</p>
+   <p><b class="a">IDF-weighted TFA</b> &mdash; up-weight corpus-rare gold tokens, down-weight boilerplate.</p>
+   <p><b class="a">surprisal-weighted TFA</b> &mdash; up-weight surprising, non-formulaic gold tokens.</p>
+   <p><b class="a">TFA-logprob / BPC</b> &mdash; a soft gold-token log-probability instead of hard argmax match.</p></div>
+   <div>
+   <p><b class="p">step-shuffle contrast</b> &mdash; TFA(gold) minus TFA(gold with its reasoning lines reordered).</p>
+   <p><b class="p">answer-swap contrast</b> &mdash; TFA(gold) minus TFA(gold with a wrong final answer).</p>
+   <p><b class="g">multi-reference TFA</b> &mdash; the max TFA over several verified gold solutions.</p>
+   <p style="color:var(--mut);font-size:.92rem">Each peels off one coordinate: glue, frequency, style, path order, or length.</p></div></div>'''+
+ '<div class="take">If the signal were only masked, one of these should uncover it.</div>')
+
 # 13 variants
-slide("Q2 &middot; what we tried","Every cheap fix fails",
- '<p>Content-token masking, IDF and surprisal reweighting, soft log-prob/BPC, step-shuffle and answer-swap contrasts. Each peels off one nuisance coordinate; the residual stays uncorrelated with quality. The answer-swap contrast looked like +0.35 until we controlled for length, then we <b>retracted</b> it, a lesson now a rule: no item-level win is believed until it survives length and difficulty controls.</p>'+
- fig("var","TFA variants: item-level ρ for each cheap fix, none recovers a per-item quality signal.")+
- '<div class="take">The signal is <i>absent</i>, not masked. TFA cannot grade a solution.</div>')
+slide("Q2 &middot; what we tried &middot; the results","Every cheap fix fails",
+ '<p>We ran all seven. <b>None recovers a per-item quality signal:</b> the correlations cluster at zero, and the reweighting variants come out slightly <b>negative</b> (the surprising, hard-to-predict tokens are exactly the ones good models also miss). Structurally, each fix strips just one coordinate of the nuisance and the leftover is <i>still</i> nuisance, not competence, the signature of a signal that is <b>absent, not merely masked</b>.</p>'+
+ '<p style="font-size:.98rem"><b>One cautionary tale.</b> The answer-swap contrast first looked like a real win at +0.35. It was a length artifact: because the corruption changed only the final-answer token, the score collapsed to &ldquo;predicts the right answer, divided by solution length.&rdquo; Controlling for length dropped it to zero and we retracted it, now a standing rule: <b>no item-level win is believed until it survives length and difficulty controls.</b></p>'+
+ fig("var","The results: item-level ρ for each cheap fix. None recovers a per-item quality signal.")+
+ '<div class="take">The signal is <i>absent</i>, not masked. TFA cannot grade an individual solution.</div>')
 
 # 14 rollout
 slide("Q3 &middot; a signal that does grade","Rollout <span class='g'>process value</span> grades solutions, at a cost",
@@ -156,6 +169,13 @@ S.append('''<section class="slide fwd"><div class="wrap"><div class="kick">Path 
    <li><b>Consistency-vs-truth</b> guardrails throughout</li></ul>
    <div class="take" style="margin-top:12px">Our result is the map: a reference-anchored cheap signal is safe only
    within a family; elsewhere it rewards style. For frontier-API and agentic settings, go output-grounded and reference-free.</div></div></div></section>''')
+
+# 17 appendix: judge robustness
+slide("Appendix &middot; robustness to the judge","Not one judge's opinion",
+ chips(("0.75-0.94","inter-judge agreement (ρ)"),("2 families","gpt-5.2 &amp; Opus 4.8"))+
+ "<p>The model-ranking story above is judge-free (TFA vs <b>accuracy</b>). The <i>item-level</i> results in Part 2 are the only judge-defined ones, so we re-graded the three anchor datasets with a second frontier judge from a different family (Claude Opus 4.8), same rubric. Same pattern: the MATH null stays null and the small GSM8K and Putnam signals replicate, with CIs still excluding zero.</p>"+
+ fig("judge","Item-level partial ρ under two judges (gpt-5.2 vs Claude Opus 4.8): the same conclusions under both.")+
+ "<div class='take'>The conclusions are properties of TFA, not of the particular judge we appointed as ground truth.</div>")
 
 STYLE='''<style>
 :root{--bg:#f6f7f9;--panel:#fff;--ink:#181b20;--mut:#5b6470;--line:#e2e5ea;--accent:#2b5c8a;--g:#2f8f4e;--a:#c07d15;--p:#7d54c9;--r:#c44e52;--shadow:0 1px 3px rgba(20,25,35,.08),0 8px 24px rgba(20,25,35,.06);}
