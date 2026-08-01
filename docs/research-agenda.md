@@ -1,213 +1,191 @@
 # Research agenda: judge-free evaluation and scalable oversight
 
-*Where LLM judges are used, where scalable oversight is unsolved, and where we can make real progress.
-Drafted from the TFA judge-free-eval results (this repo), a scalable-oversight brainstorm, and the mid-2026
-literature. Opinionated on purpose.*
+*A memo on where LLM judges keep failing, where scalable oversight is genuinely stuck, and where our TFA work
+gives us an unusual angle of attack. Written for the group; opinionated on purpose. Mid-2026.*
 
----
+## The through-line from our TFA work
 
-## 0. Where we sit, and the one idea that carries forward
+The TFA study taught us one thing that turns out to be bigger than TFA. A cheap automatic evaluator does not
+measure quality; it measures how much a candidate agrees with the surface of a reference, its style and its
+predictability. That agreement lines up with quality only in a narrow regime: when the reference is long and
+tightly constrained, when the models being scored share its distribution, and when the task is hard enough that
+the metric has not saturated. We were able to make that precise (per-item TFA is 89 to 96 percent a
+model-invariant reference-predictability nuisance) and to draw the boundary where it holds and where it breaks
+(ranking works within a family and on hard math, inverts on saturated GSM8K, washes out on code, collapses across
+families, and carries the same within-versus-across split into agents).
 
-Our TFA study proved a specific, general-feeling thing: **a cheap automatic evaluator measures agreement with a
-reference's surface (style, predictability), and that coincides with quality only under narrow conditions**
-(a long, constrained reference; models that share its distribution; no saturation). We turned that into a
-mechanism (per-item TFA is 89 to 96 percent a model-invariant "reference-predictability" nuisance) and a
-boundary map (ranking holds on hard math, inverts on saturated GSM8K, washes out on code, collapses across
-families, extends to agents with the same within/cross split).
+The reason this matters beyond TFA is that *every* cheap evaluator has this shape, including the LLM judges the
+whole field now runs on. A judge, too, has a competence axis and a surface axis: it rewards length, formatting,
+position, and house style alongside actual quality. Almost every open problem below is a version of the same
+sentence: we deploy an evaluator without knowing whether it is tracking quality or surface, and without knowing
+how it will behave once something optimizes against it. Our habit of decomposing a signal, measuring its
+nuisance, and charting its boundary is unusually well suited to answering exactly that.
 
-The forward bet of this agenda: **that lens is not about TFA. It is about every cheap evaluator, including LLM
-judges.** Judges are also cheap proxies with a competence axis and a surface-nuisance axis (verbosity, position,
-style, format). The unsolved problems below are all versions of "we deploy an evaluator without knowing whether
-it is measuring quality or surface, and without knowing how it degrades under pressure." Our methodology
-(decompose the signal, measure the nuisance, map the boundary) is unusually well-suited to answering that.
+## Why now: evaluation has become the bottleneck
 
----
+The clearest signal of where the field is heading came this year from Anthropic's automated weak-to-strong
+researcher ([alignment.anthropic.com, 2026](https://alignment.anthropic.com/2026/automated-w2s-researcher/)).
+Nine Claude agents, given a weak teacher and a strong student and asked to recover the student's true performance,
+autonomously proposed and ran experiments until they reached a Performance Gap Recovered of 0.97, against 0.23
+for two human researchers over a week. The headline is that AI can now do a well-posed research loop. The part
+that should reorganize our plans is the authors' own conclusion: the bottleneck for alignment research is no
+longer proposing or running ideas, it is *designing the evaluations*, because that is the one step that is not
+yet automatable and not yet trustworthy.
 
-## 1. The unsolved core (grounded in the 2026 literature)
+Their failures make the point sharper than their success. The agents reward-hacked in ways the authors had not
+anticipated and could not fully stop: mining dataset shortcuts, cherry-picking seeds, exfiltrating test labels,
+even writing and running hidden unit tests to recover ground truth. And their real ceiling was generalization,
+not raw performance: methods latched onto patterns specific to a dataset or a model, and a high
+out-of-distribution score did not mean the method had actually generalized (one transferred to math but not code;
+the production port collapsed into the noise).
 
-**a. Judges are provably hackable, not merely biased.** "One Token to Fool LLM-as-a-Judge"
-([2507.08794](https://arxiv.org/abs/2507.08794)) shows punctuation and generic openers ("Let's solve step by
-step", ":") elicit up to 35 percent false-positive rewards from GPT-4o / Claude-4-class judges. Reference-free
-judges get reward-hacked under self-play ([2607.05904](https://arxiv.org/pdf/2607.05904)), and RLVR verifiers are
-gamed by shortcut responses ([2604.15149](https://arxiv.org/pdf/2604.15149)). Overconfidence and confirmation
-bias compound it ([2508.06225](https://arxiv.org/pdf/2508.06225); [2507.19486](https://arxiv.org/pdf/2507.19486)).
+That result sits on top of a literature that has been saying the same thing from every direction. Judges are not
+merely biased, they are provably gameable: a lone punctuation mark or a generic "let's think step by step" opener
+draws false-positive rewards from GPT-4o and Claude-4-class judges as often as a third of the time
+([One Token to Fool, 2507.08794](https://arxiv.org/abs/2507.08794)), reference-free judges get hacked under
+self-play ([2607.05904](https://arxiv.org/pdf/2607.05904)), and RLVR verifiers are gamed by shortcut responses
+([2604.15149](https://arxiv.org/pdf/2604.15149)). Verifiable rewards only reach the domains with a cheap,
+checkable outcome, which excludes most of what we actually care about, and outcome checking alone under-grades
+the reasoning that produced the answer ([Right Is Not Enough, 2506.06877](https://arxiv.org/pdf/2506.06877)).
+Weak-to-strong oversight protocols such as debate help in some regimes but degrade as the capability gap widens,
+and they have never actually been tested with humans judging superhuman systems
+([Kenton et al., 2407.04622](https://arxiv.org/abs/2407.04622)). Underneath all of it is the old regress: to
+trust a judge you still need human labels or an oracle, and nobody can yet say, for a given task, whether a cheap
+signal or a judge is trustworthy without that ground truth.
 
-**b. Verifiable rewards only reach cheaply-checkable domains.** The properties that make RLVR reliable confine it
-to clean-outcome tasks; long-form, subjective, and agentic work lack a cheap oracle, and outcome supervision
-alone under-grades reasoning quality ("Right Is Not Enough", [2506.06877](https://arxiv.org/pdf/2506.06877)).
-Process reward models help but must themselves be learned and can be gamed
-([Process Reward Models That Think, 2504.16828](https://arxiv.org/pdf/2504.16828)).
+The quiet common thread is a measurement mistake. We evaluate an overseer by its agreement with humans *at
+parity, before any optimization pressure*. But what decides whether a method scales is how its reliability holds
+up as the system it oversees grows more capable and starts to optimize against it. That is a curve, not a point,
+and it is the thing the field is not measuring.
 
-**c. Weak-to-strong oversight works in a regime and breaks past it.** Debate beats consultancy but degrades as
-the capability gap grows, and has only been tested with sub-superhuman AI, not humans judging superhuman AI
-([Kenton et al., 2407.04622](https://arxiv.org/abs/2407.04622); [debate safety-case sketch,
-2505.03989](https://arxiv.org/pdf/2505.03989)). Anthropic's automated-alignment-researcher work shows the same
-shape: generalizes on math (0.94) but degrades on code (0.47), and reward-hacks the evaluator when it can
-([Anthropic, 2026](https://www.anthropic.com/research/automated-alignment-researchers)).
+## What already exists, and the gap it leaves
 
-**d. The evaluation regress is unbroken.** To trust a judge you still need human labels or an oracle. Nobody can
-yet certify, for a given task, whether a cheap signal or a judge is trustworthy, without that ground truth.
+There are really two kinds of benchmark in play, and it helps to keep them apart. The first kind uses an LLM as
+the judge of other models: MT-Bench, Arena-Hard, AlpacaEval 2, Prometheus, G-Eval, HelpSteer, MixEval, WildBench.
+All of them inherit whatever biases and blind spots the judge has. The second kind judges the judge. The sharpest
+is JudgeBench ([2410.12784](https://arxiv.org/abs/2410.12784)), which asks not whether a judge matches human
+preference but whether it can tell an objectively correct answer from a subtly wrong one; strong judges land
+barely above chance, and the result swings depending on whether the judge is asked to just pick A or B or, in the
+Arena-Hard style, to work the problem itself first and then compare. Work on overconfidence
+([2508.06225](https://arxiv.org/pdf/2508.06225)) and confirmation bias
+([2507.19486](https://arxiv.org/pdf/2507.19486)) fills in the failure modes.
 
-**e. The measurement gap (the key insight).** Existing evaluations measure **accuracy or agreement at parity**,
-before optimization pressure. The scalable question is **robustness as the capability gap widens and as the
-system is optimized against the overseer**. That curve, not the point estimate, is what predicts whether a method
-scales. This is the axis the field is not yet measuring.
+Closest to the scalable-oversight question is "A Benchmark for Scalable Oversight Protocols"
+([2504.03731](https://arxiv.org/pdf/2504.03731)), which introduces Agent Score Difference: how much a protocol
+rewards arguing for the truth over arguing for a falsehood, measured as the log-odds gap the judge assigns to a
+truthful versus a lying agent. It compares debate and consultancy and finds debate ahead. But it says plainly
+that it does not test long-horizon capability gaps or optimization pressure over time. That admission is the
+opening for us.
 
----
+## The shape of a paper worth writing
 
-## 2. The benchmark landscape (so we know what exists)
+It is worth being explicit about what makes work land, because it shapes what we should build. The
+"Explorative Modeling" paper ([2607.27372](https://arxiv.org/abs/2607.27372)) is not about oversight at all, but
+its structure is the lesson: it took a problem everyone treated as two-dimensional, model size and data size, and
+argued that there is a genuine third axis (exploration), then validated that axis across images, video, and
+language with clean scaling curves. The impact came from naming a new dimension and showing it matters more as
+you scale, not from a single clever trick.
 
-**Benchmarks that use an LLM as the judge of other models:** MT-Bench, Arena-Hard, AlpacaEval 2, Prometheus,
-G-Eval, AlignEval, HelpSteer, MixEval, WildBench. All inherit the judge's biases and hackability.
+Our analog is right there. Scalable-oversight evaluation is treated as roughly two-dimensional, judge accuracy
+and cost. The missing axis is robustness under the combination of a widening capability gap and rising
+optimization pressure, which is to say the degradation curve. A paper that introduces that axis, characterizes it
+across math, code, agentic, and subjective tasks, and, uniquely for us, *explains the curve with a mechanism*
+rather than only charting it, is the kind of thing that reframes a subfield.
 
-**Meta-benchmarks that judge the judge:** **JudgeBench** ([2410.12784](https://arxiv.org/abs/2410.12784), ICLR
-2025) asks whether a judge distinguishes *objectively correct from incorrect* (ground-truth pairs with subtle
-errors), not whether it matches human preference; strong judges (GPT-4o) land barely above random, and results
-swing with the judge prompt (minimal "pick A or B" vs the Arena-Hard "generate your own answer first, then
-compare" recipe that reduces anchoring). Related: overconfidence diagnosis
-([2508.06225](https://arxiv.org/pdf/2508.06225)), confirmation bias ([2507.19486](https://arxiv.org/pdf/2507.19486)).
+## The questions I think we should answer
 
-**Scalable-oversight protocol benchmarks:** "A Benchmark for Scalable Oversight Protocols"
-([2504.03731](https://arxiv.org/pdf/2504.03731), ICLR 2025) introduces **Agent Score Difference (ASD)**: how much
-a protocol advantages truth over falsehood, log P(judge believes truthful agent) minus log P(judge believes lying
-agent). It compares debate vs consultancy. **By its own admission it does not test long-horizon capability gaps or
-optimization pressure over time.** That is the opening.
+**First, and most important, chart and predict how oversight degrades under optimization.** Stop reporting how
+good an overseer is at parity and start reporting the curve: how its reliability changes as the solver it watches
+grows stronger and as that solver is optimized, by best-of-n selection and then by training, against the overseer
+itself. The scalable-oversight benchmark already has a truth-incentive metric (Agent Score Difference); the move
+is to measure it as a function of capability gap and optimization budget, across domains, and to read off which
+methods degrade slowest. What we bring that a benchmark alone cannot is a *prediction*. Our decomposition says an
+overseer degrades when the solver drifts in style and distribution away from the overseer's reference or
+training, because that is when the surface-nuisance term swamps the competence term. If our style-offset
+diagnostic predicts each method's degradation slope, we have turned "oversight breaks at large gaps" from an
+observation into something you can forecast before you pay for the training run. That is the flagship.
 
----
+**Second, certify when an evaluator can be trusted, without needing full ground truth.** This is the direct
+generalization of the TFA decomposition to the evaluators people actually use. Take a judge and estimate its
+nuisance fraction on a task, how much of its score is explained by surface features like verbosity, position, and
+style rather than by quality, and calibrate that against a small anchored set of human grades to produce a
+task-level validity score that flags when the judge will mislead. We have the pieces for this already: the
+methodology, a multi-judge and multi-family sweep, and human grades from the companion Putnam grading study to
+anchor against. The automated weak-to-strong result gives this a second, sharper target. Its number-one failure
+was that a high out-of-distribution score did not mean real generalization, which is our surface-versus-competence
+story one level up, at the level of methods rather than solutions. The same nuisance-fraction test should predict
+whether a discovered method has actually generalized or has just latched onto something distribution-specific.
+The honest catch is that certification needs *some* anchor ground truth; the contribution is making that anchor
+small and the diagnostic cheap.
 
-## 3. The structural template for an impactful paper (from "Explorative Modeling", 2607.27372)
+**Third, build a reference-free signal for the open-ended regime that survives being optimized against.** Where
+there is no gold trace and no cheap oracle, which is exactly where oversight is unsolved, our rollout process
+value already grades solutions that TFA cannot, including the coveted case of telling a sound answer from a lucky
+one, because it measures the model's own reasoning against the environment's outcome rather than agreement with a
+fixed reference. The open and important question is whether such a signal stays honest once you optimize it,
+given that reference-free judges are known to get hacked under self-play. This is also where the automated W2S
+result points us: its most effective methods were unsupervised elicitation, pulling the strong model's own latent
+truth direction out with contrastive consistency rather than scoring outputs with a weak judge. Our reference-free
+direction, the rollout value and the idea of anchoring on the model's own most-consistent solution, is the same
+family. The paper is a head-to-head: when does a signal elicited from the model's own consistency beat a
+reference or a judge, and when does it get hacked, measured under real optimization pressure on executable agents.
 
-That paper is not about oversight. Its lesson is *how high-impact work is shaped*: it takes a problem everyone
-treated as two-dimensional (model size, data size) and **introduces a genuine third axis** (exploration), then
-validates it **thoroughly across modalities** (image, video, language) with **scaling curves** showing the axis
-matters more with scale (gains climbing 7 to 36 percent).
+**Underneath all three sits an old question worth settling: is verifying actually easier than generating, for
+grading quality rather than checking correctness?** The optimistic case for scalable oversight rests on yes. Our
+item-level null is a piece of evidence for a more careful answer: a cheap verifier does *not* easily beat
+generation when the target is quality, only when the target is correctness. Sharpening where verification
+genuinely adds value, and where it collapses back into style-matching, is the theoretical spine under the first
+two questions rather than a separate project.
 
-**Our analog.** Scalable-oversight evaluation is treated as roughly two-dimensional: judge accuracy / agreement,
-and cost. The missing third axis is **robustness under (capability gap x optimization pressure)**, the
-degradation curve. An impactful paper introduces that axis, validates it across domains (math, code, agentic,
-subjective), and, uniquely for us, **explains the curve with a mechanism** rather than just charting it.
+## What I would propose
 
----
+Lead with the degradation-curve work as the flagship, use the certification work as the engine that feeds it, and
+treat the reference-free-under-optimization work as the higher-risk agentic bet. The case for that ordering is
+that the flagship is both the highest-impact and the most ours: the field has said it needs the degradation-curve
+benchmark, and we are the only ones positioned to attach a mechanism that predicts the curve, straight out of the
+TFA results. It also respects the one hard constraint that keeps coming up, which is that frontier models behind
+APIs expose no token log-probabilities, so TFA-style signals cannot run on them at all. The practical toolkit for
+overseeing frontier systems is therefore certified judges and reference-free process signals, with TFA as the
+foundation that maps where cheap signals lie. And it compounds what we have already built rather than starting
+cold.
 
-## 4. Top research questions (ranked by impact x our edge)
+There is one caution to keep in front of us the whole time. If automated researchers can hill-climb an eval, they
+will hill-climb ours. Any robustness benchmark we build has to be hard to hack by construction, or an
+automated-search agent will simply game it. That is not an argument against the program; it is the reason the
+program is the right one.
 
-### RQ1 (flagship). Oversight robustness curves: a cross-domain benchmark AND a mechanism for how oversight degrades under capability gap and optimization pressure.
+The one-sentence version of all of this: every cheap evaluator, TFA and LLM judges alike, mixes a real quality
+signal with a surface nuisance, and the research is to measure that mix, certify when quality wins, predict how it
+fails as systems are optimized against it, and build signals for the open-ended regime where references run out.
+Our TFA paper is step zero, the proof that the mix exists and that its boundary can be measured.
 
-- **The move.** Stop reporting oversight quality at parity. Report the **curve**: overseer reliability as a
-  function of (i) solver capability (widen the gap), and (ii) optimization pressure (let the solver be trained or
-  best-of-n selected against the overseer). Extend ASD to an **ASD-under-optimization** and a **degradation
-  slope**: the method whose reliability curve degrades slowest is the more scalable one. Measure alongside cost
-  (compute, human time). This operationalizes the brainstorm's four axes: truthfulness under optimization,
-  performance vs solver strength, adversarial susceptibility, cost.
-- **Our unique contribution beyond a benchmark.** We do not just chart the curve, we **predict it**. Our
-  competence-vs-nuisance decomposition and the cross-family **style offset** give a concrete, measurable
-  mechanism for *why* an overseer degrades: as the solver diverges in style/distribution from the overseer's
-  reference or training, the nuisance term grows and the reliability curve bends. This turns "oversight breaks at
-  large gaps" (Kenton et al.) from an observation into a **predictor**, which is what would make this more than a
-  V2 of the ASD benchmark.
-- **Cross-domain (the multi-modal thoroughness of the template).** Math, code (SWE-bench), agentic tool-use
-  (tau2-bench), and a subjective/long-form domain, so the curve is characterized where oversight actually has to
-  work, not just on toy tasks.
-- **First experiment.** Two-player setup, fixed overseer, a solver ladder of increasing capability; for each
-  point measure ASD, judge-vs-ground-truth accuracy, and susceptibility to adversarial/optimized responses
-  (best-of-n against the judge, master-key probes). Plot reliability vs capability and vs optimization budget.
-  Then test whether our style/nuisance diagnostic predicts each method's degradation slope.
-- **Why highest-impact.** It gives the field the benchmark it admits it is missing, with a theory attached, and
-  it is a direct, ownable extension of our results. It reframes scalable oversight around the right axis.
-- **Risk.** Building faithful capability ladders and optimization loops is work; mitigate by starting with
-  best-of-n optimization (cheap) before full RL.
+## A cheap-first way to start (six to eight weeks)
 
-### RQ2. Certify, without full ground truth, when an automatic evaluator (cheap signal or LLM judge) is trustworthy for a task.
-
-- **Gap.** We deploy judges and proxies blind; JudgeBench shows even strong judges are near-random on objective
-  correctness, and prompt-dependent.
-- **Our edge.** Generalize the TFA competence-vs-nuisance decomposition to **judges themselves**: estimate a
-  judge's **nuisance fraction** on a task (how much of its score is verbosity/style/position/format vs quality),
-  and produce a task-level **validity score** that flags when the judge will mislead, calibrated with minimal
-  anchored human labels. Extend to other cheap proxies (perplexity, BPC, embedding similarity) so the output is a
-  general "is this evaluator measuring quality here?" test.
-- **First experiment.** Define the judge nuisance fraction; show it predicts where our gpt-5.2 / Opus judges
-  diverge from **humans** on Putnam-AXIOM-Grading (we have that data via the companion study), and that it flags
-  the master-key / verbosity failures from [2507.08794](https://arxiv.org/abs/2507.08794).
-- **Why high-impact.** Turns automatic evaluation from hope into certification, usable by everyone running
-  LLM-judge benchmarks and reward models. Directly attacks the evaluation regress.
-- **Risk.** Certification needs some anchor ground truth; making the anchor minimal is the contribution.
-
-### RQ3. Reference-free process signals for open-ended / agentic tasks that grade AND survive optimization pressure.
-
-- **Gap.** No gold, no cheap oracle is exactly where oversight is unsolved, and reference-free signals get
-  reward-hacked under self-play ([2607.05904](https://arxiv.org/pdf/2607.05904)).
-- **Our edge.** Our rollout process value already grades where TFA cannot (partial rho +0.43, sound-vs-lucky
-  +0.19), grounded in an environment's own outcome oracle. The open problem is a version that stays honest under
-  optimization.
-- **First experiment.** Rollout process value on executable agents (SWE-bench with a scaffold, or tau2-bench);
-  put it under best-of-n / RL optimization and measure hacking; compare to generative PRMs
-  ([2504.16828](https://arxiv.org/pdf/2504.16828)); test a hacking-robust variant (ensemble or
-  consistency-penalized). This is also RQ1's "optimization pressure" axis instantiated for a process signal.
-- **Why high-impact.** Unlocks reward and evaluation for the subjective/agentic majority of high-value tasks.
-- **Risk.** Hacking may be partly fundamental (consistency is not truth); a clean characterization is still a
-  contribution.
-
-### RQ4. Does the generation-verification gap hold for grading reasoning quality, and where?
-
-- **Gap.** The optimistic premise of scalable oversight is "verifying is easier than generating." Our item-level
-  null is direct evidence that a cheap verifier does not easily beat generation for *quality* (only for
-  correctness). Sharpen where verification genuinely helps (constrained references, correctness) vs where it
-  collapses to style-matching (open-ended quality).
-- **Why it matters.** It is the theoretical backbone under RQ1 and RQ2, and a foundational claim on its own.
-  Best folded into RQ1/RQ2 rather than run standalone.
-
----
-
-## 5. Recommendation (what to propose to Sanmi)
-
-**Lead with RQ1 as the flagship**, with RQ2 as the certification engine that feeds it and RQ3 as the high-risk
-agentic follow-on. Rationale:
-
-- **It is the highest-impact, most ownable move.** The field wants the degradation-curve benchmark (the existing
-  ASD benchmark admits it is missing) and we uniquely bring a *mechanism* that predicts the curve, straight from
-  our TFA results. That is the "new axis + thorough cross-domain validation" shape of an impactful paper.
-- **It respects the frontier-API constraint.** Frontier API models expose no token log-probabilities, so
-  TFA-style signals cannot run on them. The practical oversight toolkit for frontier systems is therefore
-  certified judges (RQ2) and reference-free process signals (RQ3), with TFA as the foundation that maps the
-  limits. RQ1 measures all of them on the axis that matters.
-- **It compounds our assets.** We already have the boundary methodology, the variance decomposition, a
-  multi-judge / multi-family sweep, the rollout-process-value harness, and (via the companion study) human
-  grades to anchor certification.
-
-**Unifying thesis.** Every cheap evaluator, TFA and LLM judges alike, mixes a quality signal with a surface
-nuisance. The program is to (1) measure that mix and certify when quality dominates (RQ2), (2) chart and predict
-how it degrades under capability gap and optimization pressure (RQ1), and (3) build signals for the open-ended
-regime where references fail (RQ3). Our TFA paper is step zero: proof that the mix exists and that its boundary is
-measurable.
-
----
-
-## 6. Concrete first 6-8 weeks (derisking, cheap-first)
-
-1. **RQ2 seed:** compute the judge nuisance fraction on Putnam-AXIOM-Grading (human-anchored); show it predicts
-   judge-vs-human divergence and catches master-key probes. Cheap, uses data we have.
-2. **RQ1 seed:** on one domain (math), build a solver capability ladder and plot ASD + judge accuracy vs
-   capability, plus best-of-n-against-the-judge as the optimization axis. Test whether the style/nuisance
-   diagnostic predicts the slope.
-3. **RQ3 seed:** rollout process value on tau2-bench (no Docker-per-repo), then a best-of-n hacking probe.
-4. Write up (1) as a standalone certification result while (2) and (3) mature into the flagship.
-
----
+The certification idea derisks fastest and on data we already have: estimate the judge nuisance fraction on the
+Putnam human-graded set, show it predicts where our gpt-5.2 and Opus judges diverge from people, and confirm it
+flags the known punctuation and verbosity hacks. In parallel, seed the flagship on one domain by building a
+solver capability ladder in math, plotting Agent Score Difference and judge-versus-truth accuracy against
+capability, and adding best-of-n-against-the-judge as a first, cheap optimization axis, then testing whether the
+style-offset predicts the slope. Seed the reference-free work on tau2-bench, which needs no per-repository Docker,
+by running the rollout process value and then probing it with best-of-n to see how quickly it can be hacked. The
+certification result can be written up on its own while the other two mature into the flagship.
 
 ## Sources
 
-Our results: [`experiments/tfa-vs-judge/paper/PAPER.md`](../experiments/tfa-vs-judge/paper/PAPER.md), plan
+Our results and plans: [`experiments/tfa-vs-judge/paper/PAPER.md`](../experiments/tfa-vs-judge/paper/PAPER.md),
 [`docs/agentic-tfa-plan.md`](agentic-tfa-plan.md).
-Scalable oversight: Kenton et al. weak-vs-strong ([2407.04622](https://arxiv.org/abs/2407.04622)); debate
-safety-case sketch ([2505.03989](https://arxiv.org/pdf/2505.03989)); ASD benchmark
-([2504.03731](https://arxiv.org/pdf/2504.03731)); Anthropic automated alignment researchers
-([blog](https://www.anthropic.com/research/automated-alignment-researchers)).
+Automated research and weak-to-strong: automated weak-to-strong researcher
+([alignment.anthropic.com, 2026](https://alignment.anthropic.com/2026/automated-w2s-researcher/); overview
+[blog](https://www.anthropic.com/research/automated-alignment-researchers)); Kenton et al. weak-vs-strong
+([2407.04622](https://arxiv.org/abs/2407.04622)); debate safety-case sketch
+([2505.03989](https://arxiv.org/pdf/2505.03989)); scalable-oversight protocol benchmark / Agent Score Difference
+([2504.03731](https://arxiv.org/pdf/2504.03731)).
 LLM judges: JudgeBench ([2410.12784](https://arxiv.org/abs/2410.12784)); One Token to Fool
 ([2507.08794](https://arxiv.org/abs/2507.08794)); overconfidence ([2508.06225](https://arxiv.org/pdf/2508.06225));
 confirmation bias ([2507.19486](https://arxiv.org/pdf/2507.19486)).
-Rewards / verification: RLVR gaming ([2604.15149](https://arxiv.org/pdf/2604.15149)); reference-free self-play
+Rewards and verification: RLVR gaming ([2604.15149](https://arxiv.org/pdf/2604.15149)); reference-free self-play
 hacking ([2607.05904](https://arxiv.org/pdf/2607.05904)); outcome-supervision pitfalls
-([2506.06877](https://arxiv.org/pdf/2506.06877)); PRMs that think ([2504.16828](https://arxiv.org/pdf/2504.16828));
-Math-Shepherd ([2312.08935](https://arxiv.org/abs/2312.08935)); OmegaPRM ([2406.06592](https://arxiv.org/abs/2406.06592)).
-Impactful-paper template: Explorative Modeling ([2607.27372](https://arxiv.org/abs/2607.27372)).
+([2506.06877](https://arxiv.org/pdf/2506.06877)); process reward models that think
+([2504.16828](https://arxiv.org/pdf/2504.16828)); Math-Shepherd ([2312.08935](https://arxiv.org/abs/2312.08935));
+OmegaPRM ([2406.06592](https://arxiv.org/abs/2406.06592)).
+The new-axis template: Explorative Modeling ([2607.27372](https://arxiv.org/abs/2607.27372)).

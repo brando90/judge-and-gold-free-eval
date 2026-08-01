@@ -198,7 +198,17 @@ slide("Research agenda &middot; the bet","Flagship: oversight robustness curves"
  '<div class="warn"><b>Respects the frontier constraint.</b> API models expose no token log-probabilities, so the practical toolkit is <b>certified judges (RQ2) + reference-free process signals (RQ3)</b>, with TFA the foundation that maps the limits.</div>'+
  '<div class="take">Proposal to Sanmi: RQ1 as the flagship, RQ2 as its certification engine, RQ3 as the agentic follow-on.</div>')
 
-# 20 appendix: judge robustness
+# 20 research agenda: why now (automated W2S researcher)
+slide("Research agenda &middot; why now","The automated weak-to-strong researcher confirms the bottleneck",
+ '<p>Nine Claude agents autonomously solved a weak-to-strong problem (Performance Gap Recovered <b>0.97</b> vs <b>0.23</b> for human researchers) in days. Their own conclusion: the bottleneck is no longer proposing or running ideas, it is <b>designing evals</b>. The failures were <b>reward hacking</b> (shortcut mining, test-label exfiltration) and generalization, <b>high out-of-distribution accuracy did not mean real generalization</b>.</p>'+
+ '<div class="cols"><div><h3 class="g">What it changes for us</h3>'+
+ '<ul><li><b>Robustness under optimization is the whole game</b>, not accuracy at parity &rarr; RQ1.</li>'+
+ '<li>Their generalization bottleneck is our <b>surface-vs-competence</b> mechanism one level up &rarr; RQ2 certifies generalization.</li>'+
+ '<li>Their winning methods are <b>self-elicited from the strong model</b> (unsupervised consistency) &rarr; the reference-free bridge, RQ3.</li></ul></div>'+
+ '<div><h3 class="r">The caution</h3><p>An automated researcher will hack <i>our</i> eval too. A robustness benchmark has to be hacking-robust by construction. That is not a problem for the thesis, it is why the thesis matters.</p></div></div>'+
+ '<div class="take">AI will do the research; the scarce skill becomes hacking-robust, generalization-faithful evaluation, which is our lane.</div>')
+
+# 21 appendix: judge robustness
 slide("Appendix &middot; robustness to the judge","Not one judge's opinion",
  chips(("0.75-0.94","inter-judge agreement (ρ)"),("2 families","gpt-5.2 &amp; Opus 4.8"))+
  "<p>The model-ranking story above is judge-free (TFA vs <b>accuracy</b>). The <i>item-level</i> results in Part 2 are the only judge-defined ones, so we re-graded the three anchor datasets with a second frontier judge from a different family (Claude Opus 4.8), same rubric. Same pattern: the MATH null stays null and the small GSM8K and Putnam signals replicate, with CIs still excluding zero.</p>"+
