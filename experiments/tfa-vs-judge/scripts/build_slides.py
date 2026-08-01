@@ -174,39 +174,18 @@ S.append('''<section class="slide fwd"><div class="wrap"><div class="kick">Path 
    <div class="take" style="margin-top:12px">Our result is the map: a reference-anchored cheap signal is safe only
    within a family; elsewhere it rewards style. For frontier-API and agentic settings, go output-grounded and reference-free.</div></div></div></section>''')
 
-# 17 research agenda: the gap
-slide("Research agenda &middot; the gap","Scalable oversight is measured at the wrong point",
- '<p>Today an overseer is judged by its <b>accuracy at parity</b> and its <b>cost</b>. But what predicts whether a method <i>scales</i> is the <b>degradation curve</b>: how reliability changes as the solver grows more capable and as it is optimized against the overseer.</p>'+
- '<ul><li>The current protocol benchmark (Agent Score Difference) explicitly does <b>not</b> test long-horizon capability gaps or optimization pressure over time.</li>'+
- '<li>Judges are provably hackable: a lone &ldquo;:&rdquo; draws false positives from GPT-4o up to 35% of the time, and strong judges are near-random on JudgeBench objective-correctness pairs.</li>'+
- '<li>Reference-free reward signals get gamed under self-play.</li></ul>'+
- '<div class="take">The missing third axis: robustness under <b>capability gap &times; optimization pressure</b>.</div>')
-
-# 18 research agenda: the questions
-slide("Research agenda &middot; the questions","Four questions, ranked by impact",
+# 17 the neutral question menu (mirrors docs/research-questions-for-sanmi; detailed agenda moved to appendix)
+slide("Path forward &middot; the question menu","Five directions to choose between",
+ '<p>These open up straight from the result above. Listed in <b>no particular order</b>, my own read is last, on purpose. Pick one and we go.</p>'+
  '<div class="cols"><div>'+
- '<h3 class="g">RQ1 &middot; flagship</h3><p><b>Oversight robustness curves.</b> Chart overseer reliability vs solver capability and vs optimization pressure, across math, code, agentic, and subjective domains, and <b>predict the slope</b> from our style/nuisance offset. Turns &ldquo;oversight breaks at large gaps&rdquo; into a predictor.</p>'+
- '<h3 class="p">RQ2</h3><p><b>Certify an evaluator without full ground truth.</b> A judge <b>nuisance fraction</b> (quality vs surface: verbosity, style, position), anchored on human grades; flags the hackable failures before deployment.</p></div>'+
- '<div><h3>RQ3</h3><p><b>Reference-free process signals for agents that survive optimization.</b> Our rollout process value, grounded in the environment oracle, hardened against reward hacking.</p>'+
- '<h3>RQ4</h3><p><b>Does verification beat generation for grading quality?</b> Our item-level null says: not for quality, only for correctness. The backbone under RQ1 and RQ2.</p></div></div>'+
- '<div class="take">Every cheap evaluator, TFA and LLM judges alike, mixes a quality signal with a surface nuisance.</div>')
-
-# 19 research agenda: the bet
-slide("Research agenda &middot; the bet","Flagship: oversight robustness curves",
- '<p>The impactful-paper template, borrowed from generative modeling: introduce a genuine new <b>axis</b> to a problem treated as two-dimensional, then validate it across modalities with scaling curves. Our new axis is <b>oversight robustness</b>; our modalities are math, code, agentic, and subjective tasks.</p>'+
- '<p>What is uniquely ours: not just the benchmark, but a <b>mechanism that predicts the curve</b>. As the solver diverges in style and distribution from the overseer, the nuisance term grows and reliability bends, exactly the offset we measured for TFA.</p>'+
- '<div class="warn"><b>Respects the frontier constraint.</b> API models expose no token log-probabilities, so the practical toolkit is <b>certified judges (RQ2) + reference-free process signals (RQ3)</b>, with TFA the foundation that maps the limits.</div>'+
- '<div class="take">Proposal to Sanmi: RQ1 as the flagship, RQ2 as its certification engine, RQ3 as the agentic follow-on.</div>')
-
-# 20 research agenda: why now (automated W2S researcher)
-slide("Research agenda &middot; why now","The automated weak-to-strong researcher confirms the bottleneck",
- '<p>Nine Claude agents autonomously solved a weak-to-strong problem (Performance Gap Recovered <b>0.97</b> vs <b>0.23</b> for human researchers) in days. Their own conclusion: the bottleneck is no longer proposing or running ideas, it is <b>designing evals</b>. The failures were <b>reward hacking</b> (shortcut mining, test-label exfiltration) and generalization, <b>high out-of-distribution accuracy did not mean real generalization</b>.</p>'+
- '<div class="cols"><div><h3 class="g">What it changes for us</h3>'+
- '<ul><li><b>Robustness under optimization is the whole game</b>, not accuracy at parity &rarr; RQ1.</li>'+
- '<li>Their generalization bottleneck is our <b>surface-vs-competence</b> mechanism one level up &rarr; RQ2 certifies generalization.</li>'+
- '<li>Their winning methods are <b>self-elicited from the strong model</b> (unsupervised consistency) &rarr; the reference-free bridge, RQ3.</li></ul></div>'+
- '<div><h3 class="r">The caution</h3><p>An automated researcher will hack <i>our</i> eval too. A robustness benchmark has to be hacking-robust by construction. That is not a problem for the thesis, it is why the thesis matters.</p></div></div>'+
- '<div class="take">AI will do the research; the scarce skill becomes hacking-robust, generalization-faithful evaluation, which is our lane.</div>')
+ '<h3 class="g">The map</h3><p>Finish the reference-anchored picture, or prove the no-go: multi-reference, outcome-gated, and per-step TFA. Reuses the existing pipeline, so days not weeks.</p>'+
+ '<h3 class="p">Certification</h3><p>Check an evaluator before we deploy it, without full ground truth: run our nuisance decomposition on an LLM judge and see whether it predicts where the judge gets gamed.</p>'+
+ '<h3 class="a">Process value</h3><p>A reference-free signal that grades agents and survives being optimized against: rollout value grounded in an environment oracle, then measure the reward hacking.</p></div>'+
+ '<div>'+
+ '<h3>Robustness curves</h3><p>Do oversight signals degrade predictably as the solver gets stronger? Sweep solver scale, plot reliability against the capability gap, and test whether our style-offset predicts the slope.</p>'+
+ '<h3>No oracle</h3><p>Is there any cheap signal where there is no checkable answer at all? Apply the decomposition to a subjective-grading dataset with human labels.</p>'+
+ '<div class="def" style="font-size:.94rem;margin-top:10px"><b>My read, last on purpose.</b> Open with <b>certification</b>: cheapest, reuses machinery we already have, a concrete result in a couple of weeks, and it feeds <b>robustness curves</b>, the higher ceiling but the larger commitment. <b>The map</b> is the safe finisher; process value and no oracle are follow-ons.</div></div></div>'+
+ '<div class="take">Full one-pager: docs/research-questions-for-sanmi. The detailed earlier framing (gap, RQs, the bet, why now) is in the appendix.</div>')
 
 # 21 appendix: judge robustness
 slide("Appendix &middot; robustness to the judge","Not one judge's opinion",
@@ -234,6 +213,37 @@ slide("Appendix &middot; backup &middot; the nuisance decomposition","How the 89
  '<div class="def" style="font-size:.95rem"><b>Why this splits the two verdicts.</b> Being identical across models, the nuisance <b>cancels</b> when you average over items (mean TFA still ranks models) but <b>swamps</b> the 4-11% model-specific residual inside any single item (so grading fails). The 89-96% is the ceiling on how much per-item signal ever existed.</div>'+
  '</div></div>'+
  '<div class="take">Grading needs that 4-11% residual, and the judge correlation shows even it is mostly noise, not competence.</div>')
+
+# appendix: research agenda deep-dive (moved out of the main flow, kept so nothing is lost)
+slide("Appendix &middot; agenda &middot; the gap","Scalable oversight is measured at the wrong point",
+ '<p>Today an overseer is judged by its <b>accuracy at parity</b> and its <b>cost</b>. But what predicts whether a method <i>scales</i> is the <b>degradation curve</b>: how reliability changes as the solver grows more capable and as it is optimized against the overseer.</p>'+
+ '<ul><li>The current protocol benchmark (Agent Score Difference) explicitly does <b>not</b> test long-horizon capability gaps or optimization pressure over time.</li>'+
+ '<li>Judges are provably hackable: a lone &ldquo;:&rdquo; draws false positives from GPT-4o up to 35% of the time, and strong judges are near-random on JudgeBench objective-correctness pairs.</li>'+
+ '<li>Reference-free reward signals get gamed under self-play.</li></ul>'+
+ '<div class="take">The missing third axis: robustness under <b>capability gap &times; optimization pressure</b>.</div>')
+
+slide("Appendix &middot; agenda &middot; the questions","The four questions, in detail",
+ '<div class="cols"><div>'+
+ '<h3 class="g">RQ1 &middot; flagship</h3><p><b>Oversight robustness curves.</b> Chart overseer reliability vs solver capability and vs optimization pressure, across math, code, agentic, and subjective domains, and <b>predict the slope</b> from our style/nuisance offset. Turns &ldquo;oversight breaks at large gaps&rdquo; into a predictor.</p>'+
+ '<h3 class="p">RQ2</h3><p><b>Certify an evaluator without full ground truth.</b> A judge <b>nuisance fraction</b> (quality vs surface: verbosity, style, position), anchored on human grades; flags the hackable failures before deployment.</p></div>'+
+ '<div><h3>RQ3</h3><p><b>Reference-free process signals for agents that survive optimization.</b> Our rollout process value, grounded in the environment oracle, hardened against reward hacking.</p>'+
+ '<h3>RQ4</h3><p><b>Does verification beat generation for grading quality?</b> Our item-level null says: not for quality, only for correctness. The backbone under RQ1 and RQ2.</p></div></div>'+
+ '<div class="take">Every cheap evaluator, TFA and LLM judges alike, mixes a quality signal with a surface nuisance.</div>')
+
+slide("Appendix &middot; agenda &middot; the bet","The impactful-paper template: oversight robustness curves",
+ '<p>The impactful-paper template, borrowed from generative modeling: introduce a genuine new <b>axis</b> to a problem treated as two-dimensional, then validate it across modalities with scaling curves. Our new axis is <b>oversight robustness</b>; our modalities are math, code, agentic, and subjective tasks.</p>'+
+ '<p>What is uniquely ours: not just the benchmark, but a <b>mechanism that predicts the curve</b>. As the solver diverges in style and distribution from the overseer, the nuisance term grows and reliability bends, exactly the offset we measured for TFA.</p>'+
+ '<div class="warn"><b>Respects the frontier constraint.</b> API models expose no token log-probabilities, so the practical toolkit is <b>certified judges (RQ2) + reference-free process signals (RQ3)</b>, with TFA the foundation that maps the limits.</div>'+
+ '<div class="take">Proposal to Sanmi: RQ1 as the flagship, RQ2 as its certification engine, RQ3 as the agentic follow-on.</div>')
+
+slide("Appendix &middot; agenda &middot; why now","The automated weak-to-strong researcher confirms the bottleneck",
+ '<p>Nine Claude agents autonomously solved a weak-to-strong problem (Performance Gap Recovered <b>0.97</b> vs <b>0.23</b> for human researchers) in days. Their own conclusion: the bottleneck is no longer proposing or running ideas, it is <b>designing evals</b>. The failures were <b>reward hacking</b> (shortcut mining, test-label exfiltration) and generalization, <b>high out-of-distribution accuracy did not mean real generalization</b>.</p>'+
+ '<div class="cols"><div><h3 class="g">What it changes for us</h3>'+
+ '<ul><li><b>Robustness under optimization is the whole game</b>, not accuracy at parity &rarr; RQ1.</li>'+
+ '<li>Their generalization bottleneck is our <b>surface-vs-competence</b> mechanism one level up &rarr; RQ2 certifies generalization.</li>'+
+ '<li>Their winning methods are <b>self-elicited from the strong model</b> (unsupervised consistency) &rarr; the reference-free bridge, RQ3.</li></ul></div>'+
+ '<div><h3 class="r">The caution</h3><p>An automated researcher will hack <i>our</i> eval too. A robustness benchmark has to be hacking-robust by construction. That is not a problem for the thesis, it is why the thesis matters.</p></div></div>'+
+ '<div class="take">AI will do the research; the scarce skill becomes hacking-robust, generalization-faithful evaluation, which is our lane.</div>')
 
 STYLE='''<style>
 :root{--bg:#f6f7f9;--panel:#fff;--ink:#181b20;--mut:#5b6470;--line:#e2e5ea;--accent:#2b5c8a;--g:#2f8f4e;--a:#c07d15;--p:#7d54c9;--r:#c44e52;--shadow:0 1px 3px rgba(20,25,35,.08),0 8px 24px rgba(20,25,35,.06);}
