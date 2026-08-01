@@ -102,8 +102,10 @@ slide("Q2 &middot; grading individual solutions","Now the harder question: can T
 
 # 12 why
 slide("Q2 &middot; why, with proof","Because per-item TFA is 89-96% reference nuisance",
- chips(("89-96%","of per-item variance is a reference nuisance"))+
- '<p>Decompose per-item TFA as <b class="g">competence</b> + a <b class="a">reference-predictability</b> nuisance (how easy this gold is to reproduce, identical for every model) + a <b class="r">style offset</b>. The nuisance is 89-96% of within-model variance. It <b>cancels</b> when averaged over items (ranking works) and <b>buries competence</b> per item (grading fails).</p>'+
+ chips(("89-96%","reference nuisance"),("4-11%","left for competence"))+
+ '<p>Write per-item TFA as <b class="g">competence</b> plus a <b class="a">reference-predictability nuisance</b> (how easy this particular gold is to reproduce, the same for every model) plus a <b class="r">style offset</b>.</p>'+
+ '<div class="def" style="font-size:.96rem"><b>How the nuisance is measured.</b> Take the model &times; item grid of per-item TFA (the 5-model Qwen ladder) and subtract the per-model mean (each model minus its own average), so only item-to-item variation is left. The share of that variation which is <b>identical across all models</b> (the item main effect, a one-way ANOVA on the reference) is the nuisance: <b>89-96%</b> on every dataset. The other 4-11% is all that remains for competence. Reproducible via <span style="font-family:ui-monospace,Menlo,monospace;font-size:.9em">scripts/variance_decomp.py</span>.</div>'+
+ '<p>Because it is the same for every model, the nuisance <b>cancels</b> when you average over items (ranking works), but <b>buries</b> the competence signal within a single item (grading fails).</p>'+
  fig("f10","Figure 10. Variance decomposition: per-item TFA is 89-96% a model-invariant reference nuisance.")+
  '<div class="take">This predicts no reweighting of TFA can recover the signal. So we tried them all.</div>')
 
