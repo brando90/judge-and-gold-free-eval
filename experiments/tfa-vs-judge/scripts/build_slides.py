@@ -97,6 +97,7 @@ slide("Q1 &middot; step 4 &middot; to agents","The whole boundary reaches coding
 slide("Q2 &middot; grading individual solutions","Now the harder question: can TFA grade one solution?",
  chips(("&approx; 0","MATH (per-item, beyond correctness)"),("+0.12","GSM8K"),("+0.22","Putnam"))+
  '<p>Controlling for correctness, the per-item TFA-vs-judge signal is <b>zero on MATH</b>, small on GSM8K, and only +0.22 on the hardest math. The small signals are <b>real</b> (they survive label-noise and contamination controls) but explain under 5% of variance, far too little to replace a judge.</p>'+
+ '<div class="def" style="font-size:.95rem"><b>Why a judge here, not accuracy?</b> Grading a solution means scoring quality <i>beyond</i> right-or-wrong. Accuracy is binary and is exactly what we control for, and among the correct answers it has no variance at all, so ρ(TFA, accuracy | correct) is undefined. The item-level target has to be <b>graded</b> (a judge, or human grades). Model ranking (Q1) is the judge-free, accuracy-based half; robustness to the choice of judge is in the appendix.</div>'+
  fig("f2","Figure 2. Per-item TFA-vs-judge (controlling for correctness): ~0 on MATH, small on GSM8K, largest on Putnam.")+
  '<div class="take">A leaderboard, not a grader. Why?</div>')
 
