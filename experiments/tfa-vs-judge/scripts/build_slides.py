@@ -178,12 +178,12 @@ S.append('''<section class="slide fwd"><div class="wrap"><div class="kick">Path 
 slide("Path forward &middot; the questions","Which question is worth going after?",
  '<p>Each is a different bet on what our result generalizes to. Listed in <b>no particular order</b>.</p>'+
  '<div class="cols"><div>'+
- '<h3 class="g">Is scalable oversight bounded by a scaling law?</h3><p>Chart oversight reliability against <b>solver capability</b>, not accuracy at parity: whose curve degrades slowest as the solver outgrows the overseer and is optimized against it?</p>'+
- '<h3 class="p">Do all cheap evaluators measure surface agreement, not quality?</h3><p>Is the competence-versus-nuisance split we found for TFA universal, LLM judges and similarity metrics included?</p>'+
- '<h3 class="a">Is verifying quality fundamentally easier than generating it?</h3><p>Or does the generation-verification gap hold only for correctness, not quality, as our item-level null already suggests?</p></div>'+
+ '<h3 class="g">As AI gets more capable than the methods we use to check it, does our ability to catch its mistakes break down in a predictable way?</h3><p>If we can plot that breakdown as a curve, we can tell which checking methods will still hold up as models keep improving, instead of only comparing them on the models we have now.</p>'+
+ '<h3 class="p">When we grade AI answers cheaply and automatically, are we measuring whether the answer looks right, or whether it is right?</h3><p>Our result suggests cheap graders, including using one AI to judge another, mostly reward answers that resemble the reference, not answers that are actually better.</p>'+
+ '<h3 class="a">Is telling a good answer from a bad one really easier than producing a good answer in the first place?</h3><p>We found that judging plain correctness is easy but judging quality is not, so the assumption that checking is easier than doing may only hold for right-or-wrong tasks.</p></div>'+
  '<div>'+
- '<h3>Can an evaluator be trusted under optimization pressure?</h3><p>Which evaluation signals survive being trained against, and can we predict in advance which ones get gamed?</p>'+
- '<h3>Can quality be measured with no reference at all?</h3><p>Where no gold answer exists (open-ended writing, research, agents), is there any cheap signal that tracks quality, or is human judgment the floor?</p></div></div>'+
+ '<h3>If we train an AI to score well on a cheap evaluator, does that evaluator stop being trustworthy, and can we tell in advance which ones will break?</h3><p>An evaluator that looks accurate can fall apart once a model is optimized to satisfy it (reward hacking); the open question is which signals survive that pressure.</p>'+
+ '<h3>For open-ended work with no clear right answer, can anything cheap judge quality, or do we always need a human?</h3><p>Essays, research, and long agent tasks have no gold answer to compare against, so it is unknown whether any low-cost signal tracks quality at all.</p></div></div>'+
  '<div class="take">The choice: which of these is worth a year. The earlier detailed framing is in the appendix.</div>')
 
 # 21 appendix: judge robustness
