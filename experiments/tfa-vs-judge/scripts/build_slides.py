@@ -215,6 +215,26 @@ slide("Appendix &middot; robustness to the judge","Not one judge's opinion",
  fig("judge","Item-level partial ρ under two judges (gpt-5.2 vs Claude Opus 4.8): the same conclusions under both.")+
  "<div class='take'>The conclusions are properties of TFA, not of the particular judge we appointed as ground truth.</div>")
 
+# 22 appendix: nuisance decomposition (backup for the "why, with proof" slide)
+slide("Appendix &middot; backup &middot; the nuisance decomposition","How the 89-96% is actually measured",
+ chips(("94.6%","MATH-500"),("88.9%","MATH-full"),("89.1%","GSM8K"),("96.1%","Putnam"))+
+ '<div class="cols"><div>'+
+ '<h3 class="g">The recipe (a one-way ANOVA on the reference)</h3>'+
+ '<ol><li><b>Build the grid.</b> T[model, item] = per-item TFA for the 5-model Qwen ladder, aligned on the problems all five share.</li>'+
+ '<li><b>Remove each model level.</b> Subtract every model own mean over items: D = T minus its row mean. This strips out overall generosity (the model-ranking axis), leaving only how TFA rises and falls from item to item within a model.</li>'+
+ '<li><b>Find the shared part.</b> Average each item column down the models: b[item] = mean over models of D. That is the item main effect, the deviation <b>identical for every model</b>, a fact about the reference, not about any model.</li>'+
+ '<li><b>Take the ratio.</b> nuisance = SS(b) / SS(D) = &Sigma; b&sup2; over &Sigma; D&sup2;: the item factor share of the within-model variance. It lands at <b>89-96%</b> on every dataset; the leftover 4-11% is the model-specific residual.</li></ol>'+
+ '<p style="font-size:.9rem;color:var(--mut)">Reproducible via <span style="font-family:ui-monospace,Menlo,monospace">scripts/variance_decomp.py</span>.</p>'+
+ '</div><div>'+
+ '<h3 class="p">A two-model, three-item toy</h3>'+
+ '<table class="mini"><tr><th></th><th>item 1</th><th>item 2</th><th>item 3</th><th>row mean</th></tr>'+
+ '<tr><td>Model A</td><td>0.70</td><td>0.80</td><td>0.90</td><td>0.80</td></tr>'+
+ '<tr><td>Model B</td><td>0.74</td><td>0.84</td><td>0.94</td><td>0.84</td></tr></table>'+
+ '<p style="font-size:.98rem">Center each row and both become [&minus;.10, 0, +.10]. The item effect is [&minus;.10, 0, +.10] and the residual is <b>zero everywhere</b>, so nuisance = 100%: item 3 is easier to reproduce for <i>both</i> models by the same amount, so nothing here tells the two apart. The uniform +0.04 on Model B is the overall level, removed in step 2, and that is the ranking axis.</p>'+
+ '<div class="def" style="font-size:.95rem"><b>Why this splits the two verdicts.</b> Being identical across models, the nuisance <b>cancels</b> when you average over items (mean TFA still ranks models) but <b>swamps</b> the 4-11% model-specific residual inside any single item (so grading fails). The 89-96% is the ceiling on how much per-item signal ever existed.</div>'+
+ '</div></div>'+
+ '<div class="take">Grading needs that 4-11% residual, and the judge correlation shows even it is mostly noise, not competence.</div>')
+
 STYLE='''<style>
 :root{--bg:#f6f7f9;--panel:#fff;--ink:#181b20;--mut:#5b6470;--line:#e2e5ea;--accent:#2b5c8a;--g:#2f8f4e;--a:#c07d15;--p:#7d54c9;--r:#c44e52;--shadow:0 1px 3px rgba(20,25,35,.08),0 8px 24px rgba(20,25,35,.06);}
 @media (prefers-color-scheme:dark){:root{--bg:#0f1216;--panel:#171b21;--ink:#e9ecf1;--mut:#9aa3af;--line:#262b33;--accent:#6ea8dc;--g:#5ec97e;--a:#e0a94a;--p:#a988e6;--r:#e0777b;--shadow:0 1px 3px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);}}
@@ -247,6 +267,10 @@ b,strong{font-weight:700}.g{color:var(--g);font-weight:700}.a{color:var(--a);fon
 .fig img{display:block;width:100%;max-width:100%;height:auto;border-radius:6px}
 .fig figcaption{font-size:.8rem;color:var(--mut);margin-top:7px;line-height:1.4}
 .cols{display:grid;grid-template-columns:1fr 1fr;gap:30px}.cols p,.cols ul,.cols ol{font-size:1rem}
+.mini{border-collapse:collapse;font-family:ui-monospace,Menlo,monospace;font-size:.9rem;margin:8px 0 12px}
+.mini th,.mini td{border:1px solid var(--line);padding:5px 11px;text-align:right;font-variant-numeric:tabular-nums}
+.mini th{color:var(--mut);font-weight:600;background:color-mix(in srgb,var(--accent) 7%,var(--panel))}
+.mini td:first-child,.mini th:first-child{text-align:left;color:var(--ink);font-weight:700}
 .new{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:4px 20px 14px;box-shadow:var(--shadow)}
 .warn{background:color-mix(in srgb,var(--r) 9%,var(--panel));border:1px solid color-mix(in srgb,var(--r) 30%,var(--line));border-radius:10px;padding:11px 15px;margin-top:14px;font-size:.98rem}
 .rail{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:50;transition:width .15s}
