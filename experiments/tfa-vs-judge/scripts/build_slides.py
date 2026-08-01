@@ -174,7 +174,31 @@ S.append('''<section class="slide fwd"><div class="wrap"><div class="kick">Path 
    <div class="take" style="margin-top:12px">Our result is the map: a reference-anchored cheap signal is safe only
    within a family; elsewhere it rewards style. For frontier-API and agentic settings, go output-grounded and reference-free.</div></div></div></section>''')
 
-# 17 appendix: judge robustness
+# 17 research agenda: the gap
+slide("Research agenda &middot; the gap","Scalable oversight is measured at the wrong point",
+ '<p>Today an overseer is judged by its <b>accuracy at parity</b> and its <b>cost</b>. But what predicts whether a method <i>scales</i> is the <b>degradation curve</b>: how reliability changes as the solver grows more capable and as it is optimized against the overseer.</p>'+
+ '<ul><li>The current protocol benchmark (Agent Score Difference) explicitly does <b>not</b> test long-horizon capability gaps or optimization pressure over time.</li>'+
+ '<li>Judges are provably hackable: a lone &ldquo;:&rdquo; draws false positives from GPT-4o up to 35% of the time, and strong judges are near-random on JudgeBench objective-correctness pairs.</li>'+
+ '<li>Reference-free reward signals get gamed under self-play.</li></ul>'+
+ '<div class="take">The missing third axis: robustness under <b>capability gap &times; optimization pressure</b>.</div>')
+
+# 18 research agenda: the questions
+slide("Research agenda &middot; the questions","Four questions, ranked by impact",
+ '<div class="cols"><div>'+
+ '<h3 class="g">RQ1 &middot; flagship</h3><p><b>Oversight robustness curves.</b> Chart overseer reliability vs solver capability and vs optimization pressure, across math, code, agentic, and subjective domains, and <b>predict the slope</b> from our style/nuisance offset. Turns &ldquo;oversight breaks at large gaps&rdquo; into a predictor.</p>'+
+ '<h3 class="p">RQ2</h3><p><b>Certify an evaluator without full ground truth.</b> A judge <b>nuisance fraction</b> (quality vs surface: verbosity, style, position), anchored on human grades; flags the hackable failures before deployment.</p></div>'+
+ '<div><h3>RQ3</h3><p><b>Reference-free process signals for agents that survive optimization.</b> Our rollout process value, grounded in the environment oracle, hardened against reward hacking.</p>'+
+ '<h3>RQ4</h3><p><b>Does verification beat generation for grading quality?</b> Our item-level null says: not for quality, only for correctness. The backbone under RQ1 and RQ2.</p></div></div>'+
+ '<div class="take">Every cheap evaluator, TFA and LLM judges alike, mixes a quality signal with a surface nuisance.</div>')
+
+# 19 research agenda: the bet
+slide("Research agenda &middot; the bet","Flagship: oversight robustness curves",
+ '<p>The impactful-paper template, borrowed from generative modeling: introduce a genuine new <b>axis</b> to a problem treated as two-dimensional, then validate it across modalities with scaling curves. Our new axis is <b>oversight robustness</b>; our modalities are math, code, agentic, and subjective tasks.</p>'+
+ '<p>What is uniquely ours: not just the benchmark, but a <b>mechanism that predicts the curve</b>. As the solver diverges in style and distribution from the overseer, the nuisance term grows and reliability bends, exactly the offset we measured for TFA.</p>'+
+ '<div class="warn"><b>Respects the frontier constraint.</b> API models expose no token log-probabilities, so the practical toolkit is <b>certified judges (RQ2) + reference-free process signals (RQ3)</b>, with TFA the foundation that maps the limits.</div>'+
+ '<div class="take">Proposal to Sanmi: RQ1 as the flagship, RQ2 as its certification engine, RQ3 as the agentic follow-on.</div>')
+
+# 20 appendix: judge robustness
 slide("Appendix &middot; robustness to the judge","Not one judge's opinion",
  chips(("0.75-0.94","inter-judge agreement (ρ)"),("2 families","gpt-5.2 &amp; Opus 4.8"))+
  "<p>The model-ranking story above is judge-free (TFA vs <b>accuracy</b>). The <i>item-level</i> results in Part 2 are the only judge-defined ones, so we re-graded the three anchor datasets with a second frontier judge from a different family (Claude Opus 4.8), same rubric. Same pattern: the MATH null stays null and the small GSM8K and Putnam signals replicate, with CIs still excluding zero.</p>"+
