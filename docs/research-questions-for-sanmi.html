@@ -36,7 +36,14 @@ h1{font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;font
   border:1px solid var(--accent-line);border-radius:6px;padding:3px 9px;margin-bottom:11px}
 .q h2{font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;font-weight:700;
   font-size:1.26rem;line-height:1.3;margin:0 0 .5em;letter-spacing:-.005em;text-wrap:balance}
-.why{font-size:1rem;margin:0;max-width:66ch}
+.why{font-size:1rem;margin:0}
+.ref{font-size:.84rem;color:var(--mut);margin:.85em 0 0;padding-top:.7em;border-top:1px solid var(--line);max-width:70ch}
+.ref b{color:var(--ink);font-weight:600}
+.ref code{font-family:ui-monospace,Menlo,monospace;font-size:.92em;color:var(--accent)}
+.spine{background:var(--accent-soft);border:1px solid var(--accent-line);border-radius:14px;padding:20px 22px}
+.spine h2{font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;font-size:1.2rem;margin:0 0 .4em}
+.spine p{font-size:.98rem;margin:0;max-width:70ch}
+.spine code{font-family:ui-monospace,Menlo,monospace;font-size:.9em;color:var(--accent)}
 .toggle{position:fixed;top:14px;right:16px;background:var(--panel);border:1px solid var(--line);color:var(--mut);
   border-radius:20px;padding:5px 12px;font-size:.76rem;cursor:pointer;box-shadow:var(--shadow)}
 </style>
@@ -48,7 +55,7 @@ h1{font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;font
   models well but cannot grade an individual answer</b>, and we can prove why: 89 to 96 percent of the
   per-answer score reflects how predictable the reference text is, not how good the answer is. The
   signal tracks resemblance to the reference's <b>style</b>, not reasoning <b>quality</b>.</p>
-  <p class="note">Five questions follow. Each is a different bet on what the finding generalizes to. In no particular order.</p>
+  <p class="note">Five questions follow, in no particular order. Under each: the closest prior work and where it stops short, checked in a literature pass.</p>
   <hr class="rule">
   <div class="cards">
 
@@ -57,6 +64,10 @@ h1{font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;font
       <h2>As AI gets more capable than the methods we use to check it, does our ability to catch its mistakes break down in a predictable way?</h2>
       <p class="why">If we can plot that breakdown as a curve, we can tell which checking methods will still
       hold up as models keep improving, instead of only comparing them on the models we have now.</p>
+      <p class="ref"><b>Closest prior work.</b> Engels et al. 2025 (<code>arXiv:2504.18530</code>) already plots
+      oversight success against the capability gap, but on game Elo; Agent Score Difference
+      (<code>arXiv:2504.03731</code>) is a single score at parity, not a curve. Our edge: the
+      optimization-pressure-over-time axis, and real math, code, and agentic capability rather than games.</p>
     </div>
 
     <div class="q">
@@ -64,6 +75,10 @@ h1{font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;font
       <h2>When we grade AI answers cheaply and automatically, are we measuring whether the answer looks right, or whether it is right?</h2>
       <p class="why">Our result suggests cheap graders, including using one AI to judge another, mostly reward
       answers that resemble the reference, not answers that are actually better.</p>
+      <p class="ref"><b>Closest prior work.</b> JudgeBench (<code>arXiv:2410.12784</code>) shows judges failing at
+      objective correctness; ODIN (<code>arXiv:2402.07319</code>) and Length-Controlled AlpacaEval
+      (<code>arXiv:2404.04475</code>) each remove one bias. None reports the surface-nuisance fraction of the
+      score as the headline, which our decomposition does.</p>
     </div>
 
     <div class="q">
@@ -71,6 +86,10 @@ h1{font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;font
       <h2>Is telling a good answer from a bad one really easier than producing a good answer in the first place?</h2>
       <p class="why">We found that judging plain correctness is easy but judging quality is not, so the common
       assumption that checking is easier than doing may only hold for right-or-wrong tasks.</p>
+      <p class="ref"><b>Closest prior work.</b> Weaver (<code>arXiv:2506.18203</code>), Generator-Validator
+      Consistency (<code>arXiv:2310.01846</code>), and "Can LLMs Judge Better Than They Generate?"
+      (<code>arXiv:2606.28050</code>) all study the gap for correctness only. Restricting it to quality among
+      already-correct answers appears open.</p>
     </div>
 
     <div class="q">
@@ -78,6 +97,10 @@ h1{font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;font
       <h2>If we train an AI to score well on a cheap evaluator, does that evaluator stop being trustworthy, and can we tell in advance which ones will break?</h2>
       <p class="why">An evaluator that looks accurate can fall apart once a model is optimized to satisfy it
       (reward hacking). The open question is which signals survive that pressure.</p>
+      <p class="ref"><b>Closest prior work.</b> Scaling Laws for Reward Model Overoptimization
+      (<code>arXiv:2210.10760</code>) predicts hacking magnitude from optimization, not from a static property;
+      Skalse et al. (<code>arXiv:2209.13085</code>) prove unhackability is near-impossible. Predicting
+      hackability in advance from a measurable surface property appears unclaimed.</p>
     </div>
 
     <div class="q">
@@ -85,6 +108,20 @@ h1{font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;font
       <h2>For open-ended work with no clear right answer, can anything cheap judge quality, or do we always need a human?</h2>
       <p class="why">Essays, research, and long agent tasks have no gold answer to compare against, so it is
       unknown whether any low-cost signal tracks quality at all.</p>
+      <p class="ref"><b>Closest prior work.</b> BARTScore (<code>arXiv:2106.11520</code>), CCS
+      (<code>arXiv:2212.03827</code>), and Self-Consistency (<code>arXiv:2203.11171</code>) give label-free
+      signals, but for constrained or convergent tasks. Whether any survives into open-ended, answer-free work,
+      or whether human judgment is the floor, is unposed.</p>
+    </div>
+
+    <div class="spine">
+      <h2>The spine: why these hang together</h2>
+      <p>Across all five, one measurable quantity keeps recurring: how much of an evaluator's score is surface
+      nuisance rather than model-invariant quality. No prior work defines that fraction and shows it predicts
+      <b>both</b> out-of-distribution collapse <b>and</b> hackability (closest: Inside the Unfair Judge,
+      <code>arXiv:2607.11871</code>; Singhal et al. length correlations, <code>arXiv:2310.03716</code>;
+      Eisenstein et al. Helping or Herding, <code>arXiv:2312.09244</code>). That unifying predictor is the open
+      gap, and it is a mechanism rather than a trained metric, which makes it hard to game.</p>
     </div>
 
   </div>

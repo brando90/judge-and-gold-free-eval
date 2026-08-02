@@ -13,6 +13,9 @@ def fig(k,cap): return f'<figure class="fig"><img src="{IMG[k]}" alt="{cap}"/><f
 def chips(*cs): return '<div class="chips">'+''.join(f'<div class="chip"><span class="cn">{n}</span><span class="cl">{l}</span></div>' for n,l in cs)+'</div>'
 S=[]
 def slide(kick,title,body,cls=""): S.append(f'<section class="slide {cls}"><div class="wrap"><div class="kick">{kick}</div><h2>{title}</h2>{body}</div></section>')
+def refslide(kick,title,verdict,refs,edge):
+ items="".join(f'<li><b>{t}</b> <span class="cite">{c}</span><br><span class="rd">{d}</span></li>' for t,c,d in refs)
+ slide(kick,title,f'<div class="chips"><div class="chip"><span class="cn">{verdict}</span><span class="cl">novelty verdict</span></div></div><ul class="refs">{items}</ul><div class="take">{edge}</div>')
 
 # 1 title
 S.append('''<section class="slide title"><div class="wrap">
@@ -186,6 +189,49 @@ slide("Path forward &middot; the questions","Which question is worth going after
  '<h3>For open-ended work with no clear right answer, can anything cheap judge quality, or do we always need a human?</h3><p>Essays, research, and long agent tasks have no gold answer to compare against, so it is unknown whether any low-cost signal tracks quality at all.</p></div></div>'+
  '<div class="take">The choice: which of these is worth a year. The earlier detailed framing is in the appendix.</div>')
 
+# 18-23 appendix: prior work per question (verified in the literature pass)
+refslide("Appendix &middot; prior work &middot; Q1","Oversight reliability vs the capability gap","PARTIAL",
+ [("Scaling Laws for Scalable Oversight","arXiv:2504.18530","Engels et al. 2025. Plots oversight success against the overseer-overseen capability gap across several games."),
+  ("A Benchmark for Scalable Oversight Protocols","arXiv:2504.03731","Sudhir, Kaunismaa, Panickssery 2025. Agent Score Difference: a scalar honesty-at-parity score, not a curve."),
+  ("Scalable oversight with weak LLMs judging strong LLMs","arXiv:2407.04622","Kenton et al. 2024. Judge accuracy vs the debater-judge gap, inference-only."),
+  ("Weak-to-strong generalization","arXiv:2312.09390","Burns et al. 2023. Training recovery vs compute, not a reliability curve.")],
+ "Engels already draws the capability-gap curve, on game Elo. Unclaimed: the <b>optimization-pressure-over-time</b> axis and grounding capability in real math, code, and agentic domains.")
+
+refslide("Appendix &middot; prior work &middot; Q2","Do cheap evaluators score surface, not quality","PARTIAL",
+ [("JudgeBench","arXiv:2410.12784","Tan et al. 2024. Frontier judges near chance at picking the objectively correct answer over the stylish one."),
+  ("Style Over Substance","arXiv:2307.03025","Wu and Aji 2023 (also Feuer et al. 2024, 2409.15268). Fluent-but-wrong beats plain-but-right."),
+  ("Length-Controlled AlpacaEval","arXiv:2404.04475","Dubois et al. 2024. Partials out length as a mediator, one nuisance only."),
+  ("ODIN: Disentangled Reward Mitigates Hacking","arXiv:2402.07319","Chen et al. 2024. Splits a reward into length vs content heads.")],
+ "Each shows or removes <i>one</i> bias; none reports the <b>surface-nuisance fraction</b> of score variance as the headline. Our decomposition does.")
+
+refslide("Appendix &middot; prior work &middot; Q3","Is judging quality easier than generating","mostly UNCLAIMED",
+ [("Weaver: Shrinking the Generation-Verification Gap","arXiv:2506.18203","Saad-Falcon, Song et al. 2025. Weak-verifier ensembles, correctness selection only."),
+  ("Generator-Validator Consistency","arXiv:2310.01846","Li et al. 2023. GV-consistency, still correctness / true-false."),
+  ("LLMs Cannot Self-Correct Reasoning Yet","arXiv:2310.01798","Huang et al. 2023. Self-verification fails without external feedback."),
+  ("Can LLMs Judge Better Than They Generate?","arXiv:2606.28050","Bandyopadhyay 2026. Generation beats self-evaluation on 3 of 4 QA benchmarks.")],
+ "All correctness-only. Unclaimed: whether judging <b>quality among already-correct</b> answers is easier than producing a good one.")
+
+refslide("Appendix &middot; prior work &middot; Q4","Can we predict which evaluators get gamed","PARTIAL / UNCLAIMED",
+ [("Scaling Laws for Reward Model Overoptimization","arXiv:2210.10760","Gao et al. 2023. Overoptimization magnitude from KL and RM size, during optimization."),
+  ("Defining and Characterizing Reward Hacking","arXiv:2209.13085","Skalse et al. 2022. Unhackability is near-impossible, a theoretical property."),
+  ("More Convincing, Not More Correct","arXiv:2607.05904","2026. Self-play drives reference-free judges to convincing-but-wrong outputs."),
+  ("Inside the Unfair Judge","arXiv:2607.11871","Xu et al. 2026. A judge activation bias-subspace predicts its OOD failure.")],
+ "None forecasts hackability <b>ex ante</b> from a static surface-nuisance property. That predictive framing is unclaimed.")
+
+refslide("Appendix &middot; prior work &middot; Q5","Any cheap signal with no reference","PARTIAL",
+ [("BARTScore","arXiv:2106.11520","Yuan, Neubig, Liu 2021. LM likelihood as a reference-free NLG score, for constrained generation."),
+  ("Discovering Latent Knowledge Without Supervision (CCS)","arXiv:2212.03827","Burns et al. 2022. Unsupervised truth direction from consistency, short factual statements."),
+  ("Self-Consistency","arXiv:2203.11171","Wang et al. 2022. Answer agreement as a label-free correctness proxy, where answers converge."),
+  ("Reference-free NLG evaluation survey","arXiv:2501.12011","2025. Landscape and limits of reference-free metrics.")],
+ "The building blocks exist, but none asks whether <b>any</b> cheap reference-free signal survives into open-ended, answer-free work, or whether human judgment is the floor.")
+
+refslide("Appendix &middot; prior work &middot; the spine","Does the nuisance fraction predict failure","UNCLAIMED",
+ [("Inside the Unfair Judge","arXiv:2607.11871","Xu et al. 2026. A measured judge property predicts OOD failure, but geometric, not a nuisance fraction, and silent on hacking."),
+  ("A Long Way to Go: Length Correlations in RLHF","arXiv:2310.03716","Singhal et al. 2023. One nuisance feature, length, drives most of the hacking."),
+  ("Reward Model Ensembles Help Mitigate Overoptimization","arXiv:2310.02743","Coste et al. 2023. Uncertainty mitigates, it does not predict."),
+  ("Helping or Herding?","arXiv:2312.09244","Eisenstein et al. 2023. Shared systematic reward-model error survives ensembling and still gets hacked.")],
+ "Each leg is foreshadowed, but no one defines a single <b>surface-nuisance fraction</b> that jointly predicts <b>both</b> OOD collapse and hackability. That unifying predictive quantity is the open gap, and the moat.")
+
 # 21 appendix: judge robustness
 slide("Appendix &middot; robustness to the judge","Not one judge's opinion",
  chips(("0.75-0.94","inter-judge agreement (ρ)"),("2 families","gpt-5.2 &amp; Opus 4.8"))+
@@ -280,6 +326,9 @@ b,strong{font-weight:700}.g{color:var(--g);font-weight:700}.a{color:var(--a);fon
 .mini th,.mini td{border:1px solid var(--line);padding:5px 11px;text-align:right;font-variant-numeric:tabular-nums}
 .mini th{color:var(--mut);font-weight:600;background:color-mix(in srgb,var(--accent) 7%,var(--panel))}
 .mini td:first-child,.mini th:first-child{text-align:left;color:var(--ink);font-weight:700}
+.refs{font-size:.98rem;max-width:82ch}.refs li{margin:.55em 0}
+.cite{font-family:ui-monospace,Menlo,monospace;font-size:.78em;color:var(--accent)}
+.rd{color:var(--mut);font-size:.92rem}
 .new{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:4px 20px 14px;box-shadow:var(--shadow)}
 .warn{background:color-mix(in srgb,var(--r) 9%,var(--panel));border:1px solid color-mix(in srgb,var(--r) 30%,var(--line));border-radius:10px;padding:11px 15px;margin-top:14px;font-size:.98rem}
 .rail{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:50;transition:width .15s}
