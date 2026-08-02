@@ -107,14 +107,14 @@ function createTFADeck() {
        'The positive bet: reference-free process value grounded in an environment success oracle, where no gold trace exists.',
        'Hard constraint: frontier API models expose no token log-probabilities, so TFA runs only on open weights.']},
 
-    {type:'menu', kick:'Path forward, the questions', title:'Which question is worth going after?',
-     sub:'Each is a different bet on what our result generalizes to. In no particular order.',
+    {type:'menu', kick:'Path forward, the program', title:'Reliable judges without ground truth',
+     sub:'Build judges that stay reliable under optimization and under smarter models, in low-ground-truth domains, and measure it. Five steps, in dependency order.',
      items:[
-       ['As AI gets more capable than the methods we use to check it, does our ability to catch its mistakes break down in a predictable way?','If we can plot that breakdown as a curve, we can tell which checking methods will still hold up as models keep improving, instead of only comparing them on the models we have now.'],
-       ['When we grade AI answers cheaply and automatically, are we measuring whether the answer looks right, or whether it is right?','Our result suggests cheap graders, including using one AI to judge another, mostly reward answers that resemble the reference, not answers that are actually better.'],
-       ['Is telling a good answer from a bad one really easier than producing a good answer in the first place?','We found that judging plain correctness is easy but judging quality is not, so the assumption that checking is easier than doing may only hold for right-or-wrong tasks.'],
-       ['If we train an AI to score well on a cheap evaluator, does that evaluator stop being trustworthy, and can we tell which ones will break?','An evaluator that looks accurate can fall apart once a model is optimized to satisfy it (reward hacking); the open question is which signals survive that pressure.'],
-       ['For open-ended work with no clear right answer, can anything cheap judge quality, or do we always need a human?','Essays, research, and long agent tasks have no gold answer to compare against, so it is unknown whether any low-cost signal tracks quality at all.']]}
+       ['1. The yardstick','Measure a judge with little ground truth: split its score into real quality vs surface nuisance (the nuisance fraction). A mechanism, not a trained metric. Everything below needs it.'],
+       ['2. Survives smarter models','Does reliability fall predictably as the judged model outgrows the judge, and does the nuisance fraction predict the slope? Plot reliability vs the capability gap.'],
+       ['3. Survives reward hacking','When a model is optimized against the judge, does it break, and can we predict which judges break before optimizing, from the nuisance fraction?'],
+       ['4. Design','What construction survives both: reference-free and process signals grounded in an environment oracle, ensembles, consistency, debate? Keep what lowers the nuisance fraction and flattens the curves.'],
+       ['5. The floor','Is there an open-ended regime where no cheap judge survives, so the honest design keeps a human or an environment oracle in the loop? Find where the nuisance fraction cannot be driven down.']]}
   ];
 
   // remove the default blank first slide once we have added our own

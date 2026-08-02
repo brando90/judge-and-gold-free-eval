@@ -177,9 +177,21 @@ S.append('''<section class="slide fwd"><div class="wrap"><div class="kick">Path 
    <div class="take" style="margin-top:12px">Our result is the map: a reference-anchored cheap signal is safe only
    within a family; elsewhere it rewards style. For frontier-API and agentic settings, go output-grounded and reference-free.</div></div></div></section>''')
 
-# 17 the questions (high-level research questions to choose between; detail moved to appendix)
-slide("Path forward &middot; the questions","Which question is worth going after?",
- '<p>Each is a different bet on what our result generalizes to. Listed in <b>no particular order</b>.</p>'+
+# 17 the program (committed research program; alternative-bets framing + prior work in appendix)
+slide("Path forward &middot; the program","Reliable judges without ground truth",
+ '<p>One mission: build judges that stay reliable when they are <b>optimized against</b> and when the model they judge is <b>smarter than them</b>, in domains with little ground truth, and measure it. Five steps, in <b>dependency order</b>.</p>'+
+ '<div class="cols"><div>'+
+ '<h3 class="ac">1 &middot; The yardstick</h3><p>With little ground truth, how do you tell a good judge from a bad one? Split its score into real quality vs surface nuisance (the nuisance fraction) from a small anchor. A <b>mechanism, not a trained metric</b>, so it cannot itself be gamed. Everything below needs this number.</p>'+
+ '<h3 class="g">2 &middot; Survives smarter models</h3><p>Does reliability fall predictably as the judged model outgrows the judge, and does the yardstick predict the fall? Plot reliability against the capability gap; test whether the nuisance fraction predicts the slope.</p>'+
+ '<h3 class="r">3 &middot; Survives reward hacking</h3><p>When a model is optimized against the judge, does it break, and can we predict which judges break <b>before</b> optimizing, from the nuisance fraction?</p></div>'+
+ '<div>'+
+ '<h3 class="p">4 &middot; Design</h3><p>What construction survives both axes, especially where ground truth is scarce: reference-free and process signals grounded in an environment oracle, ensembles, consistency, debate? Build candidates, score them with step 1, keep what lowers the nuisance fraction and flattens the curves.</p>'+
+ '<h3 class="a">5 &middot; The floor</h3><p>Is there an open-ended regime where no cheap judge survives, so the honest design keeps a human or an environment oracle in the loop? Find where the nuisance fraction cannot be driven down.</p></div></div>'+
+ '<div class="take">The spine: one static, mechanism-based quantity, the nuisance fraction, that predicts <b>both</b> capability-gap collapse and hackability. That is what makes this one program, not five errands.</div>')
+
+# 18 appendix: the alternative bets (the earlier independent-questions framing)
+slide("Appendix &middot; alternative bets","The five as separate bets",
+ '<p>Before the program above, these were the five as <b>independent</b> bets to choose between. Each is a different generalization of our result; the program folds them into one dependency chain. Prior-work grounding for each follows.</p>'+
  '<div class="cols"><div>'+
  '<h3 class="g">As AI gets more capable than the methods we use to check it, does our ability to catch its mistakes break down in a predictable way?</h3><p>If we can plot that breakdown as a curve, we can tell which checking methods will still hold up as models keep improving, instead of only comparing them on the models we have now.</p>'+
  '<h3 class="p">When we grade AI answers cheaply and automatically, are we measuring whether the answer looks right, or whether it is right?</h3><p>Our result suggests cheap graders, including using one AI to judge another, mostly reward answers that resemble the reference, not answers that are actually better.</p>'+
@@ -187,7 +199,7 @@ slide("Path forward &middot; the questions","Which question is worth going after
  '<div>'+
  '<h3 class="r">If we train an AI to score well on a cheap evaluator, does that evaluator stop being trustworthy, and can we tell in advance which ones will break?</h3><p>An evaluator that looks accurate can fall apart once a model is optimized to satisfy it (reward hacking); the open question is which signals survive that pressure.</p>'+
  '<h3 class="ac">For open-ended work with no clear right answer, can anything cheap judge quality, or do we always need a human?</h3><p>Essays, research, and long agent tasks have no gold answer to compare against, so it is unknown whether any low-cost signal tracks quality at all.</p></div></div>'+
- '<div class="take">The choice: which of these is worth a year. The earlier detailed framing is in the appendix.</div>')
+ '<div class="take">The program reorders these: yardstick (bet 2), survives smarter models (bet 1), survives hacking (bet 4), design (bet 3), the floor (bet 5).</div>')
 
 # 18-23 appendix: prior work per question (verified in the literature pass)
 refslide("Appendix &middot; prior work &middot; Q1","Oversight reliability vs the capability gap","PARTIAL",

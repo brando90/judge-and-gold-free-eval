@@ -1,4 +1,4 @@
-<title>Judge-free evaluation: which question is worth going after?</title>
+<title>The program: reliable judges without ground truth</title>
 <style>
 :root{
   --bg:#FBFAF7;--panel:#FFFFFF;--ink:#1C1F26;--mut:#5C6470;--line:#E7E3DB;
@@ -44,26 +44,82 @@ h1{font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;font
 .spine h2{font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;font-size:1.2rem;margin:0 0 .4em}
 .spine p{font-size:.98rem;margin:0;max-width:70ch}
 .spine code{font-family:ui-monospace,Menlo,monospace;font-size:.9em;color:var(--accent)}
+.sec{font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;font-weight:700;font-size:1.5rem;margin:40px 0 2px}
+.secnote{font-size:.92rem;color:var(--mut);margin:0 0 4px;max-width:66ch}
 .toggle{position:fixed;top:14px;right:16px;background:var(--panel);border:1px solid var(--line);color:var(--mut);
   border-radius:20px;padding:5px 12px;font-size:.76rem;cursor:pointer;box-shadow:var(--shadow)}
 </style>
 <button class="toggle" onclick="var r=document.documentElement,c=r.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');r.setAttribute('data-theme',c==='dark'?'light':'dark')">◐ theme</button>
 <div class="page">
   <div class="eyebrow">Koyejo group &middot; judge-free evaluation</div>
-  <h1>Which question is worth going after?</h1>
-  <p class="lede">Our study is essentially done. A cheap, automatic way of scoring answers <b>ranks whole
-  models well but cannot grade an individual answer</b>, and we can prove why: 89 to 96 percent of the
-  per-answer score reflects how predictable the reference text is, not how good the answer is. The
-  signal tracks resemblance to the reference's <b>style</b>, not reasoning <b>quality</b>.</p>
-  <p class="note">Five questions follow, in no particular order. Under each: the closest prior work and where it stops short, checked in a literature pass.</p>
+  <h1>Reliable judges without ground truth</h1>
+  <p class="lede">One mission: build judges that stay reliable when they are <b>optimized against</b> and when
+  the model they judge is <b>smarter than them</b>, in domains with little ground truth, and measure it. It
+  grows from a finished result: a cheap grader ranks whole models well but <b>cannot grade an individual
+  answer</b>, because 89 to 96 percent of the per-answer score is reference-style resemblance, not quality.</p>
+  <p class="note">Five steps, in dependency order. The first is a gate: nothing else is measurable without it.</p>
   <hr class="rule">
+  <div class="cards">
+
+    <div class="q">
+      <span class="chip">step 1 &middot; gate</span>
+      <h2>The yardstick: measuring a judge with little ground truth</h2>
+      <p class="why">How do you tell a good judge from a bad one when you have almost no labels? Split its score
+      into a real-quality part and a surface-nuisance part (the nuisance fraction) from a small anchor. It must
+      be a mechanism, not a trained metric, so it cannot itself be gamed. Every step below needs this number.</p>
+    </div>
+
+    <div class="q">
+      <span class="chip">step 2 &middot; smarter models</span>
+      <h2>Does it survive smarter models?</h2>
+      <p class="why">Does the judge's reliability fall predictably as the model it judges grows more capable than
+      it, and does the yardstick predict the fall? Plot reliability against the capability gap across domains.</p>
+    </div>
+
+    <div class="q">
+      <span class="chip">step 3 &middot; reward hacking</span>
+      <h2>Does it survive reward hacking?</h2>
+      <p class="why">When a model is optimized against the judge, does the judge break, and can we predict which
+      judges break before we optimize, from the nuisance fraction alone?</p>
+    </div>
+
+    <div class="q">
+      <span class="chip">step 4 &middot; design</span>
+      <h2>How do we design one that survives both?</h2>
+      <p class="why">What construction holds up on both axes where ground truth is scarce: reference-free and
+      process signals grounded in an environment oracle, ensembles, self-consistency, debate? Build candidates,
+      score each with step 1, keep what lowers the nuisance fraction and flattens the curves.</p>
+    </div>
+
+    <div class="q">
+      <span class="chip">step 5 &middot; the floor</span>
+      <h2>Where is the floor?</h2>
+      <p class="why">Is there an open-ended regime, with no checkable answer, where no cheap judge survives, so
+      the honest design keeps a human or an environment oracle in the loop? Find where the nuisance fraction
+      cannot be driven down. That boundary is a result in itself.</p>
+    </div>
+
+    <div class="spine">
+      <h2>The spine</h2>
+      <p>One static, mechanism-based quantity, the nuisance fraction, predicts <b>both</b> capability-gap
+      collapse (step 2) and hackability (step 3). That single predictor is what makes this one program rather
+      than five errands, and the literature pass finds it unclaimed: the closest work
+      (Inside the Unfair Judge, <code>arXiv:2607.11871</code>; Singhal et al. length correlations,
+      <code>arXiv:2310.03716</code>; Eisenstein et al. Helping or Herding, <code>arXiv:2312.09244</code>) each
+      foreshadows only one leg, and a mechanism is much harder to game than a trained metric.</p>
+    </div>
+
+  </div>
+
+  <h2 class="sec">Appendix: the five as separate bets</h2>
+  <p class="secnote">Before the program, these were the five as independent bets. The program reorders them:
+  yardstick = bet 2, survives smarter models = bet 1, survives hacking = bet 4, design = bet 3, the floor =
+  bet 5. Under each: the closest prior work and where it stops short.</p>
   <div class="cards">
 
     <div class="q">
       <span class="chip">scaling law</span>
       <h2>As AI gets more capable than the methods we use to check it, does our ability to catch its mistakes break down in a predictable way?</h2>
-      <p class="why">If we can plot that breakdown as a curve, we can tell which checking methods will still
-      hold up as models keep improving, instead of only comparing them on the models we have now.</p>
       <p class="ref"><b>Closest prior work.</b> Engels et al. 2025 (<code>arXiv:2504.18530</code>) already plots
       oversight success against the capability gap, but on game Elo; Agent Score Difference
       (<code>arXiv:2504.03731</code>) is a single score at parity, not a curve. Our edge: the
@@ -73,8 +129,6 @@ h1{font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;font
     <div class="q">
       <span class="chip">looks right vs is right</span>
       <h2>When we grade AI answers cheaply and automatically, are we measuring whether the answer looks right, or whether it is right?</h2>
-      <p class="why">Our result suggests cheap graders, including using one AI to judge another, mostly reward
-      answers that resemble the reference, not answers that are actually better.</p>
       <p class="ref"><b>Closest prior work.</b> JudgeBench (<code>arXiv:2410.12784</code>) shows judges failing at
       objective correctness; ODIN (<code>arXiv:2402.07319</code>) and Length-Controlled AlpacaEval
       (<code>arXiv:2404.04475</code>) each remove one bias. None reports the surface-nuisance fraction of the
@@ -84,8 +138,6 @@ h1{font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;font
     <div class="q">
       <span class="chip">checking vs doing</span>
       <h2>Is telling a good answer from a bad one really easier than producing a good answer in the first place?</h2>
-      <p class="why">We found that judging plain correctness is easy but judging quality is not, so the common
-      assumption that checking is easier than doing may only hold for right-or-wrong tasks.</p>
       <p class="ref"><b>Closest prior work.</b> Weaver (<code>arXiv:2506.18203</code>), Generator-Validator
       Consistency (<code>arXiv:2310.01846</code>), and "Can LLMs Judge Better Than They Generate?"
       (<code>arXiv:2606.28050</code>) all study the gap for correctness only. Restricting it to quality among
@@ -95,8 +147,6 @@ h1{font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;font
     <div class="q">
       <span class="chip">gaming the grader</span>
       <h2>If we train an AI to score well on a cheap evaluator, does that evaluator stop being trustworthy, and can we tell in advance which ones will break?</h2>
-      <p class="why">An evaluator that looks accurate can fall apart once a model is optimized to satisfy it
-      (reward hacking). The open question is which signals survive that pressure.</p>
       <p class="ref"><b>Closest prior work.</b> Scaling Laws for Reward Model Overoptimization
       (<code>arXiv:2210.10760</code>) predicts hacking magnitude from optimization, not from a static property;
       Skalse et al. (<code>arXiv:2209.13085</code>) prove unhackability is near-impossible. Predicting
@@ -106,22 +156,10 @@ h1{font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;font
     <div class="q">
       <span class="chip">no right answer</span>
       <h2>For open-ended work with no clear right answer, can anything cheap judge quality, or do we always need a human?</h2>
-      <p class="why">Essays, research, and long agent tasks have no gold answer to compare against, so it is
-      unknown whether any low-cost signal tracks quality at all.</p>
       <p class="ref"><b>Closest prior work.</b> BARTScore (<code>arXiv:2106.11520</code>), CCS
       (<code>arXiv:2212.03827</code>), and Self-Consistency (<code>arXiv:2203.11171</code>) give label-free
       signals, but for constrained or convergent tasks. Whether any survives into open-ended, answer-free work,
       or whether human judgment is the floor, is unposed.</p>
-    </div>
-
-    <div class="spine">
-      <h2>The spine: why these hang together</h2>
-      <p>Across all five, one measurable quantity keeps recurring: how much of an evaluator's score is surface
-      nuisance rather than model-invariant quality. No prior work defines that fraction and shows it predicts
-      <b>both</b> out-of-distribution collapse <b>and</b> hackability (closest: Inside the Unfair Judge,
-      <code>arXiv:2607.11871</code>; Singhal et al. length correlations, <code>arXiv:2310.03716</code>;
-      Eisenstein et al. Helping or Herding, <code>arXiv:2312.09244</code>). That unifying predictor is the open
-      gap, and it is a mechanism rather than a trained metric, which makes it hard to game.</p>
     </div>
 
   </div>
