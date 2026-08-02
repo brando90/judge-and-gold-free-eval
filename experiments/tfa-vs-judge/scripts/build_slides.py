@@ -185,8 +185,8 @@ slide("Path forward &middot; the questions","Which question is worth going after
  '<h3 class="p">When we grade AI answers cheaply and automatically, are we measuring whether the answer looks right, or whether it is right?</h3><p>Our result suggests cheap graders, including using one AI to judge another, mostly reward answers that resemble the reference, not answers that are actually better.</p>'+
  '<h3 class="a">Is telling a good answer from a bad one really easier than producing a good answer in the first place?</h3><p>We found that judging plain correctness is easy but judging quality is not, so the assumption that checking is easier than doing may only hold for right-or-wrong tasks.</p></div>'+
  '<div>'+
- '<h3>If we train an AI to score well on a cheap evaluator, does that evaluator stop being trustworthy, and can we tell in advance which ones will break?</h3><p>An evaluator that looks accurate can fall apart once a model is optimized to satisfy it (reward hacking); the open question is which signals survive that pressure.</p>'+
- '<h3>For open-ended work with no clear right answer, can anything cheap judge quality, or do we always need a human?</h3><p>Essays, research, and long agent tasks have no gold answer to compare against, so it is unknown whether any low-cost signal tracks quality at all.</p></div></div>'+
+ '<h3 class="r">If we train an AI to score well on a cheap evaluator, does that evaluator stop being trustworthy, and can we tell in advance which ones will break?</h3><p>An evaluator that looks accurate can fall apart once a model is optimized to satisfy it (reward hacking); the open question is which signals survive that pressure.</p>'+
+ '<h3 class="ac">For open-ended work with no clear right answer, can anything cheap judge quality, or do we always need a human?</h3><p>Essays, research, and long agent tasks have no gold answer to compare against, so it is unknown whether any low-cost signal tracks quality at all.</p></div></div>'+
  '<div class="take">The choice: which of these is worth a year. The earlier detailed framing is in the appendix.</div>')
 
 # 18-23 appendix: prior work per question (verified in the literature pass)
@@ -306,7 +306,7 @@ h2{font-size:clamp(1.6rem,3.2vw,2.4rem);line-height:1.07;letter-spacing:-.015em;
 h3{font-size:1rem;margin:.9em 0 .3em;font-weight:700}
 p{font-size:1.04rem;max-width:72ch;margin:.45em 0}
 ul,ol{font-size:1.02rem;max-width:72ch;padding-left:1.2em;margin:.35em 0}li{margin:.28em 0}
-b,strong{font-weight:700}.g{color:var(--g);font-weight:700}.a{color:var(--a);font-weight:700}.p{color:var(--p);font-weight:700}.r{color:var(--r);font-weight:700}
+b,strong{font-weight:700}.g{color:var(--g);font-weight:700}.a{color:var(--a);font-weight:700}.p{color:var(--p);font-weight:700}.r{color:var(--r);font-weight:700}.ac{color:var(--accent);font-weight:700}
 .title{background:radial-gradient(1200px 500px at 15% -10%,color-mix(in srgb,var(--accent) 12%,transparent),transparent)}.title .hl{color:var(--accent)}
 .lede{font-size:1.28rem;max-width:64ch;margin:.4em 0 1.1em}
 .meta{font-family:ui-monospace,Menlo,monospace;font-size:.8rem;color:var(--mut);border-top:1px solid var(--line);padding-top:14px;max-width:70ch}
