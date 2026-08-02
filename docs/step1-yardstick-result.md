@@ -64,6 +64,29 @@ Reading:
 - **Ceiling caveat.** 70 to 96 percent of correct-answer judge scores sit at the
   maximum, so the within-correct analysis explains only the non-ceiling minority.
 
+## Why the quality signal is low on GSM8K/Putnam, and can a prompt fix it?
+
+`scripts/improved_prompt.py`. Two facts.
+
+1. **The quality signal is an identity, not a coincidence.** With one binary
+   regressor, R2 = correlation^2, so the quality signal *equals* corr(judge,
+   accuracy)^2. MATH 85% <-> 0.92, GSM8K 73% <-> 0.86, Putnam 29-36% <-> 0.54-0.60.
+   If a judge's agreement with accuracy is low, the quality signal is low by
+   definition.
+2. **A better quality prompt does not raise it, but a binary prompt shows why it
+   was low.** On a stratified sample (balanced correct/incorrect), a solve-first
+   quality rubric left it flat (GSM8K 62% -> 61%, Putnam 37% -> 36%). But asking a
+   **binary** "is the final answer correct?" question jumped Putnam from corr 0.62
+   (38%) to **0.91 (84%)** and GSM8K from 0.78 (61%) to 0.82 (67%).
+
+So the low Putnam signal is a **graded-vs-binary mismatch**, not judge incapacity:
+the judge detects correctness very well (0.91), but the 0-10 quality rubric spreads
+scores on purpose (a rigorous-but-wrong solution gets a mid score), which
+under-correlates with strict binary `cc`. Implication for the certificate: the
+quality axis should separate correctness detection (ask a binary question) from
+graded quality, or it penalizes a judge for grading a spectrum. GSM8K stays limited
+mostly by saturation.
+
 ## Causal test (padding): the length "bias" does not reproduce — important correction
 
 `scripts/causal_padding.py` (`runs/causal_padding_gsm8k_opus_pilot.jsonl`). We
