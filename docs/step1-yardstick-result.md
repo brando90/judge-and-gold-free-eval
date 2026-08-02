@@ -87,6 +87,35 @@ quality axis should separate correctness detection (ask a binary question) from
 graded quality, or it penalizes a judge for grading a spectrum. GSM8K stays limited
 mostly by saturation.
 
+## Coherence of the quality axis under perturbation, and the binary trap
+
+`scripts/perturb_quality.py` (`runs/perturb_quality_{gsm8k,putnam}_gpt.jsonl`),
+GPT-5.2 on balanced samples (equal correct/incorrect so accuracy has variance).
+
+| condition | corr(acc) | quality signal | dScore vs orig |
+|---|---:|---:|---:|
+| GSM8K orig | 0.783 | 61.3% | - |
+| GSM8K verbose | 0.788 | 62.0% | -0.07 |
+| GSM8K reformat | 0.782 | 61.1% | +0.02 |
+| GSM8K binary | 0.816 | 66.7% | -0.42 |
+| Putnam orig | 0.614 | 37.7% | - |
+| Putnam verbose | 0.594 | 35.2% | -0.14 |
+| Putnam reformat | 0.598 | 35.8% | -0.07 |
+| Putnam binary | 0.932 | 86.9% | +2.54 |
+
+- **Identity holds empirically:** quality signal = corr(acc)^2 in every row.
+- **The quality axis is robust to surface.** Under verbose/reformat, scores barely
+  move (dScore ~ +/-0.1) and the quality signal barely moves (GSM8K 61 -> 62/61;
+  Putnam 38 -> 35/36). It moves only when scores move.
+- **The binary trap.** A binary "is it correct?" rubric spikes the quality signal
+  (Putnam 38% -> 87%) but shifts the mean score by +2.54: it answers an easier,
+  different question (correctness), which we already have for free from `cc`. So
+  maximizing the quality signal is not the goal; a judge that maxes it is redundant
+  with the cheap correctness check. The judge's value is graded quality BEYOND
+  correctness, exactly the residual our item-level study found hard. The Step-1
+  metric should therefore separate correctness detection from graded-quality
+  discrimination, not reward a judge for collapsing to binary.
+
 ## Causal test (padding): the length "bias" does not reproduce — important correction
 
 `scripts/causal_padding.py` (`runs/causal_padding_gsm8k_opus_pilot.jsonl`). We
