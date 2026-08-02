@@ -64,6 +64,40 @@ Reading:
 - **Ceiling caveat.** 70 to 96 percent of correct-answer judge scores sit at the
   maximum, so the within-correct analysis explains only the non-ceiling minority.
 
+## Causal test (padding): the length "bias" does not reproduce — important correction
+
+`scripts/causal_padding.py` (`runs/causal_padding_gsm8k_opus_pilot.jsonl`). We
+intervened on length while holding the correct answer fixed: PAD = the same answer
+with a redundant correct restatement appended (more length, no new reasoning),
+re-judged fresh against a fresh re-judge of the unpadded text (orig2), on 40
+correct, non-ceiling GSM8K answers with Opus.
+
+- **Padding effect (pad - orig2): +0.04, 95% ~[-0.37, +0.45], 25% positive.**
+  Essentially zero. Adding redundant length does not raise Opus's score.
+- Controls are clean: re-judging the same text is stable (orig2 - old = -0.16), and
+  the terse arm collapses (compress - orig2 = -8.36) because the rubric penalizes
+  *showing no reasoning*, not length as such.
+
+**Interpretation.** The observational GSM8K Opus surface effect (10.8%, hardened
+with CV, feature-robustness, and CIs) is **not a manipulable length bias**. Among
+correct answers, length is confounded with genuine reasoning thoroughness: terse
+correct answers often have real gaps the rubric legitimately penalizes, while
+verbose ones show complete work. Adding length without adding reasoning moves
+nothing. So the surface-regression yardstick **overstated bias by confounding
+length with quality**, and the earlier "actionable flag" is withdrawn pending a
+counterfactual measure.
+
+Caveats on this correction: n=40, GSM8K only, Opus only, and one crude
+manipulation (redundant duplication). A non-redundant elaboration manipulation and
+the GPT-5.2 control are the follow-ups. But the direction is clear enough not to
+claim a bias.
+
+**What survives.** The certificate's quality axis is untouched: judges track
+ground-truth accuracy 0.85 to 0.92 and TFA ~0 (see the accuracy check). What this
+corrects is the surface-nuisance axis: a naive score-on-surface regression is not a
+trustworthy bias measure on its own, because surface (length) proxies quality among
+correct answers. The nuisance axis needs a causal / counterfactual definition.
+
 ## Confidence checks (bootstrap CI, held-out gain, feature robustness)
 
 `scripts/step1_confidence.py` (`runs/step1_confidence.json`) hardens the numbers
@@ -81,9 +115,25 @@ with no new data.
   {length only, length+words, all five features}, so it is length and does not
   depend on our feature choices; GSM8K GPT stays about 0 throughout.
 
-High confidence: judges track correctness far better than TFA, and Opus has a real
-length bias on GSM8K. Under-powered: Putnam. Still observational (next: the causal
-padding test).
+High confidence: judges track correctness far better than TFA. The GSM8K Opus
+surface effect is robust *observationally* but did NOT reproduce under the causal
+padding test below, so it is not claimed as a bias. Under-powered: Putnam.
+
+## Independent validation against ground-truth accuracy
+
+`scripts/step1_accuracy_check.py` (`runs/step1_accuracy_check.json`). The surface
+component is estimated without labels, so testing the de-surfaced (non-nuisance)
+judge signal against accuracy is an independent check.
+
+- **The judges' agreement with accuracy is genuine, not surface.** Removing the
+  surface component barely changes it: MATH 0.92 -> 0.87, GSM8K 0.86 -> 0.85,
+  Putnam ~unchanged (model-controlled partials move the same way). Surface alone
+  correlates only 0.05 to 0.29 with accuracy.
+- **Opus's GSM8K length bias is orthogonal to correctness:** removing surface does
+  not lower its accuracy agreement (0.86 -> 0.85), so the length effect is pure
+  bias among correct answers, not a truth-correlated shortcut.
+- **TFA does not track accuracy at the item level** (MATH corr -0.01, GSM8K/Putnam
+  ~0.11), surface-removed or not, failing the same test the judges pass.
 
 ## Low-ground-truth subsampling (`fig_step1_subsample.png`)
 
@@ -98,9 +148,12 @@ padding test).
 
 ## Bottom line
 
-The gate works: a mechanism-based, cross-validated, model-controlled nuisance
-fraction cleanly ranks LLM judges above TFA and flags a concrete, real length bias
-in one judge. The quality axis transfers to low ground truth from ~100 labels; the
-within-correct surface axis needs more data or a bias-corrected estimator. Putnam
-is under-powered. This is Step 1 only; it does not yet test survival under a
-widening capability gap (Step 2) or optimization (Step 3).
+The gate half-works, with one clear correction. The **quality axis is solid and
+independently validated**: judges track ground-truth accuracy 0.85 to 0.92, TFA
+~0, and it transfers to low ground truth from ~100 labels. The **surface-nuisance
+axis is not yet a trustworthy bias measure**: the one bias it flagged (Opus length
+on GSM8K), though robust observationally, did not reproduce causally, because
+length proxies reasoning thoroughness among correct answers. So the nuisance axis
+needs a counterfactual definition, not a score-on-surface regression. Putnam is
+under-powered throughout. This is Step 1 only; it does not yet test survival under
+a widening capability gap (Step 2) or optimization (Step 3).
