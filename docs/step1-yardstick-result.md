@@ -128,6 +128,20 @@ corrects is the surface-nuisance axis: a naive score-on-surface regression is no
 trustworthy bias measure on its own, because surface (length) proxies quality among
 correct answers. The nuisance axis needs a causal / counterfactual definition.
 
+## Positive control: the causal method detects a real bias (position)
+
+`scripts/position_bias.py` (`runs/position_bias_gsm8k.jsonl`). To show the null
+above is sensitivity, not a dead method, we ran the canonical pairwise position
+bias: two near-equal correct answers to the same problem, judged as (A,B) and
+(B,A). p(pick first) = 0.5 is unbiased.
+
+- GPT-5.2: p(first) = 0.47, content-consistent 0.73 (near-unbiased).
+- Opus 4.8: **p(first) = 0.62**, content-consistent 0.70 (real first-position bias,
+  n=40).
+
+So the method is sensitive (flags Opus position bias) and specific (nulls the fake
+surface bias): a genuine bias moves it, length and formatting do not.
+
 ## Confidence checks (bootstrap CI, held-out gain, feature robustness)
 
 `scripts/step1_confidence.py` (`runs/step1_confidence.json`) hardens the numbers
