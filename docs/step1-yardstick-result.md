@@ -110,10 +110,17 @@ nothing. So the surface-regression yardstick **overstated bias by confounding
 length with quality**, and the earlier "actionable flag" is withdrawn pending a
 counterfactual measure.
 
-Caveats on this correction: n=40, GSM8K only, Opus only, and one crude
-manipulation (redundant duplication). A non-redundant elaboration manipulation and
-the GPT-5.2 control are the follow-ups. But the direction is clear enough not to
-claim a bias.
+**Full battery (both judges, three perturbations, n=150; `scripts/causal_battery.py`,
+`runs/causal_battery_gsm8k.jsonl`).** Extending the pilot, we ran verbose
+(connective filler), reformat (markdown headers), and dup (duplication) against a
+fresh orig2, on both GPT-5.2 and Opus. Every effect is <= 0: no judge raises a
+correct answer's score for length or formatting. The cleanest manipulations are ~0
+(GPT dup -0.02 [-0.05,+0.01], reformat -0.03 [-0.09,+0.02]; Opus dup -0.14
+[-0.34,+0.05], reformat -0.14 [-0.41,+0.12]), and Opus mildly *penalizes* filler
+verbosity (-0.44 [-0.66,-0.22]). So neither judge has a pro-surface bias, and the
+GPT-5.2 control is flat too. The observational "Opus over-rewards length" is
+refuted. Remaining caveat: GSM8K only, and a known-bias positive control (position
+bias) is the next check that the method can detect a bias when one exists.
 
 **What survives.** The certificate's quality axis is untouched: judges track
 ground-truth accuracy 0.85 to 0.92 and TFA ~0 (see the accuracy check). What this
