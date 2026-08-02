@@ -64,6 +64,27 @@ Reading:
 - **Ceiling caveat.** 70 to 96 percent of correct-answer judge scores sit at the
   maximum, so the within-correct analysis explains only the non-ceiling minority.
 
+## Confidence checks (bootstrap CI, held-out gain, feature robustness)
+
+`scripts/step1_confidence.py` (`runs/step1_confidence.json`) hardens the numbers
+with no new data.
+
+- **Quality signal, bootstrap 95% CI:** MATH 85% [83, 87], GSM8K 73% [70, 77],
+  Putnam 29 to 36% [22, 44]. All sit far above TFA (0 to 1%) with non-overlapping
+  intervals.
+- **Surface beyond model, held-out gain** (repeated 70/30 splits, so out-of-sample
+  and leakage-free): the GSM8K Opus length bias is 10.8% [7.2, 16.3] and positive
+  in **100% of splits**. MATH is small but real (Opus 5.8% [3.2, 8.1], GPT 2.7%
+  [0.5, 4.1]). GSM8K GPT is null (0.7% [-1.2, 1.5]). Putnam is noise (negative
+  medians, intervals about [-33, +5]), confirming it is under-powered.
+- **Feature-set robustness:** the GSM8K Opus effect is 10.9 / 10.5 / 10.9% under
+  {length only, length+words, all five features}, so it is length and does not
+  depend on our feature choices; GSM8K GPT stays about 0 throughout.
+
+High confidence: judges track correctness far better than TFA, and Opus has a real
+length bias on GSM8K. Under-powered: Putnam. Still observational (next: the causal
+padding test).
+
 ## Low-ground-truth subsampling (`fig_step1_subsample.png`)
 
 - **Quality signal is estimable from a small anchor.** With only ~100 correctness
