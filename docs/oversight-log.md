@@ -237,3 +237,40 @@ Remaining questions tonight: (1) where on the 0.5B-14B ladder does coherent-wron
 detection emerge, and does it track the judge's own solve rate on the same items
 (generation-verification coupling, label-noise-free)? (2) weak-judge typo table
 (wave-2). (3) DONE: independent Opus arbiter agrees with GPT on 55/55 adjudications (100%) -- the label-noise findings are two-family-unanimous.
+
+## Synthesis after ~5 hours (the opening, pending the weak-judge ladder tables)
+
+One sentence: IN ORACLE-VERIFIABLE MATH, "UNRELIABLE JUDGES" ARE MOSTLY A
+MEASUREMENT ARTIFACT; the real, quantified failure surfaces are the oracle
+itself, step-level leniency, and (pending) the capability threshold where
+verification-by-rederivation emerges on the judge ladder.
+
+The five verified components:
+1. Adjudicated frontier FP on natural errors ~2%, flat across solver strength,
+   consensus, difficulty; universal fools ~0.2% (F1, F3).
+2. Every apparent oversight law we constructed (attractor, capability-gap,
+   detection-hierarchy) dissolved under adjudication into label noise -- a
+   methodological warning for the judge-evaluation literature, which routinely
+   scores judges against noisy oracles (F1-F3). Two-family-unanimous
+   adjudication (55/55) grounds this.
+3. The inverse instrument: cheap ladder + frontier unanimous disagreement with
+   the label mines ORACLE BUGS at ~97% precision, unsupervised (F3b). GSM8K cc
+   bug rate 4.1% in our own pipeline; quality signals were being UNDERSTATED.
+4. Judges are coherence-readers, not verifiers: 40-50% of explicit false
+   equations pass unpenalized (69-85% at a >=7 bar); but mechanically-verified
+   COHERENT-wrong is caught 100% with FP 0-3% (F4, F5). Frontier judges
+   re-derive; they do not line-check. Consequence: judge scores are trustworthy
+   at the SOLUTION level and untrustworthy at the STEP level -- directly
+   relevant to PRM-style process supervision.
+5. Judge discrimination follows a smooth capability curve (AUC 0.78 -> 0.99,
+   0.5B -> frontier), with frontier margin in confidence, not coverage (F2
+   corrected).
+
+What would have to be true for "scalable oversight of reasoning" to be hard in
+this regime, given the above: errors would need to be coherent AND beyond the
+judge's own rederivation ability. Hence the last measurement tonight: where on
+the ladder does coherent-wrong detection emerge, and does it track the judge's
+own solve rate (generation-verification coupling). If detection ~ own-solve,
+oversight inherits the generation frontier, and the honest scalable-oversight
+frontier is exactly: solvers producing coherent solutions to problems the judge
+cannot solve. That is a clean, testable definition the field currently lacks.

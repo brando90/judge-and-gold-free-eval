@@ -64,8 +64,9 @@ def main():
     with open(args.out, "w") as f:
         for t, o in zip(tasks, outs):
             txt = o.outputs[0].text if o.outputs else ""
-            f.write(json.dumps(dict(task_id=t["task_id"], dataset=t["dataset"], solver=t["solver"],
-                                    pid=t["pid"], cc=t["cc"], label_src=t["label_src"], tfa=t.get("tfa"),
+            f.write(json.dumps(dict(task_id=t["task_id"], dataset=t.get("dataset"), solver=t.get("solver"),
+                                    pid=t.get("pid"), cc=t.get("cc"), label_src=t.get("label_src"),
+                                    tfa=t.get("tfa"), cond=t.get("cond"),
                                     judge=args.model, score=parse_score(txt))) + "\n")
     done = sum(1 for _ in open(args.out))
     print(f"[done] {args.model}: {done} judgments -> {args.out}")
