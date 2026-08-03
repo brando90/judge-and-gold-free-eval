@@ -47,10 +47,14 @@ Two conclusions, both verified beyond our own pipeline:
    fixing them raised the measured quality of a frontier judge from 0.66 to
    0.75. Benchmarks measure the oracle as much as the judge.
 2. The wreckage contains a tool. When several cheap open models unanimously
-   produce the same "wrong" answer, the answer key is usually broken. Checked
-   against GSM8K-Platinum, a human-curated re-annotation, with no frontier model
-   involved: 66 of 74 flags (89%) were genuine key problems. That is an
-   unsupervised benchmark debugger that costs pennies.
+   produce the same "wrong" answer, the grading oracle is usually what is
+   broken. Checked against GSM8K-Platinum, a human-curated re-annotation, with
+   no frontier model involved: 66 of 74 flags (89%) were genuine grading
+   problems, and the breakdown matters: 60 were our own scorer misparsing
+   correct answers (the dataset key was fine), 4 were items Platinum removed as
+   broken, and 2 were keys Platinum re-labeled to the models' answer. An
+   unsupervised grading-pipeline debugger that costs pennies, and a reminder
+   that the oracle a judge is scored against is the key AND the scorer.
 
 With labels cleaned, judge skill on natural errors is a smooth curve:
 discrimination AUC 0.78, 0.90, 0.92, 0.96, 0.96, 0.97, 0.99 up the ladder. No

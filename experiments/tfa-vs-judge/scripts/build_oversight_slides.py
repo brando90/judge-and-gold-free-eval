@@ -88,10 +88,11 @@ slide("Act I · the payoff","The answer keys are dirty, and that is measurable",
  '''<p>Three separate "judge failure" effects each dissolved into <b>label noise</b>: errors in the
  benchmark answer keys, not in the judges. This flips the usual conclusion: much of what the literature
  measures as judge unreliability is actually <b>oracle unreliability</b>.</p>
- <p>The wreckage contains a tool. When a handful of cheap open models <b>and</b> a frontier judge all
- unanimously disagree with the answer key, the key is nearly always wrong. We validated this against
- GSM8K-Platinum, a human re-annotation, with no frontier model in the loop:</p>'''+
- fig("f2_miner","Of 74 items flagged by cheap-model consensus, 66 (89%) were genuine answer-key problems. An unsupervised benchmark-debugging tool that costs pennies.")+
+ <p>The wreckage contains a tool. When several cheap open models unanimously disagree with the official
+ grade, the <b>grading oracle</b> is nearly always what is wrong: usually our own answer-matching scorer
+ misparsing a correct answer, sometimes the dataset's key or item itself. Validated against GSM8K-Platinum,
+ a human re-annotation, with no frontier model in the loop:</p>'''+
+ fig("f2_miner","Of 74 items flagged by cheap-model consensus, 66 (89%) were genuine grading-oracle problems: 60 scorer misparses of correct answers, 4 broken items, 2 wrong keys. An unsupervised grading-pipeline debugger that costs pennies.")+
  '<div class="take">Rule one of oversight research: before you measure the judge, measure the answer key.</div>')
 
 # 6 how judges really behave
@@ -176,7 +177,7 @@ slide("Act IV · the finding","The reference lever flips sign, and we know why",
 S.append('''<section class="slide concl"><div class="wrap"><div class="kick">What it all adds up to</div>
  <h2>Practical rules for anyone building oversight today</h2>
  <div class="cols"><div><h3>Measurement</h3>
- <ul><li><b>Audit the answer key first.</b> Cheap-model consensus disagreement finds oracle bugs at ~89-97% precision, unsupervised.</li>
+ <ul><li><b>Audit the grading oracle first</b> (scorer AND key). Cheap-model consensus disagreement finds oracle bugs at 89% externally validated precision, unsupervised.</li>
  <li><b>Never trust one threshold.</b> Report threshold-free metrics; a cutoff manufactured a fake "7B = frontier" result.</li>
  <li><b>Ask twice, swapped.</b> Order-flip rate is a free, label-free stress meter for any pairwise judge.</li></ul>
  <h3>Judges are not proofreaders</h3>

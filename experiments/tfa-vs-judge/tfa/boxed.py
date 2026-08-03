@@ -46,7 +46,21 @@ def extract_final_answer(text: str, dataset: str) -> str | None:
     if b is not None:
         return b
     if dataset.lower().startswith("gsm8k"):
-        return extract_gsm8k_answer(text)
+        g = extract_gsm8k_answer(text)
+        if g is not None:
+            return g
+        # Robustness patch (2026-08): many models answer "The answer is 23." with
+        # neither \boxed{} nor `#### N`. Without these fallbacks, correct answers
+        # were scored 0, the dominant oracle-bug mode found by the oversight study
+        # (60/74 externally validated flags). Order: explicit answer phrase, then
+        # last number in the text.
+        m = re.findall(r"(?:answer|result|total|cost)\s*(?:is|:|=|of)\s*\$?([-+]?[0-9][0-9,]*\.?[0-9]*)",
+                       text, re.IGNORECASE)
+        if m:
+            return m[-1].replace(",", "").strip()
+        m = re.findall(r"[-+]?[0-9][0-9,]*\.?[0-9]*", text)
+        if m:
+            return m[-1].replace(",", "").strip()
     return None
 
 
@@ -56,7 +70,13 @@ def _normalize(s: str) -> str:
     s = s.replace(r"\!", "").replace(r"\,", "")
     if s.startswith("{") and s.endswith("}"):
         s = s[1:-1]
-    return s
+    s = s.replace(",", "").rstrip(".")
+    # numeric folding: "6.00" == "6"
+    try:
+        f = float(s)
+        return str(int(f)) if f == int(f) else str(f)
+    except ValueError:
+        return s
 
 
 def answers_equivalent(pred: str | None, gold: str | None) -> bool:
