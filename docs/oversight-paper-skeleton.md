@@ -59,9 +59,25 @@ P4 Strategy phase change on planted typos (position x magnitude).
      = global consequence, typo forgiveness; 0.5B/1.5B floor.
    - Step-level blind spot: 40-50% of explicit false equations unpenalized;
      69-85% pass >=7. Direct relevance to PRM-style process supervision.
-P5 (pending tonight) Style-matched error-free controls to close the last
-   confound on P3; near-equal ambiguity results from earlier session connect
-   nuisance (position bias) to the weak-signal regime.
+P5 Style confound closed: error-free style-matched rewrites score 9.98/10.00
+   (= controls), so P3 drops are entirely the planted error.
+P6 THE REFERENCE-DEPENDENCE LAW (headline panel).
+   - Code (no-reference, oracle = executed HumanEval tests, 85 verified
+     coherent-wrong mutants): detection 4/7/19/38/58% (0.5B..14B), frontier
+     86/95% (FP 1-2%); AUC 0.51/0.54/0.59/0.71/0.85. Gradual scaling, no early
+     phase change.
+   - Same math candidates, gold withheld: 3B 85->17% (FP 4->81%), 7B 85->49%,
+     14B 90->75%, frontier ~unchanged (98-100%, GPT shallow FP 3->23%).
+   - Reference-free curves match across domains (math 6/3/17/49/75 ~ code
+     4/7/19/38/58). Reference-assist benefit: +68 (3B), +36 (7B), +15 (14B),
+     +2-5 (frontier): REFERENCES FLATTEN THE VERIFICATION CAPABILITY CURVE.
+   - Implication: the scarce resource for scalable oversight is trusted
+     references/oracles, not judge capability; with-reference benchmarks
+     overstate small-judge readiness; reference-free judging is
+     capability-bounded and is the true oversight frontier.
+   - Beyond Zheng et al. 2023 (reference-guided helps at frontier): the
+     scale x reference INTERACTION, its magnitude, cross-domain consistency,
+     and label-noise-immune instruments.
 
 ## Threats to validity / what a reviewer will say
 - GSM8K/MATH only; arithmetic-flavored verification. NEXT: replicate P3 on a
