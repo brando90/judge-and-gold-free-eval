@@ -39,11 +39,13 @@ TABLE = ('<table class="mini"><tr><th>dataset (all 17 models pooled)</th><th>Pea
 # 1 title: the takeaway is ON the title slide
 S.append('''<section class="slide title"><div class="wrap">
  <div class="kick">Stanford · Koyejo Group · judge-free evaluation · v2, revised after Brando's review</div>
- <h1>TFA predicts accuracy on hard tasks<br><span class="hl">and breaks on easy, saturated ones</span></h1>
- <p class="lede">That is the finding. Teacher-Forced Accuracy, a judge-free signal, ranks models by skill when the
- reference is hard and long, inverts when the benchmark is saturated, and cannot grade an individual solution at all.
- The reason is one mechanism: TFA measures agreement with the reference's <b>style</b>, and only on hard data does
- style move together with skill.</p>
+ <h1>TFA predicts accuracy on hard tasks<br><span class="hl">but not on easy ones</span></h1>
+ <p class="lede">TFA scores a model by how well it predicts a reference solution, token by token, with no judge
+ involved. We tested it on 17 models from 7 families across 8 math and code benchmarks. On hard problems it gives
+ you a real leaderboard: models that predict the reference well are the models that solve problems well. On easy,
+ saturated benchmarks that connection goes away, because everyone predicts the reference about equally well and the
+ leftover differences are writing style, not skill. On GSM8K the ranking actually flips. And for grading a single
+ solution, TFA turned out to carry almost no signal anywhere; we tried seven ways to fix that and none worked.</p>
  <div class="meta">17 models · 7 families · 8 datasets (math · olympiad · code) · every headline correlation reported as Pearson r / r&sup2; + Spearman ρ + Kendall τ</div>
  <div class="hint">scroll or press → to advance</div></div></section>''')
 

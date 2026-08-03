@@ -47,11 +47,13 @@ b,strong{font-weight:700}.g{color:var(--g);font-weight:700}.a{color:var(--a);fon
 @media (max-width:760px){.cols{grid-template-columns:1fr;gap:6px}.slide{padding:56px 6vw 52px}}
 </style><div class="rail"></div><button class="toggle">◐ theme</button><div class="counter"></div><div class="deck"><section class="slide title"><div class="wrap">
  <div class="kick">Stanford · Koyejo Group · judge-free evaluation · v2, revised after Brando's review</div>
- <h1>TFA predicts accuracy on hard tasks<br><span class="hl">and breaks on easy, saturated ones</span></h1>
- <p class="lede">That is the finding. Teacher-Forced Accuracy, a judge-free signal, ranks models by skill when the
- reference is hard and long, inverts when the benchmark is saturated, and cannot grade an individual solution at all.
- The reason is one mechanism: TFA measures agreement with the reference's <b>style</b>, and only on hard data does
- style move together with skill.</p>
+ <h1>TFA predicts accuracy on hard tasks<br><span class="hl">but not on easy ones</span></h1>
+ <p class="lede">TFA scores a model by how well it predicts a reference solution, token by token, with no judge
+ involved. We tested it on 17 models from 7 families across 8 math and code benchmarks. On hard problems it gives
+ you a real leaderboard: models that predict the reference well are the models that solve problems well. On easy,
+ saturated benchmarks that connection goes away, because everyone predicts the reference about equally well and the
+ leftover differences are writing style, not skill. On GSM8K the ranking actually flips. And for grading a single
+ solution, TFA turned out to carry almost no signal anywhere; we tried seven ways to fix that and none worked.</p>
  <div class="meta">17 models · 7 families · 8 datasets (math · olympiad · code) · every headline correlation reported as Pearson r / r&sup2; + Spearman ρ + Kendall τ</div>
  <div class="hint">scroll or press → to advance</div></div></section><section class="slide "><div class="wrap"><div class="kick">The takeaway</div><h2>Three results, stated up front</h2><div class="chips"><div class="chip"><span class="cn">+0.86 / +0.84 / +0.71</span><span class="cl">hard math: ρ / r / τ, TFA vs accuracy</span></div><div class="chip"><span class="cn">&minus;0.25 / &minus;0.14 / &minus;0.16</span><span class="cl">saturated GSM8K: ρ / r / τ</span></div><div class="chip"><span class="cn">&approx; 0</span><span class="cl">grading one solution, all variants</span></div></div><div class="cols"><div>
  <h3 class="g">1 &middot; As a model ranker, TFA works where the data is hard</h3>
