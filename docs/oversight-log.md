@@ -98,3 +98,27 @@ oracle_noise.py):
   fooling. The subtlety law remains open -> E2 (causal planted ladder) and E4
   (weak-judge matrix) are now the only paths to the failure regime. Putnam/MATH
   observational proxies too weak at the floor.
+
+### Finding 2 (E4 wave 1, first surface, 2026-08-02 ~21:00)
+
+Judge x solver reliability surface (5 Qwen judges 0.5B-14B via cluster vLLM +
+frontier GPT/Opus rows joined from existing scores; cleaned labels; scores clamped
+to [0,10]; compliance gate from planted calib pairs):
+
+- RELIABILITY ON NATURAL ERRORS SATURATES AT TINY JUDGE SCALE. FP(>=7) on wrong
+  candidates: 0.5B 86% (fails gate 1.3, at floor) -> 1.5B 18% -> 3B 5.4% -> 7B
+  5.5% vs GPT-5.2 6.1%, Opus 3.1%. A 7B judge matches frontier FP rejection even
+  on solutions from 32B solvers (4.5x its size). corr(score, cc) on MATH-500:
+  0.21 / 0.75 / 0.62 / 0.78 / 0.92 / 0.94 -- correlation still improves with
+  judge scale (finer discrimination) but ERROR REJECTION does not.
+- Solver-strength axis is weak and NON-MONOTONE: the 14B-solver column is a local
+  FP peak for every judge (its errors are subtler), while the 32B column drops
+  again (its residual errors sit on very hard items and are grosser). Consistent
+  with subtlety mediation, not with a simple capability-gap law.
+- Caveats logged: 1.5B parse rate 86% (selection); 3B garbage-calib at 4.05
+  (partial gate); TP on correct varies (3B under-scores corrects, 63.6%);
+  threshold sensitivity to be checked at >=5.
+
+Implication: on natural weak-to-mid-solver errors the oversight gap closes by 7B;
+the differentiator must live in the SUBTLE-ERROR regime. E2 (planted position x
+magnitude ladder) x all 7 judges is exactly that measurement; wave 2 queued.
