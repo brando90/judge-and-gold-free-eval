@@ -222,6 +222,16 @@ against valid alternatives. And where the task is precise constraint-checking,
 do not use a judge at all; use a programmatic checker, because no judge on our
 ladder does this reliably, references or not.
 
+These rules compose into a simple adaptive protocol: classify each prompt
+(one right answer or many valid ones) with a cheap pass, then attach a
+reference only in the single-answer case. On RewardBench-2 with a 14B judge
+this router captures the math reference gain and most of the plurality harm
+avoidance at once, beating both fixed policies pooled (78 versus 76 and 77
+percent), with oracle routing showing six more points of headroom; its known
+failure is that answer multiplicity is the wrong routing key for open-ended
+instruction tasks, where the better key, per the boundary condition above, is
+whether the judge can verify the content itself.
+
 ## Honest limits
 
 The adjudications rest on two frontier families plus one human-curated external

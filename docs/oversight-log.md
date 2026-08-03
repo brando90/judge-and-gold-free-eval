@@ -789,3 +789,22 @@ are plural AND (b) the judge cannot cheaply verify validity itself, i.e. in the
 comparator-reliant regime -- which is where scalable oversight's hard cases
 live by definition. Scope narrowed, mechanism strengthened, model prediction
 confirmed rather than assumed.
+
+### Finding 15 (adaptive reference policy: proof of concept)
+
+Router = "use self-reference when a cheap classification pass says the prompt
+has one right answer; go bare otherwise" (14B classifier, 462 prompts: 300
+single / 162 multiple). Evaluated on existing RB2 arms (14B judge, per-item):
+  subset      direct  selfref  ROUTER  oracle
+  Math          75      84       84      89
+  Precise IF    52      57       56      64
+  Focus         84      79       79      88
+  Ties          99      91       95      99
+  pooled        76      77       78      84
+The router simultaneously captures the Math reference gain AND undoes most of
+the Ties anchoring harm, beating both fixed policies pooled, with honest
+limits: it misroutes Focus (multiplicity is the wrong key there; per F14 the
+right key is verification hardness relative to the judge), and oracle routing
+shows +6 points of headroom. Deliverable: a deployable adaptive judging
+protocol standing in for "a new judge model," with its failure mode and
+improvement direction identified.
