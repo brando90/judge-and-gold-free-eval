@@ -77,8 +77,8 @@ slide("Q1 &middot; step 3 &middot; beyond one dataset","Why it saturates on easy
 
 # 8 boundary
 slide("Q1 &middot; step 3 &middot; the boundary","Strong on hard math, weak on code, <span class='a'>negative</span> on saturated GSM8K",
- chips(("+0.86","Omni-MATH"),("+0.60","Putnam"),("+0.43","code"),("&minus;0.37","GSM8K"))+
- '<p>Pooling all families across all eight datasets gives one boundary map. It holds on hard, constrained references, weakens on code (many valid programs), and <b class="a">inverts</b> on saturated grade-school math.</p>'+
+ chips(("+0.86","Omni-MATH"),("+0.60","Putnam"),("+0.43","code"),("&minus;0.25","GSM8K"))+
+ '<p>Pooling all families across all eight datasets gives one boundary map. It holds on hard, constrained references, weakens on code (many valid programs), and <b class="a">inverts</b> on saturated grade-school math (GSM8K &minus;0.25, GSM8K-Platinum &minus;0.19). Numbers reflect a repaired answer-matching scorer: a follow-up oversight study found the original scorer mis-graded 4-10% of GSM8K-style answers, which had overstated the inversion (previously reported as &minus;0.37/&minus;0.38); the qualitative boundary is unchanged.</p>'+
  fig("f5","Figure 5. Cross-family boundary: strong on hard/olympiad math, weak on code, negative on saturated GSM8K.")+
  '<div class="take">One rule: TFA ranks by quality only when the reference is a long, constrained trace and models share its style.</div>')
 
