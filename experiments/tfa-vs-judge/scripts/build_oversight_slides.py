@@ -114,6 +114,12 @@ slide("The setup","Judges of every size, and errors we control",
  checks out and the text reads smoothly, but the final answer is wrong. A mechanical checker verified every planted
  error before use: arithmetic consistent, final answer genuinely wrong, no giveaway phrasing. For code, we mutated
  correct programs and kept only mutants that actually fail the official tests.</p>
+ <div class="def"><b>The three conditions, which the diagram color-codes.</b> <b class="r">No reference:</b> the
+ judge sees only the problem and the solution it must grade. <b class="g">A correct reference:</b> the judge also
+ sees the benchmark's own known-correct worked solution to the same problem, so it can compare the two. <b class="p">Its
+ own earlier answer:</b> before judging, we ask the same model to solve the problem in a separate, earlier call;
+ whatever it produced, right or wrong, is then pasted in as the reference when it judges. This last condition asks
+ what happens when no trusted reference exists and the judge has to supply its own.</div>
  '''+fig("f0_method","The method at a glance: build verified errors, show them to judges of every size under three reference conditions, then move to tasks with no answer key.")+'''
  <div class="take">Every result that follows is measured against these verified errors.</div>''')
 
