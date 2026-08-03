@@ -1,0 +1,379 @@
+{
+ "cross_family": {
+  "MATH-500": {
+   "pearson": 0.3798045787032651,
+   "spearman": 0.3543838802207674,
+   "kendall": 0.2287838454311913,
+   "n": 17
+  },
+  "MATH (full)": {
+   "pearson": 0.3037275966716033,
+   "spearman": 0.21472408801548332,
+   "kendall": 0.13333699146284095,
+   "n": 17
+  },
+  "Putnam-AXIOM": {
+   "pearson": 0.5212795359058705,
+   "spearman": 0.5970533992185293,
+   "kendall": 0.423818178868599,
+   "n": 17
+  },
+  "Putnam-Variations": {
+   "pearson": 0.3560031489649547,
+   "spearman": 0.37691899399237166,
+   "kendall": 0.2602392326386134,
+   "n": 17
+  },
+  "GSM8K": {
+   "pearson": -0.13995484399234842,
+   "spearman": -0.2524509803921569,
+   "kendall": -0.16176470588235295,
+   "n": 17
+  },
+  "GSM8K-Platinum": {
+   "pearson": -0.09264994948815922,
+   "spearman": -0.19386517660826494,
+   "kendall": -0.14815221273648993,
+   "n": 17
+  },
+  "Omni-MATH (olympiad)": {
+   "pearson": 0.8434775852332028,
+   "spearman": 0.8571428571428573,
+   "kendall": 0.7142857142857143,
+   "n": 7
+  },
+  "HumanEval (code)": {
+   "pearson": 0.27296710068616137,
+   "spearman": 0.43041087182522264,
+   "kendall": 0.30258508589286587,
+   "n": 17
+  }
+ },
+ "within_qwen": {
+  "MATH-500": {
+   "pearson": 0.9378587956484601,
+   "spearman": 0.8999999999999998,
+   "kendall": 0.7999999999999999,
+   "n": 5
+  },
+  "MATH (full)": {
+   "pearson": 0.8512362090589309,
+   "spearman": 0.6,
+   "kendall": 0.39999999999999997,
+   "n": 5
+  },
+  "Putnam-AXIOM": {
+   "pearson": 0.971381703229151,
+   "spearman": 0.9999999999999999,
+   "kendall": 0.9999999999999999,
+   "n": 5
+  },
+  "Putnam-Variations": {
+   "pearson": 0.9216209949582936,
+   "spearman": 0.8999999999999998,
+   "kendall": 0.7999999999999999,
+   "n": 5
+  },
+  "GSM8K": {
+   "pearson": 0.8802484739679776,
+   "spearman": 0.7,
+   "kendall": 0.6,
+   "n": 5
+  },
+  "GSM8K-Platinum": {
+   "pearson": 0.8867961034690356,
+   "spearman": 0.6,
+   "kendall": 0.39999999999999997,
+   "n": 5
+  },
+  "Omni-MATH (olympiad)": {
+   "pearson": 0.865821085585164,
+   "spearman": 0.8999999999999998,
+   "kendall": 0.7999999999999999,
+   "n": 5
+  },
+  "HumanEval (code)": {
+   "pearson": 0.7982895868533351,
+   "spearman": 0.7999999999999999,
+   "kendall": 0.6,
+   "n": 5
+  }
+ },
+ "within_family_cells": [
+  {
+   "dataset": "MATH-500",
+   "family": "Qwen2.5",
+   "regime": "hard",
+   "pearson": 0.9378587956484601,
+   "spearman": 0.8999999999999998,
+   "kendall": 0.7999999999999999,
+   "n": 5
+  },
+  {
+   "dataset": "MATH-500",
+   "family": "Phi",
+   "regime": "hard",
+   "pearson": -0.4848281860455783,
+   "spearman": 0.5,
+   "kendall": 0.33333333333333337,
+   "n": 3
+  },
+  {
+   "dataset": "MATH-500",
+   "family": "OLMo",
+   "regime": "hard",
+   "pearson": 0.9492411870338381,
+   "spearman": 1.0,
+   "kendall": 1.0,
+   "n": 3
+  },
+  {
+   "dataset": "MATH-500",
+   "family": "Mistral",
+   "regime": "hard",
+   "pearson": 0.9855432999370484,
+   "spearman": 1.0,
+   "kendall": 1.0,
+   "n": 3
+  },
+  {
+   "dataset": "MATH (full)",
+   "family": "Qwen2.5",
+   "regime": "hard",
+   "pearson": 0.8512362090589309,
+   "spearman": 0.6,
+   "kendall": 0.39999999999999997,
+   "n": 5
+  },
+  {
+   "dataset": "MATH (full)",
+   "family": "Mistral",
+   "regime": "hard",
+   "pearson": 0.9807505472645859,
+   "spearman": 1.0,
+   "kendall": 1.0,
+   "n": 3
+  },
+  {
+   "dataset": "MATH (full)",
+   "family": "Phi",
+   "regime": "hard",
+   "pearson": -0.5950141388249004,
+   "spearman": -1.0,
+   "kendall": -1.0,
+   "n": 3
+  },
+  {
+   "dataset": "MATH (full)",
+   "family": "OLMo",
+   "regime": "hard",
+   "pearson": 0.9400330437160713,
+   "spearman": 1.0,
+   "kendall": 1.0,
+   "n": 3
+  },
+  {
+   "dataset": "Putnam-AXIOM",
+   "family": "Qwen2.5",
+   "regime": "hard",
+   "pearson": 0.971381703229151,
+   "spearman": 0.9999999999999999,
+   "kendall": 0.9999999999999999,
+   "n": 5
+  },
+  {
+   "dataset": "Putnam-AXIOM",
+   "family": "OLMo",
+   "regime": "hard",
+   "pearson": 0.8318147755696561,
+   "spearman": 0.5,
+   "kendall": 0.33333333333333337,
+   "n": 3
+  },
+  {
+   "dataset": "Putnam-AXIOM",
+   "family": "Phi",
+   "regime": "hard",
+   "pearson": 0.9401349935957146,
+   "spearman": 1.0,
+   "kendall": 1.0,
+   "n": 3
+  },
+  {
+   "dataset": "Putnam-AXIOM",
+   "family": "Mistral",
+   "regime": "hard",
+   "pearson": 0.8851132175711052,
+   "spearman": 1.0,
+   "kendall": 1.0,
+   "n": 3
+  },
+  {
+   "dataset": "Putnam-Variations",
+   "family": "Qwen2.5",
+   "regime": "hard",
+   "pearson": 0.9216209949582936,
+   "spearman": 0.8999999999999998,
+   "kendall": 0.7999999999999999,
+   "n": 5
+  },
+  {
+   "dataset": "Putnam-Variations",
+   "family": "Phi",
+   "regime": "hard",
+   "pearson": 0.830311231444421,
+   "spearman": 0.5,
+   "kendall": 0.33333333333333337,
+   "n": 3
+  },
+  {
+   "dataset": "Putnam-Variations",
+   "family": "Mistral",
+   "regime": "hard",
+   "pearson": 0.9999912810671439,
+   "spearman": 1.0,
+   "kendall": 1.0,
+   "n": 3
+  },
+  {
+   "dataset": "Putnam-Variations",
+   "family": "OLMo",
+   "regime": "hard",
+   "pearson": 0.9619086435545776,
+   "spearman": 0.5,
+   "kendall": 0.33333333333333337,
+   "n": 3
+  },
+  {
+   "dataset": "GSM8K",
+   "family": "Qwen2.5",
+   "regime": "saturated",
+   "pearson": 0.8802484739679776,
+   "spearman": 0.7,
+   "kendall": 0.6,
+   "n": 5
+  },
+  {
+   "dataset": "GSM8K",
+   "family": "OLMo",
+   "regime": "saturated",
+   "pearson": -0.6005139031843627,
+   "spearman": -0.5,
+   "kendall": -0.33333333333333337,
+   "n": 3
+  },
+  {
+   "dataset": "GSM8K",
+   "family": "Phi",
+   "regime": "saturated",
+   "pearson": -0.7600299137919077,
+   "spearman": -0.5,
+   "kendall": -0.33333333333333337,
+   "n": 3
+  },
+  {
+   "dataset": "GSM8K",
+   "family": "Mistral",
+   "regime": "saturated",
+   "pearson": 0.6381226584929747,
+   "spearman": 1.0,
+   "kendall": 1.0,
+   "n": 3
+  },
+  {
+   "dataset": "GSM8K-Platinum",
+   "family": "Qwen2.5",
+   "regime": "saturated",
+   "pearson": 0.8867961034690356,
+   "spearman": 0.6,
+   "kendall": 0.39999999999999997,
+   "n": 5
+  },
+  {
+   "dataset": "GSM8K-Platinum",
+   "family": "Mistral",
+   "regime": "saturated",
+   "pearson": 0.6191020737090184,
+   "spearman": 1.0,
+   "kendall": 1.0,
+   "n": 3
+  },
+  {
+   "dataset": "GSM8K-Platinum",
+   "family": "Phi",
+   "regime": "saturated",
+   "pearson": -0.6215242306080506,
+   "spearman": -0.5,
+   "kendall": -0.33333333333333337,
+   "n": 3
+  },
+  {
+   "dataset": "GSM8K-Platinum",
+   "family": "OLMo",
+   "regime": "saturated",
+   "pearson": -0.5242396462596686,
+   "spearman": -0.5,
+   "kendall": -0.33333333333333337,
+   "n": 3
+  },
+  {
+   "dataset": "Omni-MATH (olympiad)",
+   "family": "Qwen2.5",
+   "regime": "hard",
+   "pearson": 0.865821085585164,
+   "spearman": 0.8999999999999998,
+   "kendall": 0.7999999999999999,
+   "n": 5
+  },
+  {
+   "dataset": "HumanEval (code)",
+   "family": "Qwen2.5",
+   "regime": "code",
+   "pearson": 0.7982895868533351,
+   "spearman": 0.7999999999999999,
+   "kendall": 0.6,
+   "n": 5
+  },
+  {
+   "dataset": "HumanEval (code)",
+   "family": "OLMo",
+   "regime": "code",
+   "pearson": -0.8050496792743425,
+   "spearman": -0.5,
+   "kendall": -0.33333333333333337,
+   "n": 3
+  },
+  {
+   "dataset": "HumanEval (code)",
+   "family": "Phi",
+   "regime": "code",
+   "pearson": -0.9108193763139842,
+   "spearman": -0.5,
+   "kendall": -0.33333333333333337,
+   "n": 3
+  },
+  {
+   "dataset": "HumanEval (code)",
+   "family": "Mistral",
+   "regime": "code",
+   "pearson": 0.039607932021945236,
+   "spearman": 0.5,
+   "kendall": 0.33333333333333337,
+   "n": 3
+  }
+ ],
+ "swe": {
+  "cross_family": {
+   "pearson": -0.23589360225918746,
+   "spearman": 0.0,
+   "kendall": 0.0,
+   "n": 8
+  },
+  "within_qwen_coder": {
+   "pearson": 0.9789016811536353,
+   "spearman": 1.0,
+   "kendall": 1.0,
+   "n": 4
+  }
+ }
+}

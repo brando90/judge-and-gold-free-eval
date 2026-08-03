@@ -19,7 +19,7 @@ S.append('''<section class="slide title"><div class="wrap">
  <p class="lede">A research campaign on what breaks AI judges, told step by step. Every result
  was attacked by an independent critic, one was publicly retracted and corrected, and the final findings
  survived external validation on human-labeled data.</p>
- <div class="meta">7 judge models (0.5B to frontier) · 6 model families · planted-error instruments · 4 benchmarks · 13 findings · 1 retraction</div>
+ <div class="meta">7 judge models (0.5B to frontier) · 6 model families · planted-error instruments · 5 benchmarks · 15 findings · 1 retraction · v10</div>
  <div class="hint">scroll or press → to advance</div></div></section>''')
 
 # 2 the three contributions (the lede)
