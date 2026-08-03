@@ -236,4 +236,4 @@ verified-domain verdict is complete:
 Remaining questions tonight: (1) where on the 0.5B-14B ladder does coherent-wrong
 detection emerge, and does it track the judge's own solve rate on the same items
 (generation-verification coupling, label-noise-free)? (2) weak-judge typo table
-(wave-2). (3) independent-family arbiter robustness for the F3 adjudications.
+(wave-2). (3) DONE: independent Opus arbiter agrees with GPT on 55/55 adjudications (100%) -- the label-noise findings are two-family-unanimous.
