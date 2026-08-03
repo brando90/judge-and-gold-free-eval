@@ -45,9 +45,7 @@ S.append('''<section class="slide title"><div class="wrap">
  reference solution token by token. Seventeen models, seven families, eight math and code benchmarks. On hard
  problems it gives you a real leaderboard: models that predict the reference well are the models that solve
  problems well. On easy, saturated benchmarks that connection goes away, because everyone predicts the reference
- about equally well and the leftover differences are writing style, not skill; on GSM8K the ranking actually flips.
- TFA is the metric we ran, but the failure mode is not TFA's alone: any metric that rewards agreement with a
- reference starts measuring style the moment a benchmark saturates.</p>
+ about equally well and the leftover differences are writing style, not skill; on GSM8K the ranking actually flips.</p>
  <div class="meta">17 models · 7 families · 8 datasets (math · olympiad · code) · every headline correlation reported as Pearson r / r&sup2; + Spearman ρ + Kendall τ</div>
  <div class="hint">scroll or press → to advance</div></div></section>''')
 

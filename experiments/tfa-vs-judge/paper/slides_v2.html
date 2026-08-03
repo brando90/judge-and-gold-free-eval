@@ -53,9 +53,7 @@ b,strong{font-weight:700}.g{color:var(--g);font-weight:700}.a{color:var(--a);fon
  reference solution token by token. Seventeen models, seven families, eight math and code benchmarks. On hard
  problems it gives you a real leaderboard: models that predict the reference well are the models that solve
  problems well. On easy, saturated benchmarks that connection goes away, because everyone predicts the reference
- about equally well and the leftover differences are writing style, not skill; on GSM8K the ranking actually flips.
- TFA is the metric we ran, but the failure mode is not TFA's alone: any metric that rewards agreement with a
- reference starts measuring style the moment a benchmark saturates.</p>
+ about equally well and the leftover differences are writing style, not skill; on GSM8K the ranking actually flips.</p>
  <div class="meta">17 models · 7 families · 8 datasets (math · olympiad · code) · every headline correlation reported as Pearson r / r&sup2; + Spearman ρ + Kendall τ</div>
  <div class="hint">scroll or press → to advance</div></div></section><section class="slide "><div class="wrap"><div class="kick">The takeaway</div><h2>Three results, stated up front</h2><div class="chips"><div class="chip"><span class="cn">+0.86 / +0.84 / +0.71</span><span class="cl">hard math: ρ / r / τ, TFA vs accuracy</span></div><div class="chip"><span class="cn">&minus;0.25 / &minus;0.14 / &minus;0.16</span><span class="cl">saturated GSM8K: ρ / r / τ</span></div><div class="chip"><span class="cn">&approx; 0</span><span class="cl">grading one solution, all variants</span></div></div><div class="cols"><div>
  <h3 class="g">1 &middot; As a model ranker, TFA works where the data is hard</h3>
