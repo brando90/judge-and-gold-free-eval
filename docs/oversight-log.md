@@ -177,3 +177,31 @@ errors to ~1.4). No dramatic gap, no fake equivalence. The capability axis is
 alive when measured threshold-free; the subtlety law question moves to E2.
 Wave-2 (planted x 5 weak judges) launched directly after the chained watcher was
 found stuck on a pgrep self-match (the known gotcha).
+
+### Finding 4 (E2 v1 planted typos: knobs inverted, judges read coherence not arithmetic)
+
+Frontier detection of single-number non-propagated corruptions is 47-68%
+(drop>=3), and the knobs came out INVERTED vs the naive subtlety theory:
+late_small detected MOST (gpt 61% / opus 68%), early_gross LEAST (47/48%).
+Mechanical audit explains it: a non-propagated corruption reads as a TYPO. An
+early one is discounted because consistent downstream text ignores it; a late one
+sits next to the conclusion and looks consequential; a gross x10 reads as an
+obvious transcription slip and is forgiven MORE than a small one. So v1 measures
+typo salience, not error subtlety. Two real results regardless:
+- F4a Judges read NARRATIVE COHERENCE, not line-level arithmetic: 40-50% of
+  literally false stated equations trigger no meaningful score change. Bad news
+  for step-level (PRM-style) uses of judge scores; under-penalization holds even
+  against the rubric's own "slip -> middle score" instruction (implied drop ~4.5,
+  observed 2.3-3.5).
+- F4b Position works OPPOSITE to the downstream-contradiction theory, evidence
+  that "subtlety" must be defined by COHERENCE of the whole trace, not local
+  corruption geometry.
+
+E2 v2 built in response: PROPAGATED coherent-wrong candidates (GPT-5.2 rewrites
+carrying one changed value through consistently), mechanically verified (every
+stated "a op b = c" checked; final answer != gold; 81/240 rewrites passed, 47
+items + paired controls). Even GPT-5.2 fails to write internally consistent wrong
+arithmetic 65% of the time -- itself evidence that coherent-wrong errors are hard
+to produce, consistent with frontier FP ~2% on natural errors. v2 = the
+label-noise-immune, coherence-controlled subtlety instrument; frontier judging
+running, weak-judge wave queued.
