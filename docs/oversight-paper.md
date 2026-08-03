@@ -190,12 +190,22 @@ rates rise when the reference is added), q < q0 in practice, and the harm grows
 with k. This is the Ties column, and it predicts the harm is independent of
 reference quality and source, which is what the other-model controls found.
 
-The model makes one further testable prediction: on synthetic plurality tasks
-where validity is trivially checkable (q0 near 1), adding a valid reference that
-differs from the valid candidate should still depress accuracy in judges that
-lean on the comparator, and should not in judges strong enough to keep
-verifying. That experiment is running as this draft is written; its result will
-replace this sentence.
+The model makes a further testable prediction: on plurality tasks whose
+validity is trivially checkable, judges strong enough to keep verifying should
+show no harm from a valid-but-different reference, while judges below the
+verification floor should still be hurt. We built exactly that instrument
+(synthetic many-valid-answer questions, validity checked by code, reference a
+different valid answer, single-answer twins as controls) and the prediction
+held on all five judges tested: no harm at 3B and above on the easy plural
+checks (deltas 0 to +3, not significant) with the single-answer side showing
+the full reference benefit (+32 to +39 points, p < 1e-4), and the harm
+reappearing at 1.5B, the one rung below the verification floor (-13 to -14,
+order-flips rising to 95%). The final form of the law is therefore
+two-conditional: a reference degrades judging when valid answers are plural AND
+verification is hard relative to the judge. RewardBench-2's factuality-flavored
+plural items sit in that regime for every judge on our ladder, which is why all
+of them were hurt there; and the hard cases of scalable oversight sit in that
+regime by definition.
 
 ## The rules this buys
 

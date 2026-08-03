@@ -28,9 +28,9 @@ slide("The three contributions","If you remember three things",
  """<div class="cols"><div>
  <h3 class="r">1 &middot; A design law: references flip sign</h3>
  <p>Giving a judge a reference answer <b>helps</b> on tasks with one right answer (in proportion to reference
- quality, +9 points) and <b>hurts</b> on tasks with many valid answers (any reference, any source, &minus;7 to
- &minus;8 points, p&le;.0005): the judge anchors on one valid answer and punishes the others. The boundary is
- <b>answer multiplicity</b>, not subjectivity.</p>
+ quality, +9 points) and <b>hurts</b> when two conditions meet: valid answers are <b>plural</b> and verification is <b>hard for the
+ judge</b> (any reference, any source, &minus;7 to &minus;8 points, p&le;.0005; replicated on synthetic
+ plurality tasks exactly where the model predicts, and absent where verification is easy).</p>
  <h3 class="g">2 &middot; Cheap oversight, and its mechanism</h3>
  <p>With a reference, a <b>3B</b> judge catches 85% of hidden errors, near frontier level; without one, 17%.
  Verification = <i>getting a reference</i> (capability-bound) + <i>comparing</i> (cheap). Six model families,
@@ -40,8 +40,9 @@ slide("The three contributions","If you remember three things",
  <p>Three textbook-looking "judge failure" laws in our own data dissolved into <b>71-83% benchmark label
  errors</b> on adjudication. Byproduct: an unsupervised answer-key debugger with <b>89%</b> externally
  validated precision.</p>
- <div class="def"><b>Not claimed:</b> no new judge model, no full theory, and the many-valid-answers result
- currently rests on one benchmark (replication in progress). Typo-forgiveness, the salience inversion, and
+ <div class="def"><b>Not claimed:</b> no new judge model, no full theory, the plurality harm is now replicated on a
+ second, synthetic instrument with its boundary condition mapped (harm requires hard verification, not
+ plurality alone). Typo-forgiveness, the salience inversion, and
  the order-flip meter are supporting evidence, not headlines.</div></div></div>""")
 
 # 2 the problem

@@ -767,3 +767,25 @@ Precise-IF checking bottleneck at all scales; label-free flip-rate scale curve;
 6-family interaction replication. Full record: Findings 1-13 across both
 phases, two design critics + two adversarial critics passed, one public
 retraction cycle, external validations (Platinum, ProcessBench, RB2).
+
+### Finding 14 (plurality replication: partial, and the boundary condition)
+
+Synthetic plurality instrument (validity code-checkable; reference = a DIFFERENT
+valid answer; single-answer twins as within-family control; 5 judges incl.
+Gemma; McNemar):
+  single twins: reference helps hugely for capable judges (7B +39 p<1e-4,
+  14B +32, Gemma +12; flips 68-78% -> 3-7%). Clean replication of the
+  quality-tracking side.
+  plural items: NO harm for >=3B (deltas 0..+3, n.s.) -- but harm reappears at
+  1.5B on BOTH kinds (-13/-14, p<1e-4; plural flips 57->95%).
+Interpretation, exactly the minimal model's q-term: the anchoring harm operates
+through COMPARATOR RELIANCE, which engages only when independent verification
+is hard relative to the judge. Synthetic validity checks are easy for >=3B
+(they keep verifying; no harm); RB2 Ties' factuality checks are hard for every
+judge on the ladder (all defer; all harmed); 1.5B cannot verify anything (harmed
+everywhere).
+REVISED LAW (final form): a reference degrades judging when (a) valid answers
+are plural AND (b) the judge cannot cheaply verify validity itself, i.e. in the
+comparator-reliant regime -- which is where scalable oversight's hard cases
+live by definition. Scope narrowed, mechanism strengthened, model prediction
+confirmed rather than assumed.
