@@ -26,6 +26,21 @@ Candidate solution:
 {candidate}
 """
 
+
+RUBRIC_CODE = """You are reviewing a Python function for CORRECTNESS against its specification (the docstring).
+No reference solution is provided; reason about the code yourself.
+
+Score from 0 to 10 how likely the implementation is fully correct for ALL valid inputs:
+- 10: certainly correct.
+- 5: plausible but you found a questionable case or cannot fully verify.
+- 0: certainly incorrect (you can point to an input it gets wrong).
+
+Return STRICT JSON only: {{"score": <float 0-10>, "justification": "<one sentence>"}}.
+
+Specification and candidate implementation:
+{candidate}
+"""
+
 def parse_score(text):
     m = re.search(r"\{.*?\}", text or "", re.DOTALL)
     if m:
@@ -41,6 +56,7 @@ def main():
     ap.add_argument("--out", required=True)
     ap.add_argument("--max_model_len", type=int, default=8192)
     ap.add_argument("--gpu_frac", type=float, default=0.92)
+    ap.add_argument("--rubric", default="math", choices=["math","code"])
     args = ap.parse_args()
 
     from vllm import LLM, SamplingParams
@@ -52,8 +68,11 @@ def main():
         return s if len(s) <= n else s[:n] + " ...[truncated]"
     prompts = []
     for t in tasks:
-        body = RUBRIC.format(question=clip(t["question"], 4000), gold=clip(t["gold"], 6000),
-                             candidate=clip(t["candidate"], 8000))
+        if args.rubric == "code":
+            body = RUBRIC_CODE.format(candidate=clip(t["candidate"], 8000))
+        else:
+            body = RUBRIC.format(question=clip(t["question"], 4000), gold=clip(t["gold"], 6000),
+                                 candidate=clip(t["candidate"], 8000))
         msgs = [{"role": "user", "content": body}]
         prompts.append(tok.apply_chat_template(msgs, tokenize=False, add_generation_prompt=True))
 
