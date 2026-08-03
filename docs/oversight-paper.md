@@ -187,5 +187,5 @@ Thirteen findings, four independent critic passes (two design, two
 adversarial), one public retraction with a verified correction, all headline
 numbers re-derived from raw files by fresh code, planted code errors re-executed
 against official tests, and a complete chronological audit trail in
-docs/oversight-log.md. Roughly one overnight of five cluster GPUs, two frontier
+docs/oversight-log.md. Roughly one day of five cluster GPUs, two frontier
 judges, and $28 of API spend.

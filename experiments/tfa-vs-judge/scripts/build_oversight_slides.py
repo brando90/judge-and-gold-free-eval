@@ -16,7 +16,7 @@ def slide(kick,title,body,cls=""): S.append(f'<section class="slide {cls}"><div 
 S.append('''<section class="slide title"><div class="wrap">
  <div class="kick">Stanford · Koyejo group · scalable oversight</div>
  <h1>Watching the watchers:<br><span class="hl">when do AI judges actually fail?</span></h1>
- <p class="lede">An overnight research campaign on what breaks AI judges, told step by step. Every result
+ <p class="lede">A research campaign on what breaks AI judges, told step by step. Every result
  was attacked by an independent critic, one was publicly retracted and corrected, and the final findings
  survived external validation on human-labeled data.</p>
  <div class="meta">7 judge models (0.5B to frontier) · 6 model families · planted-error instruments · 4 benchmarks · 13 findings · 1 retraction</div>
@@ -51,12 +51,12 @@ slide("The setup","A ladder of judges and errors we control",
 
 # 4 the mirage
 slide("Act I · the mirage","We found a spectacular law. Then we checked it.",
- '''<p>Early in the night the data produced something beautiful: if you count how many <b>small</b> judges
+ '''<p>Early in the campaign the data produced something beautiful: if you count how many <b>small</b> judges
  a wrong solution fools, you can predict almost perfectly whether the <b>frontier</b> judge is fooled too.
  Zero small judges fooled: the frontier fails 1% of the time. All three fooled: <b>94%</b>. A cheap early
  warning system for frontier failures!</p>'''+
  fig("f1_mirage","Left: the apparent law. Right: what adjudicating all 55 cases revealed, 71% were benchmark label errors, and on the genuinely wrong cases the frontier judge failed only 6%.")+
- '<div class="take">The "law" was an artifact. The solutions that fooled everyone were mostly <b>correct answers marked wrong by the benchmark</b>. Two other exciting effects died the same death that night.</div>')
+ '<div class="take">The "law" was an artifact. The solutions that fooled everyone were mostly <b>correct answers marked wrong by the benchmark</b>. Two other exciting effects died the same death under the same scrutiny.</div>')
 
 # 5 lesson + miner
 slide("Act I · the payoff","The answer keys are dirty, and that is measurable",
@@ -100,7 +100,7 @@ slide("Act III · the mechanism","The single most useful plot of the campaign",
 
 # 9 the retraction
 slide("Interlude","The bug, the retraction, and the better result",
- '''<p>Full honesty: at 3am the purple curve first came out <b>perfect</b>, "solve it yourself first"
+ '''<p>Full honesty: the first version of the purple curve came out <b>perfect</b>, "solve it yourself first"
  seemed to recover 100% of the reference benefit at every size. Suspicious, because the numbers were
  <i>exactly</i> equal to the green curve. A code audit found a silent dispatch bug: the "solve first" arm
  had been running the with-reference condition twice. <b>128 of 128 scores identical.</b> We retracted the
