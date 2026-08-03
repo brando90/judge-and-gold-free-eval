@@ -13,7 +13,9 @@ import matplotlib.pyplot as plt
 
 OUT = "paper/figs"
 pm = json.load(open("paper/figs/.permodel_cache.json"))
-REGIME = {"MATH-500": "hard", "MATH (full)": "hard", "Putnam-AXIOM": "hard", "Putnam-Variations": "hard",
+# saturated = top-model accuracy above ~90% (GSM8K 0.95, GSM8K-Platinum 0.97, MATH-full 0.94);
+# MATH-500 tops out at 0.79, so it stays hard.
+REGIME = {"MATH-500": "hard", "MATH (full)": "saturated", "Putnam-AXIOM": "hard", "Putnam-Variations": "hard",
           "Omni-MATH (olympiad)": "hard", "HumanEval (code)": "code", "GSM8K": "saturated", "GSM8K-Platinum": "saturated"}
 
 def tri(t, s):
@@ -43,7 +45,9 @@ json.dump(res, open("runs/multistat.json", "w"), indent=1)
 ORDER = ["Putnam-AXIOM", "Omni-MATH (olympiad)", "MATH-500", "Putnam-Variations", "MATH (full)",
          "HumanEval (code)", "GSM8K", "GSM8K-Platinum"]
 MCOL = {"pearson": "#2b5c8a", "spearman": "#2f8f4e", "kendall": "#c07d15"}
-fig, (axL, axR) = plt.subplots(1, 2, figsize=(13.2, 5.2), gridspec_kw=dict(width_ratios=[1.25, 1]))
+fig = plt.figure(figsize=(13.2, 5.2))
+gs = fig.add_gridspec(3, 2, width_ratios=[1.25, 1], hspace=0.55)
+axL = fig.add_subplot(gs[:, 0])
 ys = np.arange(len(ORDER))[::-1]
 for y, lab in zip(ys, ORDER):
     w = res["within_qwen"][lab]
@@ -61,19 +65,25 @@ axL.tick_params(left=False)
 
 cells = res["within_family_cells"]
 bins = np.linspace(-1, 1, 9)
-hard = [c["spearman"] for c in cells if c["regime"] == "hard"]
-easy = [c["spearman"] for c in cells if c["regime"] != "hard"]
-axR.hist([hard, easy], bins=bins, stacked=True, color=["#2f8f4e", "#d98c1f"], edgecolor="white",
-         label=[f"hard references ({len(hard)} ladders)", f"saturated / code ({len(easy)} ladders)"])
-axR.axvline(0, color="#333", lw=1.0)
-axR.set_xlabel("Spearman ρ(TFA, accuracy) of one family ladder on one dataset", fontsize=10)
-axR.set_ylabel("number of family × dataset ladders", fontsize=10)
-axR.legend(fontsize=9.5, frameon=False, loc="upper left")
-axR.set_title("All 29 family ladders as a histogram:\nhard-reference ladders pile up at +1, saturated ones scatter", fontsize=11, loc="left")
-for sp in ("top", "right"): axR.spines[sp].set_visible(False)
-fig.tight_layout()
+groups = [("hard", "#2f8f4e", "Hard benchmarks (Putnam, Omni-MATH, MATH-500)"),
+          ("saturated", "#d98c1f", "Saturated benchmarks (GSM8K, GSM8K-Platinum, MATH-full)"),
+          ("code", "#7d54c9", "Code (HumanEval)")]
+for i, (reg, col, name) in enumerate(groups):
+    axR = fig.add_subplot(gs[i, 1])
+    vals = [c["spearman"] for c in cells if c["regime"] == reg]
+    neg = sum(v < 0 for v in vals)
+    verdict = "every ladder ranks correctly" if neg == 0 else f"{neg} of {len(vals)} ladders rank backwards"
+    axR.hist(vals, bins=bins, color=col, edgecolor="white")
+    axR.axvline(0, color="#333", lw=1.0)
+    axR.set_xlim(-1.05, 1.05); axR.set_ylim(0, 12)
+    axR.set_title(f"{name}: {verdict}", fontsize=9.8, loc="left")
+    axR.set_ylabel("ladders", fontsize=9)
+    for sp in ("top", "right"): axR.spines[sp].set_visible(False)
+    if i < 2: axR.set_xticklabels([])
+    else: axR.set_xlabel("Spearman ρ(TFA, accuracy), one bar counts family ladders", fontsize=10)
 fig.savefig(f"{OUT}/fig_ms_multistat.png", dpi=150, bbox_inches="tight"); plt.close(fig)
-print("WROTE fig_ms_multistat.png  hard cells:", len(hard), "easy cells:", len(easy))
+print("WROTE fig_ms_multistat.png  cells per regime:",
+      {reg: sum(1 for c in cells if c["regime"] == reg) for reg, _, _ in groups})
 
 # ---- Figure B: SWE-bench in the arrow grammar ------------------------------
 def sz(m):

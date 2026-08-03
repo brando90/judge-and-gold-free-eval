@@ -72,7 +72,29 @@ slide("The takeaway","Three results, stated up front",
  the same skill as solving the problem. On an easy problem everyone can predict it, so whatever differences remain
  come from formatting and phrasing. When the benchmark is easy, that is all TFA has left to measure.</div></div></div>''')
 
-# 3 terminology
+# 3 contents
+slide("Contents","What this deck covers",
+ '''<div class="cols"><div>
+ <h3 class="ac">Terms</h3>
+ <p>Five definitions everything else depends on: TFA, model-level vs item-level correlation, saturation, and the
+ boundary map. One slide, before any results.</p>
+ <h3 class="g">Result 1 &middot; ranking models</h3>
+ <p>Can TFA order models by skill? Tested in widening circles: inside one family, across seven families, dataset by
+ dataset across the difficulty range, and on SWE-bench coding agents.</p>
+ <h3 class="p">Result 2 &middot; grading single solutions</h3>
+ <p>Can TFA score one answer the way a judge would? The test, the measurement of why it fails, and the seven
+ repairs we tried.</p></div>
+ <div>
+ <h3 class="a">Result 3 &middot; what does grade</h3>
+ <p>A rollout-based signal that grades solutions without a judge, and the compute bill that comes with it.</p>
+ <h3>Conclusions and path forward</h3>
+ <p>What is new here, and the case for judge-free, auditable scoring wherever benchmarks already own gold
+ references.</p>
+ <h3 style="color:var(--mut)">Appendix</h3>
+ <p>Saturation mechanics, the reconciliation with the original TFA paper's numbers, judge-robustness checks, the
+ full variance decomposition, and prior work per question.</p></div></div>''')
+
+# 4 terminology
 slide("Terms used in this deck","Five terms, defined before we use them",
  '''<div class="cols"><div>
  <div class="def"><b>TFA (Teacher-Forced Accuracy).</b> Give the model the problem, then feed it the gold solution
@@ -102,8 +124,8 @@ slide("Terms used in this deck","Five terms, defined before we use them",
 # 4 within family
 slide("Result 1 &middot; ranking &middot; within a family","Start inside one family: TFA tracks accuracy across the Qwen ladder",
  chips(("+0.80 to +0.97","Pearson r, within-Qwen, 8 datasets"),("+0.60 to +1.00","Spearman ρ"),("+0.40 to +1.00","Kendall τ"))+
- '<p>We start with the cleanest comparison we have: five Qwen models, 0.5B to 14B, each reduced to one average-TFA number and one accuracy number per dataset. The left panel plots the correlation between the two under all three statistics. It is positive on all eight datasets, and the weakest values sit on the two datasets where accuracy is closest to the ceiling (MATH-full and GSM8K-Platinum). The right panel widens the view. In total we have 29 family ladders (one family\'s sizes on one dataset), and their correlations form a histogram with two lobes: on hard benchmarks the ladders pile up near +1.0, while on saturated benchmarks and code they spread out and some go negative.</p>'+
- fig("ms","Left: within-Qwen TFA-vs-accuracy correlation under Pearson, Spearman, and Kendall, per dataset (n=5 models each); all values are positive, so the axis starts at zero. Right: histogram of all 29 family-ladder Spearman correlations, colored by whether the dataset is hard or saturated/code.")+
+ '<p>We start with the cleanest comparison we have: five Qwen models, 0.5B to 14B, each reduced to one average-TFA number and one accuracy number per dataset. The left panel plots the correlation between the two under all three statistics. It is positive on all eight datasets, and the weakest values sit on the datasets where accuracy is closest to the ceiling. The right side widens the view to all 29 family ladders we measured (a ladder = one family\'s sizes on one dataset), split by benchmark type, one histogram each. On hard benchmarks every one of the 13 ladders ranks correctly. On saturated benchmarks 5 of the 12 rank backwards. Code sits in between, 2 of 4 backwards.</p>'+
+ fig("ms","Left: within-Qwen TFA-vs-accuracy correlation under Pearson, Spearman, and Kendall, per dataset (n=5 models each); all values are positive, so the axis starts at zero. Right: all 29 family-ladder Spearman correlations as three histograms, one per benchmark type, with the verdict written on each.")+
  '<div class="take">Inside one family TFA orders models correctly. The histogram also shows where that stops: as soon as the benchmark gets easy.</div>')
 
 # 5 across families
