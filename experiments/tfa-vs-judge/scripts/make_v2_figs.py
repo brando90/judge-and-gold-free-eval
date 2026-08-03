@@ -51,11 +51,10 @@ for y, lab in zip(ys, ORDER):
         axL.scatter([w[k]], [y + dy], s=64, color=MCOL[k], zorder=3, label=k if lab == ORDER[0] else None)
     axL.plot([min(w["pearson"], w["spearman"], w["kendall"]), max(w["pearson"], w["spearman"], w["kendall"])],
              [y, y], color="#c9ced6", lw=1.2, zorder=1)
-axL.axvline(0, color="#333", lw=1.0)
 axL.set_yticks(ys); axL.set_yticklabels(ORDER, fontsize=10)
-axL.set_xlim(-1.05, 1.1); axL.grid(axis="x", alpha=0.25)
+axL.set_xlim(0, 1.08); axL.grid(axis="x", alpha=0.25)
 axL.set_xlabel("correlation, mean TFA vs accuracy (within-Qwen ladder, n=5 models)", fontsize=10)
-axL.legend(fontsize=9.5, loc="lower left", frameon=False, title=None)
+axL.legend(fontsize=9.5, loc="upper left", frameon=False, title=None)
 axL.set_title("Within one family, three statistics agree:\nall positive on every dataset, weakest where accuracy saturates", fontsize=11, loc="left")
 for sp in ("top", "right", "left"): axL.spines[sp].set_visible(False)
 axL.tick_params(left=False)

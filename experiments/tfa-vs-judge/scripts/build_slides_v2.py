@@ -100,11 +100,11 @@ slide("Terms used in this deck","Five terms, defined before we use them",
  shows only one, the other two are in the table on the boundary-map slide.</p>''')
 
 # 4 within family
-slide("Result 1 &middot; ranking &middot; within a family","Within the Qwen ladder, all three statistics agree TFA tracks accuracy",
+slide("Result 1 &middot; ranking &middot; within a family","Start inside one family: TFA tracks accuracy across the Qwen ladder",
  chips(("+0.80 to +0.97","Pearson r, within-Qwen, 8 datasets"),("+0.60 to +1.00","Spearman ρ"),("+0.40 to +1.00","Kendall τ"))+
- '<p>The purest test first: five Qwen models (0.5B to 14B), one mean-TFA number each, against accuracy. The left panel shows all three statistics per dataset instead of a single range: every value is positive on every dataset, and the weakest values sit exactly on the saturated data (MATH-full, GSM8K-Platinum). The right panel pools every family ladder we have, 29 in all, into a histogram: on hard references the ladders pile up at +1.0; on saturated data and code they scatter through zero.</p>'+
- fig("ms","Left: within-Qwen TFA-vs-accuracy correlation under Pearson, Spearman, and Kendall, per dataset (n=5 models each). Right: histogram of all 29 family-ladder Spearman correlations, colored by whether the dataset is hard or saturated/code.")+
- '<div class="take">Within a family TFA is a real leaderboard signal, and the histogram already shows where it will break: saturation.</div>')
+ '<p>We start with the cleanest comparison we have: five Qwen models, 0.5B to 14B, each reduced to one average-TFA number and one accuracy number per dataset. The left panel plots the correlation between the two under all three statistics. It is positive on all eight datasets, and the weakest values sit on the two datasets where accuracy is closest to the ceiling (MATH-full and GSM8K-Platinum). The right panel widens the view. In total we have 29 family ladders (one family\'s sizes on one dataset), and their correlations form a histogram with two lobes: on hard benchmarks the ladders pile up near +1.0, while on saturated benchmarks and code they spread out and some go negative.</p>'+
+ fig("ms","Left: within-Qwen TFA-vs-accuracy correlation under Pearson, Spearman, and Kendall, per dataset (n=5 models each); all values are positive, so the axis starts at zero. Right: histogram of all 29 family-ladder Spearman correlations, colored by whether the dataset is hard or saturated/code.")+
+ '<div class="take">Inside one family TFA orders models correctly. The histogram also shows where that stops: as soon as the benchmark gets easy.</div>')
 
 # 5 across families
 slide("Result 1 &middot; ranking &middot; across families","Across families it holds on hard math and scrambles on saturated data",
