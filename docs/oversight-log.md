@@ -688,3 +688,24 @@ generated in a separate forced pass):
   noise; the cross-cell coherence (20 cells, one pattern) is the main evidence.
   Focus "accuracy" is agreement-with-RB2-construction (per design critic), but
   the flip-rate corroboration is label-free and immune to that caveat.
+
+### F13 critic verdict: NEEDS-ONE-CONTROL + construct correction
+
+Adversarial critic on F13: (1) CONSTRUCT ERROR -- RB2 "Ties" is multi-valid-
+answer FACTUAL, not subjective; the -13/-8 harm is mechanically predicted
+anchoring-on-one-valid-answer-among-many. The gradient's soft end must be
+relabeled: the verified claim is "self-reference harms MULTI-VALID-ANSWER
+evaluation," not "subjective evaluation" (Focus deltas -2/-5 are inside the
++/-8-9pt noise band and cannot carry the subjective claim). (2) Self-preference
+literature (2410.21819, 2601.22548) predicts the anchoring mechanism; the sign
+flip as a phenomenon is not pre-empted, but 2509.19880's per-dataset appendix
+must be checked for negative subjective cells before claiming priority.
+(3) Flip-rate-as-quality-proxy is established; the delta-flip diagnostic is
+confounded with pair difficulty -- downgraded from headline to observation.
+(4) Stats: McNemar + per-cell CIs required; surviving cells = Ties -13, 14B
+Math +10 (borderline), and flip deltas >10pts.
+CONTROL RUNNING: other-model reference arms (14B judge with 0.5B ref = wrong-
+but-plausible; 14B with 3B ref; 3B with 14B ref), matched format. If Ties harm
+persists with other-refs -> generic single-answer anchoring; if it vanishes ->
+self-preference specifically; if gold-quality other-ref (14B ref for 3B judge)
+HELPS Ties -> reference quality, not selfness, is the variable.
