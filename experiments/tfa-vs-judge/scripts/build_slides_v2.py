@@ -149,11 +149,13 @@ slide("Result 2 &middot; grading &middot; the test","Can TFA grade one solution?
  chips(("&approx; 0","MATH-500 (agreement with the judge)"),("+0.12","GSM8K"),("+0.22","Putnam")) +
  '''<div class="def"><b>What changes on this slide.</b> Up to now, every data point was a whole model. From here on,
  every data point is <b>one solution</b>. The question: does a solution's TFA agree with the grade a judge gives
- that same solution? One adjustment makes the test fair: we first set aside right-vs-wrong, since checking the final
- answer is easy and is not what anyone needs a grader for. What is left is the real grading question: among
- solutions that are equally correct, can TFA tell the well-reasoned ones from the shaky ones? (We compare against a
- judge rather than accuracy because among correct solutions, accuracy is simply 1 for all of them; there is nothing
- left for it to distinguish.)</div>'''+
+ that same solution? Two choices in the setup, and why. <b>Why grade against a judge instead of accuracy:</b> per
+ solution, accuracy is a single bit, right or wrong, and on these benchmarks checking that bit is a free string
+ match against the answer key. A grader is only worth having if it says more: partial credit, sound versus shaky
+ reasoning. Only a graded score (a judge, or human grades) can express that. <b>Why we subtract correctness first:</b>
+ we keep every solution, wrong ones included, but statistically remove the agreement that correctness alone
+ explains. Otherwise TFA would look like a grader just by noticing right final answers, something we already get
+ for free. What survives the subtraction is TFA's actual grading ability.</div>'''+
  '''<p>It cannot. On MATH the agreement is zero. On GSM8K it is +0.12 and on Putnam +0.22. Those two small values are
  real, not noise: they survive our label-error and contamination checks, and a second judge from a different company
  produces the same numbers (appendix). But real is not the same as useful. Even at its best, +0.22, TFA explains
