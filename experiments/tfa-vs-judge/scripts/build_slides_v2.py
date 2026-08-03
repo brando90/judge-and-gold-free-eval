@@ -79,8 +79,8 @@ slide("Contents","What this deck covers",
  <p>Five definitions everything else depends on: TFA, model-level vs item-level correlation, saturation, and the
  boundary map. One slide, before any results.</p>
  <h3 class="g">Result 1 &middot; ranking models</h3>
- <p>Can TFA order models by skill? Tested in widening circles: inside one family, across seven families, dataset by
- dataset across the difficulty range, and on SWE-bench coding agents.</p>
+ <p>Can TFA order models by skill? Tested within each family across the difficulty range, then pooled into a
+ dataset-by-dataset map, then repeated on SWE-bench coding agents.</p>
  <h3 class="p">Result 2 &middot; grading single solutions</h3>
  <p>Can TFA score one answer the way a judge would? The test, the measurement of why it fails, and the seven
  repairs we tried.</p></div>
@@ -122,21 +122,11 @@ slide("Terms used in this deck","Five terms, defined before we use them",
  shows only one, the other two are in the table on the boundary-map slide.</p>''')
 
 # 4 within family
-slide("Result 1 &middot; ranking &middot; within a family","Start inside one family: TFA tracks accuracy across the Qwen ladder",
+slide("Result 1 &middot; ranking &middot; within families","TFA ranks models correctly on hard benchmarks, and flips on saturated ones",
  chips(("+0.80 to +0.97","Pearson r, within-Qwen, 8 datasets"),("+0.60 to +1.00","Spearman ρ"),("+0.40 to +1.00","Kendall τ"))+
  '<p>We start with the cleanest comparison we have: five Qwen models, 0.5B to 14B, each reduced to one average-TFA number and one accuracy number per dataset. The left panel plots the correlation between the two under all three statistics. It is positive on all eight datasets, and the weakest values sit on the datasets where accuracy is closest to the ceiling. The right side repeats this same comparison for the four families that come in three or more sizes (Qwen, Phi, OLMo, Mistral). Each family on each dataset gives one correlation number (for example, the three Phi models on GSM8K give one), 28 numbers in all, shown as three histograms split by benchmark type. On hard benchmarks all 12 are positive: every family ranks correctly. On saturated benchmarks 5 of 12 are negative: in those families the stronger models score <i>lower</i> TFA. On code it is 2 of 4.</p>'+
  fig("ms","Left: within-Qwen TFA-vs-accuracy correlation under Pearson, Spearman, and Kendall, per dataset (n=5 models each); all values are positive, so the axis starts at zero. Right: the same correlation for each of the four multi-size families on each dataset (4 families x 3 datasets per group, 4 on code). Omni-MATH is not in the histograms because it was scored on a smaller model set where only one family has three sizes; its cross-family number is on the map slide.")+
- '<div class="take">Inside one family TFA orders models correctly. The histogram also shows where that stops: as soon as the benchmark gets easy.</div>')
-
-# 5 across families
-slide("Result 1 &middot; ranking &middot; across families","Across families it holds on hard math and scrambles on saturated data",
- '''<p>Now add Mistral, Phi, OLMo, and the math-specialized families. Each arrow below is one family's size ladder,
- tail at its smallest model, head at its largest. On hard data (Putnam, MATH-500) the arrows point up-right: a bigger,
- better model predicts the gold better, whatever family it comes from. As the data gets easier the arrows flatten and
- scatter, and on GSM8K Phi's and OLMo's arrows point <b class="r">down</b>: their stronger models solve more problems
- but answer in a fuller, more labeled style than the terse gold, so they predict it worse.</p>'''+
- fig("f6","Each arrow is one family's size ladder in (mean TFA, accuracy) space, tail = smallest model, head = largest. Up-right on hard data; flat, scattered, and partly inverted on saturated data. The same arrow grammar is used on every such figure in this deck, including the agents one.")+
- '<div class="take">On saturated data a family\'s house style moves TFA more than its skill does. That is the whole failure mode.</div>')
+ '<div class="take">Where the ranking flips, the family\'s writing style, not its skill, is what moves TFA: on GSM8K the stronger Phi and OLMo models answer in a fuller style than the terse gold and predict it worse. The model-by-model picture is in the appendix.</div>')
 
 # 6 boundary + table
 slide("Result 1 &middot; ranking &middot; the full map","The boundary, with every correlation in triplicate",
@@ -149,7 +139,7 @@ slide("Result 1 &middot; ranking &middot; the full map","The boundary, with ever
 # 7 agents, same grammar
 slide("Result 1 &middot; ranking &middot; coding agents","The same pattern on SWE-bench, drawn the same way",
  chips(("+1.00 / +0.98 / +1.00","within Qwen-Coder: ρ / r / τ (n=4)"),("+0.00 / &minus;0.24 / +0.00","across 4 families: ρ / r / τ (n=8)"))+
- '<p>Same experiment, agentic setting: teacher-force the gold repository patch on SWE-bench and compare patch-TFA to coding ability. Same figure grammar as the math slide: one arrow per family ladder. The Qwen-Coder arrow (4 sizes) points up-right, a perfect within-family ranking. The CodeLlama arrow points down-right: it reproduces the gold patch style best while writing the worst code, the repository version of the GSM8K style trap. Two families ship only one size, so they appear as single diamonds, marked as such.</p>'+
+ '<p>Same experiment, agentic setting: teacher-force the gold repository patch on SWE-bench and compare patch-TFA to coding ability. In the figure, each arrow is one coder family, running from its smallest model to its largest. The Qwen-Coder arrow (4 sizes) points up-right, a perfect within-family ranking. The CodeLlama arrow points down-right: it reproduces the gold patch style best while writing the worst code, the repository version of the GSM8K style trap. Two families ship only one size, so they appear as single diamonds, marked as such.</p>'+
  fig("f9","SWE-bench patch-TFA vs HumanEval pass@1, one arrow per coder family (tail = smallest, head = largest). Up-right within Qwen-Coder; no cross-family relationship; CodeLlama is the high-style/low-skill outlier.")+
  '<div class="take">For agents, same conclusion in plain words: TFA can rank sizes inside one model family, and it cannot compare models across families.</div>')
 
@@ -233,9 +223,20 @@ slide("Path forward","Our lane: reliable metrics <b>with</b> gold references",
 S.append('''<section class="slide divider"><div class="wrap" style="text-align:center">
  <div class="kick">everything after this slide is backup</div>
  <h1 style="font-size:clamp(3rem,8vw,6rem)">APPENDIX</h1>
- <p class="lede" style="max-width:56ch;margin:0 auto">Saturation mechanics, the reconciliation with the original TFA
- paper, judge-robustness checks, the full nuisance-decomposition recipe, the scalable-oversight program (the
- no-gold-references lane), and per-question prior work.</p></div></section>''')
+ <p class="lede" style="max-width:56ch;margin:0 auto">The model-by-model view of the ranking flips, saturation
+ mechanics, the reconciliation with the original TFA paper, judge-robustness checks, the full nuisance-decomposition
+ recipe, the scalable-oversight program (the no-gold-references lane), and per-question prior work.</p></div></section>''')
+
+# A0 the flips, model by model (moved from the main flow; slide 5 summarizes it)
+slide("Appendix &middot; the flips, model by model","What the histogram's negative values look like in the raw data",
+ '''<p>This is the model-by-model view behind the within-families slide. Each arrow is one family, running from its
+ smallest model to its largest, in (mean TFA, accuracy) space. On hard data (Putnam, MATH-500) every arrow points
+ up-right: the bigger, better model predicts the gold better, whatever family it comes from. As the data gets easier
+ the arrows flatten and scatter, and on GSM8K Phi's and OLMo's arrows point <b class="r">down</b>: their stronger
+ models solve more problems but answer in a fuller, more labeled style than the terse gold, so they predict it
+ worse.</p>'''+
+ fig("f6","Each arrow is one family from its smallest model (tail) to its largest (head). Up-right on hard data; flat, scattered, and partly inverted on saturated data.")+
+ '<div class="take">On saturated data a family\'s house style moves TFA more than its skill does.</div>')
 
 # A1 saturation detail
 slide("Appendix &middot; saturation mechanics","Why easy data kills the signal: the TFA range collapses 3x",
