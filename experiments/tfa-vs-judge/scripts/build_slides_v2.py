@@ -39,13 +39,15 @@ TABLE = ('<table class="mini"><tr><th>dataset (all 17 models pooled)</th><th>Pea
 # 1 title: the takeaway is ON the title slide
 S.append('''<section class="slide title"><div class="wrap">
  <div class="kick">Stanford · Koyejo Group · judge-free evaluation · v2, revised after Brando's review</div>
- <h1>TFA predicts accuracy on hard tasks<br><span class="hl">but not on easy ones</span></h1>
- <p class="lede">TFA scores a model by how well it predicts a reference solution, token by token, with no judge
- involved. We tested it on 17 models from 7 families across 8 math and code benchmarks. On hard problems it gives
- you a real leaderboard: models that predict the reference well are the models that solve problems well. On easy,
- saturated benchmarks that connection goes away, because everyone predicts the reference about equally well and the
- leftover differences are writing style, not skill. On GSM8K the ranking actually flips. And for grading a single
- solution, TFA turned out to carry almost no signal anywhere; we tried seven ways to fix that and none worked.</p>
+ <h1>Grading models against a gold reference<br><span class="hl">measures skill on hard tasks, style on easy ones</span></h1>
+ <p class="lede">Can you score models without an LLM judge, by checking their work against a benchmark's gold
+ solutions? We tested the sharpest version of that idea: TFA, which scores a model by how well it predicts the
+ reference solution token by token. Seventeen models, seven families, eight math and code benchmarks. On hard
+ problems it gives you a real leaderboard: models that predict the reference well are the models that solve
+ problems well. On easy, saturated benchmarks that connection goes away, because everyone predicts the reference
+ about equally well and the leftover differences are writing style, not skill; on GSM8K the ranking actually flips.
+ TFA is the metric we ran, but the failure mode is not TFA's alone: any metric that rewards agreement with a
+ reference starts measuring style the moment a benchmark saturates.</p>
  <div class="meta">17 models · 7 families · 8 datasets (math · olympiad · code) · every headline correlation reported as Pearson r / r&sup2; + Spearman ρ + Kendall τ</div>
  <div class="hint">scroll or press → to advance</div></div></section>''')
 
@@ -163,7 +165,8 @@ S.append('''<section class="slide concl"><div class="wrap"><div class="kick">Con
  <h2>What we showed, what is new</h2>
  <div class="cols"><div><h3>The one-sentence version</h3>
    <p><b>TFA measures agreement with the reference's <span class="p">style</span>; only on hard data does style move
-   with <span class="g">skill</span>.</b> Everything in this deck is that sentence quantified.</p>
+   with <span class="g">skill</span>.</b> Everything in this deck is that sentence quantified. And though TFA is the
+   metric we tested, the mechanism belongs to the whole class: any reference-matching metric inherits it.</p>
    <ul><li><b>Leaderboards:</b> trustworthy within a family and on hard references (ρ, r, τ all positive); untrustworthy on saturated benchmarks (all three negative on GSM8K).</li>
    <li><b>Grading single solutions:</b> fails; 89-96% of the per-item signal belongs to the reference; seven repairs all land at zero.</li>
    <li><b>Rollout process value</b> does grade, at ~100x cost.</li>
@@ -348,6 +351,6 @@ document.querySelector('.toggle').addEventListener('click',()=>{const r=document
  const cur=r.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');
  r.setAttribute('data-theme',cur==='dark'?'light':'dark');});
 </script>'''
-html='<title>TFA v2: a judge-free signal for hard tasks</title>'+STYLE+'<div class="rail"></div><button class="toggle">◐ theme</button><div class="counter"></div><div class="deck">'+"".join(S)+'</div>'+SCRIPT
+html='<title>Judge-free grading against references: skill on hard tasks, style on easy</title>'+STYLE+'<div class="rail"></div><button class="toggle">◐ theme</button><div class="counter"></div><div class="deck">'+"".join(S)+'</div>'+SCRIPT
 out="paper/slides_v2.html"
 open(out,"w").write(html); print("wrote",out,"slides:",len(S),"bytes:",len(html))
