@@ -152,14 +152,16 @@ slide("Result 2 &middot; grading &middot; the test","Can TFA grade one solution?
  that same solution? Two choices in the setup, and why. <b>Why grade against a judge instead of accuracy:</b> per
  solution, accuracy is a single bit, right or wrong, and on these benchmarks checking that bit is a free string
  match against the answer key. A grader is only worth having if it says more: partial credit, sound versus shaky
- reasoning. Only a graded score (a judge, or human grades) can express that. <b>Why we subtract correctness first:</b>
- we keep every solution, wrong ones included, but statistically remove the agreement that correctness alone
- explains. Otherwise TFA would look like a grader just by noticing right final answers, something we already get
- for free. What survives the subtraction is TFA's actual grading ability.</div>'''+
- '''<p>It cannot. On MATH the agreement is zero. On GSM8K it is +0.12 and on Putnam +0.22. Those two small values are
- real, not noise: they survive our label-error and contamination checks, and a second judge from a different company
- produces the same numbers (appendix). But real is not the same as useful. Even at its best, +0.22, TFA explains
- about one twentieth of the variation in the judge's grades. Nobody would grade an exam with that.</p>'''+
+ reasoning. Only a graded score (a judge, or human grades) can express that. <b>Why right-vs-wrong is factored out:</b>
+ a correct final answer already predicts a good judge grade, and TFA also picks up correct final answers. So a
+ naive comparison would crown TFA a grader when all it did was spot the right answer, which the answer key tells
+ us for free. The fair test is: <i>among the correct solutions</i>, does higher TFA mean a better judge grade? And
+ the same among the wrong ones? That is the agreement the chips above report.</div>'''+
+ '''<p>The answer is no. On MATH there is no agreement at all. On GSM8K and Putnam there is a little: +0.12 and
+ +0.22. We checked that the little bit is genuine. It is not explained by label errors or contamination, and a
+ different company's model doing the judging produces the same numbers (appendix). Genuine, but far too weak to
+ use. A correlation of +0.22 means that when the judge scores one solution higher than another, TFA agrees roughly
+ 57 times out of 100. Guessing gets you 50. You would not let that grade an exam.</p>'''+
  fig("f2","Per-solution agreement between TFA and the judge\'s grade, with right-vs-wrong set aside (partial Spearman ρ): zero on MATH, small on GSM8K, largest but still weak on Putnam.")+
  '<div class="take">TFA can rank models, and it cannot grade their answers. The next slide gives the reason as a single number.</div>')
 
