@@ -466,3 +466,20 @@ scale x reference interaction + the solve-first bootstrap + the label-artifact
 audit. Queued next (ordered): judge-family deconfound (Llama/Gemma ladder),
 ProcessBench transfer of the strategy shift, pairwise-protocol robustness,
 human holdout, bootstrap-on-unsolvable powered study.
+
+### Finding 9 (cross-family replication of the interaction + bootstrap)
+
+The novelty critic's #1 demand, run overnight on cached non-Qwen judges (math
+propagated, all three arms):
+  phi-4 (MSFT):   with-ref 99% / no-ref 73% / solve-first 99%  (FP7 1/27/1%)
+  Mistral-7B:     with-ref 19% / no-ref  4% / solve-first 19%  (FP7 81/96/81%)
+- The full structure REPLICATES across families at both high and low capability:
+  reference boosts detection, and SOLVE-FIRST RECOVERS THE ENTIRE REFERENCE
+  BENEFIT (solve-first == with-ref in all six judge-family cells measured so
+  far: Qwen 3B/7B/14B, phi-4, Mistral-7B; 1.5B partial).
+- Refinement forced by Mistral-7B: verification capability is FAMILY-dependent,
+  not parameter-count-dependent (Mistral-7B sits far below Qwen2.5-3B). The
+  claim "a trusted reference makes error detection a ~3B commodity" must read
+  "a modern ~3B-CLASS-CAPABILITY commodity."
+- OLMo-13B and Qwen-Math-7B rescue jobs running at 4096 ctx (first launch died
+  on my hardcoded 8192 max_model_len; Ministral engine-init failure unresolved).
