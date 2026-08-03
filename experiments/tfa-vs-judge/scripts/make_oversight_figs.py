@@ -50,7 +50,7 @@ arrow(52, 65.5, 58, 60); arrow(52, 59, 58, 58); arrow(52, 51, 58, 56)
 # step 3
 step(40, "Step 3 · Repeat on tasks with no answer key")
 box(2, 16, 26, 17, "a pair of answers to one prompt,\none known-better, one known-worse.\nTask types range from one right\nanswer ('what is 17 x 24?') to many\nvalid answers ('name a color\nof the rainbow')", "#e8eaee", "#22262c", 8.8)
-box(34, 25, 28, 8, "the judge picks the better one,\nsame three conditions, plus a control:\nanother model's answer as reference", C["purple"], fs=8.8)
+box(34, 25, 28, 8, "the judge picks the better one, seeing:\nno reference, its own answer as reference,\nor another model's answer (the control)", C["purple"], fs=8.8)
 box(34, 14, 28, 8, "each pair judged twice, order\nswapped; a changed verdict means\norder decided, not content", C["amber"], fs=8.8)
 box(68, 16, 30, 14, "two questions answered:\n1. does a reference help or hurt,\nby task type?\n2. how order-dependent are the\nverdicts? (the order-flip rate)", C["slate"], fs=8.8)
 arrow(28, 27, 34, 29); arrow(28, 22, 34, 18); arrow(62, 29, 68, 25); arrow(62, 18, 68, 21)
