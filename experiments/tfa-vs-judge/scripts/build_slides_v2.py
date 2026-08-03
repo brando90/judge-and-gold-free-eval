@@ -146,11 +146,20 @@ slide("Result 1 &middot; ranking &middot; coding agents","The same pattern on SW
 
 # 8 item level
 slide("Result 2 &middot; grading &middot; the test","Can TFA grade one solution? No.",
- chips(("&approx; 0","MATH-500 (item-level partial ρ)"),("+0.12","GSM8K"),("+0.22","Putnam")) +
- '<div class="def"><b>Reminder of the definition.</b> Item-level means: for one single solution, does TFA track the judge\'s grade for that solution once right-vs-wrong is removed (partial correlation controlling for correctness)? This is the property you would need to <b>replace a judge</b> with TFA. The statistic here is partial Spearman ρ; the target must be a graded score (a judge, or human grades), because among correct answers plain accuracy has no variance left to correlate with.</div>'+
- '<p>The answer is no. The signal is zero on MATH, small on GSM8K, and +0.22 at best on the hardest math. The small values are real (they survive label-noise and contamination controls, and replicate under a second judge from a different model family, appendix), but under 5% of variance is far too little to grade with.</p>'+
- fig("f2","Item-level partial correlation between TFA and the judge grade, controlling for correctness: ~0 on MATH, small on GSM8K, largest but still weak on Putnam.")+
- '<div class="take">TFA is a leaderboard signal, not a grader. The next slide shows why, with a number.</div>')
+ chips(("&approx; 0","MATH-500 (agreement with the judge)"),("+0.12","GSM8K"),("+0.22","Putnam")) +
+ '''<div class="def"><b>What changes on this slide.</b> Up to now, every data point was a whole model. From here on,
+ every data point is <b>one solution</b>. The question: does a solution's TFA agree with the grade a judge gives
+ that same solution? One adjustment makes the test fair: we first set aside right-vs-wrong, since checking the final
+ answer is easy and is not what anyone needs a grader for. What is left is the real grading question: among
+ solutions that are equally correct, can TFA tell the well-reasoned ones from the shaky ones? (We compare against a
+ judge rather than accuracy because among correct solutions, accuracy is simply 1 for all of them; there is nothing
+ left for it to distinguish.)</div>'''+
+ '''<p>It cannot. On MATH the agreement is zero. On GSM8K it is +0.12 and on Putnam +0.22. Those two small values are
+ real, not noise: they survive our label-error and contamination checks, and a second judge from a different company
+ produces the same numbers (appendix). But real is not the same as useful. Even at its best, +0.22, TFA explains
+ about one twentieth of the variation in the judge's grades. Nobody would grade an exam with that.</p>'''+
+ fig("f2","Per-solution agreement between TFA and the judge\'s grade, with right-vs-wrong set aside (partial Spearman ρ): zero on MATH, small on GSM8K, largest but still weak on Putnam.")+
+ '<div class="take">TFA can rank models, and it cannot grade their answers. The next slide gives the reason as a single number.</div>')
 
 # 9 why
 slide("Result 2 &middot; grading &middot; the reason","89-96% of per-item TFA is about the reference, not the solution",
