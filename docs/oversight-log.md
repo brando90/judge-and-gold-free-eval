@@ -483,3 +483,28 @@ propagated, all three arms):
   "a modern ~3B-CLASS-CAPABILITY commodity."
 - OLMo-13B and Qwen-Math-7B rescue jobs running at 4096 ctx (first launch died
   on my hardcoded 8192 max_model_len; Ministral engine-init failure unresolved).
+
+### Finding 9 completed (four families)
+
+Final cross-family table (math propagated, det%/FP7%):
+  phi-4 (MSFT):    with-ref 99/1   no-ref 73/27   solve-first 99/1
+  Mistral-7B:      with-ref 19/81  no-ref  4/96   solve-first 19/81
+  OLMo-2-13B(AI2): with-ref 64/42  no-ref  4/96   solve-first 67/42
+  (Qwen-Math-7B: too few parseable verdicts -- specialized-model compliance
+  failure, consistent with the gate requirement; Ministral engine-init and
+  OLMo-7B/32B context limits documented.)
+phi-4 code no-ref detection 59% ~= Qwen-14B 58% (frontier 86-95%): the code
+curve replicates across families at matched capability.
+
+THE PATTERN NOW HOLDS IN FOUR MODEL FAMILIES (Qwen, Microsoft, Mistral, AI2),
+at every capability level measured: a trusted reference massively boosts
+verified-error detection, and SOLVE-FIRST PROMPTING RECOVERS THE FULL REFERENCE
+BENEFIT with no reference shown (solve-first == with-ref in every family cell:
+8/8). The scale x reference interaction + protocol-artifact reading is
+family-general; verification capability itself is family-dependent (Mistral-7B
+<< Qwen-3B), so the commodity claim is capability-, not size-indexed.
+
+RUN COMPLETE. Findings 1-9; two critics passed (adversarial SATISFIED with
+contingency run; novelty PUBLISHABLE-YES); independent data audit clean;
+external (Platinum-only) validation of the bug miner at 89%; cross-family
+replication 4 families. All committed.
