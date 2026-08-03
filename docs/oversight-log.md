@@ -749,3 +749,21 @@ negative is the wrong-self-reference case (one -2.11 F1 cell). Our F13-final
 reference-source controls, order-instability, scale-resolved) is untested there:
 position as THE BOUNDARY AND INVERSION of their mechanism. Verdict: PARTIAL
 adjacency, specific claim unclaimed.
+
+### Finding 9 extension: gated families close the deconfound (6/6)
+
+Llama-3.1-8B: ref 63% / noref 49% (+14). Gemma-2-9B: ref 70% / noref 46% (+24).
+The scale x reference interaction now replicates in SIX model families (Qwen,
+Microsoft, MistralAI, AI2, Meta, Google) -- every family shows the reference
+boost at mid-scale, magnitude varying with family verification capability. The
+novelty critic's judge-family deconfound is complete.
+
+## PHASE 2 CLOSED
+
+Deliverables: F13-final (reference double dissociation: quality-tracked help on
+single-answer content, ANY-reference harm under answer multiplicity, controls +
+McNemar, novelty positioned against 2509.19880 as its boundary/inversion);
+Precise-IF checking bottleneck at all scales; label-free flip-rate scale curve;
+6-family interaction replication. Full record: Findings 1-13 across both
+phases, two design critics + two adversarial critics passed, one public
+retraction cycle, external validations (Platinum, ProcessBench, RB2).
