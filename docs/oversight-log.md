@@ -738,3 +738,14 @@ reference; format-matched) + McNemar item-paired stats:
   demanded control run, self-preference alternative eliminated, McNemar
   reported. Remaining verification before external claims: check 2509.19880's
   per-dataset appendix for any prior negative cells.
+
+### F13 novelty positioning confirmed (2509.19880 appendix audit)
+
+"Do Before You Judge" covers 21 subtasks, ALL single-deterministic-answer or
+meta-judged binary; POINTWISE only (pairwise deliberately avoided); no
+other-model-reference control; no order-consistency measures; the only conceded
+negative is the wrong-self-reference case (one -2.11 F1 cell). Our F13-final
+(multi-valid-answer pairwise, ANY-reference harm at -7/-8 with p<=.0005,
+reference-source controls, order-instability, scale-resolved) is untested there:
+position as THE BOUNDARY AND INVERSION of their mechanism. Verdict: PARTIAL
+adjacency, specific claim unclaimed.
