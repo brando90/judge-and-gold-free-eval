@@ -65,12 +65,14 @@ axL.tick_params(left=False)
 
 cells = res["within_family_cells"]
 bins = np.linspace(-1, 1, 9)
-groups = [("hard", "#2f8f4e", "Hard benchmarks (Putnam, Omni-MATH, MATH-500)"),
+# Omni-MATH is excluded here: it was scored on a smaller model set where only one family has 3+ sizes,
+# so including it would make the hard group 13 while the others count 4 families x datasets.
+groups = [("hard", "#2f8f4e", "Hard benchmarks (MATH-500, Putnam-AXIOM, Putnam-Variations)"),
           ("saturated", "#d98c1f", "Saturated benchmarks (GSM8K, GSM8K-Platinum, MATH-full)"),
           ("code", "#7d54c9", "Code (HumanEval)")]
 for i, (reg, col, name) in enumerate(groups):
     axR = fig.add_subplot(gs[i, 1])
-    vals = [c["spearman"] for c in cells if c["regime"] == reg]
+    vals = [c["spearman"] for c in cells if c["regime"] == reg and c["dataset"] != "Omni-MATH (olympiad)"]
     neg = sum(v < 0 for v in vals)
     verdict = f"all {len(vals)} positive, every family ranks correctly" if neg == 0 \
         else f"{neg} of {len(vals)} negative, those rankings flip"
