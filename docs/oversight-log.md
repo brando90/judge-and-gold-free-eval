@@ -156,3 +156,24 @@ Caveat on F3a/b: the k>=2 arbiter is GPT-5.2 itself (solve-first binary, a much
 stronger protocol than 0-10 scoring, near-oracle on GSM8K arithmetic; MATH cases
 less certain). An independent-family arbiter pass (Opus binary) is queued as a
 robustness check.
+
+### Correction to Finding 2 (threshold artifact) + robust ladder
+
+The "7B matches frontier" claim was an FP>=7 threshold artifact: at FP>=5 weak
+judges are at 74-75% vs GPT 10.3% / Opus 3.9%. Weak judges HEDGE genuine errors at
+midscale (mean-on-wrong: 7B 4.09 vs GPT 1.68); they rarely say 8+, which mimicked
+frontier rejection at the >=7 cut. Threshold-free metrics with adjudicated
+relabels (k>=2 label bugs flipped to correct):
+
+  judge     0.5B   1.5B    3B     7B    14B   GPT-5.2  Opus
+  AUC      0.781  0.898  0.923  0.962  0.961   0.974  0.993
+  sep       0.46   5.49   4.20   5.07   5.98    8.02   8.16
+  meanW     8.95   3.61   3.90   3.89   2.48    1.38   1.40
+
+Corrected statement: judge discrimination on natural errors improves SMOOTHLY and
+monotonically with judge capability (AUC 0.78 -> 0.99); near-ceiling by 7B but
+frontier still adds real margin (separation ~8 vs ~5, confident rejection of
+errors to ~1.4). No dramatic gap, no fake equivalence. The capability axis is
+alive when measured threshold-free; the subtlety law question moves to E2.
+Wave-2 (planted x 5 weak judges) launched directly after the chained watcher was
+found stuck on a pgrep self-match (the known gotcha).
