@@ -174,28 +174,34 @@ slide("Result 2 &middot; grading &middot; the reason","A solution's TFA score is
  every model struggles. That shared part, identical for the 0.5B model and the 14B model, accounts for
  <b>89-96%</b> of the movement. The part that depends on which model produced the solution is the remaining
  <b>4-11%</b>.</p>'''+
- '''<div class="def"><b>An analogy.</b> Think of timing runners on hilly routes. Any single time mostly tells you how
- steep that route was, not how fast the runner is. Average each runner over many routes and the hills hit everyone
- equally, so the averages rank the runners fairly. But you would never judge one run by its raw time. In TFA, the
- reference is the hill.</div>'''+
- '''<p>This one number explains both verdicts so far. <b>Ranking works</b> because averaging over hundreds of
- problems gives every model the same hills, so the hills cancel when you compare models. <b>Grading fails</b>
- because a single solution has nothing to average: its score mostly reports how predictable its reference happens
- to be. The step-by-step recipe with a worked example is in the appendix.</p>'''+
+ '''<p>This one number explains both verdicts so far. <b>Ranking works</b> because the shared part is the same for
+ every model, so it cancels the moment you average over hundreds of problems and compare models. <b>Grading
+ fails</b> because a single solution has nothing to average: its score mostly reports how predictable its reference
+ happens to be. The step-by-step recipe with a worked example is in the appendix.</p>'''+
  fig("f10","The measurement: split per-solution TFA into the part shared by all five Qwen models (a property of the reference) and the part specific to each model. The shared part is 89-96% on every dataset.")+
  '<div class="take">It also makes a prediction: if only 4-11% of the signal is about the solution, no reweighting of TFA can turn it into a grader. The next slide tests that prediction seven ways.</div>')
 
 # 10 fixes, merged
-slide("Result 2 &middot; grading &middot; seven repairs, all fail","If the signal were merely buried, one of these would have found it",
- '''<p>Each repair removes one component of the nuisance: <b class="a">content-token TFA</b> (mask formatting),
- <b class="a">IDF weighting</b> (up-weight rare tokens), <b class="a">surprisal weighting</b> (up-weight non-formulaic
- tokens), <b class="a">soft log-prob instead of hard match</b>, <b class="p">step-shuffle contrast</b> (gold minus
- reordered gold), <b class="p">answer-swap contrast</b> (gold minus wrong-answer gold), <b class="g">multi-reference
- max</b> (best TFA over several golds). All seven land at zero, and the reweightings go slightly negative: the
- surprising tokens are exactly the ones good models also miss.</p>'''+
- '<p style="font-size:.98rem"><b>One cautionary tale we keep on purpose.</b> The answer-swap contrast first looked like a +0.35 win. It was a length artifact (the corruption touched only the final token, so the contrast collapsed to "right answer, divided by length"). Controlling for length dropped it to zero, and we retracted it. House rule since: no item-level win is believed until it survives length and difficulty controls.</p>'+
- fig("var","Item-level correlation for each of the seven repairs: all at or below zero. The signal is absent, not masked.")+
- '<div class="take">Seven misses plus the 89-96% decomposition: per-item TFA has no quality signal to recover.</div>')
+slide("Result 2 &middot; grading &middot; the repairs","We tried seven ways to clean up the signal. None worked.",
+ '''<p>If the grading signal were real but hidden behind the reference's predictability, some cleaned-up version of
+ TFA should reveal it. We built seven, each removing one suspect:</p>
+ <div class="cols"><div><ul>
+ <li><b>Ignore formatting:</b> score only the meaningful tokens, skip the LaTeX and boilerplate.</li>
+ <li><b>Reward rare words:</b> weight uncommon tokens up, filler down.</li>
+ <li><b>Reward surprising tokens:</b> the formulaic ones carry no information anyway.</li>
+ <li><b>Score softly:</b> use the model's probability for each gold token instead of a hard right/wrong match.</li></ul></div>
+ <div><ul>
+ <li><b>Compare against a scrambled gold:</b> the real reference minus one with its steps reordered.</li>
+ <li><b>Compare against a falsified gold:</b> the real reference minus one with a wrong final answer.</li>
+ <li><b>Offer several golds:</b> take the best TFA over multiple verified solutions.</li></ul></div></div>
+ <p>All seven come out at zero. The reweighted versions even dip slightly below zero, for a telling reason: the
+ surprising, hard-to-predict tokens are exactly the ones that good models miss too.</p>'''+
+ '''<p style="font-size:.98rem"><b>One of the seven fooled us for a day.</b> The falsified-gold version first showed
+ +0.35, which would have been a headline. It was an artifact: the fake gold differs in only its final token, so the
+ score quietly reduced to "has the right answer, divided by length." Controlling for length sent it to zero, and we
+ retracted it. House rule since then: no grading win counts until it survives length and difficulty controls.</p>'''+
+ fig("var","Per-solution agreement with the judge for each of the seven repaired versions of TFA: all at or below zero.")+
+ '<div class="take">Seven attempts, zero recoveries. Together with the 89-96% split, we conclude the grading signal is not hidden in TFA. It is not there.</div>')
 
 # 11 rollout
 slide("Result 3 &middot; a signal that does grade","Rollout process value grades solutions, at ~100x the cost",
