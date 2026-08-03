@@ -590,3 +590,31 @@ verified pipeline). The verified opening stack:
     self-reference recovers the reference regime and BEATS gold at tiny scale;
     detection couples to own-solve (F10, F11)
  4. Outcome-not-process grading + local->global strategy shift (F4-F6)
+
+### Finding 12 (ProcessBench transfer: external validation + an honest null)
+
+ProcessBench-gsm8k (400 items, HUMAN-annotated earliest-error steps; PB's own
+protocol: errAcc on error items, corAcc on correct items, F1):
+
+  judge   direct F1 (err/cor)      solve-first F1 (err/cor)
+  0.5B    0.0  (22/0: never says -1)   0.0  (0/100: always says -1)
+  1.5B    0.0  (37/0)                  0.0  (33/0)
+  7B      30.2 (18/97)                 38.0 (24/96)
+  14B     63.2 (48/93)                 70.4 (57/92)
+  (3B rescue + Opus frontier rung in flight)
+
+- F12a External scale curve on human-annotated step errors replicates the
+  verification capability structure: degenerate response modes below 3B-class
+  (always/never error, position priors), credulity at 7B (says -1 for nearly
+  everything), real localization at 14B.
+- F12b SOLVE-FIRST HELPS ON AN EXTERNAL BENCHMARK at sufficient scale: +7-8 F1
+  at 7B/14B (14B: 63->70, errAcc 48->57). The staged-reference direction
+  transfers beyond our own instruments; single-prompt compliance is
+  scale-dependent (helps at 14B, was harmful at 7B on our propagated set --
+  protocol sensitivity to be reconciled).
+- F12c HONEST NULL: the planted-typo strategy-shift prediction (early/late
+  detection ordering by scale) does NOT transfer to natural errors: small-judge
+  "late detection" is a position-prior artifact (0.5B predicts step 3 on 43% of
+  items; mean relative predicted position 0.60), and 14B is ~flat (50/43
+  direct, 56/60 solve). The local->global claim stays scoped to the planted
+  regime (as the novelty critic required).
