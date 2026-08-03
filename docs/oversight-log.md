@@ -631,3 +631,25 @@ FULL EXTERNAL CURVE (ProcessBench-gsm8k F1, human-annotated):
 The verification capability structure -- floor, degenerate modes, credulity
 wobble, gradual climb, frontier reliability -- is confirmed end-to-end on an
 external, human-labeled benchmark. RUN CLOSED (for real this time).
+
+## Phase 2 (Aug 3): hard-to-verify domains -- design critic verdict
+
+PRIOR-ART AMENDMENT TO F11: "Do Before You Judge: Self-Reference as a Pathway
+to Better LLM Evaluation" (arXiv:2509.19880) already proposes generate-then-
+judge-with-own-reference. F11's standing delta is the SCALE-RESOLVED
+measurement on verified errors, the SELF>GOLD style reversal, and the
+compliance failure mode -- the mechanism itself is prior art. Also cite
+2607.05904 (answer-first collapses FP) as confirmation of F10's direction, and
+2606.28050 / 2509.22099 for the generation-judgment asymmetry that Phase-2 H4
+must NOT re-claim.
+
+Design critic (opus, web-verified): Track A GO-WITH-CHANGES; Track B (agentic
+planted-flaw trajectories) KILLED as framed (R-Judge 2401.10019, AgentAuditor
+2506.00641 occupy it; only the planted+scale-ladder wedge would be novel --
+deferred). Track A changes applied: depth over breadth (Math, Precise-IF,
+Focus, Ties at n=120 each; Factuality/Safety dropped); Ties scored label-free
+(position-flip nuisance) not pairwise-accuracy; accuracy reported separately
+from SELF-AGREEMENT (self-preference confound); headline = per-item regression
+of judge-correctness on own-generation-correctness across the gradient, with
+the residual decomposed into position nuisance. Qwen ladder first; frontier and
+Llama/Gemma as robustness after.
