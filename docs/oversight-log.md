@@ -709,3 +709,32 @@ but-plausible; 14B with 3B ref; 3B with 14B ref), matched format. If Ties harm
 persists with other-refs -> generic single-answer anchoring; if it vanishes ->
 self-preference specifically; if gold-quality other-ref (14B ref for 3B judge)
 HELPS Ties -> reference quality, not selfness, is the variable.
+
+### Finding 13 FINAL (controlled): the reference double dissociation
+
+Cross-reference controls (14B judge with 0.5B/3B references; 3B judge with 14B
+reference; format-matched) + McNemar item-paired stats:
+
+  14B judge      Math acc/flip     Ties acc/flip
+  direct           75 / 24           99 /  2
+  selfref          84 / 13  p=.006   91 / 17  p<.0001
+  xweak(0.5B ref)  73 / 21  ~0       92 /  9  p=.0005
+  xmid(3B ref)     82 / 11  +7       92 / 11  p=.0002
+  (3B judge: xstrong 14B-ref harms Ties 91->81 like selfref 91->78)
+
+- F13a' ON SINGLE-ANSWER VERIFIABLE CONTENT the reference effect tracks
+  REFERENCE QUALITY: good references help (+7..+9, p<.01), a bad reference is
+  ~neutral. Selfness is irrelevant; quality is the variable.
+- F13b' ON MULTI-VALID-ANSWER CONTENT, ANY single reference degrades judging
+  (-7..-8, p<=.0005; order-instability 2 -> 9-17%), regardless of quality or
+  source: the judge anchors on one valid answer and penalizes equally-valid
+  alternatives. Self-preference is CLEARED as the mechanism by the controls.
+- F13c' The oversight-relevant axis is ANSWER MULTIPLICITY, not "subjectivity":
+  reference-based oversight is structurally harmful under answer plurality.
+  Combined with F7/F11: references are the cheap-oversight lever exactly and
+  only where answers are unique; under plurality the lever inverts. Precise-IF
+  remains untouched by any reference (the meticulous-checking bottleneck).
+- Critic loop closed: construct error fixed (Ties = multi-valid factual), the
+  demanded control run, self-preference alternative eliminated, McNemar
+  reported. Remaining verification before external claims: check 2509.19880's
+  per-dataset appendix for any prior negative cells.
