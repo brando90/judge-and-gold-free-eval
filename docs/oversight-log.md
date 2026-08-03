@@ -618,3 +618,16 @@ protocol: errAcc on error items, corAcc on correct items, F1):
   items; mean relative predicted position 0.60), and 14B is ~flat (50/43
   direct, 56/60 solve). The local->global claim stays scoped to the planted
   regime (as the novelty critic required).
+
+### Finding 12 completed (full external curve)
+
+3B rescue: F1 36.9 direct / 31.1 solve (3B > 7B direct -- 7B's credulity mode
+is a real non-monotonicity, solve-first fixes it: 38 > 30). Opus frontier rung:
+parse 400/400, errAcc 79.7%, corAcc 98.4%, F1 88.1 (at/above the strongest
+published gsm8k reference points; verify exact numbers before citing).
+
+FULL EXTERNAL CURVE (ProcessBench-gsm8k F1, human-annotated):
+  0.5B: 0   1.5B: 0   3B: 37   7B: 30 (38 solve)   14B: 63 (70 solve)   Opus: 88
+The verification capability structure -- floor, degenerate modes, credulity
+wobble, gradual climb, frontier reliability -- is confirmed end-to-end on an
+external, human-labeled benchmark. RUN CLOSED (for real this time).
