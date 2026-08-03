@@ -104,6 +104,49 @@ Solution steps:
 {candidate}
 """
 
+
+RUBRIC_PAIR = """You are comparing two responses to a prompt. Decide which response is BETTER overall
+(more correct, more helpful, better focused on the request).
+
+Return STRICT JSON only, as the FINAL line: {{"winner": "A"}} or {{"winner": "B"}}
+
+Prompt:
+{question}
+
+Response A:
+{A}
+
+Response B:
+{B}"""
+
+RUBRIC_PAIRREF = """You are comparing two responses to a prompt. You previously wrote your own answer to this
+prompt; use it as a reference point. Decide which response is BETTER overall (more correct, more helpful,
+better focused on the request).
+
+Return STRICT JSON only, as the FINAL line: {{"winner": "A"}} or {{"winner": "B"}}
+
+Prompt:
+{question}
+
+Your own earlier answer (reference):
+{gold}
+
+Response A:
+{A}
+
+Response B:
+{B}"""
+
+RUBRIC_ANSWER = """{question}"""
+
+def parse_pair(text):
+    import re as _re
+    ms=_re.findall(r'"winner"\s*:\s*"?([AB])', text or "")
+    if ms: return 0.0 if ms[-1]=="A" else 1.0
+    tail=(text or "").strip()[-10:]
+    ms=_re.findall(r"\b([AB])\b", tail)
+    return (0.0 if ms[-1]=="A" else 1.0) if ms else None
+
 def parse_steploc(text):
     import re as _re, json as _json
     ms=_re.findall(r'\{[^{}]*?"first_error_step"[^{}]*?\}', text or "")
@@ -129,7 +172,7 @@ def main():
     ap.add_argument("--max_model_len", type=int, default=8192)
     ap.add_argument("--gpu_frac", type=float, default=0.92)
     ap.add_argument("--dump_text", action="store_true")
-    ap.add_argument("--rubric", default="math", choices=["math","code","mathnoref","norefsolve","steploc","steplocsolve"])
+    ap.add_argument("--rubric", default="math", choices=["math","code","mathnoref","norefsolve","steploc","steplocsolve","pair","pairref","answer"])
     args = ap.parse_args()
 
     from vllm import LLM, SamplingParams
@@ -141,7 +184,14 @@ def main():
         return s if len(s) <= n else s[:n] + " ...[truncated]"
     prompts = []
     for t in tasks:
-        if args.rubric == "norefsolve":
+        if args.rubric == "pair":
+            body = RUBRIC_PAIR.format(question=clip(t["question"], 4000), A=clip(t["A"], 5000), B=clip(t["B"], 5000))
+        elif args.rubric == "pairref":
+            body = RUBRIC_PAIRREF.format(question=clip(t["question"], 4000), gold=clip(t["gold"], 3000),
+                                         A=clip(t["A"], 5000), B=clip(t["B"], 5000))
+        elif args.rubric == "answer":
+            body = RUBRIC_ANSWER.format(question=clip(t["question"], 4000))
+        elif args.rubric == "norefsolve":
             body = RUBRIC_MATH_SOLVEFIRST.format(question=clip(t["question"], 4000), candidate=clip(t["candidate"], 8000))
         elif args.rubric == "steploc":
             body = RUBRIC_STEPLOC.format(question=clip(t["question"], 4000), candidate=clip(t["candidate"], 9000))
@@ -159,7 +209,7 @@ def main():
 
     llm = LLM(model=args.model, max_model_len=args.max_model_len,
               gpu_memory_utilization=args.gpu_frac, trust_remote_code=True)
-    sp = SamplingParams(temperature=0.0, max_tokens=(900 if args.rubric in ("norefsolve","steplocsolve") else 300))
+    sp = SamplingParams(temperature=0.0, max_tokens=(900 if args.rubric in ("norefsolve","steplocsolve") else (700 if args.rubric == "answer" else 300)))
     outs = llm.generate(prompts, sp)
     with open(args.out, "w") as f:
         for t, o in zip(tasks, outs):
@@ -167,7 +217,7 @@ def main():
             f.write(json.dumps(dict(task_id=t["task_id"], dataset=t.get("dataset"), solver=t.get("solver"),
                                     pid=t.get("pid"), cc=t.get("cc"), label_src=t.get("label_src"),
                                     tfa=t.get("tfa"), cond=t.get("cond"),
-                                    judge=args.model, score=(parse_steploc(txt) if args.rubric in ("steploc","steplocsolve") else parse_score(txt)), text=(txt if args.dump_text else None))) + "\n")
+                                    judge=args.model, score=(parse_steploc(txt) if args.rubric in ("steploc","steplocsolve") else (parse_pair(txt) if args.rubric in ("pair","pairref") else (None if args.rubric=="answer" else parse_score(txt)))), text=(txt if args.dump_text else None))) + "\n")
     done = sum(1 for _ in open(args.out))
     print(f"[done] {args.model}: {done} judgments -> {args.out}")
 
