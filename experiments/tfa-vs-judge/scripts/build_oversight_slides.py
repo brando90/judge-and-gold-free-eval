@@ -32,9 +32,10 @@ slide("The three contributions","If you remember three things",
  judge</b> (any reference, any source, &minus;7 to &minus;8 points, p&le;.0005; replicated on synthetic
  plurality tasks exactly where the model predicts, and absent where verification is easy).</p>
  <h3 class="g">2 &middot; Cheap oversight, and its mechanism</h3>
- <p>With a reference, a <b>3B</b> judge catches 85% of hidden errors, near frontier level; without one, 17%.
- Verification = <i>getting a reference</i> (capability-bound) + <i>comparing</i> (cheap). Six model families,
- two domains. The scarce resource in oversight is references, not judge size.</p></div>
+ <p>With a reference, a <b>3B</b> judge catches 85% of hidden errors, near frontier level; without one, 17%
+ (Qwen ladder). The direction, a large reference boost at small scale, replicates in all six families tried
+ (+14 to +60 points). Verification = <i>getting a reference</i> (capability-bound) + <i>comparing</i> (cheap).
+ The scarce resource in oversight is references, not judge size.</p></div>
  <div>
  <h3 class="a">3 &middot; The measurements were broken</h3>
  <p>Three textbook-looking "judge failure" laws in our own data dissolved into <b>71-83% benchmark label
@@ -167,9 +168,9 @@ slide("Act IV · a free diagnostic","Order-swapping exposes judging without any 
 slide("Act IV · the finding","The reference lever flips sign, and we know why",
  fig("f8_rb2","Judge = Qwen-14B. On math, references help in proportion to their quality (a weak model's reference does nothing, a decent one +7, its own +9). On many-valid-answer questions, EVERY reference hurts, its own, a weak model's, a decent one's, all about equally (p<=.0005, McNemar).")+
  '''<p>The control arm settles the mechanism. If the harm came from the judge loving its own writing, other
- models' references would be harmless. They are not. <b>Any single reference</b> anchors the judge on one
- valid answer and makes it punish other perfectly valid ones.</p>
- <div class="take">The dividing line is not "objective vs subjective". It is <b>one right answer vs many</b>.</div>''')
+ models' references would be harmless. They are not. When the judge cannot verify validity itself, <b>any
+ single reference</b> anchors it on one valid answer and makes it punish other perfectly valid ones.</p>
+ <div class="take">The dividing line: <b>many valid answers AND verification too hard for the judge</b>. On synthetic plural tasks whose validity is easy to check, the harm vanishes for every judge 3B and up, exactly as the model predicts.</div>''')
 
 # 14 the rules
 S.append('''<section class="slide concl"><div class="wrap"><div class="kick">What it all adds up to</div>

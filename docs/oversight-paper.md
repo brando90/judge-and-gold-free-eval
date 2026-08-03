@@ -98,23 +98,25 @@ Three details earned their place the hard way:
   judge with it shown as a reference, produces the third column above.
 - At 1.5B the judge does better with its own scruffy answer (59%) than with the
   official gold solution (21%). A reference in the judge's own style beats a
-  polished one in someone else's. This echoes the origin of this whole project:
-  reference style is a first-order variable.
+  polished one in someone else's. Reference style, not just
+  reference correctness, is a first-order variable.
 
 We must also report our own failure. The first version of the third column came
 out exactly equal to the second, 100% recovery everywhere. It was a silent
 dispatch bug: the "solve first" arm had run the with-reference condition twice,
 and 128 of 128 scores were identical. We retracted the claim in the log, fixed
 and verified the pipeline, and reran everything. Six of our own results died by
-our own checks during this campaign; that one taught the most.
+our own checks during this campaign.
 
 Generality: the reference boost appears in all six families tried (Qwen,
 Microsoft phi-4 at +26 points, Mistral +15, AI2 OLMo +60, Meta Llama +14,
 Google Gemma +24), with family mattering more than parameter count. On
 ProcessBench, a public benchmark with human-annotated first-error labels, the
 same capability story appears (F1 of 0, 0, 37, 30, 63 up the ladder, 88 for
-Opus), and the forced solve-first protocol adds 7 to 8 F1 points once the judge
-is large enough to comply.
+Opus; the dip at 7B is its documented credulity mode, answering "no error"
+almost everywhere, which solve-first partially repairs), and the forced
+solve-first protocol adds 7 to 8 F1 points once the judge is large enough to
+comply.
 
 ## Part 4. Hard-to-verify domains, where the lever flips
 
@@ -143,9 +145,11 @@ Then the finding (judge: 14B; McNemar tests on paired items):
 | decent model's answer | 82% | 92% (p=.0002) |
 
 On single-answer content, references help in proportion to their quality, and a
-bad one is merely useless. On many-valid-answer content, every reference hurts,
-by about the same amount regardless of source or quality, and order-instability
-jumps (2% to 9-17% flips). The control settles the mechanism: this is not the
+bad one is merely useless. On these plural items, which are hard for every judge
+on our ladder to verify independently, every reference hurts, by about the same
+amount regardless of source or quality, and order-instability jumps (2% to
+9-17% flips); the replication below shows this harm requires the
+hard-to-verify condition, not plurality alone. The control settles the mechanism: this is not the
 judge preferring its own words, since other models' references hurt equally. A
 single reference anchors the judge on one valid answer and makes it punish
 other perfectly valid ones. We audited the closest prior work
@@ -154,7 +158,8 @@ gains) page by page: it tests only single-answer tasks, pointwise, with no
 other-model control and no order metrics. The sign flip is new.
 
 The dividing line for oversight is therefore not objective versus subjective.
-It is one right answer versus many.
+It is one right answer versus many valid answers that the judge cannot
+independently verify. The next section shows both conditions are necessary.
 
 ## A minimal model of why the lever flips
 
@@ -199,8 +204,9 @@ different valid answer, single-answer twins as controls) and the prediction
 held on all five judges tested: no harm at 3B and above on the easy plural
 checks (deltas 0 to +3, not significant) with the single-answer side showing
 the full reference benefit (+32 to +39 points, p < 1e-4), and the harm
-reappearing at 1.5B, the one rung below the verification floor (-13 to -14,
-order-flips rising to 95%). The final form of the law is therefore
+reappearing at 1.5B (-13 to -14, order-flips rising to 95%), a single rung on
+one instrument, consistent with, though not by itself proof of, a verification
+floor. The final form of the law is therefore
 two-conditional: a reference degrades judging when valid answers are plural AND
 verification is hard relative to the judge. RewardBench-2's factuality-flavored
 plural items sit in that regime for every judge on our ladder, which is why all
@@ -210,15 +216,17 @@ regime by definition.
 ## The rules this buys
 
 For measurement: audit the answer key before the judge (cheap-model consensus
-finds oracle bugs at 89 to 97% precision, unsupervised); never trust a single
+finds oracle bugs at 89% precision against an external human-curated check,
+unsupervised); never trust a single
 score threshold; and ask every pairwise question twice with the order swapped,
 since the flip rate is a free reliability meter that needs no labels.
 
 For deployment: where a task has one right answer, provide a reference, and if
 none exists, have the judge generate one in a separate forced step, never via a
-single "solve first" prompt. Where a task has many valid answers, withhold
-references entirely; any single reference, of any quality, biases the judge
-against valid alternatives. And where the task is precise constraint-checking,
+single "solve first" prompt. Where a task has many valid answers AND the judge
+cannot cheaply verify validity itself, withhold references; in that regime any
+single reference, of any quality, biases the judge against valid alternatives
+(when validity is easy for the judge to check, references are safe). And where the task is precise constraint-checking,
 do not use a judge at all; use a programmatic checker, because no judge on our
 ladder does this reliably, references or not.
 
@@ -226,11 +234,30 @@ These rules compose into a simple adaptive protocol: classify each prompt
 (one right answer or many valid ones) with a cheap pass, then attach a
 reference only in the single-answer case. On RewardBench-2 with a 14B judge
 this router captures the math reference gain and most of the plurality harm
-avoidance at once, beating both fixed policies pooled (78 versus 76 and 77
-percent), with oracle routing showing six more points of headroom; its known
-failure is that answer multiplicity is the wrong routing key for open-ended
-instruction tasks, where the better key, per the boundary condition above, is
-whether the judge can verify the content itself.
+avoidance at once. Its pooled edge over the best fixed policy (78 versus 77
+percent) is within our noise band and is not claimed as a gain; the point is
+that a single policy no longer has to sacrifice one regime for the other, and
+oracle routing shows six points of headroom. Its known failure is that answer
+multiplicity is the wrong routing key for open-ended instruction tasks (it
+misroutes the Focus subset), where the better key, per the boundary condition
+above, is whether the judge can verify the content itself.
+
+## Methods notes for the skeptical reader
+
+Four choices deserve explicit defense. The 0-10 rubric was held fixed across
+every judge and arm so no comparison mixes rubrics; score cutoffs (5 and 7)
+appear only in threshold-sensitivity checks, and every headline claim uses
+threshold-free statistics (AUC, paired McNemar), precisely because we caught a
+cutoff manufacturing a fake equivalence. Each table cell is a single
+deterministic run (temperature 0); paired designs and item-level tests carry
+the inference, and effects below about six points are treated as noise
+throughout. Prompt sensitivity was probed only where it became load-bearing
+(the solve-first compliance failure); a systematic prompt ablation is future
+work. Finally, RewardBench-2 Ties earns the label "many valid answers" by
+construction: each Ties prompt admits an enumerated set of equally correct
+answers, and the judged pair shows one valid against one invalid; validity is
+factual, which is exactly why it is hard for mid-size judges to verify and why
+it sits in the harmful regime of the two-condition law.
 
 ## Honest limits
 
