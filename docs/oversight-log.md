@@ -356,3 +356,13 @@ the gold withheld:
 - Protocol instability note: 3B in no-ref mode praises everything on math
   (orig2 9.89, FP 81%) but rejects everything on code (orig 2.0) -- small
   judges lose calibration without a reference; the compliance gate catches it.
+
+### Finding 7 completed (frontier no-ref row)
+
+Frontier no-ref math: GPT det 98/95% (FP7 10/23% deep/shallow), Opus 100/97%
+(FP7 0/3%). Full interaction: the reference-assist benefit falls monotonically
+with scale: +68 points detection at 3B, +36 at 7B, +15 at 14B, +2-5 at frontier
+(with a residual frontier assist visible in GPT shallow FP 23% -> 3%).
+REFERENCES FLATTEN THE VERIFICATION CAPABILITY CURVE: a trusted reference
+converts a frontier-capability verification problem into a ~3B one. Two domains,
+label-noise-immune instruments, same-candidates within-domain ablation.
