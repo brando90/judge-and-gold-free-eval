@@ -205,3 +205,35 @@ arithmetic 65% of the time -- itself evidence that coherent-wrong errors are har
 to produce, consistent with frontier FP ~2% on natural errors. v2 = the
 label-noise-immune, coherence-controlled subtlety instrument; frontier judging
 running, weak-judge wave queued.
+
+### Finding 5 (E2 v2: coherent-wrong does NOT fool frontier judges)
+
+The decisive planted test: 81 mechanically-verified PROPAGATED coherent-wrong
+solutions (internally consistent, wrong final answer, zero tells, style-polished
+-- if anything biased TOWARD fooling) vs paired fresh controls.
+
+  judge  cond          mean   drop   FP>=7  det(drop>=3)
+  gpt    prop_deep     1.50   8.50     0%      100%
+  gpt    prop_shallow  3.64   6.36     3%      100%
+  opus   prop_deep     3.54   6.42     0%      100%
+  opus   prop_shallow  4.40   5.55     0%      100%
+  (controls: orig2 = 10.0 / 9.96)
+
+Frontier judges catch internally-consistent wrong reasoning essentially always;
+they re-derive rather than follow the narrative, and dose partial credit by where
+the divergence happens (deep 1.5 < shallow 3.6). Combined with F1-F4, the
+verified-domain verdict is complete:
+
+  THE SCALABLE-OVERSIGHT PROBLEM IN ORACLE-VERIFIABLE MATH IS NOT JUDGE FAILURE.
+  Frontier judges: ~2% adjudicated FP on natural errors, 0-3% on constructed
+  coherent-wrong, AUC 0.97-0.99. The measurable failures are (a) THE ORACLE
+  (label noise dominates measured unreliability; ladder+frontier disagreement
+  mines it at ~97% precision, unsupervised), and (b) STEP-LEVEL LENIENCY (judges
+  read coherence, not line arithmetic: 69-85% of solutions with an explicit
+  false equation still pass a >=7 bar) -- which matters for process supervision
+  and for domains where no final-answer oracle exists.
+
+Remaining questions tonight: (1) where on the 0.5B-14B ladder does coherent-wrong
+detection emerge, and does it track the judge's own solve rate on the same items
+(generation-verification coupling, label-noise-free)? (2) weak-judge typo table
+(wave-2). (3) independent-family arbiter robustness for the F3 adjudications.
