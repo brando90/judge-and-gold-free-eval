@@ -73,28 +73,31 @@ slide("The takeaway","Three results, stated up front",
  come from formatting and phrasing. When the benchmark is easy, that is all TFA has left to measure.</div></div></div>''')
 
 # 3 terminology
-slide("Terms used in this deck","Four definitions, before anything else",
+slide("Terms used in this deck","Five terms, defined before we use them",
  '''<div class="cols"><div>
- <div class="def"><b>TFA (Teacher-Forced Accuracy).</b> Show the model the problem plus the gold solution one token
- at a time; TFA is the fraction of gold tokens the model would itself have predicted next. One deterministic forward
- pass. No judge, no rubric, no sampling.</div>
- <div class="def"><b>Model-level correlation</b> ("can TFA build a leaderboard?"). One number per model: its mean
- TFA over all items, against its mean accuracy. Correlate across the 17 models. Example: if the most accurate model
- also has the highest mean TFA and so on down the list, Spearman ρ = +1.</div></div>
+ <div class="def"><b>TFA (Teacher-Forced Accuracy).</b> Give the model the problem, then feed it the gold solution
+ one token at a time. At each position, ask: would the model have predicted this next token itself? TFA is the
+ fraction of positions where the answer is yes. It takes one deterministic forward pass, and no judge or rubric is
+ involved anywhere.</div>
+ <div class="def"><b>Model-level correlation.</b> Answers: can TFA build a leaderboard? Each model gets one number,
+ its average TFA over all problems, and we correlate that with its accuracy across the 17 models. If the most
+ accurate model also has the highest average TFA, the second most accurate the second highest, and so on, Spearman
+ ρ comes out +1.</div></div>
  <div>
- <div class="def"><b>Item-level correlation</b> ("can TFA grade one answer?"). For a single solution: does its TFA
- track the grade a judge gives it, <b>after removing right-vs-wrong</b> (a partial correlation controlling for
- correctness)? Example: judge says 0.8, and TFA sits proportionally high; judge says 0.3, TFA sits low. That
- proportionality, beyond mere correctness, is what "grading" means here.</div>
- <div class="def"><b>Saturated benchmark.</b> One where the models score near ceiling (GSM8K: every strong model is
- at 95%+). Little room to differ in skill means differences in TFA come from style instead.</div>
- <div class="def"><b>The boundary (map).</b> Our name for the table and figure that say, dataset by dataset, where
- model-level TFA works and where it fails: positive correlations on hard references, near zero on code, negative on
- saturated data. "The boundary holds on SWE-bench" means coding agents land on the same map, in the same place the
- map predicts.</div></div></div>
- <p class="q">One statistics rule for the whole deck: every headline correlation is reported three ways, <b>Pearson r</b>
- (with r&sup2;), <b>Spearman ρ</b> (ranks), and <b>Kendall τ</b> (pair orderings). Where only one appears in a figure
- caption, the other two are in the table on the boundary-map slide.</p>''')
+ <div class="def"><b>Item-level correlation.</b> Answers: can TFA grade one answer? Take a single solution and ask
+ whether its TFA tracks the grade a judge gives it, after right-vs-wrong is factored out (a partial correlation
+ controlling for correctness). Concretely: the judge gives one solution 0.8 and another 0.3; a grader worth using
+ should score the first clearly higher, even when both end on the correct answer. That is the bar TFA has to clear.</div>
+ <div class="def"><b>Saturated benchmark.</b> One where every reasonable model scores near the ceiling; on GSM8K,
+ every strong model is above 95%. With that little room for skill to differ, whatever still differs between models
+ is mostly style.</div>
+ <div class="def"><b>The boundary (map).</b> Our shorthand for the table and figure that record, dataset by dataset,
+ where model-level TFA works and where it fails: clearly positive on hard math, weaker on code, negative on
+ saturated data. When we say SWE-bench "lands on the map", we mean coding agents show the same pattern the map
+ predicts.</div></div></div>
+ <p class="q">One reporting rule for the whole deck: every headline correlation appears three ways, <b>Pearson r</b>
+ (with r&sup2;), <b>Spearman ρ</b> (rank order), and <b>Kendall τ</b> (pairwise orderings). Where a figure caption
+ shows only one, the other two are in the table on the boundary-map slide.</p>''')
 
 # 4 within family
 slide("Result 1 &middot; ranking &middot; within a family","Within the Qwen ladder, all three statistics agree TFA tracks accuracy",
