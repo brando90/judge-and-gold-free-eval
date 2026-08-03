@@ -1,0 +1,332 @@
+[
+  {
+    "dataset": "gsm8k",
+    "solver": "Qwen/Qwen2.5-3B-Instruct",
+    "pid": "43",
+    "verdict": "CANDIDATE_WRONG"
+  },
+  {
+    "dataset": "gsm8k",
+    "solver": "Qwen/Qwen2.5-3B-Instruct",
+    "pid": "310",
+    "verdict": "CANDIDATE_WRONG"
+  },
+  {
+    "dataset": "gsm8k",
+    "solver": "mistralai/Mistral-7B-Instruct-v0.3",
+    "pid": "32",
+    "verdict": "CANDIDATE_CORRECT"
+  },
+  {
+    "dataset": "gsm8k",
+    "solver": "mistralai/Mistral-7B-Instruct-v0.3",
+    "pid": "191",
+    "verdict": "CANDIDATE_CORRECT"
+  },
+  {
+    "dataset": "gsm8k",
+    "solver": "mistralai/Mistral-7B-Instruct-v0.3",
+    "pid": "35",
+    "verdict": "CANDIDATE_CORRECT"
+  },
+  {
+    "dataset": "math500",
+    "solver": "Qwen/Qwen2.5-14B-Instruct",
+    "pid": "test/number_theory/691.json",
+    "verdict": "CANDIDATE_CORRECT"
+  },
+  {
+    "dataset": "gsm8k",
+    "solver": "Qwen/Qwen2.5-14B-Instruct",
+    "pid": "437",
+    "verdict": "CANDIDATE_CORRECT"
+  },
+  {
+    "dataset": "gsm8k",
+    "solver": "mistralai/Mistral-7B-Instruct-v0.3",
+    "pid": "348",
+    "verdict": "CANDIDATE_CORRECT"
+  },
+  {
+    "dataset": "math500",
+    "solver": "microsoft/phi-4",
+    "pid": "test/prealgebra/914.json",
+    "verdict": "CANDIDATE_WRONG"
+  },
+  {
+    "dataset": "math500",
+    "solver": "Qwen/Qwen2.5-14B-Instruct",
+    "pid": "test/intermediate_algebra/1508.json",
+    "verdict": "CANDIDATE_WRONG"
+  },
+  {
+    "dataset": "gsm8k",
+    "solver": "Qwen/Qwen2.5-0.5B-Instruct",
+    "pid": "276",
+    "verdict": "CANDIDATE_WRONG"
+  },
+  {
+    "dataset": "gsm8k",
+    "solver": "mistralai/Mistral-7B-Instruct-v0.3",
+    "pid": "347",
+    "verdict": "CANDIDATE_CORRECT"
+  },
+  {
+    "dataset": "gsm8k",
+    "solver": "mistralai/Mistral-7B-Instruct-v0.3",
+    "pid": "289",
+    "verdict": "CANDIDATE_CORRECT"
+  },
+  {
+    "dataset": "gsm8k",
+    "solver": "mistralai/Mistral-7B-Instruct-v0.3",
+    "pid": "131",
+    "verdict": "CANDIDATE_CORRECT"
+  },
+  {
+    "dataset": "gsm8k",
+    "solver": "Qwen/Qwen2.5-14B-Instruct",
+    "pid": "45",
+    "verdict": "CANDIDATE_CORRECT"
+  },
+  {
+    "dataset": "gsm8k",
+    "solver": "mistralai/Mistral-7B-Instruct-v0.3",
+    "pid": "495",
+    "verdict": "CANDIDATE_CORRECT"
+  },
+  {
+    "dataset": "gsm8k",
+    "solver": "Qwen/Qwen2.5-3B-Instruct",
+    "pid": "157",
+    "verdict": "CANDIDATE_WRONG"
+  },
+  {
+    "dataset": "gsm8k",
+    "solver": "mistralai/Mistral-7B-Instruct-v0.3",
+    "pid": "246",
+    "verdict": "CANDIDATE_CORRECT"
+  },
+  {
+    "dataset": "gsm8k",
+    "solver": "mistralai/Mistral-7B-Instruct-v0.3",
+    "pid": "487",
+    "verdict": "CANDIDATE_CORRECT"
+  },
+  {
+    "dataset": "math500",
+    "solver": "Qwen/Qwen2.5-14B-Instruct",
+    "pid": "test/precalculus/190.json",
+    "verdict": "CANDIDATE_CORRECT"
+  },
+  {
+    "dataset": "gsm8k",
+    "solver": "mistralai/Mistral-7B-Instruct-v0.3",
+    "pid": "124",
+    "verdict": "CANDIDATE_WRONG"
+  },
+  {
+    "dataset": "gsm8k",
+    "solver": "mistralai/Mistral-7B-Instruct-v0.3",
+    "pid": "358",
+    "verdict": "CANDIDATE_CORRECT"
+  },
+  {
+    "dataset": "gsm8k",
+    "solver": "mistralai/Mistral-7B-Instruct-v0.3",
+    "pid": "202",
+    "verdict": "CANDIDATE_CORRECT"
+  },
+  {
+    "dataset": "math500",
+    "solver": "microsoft/phi-4",
+    "pid": "test/number_theory/342.json",
+    "verdict": "CANDIDATE_CORRECT"
+  },
+  {
+    "dataset": "gsm8k",
+    "solver": "Qwen/Qwen2.5-14B-Instruct",
+    "pid": "475",
+    "verdict": "CANDIDATE_CORRECT"
+  },
+  {
+    "dataset": "gsm8k",
+    "solver": "mistralai/Mistral-7B-Instruct-v0.3",
+    "pid": "142",
+    "verdict": "CANDIDATE_CORRECT"
+  },
+  {
+    "dataset": "math500",
+    "solver": "Qwen/Qwen2.5-32B-Instruct",
+    "pid": "test/prealgebra/1865.json",
+    "verdict": "CANDIDATE_CORRECT"
+  },
+  {
+    "dataset": "gsm8k",
+    "solver": "Qwen/Qwen2.5-0.5B-Instruct",
+    "pid": "455",
+    "verdict": "CANDIDATE_WRONG"
+  },
+  {
+    "dataset": "gsm8k",
+    "solver": "allenai/OLMo-2-1124-13B-Instruct",
+    "pid": "70",
+    "verdict": "CANDIDATE_CORRECT"
+  },
+  {
+    "dataset": "gsm8k",
+    "solver": "mistralai/Mistral-7B-Instruct-v0.3",
+    "pid": "109",
+    "verdict": "CANDIDATE_CORRECT"
+  },
+  {
+    "dataset": "math500",
+    "solver": "allenai/OLMo-2-1124-13B-Instruct",
+    "pid": "test/algebra/1184.json",
+    "verdict": "CANDIDATE_WRONG"
+  },
+  {
+    "dataset": "gsm8k",
+    "solver": "mistralai/Mistral-7B-Instruct-v0.3",
+    "pid": "372",
+    "verdict": "CANDIDATE_CORRECT"
+  },
+  {
+    "dataset": "gsm8k",
+    "solver": "Qwen/Qwen2.5-14B-Instruct",
+    "pid": "331",
+    "verdict": "CANDIDATE_CORRECT"
+  },
+  {
+    "dataset": "math500",
+    "solver": "Qwen/Qwen2.5-14B-Instruct",
+    "pid": "test/intermediate_algebra/1566.json",
+    "verdict": "CANDIDATE_WRONG"
+  },
+  {
+    "dataset": "gsm8k",
+    "solver": "mistralai/Mistral-7B-Instruct-v0.3",
+    "pid": "106",
+    "verdict": "CANDIDATE_CORRECT"
+  },
+  {
+    "dataset": "gsm8k",
+    "solver": "mistralai/Mistral-7B-Instruct-v0.3",
+    "pid": "18",
+    "verdict": "CANDIDATE_CORRECT"
+  },
+  {
+    "dataset": "gsm8k",
+    "solver": "mistralai/Mistral-7B-Instruct-v0.3",
+    "pid": "180",
+    "verdict": "CANDIDATE_CORRECT"
+  },
+  {
+    "dataset": "gsm8k",
+    "solver": "mistralai/Mistral-7B-Instruct-v0.3",
+    "pid": "243",
+    "verdict": "CANDIDATE_CORRECT"
+  },
+  {
+    "dataset": "math500",
+    "solver": "Qwen/Qwen2.5-3B-Instruct",
+    "pid": "test/counting_and_probability/508.json",
+    "verdict": "CANDIDATE_WRONG"
+  },
+  {
+    "dataset": "math500",
+    "solver": "microsoft/phi-4",
+    "pid": "test/number_theory/521.json",
+    "verdict": "CANDIDATE_CORRECT"
+  },
+  {
+    "dataset": "gsm8k",
+    "solver": "Qwen/Qwen2.5-3B-Instruct",
+    "pid": "343",
+    "verdict": "CANDIDATE_CORRECT"
+  },
+  {
+    "dataset": "gsm8k",
+    "solver": "mistralai/Mistral-7B-Instruct-v0.3",
+    "pid": "158",
+    "verdict": "CANDIDATE_CORRECT"
+  },
+  {
+    "dataset": "math500",
+    "solver": "Qwen/Qwen2.5-14B-Instruct",
+    "pid": "test/intermediate_algebra/1994.json",
+    "verdict": "CANDIDATE_CORRECT"
+  },
+  {
+    "dataset": "gsm8k",
+    "solver": "mistralai/Mistral-7B-Instruct-v0.3",
+    "pid": "411",
+    "verdict": "CANDIDATE_CORRECT"
+  },
+  {
+    "dataset": "gsm8k",
+    "solver": "mistralai/Mistral-7B-Instruct-v0.3",
+    "pid": "183",
+    "verdict": "CANDIDATE_CORRECT"
+  },
+  {
+    "dataset": "gsm8k",
+    "solver": "mistralai/Mistral-7B-Instruct-v0.3",
+    "pid": "111",
+    "verdict": "CANDIDATE_CORRECT"
+  },
+  {
+    "dataset": "gsm8k",
+    "solver": "Qwen/Qwen2.5-0.5B-Instruct",
+    "pid": "143",
+    "verdict": "CANDIDATE_WRONG"
+  },
+  {
+    "dataset": "math500",
+    "solver": "Qwen/Qwen2.5-3B-Instruct",
+    "pid": "test/precalculus/695.json",
+    "verdict": "CANDIDATE_WRONG"
+  },
+  {
+    "dataset": "math500",
+    "solver": "Qwen/Qwen2.5-3B-Instruct",
+    "pid": "test/prealgebra/1991.json",
+    "verdict": "CANDIDATE_CORRECT"
+  },
+  {
+    "dataset": "math500",
+    "solver": "Qwen/Qwen2.5-14B-Instruct",
+    "pid": "test/number_theory/516.json",
+    "verdict": "CANDIDATE_WRONG"
+  },
+  {
+    "dataset": "math500",
+    "solver": "Qwen/Qwen2.5-14B-Instruct",
+    "pid": "test/intermediate_algebra/183.json",
+    "verdict": "CANDIDATE_WRONG"
+  },
+  {
+    "dataset": "gsm8k",
+    "solver": "mistralai/Mistral-7B-Instruct-v0.3",
+    "pid": "17",
+    "verdict": "CANDIDATE_CORRECT"
+  },
+  {
+    "dataset": "gsm8k",
+    "solver": "Qwen/Qwen2.5-0.5B-Instruct",
+    "pid": "352",
+    "verdict": "CANDIDATE_WRONG"
+  },
+  {
+    "dataset": "gsm8k",
+    "solver": "mistralai/Mistral-7B-Instruct-v0.3",
+    "pid": "179",
+    "verdict": "CANDIDATE_CORRECT"
+  },
+  {
+    "dataset": "gsm8k",
+    "solver": "mistralai/Mistral-7B-Instruct-v0.3",
+    "pid": "460",
+    "verdict": "CANDIDATE_CORRECT"
+  }
+]

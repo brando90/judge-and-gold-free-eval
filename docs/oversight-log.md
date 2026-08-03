@@ -122,3 +122,37 @@ to [0,10]; compliance gate from planted calib pairs):
 Implication: on natural weak-to-mid-solver errors the oversight gap closes by 7B;
 the differentiator must live in the SUBTLE-ERROR regime. E2 (planted position x
 magnitude ladder) x all 7 judges is exactly that measurement; wave 2 queued.
+
+### Finding 3 (hierarchy test + adjudication, 2026-08-02 ~21:40)
+
+Tested the "detection hierarchy": does the number of weak judges (1.5B/3B/7B)
+fooled by a wrong candidate predict frontier FP? Raw result looked spectacular
+(P(frontier fooled) = 1% -> 6.5% -> 60.5% -> 94% for k=0..3 weak fooled; ~94x
+lift). ADJUDICATION (GPT-5.2 solve-first binary on all 55 k>=2 cases) dissolved
+it: 71% of k>=2 cases are LABEL BUGS (candidate actually correct; GSM8K 32/40
+even after platinum cleaning, MATH 7/15). Conditioned on confirmed-wrong,
+frontier FP at k>=2 is just 6.2%/8.3% vs 2.0%/1.5% baseline -- weak-judge
+consensus carries almost no signal about frontier failure on GENUINE errors.
+
+The day's three apparent oversight laws (attractor effect, capability-gap
+degradation, detection hierarchy) all dissolved under adjudication. Convergent
+statement, now triple-verified:
+
+- F3a IN ORACLE-VERIFIABLE DOMAINS, MEASURED JUDGE UNRELIABILITY IS DOMINATED BY
+  ORACLE NOISE. Adjudicated frontier FP on genuine natural errors is ~2%, flat
+  across solver strength, weak-judge consensus, and difficulty. Universal fools
+  (errors that fool everything) are ~0.2% of wrong solutions.
+- F3b The ladder is not a subtlety meter; it is an ORACLE-BUG MINER: unanimous
+  (weak ladder + frontier) disagreement with the label = the label is wrong with
+  ~97% precision (39/40 gpt cell), unsupervised, at pennies. Prior work (incl.
+  Platinum) used frontier models + humans; a 1.5-7B open ladder suffices.
+- F3c Everything now rides on E2 planted errors -- label-noise-immune by
+  construction. If frontier detection collapses on late/small corruptions while
+  weak judges collapse earlier, the subtlety law survives in the planted regime;
+  if frontier detects everything, "judge failure" in verifiable math is a
+  non-problem and the program pivots to non-verifiable domains.
+
+Caveat on F3a/b: the k>=2 arbiter is GPT-5.2 itself (solve-first binary, a much
+stronger protocol than 0-10 scoring, near-oracle on GSM8K arithmetic; MATH cases
+less certain). An independent-family arbiter pass (Opus binary) is queued as a
+robustness check.
