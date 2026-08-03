@@ -274,3 +274,35 @@ own solve rate (generation-verification coupling). If detection ~ own-solve,
 oversight inherits the generation frontier, and the honest scalable-oversight
 frontier is exactly: solvers producing coherent solutions to problems the judge
 cannot solve. That is a clean, testable definition the field currently lacks.
+
+### Finding 6 (full-ladder planted results: verification phase change + GV decoupling)
+
+v1 typo probe across the ladder (det% by cond, fp7 in parens):
+- 0.5B/1.5B: detect nothing (1-6%, fp7 84-95%): below the verification floor.
+- 3B and 14B: NAIVE ordering, early_gross caught most (69%/72%) and late_small
+  least (31%/25%): mid-scale judges read LOCAL SALIENCE.
+- frontier: INVERTED ordering, late_small caught most (61%/68%), gross typos
+  forgiven: frontier judges read GLOBAL CONSEQUENCE and forgive typos as typos.
+So judging strategy undergoes a qualitative shift with scale: local pattern
+checking -> global re-derivation. The typo knobs are a strategy probe.
+
+v2 coherent-wrong across the ladder (FP>=7 / detection):
+  0.5B 95-97% / 5-6% ; 1.5B 78-79% / 21-22% ; 3B 2-5% / 82-88% ;
+  7B 7-13% / 82-88% ; 14B 2-15% / 85-95% ; GPT 0-3% / 100% ; Opus 0% / 100%.
+- F6a A sharp VERIFICATION PHASE CHANGE between 1.5B and 3B; near-ceiling from
+  3B; the "coherent-wrong universal fool" class does not exist for judges >=3B.
+- F6b GENERATION-VERIFICATION DECOUPLING at item level: detection is flat in
+  whether the judge solved the item itself (3B: 86% solved vs 100% unsolved
+  [n=6]; 7B deep: 88% vs 89% [n=9]; shallow 86% vs 73% [n=11]). No evidence
+  that verification inherits the generation frontier; a 3B judge catches
+  coherent-wrong on problems it cannot solve. Caveat: unsolved bins small
+  (n=5-11); directionally consistent across rungs and conditions.
+
+Combined story (the opening): in oracle-verifiable math, oversight-by-judging is
+governed by a cheap verification capability that (i) emerges sharply near 3B,
+(ii) exceeds the judge's own generation frontier, and (iii) changes strategy
+(local -> global) with scale; frontier failure is confined to rubric-licensed
+step-level leniency, while the dominant "unreliability" in measurements is
+oracle noise, minable at 97% precision by ladder disagreement. Remaining
+confound to close: style-matched error-free rewrites (v2 rewrites are
+LaTeX-styled vs plain controls); running next.
