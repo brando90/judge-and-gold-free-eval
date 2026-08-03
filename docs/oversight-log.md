@@ -366,3 +366,46 @@ with scale: +68 points detection at 3B, +36 at 7B, +15 at 14B, +2-5 at frontier
 REFERENCES FLATTEN THE VERIFICATION CAPABILITY CURVE: a trusted reference
 converts a frontier-capability verification problem into a ~3B one. Two domains,
 label-noise-immune instruments, same-candidates within-domain ablation.
+
+### Strong-critic verdict and the contingent experiment (end of run)
+
+Adversarial opus critic (full claim set, web-verified prior art): **SATISFIED --
+"a genuine, novel, defensible opening exists"** in C1 (oversight effects as label
+artifacts + the mining instrument) and the QUANTIFIED scale x reference
+interaction -- contingent on (a) the self-solve-vs-verify confound experiment,
+(b) an eventual human-audited label holdout. Downgrades applied:
+- C1: frontier "~2% FP" rephrased as residual frontier-adjudicated disagreement
+  (adjudicator circularity; correlated frontier families); human holdout queued.
+- C2: top-of-ladder AUC differences need CIs; not separable at current n.
+- C3: reframed from "step-level blind spot" to "frontier judges are OUTCOME
+  graders, not process graders" (typo forgiveness is arguably correct behavior).
+- C4: kept as scaffolding (Zheng's main effect made quantitative).
+- C5: THE "LAW" FRAMING DROPPED. Kept: the scale x reference interaction (+68 at
+  3B .. +2-5 at frontier, two domains, label-noise-immune instruments).
+- C6: WITHDRAWN (n=6-11 cannot support a null).
+
+Contingent experiment (run immediately, code domain, item-matched, Wilson CIs):
+reference-free mutant detection vs judge's own solve status:
+  3B 23% [14,35] solved vs 8% [2,26] unsolved; 7B 36% [26,48] vs 46% [23,71];
+  14B 63% [51,73] vs 33% [15,58].
+No consistent item-level coupling (7B flat; 3B/14B mixed, CIs overlap). The
+critic's collapse condition ("if reference-free success tracks self-solve
+item-by-item, C5 reduces to the generation-verification gap") is NOT confirmed;
+neither is clean decoupling. Verification and generation are correlated
+capabilities but not item-identical at current power. Next: a POWERED coupling
+study on items selected to be unsolvable per judge.
+
+## Final state of the opening (post-critic)
+
+KEEP (critic-endorsed):
+1. Published-style oversight effects can be label artifacts; adjudication
+   dissolves three of them; ladder+frontier disagreement mines oracle bugs
+   (~97% precision on n=40) unsupervised. [C1, downgraded wording]
+2. The scale x reference interaction: a trusted reference converts error
+   detection from a capability-bounded skill into a ~3B commodity (+68/3B ..
+   +2-5/frontier; math+code; mechanically verified instruments). [C5 core]
+3. Outcome-vs-process grading and the local->global strategy shift with scale.
+   [C3 reframed, C4]
+OPEN (needs power/humans):
+4. Item-level verification-generation coupling (mixed at current n).
+5. Human-audited holdout for the adjudication chain.
