@@ -43,9 +43,12 @@ difficulty confound).
 
 Two conclusions, both verified beyond our own pipeline:
 
-1. In our GSM8K scoring, 4.1% of correctness labels were simply wrong, and
-   fixing them raised the measured quality of a frontier judge from 0.66 to
-   0.75. Benchmarks measure the oracle as much as the judge.
+1. In our GSM8K scoring, 4 to 10% of correctness labels were wrong depending
+   on model family, and repairing the oracle raised the measured quality of a
+   frontier judge from 0.66 (raw) to 0.75 (conservative cleaning) to 0.91
+   (full scorer repair). Benchmarks measure the oracle as much as the judge,
+   and the size of that error was itself underestimated until the scorer was
+   fixed at the root.
 2. The wreckage contains a tool. When several cheap open models unanimously
    produce the same "wrong" answer, the grading oracle is usually what is
    broken. Checked against GSM8K-Platinum, a human-curated re-annotation, with

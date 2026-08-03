@@ -84,7 +84,7 @@ slide("Act I · the mirage","We found a spectacular law. Then we checked it.",
 
 # 5 lesson + miner
 slide("Act I · the payoff","The answer keys are dirty, and that is measurable",
- chips(("4.1%","of GSM8K grades in our pipeline were wrong"),("89%","bug-miner precision, externally validated"))+
+ chips(("4-10%","of GSM8K grades wrong (by model family)"),("89%","bug-miner precision, externally validated"),("0.66→0.91","frontier judge quality, raw → repaired oracle"))+
  '''<p>Three separate "judge failure" effects each dissolved into <b>label noise</b>: errors in the
  benchmark answer keys, not in the judges. This flips the usual conclusion: much of what the literature
  measures as judge unreliability is actually <b>oracle unreliability</b>.</p>
