@@ -424,3 +424,45 @@ stated math true" (frontier's 100% detection suggests the errors are real
 regardless). New arms running: powered code coupling (multi-mutant v2) and
 REFERENCE BOOTSTRAPPING (solve-first rubric on the ladder: can a weak judge
 recover the with-reference regime by generating its own reference?).
+
+### Finding 8 (final block: bootstrap discovery, powered coupling, novelty verdict, external validation)
+
+- F8a REFERENCE BOOTSTRAPPING (new opening, actionable): a solve-first rubric
+  (judge generates its own solution, then compares) FULLY recovers the
+  with-reference regime with no gold shown: 3B/7B/14B detection 85/85/90% =
+  100% recovery of the reference gap (1.5B recovers 53%; 0.5B floor). The
+  small-judge "reference dependence" was therefore substantially a PROTOCOL
+  artifact (holistic no-ref judging fails; solve-then-compare succeeds). Third
+  mismeasurement of the night: labels (F1-F3), thresholds (F2c), and now
+  reference-ablation protocol. Mechanism check: solve-first detection is flat
+  in own-solve status (3B 84 vs 91%, 7B 87 vs 80%; thin bins) -- solve-first
+  elicits verification even beyond the free-solve envelope.
+- F8b POWERED COUPLING (critic's contingent experiment, n tripled): det|solved
+  vs det|unsolved: 3B 22 vs 5%, 7B 41 vs 35%, 14B 55 vs 38% (+7..+17 points,
+  CIs mostly separated). Verification neither reduces to generation nor is
+  independent of it: real detection persists well beyond the solving frontier.
+- F8c NOVELTY CRITIC (area-chair audit, web-verified): PUBLISHABLE OPENING: YES.
+  K2 (scale x reference interaction on verified errors) = NOVEL, unclaimed
+  (JudgeLM's reference ablation is a training-technique on preferences;
+  Prometheus never removed references on verified errors; 2607.12885 has the
+  generosity effect but no scale interaction). K1 = novel-but-narrow, position
+  as an audit (Platinum/confident-learning own the mining machinery; the
+  demonstration that published oversight effects are label artifacts is ours).
+  K3 = keep only the strategy shift, scope against ProcessBench (2412.06559,
+  which deliberately avoids propagation -- our propagated instrument is the
+  complement).
+- F8d EXTERNAL VALIDATION of the bug miner (circularity killed): ladder-only
+  consensus flags on original GSM8K, adjudicated by PLATINUM + mechanical
+  checks (no frontier models): 66/74 = 89% precision (72% scorer bugs, 15%
+  platinum-removed items, 3% platinum relabels; 11% models-wrong-together).
+  Report 89% (external) alongside 97% (frontier-adjudicated).
+
+## Close of run
+
+Two critics satisfied (adversarial: SATISFIED contingent, contingency run;
+novelty: PUBLISHABLE YES). Data audit clean. The paper: "How to mismeasure
+oversight: label noise, thresholds, and reference protocols" / core = the
+scale x reference interaction + the solve-first bootstrap + the label-artifact
+audit. Queued next (ordered): judge-family deconfound (Llama/Gemma ladder),
+ProcessBench transfer of the strategy shift, pairwise-protocol robustness,
+human holdout, bootstrap-on-unsolvable powered study.
