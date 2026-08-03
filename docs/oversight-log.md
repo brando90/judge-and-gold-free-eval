@@ -808,3 +808,17 @@ right key is verification hardness relative to the judge), and oracle routing
 shows +6 points of headroom. Deliverable: a deployable adaptive judging
 protocol standing in for "a new judge model," with its failure mode and
 improvement direction identified.
+
+### Scorer retrofit (root-cause fix, user-directed)
+
+tfa/boxed.py patched (GSM8K answer-phrase + last-number fallbacks; numeric
+folding in normalization). Legacy score files retrofitted to *_corrected.jsonl
+copies with a full ledger (runs/cc_corrections.jsonl): 751 upgrades 0->1,
+concentrated exactly in the diagnosed bug class (gsm8k 256, gsm8k-platinum 249,
+putnam-axiom-var 246; zero on boxed-style MATH files). First retrofit attempt
+DISCARDED after self-audit: without local math_verify it produced ~2.5k
+artifactual downgrades on LaTeX answers; rerun with math_verify installed under
+an UPGRADE-ONLY policy (original cc=1 never re-litigated; the validated failure
+mode is false negatives). Spot-checked upgrades all genuine ("$57.00" vs 57,
+"Answer: 38", comma formatting). Note: original files untouched; analyses
+wanting corrected labels should read cc_corrected.
