@@ -508,3 +508,20 @@ RUN COMPLETE. Findings 1-9; two critics passed (adversarial SATISFIED with
 contingency run; novelty PUBLISHABLE-YES); independent data audit clean;
 external (Platinum-only) validation of the bug miner at 89%; cross-family
 replication 4 families. All committed.
+
+### RETRACTION: F8a and F9 solve-first cells (dispatch bug)
+
+Code audit (prompted by the mandate to re-check code) found the runner's
+norefsolve DISPATCH BRANCH silently missing on the cluster: --rubric norefsolve
+fell through to the WITH-GOLD math rubric. Smoking gun: solve_out vs prop_out
+per-item scores are 128/128 IDENTICAL (mean |diff| 0.000) for Qwen-7B -- the
+"solve-first recovers 100% of the reference benefit" result was the same
+condition run twice under temp-0 determinism. The suspicious exact equality
+across 8/8 cells was the tell and should have been caught pre-commit.
+- RETRACTED: F8a (bootstrap recovery), F9 solve-first cells, and the
+  "reference dependence is protocol artifact" reading. All are UNTESTED as of
+  this note.
+- UNAFFECTED: the with-ref vs no-ref interaction (mathnoref dispatch verified
+  present; outputs differ hugely), the code panel, coupling, F1-F7.
+- Fix + verified rerun of all solve-first arms launching now (verification:
+  branch grep + smoke-run showing solve-first outputs DIFFER from with-ref).
