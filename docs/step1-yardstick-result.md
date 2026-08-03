@@ -230,3 +230,142 @@ length proxies reasoning thoroughness among correct answers. So the nuisance axi
 needs a counterfactual definition, not a score-on-surface regression. Putnam is
 under-powered throughout. This is Step 1 only; it does not yet test survival under
 a widening capability gap (Step 2) or optimization (Step 3).
+
+---
+
+# Feasibility of the two axes (self-contained: read this if you have no prior context)
+
+This section explains, from scratch, what the Step-1 "yardstick" is trying to do,
+and how feasible each half actually is. It assumes no knowledge of the rest of the
+document.
+
+## The goal, in one paragraph
+
+We want to certify an LLM "judge" (a model that scores other models' answers) as
+trustworthy, in domains where we have little or no labeled ground truth. A judge is
+trustworthy to the extent that its score (a) tracks real answer quality and (b) is
+not driven by superficial properties of the answer it should ignore. So the
+certificate has two axes: a QUALITY axis (does the score track truth?) and a
+NUISANCE axis (does the score chase surface?). Below we break down how to measure
+each cheaply, what it costs in labels, and where it breaks.
+
+## Axis 1: quality (does the judge track truth?)
+
+**What it is.** The quality signal is how much of the judge's per-item score is
+explained by whether the answer is actually correct. Formally it is the R^2 of the
+judge score regressed on a correctness label; with a single binary label this
+equals corr(judge score, correctness)^2. It is, in plain terms, "judge accuracy,"
+expressed as variance explained.
+
+**How many labels ("the anchor") does it need?**
+- Empirically, ~100 labels reproduced the full-dataset value in our runs (MATH 85.9
+  +/- 5.4% vs 85.5% full; GSM8K 72.8 +/- 8.4% vs 73.1%).
+- Why so few, and does it depend on dataset size? The standard error of a
+  correlation is about (1 - r^2)/sqrt(n), where n is the number of LABELED items,
+  not the size of the full pool. So the anchor size needed is essentially
+  INDEPENDENT of how big the full dataset is (the finite-population correction is
+  negligible unless the anchor is a large fraction of the whole). Roughly 100 to
+  300 labels give a stable estimate.
+- What it does depend on: (1) the true correlation, a judge that tracks truth well
+  (r ~ 0.85) is easy to pin down, a weak one (r ~ 0.55) needs more labels for the
+  same precision; and (2) CLASS BALANCE, if 96% of answers are correct (a saturated
+  benchmark), you need many more labels to collect enough of the rare incorrect
+  class. Class balance, not scale, is the binding constraint.
+
+**How do you get labels in the domains the program targets, and what is a label?**
+The cost of a label depends entirely on whether an oracle exists:
+- Hard reasoning (math, code): the label is AUTOMATIC and cheap, answer-checking for
+  math, unit tests for code. No humans needed. The label is the correctness of the
+  END solution, not of the reasoning trace.
+- Agents: the label is the ENVIRONMENT's own success signal, SWE-bench tests pass,
+  a web task is completed, and so on. Also automatic, and again about the end state,
+  not the trajectory.
+- Open-ended work (essays, research, open agentic goals): NO cheap label exists, and
+  even DEFINING the label is hard because quality is multi-dimensional with no single
+  truth. Here you must fall back on a small set of human ratings, and this axis
+  becomes weak and partly ill-defined. This is the same "floor" issue that Step 5 of
+  the program is about.
+
+**A distinction the one-line pitch hides (important).** There are really two
+quality targets with very different label costs:
+1. Correctness-tracking: does the judge agree with a cheap end-answer oracle? Cheap
+   wherever an oracle exists. But a judge that maximizes ONLY this is redundant with
+   the oracle we already have (see "the binary trap" earlier in this document, a
+   binary correctness rubric spikes this signal while adding nothing beyond the free
+   correctness check).
+2. Quality-beyond-correctness: does the judge grade the reasoning/trace among answers
+   that are all correct (or all incorrect)? This needs TRACE-LEVEL quality labels,
+   which are expensive and, in open domains, ill-defined. This is the judge's real
+   value and the genuinely hard thing to certify.
+The phrase "real quality" in the pitch is ambiguous between these two and should be
+disambiguated.
+
+**Does it map onto existing LLM-judge benchmarks?** Yes, which both validates and
+bounds the idea. Judge meta-benchmarks (for example JudgeBench, RewardBench) ARE
+labeled anchors, "does the judge agree with ground truth" is exactly what they
+measure. So in a labeled benchmark the quality axis is just judge accuracy and works
+trivially. The NOVEL and untested claim is recovering that number from a SMALL anchor
+in an UNLABELED domain. A clean external check is to take such a benchmark,
+subsample to ~100 to 300 labels, and show the small-anchor estimate matches the full
+benchmark. (A dedicated benchmark-landscape subsection is added below.)
+
+## Axis 2: nuisance (does the judge chase surface?)
+
+**What it is.** The share of the judge's score driven by quality-irrelevant surface
+properties of the answer, length, formatting, position, style, and so on.
+
+**Two ways to measure it, and why one is untrustworthy.**
+- Observational (a regression): regress the judge score on surface features and read
+  off how much variance they explain. This is cheap and needs no labels for the raw
+  version, but it OVERSTATES bias, because surface correlates with quality (for
+  example, among correct answers, longer solutions often show more complete
+  reasoning). In this study the regression flagged a 10.8% length "bias" for one
+  judge that a causal test then refuted.
+- Causal (a perturbation, the trustworthy one): apply a CONTENT-PRESERVING change to
+  the answer (make it more verbose, reformat it, reorder a pairwise comparison), then
+  re-judge and measure how much the score moves. The score change IS the bias, by
+  construction it cannot be confounded with quality, and it needs NO labels. This is
+  what should define nuisance.
+
+**Which nuisance types do you consider? (the real weakness.)** Length and formatting
+are two of many, and you cannot enumerate every possible confound in advance. What
+you can do:
+1. Start from the known taxonomy in the judge-bias literature: length/verbosity,
+   formatting/markdown, position (pairwise order), self-preference (a judge favoring
+   its own family's style), sycophancy (agreeing with a stated answer or stated
+   confidence), politeness/tone, authority or citation cues, answer-first vs
+   reasoning-first. This gives a BATTERY of perturbations, not a single number.
+2. Adversarial / generative discovery: let a model SEARCH for a content-preserving
+   perturbation that changes the judge's score. Anything that moves the score is a
+   nuisance you did not hand-specify. This turns "which types?" from guesswork into a
+   search, and the worst score change found is an adversarial nuisance bound that
+   tightens the harder you search.
+3. Decorrelation test: move to a distribution where surface and quality are
+   deliberately DEcorreLATED and measure how much the judge's agreement with truth
+   drops; if it relied on surface, it falls there. This catches aggregate
+   surface-reliance without naming every feature.
+
+**Can you get the "full" nuisance fraction? No, and this is a genuine limit.** You
+cannot certify the ABSENCE of nuisance, only detect its presence. What is actually
+obtainable is (a) a battery of causal sensitivities per known bias type
+(interpretable), and (b) an adversarial LOWER BOUND (the worst content-preserving
+perturbation found so far). You never get a certified upper bound. This is
+acceptable for the program's purpose, because a lower bound on gameability is exactly
+what a pre-deployment check wants: if you already found a perturbation that moves the
+judge, that is a fielded exploit regardless of what else exists. But it means the
+"nuisance fraction" is not one scalar; it is a battery plus an adversarial bound, and
+the pitch wording ("the nuisance fraction ... cannot be gamed") should become "a
+mechanism-based LOWER BOUND on nuisance that flags exploits before deployment."
+
+## Net
+
+- Quality axis: cheap and solid where an oracle exists (math, code, agents), from
+  ~100 to 300 labels, independent of dataset size, limited mainly by class balance;
+  weak and ill-defined in open-ended domains; and it must be split into cheap
+  correctness-tracking versus expensive quality-beyond-correctness.
+- Nuisance axis: not a single "full fraction," a causal battery plus an adversarial
+  lower bound; you certify the presence of gameability, never its absence.
+- Two external checks worth running before this is presentation-ready: (1) small-anchor
+  recovery on a public judge benchmark (validate the label-count claim off our own
+  data), and (2) one round of adversarial nuisance discovery (does a search find a
+  perturbation the hand-picked battery missed?).
