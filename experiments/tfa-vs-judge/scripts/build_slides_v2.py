@@ -53,20 +53,24 @@ S.append('''<section class="slide title"><div class="wrap">
 slide("The takeaway","Three results, stated up front",
  chips(("+0.86 / +0.84 / +0.71","hard math: ρ / r / τ, TFA vs accuracy"),("&minus;0.25 / &minus;0.14 / &minus;0.16","saturated GSM8K: ρ / r / τ"),("&approx; 0","grading one solution, all variants"))+
  '''<div class="cols"><div>
- <h3 class="g">1 &middot; As a model ranker, TFA works where the data is hard</h3>
- <p>Across 17 models and 7 families, mean TFA orders models by accuracy on Putnam and olympiad math, weakens as
- benchmarks approach saturation, and <b class="r">inverts</b> on GSM8K. The same pattern reaches SWE-bench coding
- agents: perfect within one family, nothing across families.</p>
- <h3 class="p">2 &middot; As a grader of single solutions, TFA fails</h3>
- <p>Per-solution TFA is 89-96% a property of the <i>reference</i>, not of the solution being graded. Seven repair
- attempts all fail. This kills the untested claim, in prior work, that TFA can replace a judge on individual answers.</p></div>
+ <h3 class="g">1 &middot; TFA can rank models, if the benchmark is hard</h3>
+ <p>We compared mean TFA to accuracy for 17 models from 7 families. On Putnam and olympiad math the two agree
+ closely. The agreement fades as benchmarks get easier, and on GSM8K it goes <b class="r">negative</b>: the models
+ with the best TFA are not the most accurate ones. Same story on SWE-bench: TFA ranks the four Qwen-Coder sizes
+ correctly, and tells you nothing when comparing across families.</p>
+ <h3 class="p">2 &middot; TFA cannot grade a single solution</h3>
+ <p>We checked whether a solution's TFA tracks the grade a judge gives that solution. It does not: 89-96% of what
+ per-solution TFA measures is how predictable the reference text is, which says nothing about the solution being
+ graded. We tried seven fixes and none recovered a signal. Earlier work assumed TFA could stand in for a judge here;
+ as far as we can tell, nobody had actually tested it.</p></div>
  <div>
- <h3 class="a">3 &middot; What does grade costs 100x</h3>
- <p>Truncate a solution, let a fixed completer finish it, check where it lands. That rollout signal separates good
- from lucky solutions where TFA cannot, at roughly a hundred times the compute.</p>
- <div class="def"><b>Why it all happens.</b> On hard data, predicting the reference's next token requires the same
- skill as solving; on easy data everyone can predict it, so the residual differences are <b>style</b> (formatting,
- verbosity, phrasing), and style is what TFA ends up measuring.</div></div></div>''')
+ <h3 class="a">3 &middot; Grading without a judge is possible, just expensive</h3>
+ <p>One thing did grade: cut a solution off partway, have a fixed model finish it, and check whether it still lands
+ on the right answer. That correlates +0.43 with the judge's grade and even tells sound solutions from lucky ones.
+ The catch: it needs many completions per solution, roughly 100x the compute of TFA.</p>
+ <div class="def"><b>The reason behind all three.</b> On a hard problem, predicting the reference's next step takes
+ the same skill as solving the problem. On an easy problem everyone can predict it, so whatever differences remain
+ come from formatting and phrasing. When the benchmark is easy, that is all TFA has left to measure.</div></div></div>''')
 
 # 3 terminology
 slide("Terms used in this deck","Four definitions, before anything else",
