@@ -4,31 +4,32 @@ Assembled 2026-08-02/03 from the autonomous run (see oversight-log.md for the fu
 audit trail; every number below survived an adjudication or robustness pass, and
 three seductive pseudo-results were killed on the way).
 
-## One-paragraph abstract (draft)
+## One-paragraph abstract (post-critic draft)
 
-The scalable-oversight literature assumes LLM judges become unreliable as solvers
-strengthen, and evaluates judges against benchmark oracles. We show that in
-oracle-verifiable math both practices mislead. (1) Measured judge "unreliability"
-is dominated by ORACLE NOISE: adjudicating every case where a cheap open-model
-ladder unanimously disagrees with the label (two frontier families agreeing
-55/55) reveals ~4% label errors in GSM8K-style scoring and reduces frontier
-false-positive rates on genuinely wrong solutions to ~2%; three apparent
-oversight laws (attractor errors, capability-gap degradation, a weak-to-strong
-detection hierarchy) all dissolve once labels are fixed, and ladder+frontier
-disagreement mines oracle bugs at ~97% precision with no supervision. (2) The
-real structure of judging is a VERIFICATION PHASE CHANGE: on mechanically
-verified, internally-consistent wrong solutions (immune to label noise by
-construction), detection jumps from 5%/22% (0.5B/1.5B judges) to 88% at 3B and
-100% at the frontier; detection is FLAT in whether the judge can solve the item
-itself, rejecting the assumption that oversight inherits the generation frontier.
-(3) Judging strategy itself changes with scale: mid-size judges penalize locally
-salient corruptions (early/gross planted typos) while frontier judges penalize
-consequential ones (late/small) and forgive typos, reading coherence rather than
-checking lines, which leaves a quantified step-level blind spot (40-50% of
-explicit false equations unpenalized; 69-85% pass a deployment-style threshold).
-Oversight risk in verifiable domains therefore concentrates not in judge
-capability but in oracle quality and step-level leniency; we release the planted
-and propagated error instruments and the adjudicated label sets.
+Scalable-oversight research typically scores LLM judges against benchmark
+oracles and assumes judge reliability degrades as solvers strengthen. We show
+both practices mislead in oracle-verifiable domains, and quantify what actually
+governs judge reliability. (1) LABEL ARTIFACTS: three apparent oversight effects
+(attractor errors that fool judges, capability-gap degradation, and a
+weak-judge hierarchy that predicts frontier failure at 94%) each dissolve under
+label adjudication, with 71-83% of the driving cases being benchmark label
+bugs; a cheap open-model ladder whose unanimous disagreement with the label
+flags oracle errors at ~97% precision (n=40) provides an unsupervised repair
+instrument, and residual frontier-adjudicated disagreement on genuine errors is
+~2%. (2) THE SCALE x REFERENCE INTERACTION: on mechanically verified
+coherent-wrong solutions (immune to label noise by construction), providing a
+trusted reference converts error detection from a capability-bounded skill into
+a small-model commodity: detection gains from the reference are +68 points at
+3B, +36 at 7B, +15 at 14B, and +2-5 at the frontier, consistently across math
+and code. With-reference judge evaluations therefore overstate small-judge
+readiness for reference-free deployment. (3) OUTCOME, NOT PROCESS: frontier
+judges forgive non-propagated false steps (40-50% unpenalized) while catching
+propagated coherent-wrong essentially always; mid-scale judges penalize salient
+corruptions, frontier judges penalize consequential ones -- a local-to-global
+strategy shift with scale. Item-matched tests do not support reducing
+reference-free verification to the judge's own generation ability, but current
+power leaves the verification-generation coupling open. We release the planted,
+propagated, and mutation instruments and the adjudicated labels.
 
 ## Panels (all data in runs/, scripts in scripts/)
 
@@ -49,8 +50,8 @@ P3 Verification phase change on coherent-wrong (propagated, mechanically
    verified, tell-free; the label-noise-immune instrument).
    - FP>=7 / detection: 95%/5 -> 78%/22 -> 2-5%/88 -> 7-13%/88 -> 2-15%/95 ->
      0-3%/100 -> 0%/100.
-   - GV decoupling: detection flat in judge's own solve status (86 vs 100%, 88
-     vs 89%); small unsolved bins flagged.
+   - GV decoupling claim WITHDRAWN per critic (n=6-11 cannot support a null);
+     item-matched code coupling mixed (7B 36 vs 46%, 14B 63 vs 33%, CIs overlap).
    - Even GPT-5.2 fails to WRITE coherent-wrong 65% of the time (mechanical
      verifier rejections) -- coherent errors are intrinsically hard to produce.
 P4 Strategy phase change on planted typos (position x magnitude).
