@@ -306,3 +306,18 @@ step-level leniency, while the dominant "unreliability" in measurements is
 oracle noise, minable at 97% precision by ladder disagreement. Remaining
 confound to close: style-matched error-free rewrites (v2 rewrites are
 LaTeX-styled vs plain controls); running next.
+
+### Style confound closed (P5)
+
+Error-free style-matched rewrites (same generator, same polish, arithmetic
+verified, answer == gold; 32/47 passed verification) score 9.98 (GPT) / 10.00
+(Opus), identical to plain controls (10.0/9.96). The v2 coherent-wrong drops are
+entirely attributable to the planted error. F5/F6 style-clean.
+
+### Final block: second-domain replication (code)
+
+Building the code analog of P3: mutate CORRECT HumanEval solutions with subtle
+mechanical bugs (boundary/operator/off-by-one), verify coherent-wrong by RUNNING
+the tests (true oracle, no label noise possible), judge across ladder+frontier.
+This answers the "arithmetic-only" objection with the strongest available
+instrument.
