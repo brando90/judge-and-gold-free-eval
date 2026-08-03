@@ -541,3 +541,30 @@ with-ref, 43% identical vs 100% before):
   solution to the same problem, which we already have) -- forced two-stage,
   no compliance confound. Prediction: on items the judge solved correctly,
   self-ref detection ~= gold-ref detection; on own-wrong items, degraded.
+
+### Finding 11 (self-reference bootstrap, verified pipeline: the decomposition)
+
+Mechanically-staged self-reference judging (with-ref rubric, gold := the judge's
+OWN prior solution; no compliance confound; scores verified distinct from all
+other arms):
+  1.5B: selfref 59%/FP29  vs goldref 21% vs noref 3%   (SELF > GOLD!)
+  3B:   selfref 60%/FP0   vs goldref 85% vs noref 17%  (52% of gap recovered)
+  14B:  selfref 95%/FP7   vs goldref 90% vs noref 75%  (full recovery)
+  det | own-solution-correct vs own-wrong: 1.5B 69/30, 3B 67/18, 14B 96/na(n=2)
+  (7B rerun in flight; first attempt died on a zombie-GPU engine init.)
+
+- F11a THE DECOMPOSITION: verification = REFERENCE GENERATION + STYLE-MATCHED
+  COMPARISON. Comparison is cheap at tiny scale when the reference is in the
+  judge's own distribution (1.5B: self-reference beats the human gold, 59% vs
+  21% -- the gold's terse style is the bottleneck, not the comparison skill).
+  Generation is the capability bottleneck (detection couples to own-solution
+  correctness). This explains the scale x reference interaction mechanistically
+  and reconnects to the project's origin: reference STYLE was TFA's nuisance,
+  and it is also the small-judge comparison bottleneck.
+- F11b Honest prior-art note: answer-first judging is known practice
+  (Arena-Hard's judge protocol). New here: the scale-resolved measurement on
+  verified errors, the SELF>GOLD reversal at small scale, the silent-compliance
+  failure of single-prompt bootstrapping (F10), and the coupling split.
+- Practical: staged self-reference gives a 14B judge gold-reference-grade error
+  detection with no reference infrastructure; at 3B it halves the gap; the
+  binding constraint is the judge's solve rate, which is measurable in advance.
