@@ -166,11 +166,24 @@ slide("Result 2 &middot; grading &middot; the test","Can TFA grade one solution?
  '<div class="take">TFA can rank models, and it cannot grade their answers. The next slide gives the reason as a single number.</div>')
 
 # 9 why
-slide("Result 2 &middot; grading &middot; the reason","89-96% of per-item TFA is about the reference, not the solution",
- chips(("89-96%","of per-item variance: reference nuisance"),("4-11%","left over for solution quality"))+
- '<p>Decompose per-item TFA across the model x item grid: after removing each model\'s overall level, <b>89-96% of the remaining variation is identical for every model</b>. It is a fact about the reference (how predictable this particular gold text is), not about the solution being graded. Because it is identical across models it cancels when you average over items, which is why ranking works, and it buries the 4-11% that is actually about quality, which is why grading fails. The full recipe with a worked toy example is in the appendix.</p>'+
- fig("f10","Variance decomposition of per-item TFA on the Qwen ladder: the model-invariant reference component is 89-96% on every dataset.")+
- '<div class="take">The same number predicts that no reweighting of TFA can fix grading. We tested that prediction seven ways.</div>')
+slide("Result 2 &middot; grading &middot; the reason","A solution's TFA score is 89-96% about the problem, not the solution",
+ chips(("89-96%","of a solution's TFA: set by the reference"),("4-11%","set by the model that solved it"))+
+ '''<p>Here is the measurement behind everything in this deck. Score the five Qwen models on the same problems and
+ watch how per-solution TFA moves from problem to problem. It moves almost entirely with the <b>problem</b>: some
+ reference solutions are short and formulaic, so every model predicts them well; others take unusual steps, so
+ every model struggles. That shared part, identical for the 0.5B model and the 14B model, accounts for
+ <b>89-96%</b> of the movement. The part that depends on which model produced the solution is the remaining
+ <b>4-11%</b>.</p>'''+
+ '''<div class="def"><b>An analogy.</b> Think of timing runners on hilly routes. Any single time mostly tells you how
+ steep that route was, not how fast the runner is. Average each runner over many routes and the hills hit everyone
+ equally, so the averages rank the runners fairly. But you would never judge one run by its raw time. In TFA, the
+ reference is the hill.</div>'''+
+ '''<p>This one number explains both verdicts so far. <b>Ranking works</b> because averaging over hundreds of
+ problems gives every model the same hills, so the hills cancel when you compare models. <b>Grading fails</b>
+ because a single solution has nothing to average: its score mostly reports how predictable its reference happens
+ to be. The step-by-step recipe with a worked example is in the appendix.</p>'''+
+ fig("f10","The measurement: split per-solution TFA into the part shared by all five Qwen models (a property of the reference) and the part specific to each model. The shared part is 89-96% on every dataset.")+
+ '<div class="take">It also makes a prediction: if only 4-11% of the signal is about the solution, no reweighting of TFA can turn it into a grader. The next slide tests that prediction seven ways.</div>')
 
 # 10 fixes, merged
 slide("Result 2 &middot; grading &middot; seven repairs, all fail","If the signal were merely buried, one of these would have found it",
