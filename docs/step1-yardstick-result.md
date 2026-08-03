@@ -467,3 +467,36 @@ weak overseer), which is a real scoping conclusion, not a detail. What we can sh
 today is a difficulty curve, not a capability-gap curve. The spine claim (a cheaply
 measured nuisance/quality number predicts this degradation) is therefore still
 untested, and honestly stated as such.
+
+## Step-3 probe: does measured nuisance predict gameability? (Direction yes, only in the ambiguous regime)
+
+`scripts/adversarial_position.py` (`runs/adversarial_position_gsm8k.jsonl`). The spine
+claim says a cheaply measured nuisance should predict how gameable a judge is. We
+measured a position bias earlier (Opus p(first)=0.62 vs GPT 0.47). Test: take
+(correct, incorrect) answer pairs, present both orders, and let an adversary who
+controls only presentation ORDER try to make the WRONG answer win by choosing the
+order. n=90 pairs, GSM8K, both judges.
+
+| judge | honest acc | adv_flip (wrong wins if adversary picks order) | forced loss |
+|---|---:|---:|---:|
+| GPT-5.2 | 0.97 | 0.04 | +0.02 |
+| Opus 4.8 | 0.95 | 0.08 | +0.03 |
+
+- **Direction supported:** the more position-biased judge (Opus) is more gameable
+  (adv_flip 0.08 vs 0.04), matching its measured nuisance.
+- **Magnitude tiny and not significant at n=90** (0.08 +/- ~0.06 overlaps 0.04 +/-
+  ~0.04); both judges are ~95-97% robust on clear correct-vs-incorrect pairs.
+
+**Why, and the real insight.** Position bias bites when content is AMBIGUOUS (the
+near-equal pairs where we measured 0.62), but when one answer is clearly correct and
+the other clearly wrong, content dominates order and the bias barely shows (0.08). So
+the spine refines to: **measured nuisance predicts gameability specifically where the
+quality signal is weak.** That is exactly the hard-oversight regime, and it is the
+mechanism that connects to Step 2: a stronger solver makes rarer, subtler errors ->
+more ambiguous cases -> nuisance bites harder. We could not test the strong-solver
+regime directly (judges dominate our solvers), but this gives the mechanism.
+
+**Follow-up that would nail it:** run the order adversary on genuinely NEAR-EQUAL
+pairs (subtle-error vs correct), where position bias is known to be large, and larger
+n; expect the Opus-vs-GPT gameability gap to widen there. That is the clean spine
+demonstration, and it is also a lightweight Step-3 (optimize-against-the-judge) result.
