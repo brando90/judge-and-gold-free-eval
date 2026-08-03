@@ -81,10 +81,14 @@ slide("Terms used in this deck","Four definitions, before anything else",
  correctness)? Example: judge says 0.8, and TFA sits proportionally high; judge says 0.3, TFA sits low. That
  proportionality, beyond mere correctness, is what "grading" means here.</div>
  <div class="def"><b>Saturated benchmark.</b> One where the models score near ceiling (GSM8K: every strong model is
- at 95%+). Little room to differ in skill means differences in TFA come from style instead.</div></div></div>
+ at 95%+). Little room to differ in skill means differences in TFA come from style instead.</div>
+ <div class="def"><b>The boundary (map).</b> Our name for the table and figure that say, dataset by dataset, where
+ model-level TFA works and where it fails: positive correlations on hard references, near zero on code, negative on
+ saturated data. "The boundary holds on SWE-bench" means coding agents land on the same map, in the same place the
+ map predicts.</div></div></div>
  <p class="q">One statistics rule for the whole deck: every headline correlation is reported three ways, <b>Pearson r</b>
  (with r&sup2;), <b>Spearman ρ</b> (ranks), and <b>Kendall τ</b> (pair orderings). Where only one appears in a figure
- caption, the other two are in the table on the boundary slide.</p>''')
+ caption, the other two are in the table on the boundary-map slide.</p>''')
 
 # 4 within family
 slide("Result 1 &middot; ranking &middot; within a family","Within the Qwen ladder, all three statistics agree TFA tracks accuracy",
