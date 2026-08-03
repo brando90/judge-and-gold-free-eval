@@ -653,3 +653,38 @@ from SELF-AGREEMENT (self-preference confound); headline = per-item regression
 of judge-correctness on own-generation-correctness across the gradient, with
 the residual decomposed into position nuisance. Qwen ladder first; frontier and
 Llama/Gemma as robustness after.
+
+### Finding 13 (Phase 2 headline: the bootstrap SIGN CHANGE along the verifiability gradient)
+
+RewardBench-2 gradient (Math / Precise-IF / Focus / Ties; 120 items x 2 orders
+each; Qwen ladder; direct pairwise vs SELF-REFERENCE pairwise, own answer
+generated in a separate forced pass):
+
+  acc direct -> self-ref (flip rate direct -> self-ref):
+                Math            Precise-IF      Focus           Ties
+  3B            65->69 (49->44) 50->49 (60->60) 65->61 (47->58) 91->78 (16->37)
+  7B            72->77 (46->28) 48->48 (46->57) 84->82 (14->22) 97->95 ( 6-> 6)
+  14B           75->84 (24->13) 52->57 (37->35) 84->79 (17->24) 99->91 ( 2->17)
+
+- F13a SIGN CHANGE: self-generated references HELP on verifiable-and-generable
+  content (Math: +3/+5/+10, gain grows with scale, flips halve), do NOTHING
+  where judging requires meticulous constraint-checking (Precise-IF: everyone
+  at chance, 46-57% flips even at 14B -- the pairwise analog of the step-level
+  blind spot), and HURT on subjective content (Ties 3B -13, 14B -8; Focus -2
+  to -5) where the judge's own answer acts as an anchor that INCREASES
+  order-instability (flips rise 16->37, 2->17).
+- F13b LABEL-FREE DIAGNOSTIC: the flip-rate delta (direct vs self-ref) predicts
+  the sign of the accuracy effect in every cell measured -- order-consistency
+  can tell a practitioner whether reference-augmentation helps THEIR domain
+  with zero ground truth. In unverifiable domains this is exactly the kind of
+  oversight instrument that exists today only as vibes.
+- F13c Scalable-oversight statement: a technique that is a pure win in
+  verifiable domains (F11, and "Do Before You Judge" 2509.19880) REVERSES in
+  the domains scalable oversight actually targets. Oversight interventions must
+  be qualified by where the domain sits on the verifiability gradient; the
+  gradient position is measurable label-free via order-consistency.
+- Power notes: n=120/subset (Ties 102); headline cells (3B Ties -13, 14B Math
+  +10, 14B Ties -8, and all flip deltas >10pts) exceed the ~+/-6pp pairing
+  noise; the cross-cell coherence (20 cells, one pattern) is the main evidence.
+  Focus "accuracy" is agreement-with-RB2-construction (per design critic), but
+  the flip-rate corroboration is label-free and immune to that caveat.
