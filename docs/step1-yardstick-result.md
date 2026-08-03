@@ -369,3 +369,64 @@ mechanism-based LOWER BOUND on nuisance that flags exploits before deployment."
   recovery on a public judge benchmark (validate the label-count claim off our own
   data), and (2) one round of adversarial nuisance discovery (does a search find a
   perturbation the hand-picked battery missed?).
+
+## Benchmark landscape: where a label set exists, and how many labels validate a judge
+
+A literature pass (Aug 2026, citations arXiv-verified) cataloged the benchmarks
+where an LLM judge is used, and whether each can supply a ground-truth label set to
+validate a judge. Two categories.
+
+**(A) Benchmarks that USE an LLM as the judge (leaderboards).** Mostly SUBJECTIVE
+human-preference labels, so they validate "does the judge match human taste," not
+"does the judge track truth":
+- MT-Bench (Zheng et al. 2023, arXiv:2306.05685), Chatbot Arena / Arena-Hard
+  (Chiang et al. 2024, arXiv:2403.04132; Li et al. 2024, arXiv:2406.11939),
+  AlpacaEval 2 length-controlled (Dubois et al. 2024, arXiv:2404.04475), HelpSteer2
+  (Wang et al. 2024, arXiv:2406.08673): human preference only.
+- G-Eval (Liu et al. 2023, arXiv:2303.16634), Prometheus / 2 (Kim et al. 2023/2024,
+  arXiv:2310.08491 / 2405.01535), WildBench (Lin et al. 2024, arXiv:2406.04770),
+  FLASK (Ye et al. 2023, arXiv:2307.10928), BiGGen-Bench (Kim et al. 2024,
+  arXiv:2406.05761): human quality ratings.
+- MixEval (Ni et al. 2024, arXiv:2406.06565) is the exception, OBJECTIVE
+  ground-truth answers where the LLM only parses.
+
+**(B) Meta-benchmarks that EVALUATE THE JUDGES against ground truth, this is where
+oracle labels live and where our quality axis applies directly:**
+- JudgeBench (Tan et al. 2024, arXiv:2410.12784): 350 pairs, OBJECTIVE correctness
+  (one right, one wrong), knowledge/reasoning/math/code.
+- LLMBar (Zeng et al. 2023, arXiv:2310.07641): 419 pairs, OBJECTIVE (one instruction
+  is objectively better-followed).
+- RM-Bench (Liu et al. 2024, arXiv:2410.16184): ~1,300, objective subtle
+  correctness, tests style-vs-substance sensitivity.
+- RewardBench (Lambert et al. 2024, arXiv:2403.13787) and RewardBench 2
+  (Malik/Lambert et al. 2025, arXiv:2506.01937): partly objective (reasoning / Math
+  / Factuality / Precise-IF subsets).
+- EvalBiasBench / OffsetBias (Park et al. 2024, arXiv:2407.06551) and CALM (Ye et
+  al. 2024, arXiv:2410.02736): bias probes (constructed gold / perturbation
+  invariance), relevant to the NUISANCE axis, not accuracy.
+
+**Can we produce a label set?** Yes, for the quality axis: the category-B objective
+benchmarks (JudgeBench, LLMBar, RM-Bench, RewardBench-2 objective subsets, MixEval)
+are ready-made oracle-labeled sets, and several are already anchor-sized (JudgeBench
+350, LLMBar 419). Open-ended / preference-only benchmarks (category A) cannot supply
+an objective label set, only human taste, which is the "floor" regime.
+
+**How many labels to validate a judge (independent confirmation of our ~100).**
+Judge validation reduces to estimating a binary agreement rate (judge vs gold) or a
+correlation, so standard statistics apply:
+- Proportion at 95% confidence: +/-10% needs ~100 labels, +/-7% ~200, +/-5% ~385
+  (worst case p=0.5).
+- Correlation half-width +/-0.1 needs ~100; +/-0.05 needs ~400.
+- Kappa-agreement guidance is the same order (~100-180 cases).
+- Order of magnitude: LOW HUNDREDS. Class balance is the real driver, near-ceiling
+  agreement needs oversampling of the rare disagreements. Thousands are needed only
+  to finely rank near-tied judges.
+
+This matches our own subsampling result (~100 labels reproduced the full value) and
+grounds it in statistics rather than one dataset.
+
+**Chosen external testbeds.** For the small-anchor recovery demonstration, use the
+objective, public, already-anchor-sized sets: JudgeBench (350) and LLMBar (419)
+first, then RM-Bench / RewardBench-2 objective subsets. MT-Bench / Arena / AlpacaEval
+serve only as subjective-label contrast cases. RM-Bench, EvalBiasBench, and CALM are
+the natural testbeds for the nuisance / bias axis.
