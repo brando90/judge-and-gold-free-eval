@@ -156,6 +156,47 @@ other-model control and no order metrics. The sign flip is new.
 The dividing line for oversight is therefore not objective versus subjective.
 It is one right answer versus many.
 
+## A minimal model of why the lever flips
+
+The dissociation follows from one assumption backed by our data: a judge given a
+reference acts substantially as a similarity comparator (it favors the candidate
+closer to the reference), while a judge without one verifies independently with
+some success probability that grows with capability.
+
+Let a task have a set V of valid answers, |V| = k. The judge sees candidates c1
+(valid) and c2 (invalid), and, in the reference condition, a reference r that is
+itself a valid answer. Suppose that with probability q the judge verifies
+independently (and then judges correctly), and otherwise falls back on
+similarity to r, picking whichever candidate matches r more closely. Assume
+distinct valid answers are mutually dissimilar, which holds by construction in
+our plurality tasks and approximately in RewardBench-2 Ties.
+
+Single answer (k = 1): any valid reference agrees with the valid candidate, so
+the similarity fallback also answers correctly. Accuracy with reference is
+q + (1 - q) * P(r is valid), which increases with reference quality and never
+falls below the no-reference accuracy q0 when P(r is valid) is high. This is
+the Math column: help proportional to reference quality, a useless reference
+approximately neutral.
+
+Many answers (k > 1): a valid reference r now differs from the valid candidate
+in roughly (k-1)/k of pairings, and in those cases the similarity fallback finds
+the valid candidate no closer to r than the invalid one, so it adds noise or
+actively prefers a near-miss that mimics r. Accuracy with reference is at most
+q + (1 - q)/k + epsilon, and the reference HURTS whenever the judge's
+independent accuracy without the distraction, q0, exceeds that quantity, i.e.
+whenever q0 - q > (1 - q)/k. Since providing a reference also suppresses
+independent verification (the judge defers to the comparator, our order-flip
+rates rise when the reference is added), q < q0 in practice, and the harm grows
+with k. This is the Ties column, and it predicts the harm is independent of
+reference quality and source, which is what the other-model controls found.
+
+The model makes one further testable prediction: on synthetic plurality tasks
+where validity is trivially checkable (q0 near 1), adding a valid reference that
+differs from the valid candidate should still depress accuracy in judges that
+lean on the comparator, and should not in judges strong enough to keep
+verifying. That experiment is running as this draft is written; its result will
+replace this sentence.
+
 ## The rules this buys
 
 For measurement: audit the answer key before the judge (cheap-model consensus
