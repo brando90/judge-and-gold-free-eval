@@ -82,107 +82,108 @@ def corr(a, b):
 def dummies(ids):
     u = sorted(set(ids)); return [np.array([1.0 if x == uu else 0.0 for x in ids]) for uu in u[1:]]
 
-OUT = {}
-for name, cfg in DATASETS.items():
-    cc_ds = load_cc(cfg["scores"])
-    def get_cc(model, pid):
-        return cc_ds.get((model, pid), CC_ALL.get((model, pid)))
+if __name__ == "__main__":
+    OUT = {}
+    for name, cfg in DATASETS.items():
+        cc_ds = load_cc(cfg["scores"])
+        def get_cc(model, pid):
+            return cc_ds.get((model, pid), CC_ALL.get((model, pid)))
 
-    # judged records
-    judged = []           # dicts with judge tag
-    judged_models = set()
-    for g in cfg["judged"]:
-        for fp in glob.glob(g):
-            for line in open(fp):
-                r = json.loads(line)
-                if r.get("judge_score") is None: continue
-                c = get_cc(r["model"], r["problem_id"])
+        # judged records
+        judged = []           # dicts with judge tag
+        judged_models = set()
+        for g in cfg["judged"]:
+            for fp in glob.glob(g):
+                for line in open(fp):
+                    r = json.loads(line)
+                    if r.get("judge_score") is None: continue
+                    c = get_cc(r["model"], r["problem_id"])
+                    if c is None: continue
+                    jm = str(r.get("judge_model", ""))
+                    jt = "opus" if "opus" in jm or "claude" in jm else "gpt"
+                    judged.append(dict(model=r["model"], pid=r["problem_id"], judge=jt,
+                                       score=float(r["judge_score"]), cc=c,
+                                       tfa=float(r.get("tfa_argmax") or np.nan),
+                                       ans=extract_answer(r.get("free_gen"))))
+                    judged_models.add(r["model"])
+
+        # proxy pool: runs/all models NOT in the judged set (strict disjoint)
+        pool = collections.defaultdict(dict)   # pid -> {model: (cc, ans)}
+        pool_models = set()
+        for fp in glob.glob(cfg["allglob"]):
+            rows = [json.loads(l) for l in open(fp)]
+            if not rows: continue
+            m = rows[0]["model"]
+            if m in judged_models: continue
+            pool_models.add(m)
+            for r in rows:
+                c = get_cc(m, r["problem_id"])
                 if c is None: continue
-                jm = str(r.get("judge_model", ""))
-                jt = "opus" if "opus" in jm or "claude" in jm else "gpt"
-                judged.append(dict(model=r["model"], pid=r["problem_id"], judge=jt,
-                                   score=float(r["judge_score"]), cc=c,
-                                   tfa=float(r.get("tfa_argmax") or np.nan),
-                                   ans=extract_answer(r.get("free_gen"))))
-                judged_models.add(r["model"])
+                pool[r["problem_id"]][m] = (c, extract_answer(r.get("free_gen")))
 
-    # proxy pool: runs/all models NOT in the judged set (strict disjoint)
-    pool = collections.defaultdict(dict)   # pid -> {model: (cc, ans)}
-    pool_models = set()
-    for fp in glob.glob(cfg["allglob"]):
-        rows = [json.loads(l) for l in open(fp)]
-        if not rows: continue
-        m = rows[0]["model"]
-        if m in judged_models: continue
-        pool_models.add(m)
-        for r in rows:
-            c = get_cc(m, r["problem_id"])
-            if c is None: continue
-            pool[r["problem_id"]][m] = (c, extract_answer(r.get("free_gen")))
+        # per-item disjoint difficulty + wrong-answer popularity
+        diff_dis, wrong_pop = {}, collections.defaultdict(dict)
+        for pid, d in pool.items():
+            ccs = [v[0] for v in d.values()]
+            if len(ccs) >= 4: diff_dis[pid] = 1 - float(np.mean(ccs))
+            wrongs = [v[1] for v in d.values() if v[0] == 0 and v[1] is not None]
+            if wrongs:
+                cnt = collections.Counter(wrongs)
+                for a, k in cnt.items(): wrong_pop[pid][a] = k / len(d)
 
-    # per-item disjoint difficulty + wrong-answer popularity
-    diff_dis, wrong_pop = {}, collections.defaultdict(dict)
-    for pid, d in pool.items():
-        ccs = [v[0] for v in d.values()]
-        if len(ccs) >= 4: diff_dis[pid] = 1 - float(np.mean(ccs))
-        wrongs = [v[1] for v in d.values() if v[0] == 0 and v[1] is not None]
-        if wrongs:
-            cnt = collections.Counter(wrongs)
-            for a, k in cnt.items(): wrong_pop[pid][a] = k / len(d)
+        # FP population: wrong judged solutions with all proxies available
+        P = [j for j in judged if j["cc"] == 0 and j["pid"] in diff_dis and not np.isnan(j["tfa"])]
+        for j in P:
+            j["pop"] = wrong_pop.get(j["pid"], {}).get(j["ans"], 0.0)
+            j["diff"] = diff_dis[j["pid"]]
 
-    # FP population: wrong judged solutions with all proxies available
-    P = [j for j in judged if j["cc"] == 0 and j["pid"] in diff_dis and not np.isnan(j["tfa"])]
-    for j in P:
-        j["pop"] = wrong_pop.get(j["pid"], {}).get(j["ans"], 0.0)
-        j["diff"] = diff_dis[j["pid"]]
+        OUT[name] = dict(n_pool_models=len(pool_models), n_wrong=len(P))
+        print(f"\n===== {name}: {len(P)} wrong judged solutions | proxy pool {len(pool_models)} disjoint models =====")
+        for jt in ("gpt", "opus"):
+            S = [j for j in P if j["judge"] == jt]
+            if len(S) < 80: print(f"  [{jt}] n={len(S)} too small"); continue
+            y = np.array([j["score"] for j in S])
+            tfa = np.array([j["tfa"] for j in S]); popl = np.array([j["pop"] for j in S])
+            dif = np.array([j["diff"] for j in S]); mdl = [j["model"] for j in S]
+            z = lambda v: (v - v.mean())/(v.std()+1e-9)
+            tfa_z, pop_z, dif_z = z(tfa), z(popl), z(dif)
+            fe = dummies(mdl)
+            # T1
+            print(f"  [{jt}] n={len(S)}  FP-score mean={y.mean():.2f}")
+            print(f"    T1 corr(score, tfa)={corr(y,tfa):+.3f}  corr(score, pop)={corr(y,popl):+.3f}  corr(score, diff)={corr(y,dif):+.3f}")
+            # T2 nested regressions with solver FE
+            r2_fe,_ = r2(y, fe)
+            r2_d, bd = r2(y, fe+[dif_z])
+            r2_s, bs = r2(y, fe+[tfa_z, pop_z])
+            r2_ds, bds = r2(y, fe+[dif_z, tfa_z, pop_z])
+            beta_d_alone = bd[-1]; beta_d_full = bds[-3]; beta_tfa = bds[-2]; beta_pop = bds[-1]
+            shrink = 100*(1 - beta_d_full/beta_d_alone) if abs(beta_d_alone) > 1e-9 else np.nan
+            print(f"    T2 R2: FE={100*r2_fe:.1f}%  +diff={100*r2_d:.1f}%  +subtle={100*r2_s:.1f}%  +both={100*r2_ds:.1f}%")
+            print(f"       beta_diff alone={beta_d_alone:+.3f} -> with subtlety={beta_d_full:+.3f} (shrink {shrink:.0f}%)  beta_tfa={beta_tfa:+.3f} beta_pop={beta_pop:+.3f}")
+            # T3 within-difficulty tertiles
+            qs = np.quantile(dif, [1/3, 2/3])
+            msg = []
+            for lo, hi, tag in [(-1, qs[0], "easy"), (qs[0], qs[1], "mid"), (qs[1], 2, "hard")]:
+                m = (dif > lo) & (dif <= hi)
+                if m.sum() >= 40:
+                    msg.append(f"{tag}: r_tfa={corr(y[m],tfa[m]):+.2f} r_pop={corr(y[m],popl[m]):+.2f} (n={int(m.sum())})")
+            print(f"    T3 within-difficulty tertiles: " + " | ".join(msg))
+            OUT[name][jt] = dict(n=len(S), r_tfa=corr(y,tfa), r_pop=corr(y,popl), r_diff=corr(y,dif),
+                                 r2_fe=r2_fe, r2_d=r2_d, r2_s=r2_s, r2_ds=r2_ds,
+                                 beta_d_alone=float(beta_d_alone), beta_d_full=float(beta_d_full),
+                                 beta_tfa=float(beta_tfa), beta_pop=float(beta_pop))
+        # T4 cross-judge systematicity (Qwen ladder has both judges on same solutions)
+        both = collections.defaultdict(dict)
+        for j in P: both[(j["model"], j["pid"])][j["judge"]] = j
+        pairs = [(d["gpt"], d["opus"]) for d in both.values() if "gpt" in d and "opus" in d]
+        if len(pairs) >= 80:
+            g = np.array([p[0]["score"] for p in pairs]); o = np.array([p[1]["score"] for p in pairs])
+            shared = (g + o) / 2
+            tfa2 = np.array([p[0]["tfa"] for p in pairs]); pop2 = np.array([p[0]["pop"] for p in pairs])
+            print(f"    T4 cross-judge (n={len(pairs)}): corr(gpt,opus FP)={corr(g,o):+.3f}  "
+                  f"corr(shared, tfa)={corr(shared,tfa2):+.3f}  corr(shared, pop)={corr(shared,pop2):+.3f}")
+            OUT[name]["cross"] = dict(n=len(pairs), r_gpt_opus=corr(g,o),
+                                      r_shared_tfa=corr(shared,tfa2), r_shared_pop=corr(shared,pop2))
 
-    OUT[name] = dict(n_pool_models=len(pool_models), n_wrong=len(P))
-    print(f"\n===== {name}: {len(P)} wrong judged solutions | proxy pool {len(pool_models)} disjoint models =====")
-    for jt in ("gpt", "opus"):
-        S = [j for j in P if j["judge"] == jt]
-        if len(S) < 80: print(f"  [{jt}] n={len(S)} too small"); continue
-        y = np.array([j["score"] for j in S])
-        tfa = np.array([j["tfa"] for j in S]); popl = np.array([j["pop"] for j in S])
-        dif = np.array([j["diff"] for j in S]); mdl = [j["model"] for j in S]
-        z = lambda v: (v - v.mean())/(v.std()+1e-9)
-        tfa_z, pop_z, dif_z = z(tfa), z(popl), z(dif)
-        fe = dummies(mdl)
-        # T1
-        print(f"  [{jt}] n={len(S)}  FP-score mean={y.mean():.2f}")
-        print(f"    T1 corr(score, tfa)={corr(y,tfa):+.3f}  corr(score, pop)={corr(y,popl):+.3f}  corr(score, diff)={corr(y,dif):+.3f}")
-        # T2 nested regressions with solver FE
-        r2_fe,_ = r2(y, fe)
-        r2_d, bd = r2(y, fe+[dif_z])
-        r2_s, bs = r2(y, fe+[tfa_z, pop_z])
-        r2_ds, bds = r2(y, fe+[dif_z, tfa_z, pop_z])
-        beta_d_alone = bd[-1]; beta_d_full = bds[-3]; beta_tfa = bds[-2]; beta_pop = bds[-1]
-        shrink = 100*(1 - beta_d_full/beta_d_alone) if abs(beta_d_alone) > 1e-9 else np.nan
-        print(f"    T2 R2: FE={100*r2_fe:.1f}%  +diff={100*r2_d:.1f}%  +subtle={100*r2_s:.1f}%  +both={100*r2_ds:.1f}%")
-        print(f"       beta_diff alone={beta_d_alone:+.3f} -> with subtlety={beta_d_full:+.3f} (shrink {shrink:.0f}%)  beta_tfa={beta_tfa:+.3f} beta_pop={beta_pop:+.3f}")
-        # T3 within-difficulty tertiles
-        qs = np.quantile(dif, [1/3, 2/3])
-        msg = []
-        for lo, hi, tag in [(-1, qs[0], "easy"), (qs[0], qs[1], "mid"), (qs[1], 2, "hard")]:
-            m = (dif > lo) & (dif <= hi)
-            if m.sum() >= 40:
-                msg.append(f"{tag}: r_tfa={corr(y[m],tfa[m]):+.2f} r_pop={corr(y[m],popl[m]):+.2f} (n={int(m.sum())})")
-        print(f"    T3 within-difficulty tertiles: " + " | ".join(msg))
-        OUT[name][jt] = dict(n=len(S), r_tfa=corr(y,tfa), r_pop=corr(y,popl), r_diff=corr(y,dif),
-                             r2_fe=r2_fe, r2_d=r2_d, r2_s=r2_s, r2_ds=r2_ds,
-                             beta_d_alone=float(beta_d_alone), beta_d_full=float(beta_d_full),
-                             beta_tfa=float(beta_tfa), beta_pop=float(beta_pop))
-    # T4 cross-judge systematicity (Qwen ladder has both judges on same solutions)
-    both = collections.defaultdict(dict)
-    for j in P: both[(j["model"], j["pid"])][j["judge"]] = j
-    pairs = [(d["gpt"], d["opus"]) for d in both.values() if "gpt" in d and "opus" in d]
-    if len(pairs) >= 80:
-        g = np.array([p[0]["score"] for p in pairs]); o = np.array([p[1]["score"] for p in pairs])
-        shared = (g + o) / 2
-        tfa2 = np.array([p[0]["tfa"] for p in pairs]); pop2 = np.array([p[0]["pop"] for p in pairs])
-        print(f"    T4 cross-judge (n={len(pairs)}): corr(gpt,opus FP)={corr(g,o):+.3f}  "
-              f"corr(shared, tfa)={corr(shared,tfa2):+.3f}  corr(shared, pop)={corr(shared,pop2):+.3f}")
-        OUT[name]["cross"] = dict(n=len(pairs), r_gpt_opus=corr(g,o),
-                                  r_shared_tfa=corr(shared,tfa2), r_shared_pop=corr(shared,pop2))
-
-json.dump(OUT, open("runs/subtlety_e1.json", "w"), indent=2, default=float)
-print("\nwrote runs/subtlety_e1.json")
+    json.dump(OUT, open("runs/subtlety_e1.json", "w"), indent=2, default=float)
+    print("\nwrote runs/subtlety_e1.json")
