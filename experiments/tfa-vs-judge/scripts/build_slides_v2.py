@@ -129,11 +129,12 @@ slide("Result 1 &middot; ranking &middot; within families","TFA ranks models cor
  '<div class="take">Where the ranking flips, the family\'s writing style, not its skill, is what moves TFA: on GSM8K the stronger Phi and OLMo models answer in a fuller style than the terse gold and predict it worse. The model-by-model picture is in the appendix.</div>')
 
 # 6 boundary + table
-slide("Result 1 &middot; ranking &middot; the full map","The boundary, with every correlation in triplicate",
+slide("Result 1 &middot; ranking &middot; the full map","The full map, and why easy benchmarks break the score",
  '<p>Pooling all 17 models on each dataset gives the full map, as a figure and as a table. The three statistics agree in sign on every dataset: clearly positive on hard and olympiad math, noisier but positive on code, near zero to negative on saturated grade-school math.</p>'+
+ '<div class="def"><b>Why easy benchmarks break the score.</b> TFA can only separate models if their scores differ. On a hard benchmark like Putnam, the five Qwen models are spread across a TFA range of about 0.08: weak models miss many reference tokens, strong ones far fewer, so skill shows up in the score. On GSM8K every model, weak or strong, can already predict most of a grade-school solution, and the whole range shrinks to about 0.03. Once skill moves the score by that little, a second factor takes over: how closely a model\'s natural writing style happens to match the reference\'s. Style differs between families but has nothing to do with skill, so the ranking drifts, and sometimes flips.</div>'+
  TABLE+
  fig("f5","The same map as the table, drawn with 95% bootstrap confidence intervals over models (Spearman). Green = hard references, orange = saturated, purple = code.")+
- '<p style="font-size:.92rem;color:var(--mut)">Provenance: these values use the repaired answer-matching scorer; the original scorer mis-graded 4-10% of GSM8K-style answers and overstated the inversion (previously &minus;0.37/&minus;0.38, now &minus;0.25/&minus;0.19). The qualitative map is unchanged. Why saturation does this, mechanically, is one slide in the appendix (TFA range compresses 3x on easy data).</p>'+
+ '<p style="font-size:.92rem;color:var(--mut)">Provenance: these values use the repaired answer-matching scorer; the original scorer mis-graded 4-10% of GSM8K-style answers and overstated the inversion (previously &minus;0.37/&minus;0.38, now &minus;0.25/&minus;0.19). The qualitative map is unchanged. The range-collapse plot behind the 0.08-vs-0.03 numbers is in the appendix.</p>'+
  '<div class="take">Use TFA as a leaderboard only where the reference is hard; never on a saturated benchmark.</div>')
 
 # 7 agents, same grammar
