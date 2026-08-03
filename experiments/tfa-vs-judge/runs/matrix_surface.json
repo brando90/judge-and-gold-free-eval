@@ -1,0 +1,197 @@
+{
+  "Qwen_Qwen2.5-0.5B-Instruct||Qwen/Qwen2.5-0.5B-Instruct": {
+    "fp": 81.77570093457945,
+    "n_wrong": 214,
+    "tp": 95.74468085106383
+  },
+  "Qwen_Qwen2.5-0.5B-Instruct||Qwen/Qwen2.5-14B-Instruct": {
+    "fp": 89.74358974358975,
+    "n_wrong": 117,
+    "tp": 92.13973799126637
+  },
+  "Qwen_Qwen2.5-0.5B-Instruct||Qwen/Qwen2.5-32B-Instruct": {
+    "fp": 95.06172839506173,
+    "n_wrong": 81,
+    "tp": 100.0
+  },
+  "Qwen_Qwen2.5-0.5B-Instruct||Qwen/Qwen2.5-3B-Instruct": {
+    "fp": 91.77215189873418,
+    "n_wrong": 158,
+    "tp": 93.99141630901288
+  },
+  "Qwen_Qwen2.5-0.5B-Instruct||allenai/OLMo-2-1124-13B-Instruct": {
+    "fp": 88.42975206611571,
+    "n_wrong": 121,
+    "tp": 91.8103448275862
+  },
+  "Qwen_Qwen2.5-0.5B-Instruct||microsoft/phi-4": {
+    "fp": 94.11764705882352,
+    "n_wrong": 102,
+    "tp": 94.9367088607595
+  },
+  "Qwen_Qwen2.5-0.5B-Instruct||mistralai/Mistral-7B-Instruct-v0.3": {
+    "fp": 73.48837209302326,
+    "n_wrong": 215,
+    "tp": 84.73684210526315
+  },
+  "Qwen_Qwen2.5-1.5B-Instruct||Qwen/Qwen2.5-0.5B-Instruct": {
+    "fp": 16.831683168316832,
+    "n_wrong": 202,
+    "tp": 86.99551569506725
+  },
+  "Qwen_Qwen2.5-1.5B-Instruct||Qwen/Qwen2.5-14B-Instruct": {
+    "fp": 34.090909090909086,
+    "n_wrong": 88,
+    "tp": 92.3469387755102
+  },
+  "Qwen_Qwen2.5-1.5B-Instruct||Qwen/Qwen2.5-32B-Instruct": {
+    "fp": 21.428571428571427,
+    "n_wrong": 70,
+    "tp": 94.0677966101695
+  },
+  "Qwen_Qwen2.5-1.5B-Instruct||Qwen/Qwen2.5-3B-Instruct": {
+    "fp": 23.357664233576642,
+    "n_wrong": 137,
+    "tp": 90.99526066350711
+  },
+  "Qwen_Qwen2.5-1.5B-Instruct||allenai/OLMo-2-1124-13B-Instruct": {
+    "fp": 10.185185185185185,
+    "n_wrong": 108,
+    "tp": 83.710407239819
+  },
+  "Qwen_Qwen2.5-1.5B-Instruct||microsoft/phi-4": {
+    "fp": 8.433734939759036,
+    "n_wrong": 83,
+    "tp": 87.79342723004694
+  },
+  "Qwen_Qwen2.5-1.5B-Instruct||mistralai/Mistral-7B-Instruct-v0.3": {
+    "fp": 16.39344262295082,
+    "n_wrong": 183,
+    "tp": 54.761904761904766
+  },
+  "Qwen_Qwen2.5-3B-Instruct||Qwen/Qwen2.5-0.5B-Instruct": {
+    "fp": 3.75,
+    "n_wrong": 240,
+    "tp": 68.75
+  },
+  "Qwen_Qwen2.5-3B-Instruct||Qwen/Qwen2.5-14B-Instruct": {
+    "fp": 6.557377049180328,
+    "n_wrong": 122,
+    "tp": 67.08333333333333
+  },
+  "Qwen_Qwen2.5-3B-Instruct||Qwen/Qwen2.5-32B-Instruct": {
+    "fp": 4.705882352941177,
+    "n_wrong": 85,
+    "tp": 51.66666666666667
+  },
+  "Qwen_Qwen2.5-3B-Instruct||Qwen/Qwen2.5-3B-Instruct": {
+    "fp": 4.046242774566474,
+    "n_wrong": 173,
+    "tp": 65.41666666666667
+  },
+  "Qwen_Qwen2.5-3B-Instruct||allenai/OLMo-2-1124-13B-Instruct": {
+    "fp": 2.459016393442623,
+    "n_wrong": 122,
+    "tp": 66.25
+  },
+  "Qwen_Qwen2.5-3B-Instruct||microsoft/phi-4": {
+    "fp": 5.405405405405405,
+    "n_wrong": 111,
+    "tp": 68.33333333333333
+  },
+  "Qwen_Qwen2.5-3B-Instruct||mistralai/Mistral-7B-Instruct-v0.3": {
+    "fp": 9.523809523809524,
+    "n_wrong": 231,
+    "tp": 49.22279792746114
+  },
+  "Qwen_Qwen2.5-7B-Instruct||Qwen/Qwen2.5-0.5B-Instruct": {
+    "fp": 0.0,
+    "n_wrong": 240,
+    "tp": 85.0
+  },
+  "Qwen_Qwen2.5-7B-Instruct||Qwen/Qwen2.5-14B-Instruct": {
+    "fp": 12.295081967213115,
+    "n_wrong": 122,
+    "tp": 92.91666666666667
+  },
+  "Qwen_Qwen2.5-7B-Instruct||Qwen/Qwen2.5-32B-Instruct": {
+    "fp": 1.1764705882352942,
+    "n_wrong": 85,
+    "tp": 89.16666666666667
+  },
+  "Qwen_Qwen2.5-7B-Instruct||Qwen/Qwen2.5-3B-Instruct": {
+    "fp": 3.4682080924855487,
+    "n_wrong": 173,
+    "tp": 90.41666666666667
+  },
+  "Qwen_Qwen2.5-7B-Instruct||allenai/OLMo-2-1124-13B-Instruct": {
+    "fp": 1.6260162601626018,
+    "n_wrong": 123,
+    "tp": 84.16666666666667
+  },
+  "Qwen_Qwen2.5-7B-Instruct||microsoft/phi-4": {
+    "fp": 6.306306306306306,
+    "n_wrong": 111,
+    "tp": 88.75
+  },
+  "Qwen_Qwen2.5-7B-Instruct||mistralai/Mistral-7B-Instruct-v0.3": {
+    "fp": 12.554112554112553,
+    "n_wrong": 231,
+    "tp": 61.6580310880829
+  },
+  "gpt-5.2||Qwen/Qwen2.5-0.5B-Instruct": {
+    "fp": 0.4166666666666667,
+    "n_wrong": 240,
+    "tp": 92.08333333333333
+  },
+  "gpt-5.2||Qwen/Qwen2.5-14B-Instruct": {
+    "fp": 8.19672131147541,
+    "n_wrong": 122,
+    "tp": 98.75
+  },
+  "gpt-5.2||Qwen/Qwen2.5-32B-Instruct": {
+    "fp": 2.3529411764705883,
+    "n_wrong": 85,
+    "tp": 98.33333333333333
+  },
+  "gpt-5.2||Qwen/Qwen2.5-3B-Instruct": {
+    "fp": 4.046242774566474,
+    "n_wrong": 173,
+    "tp": 97.91666666666666
+  },
+  "gpt-5.2||allenai/OLMo-2-1124-13B-Instruct": {
+    "fp": 2.4390243902439024,
+    "n_wrong": 123,
+    "tp": 91.25
+  },
+  "gpt-5.2||microsoft/phi-4": {
+    "fp": 9.90990990990991,
+    "n_wrong": 111,
+    "tp": 96.66666666666667
+  },
+  "gpt-5.2||mistralai/Mistral-7B-Instruct-v0.3": {
+    "fp": 13.852813852813853,
+    "n_wrong": 231,
+    "tp": 72.53886010362694
+  },
+  "claude-opus-4-8||Qwen/Qwen2.5-0.5B-Instruct": {
+    "fp": 0.4291845493562232,
+    "n_wrong": 233,
+    "tp": 91.10169491525424
+  },
+  "claude-opus-4-8||Qwen/Qwen2.5-14B-Instruct": {
+    "fp": 7.377049180327869,
+    "n_wrong": 122,
+    "tp": 99.16666666666667
+  },
+  "claude-opus-4-8||Qwen/Qwen2.5-32B-Instruct": {
+    "fp": 2.3529411764705883,
+    "n_wrong": 85,
+    "tp": 97.5
+  },
+  "claude-opus-4-8||Qwen/Qwen2.5-3B-Instruct": {
+    "fp": 4.046242774566474,
+    "n_wrong": 173,
+    "tp": 98.75
+  }
+}
