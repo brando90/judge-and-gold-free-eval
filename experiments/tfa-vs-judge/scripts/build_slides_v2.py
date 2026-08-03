@@ -204,11 +204,22 @@ slide("Result 2 &middot; grading &middot; the repairs","We tried seven ways to c
  '<div class="take">Seven attempts, zero recoveries. Together with the 89-96% split, we conclude the grading signal is not hidden in TFA. It is not there.</div>')
 
 # 11 rollout
-slide("Result 3 &middot; a signal that does grade","Rollout process value grades solutions, at ~100x the cost",
- chips(("+0.43","rollout value vs judge grade (ρ)"),("+0.19","separates sound from lucky corrects"),("~100x","cost multiple vs TFA"))+
- '<p>Drop the reference entirely and measure the solution\'s own trajectory: truncate it partway, let a fixed completer model finish it, and score whether the completion still reaches the right answer. Averaged over truncation points this "process value" correlates +0.43 with the judge\'s grade at item level, exactly where TFA sits at zero, and it even separates solutions that are correct <i>for sound reasons</i> from solutions that are correct by luck (+0.19 among corrects only). The catch is compute: many completions per solution instead of one forward pass, roughly a hundredfold.</p>'+
- fig("f8","Rollout process value vs the judge grade as a function of completer strength: a mid-strength (14B) completer is the sweet spot; too weak cannot finish sound work, too strong rescues broken work.")+
- '<div class="take">Grading is possible without a judge, just not cheaply yet. Making this cheap is a real open problem.</div>')
+slide("Result 3 &middot; a signal that does grade","One method does grade: cut the solution short and let another model finish it",
+ chips(("+0.43","agreement with the judge, per solution"),("+0.19","tells sound from lucky, among correct ones"),("~100x","the cost, versus one TFA pass"))+
+ '''<p>The method is easy to picture. Take a solution and cut it off partway. Hand the unfinished part to a separate,
+ fixed model and let it finish the job. Then check: did the finished version still land on the right answer? Repeat
+ at several cut points and average. The logic: if a solution's reasoning is on track, cutting it anywhere still
+ leads to the right answer; if it is shaky, the finisher goes off the rails somewhere.</p>'''+
+ '''<p>This score agrees with the judge's grade at +0.43 per solution, on the same test where TFA scored zero. It
+ even manages the subtlest thing we asked of any signal: among solutions that all end on the right answer, it
+ separates the ones that got there by sound reasoning from the ones that got lucky (+0.19). The price is compute.
+ Instead of one forward pass, you run many completions for every solution, about a hundred times the cost.</p>'''+
+ '''<div class="def"><b>One design choice matters: how strong the finisher is.</b> Too weak, and it cannot carry even
+ a good solution home, so everything scores low. Too strong, and it rescues broken solutions, so everything scores
+ high. The finisher that grades best is a mid-strength one, because its completions actually depend on the quality
+ of what it was handed. That is what the figure shows.</div>'''+
+ fig("f8","Agreement between this rollout score and the judge's grade, as the finisher model gets stronger: it peaks at a mid-strength (14B) finisher and falls off on both sides.")+
+ '<div class="take">So grading without a judge is possible, just not cheap. Making it cheap is the open problem we care about next.</div>')
 
 # 12 conclusions
 S.append('''<section class="slide concl"><div class="wrap"><div class="kick">Conclusions</div>
