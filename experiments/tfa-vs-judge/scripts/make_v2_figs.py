@@ -72,15 +72,16 @@ for i, (reg, col, name) in enumerate(groups):
     axR = fig.add_subplot(gs[i, 1])
     vals = [c["spearman"] for c in cells if c["regime"] == reg]
     neg = sum(v < 0 for v in vals)
-    verdict = "every ladder ranks correctly" if neg == 0 else f"{neg} of {len(vals)} ladders rank backwards"
+    verdict = f"all {len(vals)} positive, every family ranks correctly" if neg == 0 \
+        else f"{neg} of {len(vals)} negative, those rankings flip"
     axR.hist(vals, bins=bins, color=col, edgecolor="white")
     axR.axvline(0, color="#333", lw=1.0)
     axR.set_xlim(-1.05, 1.05); axR.set_ylim(0, 12)
     axR.set_title(f"{name}: {verdict}", fontsize=9.8, loc="left")
-    axR.set_ylabel("ladders", fontsize=9)
+    axR.set_ylabel("count", fontsize=9)
     for sp in ("top", "right"): axR.spines[sp].set_visible(False)
     if i < 2: axR.set_xticklabels([])
-    else: axR.set_xlabel("Spearman ρ(TFA, accuracy), one bar counts family ladders", fontsize=10)
+    else: axR.set_xlabel("Spearman ρ(TFA, accuracy), one value per family on one dataset", fontsize=10)
 fig.savefig(f"{OUT}/fig_ms_multistat.png", dpi=150, bbox_inches="tight"); plt.close(fig)
 print("WROTE fig_ms_multistat.png  cells per regime:",
       {reg: sum(1 for c in cells if c["regime"] == reg) for reg, _, _ in groups})
