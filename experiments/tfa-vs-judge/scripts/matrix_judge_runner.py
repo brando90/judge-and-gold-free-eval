@@ -41,6 +41,24 @@ Specification and candidate implementation:
 {candidate}
 """
 
+
+RUBRIC_MATH_NOREF = """You are grading the QUALITY OF MATHEMATICAL REASONING in a candidate solution.
+No reference solution is provided; solve or verify the problem yourself as needed.
+
+Score the candidate's REASONING from 0 to 10:
+- 10: fully valid, complete, rigorous reasoning that reaches a correct result.
+- 5: partially valid; some correct steps but with a real gap, unjustified jump, or error.
+- 0: invalid or incorrect reasoning.
+
+Return STRICT JSON only: {{"score": <float 0-10>, "justification": "<one sentence>"}}.
+
+Problem:
+{question}
+
+Candidate solution:
+{candidate}
+"""
+
 def parse_score(text):
     m = re.search(r"\{.*?\}", text or "", re.DOTALL)
     if m:
@@ -56,7 +74,7 @@ def main():
     ap.add_argument("--out", required=True)
     ap.add_argument("--max_model_len", type=int, default=8192)
     ap.add_argument("--gpu_frac", type=float, default=0.92)
-    ap.add_argument("--rubric", default="math", choices=["math","code"])
+    ap.add_argument("--rubric", default="math", choices=["math","code","mathnoref"])
     args = ap.parse_args()
 
     from vllm import LLM, SamplingParams
@@ -68,7 +86,9 @@ def main():
         return s if len(s) <= n else s[:n] + " ...[truncated]"
     prompts = []
     for t in tasks:
-        if args.rubric == "code":
+        if args.rubric == "mathnoref":
+            body = RUBRIC_MATH_NOREF.format(question=clip(t["question"], 4000), candidate=clip(t["candidate"], 8000))
+        elif args.rubric == "code":
             body = RUBRIC_CODE.format(candidate=clip(t["candidate"], 8000))
         else:
             body = RUBRIC.format(question=clip(t["question"], 4000), gold=clip(t["gold"], 6000),
