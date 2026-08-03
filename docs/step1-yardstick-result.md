@@ -430,3 +430,40 @@ objective, public, already-anchor-sized sets: JudgeBench (350) and LLMBar (419)
 first, then RM-Bench / RewardBench-2 objective subsets. MT-Bench / Arena / AlpacaEval
 serve only as subjective-label contrast cases. RM-Bench, EvalBiasBench, and CALM are
 the natural testbeds for the nuisance / bias axis.
+
+## Step-2 probe on existing data: is there a capability-gap degradation law? (No, not here)
+
+`scripts/step2_reliability.py` (`runs/step2_reliability.json`). The program's Step 2
+claims judge reliability degrades predictably as the solver outgrows the overseer.
+We tested the closest version available on data in hand: per (judge, dataset, solver
+model) we computed solver capability = mean(cc) and judge reliability =
+corr(judge_score, cc), for GPT-5.2 and Opus over the Qwen ladder (0.5B-32B) on
+MATH-500, GSM8K, Putnam.
+
+**Finding: no capability-gap degradation law appears; difficulty is the real driver.**
+- Pooled, reliability *rises* with solver accuracy (Opus slope +0.52, GPT +0.58,
+  corr(acc, agree) ~0.7). But this is a DIFFICULTY CONFOUND, not a capability law:
+  Putnam has both low accuracy and low agreement (~0.5), MATH/GSM8K have high both
+  (~0.9). Difficulty drives both axes together.
+- Within a dataset (difficulty held fixed), there is no consistent degradation with
+  solver size: MATH is flat (slope ~0 across 0.5B-32B), Putnam reliability *improves*
+  with size (+0.05 to +0.12 per doubling, opposite of the hypothesis), and GSM8K is
+  non-monotone with a sharp dip at 7B (agreement 0.52/0.47) that BOTH judges show
+  identically, so it is a property of that solver's outputs (likely a cc-extraction
+  or formatting quirk), not the judge.
+
+**Honest limitations that matter for the program.**
+- Our judges (GPT-5.2, Opus) are far stronger than every solver here (Qwen 0.5-14B),
+  so this is the judge-dominant regime; the true "solver outgrows overseer" case
+  cannot be tested with this data at all.
+- Reliability is governed by task difficulty and by class balance (at very low solver
+  accuracy on Putnam, e.g. acc 0.01 with ~2 correct items, the correlation is
+  unstable: 0.34 and 0.08), not by a clean capability curve.
+
+**Implication for slide 17 (the program).** Step 2's predictive law cannot be
+claimed from existing data. Demonstrating it requires NEW data with solvers
+approaching or exceeding judge capability (frontier-vs-frontier, or a deliberately
+weak overseer), which is a real scoping conclusion, not a detail. What we can show
+today is a difficulty curve, not a capability-gap curve. The spine claim (a cheaply
+measured nuisance/quality number predicts this degradation) is therefore still
+untested, and honestly stated as such.

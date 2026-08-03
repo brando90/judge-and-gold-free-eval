@@ -1,0 +1,304 @@
+{
+  "rows": [
+    {
+      "judge": "claude-opus-4-8",
+      "dataset": "MATH-500",
+      "model": "Qwen/Qwen2.5-0.5B-Instruct",
+      "size": 0.5,
+      "n": 500,
+      "acc": 0.304,
+      "agree": 0.914940063378484
+    },
+    {
+      "judge": "claude-opus-4-8",
+      "dataset": "MATH-500",
+      "model": "Qwen/Qwen2.5-14B-Instruct",
+      "size": 14.0,
+      "n": 500,
+      "acc": 0.786,
+      "agree": 0.9074051971516741
+    },
+    {
+      "judge": "claude-opus-4-8",
+      "dataset": "MATH-500",
+      "model": "Qwen/Qwen2.5-32B-Instruct",
+      "size": 32.0,
+      "n": 499,
+      "acc": 0.8296593186372746,
+      "agree": 0.9068617905464078
+    },
+    {
+      "judge": "claude-opus-4-8",
+      "dataset": "MATH-500",
+      "model": "Qwen/Qwen2.5-1.5B-Instruct",
+      "size": 1.5,
+      "n": 500,
+      "acc": 0.512,
+      "agree": 0.9140302206370011
+    },
+    {
+      "judge": "claude-opus-4-8",
+      "dataset": "MATH-500",
+      "model": "Qwen/Qwen2.5-3B-Instruct",
+      "size": 3.0,
+      "n": 500,
+      "acc": 0.668,
+      "agree": 0.9290757878473828
+    },
+    {
+      "judge": "claude-opus-4-8",
+      "dataset": "MATH-500",
+      "model": "Qwen/Qwen2.5-7B-Instruct",
+      "size": 7.0,
+      "n": 500,
+      "acc": 0.718,
+      "agree": 0.8710341866269424
+    },
+    {
+      "judge": "gpt-5.2",
+      "dataset": "MATH-500",
+      "model": "Qwen/Qwen2.5-0.5B-Instruct",
+      "size": 0.5,
+      "n": 500,
+      "acc": 0.304,
+      "agree": 0.9201681459111634
+    },
+    {
+      "judge": "gpt-5.2",
+      "dataset": "MATH-500",
+      "model": "Qwen/Qwen2.5-1.5B-Instruct",
+      "size": 1.5,
+      "n": 500,
+      "acc": 0.512,
+      "agree": 0.9117850077473856
+    },
+    {
+      "judge": "gpt-5.2",
+      "dataset": "MATH-500",
+      "model": "Qwen/Qwen2.5-14B-Instruct",
+      "size": 14.0,
+      "n": 500,
+      "acc": 0.786,
+      "agree": 0.909441864011793
+    },
+    {
+      "judge": "gpt-5.2",
+      "dataset": "MATH-500",
+      "model": "Qwen/Qwen2.5-3B-Instruct",
+      "size": 3.0,
+      "n": 500,
+      "acc": 0.668,
+      "agree": 0.9390990369236778
+    },
+    {
+      "judge": "gpt-5.2",
+      "dataset": "MATH-500",
+      "model": "Qwen/Qwen2.5-7B-Instruct",
+      "size": 7.0,
+      "n": 500,
+      "acc": 0.718,
+      "agree": 0.8750913639302645
+    },
+    {
+      "judge": "gpt-5.2",
+      "dataset": "MATH-500",
+      "model": "Qwen/Qwen2.5-32B-Instruct",
+      "size": 32.0,
+      "n": 500,
+      "acc": 0.83,
+      "agree": 0.9133489655331326
+    },
+    {
+      "judge": "claude-opus-4-8",
+      "dataset": "GSM8K",
+      "model": "Qwen/Qwen2.5-0.5B-Instruct",
+      "size": 0.5,
+      "n": 480,
+      "acc": 0.5145833333333333,
+      "agree": 0.9616761875897882
+    },
+    {
+      "judge": "claude-opus-4-8",
+      "dataset": "GSM8K",
+      "model": "Qwen/Qwen2.5-14B-Instruct",
+      "size": 14.0,
+      "n": 500,
+      "acc": 0.94,
+      "agree": 0.837731953518318
+    },
+    {
+      "judge": "claude-opus-4-8",
+      "dataset": "GSM8K",
+      "model": "Qwen/Qwen2.5-1.5B-Instruct",
+      "size": 1.5,
+      "n": 382,
+      "acc": 0.7120418848167539,
+      "agree": 0.9476762686025566
+    },
+    {
+      "judge": "claude-opus-4-8",
+      "dataset": "GSM8K",
+      "model": "Qwen/Qwen2.5-7B-Instruct",
+      "size": 7.0,
+      "n": 500,
+      "acc": 0.722,
+      "agree": 0.5213212999798128
+    },
+    {
+      "judge": "claude-opus-4-8",
+      "dataset": "GSM8K",
+      "model": "Qwen/Qwen2.5-3B-Instruct",
+      "size": 3.0,
+      "n": 500,
+      "acc": 0.852,
+      "agree": 0.9310316080146225
+    },
+    {
+      "judge": "gpt-5.2",
+      "dataset": "GSM8K",
+      "model": "Qwen/Qwen2.5-14B-Instruct",
+      "size": 14.0,
+      "n": 500,
+      "acc": 0.94,
+      "agree": 0.8271178162537596
+    },
+    {
+      "judge": "gpt-5.2",
+      "dataset": "GSM8K",
+      "model": "Qwen/Qwen2.5-7B-Instruct",
+      "size": 7.0,
+      "n": 500,
+      "acc": 0.722,
+      "agree": 0.46612404948877767
+    },
+    {
+      "judge": "gpt-5.2",
+      "dataset": "GSM8K",
+      "model": "Qwen/Qwen2.5-1.5B-Instruct",
+      "size": 1.5,
+      "n": 500,
+      "acc": 0.718,
+      "agree": 0.9556980418442467
+    },
+    {
+      "judge": "gpt-5.2",
+      "dataset": "GSM8K",
+      "model": "Qwen/Qwen2.5-3B-Instruct",
+      "size": 3.0,
+      "n": 500,
+      "acc": 0.852,
+      "agree": 0.9541238221846411
+    },
+    {
+      "judge": "gpt-5.2",
+      "dataset": "GSM8K",
+      "model": "Qwen/Qwen2.5-0.5B-Instruct",
+      "size": 0.5,
+      "n": 500,
+      "acc": 0.514,
+      "agree": 0.9609073755990235
+    },
+    {
+      "judge": "claude-opus-4-8",
+      "dataset": "Putnam",
+      "model": "Qwen/Qwen2.5-1.5B-Instruct",
+      "size": 1.5,
+      "n": 236,
+      "acc": 0.06779661016949153,
+      "agree": 0.4546019760280511
+    },
+    {
+      "judge": "claude-opus-4-8",
+      "dataset": "Putnam",
+      "model": "Qwen/Qwen2.5-0.5B-Instruct",
+      "size": 0.5,
+      "n": 236,
+      "acc": 0.012711864406779662,
+      "agree": 0.3396815347624757
+    },
+    {
+      "judge": "claude-opus-4-8",
+      "dataset": "Putnam",
+      "model": "Qwen/Qwen2.5-14B-Instruct",
+      "size": 14.0,
+      "n": 233,
+      "acc": 0.17167381974248927,
+      "agree": 0.5780847970293594
+    },
+    {
+      "judge": "claude-opus-4-8",
+      "dataset": "Putnam",
+      "model": "Qwen/Qwen2.5-7B-Instruct",
+      "size": 7.0,
+      "n": 236,
+      "acc": 0.16101694915254236,
+      "agree": 0.5569381877286926
+    },
+    {
+      "judge": "claude-opus-4-8",
+      "dataset": "Putnam",
+      "model": "Qwen/Qwen2.5-3B-Instruct",
+      "size": 3.0,
+      "n": 236,
+      "acc": 0.08898305084745763,
+      "agree": 0.43663825958568736
+    },
+    {
+      "judge": "gpt-5.2",
+      "dataset": "Putnam",
+      "model": "Qwen/Qwen2.5-1.5B-Instruct",
+      "size": 1.5,
+      "n": 236,
+      "acc": 0.06779661016949153,
+      "agree": 0.40839159203905806
+    },
+    {
+      "judge": "gpt-5.2",
+      "dataset": "Putnam",
+      "model": "Qwen/Qwen2.5-14B-Instruct",
+      "size": 14.0,
+      "n": 236,
+      "acc": 0.18220338983050846,
+      "agree": 0.7005274016858548
+    },
+    {
+      "judge": "gpt-5.2",
+      "dataset": "Putnam",
+      "model": "Qwen/Qwen2.5-7B-Instruct",
+      "size": 7.0,
+      "n": 236,
+      "acc": 0.16101694915254236,
+      "agree": 0.5731596244512148
+    },
+    {
+      "judge": "gpt-5.2",
+      "dataset": "Putnam",
+      "model": "Qwen/Qwen2.5-0.5B-Instruct",
+      "size": 0.5,
+      "n": 236,
+      "acc": 0.012711864406779662,
+      "agree": 0.08118314579540409
+    },
+    {
+      "judge": "gpt-5.2",
+      "dataset": "Putnam",
+      "model": "Qwen/Qwen2.5-3B-Instruct",
+      "size": 3.0,
+      "n": 236,
+      "acc": 0.08898305084745763,
+      "agree": 0.47913231290246744
+    }
+  ],
+  "degradation": {
+    "claude-opus-4-8": {
+      "slope": 0.5205336847246758,
+      "r": 0.7452999938572196,
+      "n_cells": 16
+    },
+    "gpt-5.2": {
+      "slope": 0.5750684078670252,
+      "r": 0.6958456053180815,
+      "n_cells": 16
+    }
+  }
+}
