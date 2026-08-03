@@ -321,3 +321,38 @@ mechanical bugs (boundary/operator/off-by-one), verify coherent-wrong by RUNNING
 the tests (true oracle, no label noise possible), judge across ladder+frontier.
 This answers the "arithmetic-only" objection with the strongest available
 instrument.
+
+### Finding 7 (the reference-dependence decomposition -- the unifying law)
+
+Code panel (no-reference review, oracle = executed tests): mutant detection
+scales GRADUALLY: AUC 0.51 / 0.54 / 0.59 / 0.71 / 0.85 (0.5B..14B), frontier
+drop 7.4/9.0 with FP 1-2% (GPT det 86%, Opus 95%). No early phase change.
+
+The discrepancy with math (3B jump to 88%) had exactly one protocol difference:
+math judges saw the GOLD. Re-judging the SAME math propagated candidates with
+the gold withheld:
+
+  judge   det WITH gold -> WITHOUT   FP WITH -> WITHOUT
+  0.5B          5% -> 6%                96% -> 94%
+  1.5B         21% -> 3%                79% -> 97%
+  3B           85% -> 17%                4% -> 81%
+  7B           85% -> 49%               10% -> 51%
+  14B          90% -> 75%                9% -> 23%
+
+- F7a The verification "phase change at 3B" is REFERENCE-ASSISTED checking; it
+  evaporates without the gold. True reference-free verification scales
+  gradually and consistently across BOTH domains (math noref 6/3/17/49/75 ~
+  code 4/7/19/38/58).
+- F7b THE LAW: verification reliability = f(judge scale, reference
+  availability). With a trusted reference, error detection is a ~3B commodity
+  (FP 4-10%); without one, it tracks capability and reaches reliability only
+  near frontier.
+- F7c Scalable-oversight reading: the scarce resource is NOT judge capability
+  but REFERENCES/ORACLES. Where a trusted reference or executable oracle
+  exists, oversight can be delegated to tiny judges; where none exists
+  (open-ended domains), judge reliability is capability-bounded -- the real
+  frontier. Most judge benchmarks operate in the with-reference regime and so
+  OVERSTATE small-judge readiness for reference-free deployment.
+- Protocol instability note: 3B in no-ref mode praises everything on math
+  (orig2 9.89, FP 81%) but rejects everything on code (orig 2.0) -- small
+  judges lose calibration without a reference; the compliance gate catches it.
