@@ -104,3 +104,32 @@ P6 THE REFERENCE-DEPENDENCE LAW (headline panel).
    error detection), platinum benchmarks (label noise), "Great Models Think
    Alike" 2502.04313 (correlated failures; our F1b quantifies FP correlation
    0.83-0.94 across families AFTER label cleaning).
+
+## Addendum (end of run): panels P7-P9
+
+P7 THE BOOTSTRAP AND ITS FAILURE MODE (F10-F11; supersedes the retracted F8a).
+   - Single-prompt solve-first FAILS at 7B (det 28% < no-ref 49%): silent
+     instruction non-compliance (dumps show the solve step skipped).
+   - Mechanically-staged SELF-REFERENCE (gold := judge's own prior solution):
+     det 59/60/85/95% (1.5B-14B) vs goldref 21/85/85/90 vs noref 3/17/49/75.
+     SELF > GOLD at 1.5B (style-match). Detection couples to own-solution
+     correctness (93 vs 60% at 7B).
+   - The mechanism: VERIFICATION = REFERENCE GENERATION (capability-bounded) +
+     STYLE-MATCHED COMPARISON (cheap at tiny scale). Explains the P6
+     interaction; reconnects to TFA's style-nuisance origin.
+P8 CROSS-FAMILY GENERALITY (F9): interaction replicates in phi-4 (99/73/99...),
+   Mistral-7B (19/4), OLMo-2-13B (64/4); verification capability is family-,
+   not size-indexed. phi-4 code no-ref 59% ~= Qwen-14B 58%.
+P9 EXTERNAL TRANSFER, ProcessBench-gsm8k, human-annotated (F12):
+   F1 curve 0 / 0 / 37 / 30 / 63 / 88 (0.5B..14B, Opus); solve-first +7-8 F1
+   at 7B/14B (fixes the 7B credulity wobble); small-judge degenerate modes
+   (position priors, always/never-error). HONEST NULL: the planted-regime
+   strategy-shift ordering does not transfer to natural errors.
+
+## Integrity record
+One full public retraction cycle inside the run (F8a dispatch bug: solve arm
+silently ran the with-ref rubric; caught by code audit + the 128/128
+identical-scores tell; corrected experiments produced the stronger F10/F11).
+Six intermediate results killed by internal cross-checks. All headline numbers
+re-derived from raw files with independent code; mutants re-executed against
+official tests; miner validated against Platinum without frontier adjudicators.
