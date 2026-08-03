@@ -525,3 +525,19 @@ across 8/8 cells was the tell and should have been caught pre-commit.
   present; outputs differ hugely), the code panel, coupling, F1-F7.
 - Fix + verified rerun of all solve-first arms launching now (verification:
   branch grep + smoke-run showing solve-first outputs DIFFER from with-ref).
+
+### Finding 10 (real solve-first results + the compliance mechanism)
+
+With the dispatch FIXED and verified (smoke: solve-first outputs now differ from
+with-ref, 43% identical vs 100% before):
+- 7B single-prompt solve-first: det 28%, FP7 70% -- WORSE than plain no-ref
+  (49%/51%). Generation dumps show why: the model frequently SKIPS the "solve
+  first" instruction silently (short outputs declaring "the solution is
+  correct"), while when it does solve, it catches the planted error and scores
+  rubric-conformantly. Single-prompt bootstrapping fails at small scale due to
+  SILENT INSTRUCTION NON-COMPLIANCE, not missing comparison skill.
+- Design consequence: the bootstrap must be mechanically staged. Running now:
+  SELF-REFERENCE judging (with-ref rubric, gold := the judge's own prior
+  solution to the same problem, which we already have) -- forced two-stage,
+  no compliance confound. Prediction: on items the judge solved correctly,
+  self-ref detection ~= gold-ref detection; on own-wrong items, degraded.

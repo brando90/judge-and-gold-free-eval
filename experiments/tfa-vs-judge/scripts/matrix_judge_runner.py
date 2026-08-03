@@ -77,6 +77,42 @@ Candidate solution:
 {candidate}
 """
 
+
+RUBRIC_STEPLOC = """You are checking a step-by-step solution for its EARLIEST ERROR.
+Read the problem and the numbered steps. If every step is correct, answer -1.
+Otherwise identify the index of the EARLIEST step that is incorrect.
+
+Return STRICT JSON only, as the FINAL line: {{"first_error_step": <int, or -1 if all steps are correct>}}
+
+Problem:
+{question}
+
+Solution steps:
+{candidate}
+"""
+
+RUBRIC_STEPLOC_SOLVE = """You are checking a step-by-step solution for its EARLIEST ERROR.
+FIRST, solve the problem yourself and get your own answer. THEN check the numbered steps against your
+solution. If every step is correct, answer -1. Otherwise identify the EARLIEST incorrect step.
+
+Work briefly, then return STRICT JSON as the FINAL line: {{"first_error_step": <int, or -1 if all steps are correct>}}
+
+Problem:
+{question}
+
+Solution steps:
+{candidate}
+"""
+
+def parse_steploc(text):
+    import re as _re, json as _json
+    ms=_re.findall(r'\{[^{}]*?"first_error_step"[^{}]*?\}', text or "")
+    for mm in reversed(ms):
+        try: return float(_json.loads(mm)["first_error_step"])
+        except Exception: pass
+    ms=_re.findall(r'first_error_step\D{0,5}(-?\d+)', text or "")
+    return float(ms[-1]) if ms else None
+
 def parse_score(text):
     m = re.search(r"\{.*?\}", text or "", re.DOTALL)
     if m:
@@ -92,7 +128,8 @@ def main():
     ap.add_argument("--out", required=True)
     ap.add_argument("--max_model_len", type=int, default=8192)
     ap.add_argument("--gpu_frac", type=float, default=0.92)
-    ap.add_argument("--rubric", default="math", choices=["math","code","mathnoref","norefsolve"])
+    ap.add_argument("--dump_text", action="store_true")
+    ap.add_argument("--rubric", default="math", choices=["math","code","mathnoref","norefsolve","steploc","steplocsolve"])
     args = ap.parse_args()
 
     from vllm import LLM, SamplingParams
@@ -104,7 +141,13 @@ def main():
         return s if len(s) <= n else s[:n] + " ...[truncated]"
     prompts = []
     for t in tasks:
-        if args.rubric == "mathnoref":
+        if args.rubric == "norefsolve":
+            body = RUBRIC_MATH_SOLVEFIRST.format(question=clip(t["question"], 4000), candidate=clip(t["candidate"], 8000))
+        elif args.rubric == "steploc":
+            body = RUBRIC_STEPLOC.format(question=clip(t["question"], 4000), candidate=clip(t["candidate"], 9000))
+        elif args.rubric == "steplocsolve":
+            body = RUBRIC_STEPLOC_SOLVE.format(question=clip(t["question"], 4000), candidate=clip(t["candidate"], 9000))
+        elif args.rubric == "mathnoref":
             body = RUBRIC_MATH_NOREF.format(question=clip(t["question"], 4000), candidate=clip(t["candidate"], 8000))
         elif args.rubric == "code":
             body = RUBRIC_CODE.format(candidate=clip(t["candidate"], 8000))
@@ -116,7 +159,7 @@ def main():
 
     llm = LLM(model=args.model, max_model_len=args.max_model_len,
               gpu_memory_utilization=args.gpu_frac, trust_remote_code=True)
-    sp = SamplingParams(temperature=0.0, max_tokens=(900 if args.rubric == "norefsolve" else 300))
+    sp = SamplingParams(temperature=0.0, max_tokens=(900 if args.rubric in ("norefsolve","steplocsolve") else 300))
     outs = llm.generate(prompts, sp)
     with open(args.out, "w") as f:
         for t, o in zip(tasks, outs):
@@ -124,7 +167,7 @@ def main():
             f.write(json.dumps(dict(task_id=t["task_id"], dataset=t.get("dataset"), solver=t.get("solver"),
                                     pid=t.get("pid"), cc=t.get("cc"), label_src=t.get("label_src"),
                                     tfa=t.get("tfa"), cond=t.get("cond"),
-                                    judge=args.model, score=parse_score(txt))) + "\n")
+                                    judge=args.model, score=(parse_steploc(txt) if args.rubric in ("steploc","steplocsolve") else parse_score(txt)), text=(txt if args.dump_text else None))) + "\n")
     done = sum(1 for _ in open(args.out))
     print(f"[done] {args.model}: {done} judgments -> {args.out}")
 
