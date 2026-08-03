@@ -34,30 +34,32 @@ def main():
     for r in ds:
         base = run_tests(r["prompt"], r["canonical_solution"], r["test"], r["entry_point"])
         if base != "pass": stats["base_fail"] += 1; continue
-        # try mutations in random order until one yields coherent-wrong
+        # collect up to MAX_MUT distinct coherent-wrong mutants per item (different sites/ops)
+        MAX_MUT = int(os.environ.get("MAX_MUT", "1"))
         muts = MUTS[:]; rng.shuffle(muts)
-        chosen = None
+        found = []
         for pat, rep in muts:
+            if len(found) >= MAX_MUT: break
             if not re.search(pat, r["canonical_solution"]): continue
-            # mutate exactly ONE occurrence (random)
             occ = [m for m in re.finditer(pat, r["canonical_solution"])]
             m = occ[rng.randrange(len(occ))]
             mut = r["canonical_solution"][:m.start()] + re.sub(pat, rep, m.group(0)) + r["canonical_solution"][m.end():]
-            if mut == r["canonical_solution"]: continue
+            if mut == r["canonical_solution"] or mut in found: continue
             res = run_tests(r["prompt"], mut, r["test"], r["entry_point"])
-            if res == "assert_fail": chosen = mut; break
+            if res == "assert_fail": found.append(mut)
             elif res == "pass": stats["equiv"] += 1
             else: stats["crash"] += 1
-        if chosen is None: stats["nomut"] += 1; continue
+        if not found: stats["nomut"] += 1; continue
         stats["ok"] += 1
         q = r["prompt"]  # docstring+signature is the spec
-        tasks.append(dict(task_id=tid, cond="mutant", pid=r["task_id"], dataset="humaneval",
-                          solver="MUT", question=q, gold="(no reference solution provided)",
-                          candidate=(q + chosen), cc=0.0, label_src="code_mutant", tfa=None)); tid += 1
+        for k, chosen in enumerate(found):
+            tasks.append(dict(task_id=tid, cond=f"mutant{k}", pid=r["task_id"], dataset="humaneval",
+                              solver="MUT", question=q, gold="(no reference solution provided)",
+                              candidate=(q + chosen), cc=0.0, label_src="code_mutant", tfa=None)); tid += 1
         tasks.append(dict(task_id=tid, cond="orig", pid=r["task_id"], dataset="humaneval",
                           solver="MUT", question=q, gold="(no reference solution provided)",
                           candidate=(q + r["canonical_solution"]), cc=1.0, label_src="code_orig", tfa=None)); tid += 1
-    with open("runs/code_mutant_tasks.jsonl", "w") as f:
+    with open(os.environ.get("OUT","runs/code_mutant_tasks.jsonl"), "w") as f:
         for t in tasks: f.write(json.dumps(t) + "\n")
     print(f"stats: {stats} -> {stats['ok']} coherent-wrong mutants (+paired originals) = {len(tasks)} tasks")
 

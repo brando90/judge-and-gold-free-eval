@@ -409,3 +409,18 @@ KEEP (critic-endorsed):
 OPEN (needs power/humans):
 4. Item-level verification-generation coupling (mixed at current n).
 5. Human-audited holdout for the adjudication chain.
+
+### Independent data audit (reputation pass)
+
+Fresh-code re-derivation of headline numbers from raw jsonl + record-level spot
+checks: F5 (frontier 100% det, FP 0-3%) reproduces exactly; F7 (3B 85% -> 17%)
+reproduces exactly; 3 random propagated mutants all differ from originals, pass
+the arithmetic verifier, and have genuinely wrong final answers; 3 random code
+mutants re-executed against official tests all assert_fail; no out-of-range
+scores in cluster outputs. LIMITATION recorded: the arithmetic verifier
+validates every PARSEABLE "a op b = c" statement; LaTeX-wrapped expressions may
+escape the regex, so its guarantee is "all parseable equations true," not "all
+stated math true" (frontier's 100% detection suggests the errors are real
+regardless). New arms running: powered code coupling (multi-mutant v2) and
+REFERENCE BOOTSTRAPPING (solve-first rubric on the ladder: can a weak judge
+recover the with-reference regime by generating its own reference?).

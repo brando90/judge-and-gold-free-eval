@@ -59,6 +59,24 @@ Candidate solution:
 {candidate}
 """
 
+
+RUBRIC_MATH_SOLVEFIRST = """You are grading the QUALITY OF MATHEMATICAL REASONING in a candidate solution.
+No reference solution is provided. FIRST, solve the problem yourself step by step and get your own answer.
+THEN compare the candidate against your own solution and grade the candidate's REASONING from 0 to 10:
+- 10: fully valid, complete, rigorous reasoning that reaches a correct result.
+- 5: partially valid; some correct steps but with a real gap, unjustified jump, or error.
+- 0: invalid or incorrect reasoning.
+
+Work through your own solution briefly, then output the JSON verdict as the FINAL line:
+{{"score": <float 0-10>}}
+
+Problem:
+{question}
+
+Candidate solution:
+{candidate}
+"""
+
 def parse_score(text):
     m = re.search(r"\{.*?\}", text or "", re.DOTALL)
     if m:
@@ -74,7 +92,7 @@ def main():
     ap.add_argument("--out", required=True)
     ap.add_argument("--max_model_len", type=int, default=8192)
     ap.add_argument("--gpu_frac", type=float, default=0.92)
-    ap.add_argument("--rubric", default="math", choices=["math","code","mathnoref"])
+    ap.add_argument("--rubric", default="math", choices=["math","code","mathnoref","norefsolve"])
     args = ap.parse_args()
 
     from vllm import LLM, SamplingParams
@@ -98,7 +116,7 @@ def main():
 
     llm = LLM(model=args.model, max_model_len=args.max_model_len,
               gpu_memory_utilization=args.gpu_frac, trust_remote_code=True)
-    sp = SamplingParams(temperature=0.0, max_tokens=300)
+    sp = SamplingParams(temperature=0.0, max_tokens=(900 if args.rubric == "norefsolve" else 300))
     outs = llm.generate(prompts, sp)
     with open(args.out, "w") as f:
         for t, o in zip(tasks, outs):
