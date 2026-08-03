@@ -568,3 +568,25 @@ other arms):
 - Practical: staged self-reference gives a 14B judge gold-reference-grade error
   detection with no reference infrastructure; at 3B it halves the gap; the
   binding constraint is the judge's solve rate, which is measurable in advance.
+
+### Finding 11 completed (7B row) + run close
+
+7B: selfref 85%/FP7 = goldref 85% (full recovery); det|own-correct 93% (n=61)
+vs own-wrong 60% (n=20). Final self-reference table (det%):
+  judge    noref  selfref  goldref
+  1.5B        3      59       21   (SELF > GOLD: style-match)
+  3B         17      60       85
+  7B         49      85       85   (full recovery)
+  14B        75      95       90   (full recovery)
+Coupling (own-correct vs own-wrong): 69/30, 67/18, 93/60, 96/na.
+
+FINAL RUN STATE: Findings 1-11 with one full retraction cycle executed inside
+the run (F8a claimed -> code-audited -> retracted -> corrected as F10/F11 with
+verified pipeline). The verified opening stack:
+ 1. Label-artifact anatomy + 89%-external-precision oracle-bug miner (F1-F3,F8d)
+ 2. Scale x reference interaction, 4 families, 2 domains (F7, F9)
+ 3. Verification = reference generation + style-matched comparison: silent
+    non-compliance kills single-prompt bootstrapping; mechanically-staged
+    self-reference recovers the reference regime and BEATS gold at tiny scale;
+    detection couples to own-solve (F10, F11)
+ 4. Outcome-not-process grading + local->global strategy shift (F4-F6)
