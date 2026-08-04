@@ -129,3 +129,30 @@ fig.tight_layout()
 fig.savefig(f"{OUT}/fig8_agentic_v2.png", dpi=150, bbox_inches="tight"); plt.close(fig)
 print("WROTE fig8_agentic_v2.png")
 print("SWE within:", w); print("SWE cross:", c)
+
+# ---- Figure C: two-way decomposition (item vs item-x-family vs residual), 4 families ----
+import json as _json
+tw = _json.load(open("runs/two_way_decomp.json"))
+TORD = [d for d in ["Putnam-AXIOM", "MATH-500", "MATH (full)", "GSM8K", "GSM8K-Platinum"] if d in tw]
+fig, ax = plt.subplots(figsize=(9.6, 4.2))
+ys = np.arange(len(TORD))[::-1]
+left = np.zeros(len(TORD))
+for key, col, lab in [("item", "#c07d15", "shared by all 4 families (reference predictability)"),
+                      ("item_x_family", "#c44e52", "family-specific (the style channel)"),
+                      ("residual", "#8a8f98", "model-specific residual")]:
+    vals = np.array([tw[d][key] for d in TORD])
+    ax.barh(ys, vals, left=left, color=col, label=lab, height=0.6)
+    for y, v, l in zip(ys, vals, left):
+        if v > 4: ax.text(l + v/2, y, f"{v:.0f}%", va="center", ha="center", fontsize=9,
+                          color="white", fontweight="bold")
+    left += vals
+ax.set_yticks(ys); ax.set_yticklabels([f"{d}  (n={tw[d]['n_models']} models)" for d in TORD], fontsize=10)
+ax.set_xlim(0, 100.9); ax.set_xlabel("share of within-model, per-solution TFA variation", fontsize=10)
+ax.legend(fontsize=9, frameon=False, loc="lower right", bbox_to_anchor=(1.0, -0.42), ncol=1)
+for sp in ("top", "right", "left"): ax.spines[sp].set_visible(False)
+ax.tick_params(left=False)
+ax.set_title("Split per-solution TFA across 15-16 models from four families: 83-92% is identical for every family\n"
+             "(a fact about the reference), and the family-style channel is 3-7%, largest on the saturated benchmarks",
+             fontsize=10.5, loc="left")
+fig.savefig("paper/figs/fig_twoway.png", dpi=150, bbox_inches="tight"); plt.close(fig)
+print("WROTE fig_twoway.png")

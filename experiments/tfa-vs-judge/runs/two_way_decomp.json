@@ -1,0 +1,47 @@
+{
+ "MATH-500": {
+  "item": 90.58203736734418,
+  "item_x_family": 3.8385346395732327,
+  "residual": 6.082940023842523,
+  "qwen_only": 93.82859217224177,
+  "n_models": 16,
+  "n_fams": 4,
+  "n_items": 500
+ },
+ "MATH (full)": {
+  "item": 83.28465443480592,
+  "item_x_family": 6.455296982500384,
+  "residual": 10.526509534494966,
+  "qwen_only": 88.94516194870647,
+  "n_models": 15,
+  "n_fams": 4,
+  "n_items": 600
+ },
+ "Putnam-AXIOM": {
+  "item": 92.00449463163592,
+  "item_x_family": 2.870786489636603,
+  "residual": 4.830504951865098,
+  "qwen_only": 96.14179705864247,
+  "n_models": 15,
+  "n_fams": 4,
+  "n_items": 236
+ },
+ "GSM8K": {
+  "item": 83.11391995139837,
+  "item_x_family": 7.194322877499315,
+  "residual": 10.398644403210735,
+  "qwen_only": 89.13365636138558,
+  "n_models": 15,
+  "n_fams": 4,
+  "n_items": 500
+ },
+ "GSM8K-Platinum": {
+  "item": 83.5230230740079,
+  "item_x_family": 7.096423639462909,
+  "residual": 10.022242528015264,
+  "qwen_only": 89.42397451119118,
+  "n_models": 15,
+  "n_fams": 4,
+  "n_items": 500
+ }
+}

@@ -10,9 +10,10 @@ def datauri(fn): return "data:image/png;base64," + base64.b64encode((FIGDIR/fn).
 IMG = {k: datauri(v) for k, v in {
  "f1":"fig1_model_level.png","f6":"fig7_mechanism.png","judge":"fig_judge.png","f3":"fig3_saturation.png",
  "f5":"fig6_cross_family.png","f7":"fig10_reconciliation.png","f9":"fig8_agentic_v2.png","f2":"fig2_difficulty_gradient.png",
- "f10":"fig9_mechanism.png","var":"fig_variants.png","f8":"fig5_rollout_completer_curve.png","ms":"fig_ms_multistat.png",
+ "f10":"fig9_mechanism.png","var":"fig_variants.png","f8":"fig5_rollout_completer_curve.png","ms":"fig_ms_multistat.png","tw":"fig_twoway.png",
 }.items()}
 MS = json.load(open("runs/multistat.json"))
+CIS = json.load(open("runs/map_cis.json"))
 def fig(k,cap): return f'<figure class="fig"><img src="{IMG[k]}" alt="{cap}"/><figcaption>{cap}</figcaption></figure>'
 def chips(*cs): return '<div class="chips">'+''.join(f'<div class="chip"><span class="cn">{n}</span><span class="cl">{l}</span></div>' for n,l in cs)+'</div>'
 S=[]
@@ -26,15 +27,18 @@ TORDER = ["Putnam-AXIOM","Omni-MATH (olympiad)","MATH-500","Putnam-Variations","
           "HumanEval (code)","GSM8K","GSM8K-Platinum"]
 def trow(lab):
     c = MS["cross_family"][lab]
+    lo, hi = CIS[lab]["spearman"]
     cls = ' class="neg"' if c["spearman"] < 0 else ""
     return (f'<tr{cls}><td>{lab}</td><td>{c["pearson"]:+.2f}</td><td>{c["pearson"]**2:.2f}</td>'
-            f'<td>{c["spearman"]:+.2f}</td><td>{c["kendall"]:+.2f}</td><td>{c["n"]}</td></tr>')
+            f'<td>{c["spearman"]:+.2f}</td><td>[{lo:+.2f}, {hi:+.2f}]</td><td>{c["kendall"]:+.2f}</td><td>{c["n"]}</td></tr>')
 TABLE = ('<table class="mini"><tr><th>dataset (all 17 models pooled)</th><th>Pearson r</th><th>r&sup2;</th>'
-         '<th>Spearman &rho;</th><th>Kendall &tau;</th><th>n models</th></tr>'
+         '<th>Spearman &rho;</th><th>&rho; 95% CI (bootstrap)</th><th>Kendall &tau;</th><th>n models</th></tr>'
          + "".join(trow(l) for l in TORDER) + '</table>'
-         '<p style="font-size:.85rem;color:var(--mut);max-width:80ch">ICC is not reported because TFA and accuracy live on '
-         'different scales; the consistency ICC on standardized scores reduces to Pearson r for two measures, so r and '
-         'r&sup2; carry that information. All three reported statistics agree in sign on every row.</p>')
+         '<p style="font-size:.85rem;color:var(--mut);max-width:80ch">Confidence intervals are bootstrap over models '
+         '(4000 resamples). With 17 models they are wide: only Putnam-AXIOM and Omni-MATH exclude zero on their own. '
+         'The sharper evidence for the boundary is the within-family view on the previous slide (all 12 hard-benchmark '
+         'families positive, 5 of 12 saturated ones negative). ICC is not reported because TFA and accuracy live on '
+         'different scales; the consistency ICC on standardized scores reduces to Pearson r for two measures.</p>')
 
 # 1 title: the takeaway is ON the title slide
 S.append('''<section class="slide title"><div class="wrap">
@@ -45,7 +49,7 @@ S.append('''<section class="slide title"><div class="wrap">
  reference solution token by token. Seventeen models, seven families, eight math and code benchmarks. On hard
  problems it gives you a real leaderboard: models that predict the reference well are the models that solve
  problems well. On easy, saturated benchmarks that connection goes away, because everyone predicts the reference
- about equally well and the leftover differences are writing style, not skill; on GSM8K the ranking actually flips.</p>
+ about equally well and the leftover differences are writing style, not skill; on GSM8K the correlation collapses to zero or reverses.</p>
  <div class="meta">17 models · 7 families · 8 datasets (math · olympiad · code) · every headline correlation reported as Pearson r / r&sup2; + Spearman ρ + Kendall τ</div>
  <div class="hint">scroll or press → to advance</div></div></section>''')
 
@@ -55,13 +59,13 @@ slide("The takeaway","Three results, stated up front",
  '''<div class="cols"><div>
  <h3 class="g">1 &middot; TFA can rank models, if the benchmark is hard</h3>
  <p>We compared mean TFA to accuracy for 17 models from 7 families. On Putnam and olympiad math the two agree
- closely. The agreement fades as benchmarks get easier, and on GSM8K it goes <b class="r">negative</b>: the models
- with the best TFA are not the most accurate ones. Same story on SWE-bench: TFA ranks the four Qwen-Coder sizes
+ closely. The agreement fades as benchmarks get easier, and on GSM8K it <b class="r">collapses to zero or reverses</b>
+ (point estimate &minus;0.25, 95% CI &minus;0.71 to +0.33). Same story on SWE-bench: TFA ranks the four Qwen-Coder sizes
  correctly, and tells you nothing when comparing across families.</p>
  <h3 class="p">2 &middot; TFA cannot grade a single solution</h3>
- <p>We checked whether a solution's TFA tracks the grade a judge gives that solution. It does not: 89-96% of what
- per-solution TFA measures is how predictable the reference text is, which says nothing about the solution being
- graded. We tried seven fixes and none recovered a signal. Earlier work assumed TFA could stand in for a judge here;
+ <p>We checked whether a solution's TFA tracks the grade a judge gives that solution. It does not: 83-92% of what
+ per-solution TFA measures is how predictable the reference text is, identical across four model families, and it
+ says nothing about the solution being graded. We tried seven fixes and none recovered a signal. Earlier work assumed TFA could stand in for a judge here;
  as far as we can tell, nobody had actually tested it.</p></div>
  <div>
  <h3 class="a">3 &middot; Grading without a judge is possible, just expensive</h3>
@@ -130,12 +134,12 @@ slide("Result 1 &middot; ranking &middot; within families","TFA ranks models cor
 
 # 6 boundary + table
 slide("Result 1 &middot; ranking &middot; the full map","The full map, and why easy benchmarks break the score",
- '<p>Pooling all 17 models on each dataset gives the full map, as a figure and as a table. The three statistics agree in sign on every dataset: clearly positive on hard and olympiad math, noisier but positive on code, near zero to negative on saturated grade-school math.</p>'+
+ '<p>Pooling all 17 models on each dataset gives the full map, as a figure and as a table. The three statistics agree in sign on every dataset: clearly positive on hard and olympiad math, noisier but positive on code, near zero to negative on saturated grade-school math. The new CI column keeps this honest: at 17 models the pooled intervals are wide, and the GSM8K reversal is a point estimate whose interval spans zero. What is solid is the contrast between regimes, carried by the within-family counts on the previous slide.</p>'+
  '<div class="def"><b>Why easy benchmarks break the score.</b> TFA can only separate models if their scores differ. On a hard benchmark like Putnam, the five Qwen models are spread across a TFA range of about 0.08: weak models miss many reference tokens, strong ones far fewer, so skill shows up in the score. On GSM8K every model, weak or strong, can already predict most of a grade-school solution, and the whole range shrinks to about 0.03. Once skill moves the score by that little, a second factor takes over: how closely a model\'s natural writing style happens to match the reference\'s. Style differs between families but has nothing to do with skill, so the ranking drifts, and sometimes flips.</div>'+
  TABLE+
  fig("f5","The same map as the table, drawn with 95% bootstrap confidence intervals over models (Spearman). Green = hard references, orange = saturated, purple = code.")+
  '<p style="font-size:.92rem;color:var(--mut)">Provenance: these values use the repaired answer-matching scorer; the original scorer mis-graded 4-10% of GSM8K-style answers and overstated the inversion (previously &minus;0.37/&minus;0.38, now &minus;0.25/&minus;0.19). The qualitative map is unchanged. The range-collapse plot behind the 0.08-vs-0.03 numbers is in the appendix.</p>'+
- '<div class="take">Use TFA as a leaderboard only where the reference is hard; never on a saturated benchmark.</div>')
+ '<div class="take">Use TFA as a leaderboard only where the reference is hard; on a saturated benchmark it is at best no signal, possibly reversed.</div>')
 
 # 7 agents, same grammar
 slide("Result 1 &middot; ranking &middot; coding agents","The same pattern on SWE-bench, drawn the same way",
@@ -166,20 +170,23 @@ slide("Result 2 &middot; grading &middot; the test","Can TFA grade one solution?
  '<div class="take">TFA can rank models, and it cannot grade their answers. The next slide gives the reason as a single number.</div>')
 
 # 9 why
-slide("Result 2 &middot; grading &middot; the reason","A solution's TFA score is 89-96% about the problem, not the solution",
- chips(("89-96%","of a solution's TFA: set by the reference"),("4-11%","set by the model that solved it"))+
- '''<p>Here is the measurement behind everything in this deck. Score the five Qwen models on the same problems and
- watch how per-solution TFA moves from problem to problem. It moves almost entirely with the <b>problem</b>: some
- reference solutions are short and formulaic, so every model predicts them well; others take unusual steps, so
- every model struggles. That shared part, identical for the 0.5B model and the 14B model, accounts for
- <b>89-96%</b> of the movement. The part that depends on which model produced the solution is the remaining
- <b>4-11%</b>.</p>'''+
+slide("Result 2 &middot; grading &middot; the reason","A solution's TFA score is 83-92% about the problem, not the solution",
+ chips(("83-92%","of a solution's TFA: set by the reference (shared by 4 families)"),("3-7%","family style"),("5-11%","the model that solved it"))+
+ '''<p>Here is the measurement behind everything in this deck. Score 15-16 models from four families (Qwen, Phi,
+ Mistral, OLMo) on the same problems and watch how per-solution TFA moves from problem to problem. It moves almost
+ entirely with the <b>problem</b>: some reference solutions are short and formulaic, so every model predicts them
+ well; others take unusual steps, so every model struggles. That shared part, identical across all four families,
+ accounts for <b>83-92%</b> of the movement. Splitting the rest: <b>3-7%</b> is family-specific (how well each
+ family's house style happens to match the reference, and it is largest exactly on the saturated benchmarks), and
+ <b>5-11%</b> is specific to the individual model. An earlier version of this measurement used only the five Qwen
+ models and read 89-96%; the four-family version separates reference predictability from Qwen's own style, and the
+ conclusion survives.</p>'''+
  '''<p>This one number explains both verdicts so far. <b>Ranking works</b> because the shared part is the same for
  every model, so it cancels the moment you average over hundreds of problems and compare models. <b>Grading
  fails</b> because a single solution has nothing to average: its score mostly reports how predictable its reference
  happens to be. The step-by-step recipe with a worked example is in the appendix.</p>'''+
- fig("f10","The measurement: split per-solution TFA into the part shared by all five Qwen models (a property of the reference) and the part specific to each model. The shared part is 89-96% on every dataset.")+
- '<div class="take">It also makes a prediction: if only 4-11% of the signal is about the solution, no reweighting of TFA can turn it into a grader. The next slide tests that prediction seven ways.</div>')
+ fig("tw","Per-solution TFA split three ways across four model families: the part shared by every family (a property of the reference), the family-specific style part, and the model-specific residual. Putnam-Variations is omitted: too few problems are shared by all 15 models for a stable split.")+
+ '<div class="take">It also makes a prediction: if only 5-11% of the signal is about the individual solution, no reweighting of TFA can turn it into a grader. The next slide tests that prediction seven ways.</div>')
 
 # 10 fixes, merged
 slide("Result 2 &middot; grading &middot; the repairs","We tried seven ways to clean up the signal. None worked.",
@@ -201,7 +208,7 @@ slide("Result 2 &middot; grading &middot; the repairs","We tried seven ways to c
  score quietly reduced to "has the right answer, divided by length." Controlling for length sent it to zero, and we
  retracted it. House rule since then: no grading win counts until it survives length and difficulty controls.</p>'''+
  fig("var","Per-solution agreement with the judge for each of the seven repaired versions of TFA: all at or below zero.")+
- '<div class="take">Seven attempts, zero recoveries. Together with the 89-96% split, we conclude the grading signal is not hidden in TFA. It is not there.</div>')
+ '<div class="take">Seven attempts, zero recoveries. Together with the 83-92% split, we conclude the grading signal is not hidden in TFA. It is not there.</div>')
 
 # 11 rollout
 slide("Result 3 &middot; a signal that does grade","One method does grade: cut the solution short and let another model finish it",
@@ -302,7 +309,7 @@ slide("Appendix &middot; judge robustness","The item-level conclusions do not de
  fig("judge","Item-level partial ρ under two frontier judges from different families: same conclusions under both."))
 
 # A4 nuisance recipe
-slide("Appendix &middot; the nuisance decomposition","The 89-96%, step by step, with a toy example",
+slide("Appendix &middot; the nuisance decomposition","The decomposition, step by step, with a toy example",
  chips(("94.6%","MATH-500"),("88.9%","MATH-full"),("89.1%","GSM8K"),("96.1%","Putnam"))+
  '<div class="cols"><div>'+
  '<h3 class="g">The recipe (a one-way ANOVA on the reference)</h3>'+
@@ -310,7 +317,7 @@ slide("Appendix &middot; the nuisance decomposition","The 89-96%, step by step, 
  '<li><b>Remove each model\'s level.</b> Subtract each model\'s own mean: D = T minus its row mean. This strips overall generosity (the ranking axis), leaving item-to-item variation.</li>'+
  '<li><b>Find the shared part.</b> Average each item\'s column across models: b[item], the deviation identical for every model, a fact about the reference.</li>'+
  '<li><b>Take the ratio.</b> nuisance = &Sigma;b&sup2; / &Sigma;D&sup2; = 89-96% on every dataset; the leftover 4-11% is the model-specific residual grading would need.</li></ol>'+
- '<p style="font-size:.9rem;color:var(--mut)">Reproducible via <span style="font-family:ui-monospace,Menlo,monospace">scripts/variance_decomp.py</span>.</p>'+
+ '<p style="font-size:.9rem;color:var(--mut)">This page shows the original one-way, Qwen-only recipe (89-96%). The main-body number is the two-way version across four families, which additionally separates the family-style channel: <span style="font-family:ui-monospace,Menlo,monospace">scripts/two_way_decomp.py</span>; one-way version: <span style="font-family:ui-monospace,Menlo,monospace">scripts/variance_decomp.py</span>.</p>'+
  '</div><div>'+
  '<h3 class="p">A two-model, three-item toy</h3>'+
  '<table class="mini"><tr><th></th><th>item 1</th><th>item 2</th><th>item 3</th><th>row mean</th></tr>'+
