@@ -157,6 +157,11 @@ slide("Part 2 · real behavior","With clean labels, judging skill is a smooth cu
 # 10 typos
 slide("Part 2 · planted false steps","Judges grade the outcome, not each line",
  chips(("40-50%","of explicit false equations go unpenalized"),("69-85%","still receive a passing score at a common cutoff"))+
+ '''<p><b>The experiment:</b> we planted a single false equation into otherwise-correct solutions and varied two
+ things: where it sits (<b>early</b> in the solution or <b>late</b>, near the conclusion) and how blatant it is
+ (<b>blatant</b> arithmetic nonsense or a <b>subtle</b> slip). <b>How to read the figure:</b> each group of bars is
+ one placement, each color is one judge, and bar height is the share of those planted false equations the judge
+ flagged. Taller means better proofreading.</p>'''+
  fig("f4_typos","Detection of one planted false equation, by where it sits (early or late) and how blatant it is. Mid-size judges punish the blatant early ones. Frontier judges punish the quiet late ones that actually affect the conclusion, and forgive obvious typos as typos.")+
  '''<p>The pattern to notice: 3B and 14B judges react to how much an error <b>stands out</b>. Frontier judges
  re-derive the solution and react to whether the error <b>matters</b>. Both styles leave line-level slips unpunished: judges are not
@@ -165,6 +170,12 @@ slide("Part 2 · planted false steps","Judges grade the outcome, not each line",
 
 # 11 the mechanism
 slide("Part 3 · the mechanism","What a reference is worth, at every judge size",
+ '''<p><b>The experiment:</b> the hidden-error solutions from the setup, the ones whose arithmetic all checks out
+ but whose final answer is wrong, shown to each judge under the three conditions defined there. <b>How to read the
+ figure:</b> the x-axis is judge size, the y-axis is the share of hidden errors caught, and each line is one
+ condition, in the same colors as the setup diagram: <b class="r">red</b> = no reference, <b class="g">green</b> =
+ shown the correct reference, <b class="p">purple</b> = its own answer from a separate pass. The vertical gray
+ arrows mark the red-to-green gap, which is what handing the judge a reference is worth.</p>'''+
  fig("f5_phase","Detection of fully-propagated hidden errors, three conditions. Red: the judge sees only the problem and the solution. Green: it also sees a correct reference. Purple: it sees its own earlier answer as the reference.")+
  '''<p>Read the curves one at a time. <b>Red, no reference:</b> small judges catch almost none of the errors, and skill
  climbs slowly with size. <b>Green, with a correct reference:</b> even the 3B judge now catches 85% of hidden errors. The gap
