@@ -55,10 +55,10 @@ slide("Contents","What this deck covers",
  <h3>The problem and the method</h3>
  <p>Why AI-judging-AI matters, and how we build experiments where the correct verdict is known: we take correct
  solutions and break them ourselves.</p>
- <h3 class="a">Part 1 &middot; the false discovery</h3>
- <p>A pattern in our data that looked like a law of judge failure. When we checked the individual cases, most of
- the "failures" were errors in the benchmark's own answer key. Checking answer keys this way turned out to be
- cheap and reliable, so we kept it as a tool.</p>
+ <h3 class="a">Part 1 &middot; answer keys</h3>
+ <p>Patterns in our data that looked like laws of judge failure turned out, on checking the individual cases, to
+ be errors in the benchmark's own answer key. Checking answer keys this way is cheap and reliable, so we kept it
+ as a tool.</p>
  <h3>Part 2 &middot; how judges behave</h3>
  <p>With the labels cleaned up: judging skill rises smoothly with model size, and judges at every size grade the
  final outcome rather than checking each line of reasoning.</p></div>
@@ -72,7 +72,8 @@ slide("Contents","What this deck covers",
  <h3>The rules</h3>
  <p>A practical checklist for anyone building oversight, then the three takeaways again.</p>
  <h3 style="color:var(--mut)">Appendix</h3>
- <p>Which of our own results we discarded and why, and the questions we left open.</p></div></div>''')
+ <p>The full walkthrough of the apparent judge-failure law, which of our own results we discarded and why, and the
+ questions we left open.</p></div></div>''')
 
 # 4 terms
 slide("Terms used in this deck","Five terms, defined before we use them",
@@ -123,23 +124,16 @@ slide("The setup","Judges of every size, and errors we control",
  '''+fig("f0_method","The method at a glance: build verified errors, show them to judges of every size under three reference conditions, then move to tasks with no answer key.")+'''
  <div class="take">Every result that follows is measured against these verified errors.</div>''')
 
-# 7 the mirage
-slide("Part 1 · the false discovery","A pattern that looked like a law of judge failure",
- '''<p>Early on we noticed an interesting pattern: count how many of the small judges a wrong solution fools, and
- you can predict almost perfectly whether the frontier judge is fooled too. Zero small
- judges fooled: the frontier fails 1% of the time. All three of the small judges fooled: <b>94%</b>. It looked like a cheap early-warning system for frontier
- failures.</p>
- <p>Before writing it up, we hand-checked every one of the 55 cases behind the 94%. Most were not judge failures
- at all. They were <b>correct answers that the benchmark had marked wrong</b>. The judges were right; the answer
- key was not.</p>'''+
- fig("f1_mirage","Left: the apparent law. Right: what checking all 55 cases revealed. 71% were benchmark labeling errors, and on the genuinely wrong solutions the frontier judge failed only 6% of the time.")+
- '<div class="take">Two other promising effects turned out the same way when we checked their cases. That changed how we ran everything that follows.</div>')
-
 # 8 the payoff: miner
-slide("Part 1 · a tool from the cleanup","Benchmark answer keys contain measurable error",
+slide("Part 1 · answer keys","Benchmark answer keys contain measurable error, and that changed everything",
  chips(("4-10%","of GSM8K grades wrong, depending on model family"),("89%","of consensus flags were real grading bugs"),("0.66→0.91","r&sup2; between frontier judge scores and true accuracy, before → after fixing the grading"))+
- '''<p>Three separate "judge failure" effects each turned out to be answer-key errors, not judge errors. That
- reverses the usual conclusion: a good share of what the literature measures as judge unreliability is
+ '''<p>Early on, our data showed three separate effects that looked like textbook laws of judge failure. The most
+ striking: counting how many small judges a wrong solution fooled seemed to predict frontier-judge failure almost
+ perfectly, 94% when all three were fooled. Before writing anything up, we hand-checked all 55 cases behind that
+ number. 71% were <b>correct answers that the benchmark had marked wrong</b>. The judges were right; the answer key
+ was not. On the genuinely wrong solutions, the frontier judge failed only 6% of the time. All three apparent
+ effects dissolved the same way (the full walkthrough of the first one is in the appendix).</p>
+ <p>That reverses the usual conclusion: a good share of what the literature measures as judge unreliability is
  answer-key unreliability.</p>
  <p>The check is simple. When several cheap open models <b>unanimously</b> disagree with the official grade, the
  official grade is nearly always what is wrong: usually the answer-matching script misreading a correct answer,
@@ -277,6 +271,18 @@ S.append('''<section class="slide divider"><div class="wrap" style="text-align:c
  <div class="kick">everything after this slide is backup</div>
  <h1 style="font-size:clamp(3rem,8vw,6rem)">APPENDIX</h1>
  <p class="lede" style="max-width:56ch;margin:0 auto">What was checked, which of our own results we withdrew, and the questions we left open.</p></div></section>''')
+
+# A0 the pattern that started Part 1 (moved from the main flow; slide 8 summarizes it)
+slide("Appendix · the pattern behind Part 1","The apparent law of judge failure, in full",
+ '''<p>Early on we noticed an interesting pattern: count how many of the small judges a wrong solution fools, and
+ you can predict almost perfectly whether the frontier judge is fooled too. Zero small
+ judges fooled: the frontier fails 1% of the time. All three of the small judges fooled: <b>94%</b>. It looked like a cheap early-warning system for frontier
+ failures.</p>
+ <p>Before writing it up, we hand-checked every one of the 55 cases behind the 94%. Most were not judge failures
+ at all. They were <b>correct answers that the benchmark had marked wrong</b>. The judges were right; the answer
+ key was not.</p>'''+
+ fig("f1_mirage","Left: the apparent law. Right: what checking all 55 cases revealed. 71% were benchmark labeling errors, and on the genuinely wrong solutions the frontier judge failed only 6% of the time.")+
+ '<div class="take">Two other promising effects turned out the same way when we checked their cases. That changed how we ran everything that follows.</div>')
 
 # A1 integrity record
 slide("Appendix · the record","What was checked, and how",
