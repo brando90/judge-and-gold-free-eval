@@ -212,6 +212,12 @@ slide("Part 4 · the real frontier","The hard part: tasks where you cannot check
 # 15 flips
 slide("Part 4 · order-swap consistency","Ask twice, swapped: a reliability check that needs no answer key",
  '<p><b>The measurement:</b> every pair of responses was judged twice, with the two responses swapping places between the passes. If the two verdicts disagree, the order decided, not the content. <b>How to read:</b> the x-axis is judge size, the y-axis is the share of verdicts that flipped, one line per task type. A judge deciding on content flips near 0%; a judge that is effectively guessing flips about half the time. Lower is better.</p>'+
+ '''<div class="def"><b>The four task types (from RewardBench-2).</b> <b>Math:</b> problems with one right answer;
+ the worse response gets it wrong. <b>Focus:</b> the worse response drifts off what was actually asked. <b>Precise
+ instruction-following:</b> the prompt sets exact, checkable constraints (say, "exactly three sentences"), and the
+ worse response breaks one. <b>Ties:</b> questions with many equally valid answers ("name a color of the rainbow"),
+ where the pair puts a valid answer against an invalid one; that contrast is easy, which is why this line falls
+ fastest.</div>'''+
  fig("f9_flips","How often the verdict flips when the two responses swap places. At 0.5B, verdicts are close to coin flips. The flip rate falls steadily with size, except on precise instruction-checking, where judges of every size stay near chance.")+
  '''<p>Two things worth noticing. First, this measurement needs no ground truth: you just ask the same question
  twice with the order swapped. Second, the one line that never improves: judging <b>precise instruction
@@ -221,7 +227,7 @@ slide("Part 4 · order-swap consistency","Ask twice, swapped: a reliability chec
 
 # 16 the sign flip
 slide("Part 4 · the finding","On many-valid-answer tasks, references make judging worse",
- '<p><b>The experiment:</b> the Qwen-14B judge picks the better response of each pair, and we vary what reference it sees. <b>How to read:</b> the left panel is math questions (one right answer), the right panel is many-valid-answer questions; each bar is one reference condition, and bar height is the share of pairs judged correctly. Compare every colored bar to the gray no-reference bar on its left: taller means the reference helped, shorter means it hurt.</p>'+
+ '<p><b>The experiment:</b> the Qwen-14B judge picks the better response of each pair, and we vary what reference it sees. <b>How to read:</b> the left panel is math questions (one right answer), the right panel is many-valid-answer questions (the Ties type from the previous slide); each bar is one reference condition, and bar height is the share of pairs judged correctly. Compare every colored bar to the gray no-reference bar on its left: taller means the reference helped, shorter means it hurt.</p>'+
  fig("f8_rb2","Judge: Qwen-14B. On math, references help in proportion to their quality: a weak model's reference does nothing, a decent one adds +7, the judge's own adds +9. On many-valid-answer questions every reference hurts, its own, a weak model's, a decent one's, all by about the same amount of pairwise accuracy (p<=.0005 under McNemar's test for paired verdicts).")+
  '''<p>The control condition answers why. If the harm came from the judge favoring its own writing, references
  written by <i>other</i> models would be harmless. They are not: they hurt by the same amount. What actually
