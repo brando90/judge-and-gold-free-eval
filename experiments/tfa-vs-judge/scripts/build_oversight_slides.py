@@ -28,10 +28,11 @@ S.append('''<section class="slide title"><div class="wrap">
 slide("The takeaway","Three results, stated up front",
  '''<div class="cols"><div>
  <h3 class="r">1 &middot; A reference helps or hurts, predictably</h3>
- <p>Show a judge a known-good answer and it gets better at grading tasks with <b>one right answer</b>: 9 percentage
- points more of its verdicts correct, and the better the reference, the bigger the gain. Show it any reference on a
- task with <b>many valid answers</b> that it cannot verify by itself, and it gets <b>worse</b>: 7 to 8 points fewer
- correct verdicts, no matter who wrote the reference (p&le;.0005 under a paired test). A controlled synthetic version of both situations reproduced both effects.</p>
+ <p>Show a judge a known-good answer and it gets better at grading tasks with <b>one right answer</b>: up to 19
+ percentage points more of its verdicts correct with a verified gold reference, and the better the reference, the
+ bigger the gain. Show it any reference on a task with <b>many valid answers</b> that it cannot verify by itself,
+ and it gets <b>worse</b>: 7 to 8 points fewer correct verdicts, no matter who wrote the reference (p&le;.0005
+ under a paired test). A controlled synthetic version of both situations reproduced both effects.</p>
  <h3 class="g">2 &middot; A small judge with a reference is nearly frontier-level</h3>
  <p>Without a reference, a 3B judge catches 17% of hidden errors. With one, <b>85%</b>, close to frontier level.
  That boost replicates in all six model families we tried, adding 14 to 60 percentage points of detection.
@@ -208,11 +209,12 @@ slide("Part 4 · the real frontier","The hard part: tasks where you cannot check
  judged <b>twice, in both orders</b>: if the verdict changes when the two responses swap places, it depended on
  presentation order, not content. Three conditions: no reference, the judge's own answer as reference, and, as a
  control, <b>another model's</b> answer as reference.</div>
- <p style="font-size:.95rem;color:var(--mut)">Why there is no "correct reference" condition here, unlike Part 3: on
- many-valid-answer questions no single correct reference exists, and that is the point of studying them. On the
- math questions, the benchmark ships no gold answer; the only response it certifies as correct is the better one of
- the pair, which is the very label the judge is tested on, so showing it would leak the answer. A gold arm for the
- math subset, with independently verified answers, is in progress.</p>''')
+ <p style="font-size:.95rem;color:var(--mut)">One condition needed building. On many-valid-answer questions no
+ single correct reference can exist, which is the point of studying them. On the math questions the benchmark
+ ships no gold answer either; the only response it certifies as correct is the better one of the pair, the very
+ label the judge is tested on, so showing that would leak the answer. We therefore built a genuine gold arm for
+ the math subset: solve every prompt with two frontier model families, keep the 99 of 120 prompts where their
+ answers agree, and use that verified solution as the correct reference.</p>''')
 
 # 15 flips
 slide("Part 4 · order-swap consistency","Ask twice, swapped: a reliability check that needs no answer key",
@@ -232,8 +234,8 @@ slide("Part 4 · order-swap consistency","Ask twice, swapped: a reliability chec
 
 # 16 the sign flip
 slide("Part 4 · the finding","On many-valid-answer tasks, references make judging worse",
- '<p><b>The experiment:</b> the Qwen-14B judge picks the better response of each pair, and we vary what reference it sees. <b>How to read:</b> the left panel is math questions (one right answer), the right panel is many-valid-answer questions (the Ties type from the previous slide); each bar is one reference condition, and bar height is the share of pairs judged correctly. Compare every colored bar to the gray no-reference bar on its left: taller means the reference helped, shorter means it hurt.</p>'+
- fig("f8_rb2","Judge: Qwen-14B. On math, references help in proportion to their quality: a weak model's reference does nothing, a decent one adds +7, the judge's own adds +9. On many-valid-answer questions every reference hurts, its own, a weak model's, a decent one's, all by about the same amount of pairwise accuracy (p<=.0005 under McNemar's test for paired verdicts).")+
+ '<p><b>The experiment:</b> the Qwen-14B judge picks the better response of each pair, and we vary what reference it sees. <b>How to read:</b> the left panel is math questions (one right answer), the right panel is many-valid-answer questions (the Ties type from the previous slide); each bar is one reference condition, ordered left to right by reference quality, and bar height is the share of pairs judged correctly. Compare every bar to the gray no-reference bar: taller means the reference helped, shorter means it hurt. The left panel compares all five conditions on the same 99 pairs, the ones with a two-family-verified gold answer.</p>'+
+ fig("f8_rb2","Judge: Qwen-14B. On math, accuracy climbs with reference quality: a weak model's reference does nothing, a decent one adds 9 points, the judge's own 12, and a verified gold reference 19 (93% vs 74%, p=9e-9; it even beats the judge's own answer, p=.007). On many-valid-answer questions every reference hurts, all sources by about the same amount (p<=.0005). Both p-values from McNemar's test for paired verdicts.")+
  '''<p>The control condition answers why. If the harm came from the judge favoring its own writing, references
  written by <i>other</i> models would be harmless. They are not: they hurt by the same amount. What actually
  happens: on a question with many valid answers, any single reference anchors the judge to one of them, and it

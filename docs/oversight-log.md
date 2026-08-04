@@ -822,3 +822,32 @@ an UPGRADE-ONLY policy (original cc=1 never re-litigated; the validated failure
 mode is false negatives). Spot-checked upgrades all genuine ("$57.00" vs 57,
 "Answer: 38", comma formatting). Note: original files untouched; analyses
 wanting corrected labels should read cc_corrected.
+
+## Finding 16 (2026-08-03): verified-gold reference arm completes the RB2 math quality ladder
+
+Prompted by review feedback ("why is there no correct-reference arm in Part 4?"). RewardBench-2 ships no
+gold answers (additional_metadata.correct is None on all 183 math rows); the only certified-correct artifact
+is the chosen response, i.e. the label itself, so using it as a reference would leak the answer.
+
+Construction: solved all 120 RB2 math prompts with two frontier families (gpt-5.2 via metered OpenAI key,
+Opus 4.8 via free claude -p session). Strict string agreement: 42/120; after Opus equivalence adjudication of
+formatting-only disagreements (unicode minus, units spelled out, 18^4 vs 104976): 110/120 agreed. Reference =
+gpt-5.2 full worked solution whose FINAL line matches the verified answer (direct match 71, equivalence-
+recovered 28) -> 99 pairs, 198 rows (runs/rb2_gold_tasks.jsonl, label_src two_family_verified_gold*).
+
+Run: Qwen2.5-14B-Instruct, rubric pairref, skampere1 GPU0. Result on the matched 99-pair subset (all arms
+recomputed on the same subset; full-set sanity reproduces the published 75/84/73/82):
+
+  no reference 74.2 | weak model's 72.2 | mid model's 83.3 | own answer 86.4 | VERIFIED GOLD 92.9
+
+McNemar exact: gold vs no-ref 41/4 discordant, p=9.3e-9; gold vs own answer 17/4, p=.0072.
+
+Reading: the reference-quality ladder now has its endpoint, and it is monotone: weak ~ none < mid < own <
+verified gold. Strengthens F13's "help in proportion to quality" leg with a true gold anchor; the ties panel
+is unchanged (no gold can exist there, which remains the boundary condition's point).
+
+Files: scripts/gen_rb2_math_gold.py, scripts/adjudicate_gold_equiv.py, scripts/build_rb2_gold_tasks.py,
+runs/rb2_math_gold.jsonl, runs/rb2_math_gold_solutions.jsonl, runs/rb2_gold_tasks.jsonl,
+runs/rb2_out/pairgold_Qwen_Qwen2.5-14B-Instruct.jsonl. Deck updated (f8 five-arm panel, takeaway, Part-4 slides).
+Caveat: gold covers 99/120 pairs (those with two-family-verified answers); the 21 uncovered pairs skew toward
+prompts frontier models disagree on, so the matched-subset comparison is the honest one and is what the figure shows.

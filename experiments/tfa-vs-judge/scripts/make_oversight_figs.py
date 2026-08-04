@@ -170,21 +170,26 @@ ax.set_title("External check on a public, human-labeled benchmark (ProcessBench)
 save(fig, "f7_processbench")
 
 # ---- f8 RB2: the same reference helps on one task type, hurts on the other (14B judge) ----
-fig, (a, b) = plt.subplots(1, 2, figsize=(9.6, 4.0))
-arms = ["no\nreference", "own answer\nas reference", "weak model's\nanswer", "mid model's\nanswer"]
-math_acc = [75, 84, 73, 82]; ties_acc = [99, 91, 92, 92]
-cols8 = [C["gray"], C["purple"], C["amber"], C["blue"]]
-a.bar(range(4), math_acc, color=cols8, width=0.6)
-a.set_xticks(range(4)); a.set_xticklabels(arms, fontsize=8)
+# Math panel: all five arms on the matched 99-pair subset where a two-family-verified gold
+# reference exists (74.2 / 72.2 / 83.3 / 86.4 / 92.9). Ties panel: full ties set; a gold
+# reference cannot exist there, which is the point.
+fig, (a, b) = plt.subplots(1, 2, figsize=(10.6, 4.2), gridspec_kw=dict(width_ratios=[1.2, 1]))
+arms5 = ["no\nreference", "weak model's\nanswer", "mid model's\nanswer", "own answer\nas reference", "verified gold\nreference"]
+math_acc = [74, 72, 83, 86, 93]
+cols5 = [C["gray"], C["amber"], C["blue"], C["purple"], C["green"]]
+a.bar(range(5), math_acc, color=cols5, width=0.62)
+a.set_xticks(range(5)); a.set_xticklabels(arms5, fontsize=8)
 a.set_ylim(60, 100); a.set_ylabel("% of pairs judged correctly")
-a.set_title("Math (one right answer):\ngood references help, bad ones do not hurt", fontsize=9.5)
+a.set_title("Math (one right answer): accuracy climbs with\nreference quality, verified gold on top (93%)", fontsize=9.5)
 for i, v in enumerate(math_acc): a.text(i, v + 0.6, str(v), ha="center", fontsize=9)
-b.bar(range(4), ties_acc, color=cols8, width=0.6)
-b.set_xticks(range(4)); b.set_xticklabels(arms, fontsize=8)
+arms4 = ["no\nreference", "weak model's\nanswer", "mid model's\nanswer", "own answer\nas reference"]
+ties_acc = [99, 92, 92, 91]
+b.bar(range(4), ties_acc, color=cols5[:4], width=0.6)
+b.set_xticks(range(4)); b.set_xticklabels(arms4, fontsize=8)
 b.set_ylim(60, 102)
 b.set_title("Many-valid-answers questions:\nevery reference hurts (p<=.0005)", fontsize=9.5)
 for i, v in enumerate(ties_acc): b.text(i, v + 0.6, str(v), ha="center", fontsize=9)
-fig.suptitle("Judge = Qwen-14B. The same reference helps on one task type and hurts on the other", fontsize=10.5, y=1.02)
+fig.suptitle("Judge = Qwen-14B. On math, better references mean better judging; on many-valid-answer questions, every reference hurts", fontsize=10.5, y=1.02)
 save(fig, "f8_rb2")
 
 # ---- f9 order-flip rate ----
