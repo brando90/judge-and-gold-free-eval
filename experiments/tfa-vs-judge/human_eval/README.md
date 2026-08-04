@@ -9,7 +9,26 @@ against people.
 
 ## What is in the sample
 
-42 traces (`traces_to_label.jsonl` / `.csv`), over-sampling the cells where a human tiebreak is decisive:
+242 traces (`traces_to_label.jsonl` / `.csv`), in two strata:
+
+**Stratum D (diagnostic, 42 traces, items 1-42).** Over-samples the cells where a human tiebreak is
+decisive (table below). Use it to adjudicate who is right when TFA and the judge disagree. Because it is
+selected ON disagreement, do not estimate correlations from it alone.
+
+**Stratum R (random, 200 traces, items 43-242).** Drawn uniformly from the MATH-500 pool with no
+selection on TFA, judge, or correctness. This is the stratum for the validity numbers: rho(TFA, human)
+and rho(judge, human), unbiased. The first 40 R-items are the **shared block**: every labeler grades
+these, which gives inter-rater agreement and the human-human ceiling the judge should be compared against.
+
+**Labeling protocol.** Every labeler: (1) grade the 40 shared-block items (marked on the card), then
+(2) grade whatever slice of the rest you were assigned. Partial returns are fine; labels key on the trace
+`id`, so files from multiple people and multiple sessions merge cleanly.
+
+**Reuse.** The original 42 diagnostic traces kept their exact `id`s and order positions, and both label
+pages kept their storage keys, so labels already collected (in-browser progress or returned CSVs) remain
+valid as-is.
+
+The diagnostic cells:
 
 | cell | selection | why it is informative |
 |---|---|---|
@@ -38,7 +57,7 @@ context, tick **blind mode** in the header to hide the cell and scores.
 
 `traces_to_label.csv` columns: `order, id, dataset, model, cell, cell_desc, correct` (deterministic
 final-answer correctness), `tfa` (teacher-forced accuracy), `judge` (gpt-5.2 reasoning score 0 to 10),
-`gold_answer, question, gold_solution, trace`. Regenerate with `scripts/make_labeling_set.py`.
+`gold_answer, question, gold_solution, trace`. Regenerate the diagnostic stratum with `scripts/make_labeling_set.py`; extend/refresh the random stratum with `scripts/extend_labeling_set.py` (append-only, never touches existing ids).
 
 ## Shareable version (no repo needed)
 
