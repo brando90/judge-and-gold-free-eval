@@ -137,6 +137,13 @@ slide("Result 1 &middot; ranking &middot; the full map","The full map, and why e
  '<p>Pooling all 17 models on each dataset gives the full map, as a figure and as a table. The three statistics agree in sign on every dataset: clearly positive on hard and olympiad math, noisier but positive on code, near zero to negative on saturated grade-school math. The new CI column keeps this honest: at 17 models the pooled intervals are wide, and the GSM8K reversal is a point estimate whose interval spans zero. What is solid is the contrast between regimes, carried by the within-family counts on the previous slide.</p>'+
  '<div class="def"><b>Why easy benchmarks break the score.</b> TFA can only separate models if their scores differ. On a hard benchmark like Putnam, the five Qwen models are spread across a TFA range of about 0.08: weak models miss many reference tokens, strong ones far fewer, so skill shows up in the score. On GSM8K every model, weak or strong, can already predict most of a grade-school solution, and the whole range shrinks to about 0.03. Once skill moves the score by that little, a second factor takes over: how closely a model\'s natural writing style happens to match the reference\'s. Style differs between families but has nothing to do with skill, so the ranking drifts, and sometimes flips.</div>'+
  TABLE+
+ '''<div class="def"><b>What the confidence interval means.</b> Each correlation here comes from only 17 points,
+ one per model, so the value depends on which particular models we happened to test. The interval answers: had the
+ model lineup been a little different, what values could we have gotten? (Computed by resampling our models 4000
+ times and recomputing.) For GSM8K that range is &minus;0.71 to +0.33: definitely not the strong positive signal of
+ the hard benchmarks, but possibly zero rather than truly reversed. That is why we say "collapses to zero or
+ reverses" and lean on the within-family counts, where 12 of 12 hard-benchmark comparisons agree, for the firm
+ part of the claim.</div>'''+
  fig("f5","The same map as the table, drawn with 95% bootstrap confidence intervals over models (Spearman). Green = hard references, orange = saturated, purple = code.")+
  '<p style="font-size:.92rem;color:var(--mut)">Provenance: these values use the repaired answer-matching scorer; the original scorer mis-graded 4-10% of GSM8K-style answers and overstated the inversion (previously &minus;0.37/&minus;0.38, now &minus;0.25/&minus;0.19). The qualitative map is unchanged. The range-collapse plot behind the 0.08-vs-0.03 numbers is in the appendix.</p>'+
  '<div class="take">Use TFA as a leaderboard only where the reference is hard; on a saturated benchmark it is at best no signal, possibly reversed.</div>')
