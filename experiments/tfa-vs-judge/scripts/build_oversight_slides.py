@@ -150,11 +150,14 @@ slide("Part 1 · a tool from the cleanup","Benchmark answer keys contain measura
 
 # 9 smooth curve
 slide("Part 2 · real behavior","With clean labels, judging skill is a smooth curve",
+ '''<div class="def"><b>How the AUC here is computed.</b> Each judge reads a solution and gives it a numeric score.
+ Take the cleaned set of solutions, some genuinely right and some genuinely wrong. Form every pair of one right and
+ one wrong solution and ask: did the judge give the wrong one the lower score? The AUC is the fraction of pairs
+ where it did, with ties counting half. Always right gives 1.0; random scoring gives 0.5. No pass/fail cutoff is
+ involved anywhere, which keeps the comparison honest across judges.</div>'''+
  fig("f3_auc","Separation of right from wrong solutions (AUC) on naturally occurring errors, after the label cleanup. Every increase in judge size helps; the frontier's advantage shows up as more decisive scores.")+
- '''<p>No cliff, no magic threshold where judging "turns on". We also caught ourselves once here: at one choice of pass/fail
- cutoff on the judge's score, the 7B judge looked identical to the frontier. At a different cutoff the frontier
- caught 74% of the errors and the 7B caught 10%. The equality was an artifact of where we drew the line, so since
- then we report threshold-free numbers only.</p>
+ '''<p>No cliff, and no special size where judging "turns on": each step up in judge size adds skill, all the way
+ to the frontier.</p>
  <div class="take">Judge skill grows smoothly with size.</div>''')
 
 # 10 typos
@@ -241,8 +244,8 @@ S.append('''<section class="slide concl"><div class="wrap"><div class="kick">Wha
  <div class="cols"><div><h3>Measurement</h3>
  <ul><li><b>Audit the grading first</b>, both the script and the key. When several cheap models unanimously disagree with
  the official grade, the grade is wrong 89% of the time, with no extra human labeling needed.</li>
- <li><b>Never trust one threshold.</b> A single cutoff produced a spurious "7B equals frontier" result in our own
- data. Report threshold-free numbers.</li>
+ <li><b>Never trust one threshold.</b> A single pass/fail cutoff can make two very different judges look equal.
+ Report threshold-free numbers such as AUC.</li>
  <li><b>Judge each pair twice, with the order swapped.</b> The order-flip rate is a reliability check that needs no ground truth.</li></ul>
  <h3>Judges are not proofreaders</h3>
  <ul><li>Explicit false steps pass 40-85% of the time. Judges grade outcomes and coherence, not lines. Do not use
