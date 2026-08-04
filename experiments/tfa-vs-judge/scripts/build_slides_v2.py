@@ -140,10 +140,12 @@ slide("Result 1 &middot; ranking &middot; the full map","The full map, and why e
  '''<div class="def"><b>What the confidence interval means.</b> Each correlation here comes from only 17 points,
  one per model, so the value depends on which particular models we happened to test. The interval answers: had the
  model lineup been a little different, what values could we have gotten? (Computed by resampling our models 4000
- times and recomputing.) For GSM8K that range is &minus;0.71 to +0.33: definitely not the strong positive signal of
- the hard benchmarks, but possibly zero rather than truly reversed. That is why we say "collapses to zero or
- reverses" and lean on the within-family counts, where 12 of 12 hard-benchmark comparisons agree, for the firm
- part of the claim.</div>'''+
+ times and recomputing.) For GSM8K that range is &minus;0.71 to +0.33, and three things follow. First, the whole range
+ sits far below the +0.60 to +0.86 of the hard benchmarks, so GSM8K is certainly not a benchmark where TFA works.
+ Second, the range contains zero, so our data cannot tell whether TFA is merely useless there or actively ranks
+ models backwards; we therefore claim only "collapses to zero or reverses". Third, the part we can be firm about
+ is the contrast between regimes, and it comes from the within-family comparisons on the previous slide: on hard
+ benchmarks all 12 families rank correctly, on saturated ones 5 of 12 come out backwards.</div>'''+
  fig("f5","The same map as the table, drawn with 95% bootstrap confidence intervals over models (Spearman). Green = hard references, orange = saturated, purple = code.")+
  '<p style="font-size:.92rem;color:var(--mut)">Provenance: these values use the repaired answer-matching scorer; the original scorer mis-graded 4-10% of GSM8K-style answers and overstated the inversion (previously &minus;0.37/&minus;0.38, now &minus;0.25/&minus;0.19). The qualitative map is unchanged. The range-collapse plot behind the 0.08-vs-0.03 numbers is in the appendix.</p>'+
  '<div class="take">Use TFA as a leaderboard only where the reference is hard; on a saturated benchmark it is at best no signal, possibly reversed.</div>')
