@@ -207,7 +207,12 @@ slide("Part 4 · the real frontier","The hard part: tasks where you cannot check
  changes here: it now picks the better of two responses. We ran every judge size over 460 prompts. Each pair was
  judged <b>twice, in both orders</b>: if the verdict changes when the two responses swap places, it depended on
  presentation order, not content. Three conditions: no reference, the judge's own answer as reference, and, as a
- control, <b>another model's</b> answer as reference.</div>''')
+ control, <b>another model's</b> answer as reference.</div>
+ <p style="font-size:.95rem;color:var(--mut)">Why there is no "correct reference" condition here, unlike Part 3: on
+ many-valid-answer questions no single correct reference exists, and that is the point of studying them. On the
+ math questions, the benchmark ships no gold answer; the only response it certifies as correct is the better one of
+ the pair, which is the very label the judge is tested on, so showing it would leak the answer. A gold arm for the
+ math subset, with independently verified answers, is in progress.</p>''')
 
 # 15 flips
 slide("Part 4 · order-swap consistency","Ask twice, swapped: a reliability check that needs no answer key",
