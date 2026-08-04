@@ -184,30 +184,17 @@ slide("Part 3 · the mechanism","What a reference is worth, at every judge size"
  first, then judges with it as the reference; it recovers most of the green curve without being handed anything.</p>
  <div class="def"><b>What this means.</b> Verification splits into two parts: getting a reference, and comparing
  against it. Comparing is cheap, tiny models can do it. Getting the reference is the expensive, capability-bound
- part. The frontier judge gains little from being handed a reference because it can already generate one itself.</div>''')
-
-# 12 the retraction
-slide("Part 3 · the bug","A bug, a retraction, and the corrected result",
- '''<p>The first version of the solve-first-then-judge result was wrong. It came out <b>perfect</b>: solving first
- seemed to recover 100% of the reference benefit at every size. That looked too good, and the giveaway was that
- its scores were exactly equal to the with-reference condition on all 128 graded items. A code audit found the
- reason: a bug in our experiment code was silently running the with-reference condition under both labels. We
- retracted the finding in the log and reran everything with a verified pipeline.</p>
- <p>The corrected experiments taught more than the original claim would have:</p>
- <ul>
- <li><b>Asking</b> a 7B judge to "solve first, then judge" in a single prompt makes it <i>worse</i> (28% vs 49%).
- It quietly skips the solving step. Small models fail instructions silently.</li>
- <li><b>Forcing</b> the two steps mechanically, generate an answer in one pass, judge with it in the next, is what
- works: detection of 59% at 1.5B, 60% at 3B, 85% at 7B, 95% at 14B.</li>
- <li>One result we did not expect: at 1.5B the judge does better with <b>its own imperfect answer</b> as the
- reference (59%) than with the official textbook solution (21%). A reference in the judge's own style beats a
- polished one it finds foreign.</li></ul>
- <div class="take">Six of our own preliminary results failed our own checks during this project. This bug was the most instructive.</div>''')
+ part. The frontier judge gains little from being handed a reference because it can already generate one itself. One practical
+ detail: the separate pass matters. Merely asking a small judge to solve first inside the same prompt makes it
+ worse, because it silently skips the solving step (the full story, including the bug we retracted on the way to
+ this result, is in the appendix).</div>''')
 
 # 13 generalization
 slide("Part 3 · does it generalize?","The reference boost replicates in six families and on human-labeled data",
- fig("f6_families","The reference boost, with-reference minus no-reference detection, replicates in every family tried: Qwen, Phi (Microsoft), Mistral, OLMo (AI2), Llama (Meta), Gemma (Google). Which family matters more than parameter count: Mistral-7B is weaker at this than Qwen-3B.")+
- fig("f7_processbench","On ProcessBench, a benchmark where humans marked the first wrong step of each solution, the same size trend appears, and the forced solve-first procedure adds 7-8 points of error-finding accuracy (F1) once the judge is big enough to follow it.")+
+ '<p><b>First check, more families:</b> the same experiment as the previous slide, with-reference versus no-reference, repeated in five more model families. <b>How to read:</b> each pair of bars is one judge; <b class="g">green</b> = with a correct reference, <b class="r">red</b> = without; bar height is the share of hidden errors caught.</p>'+
+ fig("f6_families","The reference boost replicates in every family tried: Qwen, Phi (Microsoft), Mistral, OLMo (AI2), Llama (Meta), Gemma (Google). Which family matters more than parameter count: Mistral-7B is weaker at this than Qwen-3B.")+
+ '<p><b>Second check, human-labeled data:</b> ProcessBench is a public benchmark where humans marked the first wrong step of each solution, so no part of this measurement depends on our planted errors. <b>How to read:</b> the x-axis is judge size, the y-axis is accuracy at finding that first wrong step (F1); the blue line is the standard prompt, the purple triangles are the forced solve-first procedure. Higher is better.</p>'+
+ fig("f7_processbench","The same size trend on ProcessBench, and the forced solve-first procedure adds 7-8 points of error-finding accuracy (F1) once the judge is big enough to follow it.")+
  '<div class="take">The effect is not specific to Qwen models, and not specific to our planted errors.</div>')
 
 # 14 hard-to-verify setup
@@ -224,6 +211,7 @@ slide("Part 4 · the real frontier","The hard part: tasks where you cannot check
 
 # 15 flips
 slide("Part 4 · order-swap consistency","Ask twice, swapped: a reliability check that needs no answer key",
+ '<p><b>The measurement:</b> every pair of responses was judged twice, with the two responses swapping places between the passes. If the two verdicts disagree, the order decided, not the content. <b>How to read:</b> the x-axis is judge size, the y-axis is the share of verdicts that flipped, one line per task type. A judge deciding on content flips near 0%; a judge that is effectively guessing flips about half the time. Lower is better.</p>'+
  fig("f9_flips","How often the verdict flips when the two responses swap places. At 0.5B, verdicts are close to coin flips. The flip rate falls steadily with size, except on precise instruction-checking, where judges of every size stay near chance.")+
  '''<p>Two things worth noticing. First, this measurement needs no ground truth: you just ask the same question
  twice with the order swapped. Second, the one line that never improves: judging <b>precise instruction
@@ -233,6 +221,7 @@ slide("Part 4 · order-swap consistency","Ask twice, swapped: a reliability chec
 
 # 16 the sign flip
 slide("Part 4 · the finding","On many-valid-answer tasks, references make judging worse",
+ '<p><b>The experiment:</b> the Qwen-14B judge picks the better response of each pair, and we vary what reference it sees. <b>How to read:</b> the left panel is math questions (one right answer), the right panel is many-valid-answer questions; each bar is one reference condition, and bar height is the share of pairs judged correctly. Compare every colored bar to the gray no-reference bar on its left: taller means the reference helped, shorter means it hurt.</p>'+
  fig("f8_rb2","Judge: Qwen-14B. On math, references help in proportion to their quality: a weak model's reference does nothing, a decent one adds +7, the judge's own adds +9. On many-valid-answer questions every reference hurts, its own, a weak model's, a decent one's, all by about the same amount of pairwise accuracy (p<=.0005 under McNemar's test for paired verdicts).")+
  '''<p>The control condition answers why. If the harm came from the judge favoring its own writing, references
  written by <i>other</i> models would be harmless. They are not: they hurt by the same amount. What actually
@@ -294,6 +283,24 @@ slide("Appendix · the pattern behind Part 1","The apparent law of judge failure
  key was not.</p>'''+
  fig("f1_mirage","Left: the apparent law. Right: what checking all 55 cases revealed. 71% were benchmark labeling errors, and on the genuinely wrong solutions the frontier judge failed only 6% of the time.")+
  '<div class="take">Two other promising effects turned out the same way when we checked their cases. That changed how we ran everything that follows.</div>')
+
+# A0b the retraction story (moved from the main flow)
+slide("Appendix · the bug behind Part 3","A bug, a retraction, and the corrected result",
+ '''<p>The first version of the solve-first-then-judge result was wrong. It came out <b>perfect</b>: solving first
+ seemed to recover 100% of the reference benefit at every size. That looked too good, and the giveaway was that
+ its scores were exactly equal to the with-reference condition on all 128 graded items. A code audit found the
+ reason: a bug in our experiment code was silently running the with-reference condition under both labels. We
+ retracted the finding in the log and reran everything with a verified pipeline.</p>
+ <p>The corrected experiments taught more than the original claim would have:</p>
+ <ul>
+ <li><b>Asking</b> a 7B judge to "solve first, then judge" in a single prompt makes it <i>worse</i> (28% vs 49%).
+ It quietly skips the solving step. Small models fail instructions silently.</li>
+ <li><b>Forcing</b> the two steps mechanically, generate an answer in one pass, judge with it in the next, is what
+ works: detection of 59% at 1.5B, 60% at 3B, 85% at 7B, 95% at 14B.</li>
+ <li>One result we did not expect: at 1.5B the judge does better with <b>its own imperfect answer</b> as the
+ reference (59%) than with the official textbook solution (21%). A reference in the judge's own style beats a
+ polished one it finds foreign.</li></ul>
+ <div class="take">Six of our own preliminary results failed our own checks during this project. This bug was the most instructive.</div>''')
 
 # A1 integrity record
 slide("Appendix · the record","What was checked, and how",
