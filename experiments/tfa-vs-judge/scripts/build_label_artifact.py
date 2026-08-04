@@ -190,6 +190,6 @@ document.getElementById('dlcsv').addEventListener('click',()=>{
 restore();
 </script>"""
 
-open("human_eval/label_artifact.html", "w").write(BODY.replace("__CARDS__", CARDS))
-print("wrote human_eval/label_artifact.html  (%d cards)" % len(rows))
-print("size: %.0f KB" % (len(open("human_eval/label_artifact.html").read()) / 1024))
+open("human_eval/label_artifact_v2.html", "w").write(BODY.replace("__CARDS__", CARDS))
+print("wrote human_eval/label_artifact_v2.html  (%d cards)" % len(rows))
+print("size: %.0f KB" % (len(open("human_eval/label_artifact_v2.html").read()) / 1024))

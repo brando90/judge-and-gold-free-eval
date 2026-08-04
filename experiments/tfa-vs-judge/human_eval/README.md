@@ -61,8 +61,13 @@ final-answer correctness), `tfa` (teacher-forced accuracy), `judge` (gpt-5.2 rea
 
 ## Shareable version (no repo needed)
 
-`label_artifact.html` is a self-contained, CDN-free copy published as an Artifact:
-https://claude.ai/code/artifact/b50024f9-6198-4e9c-8520-0d13cb14faca
+Two self-contained, CDN-free copies are published as Artifacts:
+
+- Original 42-trace diagnostic set (`label_artifact.html`):
+  https://claude.ai/code/artifact/b50024f9-6198-4e9c-8520-0d13cb14faca
+- Full 242-trace set with the random validity stratum (`label_artifact_v2.html`), use this one for
+  new labeling:
+  https://claude.ai/code/artifact/7e601e93-b797-470f-94dc-884621476437
 
 Math is pre-rendered to native MathML, so it renders with no external libraries (works under the Artifact
 content-security policy). It is private until you share it from the page's share menu. Rebuild it with
