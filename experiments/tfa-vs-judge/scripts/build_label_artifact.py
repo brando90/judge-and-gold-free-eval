@@ -180,8 +180,29 @@ function rowsOut(){
       machine_correct:+c.dataset.correct,answer_correct:s.answer_correct||'',steps_valid:s.steps_valid||'',
       complete:s.complete||'',quality:s.quality==null?'':s.quality,lucky:s.lucky||'',notes:s.notes||''};});
 }
-function dl(name,text,type){const b=new Blob([text],{type});const a=document.createElement('a');
-  a.href=URL.createObjectURL(b);a.download=name;a.click();}
+function showCopy(name,text){
+  let p=document.getElementById('copypanel');
+  if(!p){p=document.createElement('div');p.id='copypanel';
+    p.style.cssText='position:fixed;inset:8% 10%;z-index:99;background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:10px;box-shadow:0 12px 40px rgba(0,0,0,.35)';
+    p.innerHTML='<div style="display:flex;align-items:center;gap:10px"><b id=cpname></b><span style="flex:1"></span><button id=cpcopy>Copy to clipboard</button><button class=ghost id=cpclose>Close</button></div><div style="font-size:13px;color:var(--mut)">Direct saving was not available in this view, so here is the file content instead. Copy it, paste it into a new file with the name shown above, and send that file back.</div><textarea id=cpta style="flex:1;font:12px ui-monospace,monospace;white-space:pre"></textarea>';
+    document.body.appendChild(p);
+    document.getElementById('cpclose').onclick=()=>p.remove();
+    document.getElementById('cpcopy').onclick=()=>{const t=document.getElementById('cpta');t.select();try{navigator.clipboard.writeText(t.value);}catch(e){document.execCommand('copy');}};
+  }
+  document.getElementById('cpname').textContent=name;
+  const ta=document.getElementById('cpta');ta.value=text;ta.focus();ta.select();
+}
+async function dl(name,text,type){
+  if(window.claude&&window.claude.downloads){
+    let err=null;
+    try{await window.claude.downloads.save({filename:name,data:text});return;}catch(e){err=e;}
+    if(err&&err.code==='extension_not_enabled'){
+      try{await window.claude.downloads.save({filename:name.replace(/\\.[a-z]+$/,'.txt'),data:text});return;}catch(e2){err=e2;}
+    }
+    if(err&&(err.code==='declined'||err.code==='rate_limited'))return;
+  }
+  showCopy(name,text);
+}
 document.getElementById('dljson').addEventListener('click',()=>dl('tfa_labels.json',JSON.stringify(rowsOut(),null,2),'application/json'));
 document.getElementById('dlcsv').addEventListener('click',()=>{
   const r=rowsOut();const keys=Object.keys(r[0]);const q=v=>'"'+String(v).replace(/"/g,'""')+'"';
