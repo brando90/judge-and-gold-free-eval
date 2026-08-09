@@ -1208,7 +1208,7 @@ function rowsOut(){
       machine_correct:+c.dataset.correct,answer_correct:s.answer_correct||'',steps_valid:s.steps_valid||'',
       complete:s.complete||'',quality:s.quality==null?'':s.quality,lucky:s.lucky||'',notes:s.notes||''};});
 }
-function showCopy(name,text){
+function showCopy(name,text,type){
   let p=document.getElementById('copypanel');
   if(!p){p=document.createElement('div');p.id='copypanel';
     p.style.cssText='position:fixed;inset:8% 10%;z-index:99;background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:10px;box-shadow:0 12px 40px rgba(0,0,0,.35)';
@@ -1218,10 +1218,11 @@ function showCopy(name,text){
     document.getElementById('cpcopy').onclick=()=>{const t=document.getElementById('cpta');t.select();try{navigator.clipboard.writeText(t.value);document.getElementById('cpcopy').textContent='Copied';}catch(e){document.execCommand('copy');}};
   }
   document.getElementById('cpname').textContent=name;
-  const dl=document.getElementById('cpdl');
-  dl.href='data:'+type+';charset=utf-8,'+encodeURIComponent(text);dl.download=name;
+  const ta=document.getElementById('cpta');ta.value=text;ta.focus();ta.select();   // fill FIRST, always
   document.getElementById('cpcopy').textContent='Copy to clipboard';
-  const ta=document.getElementById('cpta');ta.value=text;ta.focus();ta.select();
+  try{const dl=document.getElementById('cpdl');
+      dl.href='data:'+(type||'text/plain')+';charset=utf-8,'+encodeURIComponent(text);dl.download=name;}
+  catch(e){}
 }
 async function dl(name,text,type){
   if(window.claude&&window.claude.downloads){
@@ -1232,7 +1233,7 @@ async function dl(name,text,type){
     }
     if(err&&(err.code==='declined'||err.code==='rate_limited'))return;
   }
-  showCopy(name,text);
+  showCopy(name,text,type);
 }
 document.getElementById('dljson').addEventListener('click',()=>dl('tfa_labels.json',JSON.stringify(rowsOut(),null,2),'application/json'));
 document.getElementById('dlcsv').addEventListener('click',()=>{
