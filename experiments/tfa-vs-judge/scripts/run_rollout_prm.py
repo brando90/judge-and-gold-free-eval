@@ -26,6 +26,8 @@ def main():
     ap.add_argument("--responses", nargs="+", required=True, help="judged.jsonl globs (responses to score)")
     ap.add_argument("--models", nargs="+", default=None, help="restrict to these evaluated models")
     ap.add_argument("--n-problems", type=int, default=50)
+    ap.add_argument("--pairs-file", default=None,
+                    help="JSON list of [model, problem_id] pairs; overrides --models/--n-problems selection")
     ap.add_argument("--k", type=int, default=8, help="rollouts per cut-point")
     ap.add_argument("--cutpoints", default="0,0.25,0.5,0.75", help="prefix fractions of the response")
     ap.add_argument("--tp", type=int, default=2)
@@ -42,11 +44,16 @@ def main():
     for pat in args.responses:
         for fp in glob.glob(pat):
             rows += [json.loads(l) for l in open(fp) if l.strip()]
-    if args.models:
-        rows = [r for r in rows if r["model"] in args.models]
-    pids = sorted({r["problem_id"] for r in rows})[: args.n_problems]
-    pset = set(pids)
-    rows = [r for r in rows if r["problem_id"] in pset]
+    if args.pairs_file:
+        pairs = {(m, p) for m, p in json.load(open(args.pairs_file))}
+        rows = [r for r in rows if (r["model"], r["problem_id"]) in pairs]
+        pids = sorted({r["problem_id"] for r in rows})
+    else:
+        if args.models:
+            rows = [r for r in rows if r["model"] in args.models]
+        pids = sorted({r["problem_id"] for r in rows})[: args.n_problems]
+        pset = set(pids)
+        rows = [r for r in rows if r["problem_id"] in pset]
     print(f"[data] scoring {len(rows)} responses over {len(pids)} problems | completer={args.completer} K={args.k} cuts={cuts}")
 
     from vllm import LLM, SamplingParams

@@ -48,7 +48,7 @@ for k, r in enumerate(sample):
     cc = int(answers_equivalent(extract_final_answer(r["free_gen"], "math500"), ga))
     shared = 1 if k < N_SHARED else 0
     rows_r.append(dict(
-        id=f"MATH-R-{r['problem_id']}-{r['model'].split('/')[-1][:8]}",
+        id=f"MATH-R-{r['problem_id']}-{r['model'].split('/')[-1]}",
         cell="R",
         cell_desc="random validity sample (drawn uniformly, no selection on scores)"
                   + (" · SHARED BLOCK: every labeler grades this one" if shared else ""),
