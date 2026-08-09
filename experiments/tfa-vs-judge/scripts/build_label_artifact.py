@@ -4,15 +4,21 @@
 import json, re, html as H
 import latex2mathml.converter as C
 
-SEG = re.compile(r"\\\((.+?)\\\)|\\\[(.+?)\\\]", re.S)
+# Segments to convert: inline \(..\), display \[..\], and bare multi-line environments
+# (align/aligned/gather/equation, starred or not) that sit in plain text without $ delimiters.
+SEG = re.compile(
+    r"\\\((.+?)\\\)"                                   # group 1: inline
+    r"|\\\[(.+?)\\\]"                                  # group 2: display
+    r"|(\\begin\{(?:align|aligned|gather|equation|multline|eqnarray)\*?\}.+?\\end\{(?:align|aligned|gather|equation|multline|eqnarray)\*?\})",  # group 3: env
+    re.S)
 
 def to_html(t):
     # t is already texified (MATH math wrapped as \(..\) / \[..\]; GSM8K left as plain text).
     out, i = [], 0
     for m in SEG.finditer(t):
         out.append(H.escape(t[i:m.start()]))
-        latex = m.group(1) if m.group(1) is not None else m.group(2)
-        display = m.group(2) is not None
+        latex = m.group(1) or m.group(2) or m.group(3)
+        display = m.group(1) is None      # display for \[..\] and environments, inline for \(..\)
         try:
             ml = C.convert(latex)
             if display:
