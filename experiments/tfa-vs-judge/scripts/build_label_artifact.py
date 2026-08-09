@@ -133,7 +133,7 @@ body.blind .rev{display:none}
   <span id=prog></span>
   <span class=grow></span>
   <input type=text id=who placeholder="your name / initials">
-  <label style="font-size:13px;color:var(--mut)"><input type=checkbox id=blind> blind</label>
+  <label style="font-size:13px;color:var(--mut)"><input type=checkbox id=blind __BLINDCHK__> blind</label>
   <button class=ghost id=dljson>Download JSON</button>
   <button id=dlcsv>Download CSV</button>
 </div></header>
@@ -179,6 +179,7 @@ document.querySelectorAll('.card').forEach(c=>{
 });
 who.addEventListener('input',()=>{store.__who=who.value;localStorage.setItem(KEY,JSON.stringify(store));});
 document.getElementById('blind').addEventListener('change',e=>document.body.classList.toggle('blind',e.target.checked));
+if(document.getElementById('blind').checked)document.body.classList.add('blind');
 function rowsOut(){
   return [...document.querySelectorAll('.card')].map(c=>{const s=store[c.dataset.id]||{};
     return {labeler:who.value,id:c.dataset.id,order:+c.dataset.order,dataset:c.dataset.dataset,
@@ -217,6 +218,8 @@ document.getElementById('dlcsv').addEventListener('click',()=>{
 restore();
 </script>"""
 
+import os as _os
+BODY = BODY.replace("__BLINDCHK__", "checked" if _os.environ.get("BLIND_DEFAULT") else "")
 open("human_eval/label_artifact_v2.html", "w").write(BODY.replace("__CARDS__", CARDS))
 print("wrote human_eval/label_artifact_v2.html  (%d cards)" % len(rows))
 print("size: %.0f KB" % (len(open("human_eval/label_artifact_v2.html").read()) / 1024))
