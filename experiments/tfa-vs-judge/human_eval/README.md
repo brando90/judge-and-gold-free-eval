@@ -20,6 +20,10 @@ selection on TFA, judge, or correctness. This is the stratum for the validity nu
 and rho(judge, human), unbiased. The first 40 R-items are the **shared block**: every labeler grades
 these, which gives inter-rater agreement and the human-human ceiling the judge should be compared against.
 
+**Rollout process value coverage.** All 200 random-stratum traces now have rollout-PV scores computed
+with the uniform 14B completer (`runs/prm_labelset/`), so human grades on these items anchor TFA, the LLM
+judge, AND the +0.43 process-value claim on the same traces. Analysis: `scripts/analyze_human_labels.py`.
+
 **Labeling protocol.** Every labeler: (1) grade the 40 shared-block items (marked on the card), then
 (2) grade whatever slice of the rest you were assigned. Partial returns are fine; labels key on the trace
 `id`, so files from multiple people and multiple sessions merge cleanly.
