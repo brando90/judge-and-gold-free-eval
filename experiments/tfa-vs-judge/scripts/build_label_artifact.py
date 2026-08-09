@@ -225,10 +225,10 @@ function grab(c){
   const ta=c.querySelector('textarea'); if(ta.value)s.notes=ta.value;
   return s;
 }
-function mark(c){const s=store[c.dataset.id]||{};c.querySelector('.done-tag').hidden=(s.quality==null);}
+function mark(c){const s=store[c.dataset.id]||{};c.querySelector('.done-tag').hidden=(s.soundness==null);}
 function save(c){store[c.dataset.id]=grab(c);store.__who=who.value;localStorage.setItem(KEY,JSON.stringify(store));mark(c);prog();}
 function prog(){const n=document.querySelectorAll('.card').length;
-  const d=[...document.querySelectorAll('.card')].filter(c=>(store[c.dataset.id]||{}).quality!=null).length;
+  const d=[...document.querySelectorAll('.card')].filter(c=>(store[c.dataset.id]||{}).soundness!=null).length;
   document.getElementById('prog').textContent=d+' / '+n+' labeled';}
 document.querySelectorAll('.card').forEach(c=>{
   c.querySelectorAll('input[type=radio]').forEach(r=>r.addEventListener('change',()=>save(c)));
@@ -240,8 +240,9 @@ function rowsOut(){
   return [...document.querySelectorAll('.card')].map(c=>{const s=store[c.dataset.id]||{};
     return {labeler:who.value,id:c.dataset.id,order:+c.dataset.order,dataset:c.dataset.dataset,
       model:c.dataset.model,cell:c.dataset.cell,tfa:+c.dataset.tfa,judge:+c.dataset.judge,
-      machine_correct:+c.dataset.correct,answer_correct:s.answer_correct||'',steps_valid:s.steps_valid||'',
-      complete:s.complete||'',quality:s.quality==null?'':s.quality,lucky:s.lucky||'',notes:s.notes||''};});
+      machine_correct:+c.dataset.correct,answer_correct:s.answer_correct||'',
+      soundness:s.soundness==null?'':s.soundness,style:s.style==null?'':s.style,
+      lucky:s.lucky||'',notes:s.notes||''};});
 }
 function showCopy(name,text,type){
   let p=document.getElementById('copypanel');
