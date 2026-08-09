@@ -3,6 +3,59 @@
 # content (no doctype/html/head/body) because the Artifact runtime wraps it in a skeleton.
 import json, re, html as H
 import latex2mathml.converter as C
+import subprocess, hashlib, os, tempfile
+
+ASY_CACHE = "human_eval/asy_cache"
+os.makedirs(ASY_CACHE, exist_ok=True)
+_ASY_ENV = dict(os.environ, PATH="/opt/homebrew/bin:/Library/TeX/texbin:" + os.environ.get("PATH", ""))
+
+# Shim for AoPS/olympiad helpers not shipped with this Asymptote (rightanglemark, etc.).
+# Only prepended on a second pass, so it never redefines symbols in blocks that already compile.
+_ASY_SHIM = """real markscalefactor=0.03;
+path rightanglemark(pair A, pair B, pair C, real s=5){
+  pair u=unit(A-B), v=unit(C-B);
+  real d=s*markscalefactor*max(length(A-B),length(C-B));
+  return (B+d*u)--(B+d*u+d*v)--(B+d*v);
+}
+"""
+
+def _compile_asy(src):
+    with tempfile.TemporaryDirectory() as td:
+        open(f"{td}/f.asy", "w").write(src)
+        r = subprocess.run(["asy", "-f", "svg", "-o", "f", "f.asy"],
+                           cwd=td, env=_ASY_ENV, capture_output=True, text=True, timeout=120)
+        p = f"{td}/f.svg"
+        if r.returncode == 0 and os.path.exists(p):
+            return re.sub(r"<\?xml[^>]*\?>", "", open(p).read()).strip()
+    return None
+
+def render_asy(src):
+    """Compile one Asymptote block to a self-contained inline SVG (cached). Try a plain
+    compile first, then with the olympiad shim; if both fail, show the raw source so nothing
+    is silently lost."""
+    src = src.strip()
+    h = hashlib.sha1(src.encode()).hexdigest()[:16]
+    cache = f"{ASY_CACHE}/{h}.svg"
+    if not os.path.exists(cache):
+        svg = _compile_asy(src) or _compile_asy(_ASY_SHIM + src)
+        open(cache, "w").write(svg or "")
+    svg = open(cache).read()
+    if not svg:
+        return ('<details class=asyraw><summary>figure (could not render; source)</summary>'
+                f'<pre>{H.escape(src)}</pre></details>')
+    return f'<div class=asyfig>{svg}</div>'
+
+_ASY = re.compile(r"\[asy\](.+?)\[/asy\]", re.S)
+
+def render_body(t):
+    """Render a text field: Asymptote blocks -> inline SVG, everything else -> to_html (LaTeX)."""
+    out, i = [], 0
+    for m in _ASY.finditer(t):
+        out.append(to_html(t[i:m.start()]))
+        out.append(render_asy(m.group(1)))
+        i = m.end()
+    out.append(to_html(t[i:]))
+    return "".join(out)
 
 # Segments to convert: inline \(..\), display \[..\], and bare multi-line environments
 # (align/aligned/gather/equation, starred or not) that sit in plain text without $ delimiters.
@@ -53,11 +106,11 @@ def card(d):
     parts.append(f'<div class="scores rev">TFA {d["tfa"]} &middot; judge {d["judge"]}/10 &middot; '
                  f'final answer {verdict} (deterministic checker)</div>')
     parts.append('</div>')
-    parts.append(f'<div class=block><div class=lbl>Problem</div><div class=body>{to_html(d["question"])}</div></div>')
+    parts.append(f'<div class=block><div class=lbl>Problem</div><div class=body>{render_body(d["question"])}</div></div>')
     parts.append(f'<div class=block><div class=lbl>Reference solution &mdash; answer {to_html(ga)}</div>'
-                 f'<div class=body>{to_html(d["gold_solution"])}</div></div>')
+                 f'<div class=body>{render_body(d["gold_solution"])}</div></div>')
     parts.append(f'<div class=block><div class=lbl>Model trace to grade</div>'
-                 f'<div class=body>{to_html(d["trace"])}</div></div>')
+                 f'<div class=body>{render_body(d["trace"])}</div></div>')
     parts.append('<div class=rubric>')
     for k, q, opts in Q:
         parts.append(f'<div class=q><span class=qt>{H.escape(q)}</span><div class=opts>')
@@ -125,6 +178,10 @@ button:focus-visible,input:focus-visible,label:focus-within{outline:2px solid va
 textarea{width:100%;background:var(--field);color:var(--fg);border:1px solid var(--bd);border-radius:9px;
   padding:9px;font:inherit;resize:vertical}
 body.blind .rev{display:none}
+.asyfig{background:#fff;border:1px solid var(--bd);border-radius:8px;padding:10px;margin:8px 0;overflow-x:auto;text-align:center}
+.asyfig svg{max-width:100%;height:auto}
+.asyraw summary{cursor:pointer;color:var(--mut);font-size:13px}
+.asyraw pre{white-space:pre-wrap;font-size:12px;color:var(--mut)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 
