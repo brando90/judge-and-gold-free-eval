@@ -97,3 +97,14 @@ With human labels `h`, the questions are: does the LLM judge agree with humans (
 TFA track human quality (`ρ(TFA, h)`), especially within the correct stratum. If the judge is faithful,
 every judge-based number in the paper inherits external validity. If not, the judge-free framing gets
 stronger and the item-level ground truth must be rebuilt on humans.
+
+
+## Active labeling (phase 2, blind, soundness+style rubric)
+
+Two per-author artifacts on the random MATH-500 stratum (blind by default; grade soundness and style on
+independent 0-10 scales):
+- Author 1 (20 shared items): https://claude.ai/code/artifact/433e4f1f-3a34-4f9e-a70f-e07c054a7ba6
+- Author 2 (80 items, first 20 shared with author 1): https://claude.ai/code/artifact/ad2372eb-d9d4-451b-a05a-90365165d086
+
+The 20 shared items give the inter-rater ceiling and let us disattenuate; author 2's extra 60 grow the
+validity n to ~80. Rebuild subsets with BLIND_DEFAULT=1 and an order-range filter over traces_to_label.jsonl.

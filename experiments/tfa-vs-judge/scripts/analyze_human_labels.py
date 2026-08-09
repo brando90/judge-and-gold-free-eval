@@ -29,10 +29,13 @@ def load_labels(paths):
                 rows += list(csv.DictReader(open(fp)))
     out = {}
     for r in rows:
-        q = r.get("quality")
+        q = r.get("soundness", r.get("quality"))
         if q in (None, ""): continue
         key = (r.get("labeler", "?"), r["id"])
-        out[key] = dict(labeler=r.get("labeler", "?"), id=r["id"], quality=float(q),
+        soundness = r.get("soundness", r.get("quality"))   # new rubric uses soundness; old used quality
+        out[key] = dict(labeler=r.get("labeler", "?"), id=r["id"],
+                        quality=float(soundness) if soundness not in (None, "") else float(q),
+                        style=float(r["style"]) if str(r.get("style","")) not in ("","None") else None,
                         lucky=r.get("lucky", ""), answer_correct=r.get("answer_correct", ""))
     return list(out.values())
 

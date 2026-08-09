@@ -33,11 +33,10 @@ def to_html(t):
 rows = [json.loads(l) for l in open("human_eval/traces_to_label.jsonl")]
 
 Q = [
-    ("answer_correct", "Final answer correct?", ["yes", "no", "unsure"]),
-    ("steps_valid", "Are the individual steps valid?", ["all valid", "minor slip", "major error"]),
-    ("complete", "Reasoning complete (no unjustified leaps)?", ["complete", "minor gap", "major gap"]),
-    ("quality", "Overall reasoning quality (0 worst to 10 best)", [str(i) for i in range(11)]),
-    ("lucky", "Lucky-correct? (right answer, invalid/incomplete reasoning)", ["no", "yes", "n/a"]),
+    ("answer_correct", "Final answer correct? (the final stated/boxed answer)", ["yes", "no", "unsure"]),
+    ("soundness", "Reasoning soundness, 0-10 — is every step valid and does the argument actually establish the answer? Ignore wording, length, and formatting. Anchors: 2 = major logical error or unjustified leap; 5 = partly justified, real gaps; 8 = fully valid, at most minor slips.", [str(i) for i in range(11)]),
+    ("style", "Clarity and style, 0-10 — how clear, organized, and readable is the writing, independent of whether it is correct? A wrong answer can still score high here. Anchors: 2 = confusing or rambling; 5 = readable; 8 = clear and well-structured.", [str(i) for i in range(11)]),
+    ("lucky", "Lucky-correct? (right final answer reached through unsound or incomplete reasoning)", ["no", "yes", "n/a"]),
 ]
 
 def card(d):
@@ -139,11 +138,12 @@ body.blind .rev{display:none}
 </div></header>
 
 <div class=wrap>
-<div class=note>You are grading the <b>reasoning quality</b> of each solution, which the automatic
-answer-checker cannot see. For each trace, read the problem and the reference solution, then judge the
-model trace on the rubric. Your work saves in this browser as you go. <b>When you finish (or partway),
-put your name above, click Download CSV, and send the file back to whoever shared this link.</b> Each
-card is tagged with its category and the metric scores; tick <b>blind</b> to hide those and judge cold.</div>
+<div class=note>You are the ground truth for <b>reasoning quality</b>, which the automatic answer-checker
+cannot see. For each trace, read the problem and the reference solution, then grade the model's trace on two
+<b>independent</b> scales: <b>soundness</b> (is the reasoning valid?) and <b>style</b> (is it clearly written?),
+judged separately — a wrong answer can be beautifully written, and a correct answer can be a mess. You are grading
+<b>blind</b>: the model name and all automatic scores are hidden on purpose. Your work saves in this browser as you
+go. <b>When you finish (or partway), put your name above, click Download, and send the file back.</b></div>
 
 __CARDS__
 </div>
