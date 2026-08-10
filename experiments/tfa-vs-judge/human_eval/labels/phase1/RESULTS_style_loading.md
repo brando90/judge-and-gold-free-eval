@@ -65,3 +65,18 @@ Note: TFA vs soundness fell from +0.36 at n=20 (an unusually easy draw, 90% corr
 the +0.36 was subsample luck, not signal. Continue random labeling toward n=80 to tighten the CIs; the qualitative
 three-way separation (judge & PV track soundness, TFA does not; judge not style-loaded) is stable across both the
 divergence and random strata, single rater (Sri). Second rater (Daneshvar) still needed for inter-rater on the new axes.
+
+## Update: random block n=41 (2026-08-09)
+
+| vs human soundness | ρ | 95% CI |
+|---|---|---|
+| LLM judge | +0.52 | [+0.13, +0.75] excl. 0 |
+| rollout PV | +0.34 | [+0.01, +0.63] excl. 0 (softening) |
+| TFA | −0.04 | [−0.35, +0.29] |
+
+Style-loading partials (n=41): judge soundness|style +0.47, style|soundness +0.06; TFA soundness|style 0.00,
+style|soundness −0.11. Judge-tracks-soundness-not-style is now stable across n=20/30/41 and the divergence block.
+
+Watch item: PV vs soundness has drifted 0.59 (n=20) -> 0.48 (n=30) -> 0.34 (n=41) as harder items entered; CI now
+barely excludes zero. "PV grades where TFA cannot" holds directionally but is more modest than the easy-draw
+suggested. Remaining ~40 random labels + Daneshvar's second-rater pass will settle it.

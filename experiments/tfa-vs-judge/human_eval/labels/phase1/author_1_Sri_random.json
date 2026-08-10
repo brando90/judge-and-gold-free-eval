@@ -489,10 +489,10 @@
     "tfa": 0.778,
     "judge": 10,
     "machine_correct": 1,
-    "answer_correct": "",
-    "soundness": "",
-    "style": "",
-    "lucky": "",
+    "answer_correct": "yes",
+    "soundness": "9",
+    "style": "9",
+    "lucky": "no",
     "notes": ""
   },
   {
@@ -505,10 +505,10 @@
     "tfa": 0.781,
     "judge": 10,
     "machine_correct": 1,
-    "answer_correct": "",
-    "soundness": "",
-    "style": "",
-    "lucky": "",
+    "answer_correct": "yes",
+    "soundness": "10",
+    "style": "10",
+    "lucky": "no",
     "notes": ""
   },
   {
@@ -521,10 +521,10 @@
     "tfa": 0.76,
     "judge": 10,
     "machine_correct": 1,
-    "answer_correct": "",
-    "soundness": "",
-    "style": "",
-    "lucky": "",
+    "answer_correct": "yes",
+    "soundness": "10",
+    "style": "10",
+    "lucky": "no",
     "notes": ""
   },
   {
@@ -537,11 +537,11 @@
     "tfa": 0.906,
     "judge": 10,
     "machine_correct": 1,
-    "answer_correct": "",
-    "soundness": "",
-    "style": "",
-    "lucky": "",
-    "notes": ""
+    "answer_correct": "yes",
+    "soundness": "10",
+    "style": "8",
+    "lucky": "no",
+    "notes": "repetition"
   },
   {
     "labeler": "Sri",
@@ -553,11 +553,11 @@
     "tfa": 0.907,
     "judge": 10,
     "machine_correct": 1,
-    "answer_correct": "",
-    "soundness": "",
-    "style": "",
-    "lucky": "",
-    "notes": ""
+    "answer_correct": "yes",
+    "soundness": "10",
+    "style": "8",
+    "lucky": "no",
+    "notes": "repetition"
   },
   {
     "labeler": "Sri",
@@ -569,11 +569,11 @@
     "tfa": 0.804,
     "judge": 10,
     "machine_correct": 1,
-    "answer_correct": "",
-    "soundness": "",
-    "style": "",
-    "lucky": "",
-    "notes": ""
+    "answer_correct": "yes",
+    "soundness": "10",
+    "style": "8",
+    "lucky": "no",
+    "notes": "repetition"
   },
   {
     "labeler": "Sri",
@@ -585,11 +585,11 @@
     "tfa": 0.72,
     "judge": 10,
     "machine_correct": 1,
-    "answer_correct": "",
-    "soundness": "",
-    "style": "",
-    "lucky": "",
-    "notes": ""
+    "answer_correct": "yes",
+    "soundness": "10",
+    "style": "8",
+    "lucky": "no",
+    "notes": "repetition"
   },
   {
     "labeler": "Sri",
@@ -601,10 +601,10 @@
     "tfa": 0.757,
     "judge": 10,
     "machine_correct": 1,
-    "answer_correct": "",
-    "soundness": "",
-    "style": "",
-    "lucky": "",
+    "answer_correct": "yes",
+    "soundness": "10",
+    "style": "5",
+    "lucky": "no",
     "notes": ""
   },
   {
@@ -617,10 +617,10 @@
     "tfa": 0.835,
     "judge": 10,
     "machine_correct": 1,
-    "answer_correct": "",
-    "soundness": "",
-    "style": "",
-    "lucky": "",
+    "answer_correct": "yes",
+    "soundness": "9",
+    "style": "9",
+    "lucky": "no",
     "notes": ""
   },
   {
@@ -633,11 +633,11 @@
     "tfa": 0.736,
     "judge": 10,
     "machine_correct": 1,
-    "answer_correct": "",
-    "soundness": "",
-    "style": "",
-    "lucky": "",
-    "notes": ""
+    "answer_correct": "yes",
+    "soundness": "10",
+    "style": "7",
+    "lucky": "no",
+    "notes": "repetition"
   },
   {
     "labeler": "Sri",
@@ -649,10 +649,10 @@
     "tfa": 0.804,
     "judge": 10,
     "machine_correct": 1,
-    "answer_correct": "",
-    "soundness": "",
-    "style": "",
-    "lucky": "",
+    "answer_correct": "yes",
+    "soundness": "10",
+    "style": "9",
+    "lucky": "no",
     "notes": ""
   },
   {
