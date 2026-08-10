@@ -10,7 +10,7 @@ def datauri(fn): return "data:image/png;base64," + base64.b64encode((FIGDIR/fn).
 IMG = {k: datauri(v) for k, v in {
  "f1":"fig1_model_level.png","f6":"fig7_mechanism.png","judge":"fig_judge.png","f3":"fig3_saturation.png",
  "f5":"fig6_cross_family.png","f7":"fig10_reconciliation.png","f9":"fig8_agentic_v2.png","f2":"fig2_difficulty_gradient.png",
- "f10":"fig9_mechanism.png","var":"fig_variants.png","f8":"fig5_rollout_completer_curve.png","ms":"fig_ms_multistat.png","tw":"fig_twoway.png",
+ "f10":"fig9_mechanism.png","var":"fig_variants.png","f8":"fig5_rollout_completer_curve.png","ms":"fig_ms_multistat.png","tw":"fig_twoway.png","hum":"fig_human.png",
 }.items()}
 MS = json.load(open("runs/multistat.json"))
 CIS = json.load(open("runs/map_cis.json"))
@@ -86,8 +86,8 @@ slide("Contents","What this deck covers",
  <p>Can TFA order models by skill? Tested within each family across the difficulty range, then pooled into a
  dataset-by-dataset map, then repeated on SWE-bench coding agents.</p>
  <h3 class="p">Result 2 &middot; grading single solutions</h3>
- <p>Can TFA score one answer the way a judge would? The test, the measurement of why it fails, and the seven
- repairs we tried.</p></div>
+ <p>Can TFA score one answer the way a judge would? The test, why it fails, the seven repairs, and a
+ check against human grades (not just the judge) that anchors the whole section.</p></div>
  <div>
  <h3 class="a">Result 3 &middot; what does grade</h3>
  <p>A rollout-based signal that grades solutions without a judge, and the compute bill that comes with it.</p>
@@ -220,6 +220,25 @@ slide("Result 2 &middot; grading &middot; the repairs","We tried seven ways to c
  '<div class="take">Seven attempts, zero recoveries. Together with the 83-92% split, we conclude the grading signal is not hidden in TFA. It is not there.</div>')
 
 # 11 rollout
+slide("Result 2 &middot; grading &middot; anchored to humans","Checked against people, not just a judge: the judge is valid, TFA still fails",
+ chips(("+0.59","judge vs human soundness"),("+0.49","rollout PV vs human soundness"),("&minus;0.07","TFA vs human soundness"))+
+ '''<p><b>The worry, stated plainly (raised by our own advisor):</b> everything above compares TFA to an LLM
+ judge. If the judge merely scored surface style, then TFA failing to match it would prove nothing, and rollout
+ PV matching it would prove nothing either. So we anchored the whole section to <b>people</b>. A human graded 60
+ randomly drawn MATH-500 solutions, blind to every model score, on two <b>independent</b> 0-10 scales: is the
+ reasoning <b>sound</b>, and separately, is it <b>well written</b>.</p>'''+
+ fig("hum","Left: correlation of each signal with human-judged soundness (n=60, 95% CI). Right: partial correlations isolating what the judge and TFA track — soundness with style held fixed, and style with soundness held fixed.")+
+ '''<p><b>Two things fall out.</b> First, the LLM judge tracks human soundness (+0.59) and, with style held fixed,
+ its signal is almost entirely soundness (+0.56) not style (+0.05) — <b>the judge is not style-loaded</b>, so using
+ it as the item-level target was fair. Second, against people directly, <b>TFA carries no soundness signal at all</b>
+ (&minus;0.07; +0.00 once style is held fixed), while <b>rollout PV does</b> (+0.49). The item-level failure of TFA
+ is real about human-judged reasoning, not an artifact of comparing to a judge.'''+
+ '''<div class="def" style="font-size:.95rem"><b>Status and limits.</b> One annotator on the 60-item validity block
+ (CIs about &plusmn;0.22); one dataset (MATH-500). A second annotator's independent re-grade is underway; on an
+ earlier 20-item set two annotators agreed at &rho;=0.80, and the same soundness-not-style pattern holds on a
+ separate divergence-selected block. Not yet claimed: a second dataset, or the frontier-judge row.</div>'''+
+ '''<div class="take">This is the upgrade from reliability to validity: the judge measures substance, TFA does not measure it, and rollout PV does.</div>''')
+
 slide("Result 3 &middot; a signal that does grade","One method does grade: cut the solution short and let another model finish it",
  chips(("+0.43","agreement with the judge, per solution"),("+0.19","tells sound from lucky, among correct ones"),("~100x","the cost, versus one TFA pass"))+
  '''<p>The method is easy to picture. Take a solution and cut it off partway. Hand the unfinished part to a separate,
