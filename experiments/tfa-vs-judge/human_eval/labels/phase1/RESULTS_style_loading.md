@@ -93,3 +93,16 @@ Style-loading partials (n=50): judge soundness|style +0.46, style|soundness +0.1
 Three-way separation stable: judge (~0.51) > PV (~0.39) > TFA (~0). Judge-not-style-loaded holds at n=20/30/41/50
 and on the divergence block. PV settled ~0.39 after the early wobble. Single rater (Sri); n toward 80 + Daneshvar
 second-rater still pending.
+
+## Update: random block n=60 (2026-08-09) — clean three-way separation
+
+| vs human soundness | ρ | 95% CI |
+|---|---|---|
+| LLM judge | +0.59 | [+0.32, +0.77] excl. 0 |
+| rollout PV | +0.49 | [+0.23, +0.69] excl. 0 |
+| TFA | −0.07 | [−0.35, +0.21] |
+
+Style-loading partials (n=60): judge soundness|style +0.56, style|soundness +0.05; TFA soundness|style −0.01,
+style|soundness −0.16. Judge & PV clearly track soundness and separate from TFA (~0); judge not style-loaded.
+PV recovered from its n=41 dip (0.34) back to 0.49, so it holds ~0.45-0.5. Checker validated (human answer-correct
+59/60). CIs now ~±0.22-0.25 (target precision). Single rater (Sri); Daneshvar second-rater still needed.
