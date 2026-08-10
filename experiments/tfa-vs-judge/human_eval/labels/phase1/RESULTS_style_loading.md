@@ -46,3 +46,22 @@ between soundness- and style-tracking is what this sample is built to support.
 
 Reproduce: the inline analysis in the chat; inputs are author1_sri_with_style.json + traces_to_label.jsonl +
 runs/prm_labelset/.
+
+## Update: random block n=30 (2026-08-09)
+
+As harder items entered (correct rate 80%, vs the easy first-20's 90%), the unbiased read sharpened and now
+matches the divergence block:
+
+| vs human soundness | ρ | 95% CI |
+|---|---|---|
+| LLM judge | +0.57 | [+0.12, +0.81] excl. 0 |
+| rollout PV | +0.48 | [+0.08, +0.77] excl. 0 |
+| TFA | −0.00 | [−0.39, +0.37] |
+
+Style-loading partials (random, n=30): judge soundness|style +0.48, style|soundness −0.07; TFA soundness|style
++0.17, style|soundness −0.24. Same pattern as the divergence block.
+
+Note: TFA vs soundness fell from +0.36 at n=20 (an unusually easy draw, 90% correct) to 0.00 at n=30, confirming
+the +0.36 was subsample luck, not signal. Continue random labeling toward n=80 to tighten the CIs; the qualitative
+three-way separation (judge & PV track soundness, TFA does not; judge not style-loaded) is stable across both the
+divergence and random strata, single rater (Sri). Second rater (Daneshvar) still needed for inter-rater on the new axes.
