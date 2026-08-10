@@ -80,3 +80,16 @@ style|soundness −0.11. Judge-tracks-soundness-not-style is now stable across n
 Watch item: PV vs soundness has drifted 0.59 (n=20) -> 0.48 (n=30) -> 0.34 (n=41) as harder items entered; CI now
 barely excludes zero. "PV grades where TFA cannot" holds directionally but is more modest than the easy-draw
 suggested. Remaining ~40 random labels + Daneshvar's second-rater pass will settle it.
+
+## Update: random block n=50 (2026-08-09) — halfway, stable
+
+| vs human soundness | ρ | 95% CI |
+|---|---|---|
+| LLM judge | +0.51 | [+0.17, +0.74] excl. 0 |
+| rollout PV | +0.39 | [+0.10, +0.64] excl. 0 |
+| TFA | −0.09 | [−0.39, +0.20] |
+
+Style-loading partials (n=50): judge soundness|style +0.46, style|soundness +0.12; TFA soundness|style −0.04.
+Three-way separation stable: judge (~0.51) > PV (~0.39) > TFA (~0). Judge-not-style-loaded holds at n=20/30/41/50
+and on the divergence block. PV settled ~0.39 after the early wobble. Single rater (Sri); n toward 80 + Daneshvar
+second-rater still pending.
