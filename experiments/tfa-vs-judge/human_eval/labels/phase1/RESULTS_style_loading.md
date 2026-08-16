@@ -106,3 +106,16 @@ Style-loading partials (n=60): judge soundness|style +0.56, style|soundness +0.0
 style|soundness −0.16. Judge & PV clearly track soundness and separate from TFA (~0); judge not style-loaded.
 PV recovered from its n=41 dip (0.34) back to 0.49, so it holds ~0.45-0.5. Checker validated (human answer-correct
 59/60). CIs now ~±0.22-0.25 (target precision). Single rater (Sri); Daneshvar second-rater still needed.
+
+## Second rater confirms style-loading result (2026-08-16)
+
+Daneshvar re-graded the 20 divergence items (soundness = his earlier quality labels; style = clarity.json):
+- inter-rater on soundness ρ=0.79 (matches the diagnostic ceiling), on style ρ=0.55.
+- Daneshvar alone: judge partial soundness|style +0.87, style|soundness +0.06 — replicates Sri (+0.77 / −0.08).
+- Two-rater consensus: judge soundness|style +0.86, style|soundness −0.06; TFA soundness|style −0.01, style|soundness −0.35.
+The judge-tracks-soundness-not-style finding is now two independent raters, not one.
+
+## Reference length/entropy check (Sanmi: "which do the correlations track?")
+Per-dataset gold references (runs/ref_length_entropy.json): boundary ρ(TFA,accuracy) vs top-model accuracy
+Spearman −0.81; vs reference entropy (6 math datasets) +0.89. Saturation and reference complexity are entangled
+(hard = long/high-entropy refs AND low accuracy); entropy is the tighter predictor. Figure: paper/figs/fig_refcomplexity.png.
