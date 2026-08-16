@@ -59,3 +59,13 @@ tier (ii) reframed mechanistically - prediction-fit metrics rank models only ins
 reference requires solving-adjacent skill; strip the reasoning content from the reference and the ranking
 signal disappears. Saturation matters because saturated benchmarks HAVE short, low-entropy references, not
 (only) because accuracy is compressed.
+
+## Code domain lands (2026-08-16): the grading null with a perfect oracle
+
+Chat-template regen fixed phi-4 (89% pass, matches original; 88% agreement with original code_pass).
+On 492 regenerated HumanEval traces scored by EXECUTING the official tests (free, perfect ground truth):
+  TFA vs test_pass = +0.00 point-biserial (within-model: -0.04 / -0.02 / +0.06)
+  logprob vs test_pass = -0.01
+The grading tier now has a second domain where the oracle is executable and human-free. No judge, no
+labels, no circularity. Code labeling artifact (60 traces, 30 pass/30 fail, 20 shared) published for the
+style/soundness axes tests cannot measure: e4328ef4-d4cb-463e-b0c5-a8549a134463.
