@@ -225,41 +225,39 @@ slide("Result 2 &middot; grading &middot; the repairs","We tried seven ways to c
  '<div class="take">Seven attempts, zero recoveries. Together with the 83-92% split, we conclude the grading signal is not hidden in TFA. It is not there.</div>')
 
 # 11 rollout
-slide("Result 2 &middot; grading &middot; anchored to humans","Checked against people, not just a judge: the judge is valid, TFA still fails",
+slide("Result 2 &middot; grading &middot; anchored to humans","We brought in people. The judge holds up. TFA still fails.",
  chips(("+0.59","judge vs human soundness"),("+0.49","rollout PV vs human soundness"),("&minus;0.07","TFA vs human soundness"))+
- '''<p><b>The worry, stated plainly (raised by our own advisor):</b> everything above compares TFA to an LLM
- judge. If the judge merely scored surface style, then TFA failing to match it would prove nothing, and rollout
- PV matching it would prove nothing either. So we anchored the whole section to <b>people</b>. A human graded 60
- randomly drawn MATH-500 solutions, blind to every model score, on two <b>independent</b> 0-10 scales: is the
- reasoning <b>sound</b>, and separately, is it <b>well written</b>.</p>'''+
+ '''<p>Everything so far compared TFA to an LLM judge. Our advisor pushed back: if the judge itself just
+ rewards nice writing, those comparisons prove nothing. Fair. So we brought in people. One of us graded 60
+ randomly chosen MATH-500 solutions, blind (no model names, no scores), giving each solution two separate 0-10
+ grades: is the reasoning <b>sound</b>, and is it <b>well written</b>. <b>How to read the figure:</b> the left
+ panel shows how well each signal agrees with the human soundness grades; the right panel shows what the judge
+ responds to, soundness or writing style, once the other is held fixed.</p>'''+
  fig("hum","Left: correlation of each signal with human-judged soundness (n=60, 95% CI). Right: partial correlations isolating what the judge and TFA track — soundness with style held fixed, and style with soundness held fixed.")+
- '''<p><b>Two things fall out.</b> First, the LLM judge tracks human soundness (+0.59) and, with style held fixed,
- its signal is almost entirely soundness (+0.56) not style (+0.05) — <b>the judge is not style-loaded</b>, so using
- it as the item-level target was fair. Second, against people directly, <b>TFA carries no soundness signal at all</b>
- (&minus;0.07; +0.00 once style is held fixed), while <b>rollout PV does</b> (+0.49). The item-level failure of TFA
- is real about human-judged reasoning, not an artifact of comparing to a judge.'''+
- '''<div class="def" style="font-size:.95rem"><b>Confirmed by two annotators.</b> On the divergence block, two
- independent annotators agree on soundness at &rho;=0.79, and <b>both</b> find the judge tracks soundness, not style
- (consensus partials: soundness +0.86, style &minus;0.06; each rater alone +0.87 / +0.77). The 60-item validity
- magnitudes at left are one annotator so far (CIs about &plusmn;0.22), one dataset (MATH-500). Not yet claimed: a
- second dataset, or the frontier-judge row.</div>'''+
- '''<div class="take">This is the upgrade from reliability to validity: the judge measures substance, TFA does not measure it, and rollout PV does.</div>''')
+ '''<p>The judge agrees with the human grades (+0.59), and what it responds to is soundness (+0.56), not
+ writing style (+0.05). So the worry does not hold here: this judge was measuring the right thing all along.
+ Against people directly, TFA agrees with nothing (&minus;0.07). The rollout method agrees (+0.49). TFA's failure
+ to grade is real, not an artifact of the judge.</p>'''+
+ '''<div class="def" style="font-size:.95rem"><b>Where this stands.</b> Two annotators graded a shared set and
+ agree with each other on soundness at 0.79, and both see the same judge pattern (soundness +0.86, style
+ &minus;0.06 in consensus). The 60-item numbers above are from one annotator and one dataset so far; more labels
+ and an outside annotator are in progress.</div>'''+
+ '''<div class="take">Measured against people: the judge measures substance, rollout PV measures some of it, and TFA measures none of it.</div>''')
 
-slide("Result 2 &middot; grading &middot; the whole class fails","It is not just TFA: no way of comparing text to the reference can grade",
+slide("Result 2 &middot; grading &middot; the whole class fails","It is not just TFA. Nothing that compares text to the reference can grade.",
  chips(("5 metrics","all fail to grade: best is +0.14 vs human"),("+0.02","TFA ranking when the reference is just the answer line"),("0.00","TFA vs actual test results on 492 code solutions"))+
- '''<p>Three checks, run after review feedback. <b>First, the class check:</b> we scored the same solutions five
- different ways against the reference: TFA, gold-token probabilities, word overlap, TF-IDF similarity, and modern
- semantic embeddings. Against human soundness grades, every one lands between &minus;0.24 and +0.14, while the
- judge scores +0.59 and the finish-the-solution method +0.49. Grading is not a weakness of TFA; it is a
- property of the whole compare-to-reference approach.</p>'''+
- '''<p><b>Second, why reference comparison ranks models at all:</b> we reran TFA on the same MATH-500 problems
- with the reference cut down to just the final answer line. The ranking signal vanished (+0.35 to +0.02, same
- problems, same models). So the ranking power comes from the reference being a long, rich piece of reasoning
- that takes skill to predict. Easy benchmarks fail largely because their references are short and simple, and
- reference complexity predicts where TFA works better than saturation does (+0.89 vs &minus;0.81).</p>'''+
- '''<p><b>Third, a check no one can argue with:</b> for code there is a perfect referee, running the official
- tests. On 492 fresh HumanEval solutions, TFA has zero relationship with whether the code actually passes
- (0.00 overall; &minus;0.04 to +0.06 within each model).</p>'''+
+ '''<p>Maybe the failure is specific to TFA? We scored the same solutions four more ways: gold-token
+ probabilities, word overlap, TF-IDF similarity, and sentence embeddings. Against the human grades, all five
+ land near zero; the best of them reaches +0.14. The judge, on the same solutions, reaches +0.59. The failure
+ belongs to the whole approach, not to one metric.</p>'''+
+ '''<p>We also found why reference comparison ranks models at all. We reran TFA on the same problems, but with
+ the reference cut down to its final answer line. The ranking signal disappeared: +0.35 with the full worked
+ solution, +0.02 with just the answer. Same problems, same models. The power was never in matching as such. It
+ comes from the reference being a long piece of reasoning that takes real skill to predict. Short reference,
+ nothing left to measure. That is also the honest reason easy benchmarks fail: their references are short.</p>'''+
+ '''<p>One more check, this time with no human opinion involved anywhere. For code there is a perfect referee:
+ run the official tests. On 492 fresh code solutions, TFA has zero relationship with whether the code passes
+ (0.00 overall, and within each model too).</p>'''+
  '''<div class="take">The reference is not useless. It just cannot be used as a similarity target. Its value is as an input to a judge, or through its answer as a checkable endpoint.</div>''')
 
 slide("Result 3 &middot; a signal that does grade","One method does grade: cut the solution short and let another model finish it",
