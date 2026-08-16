@@ -1,0 +1,20 @@
+{
+ "MATH-500": {
+  "boundary_rho": 0.6339670106371514,
+  "item_partial": 0.08996013609204127,
+  "n_models": 17,
+  "n_items": 3000
+ },
+ "Putnam-AXIOM": {
+  "boundary_rho": 0.717446883011566,
+  "item_partial": 0.16988802115463222,
+  "n_models": 17,
+  "n_items": 1180
+ },
+ "GSM8K": {
+  "boundary_rho": 0.12254901960784316,
+  "item_partial": 0.011994218086081913,
+  "n_models": 17,
+  "n_items": 2500
+ }
+}
