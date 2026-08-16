@@ -48,3 +48,14 @@ Independent critic verdict: no fatal flaws; ranked fixes. Status of each:
   raw completion prompt -> placeholder output, 4% vs true 89% pass).
 - HUMAN ACTIONS (cannot be done by models): finish n=80 as pre-stated; 2nd rater on >=30 random items;
   one external non-author annotator on 20-30; style rubric tightening or disattenuation for the style-null.
+
+## SEV 2.1 deconfound verdict (2026-08-16): complexity, not saturation, is the mechanism
+
+Short-reference TFA (reference = "The final answer is \boxed{X}." on the same MATH-500 items, 17 models):
+boundary rho collapses from +0.35 (full worked reference) to +0.02 [-0.53,+0.53]. Same items, same models,
+same accuracy distribution; only reference complexity changed. Measurement noise negligible (~5k scored
+tokens/model; binomial SE ~0.006 vs between-model sd 0.063). Together with rho(boundary, ref-entropy)=+0.89:
+tier (ii) reframed mechanistically - prediction-fit metrics rank models only insofar as predicting the
+reference requires solving-adjacent skill; strip the reasoning content from the reference and the ranking
+signal disappears. Saturation matters because saturated benchmarks HAVE short, low-entropy references, not
+(only) because accuracy is compressed.
