@@ -10,7 +10,7 @@ def datauri(fn): return "data:image/png;base64," + base64.b64encode((FIGDIR/fn).
 IMG = {k: datauri(v) for k, v in {
  "f1":"fig1_model_level.png","f6":"fig7_mechanism.png","judge":"fig_judge.png","f3":"fig3_saturation.png",
  "f5":"fig6_cross_family.png","f7":"fig10_reconciliation.png","f9":"fig8_agentic_v2.png","f2":"fig2_difficulty_gradient.png",
- "f10":"fig9_mechanism.png","var":"fig_variants.png","f8":"fig5_rollout_completer_curve.png","ms":"fig_ms_multistat.png","tw":"fig_twoway.png","hum":"fig_human.png",
+ "f10":"fig9_mechanism.png","var":"fig_variants.png","f8":"fig5_rollout_completer_curve.png","ms":"fig_ms_multistat.png","tw":"fig_twoway.png","hum":"fig_human.png","refc":"fig_refcomplexity.png",
 }.items()}
 MS = json.load(open("runs/multistat.json"))
 CIS = json.load(open("runs/map_cis.json"))
@@ -147,8 +147,13 @@ slide("Result 1 &middot; ranking &middot; the full map","The full map, and why e
  is the contrast between regimes, and it comes from the within-family comparisons on the previous slide: on hard
  benchmarks all 12 families rank correctly, on saturated ones 5 of 12 come out backwards.</div>'''+
  fig("f5","The same map as the table, drawn with 95% bootstrap confidence intervals over models (Spearman). Green = hard references, orange = saturated, purple = code.")+
- '<p style="font-size:.92rem;color:var(--mut)">Provenance: these values use the repaired answer-matching scorer; the original scorer mis-graded 4-10% of GSM8K-style answers and overstated the inversion (previously &minus;0.37/&minus;0.38, now &minus;0.25/&minus;0.19). The qualitative map is unchanged. The range-collapse plot behind the 0.08-vs-0.03 numbers is in the appendix.</p>'+
- '<div class="take">Use TFA as a leaderboard only where the reference is hard; on a saturated benchmark it is at best no signal, possibly reversed.</div>')
+ '<p style="font-size:.92rem;color:var(--mut)">A note on the numbers: an earlier version of our scorer misread 4-10% of GSM8K-style answers, which made the GSM8K dip look worse. With that fixed, GSM8K is &minus;0.25 (was &minus;0.37) and the map\'s overall shape is unchanged. The plot of why easy data compresses TFA is in the appendix.</p>'+
+ '''<div class="def" style="font-size:.95rem"><b>Whose problem is the saturated case?</b> On GSM8K every strong model
+ scores &gt;95%, so when a metric "separates" two of them it is separating on style, not skill. Recovering that
+ separation would be succeeding at the wrong thing: on a saturated benchmark there is little skill information left at
+ the ability range we care about. That is an <b>item-design</b> problem (use harder items), not a scoring-rule problem.
+ So we do not chase granularity on GSM8K.</div>
+ <div class="take">Use TFA as a leaderboard only where the reference is hard; on a saturated benchmark it is at best no signal, possibly reversed.</div>''')
 
 # 7 agents, same grammar
 slide("Result 1 &middot; ranking &middot; coding agents","The same pattern on SWE-bench, drawn the same way",
@@ -233,10 +238,11 @@ slide("Result 2 &middot; grading &middot; anchored to humans","Checked against p
  it as the item-level target was fair. Second, against people directly, <b>TFA carries no soundness signal at all</b>
  (&minus;0.07; +0.00 once style is held fixed), while <b>rollout PV does</b> (+0.49). The item-level failure of TFA
  is real about human-judged reasoning, not an artifact of comparing to a judge.'''+
- '''<div class="def" style="font-size:.95rem"><b>Status and limits.</b> One annotator on the 60-item validity block
- (CIs about &plusmn;0.22); one dataset (MATH-500). A second annotator's independent re-grade is underway; on an
- earlier 20-item set two annotators agreed at &rho;=0.80, and the same soundness-not-style pattern holds on a
- separate divergence-selected block. Not yet claimed: a second dataset, or the frontier-judge row.</div>'''+
+ '''<div class="def" style="font-size:.95rem"><b>Confirmed by two annotators.</b> On the divergence block, two
+ independent annotators agree on soundness at &rho;=0.79, and <b>both</b> find the judge tracks soundness, not style
+ (consensus partials: soundness +0.86, style &minus;0.06; each rater alone +0.87 / +0.77). The 60-item validity
+ magnitudes at left are one annotator so far (CIs about &plusmn;0.22), one dataset (MATH-500). Not yet claimed: a
+ second dataset, or the frontier-judge row.</div>'''+
  '''<div class="take">This is the upgrade from reliability to validity: the judge measures substance, TFA does not measure it, and rollout PV does.</div>''')
 
 slide("Result 3 &middot; a signal that does grade","One method does grade: cut the solution short and let another model finish it",
@@ -274,29 +280,20 @@ S.append('''<section class="slide concl"><div class="wrap"><div class="kick">Con
    <li><b>A grading signal that works</b> (rollout process value) with its cost curve.</li></ol></div></div></div></section>''')
 
 # 13 path forward, reframed
-slide("Path forward","Our lane: reliable metrics <b>with</b> gold references",
- '''<p>Benchmarks and leaderboards already own gold answers; what they lack is a trustworthy way to use them without
- hiring an LLM judge for every submission. That is the problem this line of work attacks: <b>cheap, deterministic,
- auditable scoring where a gold reference exists</b>. It is deliberately not the harder problem of evaluation with
- <b>no</b> gold references (debate, and TVD-MI-style mechanism design). We think the with-references problem is worth
- solving on its own: it is more tractable precisely because the answer is known, and it is load-bearing because the
- field's leaderboards run on it.</p>
- <div class="cols"><div><h3 class="g">Design stances</h3>
- <ul><li><b>Trained metrics are allowed.</b> A metric trained <i>offline</i> and then frozen is much harder to game
- than a reward model optimized against during RL; specializing a judge to a benchmark with in-context historic
- answers (the "Master of One" autorater recipe, arXiv:2411.15387) is a template worth adapting.</li>
- <li><b>Name the threat model.</b> "Survives gaming" means different things at <b>eval time</b> (style mimicry,
- contamination, benchmark-specific tuning) and at <b>train time</b> (RL directly against the metric). We test
- eval-time robustness first; train-time robustness is a separate, harder experiment.</li></ul></div>
- <div><h3 class="p">Constraints and neighbors</h3>
- <ul><li><b>Practical constraint, stated precisely:</b> most frontier APIs return no (or only top-k) token
- log-probabilities, so teacher-forcing on frontier models is <b>impractical today</b>: expensive or noisy, not
- impossible in principle. Near-term work therefore runs on open weights or on output-based signals.</li>
- <li><b>Neighbors we build on, not against:</b> debate-based oversight (Aryan and Eric's paper,
- openreview.net/forum?id=MDArMFusA7) and reference-free mechanism design (TVD-MI) target the no-gold-reference
- regime; our boundary map says where the cheap with-reference signals stop working, which is exactly where those
- methods need to take over.</li></ul></div></div>
- <div class="take">One map, two lanes: with references, make scoring judge-free and auditable; without references, know from the map that you have crossed into the regime where debate and mechanism design are the right tools.</div>''')
+slide("Path forward","What to build next: cheap grading wherever a gold answer exists",
+ '''<p>Benchmarks already have gold answers, yet they still pay an LLM judge to grade every submission. The problem
+ worth solving is the cheap, reproducible, auditable version of that: grade a solution well whenever a gold answer is
+ available. We are deliberately not tackling the harder case of grading with <b>no</b> gold answer at all (debate,
+ mechanism-design methods) &mdash; that is a different line of work. The with-gold problem is easier, because the
+ answer is known, and it is what every leaderboard already runs on.</p>
+ <div class="def"><b>The design rule for the next metric.</b> Score against the gold <b>answer</b> as a checkable
+ endpoint, not against the gold <b>text</b> as a target to match. Text-matching is exactly what sinks TFA: any signal
+ that scores similarity to the reference wording inherits the same 89-92% reference nuisance. Rollout process value
+ works because it checks the answer, not the wording.</div>
+ <p style="font-size:.92rem;color:var(--mut)">Two smaller notes. A metric trained offline and then frozen is fair
+ game (hard to game once it stops learning). And "resists gaming" should say when: we test it at grading time first,
+ and against training-against-it later. The no-gold case is covered by neighboring work (debate; TVD-MI).</p>
+ <div class="take">Two lanes: with a gold answer, make grading judge-free and auditable; without one, debate and mechanism design take over.</div>''')
 
 # 14 appendix divider
 S.append('''<section class="slide divider"><div class="wrap" style="text-align:center">
@@ -322,6 +319,12 @@ slide("Appendix &middot; saturation mechanics","Why easy data kills the signal: 
  chips(("~0.03","TFA range across the ladder, GSM8K"),("~0.08","TFA range, Putnam"))+
  '<p>On near-ceiling data the whole 5-model ladder is squeezed into a 0.03-wide TFA band; on hard data the band is three times wider. When the skill-driven spread shrinks below the size of a family style offset, style wins and rankings can invert. This is the mechanical link between the histogram\'s two lobes on the within-family slide.</p>'+
  fig("f3","TFA compresses on easy data and spreads on hard data; discriminating power tracks distance from ceiling.")+
+ '<p><b>Is it saturation or reference complexity? Both, and they are entangled (cheap to check, per the advisor).</b> '
+ 'Measuring each dataset\'s gold references directly: the boundary correlation tracks top-model accuracy at Spearman '
+ '&minus;0.81 (fails as the benchmark saturates) and reference entropy at +0.89 on the math datasets (works where '
+ 'references are long and complex). Hard benchmarks have long, high-entropy references AND low accuracy; saturated '
+ 'ones have short, low-entropy references AND high accuracy. Reference entropy is the tighter predictor.</p>'+
+ fig("refc","Boundary correlation vs top-model accuracy (left, Spearman -0.81) and vs reference entropy (right, math datasets, +0.89). Green = TFA ranks well, red = inverts.")+
  fig("f1","Backup: the raw within-Qwen model-level scatter per dataset behind the multi-statistic panel."))
 
 # A2 reconciliation
