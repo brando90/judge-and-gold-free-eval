@@ -245,6 +245,23 @@ slide("Result 2 &middot; grading &middot; anchored to humans","Checked against p
  second dataset, or the frontier-judge row.</div>'''+
  '''<div class="take">This is the upgrade from reliability to validity: the judge measures substance, TFA does not measure it, and rollout PV does.</div>''')
 
+slide("Result 2 &middot; grading &middot; the whole class fails","It is not just TFA: no way of comparing text to the reference can grade",
+ chips(("5 metrics","all fail to grade: best is +0.14 vs human"),("+0.02","TFA ranking when the reference is just the answer line"),("0.00","TFA vs actual test results on 492 code solutions"))+
+ '''<p>Three checks, run after review feedback. <b>First, the class check:</b> we scored the same solutions five
+ different ways against the reference: TFA, gold-token probabilities, word overlap, TF-IDF similarity, and modern
+ semantic embeddings. Against human soundness grades, every one lands between &minus;0.24 and +0.14, while the
+ judge scores +0.59 and the finish-the-solution method +0.49. Grading is not a weakness of TFA; it is a
+ property of the whole compare-to-reference approach.</p>'''+
+ '''<p><b>Second, why reference comparison ranks models at all:</b> we reran TFA on the same MATH-500 problems
+ with the reference cut down to just the final answer line. The ranking signal vanished (+0.35 to +0.02, same
+ problems, same models). So the ranking power comes from the reference being a long, rich piece of reasoning
+ that takes skill to predict. Easy benchmarks fail largely because their references are short and simple, and
+ reference complexity predicts where TFA works better than saturation does (+0.89 vs &minus;0.81).</p>'''+
+ '''<p><b>Third, a check no one can argue with:</b> for code there is a perfect referee, running the official
+ tests. On 492 fresh HumanEval solutions, TFA has zero relationship with whether the code actually passes
+ (0.00 overall; &minus;0.04 to +0.06 within each model).</p>'''+
+ '''<div class="take">The reference is not useless. It just cannot be used as a similarity target. Its value is as an input to a judge, or through its answer as a checkable endpoint.</div>''')
+
 slide("Result 3 &middot; a signal that does grade","One method does grade: cut the solution short and let another model finish it",
  chips(("+0.43","agreement with the judge, per solution"),("+0.19","tells sound from lucky, among correct ones"),("~100x","the cost, versus one TFA pass"))+
  '''<p>The method is easy to picture. Take a solution and cut it off partway. Hand the unfinished part to a separate,
