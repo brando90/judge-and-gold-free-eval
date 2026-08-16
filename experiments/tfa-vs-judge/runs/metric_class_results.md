@@ -26,3 +26,25 @@ Three-tier class law (sharper than "all text matching inherits everything"):
 
 GPT-critic calibration vs human (n=60 overlap): soundness rho +0.59, style +0.63, construct
 discrimination correct (critic-soundness tracks human-soundness 0.59 > human-style 0.33), lucky 49/60.
+
+## Critic-mandated fixes, second wave (2026-08-16)
+
+Independent critic verdict: no fatal flaws; ranked fixes. Status of each:
+
+- SEV 1.3 (missing embedding class) FIXED: MiniLM embed-cos boundary +0.45/+0.87/+0.29 (ranks like
+  prediction-fit on hard), decomposition ~70/8/21, item partials +0.13..+0.21, and vs HUMAN soundness
+  +0.14. Tier (i) survives its most dangerous challenger. TF-IDF cells filled: decomp 69/8/23 (M500),
+  52/13/35 (GSM8K); vs human +0.01. All five text metrics vs human soundness in [-0.24,+0.14].
+- SEV 2.2 (judge = endpoint-checker?) RESOLVED: random within-correct collapse is range restriction
+  (judge sd 0.16; 96% of scores = 10). On divergence stratum, within CORRECT-only (n=17), judge vs
+   2-rater consensus soundness = +0.81. Content-reading earned. Bonus: on saturated data even judge
+  VALIDITY is unmeasurable (no information) - Sanmi's item-design point at the meta level.
+- SEV 3.3c (F1 inversion) EXPLAINED: verbosity confound; controlling model output length, -0.49 -> -0.07.
+- SEV 2.3 (panel construction): judge-vs-panel numbers retired; panel confined to provisional
+  TFA/PV coverage with calibration bands; non-GPT panel reconstitution pending.
+- SEV 2.1 (entropy vs saturation deconfound): short-reference TFA job running (same MATH-500 items,
+  reference = final answer only; if boundary collapses, complexity is the mechanism).
+- Code domain: chat-template regen + test execution chained (first pass had a phi-4 prompt-format bug:
+  raw completion prompt -> placeholder output, 4% vs true 89% pass).
+- HUMAN ACTIONS (cannot be done by models): finish n=80 as pre-stated; 2nd rater on >=30 random items;
+  one external non-author annotator on 20-30; style rubric tightening or disattenuation for the style-null.

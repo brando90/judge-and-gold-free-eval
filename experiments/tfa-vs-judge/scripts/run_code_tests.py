@@ -1,6 +1,6 @@
 # Execute regenerated HumanEval traces against official tests -> free ground-truth pass/fail.
 import json, glob, re, subprocess, tempfile, os
-OUT = "runs/code_traces_scored"
+OUT = "runs/code_traces_scored_v2"
 os.makedirs(OUT, exist_ok=True)
 def extract(fg, question):
     m = re.findall(r"```(?:python)?\n(.*?)```", fg, re.S)
@@ -8,7 +8,7 @@ def extract(fg, question):
         code = max(m, key=len)
         return code if "def " in code else question + code
     return question + fg if "def " not in fg else fg
-for fp in glob.glob("runs/code_traces/humaneval__*.jsonl"):
+for fp in glob.glob("runs/code_traces_v2/humaneval__*.jsonl"):
     out = OUT + "/" + fp.split("/")[-1]
     if os.path.exists(out): print("skip", out, flush=True); continue
     rows = [json.loads(l) for l in open(fp)]
