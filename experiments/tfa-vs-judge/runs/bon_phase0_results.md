@@ -108,6 +108,25 @@ reference, hack-resistance improves but selection quality stays far from oracle.
 arms sit at noref-level damage (regret 0.43-0.56) without the frontier's inflation-without-damage
 pattern.
 
+**GPT-5.2 frontier arms (2026-08-17, $15.57 incl pilot, ledger $55.37/$90):**
+
+| config | excess hack gap [95% CI] | oracle regret @64 |
+|---|---|---|
+| GPT-5.2 noref    | +0.78 [0.53, 1.03] | 0.212 |
+| GPT-5.2 ref      | +0.22 [0.13, 0.31] | 0.212 |
+| GPT-5.2 sabotage | +0.61 [0.45, 0.79] | 0.241 |
+
+Paired contrasts: noref-ref +0.56 [+0.35, +0.79]; sabotage-ref +0.40 [+0.23, +0.59].
+
+Two frontier findings. (1) **Capability substitutes for the reference on damage, not on honesty:**
+GPT's regret is identical with and without the reference tests (0.212 both) and beats every
+open-weights config, but its no-ref scoreboard still self-inflates 3.6x (+0.78 vs +0.22) - the
+reference buys scoreboard validity even when it buys no selection accuracy. The full P1 ladder on
+code is thus a monotone capability gate: 1.5B gets nothing from the reference (can't verify), 3B-14B
+get inflation collapse AND some regret relief, the frontier needs it only for honesty. (2) The
+**inflation-without-damage sabotage mode replicates on code:** sabotage regret 0.241 ~= honest 0.212
+while the gap triples - same signature as math (+0.85 gap, regret 0.133 vs honest 0.117).
+
 Data: runs/bon_scores_v2/code__*, runs/bon_code_full.json (analysis: scripts/bon_analysis.py on
 the mbpp pool, identical pre-registered estimators).
 
