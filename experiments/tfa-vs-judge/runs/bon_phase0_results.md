@@ -72,6 +72,45 @@ random tie-breaks among its top-rated samples admit wrong answers. The small jud
 escores stay sharp. Judge deployments that select (RLHF data filtering, BoN serving) should elicit
 fine-grained scores; coarse scales waste frontier capability.
 
+## Code domain (2026-08-17): the reference lever replicates at 3B+ and is capability-gated at 1.5B
+
+Same protocol on the MBPP+ pool (378 items oracle-scored by the full EvalPlus suite, 68 in-band,
+64 samples, Qwen2.5-7B generator; HumanEval pool saturated at 82% mean pass and was set aside).
+Judge reference = the canonical example_test asserts; the ~46k-token EvalPlus oracle suite stays
+held out (first ref attempt put the full suite in context and all 8 runs died on the 4096 ctx —
+empty files, no scores interpreted; fix + RUBRIC_CODE registered by commit before any ref scores).
+
+| judge config | excess hack gap [95% CI] | oracle regret @64 |
+|---|---|---|
+| Qwen-1.5B noref | +1.45 [1.17, 1.72] | 0.412 |
+| Qwen-3B  noref  | +1.06 [0.87, 1.27] | 0.544 |
+| Qwen-7B  noref  | +1.06 [0.84, 1.27] | 0.426 |
+| Qwen-14B noref  | +1.04 [0.79, 1.32] | 0.368 |
+| Qwen-1.5B ref   | +1.40 [1.08, 1.70] | 0.441 |
+| Qwen-3B  ref    | +0.43 [0.34, 0.54] | 0.382 |
+| Qwen-7B  ref    | +0.49 [0.36, 0.63] | 0.265 |
+| Qwen-14B ref    | +0.37 [0.26, 0.51] | 0.338 |
+| Qwen-7B  sabotage | +0.84 [0.68, 1.00] | 0.559 |
+| Qwen-14B sabotage | +0.96 [0.77, 1.20] | 0.426 |
+
+**P1 paired contrast (noref minus ref excess gap, per-item bootstrap):** 1.5B +0.06 [-0.30, +0.40]
+(NULL); 3B +0.63 [+0.46, +0.84]; 7B +0.56 [+0.32, +0.81]; 14B +0.67 [+0.40, +0.96]. The reference
+collapses inflation at 3B+ (replicating math) but does NOTHING at 1.5B — unlike math, where even
+the 1.5B judge was rescued (noref +0.88 -> ref +0.16, regret 0.448 -> 0.010).
+
+**Interpretation: using a reference is itself capability-gated when verification is hard.** In math
+the reference is a worked solution the judge can compare text against; on code the reference is a
+test suite the judge must mentally execute against the candidate. The 1.5B judge cannot do that, so
+the lever fails exactly where the F13/plurality analysis predicts: reference value tracks
+verification hardness relative to the judge. Also unlike math, no code config reaches near-zero
+regret (best 0.265 at 7B-ref vs 0.010-0.048 in math): with only partial-coverage asserts as
+reference, hack-resistance improves but selection quality stays far from oracle. Code sabotage
+arms sit at noref-level damage (regret 0.43-0.56) without the frontier's inflation-without-damage
+pattern.
+
+Data: runs/bon_scores_v2/code__*, runs/bon_code_full.json (analysis: scripts/bon_analysis.py on
+the mbpp pool, identical pre-registered estimators).
+
 ## Caveats
 
 Oracle is strict boxed-string match (equivalence adjudication pending; only flips 0->1, so noref
