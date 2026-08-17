@@ -1,0 +1,97 @@
+{
+ "A_position_weighted_tfa": {
+  "0": {
+   "rho": 0.1258741258741259,
+   "n_models": 12
+  },
+  "0.5": {
+   "rho": 0.1258741258741259,
+   "n_models": 12
+  },
+  "1": {
+   "rho": 0.15384615384615385,
+   "n_models": 12
+  },
+  "2": {
+   "rho": 0.04195804195804196,
+   "n_models": 12
+  },
+  "4": {
+   "rho": 0.013986013986013986,
+   "n_models": 12
+  },
+  "8": {
+   "rho": -0.006993006993006993,
+   "n_models": 12
+  },
+  "last16": {
+   "rho": 0.027972027972027972,
+   "n_models": 12
+  },
+  "last4": {
+   "rho": -0.3706293706293707,
+   "n_models": 12
+  }
+ },
+ "B_answer_swap": {
+  "Qwen/Qwen2.5-1.5B-Instruct": {
+   "r": 0.22510895128298875,
+   "n": 472,
+   "support_correct": 2.118642968804822,
+   "support_wrong": 1.5777331313325578
+  },
+  "Qwen/Qwen2.5-14B-Instruct": {
+   "r": 0.1743551568310898,
+   "n": 489,
+   "support_correct": 1.7544270590418878,
+   "support_wrong": 1.3632741578602896
+  },
+  "Qwen/Qwen2.5-7B-Instruct": {
+   "r": 0.04285287346621168,
+   "n": 475,
+   "support_correct": 1.7095474318076627,
+   "support_wrong": 1.6091901608745878
+  },
+  "allenai/OLMo-2-0325-32B-Instruct": {
+   "r": 0.3393676355081331,
+   "n": 495,
+   "support_correct": 1.92823927252811,
+   "support_wrong": 1.1196500495443558
+  },
+  "allenai/OLMo-2-1124-7B-Instruct": {
+   "r": 0.16789153328153222,
+   "n": 436,
+   "support_correct": 1.736062908938492,
+   "support_wrong": 1.3206823858338406
+  },
+  "microsoft/Phi-3-medium-4k-instruct": {
+   "r": 0.22289105722699182,
+   "n": 401,
+   "support_correct": 2.045751805584944,
+   "support_wrong": 1.4537124138979434
+  },
+  "microsoft/Phi-3.5-mini-instruct": {
+   "r": 0.045878891108929086,
+   "n": 455,
+   "support_correct": 1.9855584859161026,
+   "support_wrong": 1.8620420338123431
+  },
+  "mistralai/Ministral-8B-Instruct-2410": {
+   "r": 0.00892835512701922,
+   "n": 476,
+   "support_correct": 1.6822690644010168,
+   "support_wrong": 1.6607380002574796
+  },
+  "mistralai/Mistral-Small-Instruct-2409": {
+   "r": -0.0343339825083789,
+   "n": 493,
+   "support_correct": 1.6733603292320476,
+   "support_wrong": 1.7547730603703184
+  },
+  "_summary": {
+   "mean_within_model_r": 0.13254894125827965,
+   "n_models": 9,
+   "sign_positive": 8
+  }
+ }
+}

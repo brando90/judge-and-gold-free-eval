@@ -22,11 +22,18 @@ And we know *why*, causally, not just descriptively:
 | short-reference deconfound (same items) | boundary +0.35 → +0.02 | strip the reference to answer-only and the signal *vanishes* |
 | code domain vs executable tests | r = 0.00 (n=492) | against a perfect verifier, similarity carries nothing |
 
-**On your specific suggestion (weight first tokens less than last):** we've run its limiting case.
-Answer-only-reference TFA *is* "weight everything but the end at zero" — and it kills the signal
-instead of cleaning it (+0.35 → +0.02). That's the falsification: the thing position-weighting
-redistributes is reference-complexity nuisance, not soundness. The full sweep (weighting exponent
-from uniform → answer-only) is running now; registered prediction: monotone decay to the null.
+**On your specific suggestion (weight first tokens less than last): ran it, full sweep, today.**
+Per-token reference hits for 12 cross-family models on MATH-500, weighting w ∝ (pos/n)^γ from
+uniform to last-tokens-only (registered prediction before the run: decay to the answer-only null):
+
+| γ (late-weighting strength) | uniform | 0.5 | 1 | 2 | 4 | 8 | last-16 tok | last-4 tok |
+|---|---|---|---|---|---|---|---|---|
+| model-ranking ρ vs accuracy | +0.13 | +0.13 | +0.15 | +0.04 | +0.01 | −0.01 | +0.03 | −0.37 |
+
+Weighting late tokens more makes TFA *worse*, monotonically past γ=1, ending negative — consistent
+with the short-reference causal test (+0.35 → +0.02 on the Qwen ladder): the variance that
+position-weighting redistributes is reference-complexity nuisance, not soundness. Clean negative,
+mechanism-predicted.
 
 ## Act 2 — The verification class works, in proportion to how checkable the endpoint is
 
@@ -40,6 +47,15 @@ New metric slate this generates, each with a registered prediction (the class bo
 which will work): entropy-normalized TFA (predict: null — comparison), prefix-repair PV curve
 (predict: works — verification), answer-swap counterfactual (predict: works — verification),
 divergence-point localization (predict: null — comparison).
+
+**First one ran today — answer-swap counterfactual** (does the trace's reasoning actually pin down
+the answer it asserts? support = lp(own boxed answer | prefix) − lp(swapped alternative | prefix),
+fixed 7B scorer, judge-free): within-model correlation with correctness is positive in 8/9 models
+(mean r +0.13, best +0.34; correct traces support their answers more than wrong ones in 8/9).
+Direction confirms the class prediction — a verification-shaped signal carries real information
+where five similarity metrics carry none — but the cheap single-point version is weak (judge +0.59,
+PV +0.49 remain far ahead). Next variant in the slate: the prefix-repair curve, which PV's +0.49
+already suggests is the strongest cheap verification signal.
 
 ## Act 3 — Trust is certifiable ex-ante, and the certificate predicts hack-resistance
 
@@ -64,5 +80,5 @@ Taxonomy + mechanism + certification: (1) similarity metrics can't grade, provab
 audit tells you which evaluators to trust, and it predicts dynamic robustness. Venue thinking
 stays ACL/EMNLP or NeurIPS D&B.
 
-Next: position-weight sweep + answer-swap results (days), human labels n=80 + second rater
+Next: prefix-repair PV curve + entropy-normalized TFA (the remaining slate), human labels n=80 + second rater
 (pending), Phase 1 DPO gated on writeup.
