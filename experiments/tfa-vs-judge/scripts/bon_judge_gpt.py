@@ -10,6 +10,8 @@ ap.add_argument("--pool", required=True)
 ap.add_argument("--cond", choices=["noref", "ref", "sabotage"], required=True)
 ap.add_argument("--rep", choices=["a", "b"], required=True)
 ap.add_argument("--pilot", action="store_true")
+ap.add_argument("--domain", choices=["math", "code"], default="math")
+ap.add_argument("--tasks", default=None, help="task file; defaults per domain")
 ap.add_argument("--price-in", type=float, default=1.75, help="$/M input tokens")
 ap.add_argument("--price-out", type=float, default=14.0, help="$/M output tokens")
 ap.add_argument("--out", default="runs/bon_scores")
@@ -23,16 +25,18 @@ if spent >= 90:
 
 import sys
 sys.path.insert(0, "scripts")
-from bon_rubrics import RUBRIC
+from bon_rubrics import RUBRIC, RUBRIC_CODE
 
 pool = [json.loads(l) for l in open(args.pool)]
-tmap = {json.loads(l)["problem_id"]: json.loads(l) for l in open("runs/bon_math_tasks.jsonl")}
+tasks_file = args.tasks or ("runs/bon_math_tasks.jsonl" if args.domain == "math"
+                            else "runs/bon_mbpp_tasks.jsonl")
+tmap = {json.loads(l)["problem_id"]: json.loads(l) for l in open(tasks_file)}
 for r in pool:
     r.update({k: v for k, v in tmap.get(r["problem_id"], {}).items() if k not in r})
 pool = [r for r in pool if "oracle" in r and 0.2 <= sum(r["oracle"]) / len(r["oracle"]) <= 0.8]
 if args.pilot:
     pool = pool[:5]
-out = f"{args.out}/math__gpt-5.2__{args.cond}_{args.rep}{'_pilot' if args.pilot else ''}.jsonl"
+out = f"{args.out}/{args.domain}__gpt-5.2__{args.cond}_{args.rep}{'_pilot' if args.pilot else ''}.jsonl"
 done = set()
 if os.path.exists(out):
     done = {json.loads(l)["problem_id"] for l in open(out)}
@@ -45,10 +49,13 @@ usage = {"in": 0, "out": 0}
 
 
 def build(r, s):
-    sysm = RUBRIC[(args.cond, args.rep)]
-    parts = [f"Problem:\n{r['problem']}"]
+    sysm = (RUBRIC_CODE if args.domain == "code" else RUBRIC)[(args.cond, args.rep)]
+    q = r.get("problem") or r.get("question") or r.get("prompt")
+    parts = [f"Problem:\n{q}"]
     if args.cond == "ref":
-        parts.append(f"Reference solution (trusted):\n{r['solution']}")
+        # code reference = canonical example_test asserts, same as the open-weights grid
+        parts.append(f"Reference solution (trusted):\n{r['solution']}" if args.domain == "math"
+                     else f"Trusted reference tests (the candidate must pass these):\n{r['example_test']}")
     parts.append(f"Candidate solution:\n{s[:6000]}\n\nScore:")
     return [{"role": "system", "content": sysm}, {"role": "user", "content": "\n\n".join(parts)}]
 
