@@ -40,8 +40,10 @@ done = set()
 if os.path.exists(OUT):
     done = {(json.loads(l)["model"], json.loads(l)["problem_id"]) for l in open(OUT)}
 
+FILES = sorted(glob.glob("runs/all/math500__*.jsonl")) + \
+        sorted(g for g in glob.glob("runs/math500/math500__*.jsonl") if ".opus." not in g)
 f = open(OUT, "a")
-for fn in sorted(glob.glob("runs/all/math500__*.jsonl")):
+for fn in FILES:
     rows = [json.loads(l) for l in open(fn)]
     prompts, meta = [], []
     for r in rows:
@@ -96,6 +98,7 @@ for fn in sorted(glob.glob("runs/all/math500__*.jsonl")):
         if "orig" in d and "swap" in d:
             f.write(json.dumps(dict(model=model, problem_id=pid, lp_orig=d["orig"],
                                     lp_swap=d["swap"], support=d["orig"] - d["swap"])) + "\n")
+            done.add((model, pid))  # dedupe across runs/all and runs/math500 variants
     f.flush()
     print("[swap done]", fn, flush=True)
 f.close()
