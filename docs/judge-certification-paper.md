@@ -43,9 +43,11 @@ the answer and matches endpoints.
 **4. A shared block and a positive control.** Two annotators grade the same items, giving the
 human-human ceiling that bounds any claim about the judge (ours: soundness 0.79, style 0.55 — the style
 axis is noisier, so style-nulls are bounded by measurement precision and we report them as such, with
-attenuation stated). And because a protocol that can only acquit is not a protocol, we certify a
-deliberately sabotaged judge — the same frontier model instructed to prioritize presentation — and
-require the instrument to convict it [pending].
+attenuation stated). And because a protocol that can only acquit is not a protocol, we certified a
+deliberately sabotaged judge: the same frontier model, instructed to prioritize presentation over
+correctness. The instrument convicted it — its style partial jumped to +0.56 (honest judge: +0.05 to
++0.12) while its soundness partial fell to +0.18 (honest: +0.47 to +0.56), on the same 60 human-labeled
+items. The protocol detects style-loading when it is present and finds none when it is not.
 
 ## What certification found
 
@@ -68,8 +70,7 @@ protocol down a ladder of open-weights judges (1.5B to 14B), each in two deploym
 and without the gold reference in context). Predictions, registered here before results: small judges
 without references will fail certification outright (their detection is near-blind); references will
 improve validity, not just detection, because our prior work shows a reference lifts a 3B judge's
-error-catching from 17% to 85%; and if the protocol is sound, the sabotaged style-judge will show the
-inverted signature (style partial high, soundness partial low).
+error-catching from 17% to 85%; (The sabotage prediction registered in an earlier draft has since been confirmed; see above.)
 
 **What certification does not claim.** One judge family passed on one math benchmark. That is the
 point: validity is a property of a (judge, task, prompt) triple, not of "LLM judges." The protocol is
@@ -92,8 +93,7 @@ not just on agreement rates.
 Current annotators include paper authors (an external annotator is in progress); the random-stratum
 n is 60 toward a pre-stated 80; one domain has human grades (code certification uses executed tests
 for soundness and pending human grades for style). The style axis is the noisier instrument
-(inter-rater 0.55) and all style-nulls carry that bound. Ladder and sabotage results are running and
-this draft will not firm its claims until they land.
+(inter-rater 0.55) and all style-nulls carry that bound. Ladder results are running and this draft will not firm those claims until they land.
 
 ---
 *Data, labeling instruments, and scripts: experiments/tfa-vs-judge (human_eval/, runs/cert_out/,
