@@ -62,7 +62,8 @@ else:
         start = len(progs)
         for s in r["samples"]:
             code = extract_code(s, r["question"])
-            progs.append(code + "\n\n" + r["test"] + f"\n\ncheck({r['entry_point']})\n")
+            tail = f"\n\ncheck({r['entry_point']})\n" if r.get("entry_point") else "\n"
+            progs.append(code + "\n\n" + r["test"] + tail)
         spans.append((start, len(progs)))
     with mp.Pool(16) as pool:
         oks = pool.map(run_one, progs, chunksize=8)

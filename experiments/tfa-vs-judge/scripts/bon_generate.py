@@ -6,7 +6,7 @@ import argparse, json, os
 from vllm import LLM, SamplingParams
 
 ap = argparse.ArgumentParser()
-ap.add_argument("--domain", choices=["math", "code"], required=True)
+ap.add_argument("--domain", choices=["math", "code", "mbpp"], required=True)
 ap.add_argument("--model", default="Qwen/Qwen2.5-7B-Instruct")
 ap.add_argument("--n", type=int, default=64)
 ap.add_argument("--out", default="runs/bon")
@@ -20,6 +20,11 @@ if args.domain == "math":
     def prompt_of(r):
         return ("Solve the following math problem. Show your reasoning step by step, "
                 "then give the final answer in \\boxed{}.\n\n" + r["problem"])
+elif args.domain == "mbpp":
+    tasks = [json.loads(l) for l in open("runs/bon_mbpp_tasks.jsonl")]
+    def prompt_of(r):
+        return (r["prompt"] + "\nYour code should pass this test:\n" + r["example_test"]
+                + "\nOutput the complete function in a python code block.")
 else:
     tasks = [json.loads(l) for l in open("humaneval.jsonl")]
     def prompt_of(r):
