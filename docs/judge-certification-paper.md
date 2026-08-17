@@ -65,12 +65,16 @@ sentence embeddings — correlates with human soundness between −0.24 and +0.1
 "agreeing with itself"; it is the only cheap signal in the comparison that measures reasoning quality
 at all, and the certification is what licenses saying so.
 
-**The judge ladder [pending].** Certification is most useful if it discriminates. We are running the
-protocol down a ladder of open-weights judges (1.5B to 14B), each in two deployment conditions (with
-and without the gold reference in context). Predictions, registered here before results: small judges
-without references will fail certification outright (their detection is near-blind); references will
-improve validity, not just detection, because our prior work shows a reference lifts a 3B judge's
-error-catching from 17% to 85%; (The sabotage prediction registered in an earlier draft has since been confirmed; see above.)
+**The ladder discriminates, and the reference flips the verdict.** We ran the protocol down a ladder
+of open-weights judges (Qwen 1.5B to 14B), each in two deployment conditions, with predictions
+registered in an earlier draft before the results landed. Both held. Without a reference in context,
+every judge on the ladder fails certification: the 1.5B judge is actively style-loaded (style partial
++0.33, soundness -0.05), and the 3B-14B judges are too weak to certify (rho +0.24 to +0.28 against
+human soundness). With the gold reference in context, every judge from 1.5B up passes: the 1.5B flips
+from style-loaded to valid (+0.40, style partial +0.08), and the 14B reaches +0.53 with partials
++0.50 / +0.07, within noise of the frontier judge. The reference does not merely raise detection
+rates, as our earlier work showed; it changes what the judge measures, from style to substance. A
+1.5B judge with a reference is a certifiable grader. A 14B judge without one is not.
 
 **What certification does not claim.** One judge family passed on one math benchmark. That is the
 point: validity is a property of a (judge, task, prompt) triple, not of "LLM judges." The protocol is
@@ -93,7 +97,7 @@ not just on agreement rates.
 Current annotators include paper authors (an external annotator is in progress); the random-stratum
 n is 60 toward a pre-stated 80; one domain has human grades (code certification uses executed tests
 for soundness and pending human grades for style). The style axis is the noisier instrument
-(inter-rater 0.55) and all style-nulls carry that bound. Ladder results are running and this draft will not firm those claims until they land.
+(inter-rater 0.55) and all style-nulls carry that bound. All registered predictions (sabotage, ladder, reference flip) are now confirmed; remaining pendings are the human-label completions above.
 
 ---
 *Data, labeling instruments, and scripts: experiments/tfa-vs-judge (human_eval/, runs/cert_out/,
