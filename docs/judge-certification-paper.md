@@ -61,9 +61,12 @@ rubric agrees with human soundness at +0.53. This judge reads the work.
 
 **The context that makes this worth reporting:** on the very same solutions, every reference-matching
 metric we could construct — teacher-forced accuracy, gold-token probabilities, TF-IDF, word overlap,
-sentence embeddings — correlates with human soundness between −0.24 and +0.14. The judge is not merely
-"agreeing with itself"; it is the only cheap signal in the comparison that measures reasoning quality
-at all, and the certification is what licenses saying so.
+sentence embeddings — correlates with human soundness between −0.24 and +0.14. A variance decomposition says why: across
+model families, 83-92% of these metrics' score variance is an item effect shared by every family —
+the score mostly encodes which problem it is, not which model solved it, leaving little room to track
+any per-solution quality. The judge is not merely "agreeing with itself"; it is the only cheap signal
+in the comparison that measures reasoning quality at all, and the certification is what licenses
+saying so.
 
 **The ladder discriminates, and the reference flips the verdict.** We ran the protocol down a ladder
 of open-weights judges (Qwen 1.5B to 14B), each in two deployment conditions, with predictions
