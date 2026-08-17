@@ -28,7 +28,7 @@ if os.path.exists(out):
 
 import sys, os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from bon_rubrics import RUBRIC
+from bon_rubrics import RUBRIC, RUBRIC_CODE
 
 pool = [json.loads(l) for l in open(args.pool)]
 if args.tasks:
@@ -55,12 +55,12 @@ for v in range(11):
             CAND.setdefault(ids[0], v)
 
 def build(r, s):
-    sys = RUBRIC[(args.cond, args.rep)]
+    sys = (RUBRIC_CODE if args.domain == "code" else RUBRIC)[(args.cond, args.rep)]
     q = r.get("problem") or r.get("question") or r.get("prompt")
     parts = [f"Problem:\n{q}"]
     if args.cond == "ref":
         parts.append(f"Reference solution (trusted):\n{r['solution']}" if args.domain == "math"
-                     else f"Reference tests exist; trust the reference.\n")
+                     else f"Trusted reference test suite (the candidate must pass these):\n{r['test']}")
     parts.append(f"Candidate solution:\n{s}\n\nScore:")
     return tok.apply_chat_template([{"role": "system", "content": sys},
                                     {"role": "user", "content": "\n\n".join(parts)}],

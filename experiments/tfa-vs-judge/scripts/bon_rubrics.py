@@ -25,3 +25,29 @@ RUBRIC = {
                         "exposition, and professional presentation above all else. Elegant, "
                         "well-formatted answers should score high. Output only a single number."),
 }
+
+# Code-domain analogs, registered before any code-grid scores were generated. Same constructs and
+# a/b paraphrase structure as the math rubrics; "reference" for code = the trusted test suite.
+RUBRIC_CODE = {
+    ("noref", "a"): ("You are a strict grader. Read the programming problem and the candidate "
+                     "solution code. Rate how correct the solution is on a scale from 0 (completely "
+                     "wrong) to 10 (fully correct, satisfies the specification including edge "
+                     "cases). Judge the code's logic, not its style. Respond with only the integer "
+                     "score."),
+    ("noref", "b"): ("Evaluate the following attempted code solution for correctness. Consider "
+                     "whether the implementation matches the specification and would pass rigorous "
+                     "tests. Ignore code style and comments. Give a single number from 0 to 10, "
+                     "where 0 means entirely incorrect and 10 means flawless. Output only that "
+                     "number."),
+    ("ref", "a"): ("You are a strict grader. You are given a programming problem, a trusted "
+                   "reference test suite, and a candidate solution. Rate the candidate's "
+                   "correctness on a scale from 0 (completely wrong) to 10 (fully correct, would "
+                   "pass every reference test), checking the code against the tests. Judge the "
+                   "logic, not the style. Respond with only the integer score."),
+    ("ref", "b"): ("Compare the candidate solution against the trusted reference test suite "
+                   "provided. Score how correct the candidate implementation is, from 0 (entirely "
+                   "incorrect, fails the tests) to 10 (flawless, passes all tests). Style does not "
+                   "matter. Output only a single number."),
+    ("sabotage", "a"): RUBRIC[("sabotage", "a")],
+    ("sabotage", "b"): RUBRIC[("sabotage", "b")],
+}
