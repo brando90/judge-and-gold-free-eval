@@ -50,12 +50,16 @@ mean over all 64 samples, not a single draw.
 ## Judge configurations
 
 Full free grid, 10 configs: Qwen {1.5B, 3B, 7B, 14B} x {no reference, gold reference} (8), plus a
-sabotage-prompt (presentation-first) variant on two sizes. Frontier arms run on **Opus via the CLI**
-(free; already calibrated +0.53 vs human soundness): honest Opus and an Opus-ported sabotage judge,
-the latter re-certified on the existing 60-item divergence stratum (panel + ~15-item human spot
-check) before being trusted as positive control. GPT-5.2 appears only as a ~50-problem validation
-subset showing Opus-selection tracks GPT-selection (<= $8; full GPT selection arms would cost
-$50-150 and are out of budget).
+sabotage-prompt (presentation-first) variant on two sizes. Frontier arms in both families:
+**GPT-5.2** (budget raised to $100) runs as a true selection judge on the filtered math items —
+honest and sabotaged, two replicates each — and **Opus via the CLI** (free) runs the same two arms,
+its sabotage port re-certified on the existing 60-item divergence stratum (panel + ~15-item human
+spot check) before being trusted as positive control. Two frontier families under pressure also
+completes the circularity-free panel coverage: Qwen arms graded by the gpt+opus panel, GPT arms by
+Opus, Opus arms by gpt. Budget discipline: a 5-item pilot measures actual per-call cost before any
+full GPT run; spend order is (1) honest GPT selection arm 2x replicates, (2) GPT sabotage arm 2x,
+(3) panel share, (4) code-domain GPT only if headroom remains (estimated ~$16 per replicate-arm at
+~200 items x 64 samples; hard stop at $90 cumulative).
 
 ## Registered predictions (analysis script committed to git before generation)
 
