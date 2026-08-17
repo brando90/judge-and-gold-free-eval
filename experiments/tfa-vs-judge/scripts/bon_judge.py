@@ -82,11 +82,16 @@ with open(out, "w") as f:
             esc = []
             for o in outs[a:b]:
                 lp = o.outputs[0].logprobs[0] if o.outputs[0].logprobs else {}
+                txt = (o.outputs[0].text or "").strip()
+                # digit-tokenizing models emit "10" as "1","0": resolve the "1" token's meaning
+                # from the actually-generated continuation
+                one_means = 10 if txt.startswith("10") else 1
                 num = den = 0.0
                 for tid, info in lp.items():
                     if tid in CAND:
+                        v = one_means if CAND[tid] == 1 else CAND[tid]
                         p = math.exp(info.logprob)
-                        num += p * CAND[tid]; den += p
+                        num += p * v; den += p
                 if den >= 0.25:
                     esc.append(num / den)
                 else:
