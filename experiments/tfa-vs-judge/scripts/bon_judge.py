@@ -17,6 +17,7 @@ ap.add_argument("--cond", choices=["noref", "ref", "sabotage"], required=True)
 ap.add_argument("--rep", choices=["a", "b"], required=True)
 ap.add_argument("--domain", choices=["math", "code"], default="math")
 ap.add_argument("--filter-band", action="store_true", help="only items with pool pass in [0.2,0.8]")
+ap.add_argument("--tasks", default=None, help="task file with problem text to join by problem_id")
 ap.add_argument("--out", default="runs/bon_scores")
 args = ap.parse_args()
 os.makedirs(args.out, exist_ok=True)
@@ -30,6 +31,16 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from bon_rubrics import RUBRIC
 
 pool = [json.loads(l) for l in open(args.pool)]
+if args.tasks:
+    tmap = {}
+    for l in open(args.tasks):
+        t = json.loads(l)
+        tmap[t.get("problem_id") or t.get("task_id")] = t
+    for r in pool:
+        r.update({k: v for k, v in tmap.get(r["problem_id"], {}).items() if k not in r})
+missing = sum(1 for r in pool if not (r.get("problem") or r.get("question") or r.get("prompt")))
+if missing:
+    raise SystemExit(f"{missing} pool rows lack problem text; pass --tasks")
 if args.filter_band:
     pool = [r for r in pool if "oracle" in r and 0.2 <= sum(r["oracle"]) / len(r["oracle"]) <= 0.8]
 print(f"[judge] {len(pool)} items x {len(pool[0]['samples'])} samples, {args.cond}_{args.rep}",
@@ -45,7 +56,7 @@ for v in range(11):
 
 def build(r, s):
     sys = RUBRIC[(args.cond, args.rep)]
-    q = r.get("problem") or r.get("question")
+    q = r.get("problem") or r.get("question") or r.get("prompt")
     parts = [f"Problem:\n{q}"]
     if args.cond == "ref":
         parts.append(f"Reference solution (trusted):\n{r['solution']}" if args.domain == "math"

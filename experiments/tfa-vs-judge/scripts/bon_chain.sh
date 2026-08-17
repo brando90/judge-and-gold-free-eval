@@ -16,18 +16,15 @@ chain () {  # $1 gpu, $2 model, $3 space-separated "cond_rep" list
   for cr in "$@"; do
     local cond=${cr%_*} rep=${cr#*_}
     CUDA_VISIBLE_DEVICES=$gpu $PY bon_judge.py --pool $POOL --judge "$model" \
-      --cond $cond --rep $rep --domain math --filter-band \
+      --cond $cond --rep $rep --domain math --filter-band --tasks runs/bon_math_tasks.jsonl \
       >> "logs/bonjudge_$(echo $model | tr '/' '_')_gpu$gpu.log" 2>&1
   done
   echo "[chain gpu$gpu $model done]" >> logs/bon_chain.log
 }
 
 FULL="noref_a noref_b ref_a ref_b"
-nohup bash -c "$(declare -f chain); chain 0 Qwen/Qwen2.5-14B-Instruct $FULL sabotage_a sabotage_b" > logs/chain_gpu0.log 2>&1 &
-echo "gpu0 14B PID $!"
-nohup bash -c "$(declare -f chain); chain 1 Qwen/Qwen2.5-7B-Instruct $FULL sabotage_a sabotage_b" > logs/chain_gpu1.log 2>&1 &
-echo "gpu1 7B PID $!"
-nohup bash -c "$(declare -f chain); chain 2 Qwen/Qwen2.5-3B-Instruct $FULL" > logs/chain_gpu2.log 2>&1 &
-echo "gpu2 3B PID $!"
-nohup bash -c "$(declare -f chain); chain 6 Qwen/Qwen2.5-1.5B-Instruct $FULL" > logs/chain_gpu6.log 2>&1 &
-echo "gpu6 1.5B PID $!"
+GPU_A=${1:-0}; GPU_B=${2:-2}
+nohup bash -c "$(declare -f chain); chain $GPU_A Qwen/Qwen2.5-14B-Instruct $FULL sabotage_a sabotage_b" > logs/chain_gpuA.log 2>&1 &
+echo "gpuA($GPU_A) 14B PID $!"
+nohup bash -c "$(declare -f chain); chain $GPU_B Qwen/Qwen2.5-7B-Instruct $FULL sabotage_a sabotage_b; chain $GPU_B Qwen/Qwen2.5-3B-Instruct $FULL; chain $GPU_B Qwen/Qwen2.5-1.5B-Instruct $FULL" > logs/chain_gpuB.log 2>&1 &
+echo "gpuB($GPU_B) 7B+3B+1.5B PID $!"

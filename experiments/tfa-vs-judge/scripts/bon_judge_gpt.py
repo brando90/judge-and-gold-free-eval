@@ -26,6 +26,9 @@ sys.path.insert(0, "scripts")
 from bon_rubrics import RUBRIC
 
 pool = [json.loads(l) for l in open(args.pool)]
+tmap = {json.loads(l)["problem_id"]: json.loads(l) for l in open("runs/bon_math_tasks.jsonl")}
+for r in pool:
+    r.update({k: v for k, v in tmap.get(r["problem_id"], {}).items() if k not in r})
 pool = [r for r in pool if "oracle" in r and 0.2 <= sum(r["oracle"]) / len(r["oracle"]) <= 0.8]
 if args.pilot:
     pool = pool[:5]
@@ -73,7 +76,7 @@ def grade_item(r):
     def one(s):
         return escore_of(client.chat.completions.create(
             model=MODEL, messages=build(r, s), max_completion_tokens=4,
-            logprobs=True, top_logprobs=20, timeout=120))
+            logprobs=True, top_logprobs=5, timeout=120))
     with ThreadPoolExecutor(max_workers=8) as ex:
         esc = list(ex.map(one, r["samples"]))
     return dict(problem_id=r["problem_id"], escore=esc)
