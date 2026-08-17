@@ -19,6 +19,8 @@ ap.add_argument("--domain", choices=["math", "code"], default="math")
 ap.add_argument("--filter-band", action="store_true", help="only items with pool pass in [0.2,0.8]")
 ap.add_argument("--tasks", default=None, help="task file with problem text to join by problem_id")
 ap.add_argument("--out", default="runs/bon_scores")
+ap.add_argument("--max-model-len", type=int, default=4096,
+                help="raise for code ref runs: test suite + candidate can exceed 4096")
 args = ap.parse_args()
 os.makedirs(args.out, exist_ok=True)
 tag = args.judge.replace("/", "__")
@@ -59,14 +61,18 @@ def build(r, s):
     q = r.get("problem") or r.get("question") or r.get("prompt")
     parts = [f"Problem:\n{q}"]
     if args.cond == "ref":
+        # code reference = the canonical assert set (example_test), NOT the full MBPP+/EvalPlus
+        # oracle suite: that suite runs to ~46k tokens and stays held out, mirroring math's
+        # human reference solution vs oracle answer check
         parts.append(f"Reference solution (trusted):\n{r['solution']}" if args.domain == "math"
-                     else f"Trusted reference test suite (the candidate must pass these):\n{r['test']}")
+                     else f"Trusted reference tests (the candidate must pass these):\n{r['example_test']}")
     parts.append(f"Candidate solution:\n{s}\n\nScore:")
     return tok.apply_chat_template([{"role": "system", "content": sys},
                                     {"role": "user", "content": "\n\n".join(parts)}],
                                    tokenize=False, add_generation_prompt=True)
 
-llm = LLM(model=args.judge, dtype="bfloat16", gpu_memory_utilization=0.9, max_model_len=4096)
+llm = LLM(model=args.judge, dtype="bfloat16", gpu_memory_utilization=0.9,
+          max_model_len=args.max_model_len)
 sp = SamplingParams(max_tokens=4, temperature=0.0, logprobs=20)
 
 with open(out, "w") as f:
