@@ -100,5 +100,5 @@ Taxonomy + mechanism + certification: (1) similarity metrics can't grade, provab
 audit tells you which evaluators to trust, and it predicts dynamic robustness. Venue thinking
 stays ACL/EMNLP or NeurIPS D&B.
 
-Next: second rater + external annotator on the n=80 (to firm up the prefix-repair claim), code labels,
-(pending), Phase 1 DPO gated on writeup.
+Next: second rater + external annotator on the n=80 (to firm up the prefix-repair claim), code
+labels, Phase 1 DPO gated on the writeup.
