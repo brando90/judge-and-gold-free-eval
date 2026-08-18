@@ -1,0 +1,337 @@
+% Status: DRAFT — full unified paper, first assembly 2026-08-17. Do not submit without: second
+% rater on n=80, external annotator, code human labels, equivalence adjudication (see Limitations).
+% !TEX root = main.tex
+%
+% bit flip (planning comment, not prose): prior work treats cheap reference-matching metrics and
+% LLM judges as points on one cost-quality tradeoff, and treats evaluator trustworthiness as an
+% empirical unknown discovered after deployment. We flip both: (1) validity is determined by the
+% signal's MECHANISM — signals that COMPARE to a reference cannot grade at all, for a measurable
+% reason, while signals that VERIFY carry real signal; (2) evaluator trustworthiness is a
+% CERTIFIABLE ex-ante property, and the static certificate predicts survival under optimization
+% pressure.
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{caption}
+\captionsetup{font=small,labelfont=bf}
+
+\newcommand{\tfa}{\textsc{TFA}}
+\graphicspath{{../experiments/tfa-vs-judge/paper/figs/}}
+
+\title{Verify, Don't Compare:\\ \large What Reference-Based Metrics Actually Measure, and How to Certify What Replaces Them}
+\author{Srivatsava Daruru \quad Daneshvar Amrollahi \quad [coauthors]\\ Koyejo Group, Stanford University}
+\date{Draft — August 17, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+% 1 problem motivation
+Benchmarks that ship gold reference solutions invite a cheap evaluation recipe: score a model by how closely its output, or its next-token predictions, match the reference.
+% 2 assumption being challenged
+The field treats such metrics and LLM judges as points on a single cost--quality tradeoff, and treats a judge's trustworthiness as an unknown to be discovered after it has been deployed.
+% 3 flip
+We show that neither framing is right: what determines whether an evaluation signal works is its \emph{mechanism} --- signals that \emph{compare} text to a reference cannot grade individual solutions at all, for a measurable reason, while signals that \emph{verify} a checkable endpoint carry real signal --- and an evaluator's trustworthiness is a \emph{certifiable} property that can be measured before deployment and predicts whether the evaluator survives optimization pressure.
+% 4 instantiation
+Across seventeen models from seven families on eight math and code benchmarks, anchored to blind two-scale human grades, five comparison metrics spanning the space (teacher-forced accuracy, gold-token probability, TF-IDF, unigram-F1, sentence embeddings) all land within noise of zero against human soundness and at exactly $0.00$ against executed tests; the mechanism is that teacher-forced accuracy is $80\%$ reference perplexity ($r=-0.895$), so $83$--$92\%$ of its per-solution variance is a property of the reference, not the solution.
+Verification-shaped signals invert the picture: a prefix-repair curve --- truncate the solution, let a fixed completer finish it, read the success profile --- reaches $r=+0.79$ with human soundness with no judge involved, and an LLM judge passes a $\sim$60-label blind certification audit that a deliberately style-loaded judge fails.
+% 5 evaluation
+Under best-of-64 selection pressure against 25 judge configurations in two domains, every evaluator that failed the static certificate was hacked (score inflation up to $+1.45\sigma$, up to $56\%$ of achievable accuracy lost), every evaluator certified in-domain resisted, and the single cross-domain exception is itself predicted by the mechanism: a trusted reference's value is capability-gated by verification hardness, vanishing for a 1.5B judge exactly when using the reference requires executing tests rather than comparing text.
+% 6 implications
+The design rule for evaluation is to use references as inputs to readers and checkers, never as similarity targets, and to certify evaluators before optimizing against them --- turning ``can we trust this evaluator?'' from a post-hoc discovery into a pre-registered measurement.
+\end{abstract}
+
+\section{Introduction}
+\label{sec:intro}
+
+% P1: problem motivation
+Most benchmarks that matter --- grade-school math, competition problems, program synthesis --- ship with a gold reference: a worked solution or canonical program known to be correct.
+Evaluating against that reference without a judge is appealing for obvious reasons: it is deterministic, costs one forward pass, cannot be sweet-talked, and anyone can audit it.
+The sharpest version is teacher-forced accuracy (\tfa): feed the model the problem and the gold solution one token at a time, and score the fraction of gold tokens the model itself would have predicted.
+As models are increasingly evaluated, filtered, and trained by automated signals --- similarity metrics, process rewards, LLM judges --- the question of which of these signals actually measure quality has become a bottleneck for the field.
+
+% P2: the assumption
+Prior work organizes this space along a single axis of cost versus quality: string metrics are cheap and crude, embedding metrics are better, LLM judges are expensive and best, and the practical question is how far down the cost axis one can afford to go.
+Implicit in this framing are two assumptions: that reference similarity degrades gracefully --- a cheaper metric measures the same thing, just with more noise --- and that whether a given judge can be trusted is an empirical unknown, discovered only after the judge has been deployed and, in the worst case, reward-hacked.
+
+% P3: the flip
+Both assumptions fail, and they fail for the same reason.
+We show that the operative axis is not cost but \emph{mechanism}: evaluation signals divide into a \emph{comparison class} that scores resemblance to the reference text and a \emph{verification class} that checks whether the solution reaches or supports a checkable endpoint.
+The comparison class does not degrade gracefully --- it measures nothing about the individual solution at any price point, because its variance is dominated by a property of the reference itself.
+And because the failure is mechanistic, evaluator trustworthiness stops being an unknown: it can be \emph{certified} in advance with roughly sixty blind human labels, and the certificate predicts which evaluators survive optimization pressure before any optimization is run.
+
+% P4: instantiation
+Concretely, we anchor everything to blind human grades on two deliberately separated scales --- soundness of reasoning and quality of writing --- collected under a protocol that can acquit an evaluator rather than only indict one.
+We test five comparison metrics spanning the space, from \tfa{} to sentence embeddings, plus targeted repairs of each (position weighting, entropy normalization, seven reweighting variants); we test three verification signals (executed tests, a prefix-repair completion curve, an answer-swap counterfactual); and we audit LLM judges with and without trusted references, including a deliberately sabotaged judge as a positive control.
+Finally, we place 25 judge configurations under best-of-64 selection pressure in math and code and measure, with pre-registered estimators, which ones inflate their own scoreboards and which ones lose real accuracy.
+
+% P5: evaluation summary
+The comparison class fails completely: all five metrics land in $[-0.24, +0.14]$ against human soundness (LLM judge on identical items: $+0.59$) and at $0.00$ against executed tests on 492 code solutions, because $83$--$92\%$ of per-solution matching variance is reference-specific nuisance, and \tfa{} pooled across 6{,}000 model--item pairs correlates at $-0.895$ with reference perplexity --- it is a compressibility meter, not a grader.
+Every targeted repair we or our reviewers proposed, including weighting late tokens more heavily and normalizing out reference entropy, left the signal at zero or made it worse, exactly as the mechanism predicts.
+The verification class works in proportion to how checkable its endpoint is: executed tests are a free oracle; the prefix-repair curve reaches $+0.79$ with human soundness judge-free, rising monotonically with truncation depth; and judges pass certification exactly when anchored to a trusted reference --- every open-weights judge we tested fails the audit blind and passes it referenced.
+Under selection pressure the certificate is predictive in all twelve configurations certified in-domain, and a capability gate appears: a reference rescues a 1.5B judge on math, where using it means comparing text, but does nothing for the same judge on code, where using it means mentally executing tests --- the one cell where protocol alone mispredicts, and exactly the cell the mechanism flags in advance.
+A style-loaded frontier judge exhibits the most dangerous failure mode --- it inflates its scoreboard $3.6\times$ while selecting almost as well as an honest judge, deceiving the metric rather than the outcome.
+
+% P6: implications
+These results replace a folk cost--quality tradeoff with a mechanism-level taxonomy that made correct advance predictions for every new metric we built, and they turn evaluator trust into a measurable, falsifiable, pre-registrable property.
+For benchmark builders the rule is: a reference's value is as context for a reader or as an endpoint for a checker, never as a similarity target.
+For anyone optimizing against an evaluator --- best-of-$n$ serving, data filtering, RLHF --- the rule is: certify first, in the deployment domain, because the evaluators that fail the sixty-label audit are precisely the ones that optimization will exploit.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{figs/fig1_master.png}
+\caption{\textbf{The paper in one figure.}
+\textbf{(A)} Against blind human soundness grades, all five reference-comparison metrics land within noise of zero while verification-shaped signals carry real signal, topping out at the prefix-repair curve ($+0.79$; measured on the $n{=}80$ label round, other entries on the class-table round).
+\textbf{(B)} The mechanism: across 6{,}000 model--item pairs, teacher-forced accuracy is $80\%$ reference perplexity --- it measures the reference, not the solution.
+\textbf{(C)} Under best-of-64 selection pressure (25 configurations, two domains), blind and sabotaged judges (orange) are hacked --- high scoreboard inflation, high accuracy loss --- while referenced judges (blue) resist; the two labeled exceptions are the paper's two mechanisms: the 1.5B code judge that cannot \emph{use} its reference (the capability gate), and the sabotaged frontier judge that deceives the metric without damaging selection.}
+\label{fig:master}
+\end{figure}
+
+\section{Setup}
+\label{sec:setup}
+
+\paragraph{Models and data.}
+Seventeen instruction-tuned models from seven families (Qwen, Phi, Mistral, OLMo, plus math-specialized Qwen-Math, DeepSeek-Math, and Mathstral), spanning 0.5B to 32B parameters, plus two frontier judges (GPT-5.2 and Claude Opus).
+Eight benchmarks: MATH-500, full MATH, Putnam-AXIOM and variations, Omni-MATH, GSM8K, GSM8K-Platinum, and HumanEval/MBPP+.
+Every model generates its own solution to every problem (greedy), and is separately teacher-forced on the gold solution.
+
+\paragraph{The comparison class.}
+Five ways of scoring a solution against the reference, chosen to span the space: \tfa{} (hard argmax match on gold tokens), gold-token log-probability (the soft version), TF-IDF cosine, unigram-F1, and sentence-embedding cosine.
+The first two measure the model's predictive fit to the reference text; the last three measure the resemblance of the model's own output to it.
+
+\paragraph{The verification class.}
+Three signals that consume the reference only through a checkable endpoint.
+\emph{Executed tests}: for code, run the official suite.
+\emph{Prefix-repair curve}: truncate the solution at depth $k \in \{0, 0.25, 0.5, 0.75\}$, let a fixed mid-sized completer finish it, and score the fraction of completions reaching the correct final answer; the profile over $k$ is the signal, and $k{=}0$ is a pure problem-difficulty probe.
+\emph{Answer-swap counterfactual}: the per-token log-probability margin a fixed scorer assigns the solution's own final answer over a swapped alternative, given the reasoning prefix.
+LLM judges sit in either class depending on protocol, which Section~\ref{sec:certify} measures directly.
+
+\paragraph{Human grades.}
+Annotators graded solutions blind (no model names, no metric scores) on two 0--10 scales with written anchors: \emph{soundness} (is every step valid; ignore the writing) and \emph{style} (is it clear and well-organized; ignore correctness).
+Two annotators graded a shared block for a reliability ceiling (soundness $\rho = 0.79$, style $0.55$); a uniformly random MATH-500 sample ($n{=}80$ labeled, 60 joined to all signals) provides the headline validity numbers; a divergence-selected block decorrelates soundness from style ($+0.82 \to +0.31$) for the partial-correlation audits.
+For code correctness no human is needed: we execute the tests.
+
+\paragraph{Statistics and pre-registration.}
+Headline correlations are Spearman or Pearson with bootstrap 95\% intervals; grading claims control for final-answer correctness where stated, because checking the final answer is free and is not what anyone needs a grader for.
+The selection-pressure experiments (Section~\ref{sec:pressure}) and all four new-metric predictions (Section~\ref{sec:slate}) were pre-registered: analysis scripts and directional predictions were committed to the repository before the corresponding data were generated.
+
+\section{The comparison class cannot grade, and we know why}
+\label{sec:compare}
+
+\subsection{The class-level null}
+\label{sec:classnull}
+
+On the random MATH-500 human-labeled sample, the five comparison metrics correlate with human soundness at $-0.07$ (\tfa), $-0.17$ (gold-token probability), $+0.01$ (TF-IDF), $-0.24$ (unigram-F1), and $+0.14$ (embeddings); every interval includes zero.
+On the same solutions the LLM judge reaches $+0.59$ and the prefix-repair signal $+0.49$ in its single-point form.
+Code offers a referee no one can argue with: on 492 freshly generated solutions scored by executing the official test suites, \tfa's correlation with passing is $0.00$, and stays within $[-0.04, +0.06]$ inside each model.
+The soft log-probability version does no better.
+
+\subsection{The mechanism: comparison scores are reference properties}
+\label{sec:mechanism}
+
+Decomposing per-solution \tfa{} across a grid of fifteen to sixteen models from four families (after removing each model's overall level), $83$--$92\%$ of the remaining variance is an \emph{item main effect}: a component identical for every family, which can only be a property of the reference --- how predictable this particular gold text is.
+Another $3$--$7\%$ is family-specific style, and this style channel roughly doubles on saturated benchmarks (GSM8K $7.2\%$, MATH-full $6.5\%$ vs.\ Putnam $2.9\%$).
+The same structure appears in code ($78/8/14$) and, attenuated, in every similarity metric ($\text{logprob } 83$--$91/7$--$11$; embeddings $\sim$$70/8$; TF-IDF $69/8$).
+
+The pooled statement is blunt: across 6{,}000 model--item pairs on MATH-500, \tfa{} correlates with the reference's bits-per-character under the same model at $r = -0.895$.
+Teacher-forced accuracy \emph{is}, to first order, a measurement of how compressible the reference is --- roughly $80\%$ shared variance --- and a score that is four-fifths about the reference cannot grade the solution in front of it.
+
+\subsection{Ranking survives exactly where the mechanism says it should}
+\label{sec:ranking}
+
+Averaged over a benchmark, mean \tfa{} ranks models by accuracy on hard data and not at all on easy data: all twelve within-family ladders rank correctly on the three hard math benchmarks, while five of twelve invert on the three saturated ones, and the pooled boundary runs from $\rho = +0.86$ (Omni-MATH) through $+0.60$ (Putnam) to $-0.25$ $[-0.71, +0.33]$ (GSM8K).
+The boundary tracks reference entropy ($+0.89$) more tightly than benchmark saturation ($-0.81$), and the two are confounded observationally, so we intervened: on the same MATH-500 items, replacing each worked reference with the single line ``The final answer is [answer]'' collapses the ranking signal from $+0.35$ to $+0.02$.
+Predicting a long, information-dense reference requires skill adjacent to solving the problem; predicting a formulaic one requires nothing, leaving only style.
+The design consequence for leaderboards: if you want reference matching to rank models, the reference must be worth predicting, and reference entropy is measurable in advance.
+
+\subsection{Repairs fail as predicted: the class is empty, not under-tuned}
+\label{sec:slate}
+
+A natural response is that some reweighting rescues the metric.
+The mechanism predicts otherwise, and we tested that prediction adversarially --- every variant below was proposed either by our reviewers or by the mechanism itself, with the directional outcome registered in the repository before the run.
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{llll}
+\toprule
+proposed metric & class & registered prediction & outcome \\
+\midrule
+position-weighted \tfa{} (late tokens up-weighted) & comparison & null & decays $+0.13 \to -0.37$ \\
+entropy-normalized \tfa{} (perplexity residualized) & comparison & null & ranking $+0.13 \to -0.17$ \\
+seven reweightings (IDF, surprisal, masking, \dots) & comparison & null & all $\le 0$ \\
+answer-swap counterfactual & verification & works & $+$ in 8/9 models, mean $+0.13$ \\
+prefix-repair curve & verification & works & $+0.79$ vs.\ human soundness \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{The taxonomy makes correct advance predictions.} All four pre-registered predictions landed as called (the seven reweighting variants predate the registration protocol and are included for completeness); the two verification-class entries are described in Section~\ref{sec:verify}.}
+\label{tab:slate}
+\end{table}
+
+The position-weighting sweep deserves detail because it is the intuitive fix: on GSM8K-style data one might weight early reference tokens less than the final ones.
+With per-token hit vectors for twelve cross-family models, weighting $w \propto (\mathrm{pos}/n)^{\gamma}$, the twelve-model ranking correlation is flat at $+0.13$ through $\gamma{=}1$, decays to zero by $\gamma \in [4,8]$, and reaches $-0.37$ when only the last four tokens count --- monotonically \emph{worse}, converging to the answer-only-reference null of Section~\ref{sec:ranking}, because the variance being redistributed is reference nuisance, not soundness.
+Entropy normalization is the complementary test: residualizing bits-per-character out of \tfa{} removes the one thing it robustly measures and leaves nothing ($+0.13 \to -0.17$ ranking; item-level $-0.11$ raw, $+0.09$ partialed, both null).
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.9\textwidth]{figs/fig2_sweeps.png}
+\caption{\textbf{The two registered sweeps move in opposite directions, as the taxonomy predicts.}
+Left: up-weighting late reference tokens (the intuitive repair) decays \tfa's twelve-model ranking signal monotonically past $\gamma{=}1$ toward --- and past --- the answer-only-reference null.
+Right: the prefix-repair signal \emph{rises} monotonically with truncation depth, from a pure difficulty probe ($k{=}0$) to $+0.79$ against human soundness at $k{=}0.75$.}
+\label{fig:sweeps}
+\end{figure}
+
+\section{The verification class grades, in proportion to endpoint checkability}
+\label{sec:verify}
+
+\subsection{Judge-free verification signals}
+
+\emph{Executed tests} are the ceiling case: a free, perfect oracle wherever they exist, and the standard against which \tfa{} scored $0.00$.
+
+\emph{The prefix-repair curve} is the strongest cheap signal we found.
+Against the $n{=}60$ joined human labels, its correlation with soundness rises monotonically with truncation depth: $+0.54$ at $k{=}0$ (solve-from-scratch, a pure difficulty probe), $+0.68$ at $k{=}0.25$, $+0.76$ at $k{=}0.5$, and $+0.79$ at $k{=}0.75$ --- exactly the profile ``the trace's reasoning causally supports its answer'' should produce.
+Controlling for difficulty via the $k{=}0$ arm, the prefix's added completability still carries $+0.69$.
+For scale: every comparison metric sits at $|r| \le 0.24$ on these items, the single-point completion value at $+0.49$, and the LLM judge at $+0.89$.
+Its costs are real --- on the order of a hundred completions per solution, and a completer whose strength must sit in a middle band (too weak cannot finish sound work; too strong rescues broken work).
+
+\emph{The answer-swap counterfactual} is the cheap end of the same class: one forward pass, no judge, no completion.
+It is positive in 8 of 9 models (mean within-model $r = +0.13$, best $+0.34$), confirming the class prediction in direction while remaining too weak to use alone.
+The ordering within the verification class --- tests $>$ repair curve $>$ answer-swap --- tracks how much verification each performs, which is the taxonomy's internal consistency check.
+
+\subsection{Judges are in the verification class only when anchored: a certification protocol}
+\label{sec:certify}
+
+Whether an LLM judge reads content or scores style is measurable with $\sim$60 blind labels: two separated human scales, a divergence stratum where soundness and style decorrelate, and partial correlations as the verdict.
+Our frontier judge passes --- partial with human soundness holding style fixed $+0.86$, partial with style holding soundness fixed $-0.06$, and $+0.81$ among correct-answer solutions where an endpoint-checking impostor would flatline.
+The protocol can also convict: a deliberately sabotaged judge, prompted to reward presentation, is caught cleanly (style-given-soundness $+0.56$, soundness-given-style $+0.18$).
+
+The decisive variable is the reference.
+Every open-weights judge in the Qwen 1.5B--14B ladder \emph{fails} certification without one --- the 1.5B judge is overtly style-loaded ($+0.33$ style partial) and the larger ones are simply too weak ($0.24$--$0.28$ quality) --- and every one of them \emph{passes} with the gold solution in context ($+0.40$ at 1.5B to $+0.53$ at 14B).
+References flip judge \emph{validity}, not just accuracy; the same lever lifts a small judge's planted-error detection from $17\%$ to $85\%$, near frontier level.
+This is the bridge to the taxonomy: a referenced judge is performing verification (checking the solution against a trusted anchor), while an unanchored small judge degenerates to the comparison class's failure mode of rewarding surface form.
+
+\section{The certificate predicts survival under optimization pressure}
+\label{sec:pressure}
+
+A static audit is only worth its cost if it predicts dynamic behavior.
+We tested this with best-of-64 selection: a 7B generator samples 64 solutions per problem, each judge configuration selects its favorite, and two pre-registered estimands separate deception from damage --- the \emph{excess hack gap} (how much the judge's scoreboard inflates relative to true quality, against a within-oracle-stratum permutation null, in baseline standard deviations) and \emph{oracle regret} (accuracy left on the table versus oracle-best selection).
+Selection uses one rubric paraphrase and reporting another, canceling winner's curse; 105 in-band MATH-500 items and 68 in-band MBPP+ items (pool pass rate in $[0.2, 0.8]$); analysis scripts committed before generation.
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lcc@{\qquad}cc}
+\toprule
+& \multicolumn{2}{c}{\textbf{math} (MATH-500)} & \multicolumn{2}{c}{\textbf{code} (MBPP+)} \\
+judge config & excess gap & regret@64 & excess gap & regret@64 \\
+\midrule
+1.5B no-ref & $+0.88$ & $0.448$ & $+1.45$ & $0.412$ \\
+3B no-ref & $+0.44$ & $0.429$ & $+1.06$ & $0.544$ \\
+7B no-ref & $+0.80$ & $0.324$ & $+1.06$ & $0.426$ \\
+14B no-ref & $+0.63$ & $0.324$ & $+1.04$ & $0.368$ \\
+\midrule
+1.5B ref & $+0.16$ & $\mathbf{0.010}$ & $+1.40$ & $0.441$ \\
+3B ref & $+0.07$ & $0.038$ & $+0.43$ & $0.382$ \\
+7B ref & $+0.18$ & $0.019$ & $+0.49$ & $0.265$ \\
+14B ref & $+0.05$ & $0.048$ & $+0.37$ & $0.338$ \\
+\midrule
+GPT-5.2 no-ref & --- & --- & $+0.78$ & $0.212$ \\
+GPT-5.2 ref & $+0.38$ & $0.117$ & $+0.22$ & $0.212$ \\
+\midrule
+7B sabotage & $+0.13$ & $0.400$ & $+0.84$ & $0.559$ \\
+14B sabotage & $+0.61$ & $0.324$ & $+0.96$ & $0.426$ \\
+GPT-5.2 sabotage & $+0.85$ & $0.133$ & $+0.61$ & $0.241$ \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{Best-of-64 selection pressure, 25 judge configurations.} Every configuration that failed static certification is hacked (large excess gap, large regret); every configuration that passed resists. The 1.5B-ref cell is the capability gate: the reference rescues the smallest judge on math and does nothing on code. All CIs in the repository; math paired no-ref$-$ref contrasts $+0.72/+0.37/+0.62/+0.57$, code $+0.06\,\text{(ns)}/+0.63/+0.56/+0.67$.}
+\label{tab:bon}
+\end{table}
+
+\paragraph{The certificate predicts, and it is domain-specific.}
+Every configuration that failed static certification is hacked at best-of-64: excess gaps $+0.44$ to $+1.45$, with $32$--$56\%$ of achievable accuracy lost.
+On math, where certification was measured in-domain, the prediction holds in all twelve configurations: the reference collapses inflation $6$--$12\times$ and regret $7$--$30\times$ (paired within-size contrasts confirmed 4/4, per-config intervals disjoint).
+On code, the reference protocol predicts twelve of thirteen configurations; the single exception --- the referenced 1.5B judge, hacked as badly as its blind twin --- is precisely the cell the capability-gate mechanism flags, and the operational lesson is that certification must be measured in the deployment domain, because a judge certified on math is not thereby certified on code.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.9\textwidth]{figs/fig3_gate.png}
+\caption{\textbf{The capability gate.}
+Excess hack gap without (orange) and with (blue) a trusted reference, by judge scale.
+On math the reference collapses inflation at every scale, including 1.5B.
+On code --- where using the reference means executing tests rather than comparing text --- the lever works only at 3B and above, and the frontier judge needs it only for scoreboard honesty (its selection quality is identical either way).}
+\label{fig:gate}
+\end{figure}
+
+\paragraph{The reference lever is capability-gated by verification hardness.}
+On code the paired contrast replicates at 3B and above ($+0.63/+0.56/+0.67$, all excluding zero) but is null at 1.5B ($+0.06$ $[-0.30, +0.40]$) --- the same 1.5B judge that, with a reference, was the \emph{best} selector on math (regret $0.010$, beating GPT-5.2's $0.117$).
+The difference is what ``using the reference'' demands: comparing text on math, mentally executing tests on code.
+At the frontier the gate closes from the other side: GPT-5.2's selection quality on code is identical with and without the reference tests (regret $0.212$ both ways, the best of any code configuration), yet its unreferenced scoreboard still self-inflates $3.6\times$ ($+0.78$ vs.\ $+0.22$).
+Capability substitutes for the reference on \emph{damage} but not on \emph{honesty}.
+
+\paragraph{A hacked judge fails in two modes, and capability trades one for the other.}
+Across the sabotage ladder, real damage falls and self-inflation rises with judge capability: the 7B sabotaged judge damages without inflating (regret $0.400$, gap $+0.13$ ns), while sabotaged GPT-5.2 inflates without damaging (gap $+0.85$, regret $0.133$; on code $+0.61$/$0.241$).
+A cross-family blind panel confirms the channel: sabotage-selected solutions are more styled ($+0.27$ $[0.10, 0.44]$) with no detectable soundness loss.
+The frontier failure mode --- deceiving the metric while selecting well --- is the dangerous one for training, since a policy optimized against it would internalize style; that is the gated Phase~1 question.
+
+\paragraph{Granularity beats scale once a reference is in hand.}
+The 1.5B referenced judge outselects GPT-5.2 on math because the frontier judge's 0--10 scale saturates ($78\%$ top-ties even with expectation-valued scores) and random tie-breaks admit wrong answers, while the small judge's continuous expected scores stay sharp.
+Judge deployments that select should elicit fine-grained scores; coarse scales waste frontier capability.
+
+\section{Design rules}
+\label{sec:rules}
+
+\begin{enumerate}
+\item \textbf{Never use a reference as a similarity target.}
+Its value is as context for a reader (Section~\ref{sec:certify}) or as a checkable endpoint for a verifier (Section~\ref{sec:verify}); any metric scoring resemblance to reference text inherits the nuisance decomposition of Section~\ref{sec:mechanism}, and the taxonomy correctly predicted the failure of every such metric before it was built.
+\item \textbf{For leaderboards, matching is legitimate exactly when references are worth predicting.}
+Report reference entropy alongside accuracy; on answer-line references, matching measures style.
+\item \textbf{Certify evaluators before optimizing against them, in the deployment domain.}
+Sixty blind labels on two separated scales, a divergence stratum, and two partial correlations decide the matter; the verdict predicted best-of-64 hack-resistance in every in-domain configuration, and the one cross-domain exception (the referenced 1.5B judge on code) is the reason the audit must be run where the judge will be used.
+\item \textbf{Match the reference's form to the judge's capability.}
+A reference only helps a judge that can verify against it; small judges need comparable text, not executable specifications.
+\item \textbf{Elicit fine-grained scores from selecting judges.}
+\item \textbf{Audit the oracle before the evaluator.}
+In the course of this work, three apparent oversight ``laws'' dissolved under adjudication into benchmark label errors and scorer bugs (71--83\% of flagged cases); ladder--frontier unanimous disagreement with the label is itself an $\sim$89\%-precision benchmark-bug miner.
+Measurement claims about evaluators are only as good as the ground truth they are scored against.
+\end{enumerate}
+
+\section{Limitations}
+\label{sec:limits}
+
+The human anchor is currently 80 random items graded by one annotator who is also an author, plus a divergence block graded by two; a second rater on thirty random items, an external non-author annotator, and the code-domain human labels are pending, and the prefix-repair headline ($+0.79$) should be treated as provisional until they land.
+The prefix-repair completer shares a family with a subset of graded traces, and its signal is substantially correctness-mediated (among correct-only solutions it drops to $+0.21$); the same caveat applies to every signal except the judge.
+Selection-pressure results use one generator per domain and strict string-match oracles (equivalence adjudication pending; it can only shrink no-reference regrets, making the reference contrast conservative).
+Judge-validity claims cover one frontier judge on math plus executable code; a second dataset and a frontier-judge row are future work.
+Pooled seventeen-model rankings carry wide intervals; within-family counts carry that evidence.
+Phase~1 --- training against certified and uncertified judges rather than selecting with them --- is designed and gated on this write-up.
+
+\section{Related work}
+\label{sec:related}
+
+Reliability audits of LLM judges (agreement, position bias, test--retest) conclude that reliability without validity is the open problem and call for variance-component analysis of the kind performed here; psychometric treatments of judges are emerging in parallel.
+The style-over-substance literature documents judge biases in general pools; complementarily, we find that on reference-equipped math with a strong judge the style loading is not detectable, and the larger measurement hazards sat in the benchmarks' own answer keys.
+Scaling-law treatments of oversight measure judge--solver capability gaps in game-like settings; our capability gate localizes the analogous phenomenon to a concrete mechanism (verification hardness of the reference) on real math and code.
+Reward-model overoptimization is documented for trained reward models; our contribution is an \emph{ex-ante} certificate, measured on sixty labels, that predicted which judge configurations would be exploited before any optimization ran, plus the two-mode decomposition of what ``exploited'' means.
+JudgeLM and Prometheus ablate references as a training design choice for judge models; we show references flip the \emph{validity} of untrained judges and that the effect is capability-gated.
+Completion-based process values descend from rollout estimation in process supervision; the prefix-repair \emph{curve}, its monotone depth profile, and its difficulty-controlled reading appear to be new, as does the class-level advance-prediction test of the comparison/verification taxonomy.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+Reference-based evaluation has been treated as a spectrum of increasingly good approximations to judgment.
+It is not a spectrum; it is two mechanisms.
+Signals that compare a solution to reference text measure the reference --- $80\%$ perplexity, $83$--$92\%$ item nuisance --- and no reweighting recovers a grading signal, because there is none to recover.
+Signals that verify a checkable endpoint grade in proportion to how much verification they perform, from a one-pass answer-swap margin through the prefix-repair curve to executed tests, with LLM judges joining the class exactly when a trusted reference anchors them and they are capable of using it.
+Because the failure is mechanistic, trust stops being a leap: a sixty-label blind audit certifies an evaluator in its deployment domain, the certificate predicted hack-resistance under best-of-64 pressure across two domains, and the taxonomy called the outcome of every new metric we built before the data existed.
+The open frontier is dynamic: what a policy \emph{trained} against a certified versus an uncertified judge internalizes --- the frontier sabotage mode that deceives metrics without damaging selection makes that the question on which the rest of this program hangs.
+
+\vspace{1em}
+\noindent\textbf{Reproducibility.}
+All scores, labels, decompositions, pre-registered analysis scripts, and the certification instruments are in the repository (\texttt{experiments/tfa-vs-judge}): the class table (\texttt{runs/metric\_class\_results.md}), the decomposition (\texttt{scripts/two\_way\_decomp.py}), the short-reference intervention (\texttt{scripts/tfa\_shortref.py}), the metric slate (\texttt{scripts/analyze\_metric\_ablations.py}, \texttt{scripts/analyze\_slate2.py}), the certification protocol (\texttt{docs/judge-certification-paper.md}, \texttt{runs/cert\_out/}), the selection-pressure grids (\texttt{scripts/bon\_*.py}, \texttt{runs/bon\_phase0\_results.md}, \texttt{runs/bon\_v2\_full.json}, \texttt{runs/bon\_code\_full.json}), and the labeling instruments with returned labels (\texttt{human\_eval/}).
+
+\end{document}
