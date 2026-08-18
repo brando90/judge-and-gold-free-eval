@@ -1,0 +1,22 @@
+{
+ "C_entropy_normalized_tfa": {
+  "corr_tfa_bpc": -0.8952437470568199,
+  "ranking_rho_raw": 0.1258741258741259,
+  "ranking_rho_normalized": -0.16783216783216784,
+  "n_models": 12
+ },
+ "D_prefix_repair_curve": {
+  "n": 60,
+  "r_v0_soundness": 0.543349082191839,
+  "r_v25_soundness": 0.6797579186263648,
+  "r_v5_soundness": 0.7583614437366207,
+  "r_v75_soundness": 0.7849805958414702,
+  "r_mean_soundness": 0.7870917345124767,
+  "r_gain_soundness": 0.4059333358733736,
+  "r_gain_partial_v0": 0.6876340611957286,
+  "r_judge_soundness_same_n": 0.8944053492705076,
+  "among_correct_n": 45,
+  "among_correct_r_v75": 0.20946370538841302,
+  "full200_r_v75_cc": 0.7016251743332221
+ }
+}

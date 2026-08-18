@@ -21,6 +21,7 @@ And we know *why*, causally, not just descriptively:
 | boundary map vs reference entropy | ρ = +0.89 | the apparent ranking signal tracks reference *complexity* |
 | short-reference deconfound (same items) | boundary +0.35 → +0.02 | strip the reference to answer-only and the signal *vanishes* |
 | code domain vs executable tests | r = 0.00 (n=492) | against a perfect verifier, similarity carries nothing |
+| **TFA vs reference perplexity (new)** | **r = −0.895** (12 models × 500 items) | TFA *is* 80% reference-complexity-under-the-model; entropy-normalizing it kills the ranking signal (+0.13 → −0.17) |
 
 **On your specific suggestion (weight first tokens less than last): ran it, full sweep, today.**
 Per-token reference hits for 12 cross-family models on MATH-500, weighting w ∝ (pos/n)^γ from
@@ -54,8 +55,27 @@ fixed 7B scorer, judge-free): within-model correlation with correctness is posit
 (mean r +0.13, best +0.34; correct traces support their answers more than wrong ones in 8/9).
 Direction confirms the class prediction — a verification-shaped signal carries real information
 where five similarity metrics carry none — but the cheap single-point version is weak (judge +0.59,
-PV +0.49 remain far ahead). Next variant in the slate: the prefix-repair curve, which PV's +0.49
-already suggests is the strongest cheap verification signal.
+PV +0.49 remain far ahead).
+
+**And the strongest slate result — the prefix-repair curve** (truncate the trace at depth k, ask a
+completer to finish it, read the success profile over k; entirely judge-free, and the data already
+existed in the PV rollouts). Against the fresh n=80 random-stratum human labels (60 joined):
+
+| truncation depth k | 0.0 (solve from scratch) | 0.25 | 0.5 | 0.75 |
+|---|---|---|---|---|
+| r vs human soundness | +0.54 | +0.68 | +0.76 | **+0.79** |
+
+Monotone in depth — the more of the trace the completer conditions on, the more soundness signal —
+which is exactly what "the trace's reasoning causally supports the answer" should look like. The
++0.79 at deep truncation is the best judge-free number in the whole class table (similarity metrics
+≤ |0.14|, single-point PV +0.49; the LLM judge on the same 60 traces reads +0.89). Controlling for
+problem difficulty (k=0 is a pure difficulty probe), the prefix's added completability still
+carries +0.69. Caveats to tighten before claiming: one rater so far, mostly correctness-mediated
+(among-correct r drops to +0.21), completer shares a family with some traces.
+
+All four slate predictions registered pre-run landed as called: two comparison-class metrics null
+or worse (position-weighting, entropy-normalizing), two verification-class metrics carry signal
+(answer-swap weakly, prefix-repair strongly).
 
 ## Act 3 — Trust is certifiable ex-ante, and the certificate predicts hack-resistance
 
@@ -80,5 +100,5 @@ Taxonomy + mechanism + certification: (1) similarity metrics can't grade, provab
 audit tells you which evaluators to trust, and it predicts dynamic robustness. Venue thinking
 stays ACL/EMNLP or NeurIPS D&B.
 
-Next: prefix-repair PV curve + entropy-normalized TFA (the remaining slate), human labels n=80 + second rater
+Next: second rater + external annotator on the n=80 (to firm up the prefix-repair claim), code labels,
 (pending), Phase 1 DPO gated on writeup.
