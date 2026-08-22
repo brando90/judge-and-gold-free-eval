@@ -25,6 +25,22 @@ Scale of the study so far: **17 models, 7 families, 8 datasets** (math, olympiad
 tool calls), **2 frontier judges**.
 
 Full writeup: **[`experiments/tfa-vs-judge/paper/PAPER.md`](experiments/tfa-vs-judge/paper/PAPER.md)**.
+Unified paper draft (LaTeX): **[`paper_latex/main.tex`](paper_latex/main.tex)** ("Verify, Don't Compare").
+
+## Artifacts
+
+Slide decks (hosted on claude.ai):
+
+- **[Judge-free grading against references: skill on hard tasks, style on easy](https://claude.ai/code/artifact/b3db133a-5629-4593-8b6e-f132f87cc8ad)** — the current main TFA deck (v2, addresses Sanmi's 8 points).
+- **[Watching the watchers: when do AI judges actually fail?](https://claude.ai/code/artifact/058650f0-a05d-4493-8529-fb0fbd7a1f4f)** — the oversight / judge-reliability deck (scale x reference interaction, label-artifact anatomy).
+- **[The program: reliable judges without ground truth](https://claude.ai/code/artifact/31e0d510-1dc3-419b-8f22-0507ca7903c8)** — the 5-step research-program one-pager.
+- Earlier deck iterations: [TFA: when can a judge-free signal grade reasoning?](https://claude.ai/code/artifact/87604c5e-7c56-4bb2-bcfd-d7af33a429b5) (Aug 3), [Judge-free evaluation of math reasoning](https://claude.ai/code/artifact/b8b929b4-fa5d-431e-9adc-df8e556528f2) (Jul 31).
+
+Human-labeling instruments (blind, two-scale soundness/style; see `experiments/tfa-vs-judge/human_eval/`):
+
+- **[Reasoning-trace labeling (public)](https://claude.ai/code/artifact/b50024f9-6198-4e9c-8520-0d13cb14faca)** — the shareable labeling instrument.
+- [Labeling set v2](https://claude.ai/code/artifact/7e601e93-b797-470f-94dc-884621476437) (242 items: 42 diagnostic + 200 random MATH-500) · [code-domain labeling](https://claude.ai/code/artifact/e4328ef4-d4cb-463e-b0c5-a8549a134463) (60 items, 30 pass / 30 fail).
+- Per-rater instruments: [author 1](https://claude.ai/code/artifact/433e4f1f-3a34-4f9e-a70f-e07c054a7ba6) · [author 2](https://claude.ai/code/artifact/ad2372eb-d9d4-451b-a05a-90365165d086) · [divergence block](https://claude.ai/code/artifact/1347fc25-e794-4e52-ae8c-08b95d9bc1b7).
 
 ---
 
