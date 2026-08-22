@@ -25,7 +25,7 @@ Scale of the study so far: **17 models, 7 families, 8 datasets** (math, olympiad
 tool calls), **2 frontier judges**.
 
 Full writeup: **[`experiments/tfa-vs-judge/paper/PAPER.md`](experiments/tfa-vs-judge/paper/PAPER.md)**.
-Unified paper draft (LaTeX): **[`paper_latex/main.tex`](paper_latex/main.tex)** ("Verify, Don't Compare").
+Unified paper draft: **[`paper_latex/main.pdf`](paper_latex/main.pdf)** ("Verify, Don't Compare"; LaTeX source in [`paper_latex/main.tex`](paper_latex/main.tex)).
 
 ## Artifacts
 
