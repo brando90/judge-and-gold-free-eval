@@ -53,4 +53,6 @@ The frontier mode, deceiving the metric while selecting well, is the one that me
 
 \paragraph{Granularity beats scale once a reference is in hand.}
 The referenced 1.5B outselects the frontier on math because the frontier's 0--10 scale ties $78\%$ of items at the top and random tie-breaks admit wrong answers, while the small judge's continuous expected scores stay sharp.
-A tie-handling ablation (frontier judge, 0--100 scale) is registered and running [pending].
+A registered ablation separates two kinds of granularity.
+Re-eliciting the frontier judge on a 0--100 integer scale cuts its regret from $0.117$ to $0.069$ and its gap from $+0.38$ to $+0.27$, confirming the registered prediction, yet top-ties rise to $90\%$ and the frontier still does not approach the small judge's $0.010$.
+Elicited granularity helps; distributional granularity, reading the expectation over score-token probabilities, helps more, and only judges that expose token probabilities offer it fully.
