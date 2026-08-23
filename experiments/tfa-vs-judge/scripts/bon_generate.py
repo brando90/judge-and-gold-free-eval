@@ -24,8 +24,9 @@ elif args.domain in ("replpilot", "repl"):
     fn = "runs/repl_pilot_tasks.jsonl" if args.domain == "replpilot" else "runs/repl_main_tasks.jsonl"
     tasks = [json.loads(l) for l in open(fn)]
     def prompt_of(r):
-        return ("Answer the following question. Think briefly if needed, then give your final "
-                "answer in \\boxed{}.\n\n" + r["problem"])
+        return ("Answer the following question. Think step by step if needed. You MUST end "
+                "your response with the final answer inside \\boxed{...}, with nothing after "
+                "it. Example ending: The answer is \\boxed{42}\n\n" + r["problem"])
 elif args.domain == "synthk":
     tasks = [json.loads(l) for l in open("runs/bon_synthk_tasks.jsonl")]
     def prompt_of(r):

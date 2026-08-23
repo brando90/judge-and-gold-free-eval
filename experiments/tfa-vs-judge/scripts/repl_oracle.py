@@ -9,6 +9,9 @@ import re
 
 ap = argparse.ArgumentParser()
 ap.add_argument("--pool", required=True)
+ap.add_argument("--tasks", default=None,
+                help="task file to join params by problem_id when the pool lacks them; "
+                     "defaults by pool name (replpilot -> pilot tasks, repl -> main tasks)")
 args = ap.parse_args()
 
 
@@ -84,6 +87,13 @@ def valid(params, answer_text):
 
 
 rows = [json.loads(l) for l in open(args.pool)]
+if rows and "params" not in rows[0]:
+    tf = args.tasks or ("runs/repl_pilot_tasks.jsonl" if "replpilot" in args.pool
+                        else "runs/repl_main_tasks.jsonl")
+    tmap = {json.loads(l)["problem_id"]: json.loads(l) for l in open(tf)}
+    for r in rows:
+        r["params"] = tmap[r["problem_id"]]["params"]
+        r["hard"] = tmap[r["problem_id"]].get("hard")
 for r in rows:
     r["oracle"] = [int(valid(r["params"], extract_boxed(s) or s[-100:]))
                    for s in r["samples"]]

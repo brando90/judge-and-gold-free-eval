@@ -41,11 +41,11 @@ def ndiv(x):
 
 def gen_crt(rng, hard):
     while True:
-        m, n = rng.choice([3, 5, 7, 11]), rng.choice([4, 9, 13, 8])
+        m, n = rng.choice([3, 5, 7]), rng.choice([2, 4, 9])
         if m == n or __import__("math").gcd(m, n) != 1:
             continue
         a, b = rng.randrange(m), rng.randrange(n)
-        span = (3000, 9000) if hard else (300, 2500)
+        span = (200, 900) if hard else (10, 90)
         lo = rng.randrange(*span)
         hi = lo + (m * n * (3 if hard else 5))
         sols = [x for x in range(lo, hi + 1) if x % m == a and x % n == b]
@@ -74,7 +74,7 @@ def gen_subset(rng, hard):
 
 def gen_goldbach(rng, hard):
     while True:
-        N = rng.randrange(400, 1400, 2) if hard else rng.randrange(60, 400, 2)
+        N = rng.randrange(200, 800, 2) if hard else rng.randrange(40, 200, 2)
         pairs = []
         for p in PRIMES:
             if p >= N:
@@ -90,9 +90,9 @@ def gen_goldbach(rng, hard):
 
 def gen_divcount(rng, hard):
     while True:
-        k = rng.choice([8, 12] if hard else [4, 6])
-        lo = rng.randrange(1500, 6000) if hard else rng.randrange(50, 400)
-        hi = lo + (40 if hard else 25)
+        k = rng.choice([4, 6] if hard else [2, 3])
+        lo = rng.randrange(100, 500) if hard else rng.randrange(10, 80)
+        hi = lo + (30 if hard else 20)
         sols = [str(x) for x in range(lo, hi + 1) if ndiv(x) == k]
         if 2 <= len(sols) <= 12:
             q = (f"Give one integer x with {lo} <= x <= {hi} that has exactly {k} positive "
@@ -102,9 +102,9 @@ def gen_divcount(rng, hard):
 
 def gen_digitsum(rng, hard):
     while True:
-        d = 4 if hard else 3
-        qq = rng.choice([7, 11, 13, 17] if hard else [3, 7, 11])
-        s = rng.choice([26, 27, 28, 29]) if hard else rng.randrange(6, 20)
+        d = 3 if hard else 2
+        qq = rng.choice([7, 11] if hard else [2, 3, 5])
+        s = rng.randrange(10, 20) if hard else rng.randrange(4, 13)
         lo, hi = 10 ** (d - 1), 10 ** d - 1
         sols = [str(x) for x in range(lo, hi + 1)
                 if x % qq == 0 and sum(map(int, str(x))) == s]
@@ -139,7 +139,7 @@ ap.add_argument("--n-main", type=int, default=120)
 ap.add_argument("--n-pilot", type=int, default=20)
 args = ap.parse_args()
 
-rng = random.Random(20260823)
+rng = random.Random(20260824)
 pilot = build(rng, args.n_pilot, args.hard_frac, "pilot")
 main = build(rng, args.n_main, args.hard_frac, "repl")
 with open("runs/repl_pilot_tasks.jsonl", "w") as f:
