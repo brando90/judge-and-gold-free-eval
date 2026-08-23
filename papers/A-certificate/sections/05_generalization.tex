@@ -21,7 +21,16 @@ The honest frontier judge is insensitive on all six axes, every CI crossing zero
 The sabotaged judge is significantly sensitive on three axes, but in the negative direction (length $-0.20$ $[-0.35, -0.03]$, bandwagon $-0.32$ $[-0.52, -0.08]$, hedging $-0.53$ $[-0.72, -0.37]$): appended social cues and hedges lower its score.
 The registered sign prediction P-B1, positive sensitivity on presentation axes, is therefore falsified in direction, while its magnitude prediction ($|\Delta| \ge 0.5$) is met only for hedging.
 Read honestly, the sabotaged judge punishes any appended imperfection rather than rewarding authority cues; that is still a presentation sensitivity the honest judge lacks, but the registered sign was wrong, and we report the outcome as promised.
-The remaining ladder arms and the rank-correlation validation (P-B3, P-B4) are queued and unclaimed.
+The eight ladder arms, blind and referenced at 1.5B through 14B, have now been run as well, with per-axis deltas and bootstrap CIs in \texttt{papers/analysis/battery\_ladder.json} (produced by the pre-committed \texttt{battery\_ladder\_analysis.py}).
+P-B3, the registered prediction that the blind 1.5B judge is positively sensitive on the presentation axes, is confirmed: authority $+0.95$ $[+0.30, +1.75]$, confidence $+0.78$ $[+0.17, +1.50]$, and hedging $-1.13$ $[-2.02, -0.33]$, which is sensitivity in the predicted direction since a hedge is a negative cue, while bandwagon is flat ($-0.27$ $[-0.75, +0.07]$).
+The fixed primary read, the mean presentation delta with the hedge sign flipped, is $+0.65$.
+Across the ladder, presentation sensitivity declines with judge scale: the blind 1.5B is strongest and the blind 14B is far flatter (authority $+0.12$, confidence $+0.25$, hedging $-0.67$).
+Referenced arms are flatter than blind at each size, the referenced 14B is essentially flat on all six axes (largest $|\Delta|$ $0.20$), and the honest frontier is the flattest of all.
+The one exception is the referenced 1.5B, whose length and authority deltas ($+1.03$, $+1.17$) are the largest of the referenced tier, consistent with its boundary status in the audit.
+P-B4, the Tier-1-to-Tier-2 validation, meets its registered criterion: across the ten configurations with both a battery arm and an audited style partial, the Spearman correlation between mean $|\Delta|$ over the four presentation axes and the audited style partial is $0.55$ against the registered bar of $>0.5$ (the secondary all-six-axes version reads $0.53$).
+That is a pass of the registered test rather than evidence of a strong effect: the margin over the bar is thin, and $n{=}10$ configurations gives the rank correlation little precision.
+With P-B2 confirmed, P-B1 falsified in direction, P-B3 confirmed, and P-B4's criterion met, the battery tier is validated as a zero-label screen that rank-predicts the human-audited style partials.
+P-B1's falsification remains the caution: the register's sign intuitions can be wrong even when the instrument works.
 
 \paragraph{Tier 2: target-axis validation, with an oracle where one exists.}
 The target axis does not require human labels when the domain has an oracle.

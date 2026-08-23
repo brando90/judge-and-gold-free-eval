@@ -38,7 +38,7 @@ cfg = DPOConfig(
     output_dir=out_dir, per_device_train_batch_size=1, gradient_accumulation_steps=8,
     num_train_epochs=args.epochs, learning_rate=args.lr, beta=args.beta,
     logging_steps=20, save_strategy="no", bf16=True, gradient_checkpointing=True,
-    max_length=1536, max_prompt_length=512, report_to=[], seed=0)
+    max_length=1536, report_to=[], seed=0)
 peft_cfg = LoraConfig(r=16, lora_alpha=32, lora_dropout=0.05, task_type="CAUSAL_LM",
                       target_modules=["q_proj", "k_proj", "v_proj", "o_proj"])
 trainer = DPOTrainer(model=model, args=cfg, train_dataset=ds,

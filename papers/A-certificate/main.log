@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.22)  23 AUG 2026 06:12
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.22)  23 AUG 2026 07:18
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -476,9 +476,9 @@ Package pdftex.def Info: figures/fig_gate.pdf  used on input line 66.
 (pdftex.def)             Requested size: 422.77664pt x 126.78505pt.
 )
 (./sections/05_generalization.tex [10 <./figures/fig_curves.pdf>] [11 <./figure
-s/fig_gate.pdf>] [12]) (./sections/05_rules_discussion.tex [13])
-(./sections/06_related.tex [14]) (./main.bbl [15]) (./sections/07_appendix.tex
-[16] [17])
+s/fig_gate.pdf>] [12]) (./sections/05_rules_discussion.tex [13] [14])
+(./sections/06_related.tex) (./main.bbl [15] [16]) (./sections/07_appendix.tex
+[17])
 Overfull \hbox (64.39206pt too wide) in paragraph at lines 29--33
 \OT1/cmr/m/n/10.95 paired bound-ary con-trasts of Sec-tion [][]4[][], and the 1
 .5B con-vic-tion in-fer-ence are in \OT1/cmtt/m/n/10.95 papers/analysis/gap[]ci
@@ -515,7 +515,7 @@ Here is how much of TeX's memory you used:
  40909 multiletter control sequences out of 15000+600000
  639663 words of font info for 86 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,11n,79p,1463b,564s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,11n,79p,1463b,569s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb>
@@ -526,7 +526,7 @@ sr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr
 ocal/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/lo
 cal/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/loc
 al/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on main.pdf (18 pages, 346893 bytes).
+Output written on main.pdf (18 pages, 348750 bytes).
 PDF statistics:
  595 PDF objects out of 1000 (max. 8388607)
  371 compressed objects within 4 object streams

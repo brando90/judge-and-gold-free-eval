@@ -13,7 +13,7 @@ from transformers import AutoTokenizer
 ap = argparse.ArgumentParser()
 ap.add_argument("--pool", required=True)
 ap.add_argument("--judge", required=True)
-ap.add_argument("--cond", choices=["noref", "ref", "sabotage", "refinst", "multiref"], required=True)
+ap.add_argument("--cond", choices=["noref", "ref", "sabotage", "refinst", "refinst2", "multiref"], required=True)
 ap.add_argument("--rep", choices=["a", "b"], required=True)
 ap.add_argument("--domain", choices=["math", "code", "ties", "synthk"], default="math")
 ap.add_argument("--filter-band", action="store_true", help="only items with pool pass in [0.2,0.8]")
@@ -57,18 +57,23 @@ for v in range(11):
             CAND.setdefault(ids[0], v)
 
 def build(r, s):
-    cond_key = "ref" if args.cond in ("refinst", "multiref") else args.cond
+    cond_key = "ref" if args.cond in ("refinst", "refinst2", "multiref") else args.cond
     sys = {"code": RUBRIC_CODE, "ties": RUBRIC_TIES, "synthk": RUBRIC_TIES}.get(args.domain, RUBRIC)[(cond_key, args.rep)]
     if args.cond == "refinst":
         sys += (" Note: the reference shown is one valid answer among possibly many; the "
                 "question may have several correct answers, and any correct answer deserves "
                 "full credit even if it differs from the reference.")
+    if args.cond == "refinst2":
+        sys += (" Important: do not compare the candidate's answer to the reference. "
+                "Use the reference only to understand the problem. Verify the candidate's "
+                "answer on its own merits; a correct answer that differs from the reference "
+                "must receive the same score as one that matches it.")
     q = r.get("problem") or r.get("question") or r.get("prompt")
     parts = [f"Problem:\n{q}"]
     if args.cond == "multiref":
         parts.append("Reference answers (trusted; a sample of the valid answers):\n"
                      + "\n".join(r["multi_refs"]))
-    if args.cond == "refinst":
+    if args.cond in ("refinst", "refinst2"):
         parts.append(f"Reference answer (trusted):\n{r['ref_answer']}")
     if args.cond == "ref":
         # code reference = the canonical assert set (example_test), NOT the full MBPP+/EvalPlus
