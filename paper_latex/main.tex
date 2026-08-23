@@ -68,7 +68,17 @@ The second is that whether a given judge can be trusted is an empirical unknown,
 % P3: the flip
 Both assumptions fail, and for the same reason.
 The operative axis is not cost but \emph{mechanism}.
-Evaluation signals divide into a \emph{comparison class}, which scores resemblance to the reference text, and a \emph{verification class}, which checks whether the solution reaches or supports a checkable endpoint.
+Evaluation signals divide into a \emph{comparison class}, which scores resemblance to the reference text, and a \emph{verification class}, which checks whether the solution reaches or supports a checkable endpoint (Figure~\ref{fig:concept}).
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{figs/fig0_concept.png}
+\caption{\textbf{The compare-vs-verify divide, and why it is auditable.}
+Top: comparison metrics score a candidate by its resemblance to the reference text, so most of their signal is a property of the reference, not the solution.
+Middle: verification signals check the solution against a checkable endpoint, so their signal tracks the solution's actual quality.
+Bottom: a blind sixty-label audit reveals which mechanism an evaluator uses, and the verdict predicts whether it survives optimization pressure (Section~\ref{sec:pressure}).}
+\label{fig:concept}
+\end{figure}
 The comparison class does not degrade gracefully.
 It measures nothing about the individual solution at any price point, because its variance is dominated by a property of the reference itself.
 And because the failure is mechanistic, trust stops being an unknown.
