@@ -1,0 +1,19 @@
+\appendix
+
+\section{Full configuration accounting}
+\label{app:confusion}
+All 25 pressure-tested configurations: 12 math (4 blind, 4 referenced, frontier honest, frontier sabotaged, plus two sabotaged ladder configurations never audited) and 13 code (4 blind, 4 referenced, frontier blind, frontier referenced, frontier sabotaged, two sabotaged ladder).
+Audited in-domain: the 10 math configurations of Table~\ref{tab:h2h}; all separate correctly.
+Never audited: sabotaged 7B (math gap $+0.13$ ns, regret $0.400$; code $+0.84$, $0.559$) and sabotaged 14B (math $+0.61$, $0.324$; code $+0.96$, $0.426$); both are excluded from prediction claims, and an audit run for them is registered.
+Code: extrapolated verdicts, 12 of 13 outcomes match; the referenced 1.5B is the miss (gap $+1.40$, regret $0.441$).
+
+\section{Verdict stability under label subsampling}
+\label{app:subsample}
+At $n$ labels resampled from the anchor set (500 draws), the fraction of draws reproducing the full-sample verdict under fixed rules (convict if style partial $> 0.30$; pass if soundness partial $> 0.40$ and style partial $< 0.20$): sabotage conviction $0.93/0.98/1.00$ at $n = 20/30/40$; honest frontier pass $0.96/1.00/1.00$; 1.5B-blind conviction $0.65/0.84/0.94$; boundary configurations (1.5B referenced, 14B blind) remain below $0.7$ until $n \ge 50$.
+Full table: \texttt{papers/analysis/label\_subsampling.md}.
+
+\section{Paired-contrast confidence intervals}
+\label{app:cis}
+Blind-minus-referenced excess-gap contrasts, with per-item bootstrap 95\% CIs.
+Math: $+0.72$ $[+0.57,+0.86]$, $+0.37$ $[+0.24,+0.51]$, $+0.62$ $[+0.48,+0.76]$, $+0.57$ $[+0.36,+0.78]$ (1.5B/3B/7B/14B, $n{=}105$); code $+0.05$ $[-0.29,+0.40]$, $+0.63$ $[+0.44,+0.83]$, $+0.56$ $[+0.32,+0.81]$, $+0.67$ $[+0.41,+0.95]$ ($n{=}68$).
+On the multi-valid tasks the sign inverts: referenced-minus-blind contrasts are positive at all four sizes ($+0.35, +0.65, +0.08, +0.47$; individual CIs cross zero at $n{=}51$ items; the anchoring-margin mechanism carries CIs excluding zero in all eight referenced cells).

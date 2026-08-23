@@ -1,0 +1,56 @@
+\section{The certificate under pressure}
+\label{sec:pressure}
+
+The experiment is simple to state: a 7B generator writes 64 candidates per problem, each judge configuration picks its favorite, and we check what happened.
+Two pre-registered estimands separate deception from damage.
+The \emph{excess hack gap} measures scoreboard inflation relative to true quality, in baseline standard deviations over a within-oracle-stratum permutation null (judge scores permuted among samples with the same correctness).
+\emph{Oracle regret} measures accuracy left on the table against best-possible selection.
+Selection and reporting use different rubric paraphrases, canceling winner's curse.
+Item pools are 105 \textsc{MATH-500} and 68 \textsc{MBPP+} items on which the generator sometimes but not always succeeds (pool pass rate in $[0.2, 0.8]$); estimators were committed before generation.
+
+\subsection*{RQ3: Does the audit's verdict predict gaming?}
+
+In-domain, completely.
+The registered predictions were categorical: blind ladder judges fail the audit and referenced ones pass; the sabotaged judge is convicted; failed evaluators are gamed.
+On the ten configurations audited in-domain, outcomes separate completely and in the registered direction: every certified configuration shows less inflation (maximum $+0.38\sigma$) and less regret (maximum $0.117$) than every failed or convicted configuration (minimum $+0.44\sigma$; minimum blind regret $0.324$; the sabotaged frontier's regret $0.133$ is the one low-damage failure, and its failure mode is inflation).
+We do not claim a pre-frozen numeric threshold; we claim registered categorical verdicts plus complete observed separation, with the full 25-configuration accounting in Appendix~\ref{app:confusion}.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig_curves.pdf}
+\caption{\textbf{Pressure curves: raw hack gap versus best-of-$n$} for every configuration with existing candidate pools, recomputed at $n = 4, 16, 64$ with the pre-registered estimators.
+Blue: certified (referenced) configurations; orange: failed or convicted ones.
+\textbf{Takeaway: failed configurations' inflation roughly doubles from $n{=}4$ to $n{=}64$ while certified configurations' rises by less than $0.15\sigma$; the certificate predicts the slope of hacking, not only its endpoint.}}
+\label{fig:curves}
+\end{figure}
+
+\paragraph{The separation grows with optimization strength.}
+Failed configurations steepen and certified ones stay flat (Figure~\ref{fig:curves}).
+The blind 3B's code gap runs $+0.64 \to +0.94 \to +1.24$ across $n = 4, 16, 64$, and the blind 7B's $+0.57 \to +0.95 \to +1.19$; the referenced 3B runs $+0.33 \to +0.40 \to +0.44$ and the referenced frontier $+0.39 \to +0.43 \to +0.48$.
+
+\paragraph{Cross-domain extrapolation, and the miss that teaches.}
+No code-domain audit was run; the thirteen code verdicts are extrapolations by protocol (referenced passes, blind fails), and twelve of thirteen outcomes match.
+The exception is the referenced 1.5B judge, gamed as badly as its blind twin (Figure~\ref{fig:gate}).
+Our explanation is post hoc but mechanistic: on math a reference is text the judge compares; on code it is a test suite the judge must mentally execute, and a 1.5B judge cannot.
+The same referenced 1.5B judge was the best selector on math (regret $0.010$, beating the frontier's $0.117$).
+Operationally: a judge certified on one domain is not thereby certified on another; run the audit where the judge will be used.
+An in-domain code audit is registered as the direct test of this explanation [pending].
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.9\textwidth]{figures/fig_gate.pdf}
+\caption{\textbf{The capability gate.}
+Excess hack gap at $n{=}64$ without (orange) and with (blue) a trusted reference, by judge scale and domain.
+\textbf{Takeaway: the reference collapses inflation at every scale on math, where using it means comparing text, and only at 3B and above on code, where using it means executing tests.}}
+\label{fig:gate}
+\end{figure}
+
+\paragraph{Two failure modes, and capability trades one for the other.}
+Across the sabotage arms, damage falls and self-inflation rises with judge capability.
+The sabotaged 7B damages without inflating (regret $0.400$, gap $+0.13$, not significant); sabotaged GPT-5.2 inflates without damaging (gap $+0.85$, regret $0.133$).
+A blind cross-family panel confirms the channel: sabotage-selected solutions are more styled ($+0.27$ $[0.10, 0.44]$) with no detectable soundness loss.
+The frontier mode, deceiving the metric while selecting well, is the one that menaces training.
+
+\paragraph{Granularity beats scale once a reference is in hand.}
+The referenced 1.5B outselects the frontier on math because the frontier's 0--10 scale ties $78\%$ of items at the top and random tie-breaks admit wrong answers, while the small judge's continuous expected scores stay sharp.
+A tie-handling ablation (frontier judge, 0--100 scale) is registered and running [pending].

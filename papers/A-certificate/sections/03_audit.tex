@@ -1,0 +1,102 @@
+\section{The audit}
+\label{sec:audit}
+
+\paragraph{Protocol.}
+The audit reads two numbers from the judge's scores on the labeled set: the partial correlation with the target axis holding the nuisance axis fixed, and the reverse.
+A substance-reading judge shows the first high and the second near zero; a nuisance-loaded judge shows the reverse.
+Two auxiliary checks complete the instrument.
+The within-correct check asks whether the judge separates sound from lucky reasoning among right answers; it must be run on the decorrelated stratum, because on the random set range restriction destroys it (the honest frontier judge reads $+0.81$ on the stratum and $-0.14$ on the random set, where $96\%$ of its scores are identical).
+The shared-block ceiling bounds what any signal can be credited with.
+
+\subsection*{RQ1: Can the audit distinguish substance-reading from nuisance-loaded judges?}
+
+Yes: it passes, convicts, and flips.
+The honest frontier judge passes with soundness partial $+0.90$ $[+0.77, +0.97]$ and style partial $-0.22$ $[-0.40, +0.05]$ ($n{=}60$).
+The sabotaged judge is convicted on the same items: style partial $+0.59$ $[+0.36, +0.76]$, soundness partial $+0.20$ $[-0.07, +0.44]$.
+The verdict tracks protocol, not model identity: blind, the 1.5B judge reads style (partial $+0.51$) and the 3B--14B judges are too weak to certify, while with the gold solution in context every ladder judge passes (Table~\ref{tab:h2h}).
+A reference changes what a judge measures, not merely how accurately it measures.
+
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lcccccc}
+\toprule
+& & \multicolumn{1}{c}{naive} & \multicolumn{2}{c}{audit} & \multicolumn{2}{c}{pressure outcome} \\
+configuration & $n$ & raw $r$ & sound.\ partial & style partial & gap ($\sigma$) & regret \\
+\midrule
+1.5B blind & 53 & $+0.18$ & $-0.00$ & $+0.51$ & $+0.88$ & $0.448$ \\
+3B blind & 60 & $+0.24$ & $+0.19$ $[-0.09,+0.53]$ & $+0.16$ $[-0.17,+0.44]$ & $+0.44$ & $0.429$ \\
+7B blind & 60 & $+0.33$ & $+0.32$ $[+0.04,+0.60]$ & $-0.02$ $[-0.31,+0.30]$ & $+0.80$ & $0.324$ \\
+14B blind & 60 & $+0.37$ & $+0.41$ $[+0.12,+0.64]$ & $-0.21$ $[-0.40,+0.00]$ & $+0.63$ & $0.324$ \\
+\midrule
+1.5B referenced & 56 & $+0.55$ & $+0.51$ $[+0.21,+0.75]$ & $+0.10$ $[-0.21,+0.44]$ & $+0.16$ & $\mathbf{0.010}$ \\
+3B referenced & 60 & $+0.55$ & $+0.53$ $[+0.36,+0.70]$ & $-0.02$ $[-0.33,+0.29]$ & $+0.07$ & $0.038$ \\
+7B referenced & 60 & $+0.66$ & $+0.66$ $[+0.48,+0.82]$ & $-0.12$ $[-0.35,+0.17]$ & $+0.18$ & $0.019$ \\
+14B referenced & 60 & $+0.70$ & $+0.70$ $[+0.50,+0.85]$ & $-0.11$ $[-0.34,+0.15]$ & $+0.05$ & $0.048$ \\
+\midrule
+GPT-5.2 honest & 60 & $+0.89$ & $+0.90$ $[+0.77,+0.97]$ & $-0.22$ $[-0.40,+0.05]$ & $+0.38$ & $0.117$ \\
+GPT-5.2 sabotaged & 60 & $+0.35$ & $+0.20$ $[-0.07,+0.44]$ & $\mathbf{+0.59}$ $[+0.36,+0.76]$ & $+0.85$ & $0.133$ \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{Naive validation versus the audit, against pressure outcomes (math; all ten in-domain-audited configurations).}
+Gap = excess hack gap at best-of-64: how much the judge's own scores inflate relative to true quality, in baseline standard deviations over a permutation null.
+Regret = accuracy left on the table versus best-possible selection.
+Bootstrap 95\% CIs in brackets (1.5B-blind CIs omitted: degenerate resamples from concentrated scores).
+\textbf{Takeaway: raw agreement conflates the sabotaged frontier judge ($+0.35$) with the honest blind 14B ($+0.37$) although their pressure behavior differs in kind; the style partial separates them ($+0.59$ vs.\ $-0.21$) and identifies the failure mode.}}
+\label{tab:h2h}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig_h2h.pdf}
+\caption{\textbf{The head-to-head, visualized.}
+Each point is one audited math configuration; the $y$ axis is its scoreboard inflation under best-of-64 pressure.
+Left: raw agreement with human soundness places the sabotaged frontier judge inside the failed-blind cluster.
+Right: the style partial isolates both style-loaded configurations in a sign-anchored conviction region fixed before outcomes.
+\textbf{Takeaway: naive validation ranks but cannot diagnose; the audit's nuisance axis separates capable-corrupt from weak-honest.}}
+\label{fig:h2h}
+\end{figure}
+
+\subsection*{RQ2: Does raw human agreement suffice instead?}
+
+No, and Table~\ref{tab:h2h} and Figure~\ref{fig:h2h} locate the two failures precisely.
+Raw agreement is not useless: referenced judges score higher than blind ones, and a threshold placed between the clusters would have called the ladder outcomes.
+It fails first by conflating weak-honest with capable-corrupt, the distinction that determines the failure mode under pressure.
+It fails second by offering no principled threshold: the separating value is knowable only after the outcomes.
+The audit shares the threshold problem for its weak-judge boundary (the 3B-blind partials straddle zero within noise), but its convictions do not: a significantly positive nuisance partial is a sign condition, fixed ex ante, and it alone identifies both style-loaded configurations.
+The audit's advantage is diagnosis and sign-anchored conviction, not a magically sharper threshold for weak judges.
+
+\paragraph{Verdict stability.}
+Convictions and strong passes stabilize with the fewest labels.
+At 40 labels, the sabotage conviction and the honest frontier pass reproduce in $100\%$ of label resamples, while boundary configurations (the 1.5B referenced pass, the 14B blind near-pass) remain unstable below $50$ labels (Figure~\ref{fig:stability}).
+A few dozen labels certify clear cases; boundary verdicts honestly demand more.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.62\textwidth]{figures/fig_stability.pdf}
+\caption{\textbf{Verdict stability under label subsampling} (500 resamples per point, fixed verdict rules).
+\textbf{Takeaway: convictions are cheap and stable; verdicts near the pass boundary are the ones that need more labels.}}
+\label{fig:stability}
+\end{figure}
+
+\paragraph{What the certificate covers: outcomes, not process.}
+Even certified judges grade endpoints rather than checking each line.
+With planted errors whose wrong value propagates coherently to the final answer, frontier judges catch essentially all; with planted false steps that do not change the final answer, they forgive $40$--$50\%$.
+A pass therefore certifies soundness-tracking at the solution level, not step-level process verification.
+
+\paragraph{A zero-label pre-screen.}
+An order-swap test costs nothing: ask the same pairwise comparison twice with the order flipped and measure the flip rate.
+Across the ladder the flip rate falls from $71$--$95\%$ at 0.5B to $2$--$37\%$ at 14B.
+A judge that cannot agree with itself under order swap cannot pass any validity audit, so the free tier eliminates hopeless judges and reserves labels for certifiable ones.
+
+\paragraph{When a reference helps.}
+On planted-error detection, the ladder detects $3/17/49/75\%$ of errors blind and $21/85/85/90\%$ with the gold reference; the 3B jump replicates in six model families ($+14$ to $+60$ points).
+Producing a reference is the hard part, not using one: a judge that first solves the problem and then grades against its own solution detects $59/60/85/95\%$, above gold at 1.5B and 14B, matching at 7B, trailing at 3B.
+Part of small-judge weakness is protocol, not capability.
+
+\paragraph{When a reference hurts.}
+On tasks with many valid answers the reference lever inverts, statically and dynamically.
+Statically, any reference, whoever wrote it, costs $7$--$8$ points of verdict accuracy (paired, $p \le .0005$).
+Dynamically, under best-of-64 pressure on multi-valid tasks, the referenced judge is more inflated than the blind one at all four ladder sizes (for example 3B: gap $+0.55$ blind versus $+1.22$ referenced), and the mechanism is directly measurable: among equally valid answers, referenced judges score those matching the shown reference $+2.7$ to $+10.0$ points (of 10) above the rest, with total anchoring at 1.5B--3B, while blind judges show no such margin~\cite{companionD}.
+A reference converts a judge into a verifier only when the task's answer is effectively unique and checking against the reference is within the judge's capability.

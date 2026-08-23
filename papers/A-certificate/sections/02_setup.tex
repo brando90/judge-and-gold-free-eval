@@ -1,0 +1,23 @@
+\section{Setup}
+\label{sec:setup}
+
+\paragraph{Evaluators.}
+We audit open-weights judges (Qwen2.5 at 1.5B, 3B, 7B, 14B), each deployed blind and with the gold reference in context, plus GPT-5.2 as the frontier judge and the same frontier model prompted to reward presentation as the sabotaged positive control.
+Claude Opus serves as a blind cross-family panel for channel decomposition.
+The two sabotaged ladder configurations (7B, 14B) were pressure-tested but never audited, and are excluded from all prediction claims (Appendix~\ref{app:confusion}).
+A trained reward model baseline (Skywork-Reward-Llama-3.1-8B) is being added under registered predictions [pending].
+
+\paragraph{Human labels.}
+The anchor set is a uniformly random sample of \textsc{MATH-500} solutions from seventeen models, graded blind by one annotator on two 0--10 scales with written anchors: \emph{soundness} (is every step valid; ignore the writing) and \emph{style} (is it clear and well-organized; ignore correctness).
+Sixty items carry labels; per-configuration joins give $n = 53$--$60$.
+A divergence-selected block, where soundness and style decorrelate ($+0.82 \to +0.31$), was graded by two annotators (inter-rater soundness $\rho = 0.79$, style $0.55$).
+Every signal-versus-human number in this paper comes from one canonical analysis script over these labels; values from earlier heterogeneous scripts are superseded.
+
+\paragraph{Judge-side probes.}
+Two recur in Section~\ref{sec:audit}.
+The \emph{planted-error detection} task corrupts known-correct solutions mechanically, with every corruption verified before use, so the right verdict is never in doubt.
+The \emph{multi-valid-answer} tasks are RewardBench-2 items whose prompts admit several enumerated correct answers.
+
+\paragraph{Registration.}
+The categorical audit predictions (the sabotage conviction, the ladder failures, the reference flip) were registered in a draft predating the pressure results, and the multi-valid predictions were committed before that experiment's data were generated; the pressure experiment's estimators were committed before generation.
+The numeric partial-correlation values reported here are descriptive, not pre-frozen thresholds, and Section~\ref{sec:pressure} states the prediction claim in the categorical form in which it was registered.

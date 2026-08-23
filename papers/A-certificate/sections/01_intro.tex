@@ -1,0 +1,42 @@
+\section{Introduction}
+\label{sec:intro}
+
+Automated evaluators now sit inside leaderboards, data filters, reward pipelines, and best-of-$n$ serving, and their trustworthiness is discovered too late.
+The practitioner's question is always the same: will this evaluator measure what I think it measures, and will it keep doing so when something optimizes against it?
+Current practice answers by correlating the judge with human labels, deploying it, and hoping.
+When the answer is no, it is discovered in the worst way: scores go up, quality does not, and the evaluator has been reward-hacked~\cite{gao2022scaling,skalse2022defining}.
+
+Two assumptions prop up this workflow, and both are failing.
+The first is that raw human agreement is an adequate validation.
+The second is that nothing better is available, so gaming can only be characterized after the fact.
+Recent work has already damaged the first assumption from one side: benchmark accuracy, the standard static measure of reward-model quality, predicts downstream optimization outcomes poorly~\cite{wen2024rethinking}.
+We damage it from the other side, and replace it.
+
+Our contribution is a \emph{certificate}: a pre-deployment audit that measures what an evaluator reads, using a few dozen blind human labels, whose registered categorical verdicts separated gaming outcomes in every configuration audited in its own domain.
+Four design choices distinguish the audit from raw-agreement validation.
+Humans grade on separated axes rather than one quality number: a target axis (here, soundness of reasoning) and nuisance axes chosen for the threat model (here, style; length, format, and position are probed separately in Section~\ref{sec:rules}).
+A single number makes nuisance-loading unmeasurable in principle, and the axes are an instantiation, not a fixed pair.
+A deliberately decorrelated stratum supplies power that random data cannot, since soundness and style correlate at $+0.82$ in the wild.
+The verdict is read from partial correlations, not an agreement rate.
+And a sabotaged judge serves as a positive control: evidence the instrument can convict, not merely bless.
+
+The audit can be small because evaluator failure is mechanistic.
+Companion work shows that signals which \emph{compare} a solution to reference text fail to grade it, because most of their variance is a property of the reference~\cite{companionB}.
+Signals that \emph{verify} against something checkable do grade.
+A judge sits on one side or the other depending on protocol and scale, and the audit detects which (Figure~\ref{fig:concept}).
+
+We validate the certificate by registering predictions and applying pressure.
+A 7B generator writes 64 candidates per problem; each judge configuration selects its favorite; two pre-registered estimands separate scoreboard inflation from real accuracy loss.
+On the ten configurations audited in-domain, certified and failed configurations separate completely on both estimands (Figure~\ref{fig:h2h}), and the separation grows with optimization strength (Figure~\ref{fig:curves}).
+A cross-domain extrapolation to thirteen code configurations succeeds in twelve and misses exactly where a post-hoc mechanism, the capability gate, says the audit itself would have failed to transfer.
+That miss yields the operational lesson: certification is a property of a judge, task, and prompt triple, and must be measured where the judge will be used.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig_concept.pdf}
+\caption{\textbf{Why a small audit can predict gaming.}
+Top and middle: the two evaluator mechanisms; comparison-shaped evaluators reward resemblance to a reference and load on nuisance axes such as style, while verification-shaped evaluators check the solution against something trusted.
+Bottom: the audit pipeline; a blind labeled set read through partial correlations classifies the mechanism, and the verdict predicts behavior under optimization pressure.
+\textbf{Takeaway: evaluator failure has one dominant mechanism, so a small instrument aimed at it can predict gaming before any optimization runs.}}
+\label{fig:concept}
+\end{figure}
