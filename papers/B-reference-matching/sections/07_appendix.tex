@@ -199,6 +199,10 @@ quantity & value \\
 \quad unigram-F1; TF-IDF cosine & $+0.13$ $[+0.06, +0.21]$; $+0.17$ $[+0.10, +0.23]$ \\
 \midrule
 \multicolumn{2}{l}{\emph{Decomposition extras (Section~\ref{sec:mechanism})}} \\
+\quad item share, \textsc{MATH-500} (15 models $\times$ 500 items) & $0.896$ $[0.881, 0.910]$; jackknife $0.887$--$0.913$ \\
+\quad item share, full \textsc{MATH} (14 models $\times$ 600 items) & $0.828$ $[0.811, 0.845]$; jackknife $0.818$--$0.846$ \\
+\quad item share, \textsc{Putnam-AXIOM} (14 models $\times$ 236 items) & $0.917$ $[0.898, 0.932]$; jackknife $0.909$--$0.937$ \\
+\quad item share, \textsc{GSM8K} (11 models $\times$ 500 items) & $0.828$ $[0.807, 0.848]$; jackknife $0.800$--$0.883$ \\
 \quad family-style share by benchmark & \textsc{GSM8K} $7.2\%$, full \textsc{MATH} $6.5\%$, \textsc{Putnam} $2.9\%$ \\
 \quad code decomposition (item / family / residual) & $78\%$ / $8\%$ / $14\%$ \\
 \midrule
@@ -209,7 +213,8 @@ quantity & value \\
 \bottomrule
 \end{tabular}
 \caption{\textbf{Deferred numbers: every interval, ladder, and subset endpoint quoted as a single number in the prose.}
-All intervals are bootstrap 95\%; the completer-sweep and phi-4 rows are computed on the 42 anchor traces the pairs file covers, and the item-level paired bootstraps (the answer-line intervention and the P-L1 control alike) condition on the fixed twelve models, so they capture item-sampling uncertainty only.}
+All intervals are bootstrap 95\%; the completer-sweep and phi-4 rows are computed on the 42 anchor traces the pairs file covers, and the item-level paired bootstraps (the answer-line intervention and the P-L1 control alike) condition on the fixed twelve models, so they capture item-sampling uncertainty only.
+The item-share rows report the bootstrap CI over items alongside the range of the share under deletion of any single model (the model-deletion jackknife).}
 \label{tab:robust}
 \end{table}
 
