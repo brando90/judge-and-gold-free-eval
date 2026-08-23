@@ -35,14 +35,14 @@
 \noindent
 A trusted reference answer in an LLM judge's context is widely treated as a general-purpose safeguard: give the judge the answer key and it stops being gamed.
 We show the lever has two faces, and on tasks with multiple valid answers it points the wrong way.
-Statically this failure is established: our prior audit found that on \textsc{RewardBench-2} Ties comparisons any reference, whoever wrote it, costs $7$--$8$ points of verdict accuracy (paired, $p \le .0005$)~\cite{companionA}, and independent work reports the same fixation bias in static pairwise grading~\cite{fixation2025,judgingref2026}.
+Statically this failure is established: our prior audit found that on \textsc{RewardBench-2} Ties tasks (comparisons among multiple valid answers) any reference, whoever wrote it, costs $7$--$8$ points of verdict accuracy (paired, $p \le .0005$)~\cite{companionA}, and independent work reports the same fixation bias in static pairwise grading~\cite{fixation2025,judgingref2026}.
 This paper tests what the bias does under optimization pressure, and why.
-Dynamically, in a pre-registered best-of-64 selection experiment on 51 Ties-derived generation tasks with a membership oracle over enumerated valid answers, the referenced judge inflates more than its blind twin at all four Qwen judge scales: a post-hoc cluster bootstrap pooled across scales over the per-item excess-gap deltas is significant at $+0.41$ $[+0.07, +0.77]$, while the accompanying oracle-regret deltas are directionally worse but cross zero individually and pooled.
+Dynamically, in a pre-registered best-of-64 selection experiment on 51 Ties-derived generation tasks with a membership oracle (a checker that decides whether an answer is in the enumerated valid set), the referenced judge inflates the scoreboard more than its blind twin at all four Qwen judge scales, as measured by the excess hack gap, scoreboard inflation under best-of-$n$ selection in baseline standard deviations over a permutation null: a post-hoc cluster bootstrap pooled across scales over the per-item excess-gap deltas is significant at $+0.41$ $[+0.07, +0.77]$, while the accompanying oracle-regret deltas (accuracy lost relative to best-possible selection) are directionally worse but cross zero individually and pooled.
 On unique-answer math the same lever collapses inflation $4$--$13\times$.
 The mechanism is anchoring, and a reference-rotation intervention makes it causal at the level of individual samples: re-judging the same frozen pools with the reference rotated to a different valid answer raises the score of the identical sample text by $+9.5$, $+9.3$, $+4.6$, and $+3.1$ points (0--10 scale) at 1.5B, 3B, 7B, and 14B when the rotated reference matches it ($n{=}40$ items per cell, every CI excluding zero, replicated across two rubric paraphrases), purely because the shown reference changed.
-Anchoring is saturated at 1.5B and 3B, where the deltas hit the ceiling of the 10-point scale, and decreases through 7B (roughly half the scale) and 14B (roughly a third); blind judges on the same split show mostly null margins with a mild preference for modal answers in two of eight cells, and even in the worst case (3B) the blind margins ($+1.36$, $+1.91$) are roughly a fifth of the referenced margins ($+9.05$, $+9.12$), with larger referenced-to-blind ratios at the other sizes.
+Anchoring is saturated at 1.5B and 3B, where the deltas hit the ceiling of the 10-point scale, and decreases through 7B (roughly half the scale) and 14B (roughly a third); blind judges on the same split show mostly null anchoring margins (the score bonus for valid answers that match the shown reference over equally valid non-matching ones) with a mild preference for modal answers in two of eight cells, and even in the worst case (3B) the blind margins ($+1.36$, $+1.91$) are roughly a fifth of the referenced margins ($+9.05$, $+9.12$), with larger referenced-to-blind ratios at the other sizes.
 Whenever the sampled pool contains an answer matching the shown reference, referenced judges select it nearly always: $18/18$, $17/17$, $14/15$, and $17/17$ of selected-valid cases on the rotation arm versus $6/16$, $8/16$, $8/15$, and $7/17$ blind (exact McNemar on the 18 paired items, discordant counts $12/0$, $9/0$, $7/1$, and $10/0$, $p = 0.0005$, $0.004$, $0.070$, and $0.002$, the 7B contrast marginal), with the smaller original arm ($n{=}10$ items, six of them forced) agreeing.
-A registered synthetic-multiplicity grid sharpens the boundary into a dose-response measurement: 60 tasks with exactly $k$ valid answers ($k \in \{1, 2, 4, 8, 16\}$), six judges from three model families, and four context conditions.
+A registered synthetic-multiplicity grid sharpens the boundary into a dose-response measurement: 60 tasks with exactly $k$ valid answers per task ($k \in \{1, 2, 4, 8, 16\}$), six judges from three model families, and four context conditions.
 A post-hoc paired re-analysis licenses one universally quantified claim: the step contrast, the mean per-item referenced-minus-blind gap delta at $k > 1$ minus the same delta at $k{=}1$, is positive with a CI excluding zero for every judge tested (from $+0.46$ $[+0.13, +0.80]$ to $+2.55$ $[+1.50, +3.67]$), so crossing from a unique answer to any multiplicity shifts every judge toward inflation.
 At $k{=}1$ the paired delta is negative, the reference helps, with CIs excluding zero for five of six judges; at $k > 1$ the paired inflation level is individually significant for three of six (3B $+2.41$, 7B $+0.89$, Llama-8B $+0.46$) and positive but crossing zero for the rest, so the universal claim is the step, not the per-judge level at any single $k$.
 The two obvious mitigations underperform their reputations: telling the judge that any correct answer deserves credit works only in proportion to judge capability, a graded gate under which 14B improves partially and phi-4, the strongest judge tested, closes its instructed $k{=}16$ gap to $+0.33$ $[+0.05, +0.75]$ against a blind $+0.77$ $[+0.47, +1.17]$, overlapping intervals, while at 1.5B one rubric shows the instruction making anchoring worse.
@@ -50,6 +50,20 @@ Showing several references nulls anchoring toward the original reference on one 
 The boundary is therefore directionally established rather than conjectural, with one failed leg reported plainly: on a cross-family generator pool the $k{=}1$ help did not replicate for the mid-size judge we tested, and a post-hoc audit locates a likely cause in answer-extraction friction on that pool (boxed-answer extraction succeeds on $0.65$ of samples versus $0.89$ on the original pool), so we keep the statement conditional, a reference helps only when the answer is effectively unique and verification is within the judge's capability.
 Under answer multiplicity it converts ``grade correctness'' into ``match my reference'' and manufactures the very gaming it was installed to prevent.
 \end{abstract}
+
+\begin{figure}[t!]
+\centering
+\includegraphics[width=0.88\textwidth]{figures/fig_anchoring.pdf}
+\caption{\textbf{Rotating the shown reference to match a sample raises that identical sample's score by up to $+9.5$ of 10 points, with mirror-image losses for samples matching the displaced reference and a near-flat placebo: anchoring is causal.}
+Bars show anchoring effects on the 0--10 score scale at four judge sizes, averaged over two rubric paraphrases; whiskers span the union of the two paraphrases' 95\% bootstrap CIs.
+Navy: paired same-sample deltas, the score gain of the identical, unchanged sample text when the reference is rotated to match its answer ($n{=}40$ items per cell).
+Blue: the cross-sectional anchoring margin in the rotation arm, the mean score bonus of valid reference-matching samples over equally valid non-matching ones ($n{=}18$).
+Orange: the same margin for blind judges, who see no reference, on the same split, mostly null ($n{=}18$).
+Light blue: the referenced margin in the original-reference arm ($n{=}4$).
+Light orange: blind judges on the original-arm split ($n{=}4$).
+Samples matching neither reference stay near-flat across the two runs (placebo), and samples matching only the displaced original reference drop by a roughly symmetric amount (losers); both controls are quantified in Section~\ref{sec:rq2}.}
+\label{fig:anchoring}
+\end{figure}
 
 \section{Introduction: the lever's two faces}
 
@@ -71,7 +85,7 @@ We therefore ran the same pre-registered best-of-64 protocol used for math and c
 \centering
 \includegraphics[width=\textwidth]{figures/fig_inversion.pdf}
 \caption{\textbf{The inversion.}
-Excess hack gap at $n{=}64$ for blind (orange) and referenced (blue) judges at four Qwen2.5 judge scales; arrows show the effect of adding the reference.
+Excess hack gap (scoreboard inflation under best-of-$n$ selection, in baseline standard deviations over a permutation null) at $n{=}64$ for blind (orange) and referenced (blue) judges at four Qwen2.5 judge scales; arrows show the effect of adding the reference.
 Left: unique-answer math (companion A~\cite{companionA}), where the reference collapses the gap $4$--$13\times$ at every scale.
 Right: \textsc{RewardBench-2} Ties generation tasks with multiple valid answers ($n{=}51$ items), where the reference \emph{raises} the gap at every scale; small hollow markers show the registered in-band subset ($n{=}7$ items), which agrees in direction at every scale.
 \textbf{Takeaway: the same trusted reference that collapses gaming on unique-answer tasks increases it when several answers are valid.}}
@@ -176,20 +190,6 @@ The same lever, the same judges, the same estimators, and the sign flips with th
 
 \subsection{RQ2: Why? The judge stops grading validity and starts grading proximity, and rotating the reference proves it.}
 \label{sec:rq2}
-
-\begin{figure}[t]
-\centering
-\includegraphics[width=0.88\textwidth]{figures/fig_anchoring.pdf}
-\caption{\textbf{Takeaway: the anchoring premium follows whichever valid answer is shown as the reference, moving with the reference even for identical sample text; blind margins on the same splits are far smaller, roughly a fifth of the referenced margin in the worst case (3B) and a smaller fraction elsewhere.}
-Anchoring effects (0--10 score scale) per judge scale, averaged over the two rubric paraphrases; whiskers span the union of the two paraphrases' 95\% bootstrap CIs.
-Navy: paired same-sample deltas, the score gain of the identical sample when the reference is rotated to match it ($n{=}40$ items per cell).
-Blue: cross-sectional margin of valid matching over valid non-matching samples in the rotation arm ($n{=}18$).
-Orange: blind judges on the same rotated split ($n{=}18$).
-Light blue: the referenced margin in the original-reference arm ($n{=}4$).
-Light orange: blind judges on the original-arm split ($n{=}4$).
-The placebo (neither-matching samples near-flat across runs) and loser (original-matching samples dropping by a roughly symmetric amount) controls are reported in the text.}
-\label{fig:anchoring}
-\end{figure}
 
 P-T2 held, its follow-up P-T2r held as predicted, and the rotation intervention turns the mechanism claim from an association into a causal one; we note again that the P-T2r registration carries little inferential weight of its own, since the original-arm margins were known when it was committed (Section~\ref{sec:setup}).
 The rotation arm intervenes on the only variable the mechanism claim is about: the same 51 items, the same frozen 64-sample pools, the same oracle labels, but \texttt{ref\_answer} reassigned to a \emph{different} member of each item's valid set, registered before any re-judging (Section~\ref{sec:setup}).
