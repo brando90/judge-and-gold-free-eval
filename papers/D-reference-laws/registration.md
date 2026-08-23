@@ -206,7 +206,7 @@ under the corrected labels. All numbers: `papers/analysis/ties_corrected_delta.j
 ## External registration note (2026-08-23): OSF registrations posted
 
 Three registrations were posted to the Open Science Framework on 2026-08-23, with immutable
-public timestamps (pending routine email approval, which does not affect the timestamps):
+public timestamps (approved and publicly visible as of 2026-08-23 (anonymous access verified), which does not affect the timestamps):
 
 - `osf.io/ym5x9`: the clean preregistered replication of the reference-lever inversion
   (this paper), registered before any pool generation, with the population, estimators,
@@ -253,3 +253,7 @@ fixed in advance, so no post-hoc population or estimator freedom exists. The k=1
 not retested: the arms are blind vs single-reference only, and multiplicity varies across items
 without k being controlled per stratum. Integrated in the paper as Section RQ5 (Table 7), with
 the abstract, contributions, ledger, and Limitations updated accordingly.
+
+
+## Public-visibility note (2026-08-23)
+All three OSF registrations (jg4ak, axp3s, ym5x9) were approved by the registrant and are publicly visible with anonymous access; registration timestamps 2026-08-23 19:29 UTC precede all corresponding data.
