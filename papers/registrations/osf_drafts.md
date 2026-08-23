@@ -89,3 +89,47 @@ positive for both judges.
 **Analysis.** The committed estimator scripts (`bon_analysis.py` machinery,
 `ties_rot_controls.py`-style margins), frozen at registration; no population or estimator
 changes permitted post hoc; deviations will be reported as deviations.
+
+---
+
+## Registration 4: k-stratified structural-mitigation experiment (Paper D follow-up)
+
+**Status at registration.** No pool has been generated and no mitigation protocol has been
+run. Registered before any data.
+
+**Design.** A pool of tasks with EXACTLY k valid answers per stratum, k in {1, 2, 4, 8, 16},
+15 items per stratum (75 total), drawn from the five verifiable constraint families of the
+osf.io/ym5x9 replication (CRT, subset-sum, Goldbach pairs, divisor counts, digit sums) with
+solution counts computed exactly at build time and validity checkable programmatically from
+the answer alone. Generator: Llama-3.1-8B-Instruct with the mandatory-boxing prompt.
+Judges: Qwen2.5-7B-Instruct and phi-4. A small pilot (10 items) may adjust family difficulty
+mixes only; pilot items do not enter the analysis.
+
+**Conditions.** Four, each with two rubric replicates (selection on replicate a, reporting
+on replicate b): (1) blind; (2) single reference (the standard lever); (3) M1 blind-then-
+reveal, a two-call structural protocol: call one scores blind; call two shows the judge its
+own blind assessment plus the reference with the instruction that a correct answer differing
+from the reference must keep its score, and the reported score is call two's; (4) M2
+equivalence-gated, a two-call decomposition: call one scores blind; call two answers only
+whether the candidate's final answer is a valid answer to the question (the reference shown
+as one valid example); the final score is the blind score if judged valid and zero otherwise.
+
+**Primary endpoints (frozen; per judge and pooled over judges by item-level cluster
+bootstrap, within k strata and pooled over k > 1).** E1: anchoring margin per condition
+(mean score of reference-matching valid samples minus other valid samples). E2: paired
+excess-gap delta of each condition minus blind at n = 64.
+
+**Predictions.** P-M1: M1 reduces both the margin and the gap-over-blind relative to the
+single-reference condition at k > 1, for both judges (not capability-gated the way the
+one-sentence instruction was), while preserving the k = 1 benefit (M1 gap at k = 1 at or
+below blind). P-M2: M2 eliminates the anchoring margin (CI including zero at every k > 1
+stratum for both judges) and holds the gap at or below blind at every k. P-M3
+(k-boundary under external registration, subsuming the earlier item-3 ask): the
+single-reference condition helps at k = 1 (gap below blind) and harms at k > 1 (gap above
+blind) for both judges; the k = 1-to-k > 1 step is positive with CI excluding zero.
+P-M4 (exploratory, no confirmatory claim): mitigation effectiveness as a function of k.
+
+**Analysis.** Estimators identical to the committed synthk and replication analysis code
+(margins, paired gaps over the bon_analysis machinery, item-level cluster bootstrap, exact
+McNemar where selection collapse is reported); the analysis script will be committed before
+the main pool is generated, and any deviation will be reported as a deviation.
