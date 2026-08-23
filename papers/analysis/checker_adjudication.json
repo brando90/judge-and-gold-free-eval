@@ -1,0 +1,13 @@
+{
+ "checker_invalid": {
+  "n": 60,
+  "adjudicated_valid": 54,
+  "rate": 0.9
+ },
+ "checker_valid_nonmatch": {
+  "n": 60,
+  "adjudicated_valid": 60,
+  "rate": 1.0
+ },
+ "note": "GPT-5.2 adjudication (reference not shown), disclosed as LLM not human; checker_invalid adjudicated-valid rate estimates the false-negative rate from valid-set incompleteness; checker_valid_nonmatch adjudicated-invalid rate estimates false positives"
+}
