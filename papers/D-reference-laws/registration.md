@@ -39,12 +39,12 @@ Falsification of P-T1 (reference still helps under pressure despite hurting stat
 accuracy) would be reported as-is; it would mean selection pressure and static grading disagree,
 which is itself informative for the certification story.
 
-## Addendum (2026-08-23): registered follow-up — reference-rotation rerun
+## Addendum (2026-08-23): registered follow-up, reference-rotation rerun
 
 Registered AFTER the primary analysis (post-data for the main experiment, pre-data for the
 rerun). Motivation: the P-T2 margin rests on only 4 items because, of the 10 items whose
 sampled pool contains a valid reference-matching sample, 6 have zero other-valid samples
-(all 64 samples give the same answer) — a property of the generator's answer distribution.
+(all 64 samples give the same answer), a property of the generator's answer distribution.
 
 - **Design:** re-judge the SAME frozen 64-sample pools with permuted reference choices:
   for each item, rotate `ref_answer` over the other members of the enumerated valid set
