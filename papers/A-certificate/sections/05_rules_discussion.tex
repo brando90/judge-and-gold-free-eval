@@ -20,10 +20,14 @@ Apparent evaluator failures in our own data dissolved, on adjudication, into eva
 \label{sec:limits}
 
 Six things bound the claim.
-First, the labels: one annotator, an author, hypothesis-aware; a second rater and an external annotator are in progress, and every headline number is provisional until consensus labels land.
-The style axis is the noisier instrument (cross-rater $0.52$, ceiling $\approx 0.72$), which attenuates exactly the partials that carry convictions; against that ceiling the measured convictions ($+0.51$, $+0.59$) are proportionally large.
-The honest frontier judge's soundness partial ($+0.90$) sits at the single-rater ceiling ($\approx 0.89$), so it should be read as saturating what one rater's labels can measure, not as a claim about the remaining fraction.
-The ceilings themselves come from $n{=}20$ shared items under a schema mismatch, so they carry wide uncertainty (the soundness inter-rater point estimate's 95\% CI spans roughly $[0.55, 0.92]$) and are indicative anchors, not walls.
+First, the labels: the primary annotator is an author and hypothesis-aware, so an independent check was the top gating item.
+That check has now run: a hypothesis-blind annotator external to the author list regraded 30 of the 60 anchor items under the same rubric, on a blinded instrument with model names and machine scores stripped (\texttt{papers/analysis/interrater.json}).
+Same-rubric reliability is soundness Pearson $0.83$ $[0.44, 0.97]$ (Spearman $0.46$) and style Pearson $0.48$ $[0.14, 0.71]$ (Spearman $0.39$), implying single-rater ceilings of about $0.91$ and $0.69$.
+The 30-item replication reproduces the honest pass and both convictions in sign, with the sabotage conviction significant on the blind rater's labels alone and the RM conviction significant on consensus (Section~\ref{sec:audit}).
+The residual caveats are that the full 60-item consensus recompute awaits the remaining 30 items and that the $n{=}30$ intervals are wide.
+The style axis is the noisier instrument (same-rubric cross-rater $0.48$, ceiling $\approx 0.69$), which attenuates exactly the partials that carry convictions; against that ceiling the measured convictions ($+0.51$, $+0.59$) are proportionally large.
+The honest frontier judge's soundness partial ($+0.90$) sits at the single-rater ceiling ($\approx 0.91$), so it should be read as saturating what one rater's labels can measure, not as a claim about the remaining fraction.
+The same-rubric estimates agree with the earlier cross-schema $n{=}20$ anchors ($0.80$ and $0.52$, ceilings $\approx 0.89$ and $0.72$), which retroactively derisks that anchor; both intervals are wide at these sample sizes, so the ceilings are indicative anchors, not walls.
 Second, the weak-judge boundary: verdicts for judges near the pass line sit within CI overlap at these label counts; the subsampling analysis quantifies which verdicts are stable, and convictions are while boundaries are not.
 Third, scope of validation: one audited domain; code is extrapolation; the capability-gate explanation of the one miss is post hoc until the registered code audit runs.
 Fourth, the pressure test is selection, not training; the frontier failure mode is precisely where selection understates risk, and a DPO validation is registered to close the gap.

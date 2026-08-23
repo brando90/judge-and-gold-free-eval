@@ -6,7 +6,7 @@ The audit reads two numbers from the judge's scores on the labeled set: the part
 A substance-reading judge shows the first high and the second near zero; a nuisance-loaded judge shows the reverse.
 Two auxiliary checks complete the instrument.
 The within-correct check asks whether the judge separates sound from lucky reasoning among right answers; it must be run on the decorrelated stratum, because on the random set range restriction destroys it (the honest frontier judge reads $+0.81$ on the stratum and $-0.14$ on the random set, where $96\%$ of its scores are identical)~\cite{companionB}.
-The shared-block ceiling bounds what any signal can be credited with.
+The cross-rater ceiling bounds what any signal can be credited with (Section~\ref{sec:setup}).
 
 \subsection*{RQ1: Can the audit distinguish substance-reading from nuisance-loaded judges?}
 
@@ -24,6 +24,9 @@ Both readings are damning for a deployed reward signal: either it inflates the s
 The mechanical audit of Section~\ref{sec:procedure} adds a confound to check: the reward model strongly prefers short responses (length partial $-0.54$), so part of its style conviction could be a length preference wearing style's labels, since the human style partial controls soundness but not length.
 A three-variable partial answers the check directly: controlling for soundness and log response length together, the reward model's style partial moves from $+0.54$ to $+0.42$ $[+0.22, +0.59]$ and the sabotaged frontier's from $+0.59$ to $+0.47$ $[+0.26, +0.65]$, while the honest frontier is essentially unchanged ($-0.22$ to $-0.24$ $[-0.43, +0.05]$) (\texttt{papers/analysis/style\_partial\_lencontrol.json}).
 Length therefore accounts for only a modest fraction of both convictions, which remain significantly positive with length controlled: the convictions are genuinely style.
+An independent-annotator replication supports the honest pass and both convictions (\texttt{papers/analysis/interrater.json}).
+On the 30-item subset regraded by a hypothesis-blind non-author annotator under the same rubric, the honest frontier's pattern reproduces and sharpens (soundness partial $+0.97$ on the blind rater's labels, style $-0.37$ $[-0.57, -0.08]$), and the sabotage conviction is stronger on the blind rater's labels than on the author's ($+0.61$ $[+0.30, +0.83]$ against $+0.41$ $[-0.08, +0.74]$ on this subset).
+The reward-model conviction is significant on two-rater consensus ($+0.48$ $[+0.02, +0.73]$) while borderline on the blind rater's labels alone ($+0.40$ $[-0.02, +0.70]$, CI touching zero at $n{=}30$).
 The verdict tracks protocol, not model identity: blind, the 1.5B judge reads style (partial $+0.51$), the 3B and 7B judges are too weak to certify, and the 14B judge clears the frozen pass rule by a hair (soundness partial $0.41$ against a $0.40$ cut), a threshold pass with no margin that Section~\ref{sec:pressure} shows to be a false pass; with the gold solution in context every honestly prompted ladder judge passes the frozen point-estimate rule (Table~\ref{tab:h2h}; the post-hoc revised rule of Section~\ref{sec:pressure} abstains on the referenced 1.5B and 3B, whose CIs straddle the bar).
 A reference changes what a judge measures, not merely how accurately it measures.
 

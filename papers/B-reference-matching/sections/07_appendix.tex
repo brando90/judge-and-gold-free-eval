@@ -132,11 +132,13 @@ The registered middle-band prediction is falsified; Section~\ref{sec:verify} sta
 \label{app:ceiling}
 \begingroup
 \sloppy
-Cross-rater agreement is measured on the shared block of $n{=}20$ solutions graded by both annotators: soundness Pearson $0.80$, Spearman $0.70$, and style Pearson $0.52$ (\texttt{papers/analysis/dependability.json}).
-The second rater graded overall quality under an older schema rather than soundness under this paper's rubric, and clarity rather than style, so these figures approximate reliability rather than replicate the rubric.
-The agreement is also measured on a different sample from the 60-item random label set.
-Because the validity correlations compare each signal to a single rater's labels, the comparator used in the main text is the implied single-rater ceiling $\sqrt{0.80} = 0.89$ (\texttt{one\_rater\_ceiling} in \texttt{dependability.json}), not the inter-rater $0.80$.
-At $n{=}20$ the inter-rater Pearson carries a wide interval, roughly $[0.55, 0.92]$, which propagates to the implied ceiling.
+Cross-rater agreement is measured twice.
+A same-rubric replication comes from a hypothesis-blind annotator external to the author list, who regraded 30 random anchor items on a blinded instrument with model names and machine scores stripped: soundness Pearson $0.83$ $[0.44, 0.97]$ (Spearman $0.46$, compressed by ties) and style Pearson $0.48$ $[0.14, 0.71]$ (\texttt{papers/analysis/interrater.json}).
+The original shared block of $n{=}20$ solutions graded by both annotators gives soundness Pearson $0.80$, Spearman $0.70$, and style Pearson $0.52$ (\texttt{papers/analysis/dependability.json}).
+That second rater graded overall quality under an older schema rather than soundness under this paper's rubric, and clarity rather than style, so those figures approximate reliability rather than replicate the rubric, and they come from a different sample than the 60-item random label set.
+The two estimates agree, which supports the older cross-construct figure as an anchor.
+Because the validity correlations compare each signal to a single rater's labels, the comparator used in the main text is the implied single-rater ceiling: $\sqrt{0.83} = 0.91$ on the same-rubric estimate, against $\sqrt{0.80} = 0.89$ on the older one (\texttt{one\_rater\_ceiling} in \texttt{dependability.json}).
+Both underlying intervals are wide (the same-rubric soundness Pearson spans $[0.44, 0.97]$ at $n{=}30$; the older figure spans roughly $[0.55, 0.92]$ at $n{=}20$), which propagates to the implied ceilings.
 Four signals (the free answer-correct bit, the referenced judge, and both critics) exceed $0.80$ on the anchor set, which is itself evidence that the inter-rater figure is not the attainable ceiling for such comparisons.
 For all these reasons the main text treats every ceiling comparison as indicative only.
 \par

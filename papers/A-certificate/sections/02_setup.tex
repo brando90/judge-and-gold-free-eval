@@ -15,8 +15,10 @@ Which label set carries which number is worth stating explicitly.
 The headline audit partials of Table~\ref{tab:h2h} use the random 60-item anchor set, where the two axes correlate at $+0.82$.
 The decorrelated divergence stratum, selected where cheap signals disagree with the judge, is used only for the within-correct check.
 Conditioning on signal disagreement induces selection effects of the Berkson kind, which is why stratum numbers are confined to that check and never enter the headline partials.
-Cross-rater agreement on the shared block gives the measurement ceilings: soundness $r = 0.80$ (the second rater graded an overall-quality scale under an earlier rubric, a schema difference we disclose), style $r = 0.52$.
-These imply single-rater attenuation ceilings of about $0.89$ for soundness and $0.72$ for style: no signal can be measured as more valid than that against one rater's labels.
+Cross-rater agreement gives the measurement ceilings, from two estimates that agree.
+The primary estimate is same-rubric: a hypothesis-blind annotator external to the author list regraded 30 random anchor items on a blinded instrument with model names and machine scores stripped, giving soundness Pearson $0.83$ $[0.44, 0.97]$ and style Pearson $0.48$ $[0.14, 0.71]$ (\texttt{papers/analysis/interrater.json}).
+An earlier $n{=}20$ shared block gave soundness $r = 0.80$ and style $r = 0.52$ under a schema mismatch (that second rater graded an overall-quality scale under an earlier rubric), consistent with the same-rubric measurement.
+The same-rubric estimates imply single-rater attenuation ceilings of about $0.91$ for soundness and $0.69$ for style: no signal can be measured as more valid than that against one rater's labels.
 Every signal-versus-human number in this paper comes from one canonical analysis script over these labels; values from earlier heterogeneous scripts are superseded.
 
 \paragraph{Judge-side probes.}

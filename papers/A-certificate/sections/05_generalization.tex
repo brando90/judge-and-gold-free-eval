@@ -54,8 +54,8 @@ Any nuisance axis missing from Tiers 1--2 can still be exploited, and the best-o
 
 \paragraph{Label economics, in place of a magic number.}
 The label budget is verdict-dependent, not fixed.
-Empirically, convictions stabilize by roughly 40 labels while boundary passes do not (Figure~\ref{fig:stability}); analytically, cross-rater components bound what labels can measure (soundness ceiling $\approx 0.89$, style $\approx 0.72$), and Spearman--Brown projections say how much a second rater buys ($0.80 \to 0.89$ for soundness).
-These ceilings come from $n{=}20$ shared items under a schema mismatch, so they carry wide uncertainty (the soundness inter-rater point estimate's 95\% CI spans roughly $[0.55, 0.92]$) and are indicative anchors, not walls.
+Empirically, convictions stabilize by roughly 40 labels while boundary passes do not (Figure~\ref{fig:stability}); analytically, cross-rater components bound what labels can measure (same-rubric soundness ceiling $\approx 0.91$, style $\approx 0.69$; \texttt{papers/analysis/interrater.json}), and Spearman--Brown projections say how much a second rater buys ($0.83 \to 0.91$ for soundness).
+These ceilings come from a hypothesis-blind same-rubric rater on $n{=}30$ items and agree with the earlier cross-schema $n{=}20$ anchors ($\approx 0.89$ and $0.72$); both estimates carry wide uncertainty (the same-rubric soundness Pearson spans $[0.44, 0.97]$) and are indicative anchors, not walls.
 A registered prospective test applies these curves to predict the label budget for a second math dataset before its labels arrive.
 
 \paragraph{What remains non-generic.}
