@@ -5,7 +5,7 @@
 All 25 pressure-tested configurations: 12 math (4 blind, 4 referenced, frontier honest, frontier sabotaged, plus two sabotaged ladder configurations never audited) and 13 code (4 blind, 4 referenced, frontier blind, frontier referenced, frontier sabotaged, two sabotaged ladder).
 Audited in-domain: the 10 math configurations of Table~\ref{tab:h2h}; all separate correctly.
 Never audited: sabotaged 7B (math gap $+0.13$ ns, regret $0.400$; code $+0.84$, $0.559$) and sabotaged 14B (math $+0.61$, $0.324$; code $+0.96$, $0.426$); both are excluded from prediction claims, and an audit run for them is registered.
-Code: extrapolated verdicts, 12 of 13 outcomes match; the referenced 1.5B is the miss (gap $+1.40$, regret $0.441$).
+Code: the mechanical-target audit rows (within-item correlation with executed tests, bootstrap CIs) are in \texttt{papers/analysis/code\_oracle\_audit.json}; the referenced 1.5B miss (gap $+1.40$, regret $0.441$) coincides with its null reference gain on the target axis.
 
 \section{Verdict stability under label subsampling}
 \label{app:subsample}

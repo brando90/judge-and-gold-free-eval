@@ -28,13 +28,13 @@ Blue: certified (referenced) configurations; orange: failed or convicted ones.
 Failed configurations steepen and certified ones stay flat (Figure~\ref{fig:curves}).
 The blind 3B's code gap runs $+0.64 \to +0.94 \to +1.24$ across $n = 4, 16, 64$, and the blind 7B's $+0.57 \to +0.95 \to +1.19$; the referenced 3B runs $+0.33 \to +0.40 \to +0.44$ and the referenced frontier $+0.39 \to +0.43 \to +0.48$.
 
-\paragraph{Cross-domain extrapolation, and the miss that teaches.}
-No code-domain audit was run; the thirteen code verdicts are extrapolations by protocol (referenced passes, blind fails), and twelve of thirteen outcomes match.
-The exception is the referenced 1.5B judge, gamed as badly as its blind twin (Figure~\ref{fig:gate}).
-Our explanation is post hoc but mechanistic: on math a reference is text the judge compares; on code it is a test suite the judge must mentally execute, and a 1.5B judge cannot.
-The same referenced 1.5B judge was the best selector on math (regret $0.010$, beating the frontier's $0.117$).
-Operationally: a judge certified on one domain is not thereby certified on another; run the audit where the judge will be used.
-An in-domain code audit is registered as the direct test of this explanation [pending].
+\paragraph{Cross-domain transfer, and an in-domain audit with a mechanical target axis.}
+The audit generalizes beyond human labels wherever the target axis has an oracle, and code supplies one: executed tests.
+We audited every code configuration by the within-item correlation of its scores with test outcomes, with no human labels involved.
+The measured rows explain the one extrapolation miss directly: the 1.5B judge's reference adds nothing to its target-axis validity on code ($+0.15$ blind, $+0.16$ referenced), which is the capability gate measured rather than inferred, and that configuration is gamed as badly as its blind twin (Figure~\ref{fig:gate}).
+The frontier tier separates cleanly ($+0.52$ blind, $+0.62$ referenced), and sabotage measurably degrades target validity even against a mechanical target ($+0.62 \to +0.42$).
+One honest nuance: the 3B judge shows equal target validity blind and referenced ($+0.10$) yet resists inflation only when referenced, so the mechanical-target audit predicts damage well and inflation resistance only through the reference protocol; the human-label axes remain necessary for the deception side.
+Operationally: a judge certified on one domain is not thereby certified on another; run the audit, with whatever target oracle the domain offers, where the judge will be used.
 
 \begin{figure}[t]
 \centering
