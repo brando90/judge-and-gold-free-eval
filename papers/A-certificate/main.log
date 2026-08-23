@@ -496,11 +496,11 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 Here is how much of TeX's memory you used:
  12248 strings out of 467525
  191300 string characters out of 5418982
- 625768 words of memory out of 5000000
+ 625804 words of memory out of 5000000
  40905 multiletter control sequences out of 15000+600000
  639495 words of font info for 85 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,11n,79p,861b,564s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,11n,79p,897b,564s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb>
@@ -511,7 +511,7 @@ sr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr
 ocal/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/lo
 cal/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/loc
 al/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on main.pdf (12 pages, 330725 bytes).
+Output written on main.pdf (12 pages, 330745 bytes).
 PDF statistics:
  558 PDF objects out of 1000 (max. 8388607)
  330 compressed objects within 4 object streams
