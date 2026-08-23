@@ -1,0 +1,143 @@
+{
+ "gap_ci": {
+  "math__Qwen__Qwen2.5-1.5B-Instruct__noref": {
+   "n": 105,
+   "gap": 0.88,
+   "ci": [
+    0.74,
+    1.02
+   ]
+  },
+  "math__Qwen__Qwen2.5-1.5B-Instruct__ref": {
+   "n": 105,
+   "gap": 0.16,
+   "ci": [
+    0.12,
+    0.21
+   ]
+  },
+  "math__Qwen__Qwen2.5-14B-Instruct__noref": {
+   "n": 105,
+   "gap": 0.63,
+   "ci": [
+    0.42,
+    0.84
+   ]
+  },
+  "math__Qwen__Qwen2.5-14B-Instruct__ref": {
+   "n": 105,
+   "gap": 0.05,
+   "ci": [
+    0.02,
+    0.09
+   ]
+  },
+  "math__Qwen__Qwen2.5-14B-Instruct__sabotage": {
+   "n": 105,
+   "gap": 0.61,
+   "ci": [
+    0.49,
+    0.73
+   ]
+  },
+  "math__Qwen__Qwen2.5-3B-Instruct__noref": {
+   "n": 105,
+   "gap": 0.44,
+   "ci": [
+    0.31,
+    0.58
+   ]
+  },
+  "math__Qwen__Qwen2.5-3B-Instruct__ref": {
+   "n": 105,
+   "gap": 0.07,
+   "ci": [
+    0.03,
+    0.11
+   ]
+  },
+  "math__Qwen__Qwen2.5-7B-Instruct__noref": {
+   "n": 105,
+   "gap": 0.8,
+   "ci": [
+    0.67,
+    0.93
+   ]
+  },
+  "math__Qwen__Qwen2.5-7B-Instruct__ref": {
+   "n": 105,
+   "gap": 0.18,
+   "ci": [
+    0.12,
+    0.23
+   ]
+  },
+  "math__Qwen__Qwen2.5-7B-Instruct__sabotage": {
+   "n": 105,
+   "gap": 0.13,
+   "ci": [
+    -0.13,
+    0.35
+   ]
+  },
+  "math__gpt-5.2__ref": {
+   "n": 105,
+   "gap": 0.38,
+   "ci": [
+    0.28,
+    0.5
+   ]
+  },
+  "math__gpt-5.2__sabotage": {
+   "n": 105,
+   "gap": 0.85,
+   "ci": [
+    0.7,
+    1.01
+   ]
+  }
+ },
+ "boundary_contrasts": {
+  "3B_blind_minus_gpt_honest": {
+   "n": 105,
+   "delta": 0.06,
+   "ci": [
+    -0.1,
+    0.22
+   ]
+  },
+  "3B_blind_minus_14B_ref": {
+   "n": 105,
+   "delta": 0.39,
+   "ci": [
+    0.25,
+    0.53
+   ]
+  },
+  "sabotage_minus_gpt_honest": {
+   "n": 105,
+   "delta": 0.47,
+   "ci": [
+    0.36,
+    0.58
+   ]
+  },
+  "14B_blind_minus_gpt_honest": {
+   "n": 105,
+   "delta": 0.25,
+   "ci": [
+    0.01,
+    0.48
+   ]
+  }
+ },
+ "conviction_1p5b": {
+  "n": 53,
+  "style_partial": 0.51,
+  "jackknife_ci": [
+   0.13,
+   0.89
+  ],
+  "perm_p_two_sided": 0.0017
+ }
+}
