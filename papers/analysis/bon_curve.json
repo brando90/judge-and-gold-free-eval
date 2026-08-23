@@ -1,0 +1,352 @@
+{
+ "math__Qwen__Qwen2.5-1.5B-Instruct__noref": {
+  "4": {
+   "raw_gap": 0.495,
+   "regret": 0.284
+  },
+  "16": {
+   "raw_gap": 0.765,
+   "regret": 0.402
+  },
+  "64": {
+   "raw_gap": 1.022,
+   "regret": 0.448
+  }
+ },
+ "math__Qwen__Qwen2.5-1.5B-Instruct__ref": {
+  "4": {
+   "raw_gap": 0.322,
+   "regret": 0.01
+  },
+  "16": {
+   "raw_gap": 0.392,
+   "regret": 0.005
+  },
+  "64": {
+   "raw_gap": 0.426,
+   "regret": 0.01
+  }
+ },
+ "math__Qwen__Qwen2.5-14B-Instruct__noref": {
+  "4": {
+   "raw_gap": 0.389,
+   "regret": 0.278
+  },
+  "16": {
+   "raw_gap": 0.536,
+   "regret": 0.352
+  },
+  "64": {
+   "raw_gap": 0.626,
+   "regret": 0.324
+  }
+ },
+ "math__Qwen__Qwen2.5-14B-Instruct__ref": {
+  "4": {
+   "raw_gap": 0.351,
+   "regret": 0.043
+  },
+  "16": {
+   "raw_gap": 0.389,
+   "regret": 0.045
+  },
+  "64": {
+   "raw_gap": 0.391,
+   "regret": 0.048
+  }
+ },
+ "math__Qwen__Qwen2.5-14B-Instruct__sabotage": {
+  "4": {
+   "raw_gap": 0.456,
+   "regret": 0.228
+  },
+  "16": {
+   "raw_gap": 0.603,
+   "regret": 0.316
+  },
+  "64": {
+   "raw_gap": 0.696,
+   "regret": 0.324
+  }
+ },
+ "math__Qwen__Qwen2.5-3B-Instruct__noref": {
+  "4": {
+   "raw_gap": 0.458,
+   "regret": 0.284
+  },
+  "16": {
+   "raw_gap": 0.602,
+   "regret": 0.393
+  },
+  "64": {
+   "raw_gap": 0.615,
+   "regret": 0.429
+  }
+ },
+ "math__Qwen__Qwen2.5-3B-Instruct__ref": {
+  "4": {
+   "raw_gap": 0.334,
+   "regret": 0.071
+  },
+  "16": {
+   "raw_gap": 0.409,
+   "regret": 0.07
+  },
+  "64": {
+   "raw_gap": 0.427,
+   "regret": 0.038
+  }
+ },
+ "math__Qwen__Qwen2.5-7B-Instruct__noref": {
+  "4": {
+   "raw_gap": 0.477,
+   "regret": 0.273
+  },
+  "16": {
+   "raw_gap": 0.696,
+   "regret": 0.35
+  },
+  "64": {
+   "raw_gap": 0.829,
+   "regret": 0.324
+  }
+ },
+ "math__Qwen__Qwen2.5-7B-Instruct__ref": {
+  "4": {
+   "raw_gap": 0.447,
+   "regret": 0.02
+  },
+  "16": {
+   "raw_gap": 0.55,
+   "regret": 0.02
+  },
+  "64": {
+   "raw_gap": 0.571,
+   "regret": 0.019
+  }
+ },
+ "math__Qwen__Qwen2.5-7B-Instruct__sabotage": {
+  "4": {
+   "raw_gap": 0.223,
+   "regret": 0.294
+  },
+  "16": {
+   "raw_gap": 0.253,
+   "regret": 0.393
+  },
+  "64": {
+   "raw_gap": 0.142,
+   "regret": 0.4
+  }
+ },
+ "math__gpt-5.2__ref": {
+  "4": {
+   "raw_gap": 0.499,
+   "regret": 0.064
+  },
+  "16": {
+   "raw_gap": 0.628,
+   "regret": 0.086
+  },
+  "64": {
+   "raw_gap": 0.715,
+   "regret": 0.116
+  }
+ },
+ "math__gpt-5.2__sabotage": {
+  "4": {
+   "raw_gap": 0.566,
+   "regret": 0.177
+  },
+  "16": {
+   "raw_gap": 0.769,
+   "regret": 0.177
+  },
+  "64": {
+   "raw_gap": 0.928,
+   "regret": 0.132
+  }
+ },
+ "code__Qwen__Qwen2.5-1.5B-Instruct__noref": {
+  "4": {
+   "raw_gap": 0.491,
+   "regret": 0.306
+  },
+  "16": {
+   "raw_gap": 0.966,
+   "regret": 0.375
+  },
+  "64": {
+   "raw_gap": 1.465,
+   "regret": 0.412
+  }
+ },
+ "code__Qwen__Qwen2.5-1.5B-Instruct__ref": {
+  "4": {
+   "raw_gap": 0.351,
+   "regret": 0.294
+  },
+  "16": {
+   "raw_gap": 0.77,
+   "regret": 0.386
+  },
+  "64": {
+   "raw_gap": 1.462,
+   "regret": 0.441
+  }
+ },
+ "code__Qwen__Qwen2.5-14B-Instruct__noref": {
+  "4": {
+   "raw_gap": 0.594,
+   "regret": 0.29
+  },
+  "16": {
+   "raw_gap": 1.007,
+   "regret": 0.366
+  },
+  "64": {
+   "raw_gap": 1.227,
+   "regret": 0.368
+  }
+ },
+ "code__Qwen__Qwen2.5-14B-Instruct__ref": {
+  "4": {
+   "raw_gap": 0.302,
+   "regret": 0.237
+  },
+  "16": {
+   "raw_gap": 0.407,
+   "regret": 0.296
+  },
+  "64": {
+   "raw_gap": 0.487,
+   "regret": 0.338
+  }
+ },
+ "code__Qwen__Qwen2.5-14B-Instruct__sabotage": {
+  "4": {
+   "raw_gap": 0.541,
+   "regret": 0.305
+  },
+  "16": {
+   "raw_gap": 0.882,
+   "regret": 0.401
+  },
+  "64": {
+   "raw_gap": 1.127,
+   "regret": 0.426
+  }
+ },
+ "code__Qwen__Qwen2.5-3B-Instruct__noref": {
+  "4": {
+   "raw_gap": 0.637,
+   "regret": 0.343
+  },
+  "16": {
+   "raw_gap": 0.939,
+   "regret": 0.45
+  },
+  "64": {
+   "raw_gap": 1.238,
+   "regret": 0.544
+  }
+ },
+ "code__Qwen__Qwen2.5-3B-Instruct__ref": {
+  "4": {
+   "raw_gap": 0.331,
+   "regret": 0.297
+  },
+  "16": {
+   "raw_gap": 0.398,
+   "regret": 0.367
+  },
+  "64": {
+   "raw_gap": 0.442,
+   "regret": 0.382
+  }
+ },
+ "code__Qwen__Qwen2.5-7B-Instruct__noref": {
+  "4": {
+   "raw_gap": 0.566,
+   "regret": 0.317
+  },
+  "16": {
+   "raw_gap": 0.947,
+   "regret": 0.417
+  },
+  "64": {
+   "raw_gap": 1.185,
+   "regret": 0.426
+  }
+ },
+ "code__Qwen__Qwen2.5-7B-Instruct__ref": {
+  "4": {
+   "raw_gap": 0.339,
+   "regret": 0.243
+  },
+  "16": {
+   "raw_gap": 0.44,
+   "regret": 0.268
+  },
+  "64": {
+   "raw_gap": 0.471,
+   "regret": 0.265
+  }
+ },
+ "code__Qwen__Qwen2.5-7B-Instruct__sabotage": {
+  "4": {
+   "raw_gap": 0.569,
+   "regret": 0.356
+  },
+  "16": {
+   "raw_gap": 0.845,
+   "regret": 0.487
+  },
+  "64": {
+   "raw_gap": 1.07,
+   "regret": 0.559
+  }
+ },
+ "code__gpt-5.2__noref": {
+  "4": {
+   "raw_gap": 0.496,
+   "regret": 0.146
+  },
+  "16": {
+   "raw_gap": 0.824,
+   "regret": 0.226
+  },
+  "64": {
+   "raw_gap": 1.029,
+   "regret": 0.217
+  }
+ },
+ "code__gpt-5.2__ref": {
+  "4": {
+   "raw_gap": 0.385,
+   "regret": 0.145
+  },
+  "16": {
+   "raw_gap": 0.432,
+   "regret": 0.176
+  },
+  "64": {
+   "raw_gap": 0.478,
+   "regret": 0.213
+  }
+ },
+ "code__gpt-5.2__sabotage": {
+  "4": {
+   "raw_gap": 0.593,
+   "regret": 0.214
+  },
+  "16": {
+   "raw_gap": 0.711,
+   "regret": 0.269
+  },
+  "64": {
+   "raw_gap": 0.873,
+   "regret": 0.236
+  }
+ }
+}

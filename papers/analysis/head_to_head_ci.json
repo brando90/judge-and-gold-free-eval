@@ -1,0 +1,182 @@
+{
+ "noref_Qwen_Qwen2.5-1.5B-Instruct": {
+  "n": 53,
+  "naive": [
+   0.18,
+   NaN,
+   NaN
+  ],
+  "sound_partial": [
+   -0.0,
+   NaN,
+   NaN
+  ],
+  "style_partial": [
+   0.51,
+   NaN,
+   NaN
+  ]
+ },
+ "noref_Qwen_Qwen2.5-14B-Instruct": {
+  "n": 60,
+  "naive": [
+   0.37,
+   0.08,
+   0.61
+  ],
+  "sound_partial": [
+   0.41,
+   0.12,
+   0.64
+  ],
+  "style_partial": [
+   -0.21,
+   -0.4,
+   0.0
+  ]
+ },
+ "noref_Qwen_Qwen2.5-3B-Instruct": {
+  "n": 60,
+  "naive": [
+   0.24,
+   -0.02,
+   0.55
+  ],
+  "sound_partial": [
+   0.19,
+   -0.09,
+   0.53
+  ],
+  "style_partial": [
+   0.16,
+   -0.17,
+   0.44
+  ]
+ },
+ "noref_Qwen_Qwen2.5-7B-Instruct": {
+  "n": 60,
+  "naive": [
+   0.33,
+   -0.01,
+   0.66
+  ],
+  "sound_partial": [
+   0.32,
+   0.04,
+   0.6
+  ],
+  "style_partial": [
+   -0.02,
+   -0.31,
+   0.3
+  ]
+ },
+ "ref_Qwen_Qwen2.5-1.5B-Instruct": {
+  "n": 56,
+  "naive": [
+   0.55,
+   0.28,
+   0.78
+  ],
+  "sound_partial": [
+   0.51,
+   0.21,
+   0.75
+  ],
+  "style_partial": [
+   0.1,
+   -0.21,
+   0.44
+  ]
+ },
+ "ref_Qwen_Qwen2.5-14B-Instruct": {
+  "n": 60,
+  "naive": [
+   0.7,
+   0.48,
+   0.87
+  ],
+  "sound_partial": [
+   0.7,
+   0.5,
+   0.85
+  ],
+  "style_partial": [
+   -0.11,
+   -0.34,
+   0.15
+  ]
+ },
+ "ref_Qwen_Qwen2.5-3B-Instruct": {
+  "n": 60,
+  "naive": [
+   0.55,
+   0.39,
+   0.71
+  ],
+  "sound_partial": [
+   0.53,
+   0.36,
+   0.7
+  ],
+  "style_partial": [
+   -0.02,
+   -0.33,
+   0.29
+  ]
+ },
+ "ref_Qwen_Qwen2.5-7B-Instruct": {
+  "n": 60,
+  "naive": [
+   0.66,
+   0.46,
+   0.83
+  ],
+  "sound_partial": [
+   0.66,
+   0.48,
+   0.82
+  ],
+  "style_partial": [
+   -0.12,
+   -0.35,
+   0.17
+  ]
+ },
+ "gpt_honest": {
+  "n": 60,
+  "naive": [
+   0.89,
+   0.76,
+   0.97
+  ],
+  "sound_partial": [
+   0.9,
+   0.77,
+   0.97
+  ],
+  "style_partial": [
+   -0.22,
+   -0.4,
+   0.05
+  ]
+ },
+ "gpt_sabotage": {
+  "n": 60,
+  "naive": [
+   0.35,
+   0.15,
+   0.56
+  ],
+  "sound_partial": [
+   0.2,
+   -0.07,
+   0.44
+  ],
+  "style_partial": [
+   0.59,
+   0.36,
+   0.76
+  ]
+ }
+}
