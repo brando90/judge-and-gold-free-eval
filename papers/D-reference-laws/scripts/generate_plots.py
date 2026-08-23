@@ -3,6 +3,7 @@
 
 Data sources:
   - papers/analysis/ties_fullset.json   (excess hack gap + regret per config, n=51)
+  - papers/analysis/ties_inband.json    (registered in-band [0.2,0.8] subset, n=7)
   - papers/analysis/ties_p2_margin.json (anchoring margins per judge/rep/cond)
   - Math gaps are the published companion-A values (hardcoded below, cited in the paper).
 
@@ -59,12 +60,13 @@ TIES = {s: (ties_gap(s, "noref"), ties_gap(s, "ref")) for s in SIZES}
 # Registered in-band primary analysis (pool pass rate in [0.2, 0.8]; n=7 items),
 # per the registration (commit 99c40ea). (noref, ref) excess hack gaps; quoted in
 # the paper's RQ1 as the underpowered registered primary that agrees in direction.
-TIES_INBAND = {
-    "1.5B": (1.19, 1.83),
-    "3B":   (0.93, 1.82),
-    "7B":   (1.26, 1.76),
-    "14B":  (0.58, 1.59),
-}
+with open(ANALYSIS / "ties_inband.json") as f:
+    inband = json.load(f)
+
+def inband_gap(size, cond):
+    return inband[f"ties__Qwen__Qwen2.5-{size}-Instruct__{cond}"]["excess_gap"]
+
+TIES_INBAND = {s: (inband_gap(s, "noref"), inband_gap(s, "ref")) for s in SIZES}
 
 # Math best-of-64 excess hack gaps (noref, ref) from companion paper A (same
 # estimators, same judge ladder); quoted, not recomputed here.
