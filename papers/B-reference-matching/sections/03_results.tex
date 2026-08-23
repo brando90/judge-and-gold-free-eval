@@ -52,14 +52,16 @@ Taken alone, this number is partially tautological, since both statistics summar
 The correlation is informative here only because the decomposition above shows the item effect survives cross-family transfer, which a mere restatement of one model's capability would not need to do.
 To first order, \tfa{} measures how compressible the reference is; a score that is four-fifths about the reference cannot grade the solution in front of it.
 
-The mechanism claim rests on the decomposition and its cross-family replication above; an intervention on the references corroborates it, and we state that corroboration as provisional.
+The mechanism claim rests on the decomposition and its cross-family replication above; an intervention on the references corroborates it, and its registered length-matched control has now run and landed as predicted.
 Across benchmarks, the model-ranking signal of Section~\ref{sec:ranking} correlates $+0.89$ with mean reference perplexity and $-0.81$ with saturation, but the two are confounded in observational data.
 So we intervened: on the same \textsc{MATH-500} items, replacing each worked reference with the single line ``The final answer is [answer]'' collapses the ranking signal from $+0.35$ to $+0.02$ as a point contrast on all seventeen models.
 The certified statement is the item-level paired bootstrap on the twelve models with per-item data for both reference variants: a paired delta of $+0.24$, excluding zero; the model-level delta on all seventeen is not distinguishable from zero at that sample size, and the subset endpoints and both intervals are in Table~\ref{tab:robust}.
 The item-level bootstrap conditions on the fixed twelve models, so its interval captures item-sampling uncertainty only, not model-sampling uncertainty; we read the intervention as confirmed on the paired subset and directionally supported on the full set, which agrees in sign.
-One alternative reading survives: answer-line references are far shorter than worked references, so the collapse could partly reflect variance compression from scoring fewer tokens rather than loss of information content.
-A length-matched uninformative-reference control that separates these readings is registered and currently running (P-L1; Table~\ref{tab:ledger}), and no result from it appears in this paper.
-Until it reports, every mechanistic use of the intervention in this paper is provisional, and the position-weighting convergence to the answer-line null (Section~\ref{sec:slate}) is partial corroboration only, since it also shortens the effective scored span.
+One alternative reading required a control: answer-line references are far shorter than worked references, so the collapse could partly reflect variance compression from scoring fewer tokens rather than loss of information content.
+The registered length-matched uninformative-reference control (P-L1; Table~\ref{tab:ledger}) separates these readings, and it has run and landed as predicted: each worked reference is replaced by a fixed content-free boilerplate paragraph, identical across items and length-matched to the mean worked reference, followed by the same answer line.
+The padded reference keeps per-token predictability high for every model, with a mean \tfa{} of $0.46$ across the same seventeen models, yet it ranks models no better than chance, a Spearman of $-0.11$ $[-0.57, +0.35]$ against benchmark accuracy versus $+0.35$ for the worked references.
+Length matching does not restore the signal, so the collapse tracks informativeness, not token count, and the variance-compression alternative is excluded by a run control.
+The intervention's mechanistic reading therefore stands, and the position-weighting convergence to the answer-line null (Section~\ref{sec:slate}) is consistent with it, though that sweep also shortens the effective scored span.
 Predicting a long, information-dense reference requires skill adjacent to solving the problem.
 Predicting a formulaic one requires nothing, leaving only style.
 
@@ -114,7 +116,7 @@ Matching metrics do rank models, under three conditions that all hold at once:
 \item \textbf{Use them in aggregate, never per item.}
 The reference-predictability nuisance is identical for every model on a given item, so it cancels when scores are averaged over a benchmark; per-item it dominates.
 \item \textbf{The reference must be detailed enough to be worth predicting.}
-A long worked solution differentiates strong models from weak ones; an answer line does not (the intervention of Section~\ref{sec:mechanism}, provisional pending its length-matched control; endpoints in Table~\ref{tab:robust}).
+A long worked solution differentiates strong models from weak ones; an answer line does not, and neither does length-matched content-free boilerplate (the intervention of Section~\ref{sec:mechanism} and its confirmed control P-L1; endpoints in Table~\ref{tab:robust}).
 \item \textbf{The benchmark must be hard enough to differentiate models.}
 On saturated data every model predicts the reference about equally well, and the leftover variance is writing style, which is why saturated point estimates collapse or turn negative.
 \end{enumerate}
@@ -128,7 +130,7 @@ The consequence for leaderboards: matching is legitimate exactly when these cond
 \subsection{Repairs fail, and the registered record says so in advance}
 \label{sec:slate}
 
-No repair of a matching metric recovered a grading or ranking signal, and most of the outcomes were called in advance: Table~\ref{tab:ledger} is the complete registered record, and three of five predictions landed as called.
+No repair of a matching metric recovered a grading or ranking signal, and most of the outcomes were called in advance: Table~\ref{tab:ledger} is the complete registered record, and four of six predictions landed as called.
 Every variant was proposed either by our reviewers or by the mechanism itself, and each directional outcome was registered in the repository before the run.
 
 \begin{table}[t]
@@ -145,15 +147,16 @@ entropy-normalized \tfa{} & matching & null & ranking $+0.13 \to -0.17$; item-le
 answer-swap check & verification & carries signal & positive in 8/9 models, mean $+0.13$ & hit \\
 completion curve & verification & carries signal & $+0.79$ vs.\ human soundness & hit \\
 completer strength (P-C1) & verification & middle band; washout at 1.5B & flat $+0.78$--$+0.88$, 1.5B--32B & falsified \\
+length-matched control (P-L1) & matching & ranking stays collapsed & padded-reference ranking $-0.11$ vs.\ $+0.35$ worked & hit \\
 \bottomrule
 \end{tabular}%
 }
-\caption{\textbf{The prediction ledger: three of five registered predictions landed as called, with one sign flip and one falsification on record.}
+\caption{\textbf{The prediction ledger: four of six registered predictions landed as called, with one sign flip and one falsification on record.}
 Each row is one pre-registered directional prediction, committed to the repository before its data were generated, with its outcome and verdict.
 The position-weighted register predicted a null, and the observed $-0.37$ at last-four tokens is a sign flip, so that register was directionally wrong, not confirmed.
 The completer-strength register (P-C1) predicted that curve validity would require a middle band of completer strength; the flat outcome falsifies the register while corroborating the free-bit mechanism (Section~\ref{sec:verify}).
 The class-level divide, verification signals carrying signal where matching carries none, was called in advance, but the register did not anticipate that the free bit would top the class.
-Two notes: seven earlier reweighting variants (IDF, surprisal, masking, \dots) predate the registration protocol and all came out $\le 0$; a sixth register, the length-matched uninformative-reference control (P-L1, prediction: ranking stays collapsed), is currently running, has not yet reported, and contributes no result to this paper.}
+Two notes: seven earlier reweighting variants (IDF, surprisal, masking, \dots) predate the registration protocol and all came out $\le 0$; the length-matched uninformative-reference control (P-L1) ran after its prediction was committed and landed as predicted, with the result in Section~\ref{sec:mechanism} and its endpoints in Table~\ref{tab:robust}.}
 \label{tab:ledger}
 \end{table}
 
