@@ -1,13 +1,15 @@
 \section{Design rules}
 \label{sec:rules}
 
+This section compresses the paper's findings into five rules a practitioner can apply directly.
+
 \begin{enumerate}
 \item \textbf{Audit before you optimize, in the deployment domain.}
-A few dozen blind labels on separated axes, a decorrelated stratum, and partial correlations; labeling sixty traces on two axes at two to four minutes per trace is five to eight annotator-hours, and the frozen categorical verdicts predicted ten of eleven registered-era in-domain pressure outcomes per estimand (twelve of thirteen in the secondary count including two confirmatory post-registration sabotaged-ladder additions), with the one false pass sitting at the pass threshold (Section~\ref{sec:pressure}).
+A few dozen blind labels on separated axes, a decorrelated subsample, and partial correlations; labeling sixty traces on two axes at two to four minutes per trace is five to eight annotator-hours, and the frozen verdicts predicted ten of eleven registered in-domain pressure outcomes (ledger, Table~\ref{tab:ledger}), with the one false pass sitting at the pass threshold (Section~\ref{sec:pressure}).
 Five to eight hours is the labeling cost alone; end-to-end certification also requires assembling the trace pool and cheap-signal battery, and the optional pressure backstop costs 64-samples-per-item generation plus judge calls per configuration, which dwarfs the labeling compute.
 \item \textbf{Do not substitute raw agreement.}
 It ranks but cannot diagnose, and it has no sign-anchored conviction (Table~\ref{tab:h2h}).
-\item \textbf{Choose nuisance axes by threat model, and treat the audit as a screen for the axes it instruments.}
+\item \textbf{Choose the ignored-property axes by threat model, and treat the audit as a screen for the axes it instruments.}
 Style is the dominant documented axis and ours; length, format, and duplication were causally probed and cleared for these judges; position bias is measurable label-free by order-swap.
 An axis orthogonal to all instrumented ones can evade the audit; the pressure test is the axis-agnostic backstop.
 \item \textbf{Give a judge a reference only when the answer is unique and the judge can use it.}
@@ -19,31 +21,35 @@ Apparent evaluator failures in our own data dissolved, on adjudication, into eva
 \section{Discussion and limitations}
 \label{sec:limits}
 
-Six things bound the claim.
-First, the labels: the primary annotator is an author and hypothesis-aware, so an independent check was the top gating item.
-That check has now run: a hypothesis-blind annotator external to the author list regraded 30 of the 60 anchor items under the same rubric, on a blinded instrument with model names and machine scores stripped (\texttt{papers/analysis/interrater.json}).
-Same-rubric reliability is soundness Pearson $0.83$ $[0.44, 0.97]$ (Spearman $0.46$) and style Pearson $0.48$ $[0.14, 0.71]$ (Spearman $0.39$), implying single-rater ceilings of about $0.91$ and $0.69$.
-The 30-item replication reproduces the honest pass and both convictions in sign, with the sabotage conviction significant on the blind rater's labels alone and the RM conviction significant on consensus (Section~\ref{sec:audit}).
-The residual caveats are that the full 60-item consensus recompute awaits the remaining 30 items and that the $n{=}30$ intervals are wide.
-The style axis is the noisier instrument (same-rubric cross-rater $0.48$, ceiling $\approx 0.69$), which attenuates exactly the partials that carry convictions; against that ceiling the measured convictions ($+0.51$, $+0.59$) are proportionally large.
-The honest frontier judge's soundness partial ($+0.90$) sits at the single-rater ceiling ($\approx 0.91$), so it should be read as saturating what one rater's labels can measure, not as a claim about the remaining fraction.
-The same-rubric estimates agree with the earlier cross-schema $n{=}20$ anchors ($0.80$ and $0.52$, ceilings $\approx 0.89$ and $0.72$), which retroactively derisks that anchor; both intervals are wide at these sample sizes, so the ceilings are indicative anchors, not walls.
-Second, the weak-judge boundary: verdicts for judges near the pass line sit within CI overlap at these label counts; the subsampling analysis quantifies which verdicts are stable, and convictions are while boundaries are not.
-Third, scope of validation: one audited domain; code is extrapolation; the capability-gate explanation of the one miss is post hoc until the registered code audit runs.
+This section states the six limits that bound the claim, and the two designed tests that address the deepest one.
+
+First, the labels: the primary annotator is an author and hypothesis-aware, so an independent check was the top gating item, and it has now run.
+A hypothesis-blind annotator external to the author list regraded 30 of the 60 anchor items under the same rubric, on a blinded instrument with model names and machine scores stripped.
+Same-rubric reliability is soundness $0.83$ and style $0.48$, implying single-rater ceilings of about $0.91$ and $0.69$; the 30-item replication reproduces the honest pass and both convictions in sign, with the sabotage conviction significant on the blind rater's labels alone and the reward-model conviction significant on two-rater consensus (per-cell values and intervals in Table~\ref{tab:robust}).
+The residual caveats: the full 60-item consensus recompute awaits the remaining 30 items, and the 30-item intervals are wide.
+The style axis is the noisier instrument (cross-rater $0.48$, ceiling about $0.69$), which attenuates exactly the partials that carry convictions; against that ceiling the measured convictions ($+0.51$, $+0.59$) are proportionally large.
+The honest frontier's soundness partial ($+0.90$) sits at the single-rater ceiling, so it should be read as saturating what one rater's labels can measure, not as a claim about the remaining fraction.
+The same-rubric estimates agree with the earlier cross-schema 20-item anchors, which retroactively derisks that anchor; both intervals are wide at these sample sizes, so the ceilings are indicative anchors, not walls (Table~\ref{tab:robust}).
+
+Second, the weak-judge boundary: verdicts for judges near the pass line sit within interval overlap at these label counts; the subsampling analysis quantifies which verdicts are stable, and convictions are while boundaries are not (Appendix~\ref{app:subsample}).
+
+Third, scope of validation: one audited domain; code is extrapolation; the capability-gate explanation of the one code miss is post hoc until the registered code audit runs.
+
 Fourth, the pressure test is selection, not training; the frontier failure mode is precisely where selection understates risk, and a DPO validation is registered to close the gap.
-Preference pairs are built from the frozen certified (honest referenced) and convicted (sabotaged) GPT-5.2 judges on the same in-band items (808 and 800 pairs respectively), identical LoRA-DPO arms are trained on the generator model, and both arms are evaluated by oracle accuracy and by both frozen judges on train and held-out items.
-The registered predictions, committed pre-run at repository commit \texttt{3a964f1}, are P-D1 (the certified arm improves true accuracy, with judge and true gains agreeing in sign), P-D2 (the convicted arm shows a larger judge-gain-minus-true-gain wedge and a smaller true gain), and P-D3 (score gains are instrument-specific); the run is queued and no outcome is claimed here.
+Preference pairs are built from the frozen certified (honest referenced) and convicted (sabotaged) GPT-5.2 judges on the same in-band items (808 and 800 pairs), identical LoRA-DPO arms are trained on the generator model, and both arms are evaluated by oracle accuracy and by both frozen judges on train and held-out items.
+Its three registered predictions (P-D1--P-D3: the certified arm improves true accuracy with judge and true gains agreeing in sign; the convicted arm shows a larger judge-minus-true wedge and a smaller true gain; score gains are instrument-specific) are committed pre-run; the run is queued and no outcome is claimed here (ledger, Table~\ref{tab:ledger}).
+
 Fifth, population shift and family confound: the audit labels come from seventeen models' solutions while the primary pressure pools come from one generator, and all open-weights judges share that generator's family, so self-preference could in principle inflate blind-judge gaming.
-The registered cross-family run closes this: on a Llama-3.1-8B-generated pool (176 in-band items), the pattern replicates at every ladder size, blind excess gaps $+0.70$ to $+1.09$ with regrets $0.26$ to $0.36$ against referenced gaps $+0.22$ to $+0.50$ with regrets $0.06$ to $0.18$, blind and referenced CIs disjoint within each size (\texttt{papers/analysis/llama\_crossfam.json}).
-Blind-judge gaming is therefore not a same-family artifact, though the referenced tier is less clean cross-family (the 7B referenced gap reaches $+0.50$, against at most $+0.18$ on the same-family pool), consistent with Qwen judges verifying Llama solutions less reliably.
+The registered cross-family run closes this: on a Llama-3.1-8B-generated pool (176 in-band items) the pattern replicates at every ladder size, with blind and referenced inflation intervals disjoint within each size (ranges in Table~\ref{tab:robust}).
+Blind-judge gaming is therefore not a same-family artifact, though the referenced tier is less clean cross-family (the 7B referenced inflation reaches $+0.50$, against at most $+0.18$ on the same-family pool), consistent with Qwen judges verifying Llama solutions less reliably.
 A deployment-pool label set remains registered (the labeling instrument exists).
-Sixth, effective sample size: the thirteen audited configurations' verdicts are strongly collinear with one protocol bit, reference presence, and beyond it there are roughly four distinct verdict classes (blind-weak, referenced-pass, style-loaded, and sabotage-at-ladder-scale fail).
-The validation is therefore closer to four independent tests than thirteen.
-The registered DPO training run and the reward-model paraphrase-replicate protocol below are the two designed tests that break this collinearity; the second has now run and confirmed its registered prediction.
+
+Sixth, effective sample size: the thirteen audited configurations' verdicts are strongly collinear with one protocol bit, reference presence, and beyond it there are roughly four distinct verdict classes (blind-weak, referenced-pass, style-loaded, and sabotage-at-ladder-scale fail), so the validation is closer to four independent tests than thirteen.
+The registered DPO run and the reward-model paraphrase-replicate protocol below are the two designed tests that break this collinearity; the second has now run and confirmed its registered prediction.
 The label count is what sufficed here, not a derived minimum.
 
 \paragraph{Making inflation comparable for reward models.}
 The inflation estimand requires that selection and reporting use independent score replicates, which a judge provides through rubric paraphrases and a single scoring function does not.
 A paraphrase-replicate protocol closes the gap: selection uses the reward model's scores of the original candidates, and reporting uses its scores of content-preserving paraphrases of the same candidates (Qwen-7B, index-aligned), so the winner's-curse cancellation matches the judge protocol.
-The run confirms the registered prediction (P-R1, commit \texttt{828944a}): the convicted reward model's excess gap is $+1.46\sigma$ $[+1.33, +1.58]$ ($n{=}105$), the largest of any configuration measured, with regret unchanged at $0.286$ because the reporting replicate does not touch selection (\texttt{papers/analysis/rm\_inflation.json}).
-One caveat travels with the number: the replicate is candidate-side rather than rubric-side, so the estimand is analogous to the judge protocol's rather than identical, and the measured gap conflates winner's-curse inflation with the reward model's own sensitivity to content-preserving rewording; both readings indict a deployed reward signal.
+The run confirms the registered prediction (P-R1; ledger): the convicted reward model's inflation is $+1.46\sigma$ ($n{=}105$), the largest of any configuration measured, with regret unchanged at $0.286$ because the reporting replicate does not touch selection.
+One caveat travels with the number: the replicate is candidate-side rather than rubric-side, so the estimand is analogous to the judge protocol's rather than identical, and the measured inflation conflates winner's-curse inflation with the reward model's own sensitivity to content-preserving rewording; both readings indict a deployed reward signal.

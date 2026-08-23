@@ -1,8 +1,8 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.22)  23 AUG 2026 10:42
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.22)  23 AUG 2026 11:05
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**main
+**main.tex
 (./main.tex
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
@@ -435,108 +435,202 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 (./sections/00_abstract.tex) (./sections/01_intro.tex [1
 
-{/usr/local/texlive/2026/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2]
-<figures/fig_concept.pdf, id=88, 714.56966pt x 259.30476pt>
+{/usr/local/texlive/2026/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2{/usr
+/local/texlive/2026/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}]
+<figures/fig_concept.pdf, id=117, 714.56966pt x 259.30476pt>
 File: figures/fig_concept.pdf Graphic file (type pdf)
 <use figures/fig_concept.pdf>
-Package pdftex.def Info: figures/fig_concept.pdf  used on input line 43.
+Package pdftex.def Info: figures/fig_concept.pdf  used on input line 40.
 (pdftex.def)             Requested size: 469.75502pt x 170.46507pt.
 ) (./sections/02_setup.tex
-[3] [4 <./figures/fig_concept.pdf>]) (./sections/03_audit.tex [5]
-<figures/fig_h2h.pdf, id=255, 655.75618pt x 235.83232pt>
+[3 <./figures/fig_concept.pdf>]) (./sections/03_audit.tex [4] [5]
+<figures/fig_h2h.pdf, id=286, 655.75618pt x 235.83232pt>
 File: figures/fig_h2h.pdf Graphic file (type pdf)
 <use figures/fig_h2h.pdf>
 Package pdftex.def Info: figures/fig_h2h.pdf  used on input line 45.
 (pdftex.def)             Requested size: 469.75502pt x 168.93909pt.
- [6]
-Overfull \hbox (2.92009pt too wide) in paragraph at lines 70--72
-\OT1/cmr/m/n/10.95 rected level $0\OML/cmm/m/it/10.95 :\OT1/cmr/m/n/10.95 05\OM
-L/cmm/m/it/10.95 =\OT1/cmr/m/n/10.95 11$ (cor-rected con-vic-tion CIs in \OT1/c
-mtt/m/n/10.95 papers/analysis/conviction[]bonferroni.json\OT1/cmr/m/n/10.95 ). 
-
- []
-
-[7 <./figures/fig_h2h.pdf>]
-<figures/fig_stability.pdf, id=297, 382.2127pt x 222.495pt>
+ [6 <./figures/fig_h2h.pdf>]
+<figures/fig_stability.pdf, id=321, 382.2127pt x 222.495pt>
 File: figures/fig_stability.pdf Graphic file (type pdf)
 <use figures/fig_stability.pdf>
-Package pdftex.def Info: figures/fig_stability.pdf  used on input line 80.
+Package pdftex.def Info: figures/fig_stability.pdf  used on input line 79.
 (pdftex.def)             Requested size: 291.2458pt x 169.54947pt.
-) (./sections/04_pressure.tex [8 <./figures/fig_stability.pdf>] [9]
-<figures/fig_curves.pdf, id=348, 655.75618pt x 228.60532pt>
+
+Overfull \hbox (6.01665pt too wide) in paragraph at lines 86--88
+ []\OT1/cmr/bx/n/10.95 What the cer-tifi-cate cov-ers: out-comes, not pro-cess.
+[] \OT1/cmr/m/n/10.95 A pass cer-ti-fies solution-level soundness-
+ []
+
+) (./sections/04_pressure.tex [7 <./figures/fig_stability.pdf>] [8]
+<figures/fig_curves.pdf, id=376, 655.75618pt x 228.60532pt>
 File: figures/fig_curves.pdf Graphic file (type pdf)
 <use figures/fig_curves.pdf>
-Package pdftex.def Info: figures/fig_curves.pdf  used on input line 42.
+Package pdftex.def Info: figures/fig_curves.pdf  used on input line 41.
 (pdftex.def)             Requested size: 469.75502pt x 163.76201pt.
- [10]
-<figures/fig_gate.pdf, id=357, 665.92227pt x 199.69731pt>
+ [9 <./figures/fig_curves.pdf>]
+<figures/fig_gate.pdf, id=433, 665.92227pt x 199.69731pt>
 File: figures/fig_gate.pdf Graphic file (type pdf)
 <use figures/fig_gate.pdf>
-Package pdftex.def Info: figures/fig_gate.pdf  used on input line 69.
+Package pdftex.def Info: figures/fig_gate.pdf  used on input line 65.
 (pdftex.def)             Requested size: 422.77664pt x 126.78505pt.
-) (./sections/05_generalization.tex [11 <./figures/fig_curves.pdf>] [12 <./figu
-res/fig_gate.pdf>] [13])
-(./sections/05_rules_discussion.tex [14]
-Overfull \hbox (33.70013pt too wide) in paragraph at lines 22--44
-\OT1/cmr/m/n/10.95 blinded in-stru-ment with model names and ma-chine scores st
-ripped (\OT1/cmtt/m/n/10.95 papers/analysis/interrater.json\OT1/cmr/m/n/10.95 )
-.
- []
-
-[15]) (./sections/06_related.tex) [16] (./main.bbl [17])
-(./sections/07_appendix.tex [18])
-Overfull \hbox (64.39206pt too wide) in paragraph at lines 29--77
-\OT1/cmr/m/n/10.95 paired bound-ary con-trasts of Sec-tion [][]4[][], and the 1
-.5B con-vic-tion in-fer-ence are in \OT1/cmtt/m/n/10.95 papers/analysis/gap[]ci
-s.json\OT1/cmr/m/n/10.95 .
+) (./sections/05_generalization.tex [10 <./figures/fig_gate.pdf>] [11]) (./sect
+ions/05_rules_discussion.tex [12] [13])
+(./sections/06_related.tex) [14] (./main.bbl [15]) (./sections/07_appendix.tex
+Underfull \hbox (badness 5105) in paragraph at lines 56--56
+[]\OT1/cmr/m/n/9 committed be-fore that
  []
 
 
-Overfull \hbox (2.41624pt too wide) in paragraph at lines 29--77
-\OML/cmm/m/it/10.95 n[]\OT1/cmr/m/n/10.95 105$); code $+0\OML/cmm/m/it/10.95 :\
-OT1/cmr/m/n/10.95 05$ $[\OMS/cmsy/m/n/10.95 ^^@\OT1/cmr/m/n/10.95 0\OML/cmm/m/i
-t/10.95 :\OT1/cmr/m/n/10.95 29\OML/cmm/m/it/10.95 ; \OT1/cmr/m/n/10.95 +0\OML/c
-mm/m/it/10.95 :\OT1/cmr/m/n/10.95 40]$, $+0\OML/cmm/m/it/10.95 :\OT1/cmr/m/n/10
-.95 63$ $[+0\OML/cmm/m/it/10.95 :\OT1/cmr/m/n/10.95 44\OML/cmm/m/it/10.95 ; \OT
-1/cmr/m/n/10.95 +0\OML/cmm/m/it/10.95 :\OT1/cmr/m/n/10.95 83]$, $+0\OML/cmm/m/i
-t/10.95 :\OT1/cmr/m/n/10.95 56$ $[+0\OML/cmm/m/it/10.95 :\OT1/cmr/m/n/10.95 32\
-OML/cmm/m/it/10.95 ; \OT1/cmr/m/n/10.95 +0\OML/cmm/m/it/10.95 :\OT1/cmr/m/n/10.
-95 81]$, $+0\OML/cmm/m/it/10.95 :\OT1/cmr/m/n/10.95 67$ $[+0\OML/cmm/m/it/10.95
- :\OT1/cmr/m/n/10.95 41\OML/cmm/m/it/10.95 ; \OT1/cmr/m/n/10.95 +0\OML/cmm/m/it
-/10.95 :\OT1/cmr/m/n/10.95 95]$
+Underfull \hbox (badness 1502) in paragraph at lines 58--59
+\OT1/cmr/m/n/9 scored af-ter out-comes were known
  []
 
-[19] [20] (./main.aux)
+
+Underfull \hbox (badness 3088) in paragraph at lines 59--60
+[]\OT1/cmr/m/n/9 Confirmed: in-fla-tion $+1\OML/cmm/m/it/9 :\OT1/cmr/m/n/9 46\O
+ML/cmm/m/it/9 ^^[$\OT1/cmr/m/n/9 , the
+ []
+
+
+Underfull \hbox (badness 1221) in paragraph at lines 60--61
+[]\OT1/cmr/m/it/9 Falsified in di-rec-tion\OT1/cmr/m/n/9 : sen-si-tive on
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 63--63
+[]\OT1/cmr/m/n/9 P-B4: bat-tery sen-si-tiv-ity rank-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 66--66
+[]\OT1/cmr/m/n/9 Cross-family gen-er-a-tor: blind-vs-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 70--70
+[]\OT1/cmr/m/n/9 registered (in-stru-ment
+ []
+
+
+Underfull \hbox (badness 5667) in paragraph at lines 93--94
+[]\OT1/cmr/m/n/8 author on same sub-set:
+ []
+
+
+Underfull \hbox (badness 1122) in paragraph at lines 94--95
+[]\OT1/cmr/m/n/8 blind rater alone: $+0\OML/cmm/m/it/8 :\OT1/cmr/m/n/8 40$
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 99--100
+[]\OT1/cmr/m/n/8 ceilings $\OMS/cmsy/m/n/8 ^^Y \OT1/cmr/m/n/8 0\OML/cmm/m/it/8 
+:\OT1/cmr/m/n/8 89$, $0\OML/cmm/m/it/8 :\OT1/cmr/m/n/8 72$;
+ []
+
+
+Underfull \hbox (badness 6316) in paragraph at lines 105--106
+[]\OT1/cmr/m/n/8 two-sided, $\OML/cmm/m/it/8 n[]\OT1/cmr/m/n/8 53$; be-low
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 109--109
+[]$\OT1/cmr/m/n/8 +0\OML/cmm/m/it/8 :\OT1/cmr/m/n/8 54 \OMS/cmsy/m/n/8 ! \OT1/c
+mr/m/n/8 +0\OML/cmm/m/it/8 :\OT1/cmr/m/n/8 42$
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 110--110
+[]$\OT1/cmr/m/n/8 +0\OML/cmm/m/it/8 :\OT1/cmr/m/n/8 59 \OMS/cmsy/m/n/8 ! \OT1/c
+mr/m/n/8 +0\OML/cmm/m/it/8 :\OT1/cmr/m/n/8 47$
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 111--111
+[]$\OMS/cmsy/m/n/8 ^^@\OT1/cmr/m/n/8 0\OML/cmm/m/it/8 :\OT1/cmr/m/n/8 22 \OMS/c
+msy/m/n/8 ! ^^@\OT1/cmr/m/n/8 0\OML/cmm/m/it/8 :\OT1/cmr/m/n/8 24$
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 126--127
+[]\OT1/cmr/m/n/8 no de-tectable sound-ness
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 136--136
+[]$\OT1/cmr/m/n/8 [+0\OML/cmm/m/it/8 :\OT1/cmr/m/n/8 48\OML/cmm/m/it/8 ; \OT1/c
+mr/m/n/8 +0\OML/cmm/m/it/8 :\OT1/cmr/m/n/8 82]$;
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 136--136
+\OT1/cmr/m/n/8 [+0\OML/cmm/m/it/8 :\OT1/cmr/m/n/8 50\OML/cmm/m/it/8 ; \OT1/cmr/
+m/n/8 +0\OML/cmm/m/it/8 :\OT1/cmr/m/n/8 85]$;
+ []
+
+
+Underfull \hbox (badness 6016) in paragraph at lines 170--170
+[]\OT1/cmr/m/n/9 authority / con-fi-
+ []
+
+
+Underfull \hbox (badness 1184) in paragraph at lines 172--173
+[]\OT1/cmr/m/n/9 largest of the ref-er-enced tier;
+ []
+
+[16] [17])
+Overfull \hbox (2.98407pt too wide) in paragraph at lines 235--78
+\OT1/cmr/m/n/10.95 (1.5B/3B/7B/14B). Code ($\OML/cmm/m/it/10.95 n[]\OT1/cmr/m/n
+/10.95 68$): $+0\OML/cmm/m/it/10.95 :\OT1/cmr/m/n/10.95 05$ $[\OMS/cmsy/m/n/10.
+95 ^^@\OT1/cmr/m/n/10.95 0\OML/cmm/m/it/10.95 :\OT1/cmr/m/n/10.95 29\OML/cmm/m/
+it/10.95 ; \OT1/cmr/m/n/10.95 +0\OML/cmm/m/it/10.95 :\OT1/cmr/m/n/10.95 40]$, $
++0\OML/cmm/m/it/10.95 :\OT1/cmr/m/n/10.95 63$ $[+0\OML/cmm/m/it/10.95 :\OT1/cmr
+/m/n/10.95 44\OML/cmm/m/it/10.95 ; \OT1/cmr/m/n/10.95 +0\OML/cmm/m/it/10.95 :\O
+T1/cmr/m/n/10.95 83]$, $+0\OML/cmm/m/it/10.95 :\OT1/cmr/m/n/10.95 56$ $[+0\OML/
+cmm/m/it/10.95 :\OT1/cmr/m/n/10.95 32\OML/cmm/m/it/10.95 ; \OT1/cmr/m/n/10.95 +
+0\OML/cmm/m/it/10.95 :\OT1/cmr/m/n/10.95 81]$,
+ []
+
+[18] [19] [20] [21] (./main.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: F40C43A5E4D4AF425824F1E4D631E4EB;1766.
+(rerunfilecheck)             Checksum: C4554E7C04B8ED661A5C65EAE98E4695;2622.
  ) 
 Here is how much of TeX's memory you used:
- 12257 strings out of 467525
- 191444 string characters out of 5418982
- 643756 words of memory out of 5000000
- 40909 multiletter control sequences out of 15000+600000
- 639663 words of font info for 86 fonts, out of 8000000 for 9000
+ 12302 strings out of 467525
+ 191982 string characters out of 5418982
+ 663275 words of memory out of 5000000
+ 40934 multiletter control sequences out of 15000+600000
+ 642731 words of font info for 96 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,11n,79p,2572b,569s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,12n,79p,1891b,571s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb>
 </usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><
-/usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></u
-sr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr
-/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/l
-ocal/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/lo
-cal/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/loca
-l/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local
-/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on main.pdf (20 pages, 363184 bytes).
+/usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></u
+sr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr
+/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/l
+ocal/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/loc
+al/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local
+/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/t
+exlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texl
+ive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive
+/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/
+2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/20
+26/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2026
+/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2026/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2026/te
+xmf-dist/fonts/type1/public/amsfonts/cm/cmti8.pfb></usr/local/texlive/2026/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmti9.pfb></usr/local/texlive/2026/texmf-
+dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb></usr/local/texlive/2026/texmf-di
+st/fonts/type1/public/cm-super/sfrm1095.pfb>
+Output written on main.pdf (21 pages, 480297 bytes).
 PDF statistics:
- 614 PDF objects out of 1000 (max. 8388607)
- 386 compressed objects within 4 object streams
- 95 named destinations out of 1000 (max. 500000)
- 114 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 735 PDF objects out of 1000 (max. 8388607)
+ 479 compressed objects within 5 object streams
+ 106 named destinations out of 1000 (max. 500000)
+ 146 words of extra memory for PDF output out of 10000 (max. 10000000)
 

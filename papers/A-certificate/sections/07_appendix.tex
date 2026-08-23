@@ -1,32 +1,240 @@
 \appendix
 
+\section{Confidence intervals for the main table}
+\label{app:citable}
+This appendix is the twin of Table~\ref{tab:h2h}: the same rows, with the bootstrap 95\% confidence intervals that the main table omits for readability.
+
+\begin{table}[ht]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{llccc}
+\toprule
+configuration & & $n$ & sound.\ partial [95\% CI] & style partial [95\% CI] \\
+\midrule
+blind & 1.5B$^{a}$ & 53 & $-0.00$ & $+0.51$ $[+0.13, +0.89]$ \\
+& 3B & 60 & $+0.19$ $[-0.09,+0.53]$ & $+0.16$ $[-0.17,+0.44]$ \\
+& 7B & 60 & $+0.32$ $[+0.04,+0.60]$ & $-0.02$ $[-0.31,+0.30]$ \\
+& 14B & 60 & $+0.41$ $[+0.12,+0.64]$ & $-0.21$ $[-0.40,+0.00]$ \\
+\midrule
+referenced & 1.5B & 56 & $+0.51$ $[+0.21,+0.75]$ & $+0.10$ $[-0.21,+0.44]$ \\
+& 3B & 60 & $+0.53$ $[+0.36,+0.70]$ & $-0.02$ $[-0.33,+0.29]$ \\
+& 7B & 60 & $+0.66$ $[+0.48,+0.82]$ & $-0.12$ $[-0.35,+0.17]$ \\
+& 14B & 60 & $+0.70$ $[+0.50,+0.85]$ & $-0.11$ $[-0.34,+0.15]$ \\
+\midrule
+frontier & honest & 60 & $+0.90$ $[+0.77,+0.97]$ & $-0.22$ $[-0.40,+0.05]$ \\
+& sabotaged & 60 & $+0.20$ $[-0.07,+0.44]$ & $+0.59$ $[+0.36,+0.76]$ \\
+\midrule
+sabotaged & 7B & 60 & $+0.28$ $[+0.07,+0.46]$ & $+0.17$ $[-0.06,+0.38]$ \\
+ladder & 14B & 60 & $+0.38$ $[+0.06,+0.62]$ & $+0.24$ $[-0.07,+0.47]$ \\
+\midrule
+reward model & Skywork-8B$^{b}$ & 60 & $-0.01$ $[-0.29,+0.28]$ & $+0.54$ $[+0.34,+0.70]$ \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{Bootstrap 95\% confidence intervals for every cell of Table~\ref{tab:h2h}.}
+$^{a}$The 1.5B-blind bootstrap resamples are degenerate (concentrated scores), so its conviction carries jackknife and permutation inference instead: the bracketed interval is the jackknife CI, and the permutation test gives $p = 0.0017$ (two-sided, $n{=}53$).
+$^{b}$The reward model's inflation is $+1.46\sigma$ $[+1.33, +1.58]$ under the candidate-side paraphrase replicate (Section~\ref{sec:limits}), an analogous but not identical estimand to the judge protocol's.
+Inflation intervals reported in the paper appear in Table~\ref{tab:robust}, panel E; the remaining per-configuration inflation intervals are in the repository analysis output (Section~\ref{sec:setup}, Reproducibility).}
+\label{tab:h2h_ci}
+\end{table}
+
+\section{Prediction ledger}
+\label{app:ledger}
+This appendix consolidates all registered-versus-post-hoc bookkeeping in one place: every prediction, when it was registered, and how it came out.
+The headline record is ten of eleven registered configurations predicted correctly (twelve of thirteen counting the two late-scored sabotaged-ladder rows).
+
+\begin{table}[ht]
+\centering
+\footnotesize
+\begin{tabular}{p{5.6cm}p{3.6cm}p{5.4cm}}
+\toprule
+prediction & registered & outcome \\
+\midrule
+Blind ladder judges fail the audit; referenced ones pass & draft predating pressure results & Correct under the frozen rule; the blind 14B's threshold pass later shown false under pressure \\
+Sabotaged frontier judge is convicted & draft predating pressure results & Correct (style partial $+0.59$) \\
+Audit-failed evaluators are gamed under pressure & draft predating pressure results & Correct: all fails land in the failed cluster \\
+Multi-valid tasks: a reference amplifies gaming & committed before that experiment's data & Correct at all four ladder sizes (Appendix~\ref{app:cis}) \\
+Pressure estimands and estimators & committed before generation & Design freeze (no outcome to score) \\
+Sabotaged 7B and 14B are convicted & pre-run, commit \texttt{718c399} & \emph{Falsified}: neither style partial significantly positive; both fail instead, and the fails match the outcomes but were scored after outcomes were known (confirmatory only) \\
+P-R1: convicted reward model out-inflates the certified referenced tier & commit \texttt{828944a}, before scores generated & Confirmed: inflation $+1.46\sigma$, the largest measured \\
+P-B1: sabotaged judge positively sensitive on presentation axes & pre-run & \emph{Falsified in direction}: sensitive on three axes but negatively; magnitude bar ($|\Delta| \ge 0.5$) met only for hedging \\
+P-B2: honest frontier insensitive on all six battery axes & pre-run & Confirmed (Table~\ref{tab:battery}) \\
+P-B3: blind 1.5B positively sensitive on presentation axes & pre-run & Confirmed (primary read $+0.65$) \\
+P-B4: battery sensitivity rank-correlates with audited style partials, Spearman $> 0.5$ & pre-run & Criterion met: $0.55$ primary, $0.53$ all-six-axes secondary; thin margin at $n{=}10$ configurations \\
+Mechanical-axes expectations E1 (honest judges clean) and E2 & stated in analysis header before execution & E1 partially violated (two honest referenced judges flagged); E2 unfalsifiable as phrased, which is not pre-specification \\
+Frontier 0--100 elicitation improves selection & registered ablation & Confirmed: regret $0.117 \to 0.069$, inflation $+0.38 \to +0.27$ \\
+Cross-family generator: blind-vs-referenced separation replicates on a Llama pool & registered & Confirmed at every ladder size (Table~\ref{tab:robust}, panel F) \\
+P-D1--P-D3: DPO training validation & pre-run, commit \texttt{3a964f1} & Queued; no outcome claimed \\
+Putnam replication under the revised CI rule & rule frozen after the false pass & Pending \\
+Code-domain audit & registered & Pending; current code scoring is post-hoc extrapolation \\
+Deployment-pool label set & registered (instrument exists) & Pending \\
+Label-budget prediction for a second math dataset & registered & Pending \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{Prediction ledger.} Registration means internal git timestamps on committed drafts and code, not an external registry.}
+\label{tab:ledger}
+\end{table}
+
+\section{Replication and robustness}
+\label{app:robust}
+This appendix collects the second-rater replication cells, reliability ceilings, multiplicity-corrected conviction inference, length-controlled partials, inflation intervals and boundary contrasts, cross-family replication ranges, and the revised-rule interval reads that the main text states with a single number each.
+
+\begin{table}[ht]
+\centering
+\scriptsize
+\renewcommand{\arraystretch}{0.95}
+\begin{tabular}{p{7.2cm}p{3.2cm}p{3.6cm}}
+\toprule
+quantity & value [95\% CI] & note \\
+\midrule
+\multicolumn{3}{l}{\emph{A. Second-rater replication (hypothesis-blind non-author, same rubric, $n{=}30$)}} \\
+Honest frontier soundness partial, blind rater's labels & $+0.97$ & sharpens the $+0.90$ pass \\
+Honest frontier style partial, blind rater's labels & $-0.37$ $[-0.57, -0.08]$ & \\
+Sabotage style partial, blind rater's labels & $+0.61$ $[+0.30, +0.83]$ & author on same subset: $+0.41$ $[-0.08, +0.74]$ \\
+Reward-model style partial, two-rater consensus & $+0.48$ $[+0.02, +0.73]$ & blind rater alone: $+0.40$ $[-0.02, +0.70]$ \\
+\midrule
+\multicolumn{3}{l}{\emph{B. Cross-rater reliability and single-rater ceilings}} \\
+Soundness reliability, same rubric ($n{=}30$) & $0.83$ $[0.44, 0.97]$ & Spearman $0.46$; ceiling $\approx 0.91$ \\
+Style reliability, same rubric ($n{=}30$) & $0.48$ $[0.14, 0.71]$ & Spearman $0.39$; ceiling $\approx 0.69$ \\
+Earlier cross-schema block ($n{=}20$) & sound.\ $0.80$; style $0.52$ & ceilings $\approx 0.89$, $0.72$; overall-quality scale under an earlier rubric \\
+Spearman--Brown, adding a second rater & $0.83 \to 0.91$ & soundness \\
+\midrule
+\multicolumn{3}{l}{\emph{C. Conviction inference under multiplicity and degeneracy (Bonferroni at $0.05/11$)}} \\
+Sabotaged frontier style partial, corrected CI & $[+0.25, +0.80]$ & \\
+Reward-model style partial, corrected CI & $[+0.20, +0.77]$ & \\
+1.5B-blind conviction, permutation $p$ & $0.0017$ & two-sided, $n{=}53$; below $0.05/11$; bootstrap degenerate \\
+1.5B-blind style partial, jackknife CI & $[+0.13, +0.89]$ & \\
+\midrule
+\multicolumn{3}{l}{\emph{D. Length-controlled (three-variable) style partials}} \\
+Reward model & $+0.54 \to +0.42$ $[+0.22, +0.59]$ & conviction survives \\
+Sabotaged frontier & $+0.59 \to +0.47$ $[+0.26, +0.65]$ & conviction survives \\
+Honest frontier & $-0.22 \to -0.24$ $[-0.43, +0.05]$ & unchanged \\
+Reward-model length partial & $-0.54$ $[-0.70, -0.32]$ & prefers short responses \\
+\midrule
+\multicolumn{3}{l}{\emph{E. Inflation intervals and boundary contrasts (math, $n{=}105$ items)}} \\
+Sabotaged frontier inflation & $+0.85$ $[+0.70, +1.01]$ & disjoint from honest \\
+Honest frontier inflation & $+0.38$ $[+0.28, +0.50]$ & \\
+Blind 14B inflation & $+0.63$ $[+0.42, +0.84]$ & the false pass \\
+Sabotaged 14B inflation & $+0.61$ $[+0.49, +0.73]$ & \\
+Sabotaged 7B inflation & $+0.13$ $[-0.13, +0.35]$ & not significant \\
+Reward-model inflation (paraphrase replicate) & $+1.46$ $[+1.33, +1.58]$ & largest measured \\
+Blind 3B $-$ honest frontier & $+0.06$ $[-0.10, +0.22]$ & boundary pair, not separable \\
+Sabotaged $-$ honest frontier & $+0.47$ $[+0.36, +0.58]$ & \\
+Blind 3B $-$ referenced 14B & $+0.39$ $[+0.25, +0.53]$ & \\
+Blind 14B $-$ honest frontier & $+0.25$ $[+0.01, +0.48]$ & \\
+Sabotaged $-$ honest frontier, regret difference & $+0.014$ $[-0.058, +0.085]$ & indistinguishable \\
+Panel channel check: sabotage-selected more styled & $+0.27$ $[+0.10, +0.44]$ & no detectable soundness loss \\
+\midrule
+\multicolumn{3}{l}{\emph{F. Cross-family generator (Llama-3.1-8B pool, $n{=}176$ in-band items)}} \\
+Blind inflation range across ladder & $+0.70$ to $+1.09$ & regrets $0.26$--$0.36$ \\
+Referenced inflation range across ladder & $+0.22$ to $+0.50$ & regrets $0.06$--$0.18$; CIs disjoint within each size \\
+\midrule
+\multicolumn{3}{l}{\emph{G. Revised-rule reads: soundness-partial CI against the $0.40$ bar}} \\
+Blind 14B & $[+0.12, +0.64]$ & straddles: abstain \\
+Referenced 1.5B & $[+0.21, +0.75]$ & straddles: abstain \\
+Referenced 3B & $[+0.36, +0.70]$ & straddles: abstain \\
+Referenced 7B / 14B / honest frontier & $[+0.48, +0.82]$; $[+0.50, +0.85]$; $[+0.77, +0.97]$ & clear: pass \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{Replication and robustness.} Every value referenced with a single number in the main text, with its interval and companions.}
+\label{tab:robust}
+\end{table}
+
+\section{Perturbation battery and mechanical-axes audit}
+\label{app:battery}
+This appendix carries the per-axis battery deltas behind Section~\ref{sec:procedure} and the zero-label mechanical-axes audit rows.
+
+\begin{table}[ht]
+\centering
+\footnotesize
+\begin{tabular}{lp{2.9cm}p{3.4cm}p{4.6cm}}
+\toprule
+configuration & axis & $\Delta$ [95\% CI] & reading \\
+\midrule
+honest frontier & length & $-0.05$ $[-0.18, +0.07]$ & insensitive on all six axes \\
+& format / authority & $-0.03$ / $-0.02$ & (P-B2 confirmed) \\
+& bandwagon / confidence & $-0.07$ / $-0.07$ & \\
+& hedging & $+0.02$ & \\
+\midrule
+sabotaged frontier & length & $-0.20$ $[-0.35, -0.03]$ & significant, negative \\
+& bandwagon & $-0.32$ $[-0.52, -0.08]$ & significant, negative \\
+& hedging & $-0.53$ $[-0.72, -0.37]$ & only axis meeting $|\Delta| \ge 0.5$ \\
+& other three axes & n.s. & P-B1 falsified in direction \\
+\midrule
+blind 1.5B & authority & $+0.95$ $[+0.30, +1.75]$ & positive as predicted (P-B3) \\
+& confidence & $+0.78$ $[+0.17, +1.50]$ & \\
+& hedging & $-1.13$ $[-2.02, -0.33]$ & predicted direction (hedge is a negative cue) \\
+& bandwagon & $-0.27$ $[-0.75, +0.07]$ & flat \\
+& primary read & $+0.65$ & mean presentation delta, hedge sign flipped \\
+\midrule
+blind 14B & authority / confidence / hedging & $+0.12$ / $+0.25$ / $-0.67$ & far flatter than 1.5B \\
+referenced 14B & all six axes & largest $|\Delta|$ $0.20$ & essentially flat \\
+referenced 1.5B & length / authority & $+1.03$ / $+1.17$ & largest of the referenced tier; boundary status \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{Six-axis perturbation battery, per-axis score deltas.}
+Sensitivity declines with judge scale, referenced arms are flatter than blind at each size, and the honest frontier is the flattest of all.
+Across the ten configurations with both a battery arm and an audited style partial, battery sensitivity rank-correlates with the style partials at Spearman $0.55$ (all-six-axes secondary $0.53$) against the registered bar of $0.5$ (P-B4).}
+\label{tab:battery}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\footnotesize
+\begin{tabular}{llll}
+\toprule
+configuration & length partial [95\% CI] & flagged & correctness partial \\
+\midrule
+sabotaged frontier & $-0.74$ $[-0.84, -0.60]$ & yes & $+0.22$ $[-0.13, +0.52]$ \\
+reward model & $-0.54$ $[-0.70, -0.32]$ & yes & $-0.03$ \\
+sabotaged 14B & $-0.45$ $[-0.66, -0.21]$ & yes & --- \\
+sabotaged 7B & $-0.41$ $[-0.61, -0.17]$ & yes & --- \\
+referenced 1.5B & $-0.35$ $[-0.58, -0.08]$ & yes & --- \\
+referenced 3B & $-0.22$ $[-0.44, -0.01]$ & yes & --- \\
+blind 3B & $-0.29$ (CI crosses zero) & no & --- \\
+referenced 7B & $-0.14$ & no & --- \\
+referenced 14B & $-0.03$ & no & --- \\
+blind 7B & $+0.08$ & no & --- \\
+blind 14B & $+0.09$ & no & --- \\
+honest frontier & $+0.13$ & no & $+0.98$ \\
+blind 1.5B & bootstrap degenerate & no (CI unavailable) & --- \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{Zero-label mechanical-axes audit} (machine correctness as target axis, log response length as the ignored-property axis; flag if the length-partial CI excludes zero).
+The two most corrupted evaluators carry the two largest magnitudes, but the rule also flags two honest referenced passes: a coarse severity screen, not a verdict instrument.}
+\label{tab:mech}
+\end{table}
+
 \section{Full configuration accounting}
 \label{app:confusion}
-All 25 pressure-tested configurations: 12 math (4 blind, 4 referenced, frontier honest, frontier sabotaged, plus the two sabotaged ladder configurations, audited post-registration) and 13 code (4 blind, 4 referenced, frontier blind, frontier referenced, frontier sabotaged, two sabotaged ladder).
-Audited in-domain: the 13 configurations of Table~\ref{tab:h2h} (four blind, four referenced, the honest and sabotaged frontier, the two sabotaged ladder judges, and the trained reward model).
-Applying the frozen rule of Appendix~\ref{app:subsample} uniformly yields six passes (the four referenced ladder judges, the honest frontier, and the blind 14B), four fails (blind 3B, soundness partial $0.19$; blind 7B, $0.32$; sabotaged 7B, $0.28$; sabotaged 14B, $0.38$), and three convictions (blind 1.5B, the sabotaged frontier, and the reward model); twelve of the thirteen verdicts match their pressure outcomes per estimand, the blind 14B pass being the single miss.
-The sabotaged 7B and 14B audits are confirmatory post-registration additions: the runs were registered pre-run at pipeline commit \texttt{718c399} with the prediction that both would be convicted, that prediction is falsified (neither style partial is significantly positive: $+0.17$ $[-0.06, +0.38]$ and $+0.24$ $[-0.07, +0.47]$), and the resulting fail verdicts, scored after the pressure outcomes were known, are both correct (regrets $0.400$ and $0.324$, in the failed cluster; \texttt{papers/analysis/sabotage\_ladder\_audit.json}).
-The registered-era record therefore remains ten of eleven, and the record including the confirmatory additions is twelve of thirteen.
-The blind 14B is a false pass: soundness partial $+0.41$ $[+0.12, +0.64]$ against the $0.40$ cut, style partial $-0.21$, yet excess gap $+0.63$ $[+0.42, +0.84]$ and regret $0.324$, both in the failed cluster.
-The sabotaged frontier separates on inflation only (its regret is statistically indistinguishable from the honest frontier's, paired difference $+0.014$ $[-0.058, +0.085]$).
-Under the post-hoc revised rule of Section~\ref{sec:pressure}, which requires the soundness-partial CI to clear the bar, the blind 14B returns insufficient evidence to certify, and so do the referenced 1.5B (CI $[+0.21, +0.75]$) and referenced 3B ($[+0.36, +0.70]$), whose intervals straddle $0.40$; the revised-rule record on the registered-era eleven is eight predictions (three passes, two fails, three convictions), eight correct, three abstentions.
-The two sabotaged-ladder fails are unchanged under the revision (neither soundness partial reaches the $0.40$ cut and neither style partial is significantly positive), so with the confirmatory additions the revised-rule record is ten predictions, ten correct, three abstentions.
-That revision was adopted after the false pass was observed and is frozen for the Putnam replication.
-Sabotaged-ladder pressure outcomes for reference: sabotaged 7B (math gap $+0.13$ $[-0.13, +0.35]$ ns, regret $0.400$; code $+0.84$, $0.559$) and sabotaged 14B (math gap $+0.61$ $[+0.49, +0.73]$, regret $0.324$; code $+0.96$, $0.426$); the math cells are now audited as above, while the code cells remain unaudited.
-Code: the mechanical-target audit rows (within-item correlation with executed tests, bootstrap CIs) are in \texttt{papers/analysis/code\_oracle\_audit.json}, and the code-side pressure summaries (per-configuration excess gaps with CIs, regrets, and tie fractions) are mirrored at \texttt{papers/analysis/bon\_code\_full.json}.
-Excluding the two sabotaged code ladder cells, which remain unaudited, leaves eleven eligible code configurations; extrapolated verdicts match the pressure outcome in ten, with the referenced 1.5B the single miss (gap $+1.40$, regret $0.441$), coinciding with its null reference gain on the target axis.
+This appendix accounts for all 25 pressure-tested configurations and both verdict rules.
+The pools: 12 math configurations (4 blind, 4 referenced, honest and sabotaged frontier, two sabotaged ladder) and 13 code (4 blind, 4 referenced, frontier blind, frontier referenced, frontier sabotaged, two sabotaged ladder).
+Audited in-domain: the 13 configurations of Table~\ref{tab:h2h}.
+Applying the frozen rule uniformly yields six passes (the four referenced ladder judges, the honest frontier, and the blind 14B), four fails (blind 3B, soundness partial $0.19$; blind 7B, $0.32$; sabotaged 7B, $0.28$; sabotaged 14B, $0.38$), and three convictions (blind 1.5B, the sabotaged frontier, and the reward model); twelve of the thirteen verdicts match their pressure outcomes per estimand, the blind 14B pass being the single miss.
+The sabotaged 7B and 14B audits are late-scored confirmatory additions (ledger, Table~\ref{tab:ledger}): the registered convict prediction was falsified, and the resulting fail verdicts, scored after the pressure outcomes were known, are both correct (regrets $0.400$ and $0.324$, in the failed cluster).
+The registered record therefore remains ten of eleven, and the record including the confirmatory additions is twelve of thirteen.
+The blind 14B is a false pass: soundness partial $+0.41$ against the $0.40$ cut, style partial $-0.21$, yet inflation $+0.63$ and regret $0.324$, both in the failed cluster.
+The sabotaged frontier separates on inflation only; its regret difference from honest is in Table~\ref{tab:robust}.
+Under the post-hoc revised rule of Section~\ref{sec:pressure} (soundness-partial CI must clear the bar), the blind 14B, referenced 1.5B, and referenced 3B all return insufficient evidence (intervals in Table~\ref{tab:robust}, panel G); the revised-rule record on the registered eleven is eight predictions (three passes, two fails, three convictions), eight correct, three abstentions.
+The two sabotaged-ladder fails are unchanged under the revision, so with the confirmatory additions the revised-rule record is ten predictions, ten correct, three abstentions.
+The revision was adopted after the false pass was observed and is frozen for the Putnam replication.
+Sabotaged-ladder pressure outcomes for reference: sabotaged 7B (math inflation $+0.13$, n.s., regret $0.400$; code $+0.84$, $0.559$) and sabotaged 14B (math inflation $+0.61$, regret $0.324$; code $+0.96$, $0.426$); the math cells are audited as above, the code cells remain unaudited.
+Code: excluding the two unaudited sabotaged code ladder cells leaves eleven eligible configurations; extrapolated verdicts match the pressure outcome in ten, with the referenced 1.5B the single miss (inflation $+1.40$, regret $0.441$), coinciding with its null reference gain on the target axis; the worst blind code regret is $0.544$.
 Code verdict predictions were not registered, and the extrapolation scoring is post hoc.
+Pressure-curve values behind Figure~\ref{fig:curves} (raw gap at $n = 4/16/64$): blind 3B code $+0.64 \to +0.94 \to +1.24$; blind 7B code $+0.57 \to +0.95 \to +1.19$; referenced 3B code $+0.33 \to +0.40 \to +0.44$; referenced frontier code $+0.39 \to +0.43 \to +0.48$.
 
 \section{Verdict stability under label subsampling}
 \label{app:subsample}
+This appendix quantifies how many labels each verdict needs.
 At $n$ labels resampled from the anchor set (500 draws), the fraction of draws reproducing the full-sample verdict under fixed rules (convict if style partial $> 0.30$; pass if soundness partial $> 0.40$ and style partial $< 0.20$): sabotage conviction $0.93/0.98/1.00$ at $n = 20/30/40$; honest frontier pass $0.96/1.00/1.00$; 1.5B-blind conviction $0.65/0.84/0.94$.
 The boundary configurations differ from each other: the 1.5B referenced pass reaches $0.70$ at $n{=}40$ and $0.94$ at $n{=}50$, while the 14B blind pass is still at $0.59$ at $n{=}50$ and reproduces fully only at the complete $n{=}60$ set.
-Full table: \texttt{papers/analysis/label\_subsampling.md}.
 Section~\ref{sec:pressure} shows that the 14B blind pass this rule produces is a false pass under pressure.
 
 \section{Paired-contrast confidence intervals}
 \label{app:cis}
-Per-configuration excess-gap point estimates and 95\% CIs for all twelve math configurations, the paired boundary contrasts of Section~\ref{sec:pressure}, and the 1.5B conviction inference are in \texttt{papers/analysis/gap\_cis.json}.
-Blind-minus-referenced excess-gap contrasts, with per-item bootstrap 95\% CIs.
-Math: $+0.72$ $[+0.57,+0.86]$, $+0.37$ $[+0.24,+0.51]$, $+0.62$ $[+0.48,+0.76]$, $+0.57$ $[+0.36,+0.78]$ (1.5B/3B/7B/14B, $n{=}105$); code $+0.05$ $[-0.29,+0.40]$, $+0.63$ $[+0.44,+0.83]$, $+0.56$ $[+0.32,+0.81]$, $+0.67$ $[+0.41,+0.95]$ ($n{=}68$).
-On the multi-valid tasks the sign inverts: referenced-minus-blind contrasts are positive at all four sizes ($+0.38$ $[-0.09, +0.85]$, $+0.66$, $+0.10$, $+0.49$; individual CIs cross zero at $n{=}51$ items; the anchoring-margin mechanism carries CIs excluding zero in all eight referenced cells; \texttt{papers/analysis/ties\_paired.json}).
+This appendix carries the blind-minus-referenced inflation contrasts and the multi-valid-task inversion.
+Blind-minus-referenced inflation contrasts, with per-item bootstrap 95\% CIs.
+Math ($n{=}105$): $+0.72$ $[+0.57,+0.86]$, $+0.37$ $[+0.24,+0.51]$, $+0.62$ $[+0.48,+0.76]$, $+0.57$ $[+0.36,+0.78]$ (1.5B/3B/7B/14B).
+Code ($n{=}68$): $+0.05$ $[-0.29,+0.40]$, $+0.63$ $[+0.44,+0.83]$, $+0.56$ $[+0.32,+0.81]$, $+0.67$ $[+0.41,+0.95]$.
+On the multi-valid tasks the sign inverts: referenced-minus-blind contrasts are positive at all four sizes ($+0.38$ $[-0.09, +0.85]$, $+0.66$, $+0.10$, $+0.49$; individual CIs cross zero at $n{=}51$ items), the raw gaps illustrate the size of the inversion (3B: $+0.55$ blind versus $+1.21$ referenced), and the anchoring-margin mechanism carries CIs excluding zero in all eight referenced cells: among equally valid answers, referenced judges score those matching the shown reference $+2.7$ to $+10.0$ points (of 10) above the rest, with total anchoring at 1.5B--3B.
+The static multi-valid reference cost of Section~\ref{sec:audit} ($7$--$8$ points of verdict accuracy) is paired, $p \le .0005$.

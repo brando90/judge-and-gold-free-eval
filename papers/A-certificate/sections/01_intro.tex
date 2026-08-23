@@ -1,48 +1,45 @@
 \section{Introduction}
 \label{sec:intro}
 
-Automated evaluators now sit inside leaderboards, data filters, reward pipelines, and best-of-$n$ serving, and their trustworthiness is discovered too late.
-The practitioner's question is always the same: will this evaluator measure what I think it measures, and will it keep doing so when something optimizes against it?
-Current practice answers by correlating the judge with human labels, deploying it, and hoping.
-When the answer is no, it is discovered in the worst way: scores go up, quality does not, and the evaluator has been reward-hacked~\cite{gao2022scaling,skalse2022defining}.
+Consider a team that wires an LLM judge into best-of-$n$ serving: the model writes 64 candidate solutions per problem and the judge picks the one to keep.
+On a spot check the judge agrees with human graders about 90 percent of the time, so the team trusts it.
+Under optimization the scoreboard climbs while true quality does not: the pipeline has learned to produce answers the judge likes, not answers that are right, and the judge has been reward-hacked~\cite{gao2022scaling,skalse2022defining}.
+The failure was discoverable beforehand, with a few dozen labeled examples, because this judge's scores track writing quality once soundness is held fixed --- and no agreement rate can reveal that.
+This paper turns that before-the-fact check into a \emph{certificate}: a cheap audit, run before deployment, whose verdict predicts whether the judge will be gamed.
 
-Two assumptions prop up this workflow, and both are failing.
-The first is that raw human agreement is an adequate validation.
-The second is that nothing better is available, so gaming can only be characterized after the fact.
-Recent work has already damaged the first assumption from one side: benchmark accuracy, the standard static measure of reward-model quality, predicts downstream optimization outcomes poorly~\cite{wen2024rethinking}.
-We damage it from the other side, and replace it.
+The workflow the certificate replaces rests on two failing assumptions: that raw human agreement validates a judge, and that nothing better exists before deployment.
+Recent work has already shown that benchmark accuracy, the standard static measure of reward-model quality, predicts downstream optimization outcomes poorly~\cite{wen2024rethinking}.
+We show that a different static measurement --- what a judge \emph{reads}, not how often it agrees --- does predict them.
+That style bias exists in judges and reward models is established at the class level~\cite{wu2023style,rmbench2024}; what the certificate adds is a per-deployment instrument that measures whether a particular judge, on a particular task and prompt, reads substance.
 
-Our contribution is a \emph{certificate}: a pre-deployment audit that measures what an evaluator reads, using a few dozen blind human labels, and returns a categorical verdict per judge configuration: \emph{pass} (certified as substance-reading), \emph{fail} (too weak to certify), or \emph{convict} (loaded on a property it should ignore).
-The frozen verdicts predicted the gaming outcome of ten of the eleven configurations in the registered-era record (Table~\ref{tab:h2h}).
-Two sabotaged-ladder audits, registered pre-run but scored after their pressure outcomes were known, add two further correct verdicts, for a secondary count of twelve of the thirteen configurations audited in-domain.
-The one false pass sits at the pass threshold (soundness partial $0.41$ against a $0.40$ cut) and is the verdict the label-subsampling analysis already marks unstable at 50 labels and below, with full reproduction only at 60 (Section~\ref{sec:pressure}).
-That style bias exists in judges and reward models is established at the class level~\cite{wu2023style,rmbench2024}; what the certificate adds is a per-deployment instrument that measures whether a particular judge, on a particular task and prompt, reads substance before it is deployed.
+Our contributions:
+\begin{itemize}
+\item \textbf{A cheap audit with a categorical verdict.} A few dozen blind human labels, graded separately on a target axis (soundness) and an axis the judge should ignore (style), are read through two partial correlations and yield a verdict per judge configuration: pass, fail, or convict (Section~\ref{sec:audit}; Table~\ref{tab:h2h}).
+\item \textbf{Outcome validation under real optimization pressure.} The frozen verdicts predicted the best-of-$n$ outcome for ten of eleven registered configurations; the full registration bookkeeping lives in one prediction ledger (Table~\ref{tab:ledger}), and Section~\ref{sec:pressure} reports the one false pass and the disclosed post-hoc rule revision it triggered.
+\item \textbf{A diagnosis raw agreement cannot make.} The audit convicts a sabotaged frontier judge and a top open trained reward model that raw agreement scores like honest mid-size judges, and the convicted frontier judge corrupts its scoreboard without measurably corrupting selection --- the failure mode an accuracy check is blind to (Sections~\ref{sec:audit}--\ref{sec:pressure}).
+\item \textbf{A generalization path beyond hand labels.} A zero-label perturbation battery and a mechanical-oracle variant of the audit are each validated against the human-label verdicts (Section~\ref{sec:procedure}).
+\item \textbf{Design rules for practitioners}, including when a trusted reference helps a judge and when it amplifies gaming (Section~\ref{sec:rules}).
+\end{itemize}
+
+The audit can be small because evaluator failure is mechanistic.
+Companion work shows that signals which \emph{compare} a solution to reference text fail to grade it, because most of their variance is a property of the reference, while signals that \emph{verify} against something checkable do grade~\cite{companionB}.
+A judge sits on one side or the other depending on protocol and scale, and the audit detects which (Figure~\ref{fig:concept}).
+
 Four design choices distinguish the audit from raw-agreement validation.
-Humans grade on separated axes rather than one quality number: a target axis (here, soundness of reasoning) and nuisance axes, the properties the judge should ignore, chosen for the threat model (here, style; length, format, and position are probed separately in Section~\ref{sec:rules}).
-A single number makes nuisance-loading unmeasurable in principle, and the axes are an instantiation, not a fixed pair.
-A deliberately decorrelated stratum, a subsample built so the two axes vary independently, supplies power that random data cannot, since soundness and style correlate at $+0.82$ in the wild.
+Humans grade on two separated axes rather than one quality number, because a single number makes loading on the wrong axis unmeasurable in principle; the axes here (soundness, style) are an instantiation chosen for the threat model, not a fixed pair (length, format, and position are probed separately in Section~\ref{sec:rules}).
+A deliberately decorrelated subsample --- built so the two axes vary independently --- supplies power that random data cannot, since soundness and style correlate at $+0.82$ in the wild.
 The verdict is read from partial correlations, not an agreement rate.
 And a sabotaged judge serves as a positive control: evidence the instrument can convict, not merely bless.
 
-The audit can be small because evaluator failure is mechanistic.
-Companion work shows that signals which \emph{compare} a solution to reference text fail to grade it, because most of their variance is a property of the reference~\cite{companionB}.
-Signals that \emph{verify} against something checkable do grade.
-A judge sits on one side or the other depending on protocol and scale, and the audit detects which (Figure~\ref{fig:concept}).
-
-We validate the certificate by registering predictions and applying pressure.
-A 7B generator writes 64 candidates per problem; each judge configuration selects its favorite; two pre-registered estimands separate scoreboard inflation from real accuracy loss.
-On the eleven registered-era configurations audited in-domain, the frozen verdicts predict outcomes in ten: failed and convicted configurations cluster above certified ones on regret and inflation, the sabotaged frontier separates on inflation alone, corrupting the scoreboard without measurably corrupting selection at this pressure, and the blind 14B is a false pass at the threshold (Figure~\ref{fig:h2h}).
-The two sabotaged-ladder audits, both correct fails, were registered pre-run but scored against outcomes already known, so they enter only a secondary count of twelve of thirteen as confirmatory additions (Section~\ref{sec:audit}); the sabotaged 7B is the one failed configuration that does not inflate.
-The inflation separation between failed and certified configurations persists across optimization strength (Figure~\ref{fig:curves}).
-A cross-domain extrapolation to the eleven code configurations eligible under the paper's own exclusion policy (the two sabotaged code ladder cells remain unaudited) succeeds in ten and misses exactly where a post-hoc mechanism, the capability gate, says the audit itself would have failed to transfer.
-Code-domain verdict predictions were not part of the registration, and the extrapolation scoring is post hoc.
+We validate by registering predictions and applying pressure: a 7B generator writes 64 candidates per problem, each judge picks its favorite, and two pre-registered quantities separate scoreboard inflation from real accuracy loss (Section~\ref{sec:pressure}).
+Failed and convicted judges cluster above certified ones on both quantities; the one false pass sits exactly at the pass threshold (Figure~\ref{fig:h2h}); and a cross-domain extrapolation to code succeeds in ten of eleven eligible configurations, missing exactly where a post-hoc mechanism --- the capability gate --- says the audit itself would not transfer.
 That miss yields the operational lesson: certification is a property of a judge, task, and prompt triple, and must be measured where the judge will be used.
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=\textwidth]{figures/fig_concept.pdf}
 \caption{\textbf{Why a small audit can predict gaming.}
-Top and middle: the two evaluator mechanisms; comparison-shaped evaluators reward resemblance to a reference and load on nuisance axes such as style, while verification-shaped evaluators check the solution against something trusted.
+Top and middle: the two evaluator mechanisms; comparison-shaped evaluators reward resemblance to a reference and load on properties like style, while verification-shaped evaluators check the solution against something trusted.
 Bottom: the audit pipeline; a blind labeled set read through partial correlations classifies the mechanism, and the verdict predicts behavior under optimization pressure.
 \textbf{Takeaway: evaluator failure has one dominant mechanism, so a small instrument aimed at it can predict gaming before any optimization runs.}}
 \label{fig:concept}
