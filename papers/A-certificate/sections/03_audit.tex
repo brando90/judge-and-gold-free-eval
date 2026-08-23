@@ -15,7 +15,12 @@ The honest frontier judge passes with soundness partial $+0.90$ $[+0.77, +0.97]$
 The sabotaged judge is convicted on the same items: style partial $+0.59$ $[+0.36, +0.76]$, soundness partial $+0.20$ $[-0.07, +0.44]$.
 The audit also convicts an evaluator class it was not designed around: a top open trained reward model (Skywork-Reward-Llama-3.1-8B) scores the same traces with soundness partial $-0.01$ $[-0.29, +0.28]$ and style partial $+0.54$ $[+0.34, +0.70]$, the same signature as the sabotaged judge, where naive validation ($r = +0.18$) would report only weakness.
 Under pressure the reward model shows the damage this verdict predicts: its math regret ($0.286$) is intermediate, worse than every certified referenced judge but better than every failed blind judge, and its code regret ($0.485$) is worse than every certified configuration's but below the worst blind and sabotaged code cells ($0.544$ and $0.559$).
-The reward model uses no reference, so no referenced-tier comparison applies; its computed excess gap is mechanically zero by construction, because a single scoring function serves as both selector and reporter, which is why Table~\ref{tab:h2h} marks it n/c.
+The reward model uses no reference, so no referenced-tier comparison applies, and a single scoring function cannot supply the independent selection and reporting replicates the inflation estimand requires.
+The paraphrase-replicate protocol of Section~\ref{sec:limits} supplies them: selection uses the RM's scores of the original candidates and reporting uses its scores of content-preserving Qwen-7B paraphrases of the same candidates, index-aligned, so the winner's-curse cancellation matches the judge protocol.
+The registered prediction (P-R1, commit \texttt{828944a}) that the convicted reward model would show a positive excess gap larger than the certified referenced ladder's is confirmed: the measured excess gap is $+1.46\sigma$ $[+1.33, +1.58]$ ($n{=}105$; \texttt{papers/analysis/rm\_inflation.json}), the largest inflation of any configuration measured, against $+0.85$ for the sabotaged frontier, $+1.09$ for the worst blind cell (cross-family pool), and at most $+0.18$ for the certified referenced tier.
+Regret is unchanged at $0.286$, because the reporting replicate does not touch selection.
+The number carries a dual reading: it conflates true winner's-curse inflation with the RM's sensitivity to content-preserving rewording itself.
+Both readings are damning for a deployed reward signal: either it inflates the scoreboard hardest of all evaluators measured, or its scores move by more than a sigma under paraphrase, which is presentation sensitivity by definition.
 The mechanical audit of Section~\ref{sec:procedure} adds a confound to check: the reward model strongly prefers short responses (length partial $-0.54$), so part of its style conviction could be a length preference wearing style's labels, since the human style partial controls soundness but not length.
 A three-variable partial answers the check directly: controlling for soundness and log response length together, the reward model's style partial moves from $+0.54$ to $+0.42$ $[+0.22, +0.59]$ and the sabotaged frontier's from $+0.59$ to $+0.47$ $[+0.26, +0.65]$, while the honest frontier is essentially unchanged ($-0.22$ to $-0.24$ $[-0.43, +0.05]$) (\texttt{papers/analysis/style\_partial\_lencontrol.json}).
 Length therefore accounts for only a modest fraction of both convictions, which remain significantly positive with length controlled: the convictions are genuinely style.
@@ -56,7 +61,7 @@ GPT-5.2 sabotaged & 60 & $+0.35$ & $+0.20$ $[-0.07,+0.44]$ & $\mathbf{+0.59}$ $[
 7B sabotaged & 60 & $+0.34$ & $+0.28$ $[+0.07,+0.46]$ & $+0.17$ $[-0.06,+0.38]$ & $+0.13$ & $0.400$ \\
 14B sabotaged & 60 & $+0.45$ & $+0.38$ $[+0.06,+0.62]$ & $+0.24$ $[-0.07,+0.47]$ & $+0.61$ & $0.324$ \\
 \midrule
-Skywork-RM-8B & 60 & $+0.18$ & $-0.01$ $[-0.29,+0.28]$ & $\mathbf{+0.54}$ $[+0.34,+0.70]$ & n/c & $0.286$ \\
+Skywork-RM-8B & 60 & $+0.18$ & $-0.01$ $[-0.29,+0.28]$ & $\mathbf{+0.54}$ $[+0.34,+0.70]$ & $\mathbf{+1.46}^{\dagger}$ $[+1.33,+1.58]$ & $0.286$ \\
 \bottomrule
 \end{tabular}
 \caption{\textbf{Naive validation versus the audit, against pressure outcomes (math; the twelve in-domain-audited judge configurations plus the trained reward model).}
@@ -65,6 +70,7 @@ Regret = accuracy left on the table versus best-possible selection.
 Bootstrap 95\% CIs in brackets.
 The 1.5B-blind bootstrap resamples are degenerate (concentrated scores), so its conviction carries jackknife and permutation inference instead: style partial $+0.51$, jackknife CI $[+0.13, +0.89]$, permutation $p = 0.0017$ (two-sided, $n{=}53$).
 Per-configuration excess-gap CIs for all twelve math configurations are in \texttt{papers/analysis/gap\_cis.json}; the sabotaged-ladder audit rows are in \texttt{papers/analysis/sabotage\_ladder\_audit.json} and are confirmatory post-registration additions (Appendix~\ref{app:confusion}).
+$^{\dagger}$The reward model's reporting replicate is a candidate-side paraphrase (RM scores of content-preserving paraphrases of the same candidates) rather than a rubric paraphrase, so its inflation estimand is analogous but not identical to the judge protocol's (\texttt{papers/analysis/rm\_inflation.json}).
 Under the frozen verdict rule the 14B-blind row is a false pass (Section~\ref{sec:pressure}).
 \textbf{Takeaway: raw agreement conflates the sabotaged frontier judge ($+0.35$) with the honest blind 14B ($+0.37$) although their pressure behavior differs in kind; the style partial separates them ($+0.59$ vs.\ $-0.21$) and identifies the failure mode.}}
 \label{tab:h2h}

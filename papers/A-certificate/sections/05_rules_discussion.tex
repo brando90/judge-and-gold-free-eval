@@ -35,10 +35,11 @@ Blind-judge gaming is therefore not a same-family artifact, though the reference
 A deployment-pool label set remains registered (the labeling instrument exists).
 Sixth, effective sample size: the thirteen audited configurations' verdicts are strongly collinear with one protocol bit, reference presence, and beyond it there are roughly four distinct verdict classes (blind-weak, referenced-pass, style-loaded, and sabotage-at-ladder-scale fail).
 The validation is therefore closer to four independent tests than thirteen.
-The registered DPO training run and the reward-model paraphrase-replicate protocol below are the two designed tests that break this collinearity.
+The registered DPO training run and the reward-model paraphrase-replicate protocol below are the two designed tests that break this collinearity; the second has now run and confirmed its registered prediction.
 The label count is what sufficed here, not a derived minimum.
 
 \paragraph{Making inflation comparable for reward models.}
-The inflation estimand requires that selection and reporting use independent score replicates, which a judge provides through rubric paraphrases and a single scoring function does not, so the reward-model row is marked n/c.
-A paraphrase-replicate protocol closes the gap: score paraphrase-perturbed replicates of each candidate, use one replicate for selection and the other for reporting, so the winner's-curse cancellation matches the judge protocol.
-Running it would put the trained reward model on the same inflation scale as the judges and is queued as a next step.
+The inflation estimand requires that selection and reporting use independent score replicates, which a judge provides through rubric paraphrases and a single scoring function does not.
+A paraphrase-replicate protocol closes the gap: selection uses the reward model's scores of the original candidates, and reporting uses its scores of content-preserving paraphrases of the same candidates (Qwen-7B, index-aligned), so the winner's-curse cancellation matches the judge protocol.
+The run confirms the registered prediction (P-R1, commit \texttt{828944a}): the convicted reward model's excess gap is $+1.46\sigma$ $[+1.33, +1.58]$ ($n{=}105$), the largest of any configuration measured, with regret unchanged at $0.286$ because the reporting replicate does not touch selection (\texttt{papers/analysis/rm\_inflation.json}).
+One caveat travels with the number: the replicate is candidate-side rather than rubric-side, so the estimand is analogous to the judge protocol's rather than identical, and the measured gap conflates winner's-curse inflation with the reward model's own sensitivity to content-preserving rewording; both readings indict a deployed reward signal.
