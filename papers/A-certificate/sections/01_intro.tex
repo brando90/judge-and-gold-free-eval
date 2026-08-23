@@ -12,14 +12,15 @@ The second is that nothing better is available, so gaming can only be characteri
 Recent work has already damaged the first assumption from one side: benchmark accuracy, the standard static measure of reward-model quality, predicts downstream optimization outcomes poorly~\cite{wen2024rethinking}.
 We damage it from the other side, and replace it.
 
-Our contribution is a \emph{certificate}: a pre-deployment audit that measures what an evaluator reads, using a few dozen blind human labels, whose frozen categorical verdicts predicted the gaming outcome of ten of the eleven configurations in the registered-era record.
+Our contribution is a \emph{certificate}: a pre-deployment audit that measures what an evaluator reads, using a few dozen blind human labels, and returns a categorical verdict per judge configuration: \emph{pass} (certified as substance-reading), \emph{fail} (too weak to certify), or \emph{convict} (loaded on a property it should ignore).
+The frozen verdicts predicted the gaming outcome of ten of the eleven configurations in the registered-era record (Table~\ref{tab:h2h}).
 Two sabotaged-ladder audits, registered pre-run but scored after their pressure outcomes were known, add two further correct verdicts, for a secondary count of twelve of the thirteen configurations audited in-domain.
 The one false pass sits at the pass threshold (soundness partial $0.41$ against a $0.40$ cut) and is the verdict the label-subsampling analysis already marks unstable at 50 labels and below, with full reproduction only at 60 (Section~\ref{sec:pressure}).
 That style bias exists in judges and reward models is established at the class level~\cite{wu2023style,rmbench2024}; what the certificate adds is a per-deployment instrument that measures whether a particular judge, on a particular task and prompt, reads substance before it is deployed.
 Four design choices distinguish the audit from raw-agreement validation.
-Humans grade on separated axes rather than one quality number: a target axis (here, soundness of reasoning) and nuisance axes chosen for the threat model (here, style; length, format, and position are probed separately in Section~\ref{sec:rules}).
+Humans grade on separated axes rather than one quality number: a target axis (here, soundness of reasoning) and nuisance axes, the properties the judge should ignore, chosen for the threat model (here, style; length, format, and position are probed separately in Section~\ref{sec:rules}).
 A single number makes nuisance-loading unmeasurable in principle, and the axes are an instantiation, not a fixed pair.
-A deliberately decorrelated stratum supplies power that random data cannot, since soundness and style correlate at $+0.82$ in the wild.
+A deliberately decorrelated stratum, a subsample built so the two axes vary independently, supplies power that random data cannot, since soundness and style correlate at $+0.82$ in the wild.
 The verdict is read from partial correlations, not an agreement rate.
 And a sabotaged judge serves as a positive control: evidence the instrument can convict, not merely bless.
 

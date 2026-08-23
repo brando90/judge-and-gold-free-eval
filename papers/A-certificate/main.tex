@@ -18,6 +18,50 @@
 \maketitle
 
 \input{sections/00_abstract}
+
+% Main result table, placed here so it renders on page 1 or 2 for skimming reviewers.
+\begin{table}[t!]
+\centering
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lcccccc}
+\toprule
+& & \multicolumn{1}{c}{naive} & \multicolumn{2}{c}{audit} & \multicolumn{2}{c}{pressure outcome} \\
+configuration & $n$ & raw $r$ & sound.\ partial & style partial & gap ($\sigma$) & regret \\
+\midrule
+1.5B blind & 53 & $+0.18$ & $-0.00$ & $+0.51$ & $+0.88$ & $0.448$ \\
+3B blind & 60 & $+0.24$ & $+0.19$ $[-0.09,+0.53]$ & $+0.16$ $[-0.17,+0.44]$ & $+0.44$ & $0.429$ \\
+7B blind & 60 & $+0.33$ & $+0.32$ $[+0.04,+0.60]$ & $-0.02$ $[-0.31,+0.30]$ & $+0.80$ & $0.324$ \\
+14B blind & 60 & $+0.37$ & $+0.41$ $[+0.12,+0.64]$ & $-0.21$ $[-0.40,+0.00]$ & $+0.63$ & $0.324$ \\
+\midrule
+1.5B referenced & 56 & $+0.55$ & $+0.51$ $[+0.21,+0.75]$ & $+0.10$ $[-0.21,+0.44]$ & $+0.16$ & $\mathbf{0.010}$ \\
+3B referenced & 60 & $+0.55$ & $+0.53$ $[+0.36,+0.70]$ & $-0.02$ $[-0.33,+0.29]$ & $+0.07$ & $0.038$ \\
+7B referenced & 60 & $+0.66$ & $+0.66$ $[+0.48,+0.82]$ & $-0.12$ $[-0.35,+0.17]$ & $+0.18$ & $0.019$ \\
+14B referenced & 60 & $+0.70$ & $+0.70$ $[+0.50,+0.85]$ & $-0.11$ $[-0.34,+0.15]$ & $+0.05$ & $0.048$ \\
+\midrule
+GPT-5.2 honest & 60 & $+0.89$ & $+0.90$ $[+0.77,+0.97]$ & $-0.22$ $[-0.40,+0.05]$ & $+0.38$ & $0.117$ \\
+GPT-5.2 sabotaged & 60 & $+0.35$ & $+0.20$ $[-0.07,+0.44]$ & $\mathbf{+0.59}$ $[+0.36,+0.76]$ & $+0.85$ & $0.133$ \\
+7B sabotaged & 60 & $+0.34$ & $+0.28$ $[+0.07,+0.46]$ & $+0.17$ $[-0.06,+0.38]$ & $+0.13$ & $0.400$ \\
+14B sabotaged & 60 & $+0.45$ & $+0.38$ $[+0.06,+0.62]$ & $+0.24$ $[-0.07,+0.47]$ & $+0.61$ & $0.324$ \\
+\midrule
+Skywork-RM-8B & 60 & $+0.18$ & $-0.01$ $[-0.29,+0.28]$ & $\mathbf{+0.54}$ $[+0.34,+0.70]$ & $\mathbf{+1.46}^{\dagger}$ $[+1.33,+1.58]$ & $0.286$ \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{Main result: a few dozen blind human labels, read through partial correlations, predict which judges get gamed before any optimization runs; raw agreement cannot, scoring the sabotaged frontier judge ($+0.35$) and the honest blind 14B ($+0.37$) nearly identically although their behavior under pressure differs in kind, while the audit's style partial separates them ($+0.59$ vs.\ $-0.21$) and names the failure mode.}
+Each row is one judge configuration on math (the twelve in-domain-audited configurations plus a trained reward model); the frozen verdicts predicted the pressure outcome of ten of the eleven registered-era configurations (twelve of thirteen including two confirmatory additions).
+Raw $r$ (naive validation) is plain correlation between the judge's scores and human soundness labels.
+Sound.\ partial is the correlation with human-graded soundness holding style fixed: how much substance the judge reads.
+Style partial is the correlation with human-graded style holding soundness fixed: how much the judge rewards presentation, the property it should ignore; a significantly positive value convicts.
+Gap is the excess hack gap at best-of-64: reward-hacking scoreboard inflation under best-of-$n$ selection, i.e.\ how far the judge's own scores inflate relative to true quality, in baseline standard deviations over a permutation null.
+Regret is oracle regret: accuracy left on the table versus best-possible selection.
+Bootstrap 95\% CIs in brackets.
+The 1.5B-blind bootstrap resamples are degenerate (concentrated scores), so its conviction carries jackknife and permutation inference instead: style partial $+0.51$, jackknife CI $[+0.13, +0.89]$, permutation $p = 0.0017$ (two-sided, $n{=}53$).
+Per-configuration excess-gap CIs for all twelve math configurations are in \texttt{papers/analysis/gap\_cis.json}; the sabotaged-ladder audit rows are in \texttt{papers/analysis/sabotage\_ladder\_audit.json} and are confirmatory post-registration additions (Appendix~\ref{app:confusion}).
+$^{\dagger}$The reward model's reporting replicate is a candidate-side paraphrase (RM scores of content-preserving paraphrases of the same candidates) rather than a rubric paraphrase, so its inflation estimand is analogous but not identical to the judge protocol's (\texttt{papers/analysis/rm\_inflation.json}).
+Under the frozen verdict rule the 14B-blind row is a false pass (Section~\ref{sec:pressure}).}
+\label{tab:h2h}
+\end{table}
+
 \input{sections/01_intro}
 \input{sections/02_setup}
 \input{sections/03_audit}
