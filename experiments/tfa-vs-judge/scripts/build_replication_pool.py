@@ -74,7 +74,7 @@ def gen_subset(rng, hard):
 
 def gen_goldbach(rng, hard):
     while True:
-        N = rng.randrange(2000, 9000, 2) if hard else rng.randrange(60, 600, 2)
+        N = rng.randrange(400, 1400, 2) if hard else rng.randrange(60, 400, 2)
         pairs = []
         for p in PRIMES:
             if p >= N:
@@ -82,7 +82,7 @@ def gen_goldbach(rng, hard):
             qq = N - p
             if qq in PSET and p < qq:
                 pairs.append(f"{p},{qq}")
-        if 2 <= len(pairs) <= 40:
+        if 2 <= len(pairs) <= (34 if hard else 24):
             q = (f"Give one pair of distinct primes p and q with p < q and p + q = {N}. "
                  f"Write the pair as p,q inside the box, for example \\boxed{{7,{N - 7}}}.")
             return q, dict(fam="goldbach", N=N), pairs
@@ -90,9 +90,9 @@ def gen_goldbach(rng, hard):
 
 def gen_divcount(rng, hard):
     while True:
-        k = rng.choice([6, 8, 10, 12] if hard else [4, 6, 8])
-        lo = rng.randrange(500, 4000) if hard else rng.randrange(50, 400)
-        hi = lo + (400 if hard else 150)
+        k = rng.choice([8, 12] if hard else [4, 6])
+        lo = rng.randrange(1500, 6000) if hard else rng.randrange(50, 400)
+        hi = lo + (40 if hard else 25)
         sols = [str(x) for x in range(lo, hi + 1) if ndiv(x) == k]
         if 2 <= len(sols) <= 12:
             q = (f"Give one integer x with {lo} <= x <= {hi} that has exactly {k} positive "
@@ -104,7 +104,7 @@ def gen_digitsum(rng, hard):
     while True:
         d = 4 if hard else 3
         qq = rng.choice([7, 11, 13, 17] if hard else [3, 7, 11])
-        s = rng.randrange(12, 26) if hard else rng.randrange(6, 20)
+        s = rng.choice([26, 27, 28, 29]) if hard else rng.randrange(6, 20)
         lo, hi = 10 ** (d - 1), 10 ** d - 1
         sols = [str(x) for x in range(lo, hi + 1)
                 if x % qq == 0 and sum(map(int, str(x))) == s]
