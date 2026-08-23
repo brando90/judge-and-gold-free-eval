@@ -4,7 +4,7 @@
 \paragraph{Evaluators.}
 We audit open-weights judges (Qwen2.5 at 1.5B, 3B, 7B, 14B), each deployed blind and with the gold reference in context, plus GPT-5.2 as the frontier judge and the same frontier model prompted to reward presentation as the sabotaged positive control.
 Claude Opus serves as a blind cross-family panel for channel decomposition.
-The two sabotaged ladder configurations (7B, 14B) were pressure-tested but never audited, and are excluded from all prediction claims (Appendix~\ref{app:confusion}).
+The two sabotaged ladder configurations (7B, 14B) were pressure-tested first and audited afterward: their audit runs were registered pre-run, but the verdict-versus-outcome scoring happened after the pressure outcomes were known, so they enter the prediction record as confirmatory post-registration additions rather than registered-era predictions (Section~\ref{sec:audit}; Appendix~\ref{app:confusion}).
 A trained reward model baseline (Skywork-Reward-Llama-3.1-8B) is audited and pressure-tested under predictions registered before its scores were generated.
 
 \paragraph{Human labels.}
@@ -23,4 +23,4 @@ The \emph{multi-valid-answer} tasks are RewardBench-2 items whose prompts admit 
 \paragraph{Registration.}
 The categorical audit predictions (the sabotage conviction, the ladder failures, the reference flip) were registered in a draft predating the pressure results, and the multi-valid predictions were committed before that experiment's data were generated; the pressure experiment's estimators were committed before generation.
 Registration here means internal git timestamps on committed drafts and code, not an external registry.
-The numeric verdict rule of Appendix~\ref{app:subsample} (convict if style partial $> 0.30$; pass if soundness partial $> 0.40$ and style partial $< 0.20$) was frozen for the label-subsampling analysis, and Section~\ref{sec:pressure} applies it uniformly to all eleven audited configurations and reports its one false pass.
+The numeric verdict rule of Appendix~\ref{app:subsample} (convict if style partial $> 0.30$; pass if soundness partial $> 0.40$ and style partial $< 0.20$) was frozen for the label-subsampling analysis, and Section~\ref{sec:pressure} applies it uniformly to all thirteen in-domain-audited configurations and reports its one false pass.

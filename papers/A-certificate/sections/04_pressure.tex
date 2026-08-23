@@ -10,9 +10,10 @@ Item pools are 105 \textsc{MATH-500} and 68 \textsc{MBPP+} items on which the ge
 
 \subsection*{RQ3: Does the audit's verdict predict gaming?}
 
-In ten of eleven in-domain configurations, yes, and the answer is per estimand.
+In twelve of thirteen in-domain configurations, yes (ten of eleven in the registered-era record), and the answer is per estimand.
 The registered predictions were categorical: blind ladder judges fail the audit and referenced ones pass; the sabotaged judge is convicted; failed evaluators are gamed.
-Applying the frozen verdict rule of Appendix~\ref{app:subsample} uniformly to all eleven audited configurations yields six passes, two fails, and three convictions, and ten of the eleven verdicts predict the pressure outcome: both fails (blind 3B and 7B) land in the failed cluster, all three convictions (blind 1.5B, the sabotaged frontier, the reward model) show the predicted damage or inflation, and five of the six passes are certified correctly.
+Applying the frozen verdict rule of Appendix~\ref{app:subsample} uniformly to all thirteen audited configurations yields six passes, four fails, and three convictions, and twelve of the thirteen verdicts predict the pressure outcome: all four fails (blind 3B and 7B, sabotaged 7B and 14B) land in the failed cluster on regret, all three convictions (blind 1.5B, the sabotaged frontier, the reward model) show the predicted damage or inflation, and five of the six passes are certified correctly.
+Two of the thirteen, the sabotaged 7B and 14B, are confirmatory post-registration additions: their audit runs were registered pre-run, their registered convict prediction was falsified, and the resulting fail verdicts, scored after outcomes were known, are both correct (Section~\ref{sec:audit}; Appendix~\ref{app:confusion}).
 The exception is the blind 14B, a false pass: its soundness partial $+0.41$ $[+0.12, +0.64]$ clears the $0.40$ cut by $0.01$ with style partial $-0.21$, yet its pressure outcome (excess gap $+0.63$ $[+0.42, +0.84]$, regret $0.324$) sits in the failed cluster.
 That verdict is the one the label-subsampling analysis already marks unstable at 50 labels and below, reproducing fully only at the complete 60-label set (Appendix~\ref{app:subsample}), and the false pass is itself informative: a threshold pass with no margin is not a certification.
 We therefore revise the rule, explicitly post hoc: certification requires the soundness-partial confidence interval, not the point estimate, to clear the bar.
@@ -23,11 +24,13 @@ The referenced 1.5B (soundness partial $+0.51$ $[+0.21, +0.75]$) and referenced 
 The revised rule's retrospective record is therefore eight predictions, eight correct, three abstentions: three passes (referenced 7B, CI $[+0.48, +0.82]$; referenced 14B, $[+0.50, +0.85]$; honest frontier, $[+0.77, +0.97]$), two fails, and three convictions, with the blind 14B, referenced 1.5B, and referenced 3B abstained.
 Abstention is the honest outcome for threshold-adjacent configurations, but it is not free: the referenced 1.5B and 3B, which behaved well under pressure (regrets $0.010$ and $0.038$, the first and third lowest observed), are abstained rather than certified.
 The revision trades coverage for safety.
-On inflation, the failed-or-convicted cluster (minimum $+0.44\sigma$) sits above the certified cluster (maximum $+0.38\sigma$), but this is a cluster-level statement, not eleven pairwise separations: the one boundary pair, blind 3B against the honest frontier's own elevated $+0.38$, is not statistically separable (paired difference $+0.06$ $[-0.10, +0.22]$), while the separated contrasts include sabotage minus honest $+0.47$ $[+0.36, +0.58]$, blind 3B minus referenced 14B $+0.39$ $[+0.25, +0.53]$, and blind 14B minus honest $+0.25$ $[+0.01, +0.48]$.
+On inflation, among the registered-era eleven, the failed-or-convicted cluster (minimum $+0.44\sigma$) sits above the certified cluster (maximum $+0.38\sigma$), but this is a cluster-level statement, not eleven pairwise separations: the one boundary pair, blind 3B against the honest frontier's own elevated $+0.38$, is not statistically separable (paired difference $+0.06$ $[-0.10, +0.22]$), while the separated contrasts include sabotage minus honest $+0.47$ $[+0.36, +0.58]$, blind 3B minus referenced 14B $+0.39$ $[+0.25, +0.53]$, and blind 14B minus honest $+0.25$ $[+0.01, +0.48]$.
 All per-configuration excess-gap CIs and paired boundary contrasts are in \texttt{papers/analysis/gap\_cis.json}.
 The sabotaged frontier's excess gap $+0.85$ $[+0.70, +1.01]$ is disjoint from the honest frontier's $+0.38$ $[+0.28, +0.50]$.
-On regret, every failed blind configuration (minimum $0.32$) exceeds every certified one (maximum $0.12$), but the sabotaged frontier does not separate: its regret $0.13$ is statistically indistinguishable from the honest frontier's $0.12$ (paired difference $+0.014$ $[-0.058, +0.085]$, $n{=}105$ items; three-decimal values in Table~\ref{tab:h2h}).
+Of the two sabotaged-ladder additions, the 14B fails on both estimands (gap $+0.61$ $[+0.49, +0.73]$, regret $0.324$) while the 7B does not inflate (gap $+0.13$ $[-0.13, +0.35]$) and its fail verdict is carried by regret ($0.400$).
+On regret, every failed configuration (minimum $0.32$) exceeds every certified one (maximum $0.12$), but the sabotaged frontier does not separate: its regret $0.13$ is statistically indistinguishable from the honest frontier's $0.12$ (paired difference $+0.014$ $[-0.058, +0.085]$, $n{=}105$ items; three-decimal values in Table~\ref{tab:h2h}).
 That asymmetry is itself a finding: a style-loaded frontier judge corrupts the scoreboard without measurably corrupting selection at this pressure, which is exactly the failure a naive accuracy check cannot see.
+The in-domain pattern also survives a generator-family change: on a Llama-3.1-8B-generated pool the blind-versus-referenced separation replicates at every ladder size, with blind and referenced excess-gap CIs disjoint within each size ($n{=}176$ in-band items; \texttt{papers/analysis/llama\_crossfam.json}; Section~\ref{sec:limits}).
 Beyond the frozen categorical rule we do not claim a pre-frozen numeric threshold; the full 25-configuration accounting is in Appendix~\ref{app:confusion}.
 
 \begin{figure}[t]
@@ -51,7 +54,7 @@ The audit generalizes beyond human labels wherever the target axis has an oracle
 We audited every code configuration by the within-item correlation of its scores with test outcomes, with no human labels involved.
 Two accounting caveats apply.
 Code-domain verdict predictions were not part of the registration, so the extrapolation scoring here is post hoc.
-And by the paper's own exclusion policy the two sabotaged code ladder cells were never audited, leaving eleven eligible code configurations; the extrapolated verdicts match the pressure outcome in ten of those eleven, with the referenced 1.5B the single miss.
+And by the paper's own exclusion policy the two sabotaged code ladder cells remain unaudited, leaving eleven eligible code configurations; the extrapolated verdicts match the pressure outcome in ten of those eleven, with the referenced 1.5B the single miss.
 The measured rows explain the one extrapolation miss directly: the 1.5B judge's reference adds nothing to its target-axis validity on code ($+0.15$ blind, $+0.16$ referenced), which is the capability gate measured rather than inferred, and that configuration is gamed as badly as its blind twin (Figure~\ref{fig:gate}).
 The frontier tier separates cleanly ($+0.52$ blind, $+0.62$ referenced), and sabotage measurably degrades target validity even against a mechanical target ($+0.62 \to +0.42$).
 One honest nuance: the 3B judge shows equal target validity blind and referenced ($+0.10$) yet resists inflation only when referenced, so the mechanical-target audit predicts damage well and inflation resistance only through the reference protocol; the human-label axes remain necessary for the deception side.
@@ -70,6 +73,7 @@ Excess hack gap at $n{=}64$ without (orange) and with (blue) a trusted reference
 Across the sabotage arms, damage falls and self-inflation rises with judge capability.
 The sabotaged 7B damages without inflating (regret $0.40$, gap $+0.13$, not significant); sabotaged GPT-5.2 inflates without measurable damage (gap $+0.85$; regret $0.13$, indistinguishable from the honest frontier's $0.12$).
 A blind cross-family panel confirms the channel: sabotage-selected solutions are more styled ($+0.27$ $[0.10, 0.44]$) with no detectable soundness loss~\cite{companionB}.
+The sabotaged-ladder audits locate the same trade on the instrument side: at ladder scale the corrupt instruction produces a failed judge rather than a convicted one, and only at frontier capability a style-loaded one (Section~\ref{sec:audit}).
 The frontier mode, deceiving the metric while selecting well, is the one that menaces training.
 
 \paragraph{Granularity beats scale once a reference is in hand.}

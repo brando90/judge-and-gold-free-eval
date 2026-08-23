@@ -16,8 +16,18 @@ The sabotaged judge is convicted on the same items: style partial $+0.59$ $[+0.3
 The audit also convicts an evaluator class it was not designed around: a top open trained reward model (Skywork-Reward-Llama-3.1-8B) scores the same traces with soundness partial $-0.01$ $[-0.29, +0.28]$ and style partial $+0.54$ $[+0.34, +0.70]$, the same signature as the sabotaged judge, where naive validation ($r = +0.18$) would report only weakness.
 Under pressure the reward model shows the damage this verdict predicts: its math regret ($0.286$) is intermediate, worse than every certified referenced judge but better than every failed blind judge, and its code regret ($0.485$) is the worst observed in either domain.
 The reward model uses no reference, so no referenced-tier comparison applies; its computed excess gap is mechanically zero by construction, because a single scoring function serves as both selector and reporter, which is why Table~\ref{tab:h2h} marks it n/c.
-The verdict tracks protocol, not model identity: blind, the 1.5B judge reads style (partial $+0.51$), the 3B and 7B judges are too weak to certify, and the 14B judge clears the frozen pass rule by a hair (soundness partial $0.41$ against a $0.40$ cut), a threshold pass with no margin that Section~\ref{sec:pressure} shows to be a false pass; with the gold solution in context every ladder judge passes the frozen point-estimate rule (Table~\ref{tab:h2h}; the post-hoc revised rule of Section~\ref{sec:pressure} abstains on the referenced 1.5B and 3B, whose CIs straddle the bar).
+The verdict tracks protocol, not model identity: blind, the 1.5B judge reads style (partial $+0.51$), the 3B and 7B judges are too weak to certify, and the 14B judge clears the frozen pass rule by a hair (soundness partial $0.41$ against a $0.40$ cut), a threshold pass with no margin that Section~\ref{sec:pressure} shows to be a false pass; with the gold solution in context every honestly prompted ladder judge passes the frozen point-estimate rule (Table~\ref{tab:h2h}; the post-hoc revised rule of Section~\ref{sec:pressure} abstains on the referenced 1.5B and 3B, whose CIs straddle the bar).
 A reference changes what a judge measures, not merely how accurately it measures.
+
+\paragraph{The sabotage rubric at ladder scale, and a falsified registration.}
+The two sabotaged ladder configurations (7B and 14B under the sabotage rubric) were pressure-tested early but audited only later, on the same anchor labels (\texttt{papers/analysis/sabotage\_ladder\_audit.json}).
+Their audit runs were registered pre-run at pipeline commit \texttt{718c399} with the prediction that both would be convicted.
+That registered prediction is falsified: neither style partial is significantly positive (7B $+0.17$ $[-0.06, +0.38]$; 14B $+0.24$ $[-0.07, +0.47]$), so under the frozen rule neither is convicted.
+Both instead fail, with soundness partials $+0.28$ $[+0.07, +0.46]$ and $+0.38$ $[+0.06, +0.62]$ below the $0.40$ cut.
+Both fail verdicts are correct predictions: under pressure both configurations land in the failed cluster (regrets $0.400$ and $0.324$).
+Because the verdict-versus-outcome scoring happened after the pressure outcomes were known, these two rows enter the accounting as confirmatory additions rather than registered-era predictions (Appendix~\ref{app:confusion}).
+The scale comparison carries a mechanism: the sabotage instruction loads style only at frontier capability (style partial $+0.59$ at GPT-5.2 against $+0.17$ and $+0.24$ at 7B and 14B, both ladder CIs crossing zero), while at ladder scale it instead degrades the judge into a weak one (soundness partials fall to $+0.28$ and $+0.38$ from the honest referenced $+0.66$ and $+0.70$).
+Corrupt instructions are therefore capability-gated, which strengthens the case that the audit must run per deployment rather than per model class.
 
 \begin{table}[t]
 \centering
@@ -40,16 +50,18 @@ configuration & $n$ & raw $r$ & sound.\ partial & style partial & gap ($\sigma$)
 \midrule
 GPT-5.2 honest & 60 & $+0.89$ & $+0.90$ $[+0.77,+0.97]$ & $-0.22$ $[-0.40,+0.05]$ & $+0.38$ & $0.117$ \\
 GPT-5.2 sabotaged & 60 & $+0.35$ & $+0.20$ $[-0.07,+0.44]$ & $\mathbf{+0.59}$ $[+0.36,+0.76]$ & $+0.85$ & $0.133$ \\
+7B sabotaged & 60 & $+0.34$ & $+0.28$ $[+0.07,+0.46]$ & $+0.17$ $[-0.06,+0.38]$ & $+0.13$ & $0.400$ \\
+14B sabotaged & 60 & $+0.45$ & $+0.38$ $[+0.06,+0.62]$ & $+0.24$ $[-0.07,+0.47]$ & $+0.61$ & $0.324$ \\
 \midrule
 Skywork-RM-8B & 60 & $+0.18$ & $-0.01$ $[-0.29,+0.28]$ & $\mathbf{+0.54}$ $[+0.34,+0.70]$ & n/c & $0.286$ \\
 \bottomrule
 \end{tabular}
-\caption{\textbf{Naive validation versus the audit, against pressure outcomes (math; the ten in-domain-audited judge configurations plus the trained reward model).}
+\caption{\textbf{Naive validation versus the audit, against pressure outcomes (math; the twelve in-domain-audited judge configurations plus the trained reward model).}
 Gap = excess hack gap at best-of-64: how much the judge's own scores inflate relative to true quality, in baseline standard deviations over a permutation null.
 Regret = accuracy left on the table versus best-possible selection.
 Bootstrap 95\% CIs in brackets.
 The 1.5B-blind bootstrap resamples are degenerate (concentrated scores), so its conviction carries jackknife and permutation inference instead: style partial $+0.51$, jackknife CI $[+0.13, +0.89]$, permutation $p = 0.0017$ (two-sided, $n{=}53$).
-Per-configuration excess-gap CIs for all twelve math configurations are in \texttt{papers/analysis/gap\_cis.json}.
+Per-configuration excess-gap CIs for all twelve math configurations are in \texttt{papers/analysis/gap\_cis.json}; the sabotaged-ladder audit rows are in \texttt{papers/analysis/sabotage\_ladder\_audit.json} and are confirmatory post-registration additions (Appendix~\ref{app:confusion}).
 Under the frozen verdict rule the 14B-blind row is a false pass (Section~\ref{sec:pressure}).
 \textbf{Takeaway: raw agreement conflates the sabotaged frontier judge ($+0.35$) with the honest blind 14B ($+0.37$) although their pressure behavior differs in kind; the style partial separates them ($+0.59$ vs.\ $-0.21$) and identifies the failure mode.}}
 \label{tab:h2h}
@@ -77,7 +89,7 @@ The audit's advantage is diagnosis and sign-anchored conviction, not a magically
 
 \paragraph{Multiple comparisons.}
 The conviction rule is a single pre-declared sign condition per configuration, a significantly positive nuisance partial, not a search over thresholds, which bounds the multiplicity concern.
-A Bonferroni correction across the eleven audited configurations leaves all three convictions significant: recomputing the style-partial bootstrap CIs at the corrected level keeps them wide of zero (sabotaged frontier $[+0.25, +0.80]$, reward model $[+0.20, +0.77]$), and the 1.5B-blind conviction's permutation test gives $p = 0.0017$ (two-sided, $n{=}53$), below the corrected level $0.05/11$ (corrected conviction CIs in \texttt{papers/analysis/conviction\_bonferroni.json}).
+A Bonferroni correction across the eleven registered-era audited configurations leaves all three convictions significant: recomputing the style-partial bootstrap CIs at the corrected level keeps them wide of zero (sabotaged frontier $[+0.25, +0.80]$, reward model $[+0.20, +0.77]$), and the 1.5B-blind conviction's permutation test gives $p = 0.0017$ (two-sided, $n{=}53$), below the corrected level $0.05/11$ (corrected conviction CIs in \texttt{papers/analysis/conviction\_bonferroni.json}).
 
 \paragraph{Verdict stability.}
 Convictions and strong passes stabilize with the fewest labels.

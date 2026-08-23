@@ -3,7 +3,7 @@
 
 \begin{enumerate}
 \item \textbf{Audit before you optimize, in the deployment domain.}
-A few dozen blind labels on separated axes, a decorrelated stratum, and partial correlations; labeling sixty traces on two axes at two to four minutes per trace is five to eight annotator-hours, and the frozen categorical verdicts predicted ten of eleven in-domain pressure outcomes per estimand, with the one false pass sitting at the pass threshold (Section~\ref{sec:pressure}).
+A few dozen blind labels on separated axes, a decorrelated stratum, and partial correlations; labeling sixty traces on two axes at two to four minutes per trace is five to eight annotator-hours, and the frozen categorical verdicts predicted twelve of thirteen in-domain pressure outcomes per estimand (ten of eleven registered-era, plus two confirmatory post-registration sabotaged-ladder additions), with the one false pass sitting at the pass threshold (Section~\ref{sec:pressure}).
 \item \textbf{Do not substitute raw agreement.}
 It ranks but cannot diagnose, and it has no sign-anchored conviction (Table~\ref{tab:h2h}).
 \item \textbf{Choose nuisance axes by threat model, and treat the audit as a screen for the axes it instruments.}
@@ -31,8 +31,8 @@ Fifth, population shift and family confound: the audit labels come from seventee
 The registered cross-family run closes this: on a Llama-3.1-8B-generated pool (176 in-band items), the pattern replicates at every ladder size, blind excess gaps $+0.70$ to $+1.09$ with regrets $0.26$ to $0.36$ against referenced gaps $+0.22$ to $+0.50$ with regrets $0.06$ to $0.18$, blind and referenced CIs disjoint within each size (\texttt{papers/analysis/llama\_crossfam.json}).
 Blind-judge gaming is therefore not a same-family artifact, though the referenced tier is less clean cross-family (the 7B referenced gap reaches $+0.50$, against at most $+0.18$ on the same-family pool), consistent with Qwen judges verifying Llama solutions less reliably.
 A deployment-pool label set remains registered (the labeling instrument exists).
-Sixth, effective sample size: the eleven audited configurations' verdicts are strongly collinear with one protocol bit, reference presence, and beyond it there are roughly three distinct verdict classes (blind-weak, referenced-pass, style-loaded).
-The validation is therefore closer to three independent tests than eleven.
+Sixth, effective sample size: the thirteen audited configurations' verdicts are strongly collinear with one protocol bit, reference presence, and beyond it there are roughly four distinct verdict classes (blind-weak, referenced-pass, style-loaded, and sabotage-at-ladder-scale fail).
+The validation is therefore closer to four independent tests than thirteen.
 The registered DPO training run and the reward-model paraphrase-replicate protocol below are the two designed tests that break this collinearity.
 The label count is what sufficed here, not a derived minimum.
 
