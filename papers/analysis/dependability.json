@@ -1,0 +1,11 @@
+{
+ "soundness_cross_rater_pearson": 0.799918379839608,
+ "soundness_spearman": 0.6962406015037594,
+ "sb_two_rater": 0.8888385037891432,
+ "one_rater_ceiling": 0.8943815627793363,
+ "n": 20,
+ "schema_note": "rater2 graded overall quality (older schema); style vs clarity",
+ "style_cross_rater_pearson": 0.5165957272197711,
+ "style_n": 20,
+ "style_ceiling": 0.7187459406631602
+}
