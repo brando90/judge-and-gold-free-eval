@@ -1,0 +1,46 @@
+\begin{thebibliography}{1}
+
+\bibitem{refguided2024}
+Anonymous.
+\newblock Reference-guided verdict: Llms-as-judges in automatic evaluation of
+  free-form text.
+\newblock {\em arXiv preprint arXiv:2408.09235}, 2024.
+
+\bibitem{dobefore2025}
+Anonymous.
+\newblock Do before you judge: Self-reference as a pathway to better llm
+  evaluation.
+\newblock {\em arXiv preprint arXiv:2509.19880}, 2025.
+
+\bibitem{companionA}
+Anonymous.
+\newblock Certify before you optimize: A cheap blind audit that predicts which
+  llm judges get gamed, 2026.
+\newblock Companion draft.
+
+\bibitem{generous2026}
+Anonymous.
+\newblock Llm judges can be too generous when there is no reference answer.
+\newblock {\em arXiv preprint arXiv:2607.12885}, 2026.
+
+\bibitem{companionB}
+Anonymous.
+\newblock What does matching a reference actually measure?, 2026.
+\newblock Companion draft.
+
+\bibitem{gao2022scaling}
+Leo Gao, John Schulman, and Jacob Hilton.
+\newblock Scaling laws for reward model overoptimization.
+\newblock {\em arXiv preprint arXiv:2210.10760}, 2022.
+
+\bibitem{malik2025rewardbench2}
+Saumya Malik, Valentina Pyatkin, et~al.
+\newblock Rewardbench 2: Advancing reward model evaluation.
+\newblock {\em arXiv preprint arXiv:2506.01937}, 2025.
+
+\bibitem{zheng2023judging}
+Lianmin Zheng et~al.
+\newblock Judging llm-as-a-judge with mt-bench and chatbot arena.
+\newblock {\em arXiv preprint arXiv:2306.05685}, 2023.
+
+\end{thebibliography}
