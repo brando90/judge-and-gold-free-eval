@@ -31,11 +31,30 @@ Yann Dubois, Bal{\'a}zs Galambosi, Percy Liang, and Tatsunori~B. Hashimoto.
   evaluators.
 \newblock {\em arXiv preprint arXiv:2404.04475}, 2024.
 
+\bibitem{gulati2025putnam}
+Aryan Gulati, Brando Miranda, Eric Chen, Emily Xia, Kai Fronsdal, Bruno Dumont,
+  Elyas Obbad, and Sanmi Koyejo.
+\newblock {Putnam-AXIOM}: A functional and static benchmark for measuring
+  higher level mathematical reasoning in {LLMs}.
+\newblock In {\em International Conference on Machine Learning (ICML)}, 2025.
+\newblock arXiv preprint arXiv:2508.08292.
+
 \bibitem{hendrycks2021math}
 Dan Hendrycks, Collin Burns, Saurav Kadavath, Akul Arora, Steven Basart, Eric
   Tang, Dawn Song, and Jacob Steinhardt.
 \newblock Measuring mathematical problem solving with the {MATH} dataset.
 \newblock {\em arXiv preprint arXiv:2103.03874}, 2021.
+
+\bibitem{huang2024compression}
+Yuzhen Huang, Jinghan Zhang, Zifei Shan, and Junxian He.
+\newblock Compression represents intelligence linearly.
+\newblock {\em arXiv preprint arXiv:2404.09937}, 2024.
+
+\bibitem{koh2025rbridge}
+Woosung Koh, Juyoung Suk, Sungjun Han, Se-Young Yun, and Jamin Shin.
+\newblock {rBridge}: Predicting {LLM} reasoning performance with small proxy
+  model.
+\newblock {\em arXiv preprint arXiv:2509.21013}, 2025.
 
 \bibitem{lightman2023verify}
 Hunter Lightman, Vineet Kosaraju, Yura Burda, Harri Edwards, Bowen Baker, Teddy
@@ -49,6 +68,19 @@ Jiawei Liu, Chunqiu~Steven Xia, Yuyao Wang, and Lingming Zhang.
   evaluation of large language models for code generation.
 \newblock {\em arXiv preprint arXiv:2305.01210}, 2023.
 
+\bibitem{luo2024omegaprm}
+Liangchen Luo, Yinxiao Liu, Rosanne Liu, Samrat Phatale, Meiqi Guo, Harsh Lara,
+  Yunxuan Li, Lei Shu, Yun Zhu, Lei Meng, Jiao Sun, and Abhinav Rastogi.
+\newblock Improve mathematical reasoning in language models by automated
+  process supervision.
+\newblock {\em arXiv preprint arXiv:2406.06592}, 2024.
+
+\bibitem{schaeffer2025pretraining}
+Rylan Schaeffer, Noam Levi, Brando Miranda, and Sanmi Koyejo.
+\newblock Pretraining scaling laws for generative evaluations of language
+  models.
+\newblock {\em arXiv preprint arXiv:2509.24012}, 2025.
+
 \bibitem{singhal2023long}
 Prasann Singhal, Tanya Goyal, Jiacheng Xu, and Greg Durrett.
 \newblock A long way to go: Investigating length correlations in {RLHF}.
@@ -59,6 +91,13 @@ Sijun Tan, Siyuan Zhuang, Kyle Montgomery, William~Y. Tang, Alejandro Cuadron,
   Chenguang Wang, Raluca~Ada Popa, and Ion Stoica.
 \newblock {JudgeBench}: A benchmark for evaluating {LLM}-based judges.
 \newblock {\em arXiv preprint arXiv:2410.12784}, 2024.
+
+\bibitem{wang2024mathshepherd}
+Peiyi Wang, Lei Li, Zhihong Shao, R.X. Xu, Damai Dai, Yifei Li, Deli Chen,
+  Y.~Wu, and Zhifang Sui.
+\newblock Math-shepherd: Verify and reinforce {LLMs} step-by-step without human
+  annotations.
+\newblock {\em arXiv preprint arXiv:2312.08935}, 2023.
 
 \bibitem{wang2022selfconsistency}
 Xuezhi Wang, Jason Wei, Dale Schuurmans, Quoc Le, Ed~Chi, Sharan Narang,

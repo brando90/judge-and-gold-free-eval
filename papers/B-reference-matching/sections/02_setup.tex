@@ -4,7 +4,7 @@
 
 \paragraph{Models and data.}
 Seventeen instruction-tuned models from seven families (Qwen, Qwen-Math, Phi, OLMo, Mistral, Ministral, and Mathstral), spanning 0.5B to 32B parameters; the full list is in Appendix~\ref{app:dnb}.
-Eight benchmarks: \textsc{MATH-500} and full \textsc{MATH}~\cite{hendrycks2021math}, \textsc{Putnam-AXIOM} and variations, \textsc{Omni-MATH}, \textsc{GSM8K}~\cite{cobbe2021gsm8k}, \textsc{GSM8K-Platinum}, and \textsc{HumanEval}~\cite{chen2021codex}/\textsc{MBPP+}~\cite{austin2021mbpp,liu2023evalplus}, plus \textsc{SWE-bench Verified} as an agentic setting (patch-level \tfa{} over eight coder models, including the Qwen-Coder size ladder).
+Eight benchmarks: \textsc{MATH-500} and full \textsc{MATH}~\cite{hendrycks2021math}, \textsc{Putnam-AXIOM} and variations~\cite{gulati2025putnam}, \textsc{Omni-MATH}, \textsc{GSM8K}~\cite{cobbe2021gsm8k}, \textsc{GSM8K-Platinum}, and \textsc{HumanEval}~\cite{chen2021codex}/\textsc{MBPP+}~\cite{austin2021mbpp,liu2023evalplus}, plus \textsc{SWE-bench Verified} as an agentic setting (patch-level \tfa{} over eight coder models, including the Qwen-Coder size ladder).
 Every model generates its own solution to every problem (greedy), and is separately teacher-forced on the gold solution.
 
 \paragraph{The comparison class.}
@@ -15,7 +15,7 @@ The last three measure how much the model's own output resembles it.
 \paragraph{The verification class.}
 Three judge-free signals that consume the reference only through a checkable endpoint.
 \emph{Executed tests}: for code, run the official suite.
-\emph{Prefix-repair curve}: truncate the solution at depth $k \in \{0, 0.25, 0.5, 0.75\}$, let a fixed mid-sized completer (Qwen2.5-14B-Instruct, eight completions per cut point; Appendix~\ref{app:dnb}) finish it, and score the fraction of completions that reach the correct final answer~\cite{lightman2023verify,wang2022selfconsistency}.
+\emph{Prefix-repair curve}: truncate the solution at depth $k \in \{0, 0.25, 0.5, 0.75\}$, let a fixed mid-sized completer (Qwen2.5-14B-Instruct, eight completions per cut point; Appendix~\ref{app:dnb}) finish it, and score the fraction of completions that reach the correct final answer~\cite{lightman2023verify,wang2022selfconsistency,wang2024mathshepherd,luo2024omegaprm}.
 The profile over $k$ is the signal, and $k{=}0$ is a pure problem-difficulty probe.
 \emph{Answer-swap counterfactual}: the per-token log-probability margin a fixed scorer assigns the solution's own final answer over a swapped alternative, given the reasoning prefix.
 LLM judges sit in either class depending on protocol; auditing judges is the subject of companion work~\cite{companionA}, and three frontier judge configurations appear here only as comparison points.

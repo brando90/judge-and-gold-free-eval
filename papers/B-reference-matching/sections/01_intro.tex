@@ -8,6 +8,9 @@ This is true of grade-school math, competition math, and program synthesis alike
 Evaluating against the reference without a judge is appealing.
 It is deterministic, costs one forward pass, involves no judge prompt whose wording could shift the score, and anyone can audit it.
 The sharpest version is teacher-forced accuracy (\tfa): feed the model the problem and the gold solution one token at a time, and score the fraction of gold tokens the model would have predicted itself.
+\tfa{} was introduced as a judge-free evaluation signal by \textsc{Putnam-AXIOM}~\cite{gulati2025putnam}.
+We do not introduce it here.
+This paper is a corrective characterization of it: where it works, where it saturates, and where it fails.
 As models are increasingly evaluated, filtered, and trained by automated signals, knowing which of those signals measure quality has become a bottleneck for the field.
 
 % P2: the assumption
@@ -31,7 +34,7 @@ We test three judge-free verification signals: executed tests, a prefix-repair c
 % P5: evaluation summary, organized as four questions
 We organize the results as four research questions.
 \textbf{RQ1} asks whether reference-similarity metrics can grade individual solutions, and the answer is a class-level null: against human soundness on the 60-item random label set, all five comparison metrics land in $[-0.33, +0.14]$, where a frontier LLM judge reaches $+0.89$ on identical items, and on 492 code solutions the two prediction-fit metrics, \tfa{} and gold-token log-probability, are indistinguishable from zero against executed tests, while the output-similarity metrics carry only a weak positive signal there ($+0.14$ to $+0.17$).
-\textbf{RQ2} asks why, and the answer is mechanistic: for \tfa, $83$--$92\%$ of per-solution variance beyond model level is reference-specific nuisance, pooled across 6{,}000 model--item pairs \tfa{} correlates at $-0.895$ with reference perplexity (bits-per-character), and replacing worked references with answer lines collapses what signal exists.
+\textbf{RQ2} asks why, and the answer is mechanistic: for \tfa, $83$--$92\%$ of per-solution variance beyond model level is an item effect that replicates across model families, so it can only be reference-specific nuisance; as a pooled corollary \tfa{} correlates at $-0.895$ with reference perplexity (bits-per-character) across 6{,}000 model--item pairs, and replacing worked references with answer lines collapses what signal exists.
 It meters compressibility, not quality.
 \textbf{RQ3} asks when matching can still rank models, and the answer is a boundary the mechanism predicts: ranking survives on hard data with information-dense references ($+0.86$ on olympiad math) and degrades on saturated data, benchmarks where most models already score near ceiling, where the point estimates turn negative, all twelve hard-benchmark family ladders stay positive, five of twelve saturated ladders invert, and every targeted repair we or our reviewers proposed left the per-solution signal at zero or made it worse.
 \textbf{RQ4} asks what does grade, and the answer is verification with a caveat: the prefix-repair curve reaches $+0.79$ with human soundness with no judge involved, comparable in magnitude to the human inter-rater ceiling (Spearman $0.79$, measured on a different block), but the signal is largely correctness-mediated (curve mean $+0.07$ among correct-only solutions), so it is a strong judge-free detector of whether reasoning reaches the right answer, and only modestly more.

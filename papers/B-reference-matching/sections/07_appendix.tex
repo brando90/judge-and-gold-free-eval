@@ -60,6 +60,7 @@ The teacher-forcing sweeps use fixed per-model subsets on the larger benchmarks:
 \label{app:ladders}
 The saturated-side ladder count of Section~\ref{sec:ranking} covers the four general families (Qwen: 0.5B--14B; Mistral: Mistral-7B, Ministral-8B, Mistral-Small; Phi: Phi-3.5-mini, Phi-3-medium, phi-4; OLMo: OLMo-2-7B, -13B, -32B) on the three saturated benchmarks, twelve cells in all.
 Each cell is the within-family Spearman correlation between mean \tfa{} and accuracy, recomputed from the released per-item scores (\texttt{runs/scores\_all\_corrected.jsonl}, corrected scorer); inverting cells are marked.
+Each family ladder has three to five models, so these Spearman values are coarsely quantized; the count and sign of inverting cells is the robust statistic, not any single cell's magnitude.
 
 \begin{center}
 \small
@@ -88,6 +89,7 @@ Blind protocol: annotators saw only the problem statement and the solution text,
 \label{app:completer}
 The fixed completer is Qwen2.5-14B-Instruct.
 At each cut depth $k \in \{0, 0.25, 0.5, 0.75\}$ it generates eight completions per cut point, for thirty-two completions per solution.
+A cross-family replication uses phi-4 as the completer under the same protocol; it covered 42 of the 60 anchor traces ($n{=}32$ within-correct), and its numbers ship as \texttt{papers/analysis/pv\_completer\_crossfam.json}.
 
 \subsection{Reliability ceiling}
 \label{app:ceiling}

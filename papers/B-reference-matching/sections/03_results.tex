@@ -33,6 +33,7 @@ The prefix-repair curve mean's $+0.79$ (Pearson) is comparable in magnitude to t
 \label{sec:mechanism}
 
 Most of a comparison score's per-solution variance is a property of the reference, not of the solution.
+The primary evidence is a cross-family, item-level decomposition.
 We decomposed per-solution \tfa{} across a grid of fifteen to sixteen models from four families (the count varies by benchmark with model availability), after removing each model's overall level.
 Between $83\%$ and $92\%$ of the remaining variance is an \emph{item main effect}: a component identical across families.
 Such a component can only be a property of the reference, namely how predictable this particular gold text is.
@@ -40,8 +41,10 @@ Another share of about $3$--$7\%$ is family-specific style, and this style chann
 The same structure appears in code ($78\%$ item, $8\%$ family, $14\%$ residual), and attenuated in every similarity metric (item share: log-probability $83$--$91\%$, embeddings ${\sim}70\%$, TF-IDF $69\%$).
 
 The item effect has a name: reference perplexity, which we measure as bits-per-character under the scoring model and use under that name throughout.
+A pooled correlation follows as a corollary of the decomposition, not as independent evidence.
 Across 6{,}000 model--item pairs on \textsc{MATH-500}, \tfa{} correlates with reference perplexity (bits-per-character under the same model) at $r = -0.895$ (Figure~\ref{fig:mechanism}), which explains $80\%$ of the pooled variance.
-This is a different accounting from the $83$--$92\%$ item share above: the decomposition splits variance across models and items, while this pools everything, and both point the same way.
+Taken alone, this number is partially tautological: both statistics summarize the same model's prediction fit to the same text, so some correlation is guaranteed, and the model-level fact that likelihood and compression track ability is already established~\cite{huang2024compression,schaeffer2025pretraining,koh2025rbridge}.
+The correlation is informative here only because the decomposition above shows the item effect survives cross-family transfer, which a mere restatement of one model's capability would not need to do.
 To first order, teacher-forced accuracy measures how compressible the reference is.
 A score that is four-fifths about the reference cannot grade the solution in front of it.
 
@@ -56,7 +59,8 @@ Predicting a formulaic one requires nothing, leaving only style.
 \includegraphics[width=0.62\textwidth]{figures/fig_mechanism.pdf}
 \caption{\textbf{Teacher-forced accuracy is reference perplexity.}
 Per-solution \tfa{} against the reference's bits-per-character under the same model, pooled over 6{,}000 model--item pairs on \textsc{MATH-500}, with the least-squares fit.
-\textbf{Takeaway:} at $r = -0.895$, reference compressibility explains $80\%$ of pooled \tfa{} variance, so \tfa{} meters the reference rather than grading the solution.}
+\textbf{Takeaway:} at $r = -0.895$, reference compressibility explains $80\%$ of pooled \tfa{} variance, so \tfa{} meters the reference rather than grading the solution.
+This pooled view is a corollary of the cross-family decomposition of Section~\ref{sec:mechanism}, which is the primary evidence.}
 \label{fig:mechanism}
 \end{figure}
 
@@ -83,11 +87,12 @@ benchmark & regime & cross-family $\rho$ [95\% CI] & within-family $\rho$ \\
 \textsc{MATH} (full) & competition math, near-saturated & $+0.21$ $[-0.29, +0.61]$ & $+0.60$ \\
 \textsc{GSM8K} & grade school, saturated & $-0.25$ $[-0.71, +0.33]$ & $+0.70$ \\
 \textsc{GSM8K-Platinum} & grade school, relabeled & $-0.19$ $[-0.71, +0.41]$ & $+0.60$ \\
-\textsc{SWE-bench Verified} & agentic code & $0.00$ (8 coder models) & $\mathbf{+1.00}$ (Qwen-Coder) \\
+\textsc{SWE-bench Verified} & agentic code, preliminary & $0.00$ (8 coder models) & $+1.00$ (Qwen-Coder, $n{=}4$) \\
 \bottomrule
 \end{tabular}
 \caption{\textbf{The boundary map: where reference matching ranks models.}
 Cross-family Spearman correlation between mean \tfa{} and accuracy (17 models; bootstrap CIs) per benchmark; the within-family column is the Qwen size ladder specifically, and best values are in bold.
+Within-family Spearmans are computed on ladders of three to six models, where the statistic takes only a few discrete values, so read signs and consistency rather than magnitudes; the \textsc{SWE-bench} within-family entry is a four-model ladder and is a preliminary observation (Section~\ref{sec:ranking}).
 Ranking degrades from olympiad to saturated benchmarks, with code sitting mid-scale; the Qwen ladder stays positive everywhere, but across all families five of twelve ladders invert on the easiest benchmarks (Appendix~\ref{app:ladders}), because family style cancels inside a family and survives across families.
 \textbf{Takeaway:} matching ranks models only on hard benchmarks with information-dense references, and cross-family comparison needs a shared style or a verifier.}
 \label{tab:map}
@@ -104,8 +109,9 @@ A long worked solution differentiates strong models from weak ones; an answer li
 On saturated data every model predicts the reference about equally well, and the leftover variance is writing style, which is why saturated point estimates collapse or turn negative.
 \end{enumerate}
 
-The agentic setting obeys the same boundary.
-On \textsc{SWE-bench Verified}, patch-level \tfa{} ranks the four Qwen-Coder sizes perfectly ($\rho = +1.00$) yet carries no cross-family signal ($\rho = 0.00$, eight models).
+The agentic setting is consistent with the same boundary, but the evidence there is preliminary.
+On \textsc{SWE-bench Verified}, patch-level \tfa{} orders the four Qwen-Coder sizes correctly ($\rho = +1.00$) yet carries no cross-family signal ($\rho = 0.00$, eight models).
+A Spearman on a four-model ladder takes only a handful of values, so the $+1.00$ is a preliminary observation ($n{=}4$), not a headline result.
 Family style survives averaging, so cross-family comparison needs a shared style or a verifier.
 The consequence for leaderboards: reference matching is legitimate exactly when these conditions hold, and reference perplexity can be measured in advance to check the second one.
 
@@ -162,15 +168,18 @@ Executed tests are the ceiling case: a free correctness oracle, up to test cover
 The prefix-repair curve is the strongest cheap signal we found.
 Against the 60-item random label set, its correlation with soundness rises with truncation depth: $+0.54$ at $k{=}0$ (solving from scratch, a pure difficulty probe), $+0.68$ at $k{=}0.25$, $+0.76$ at $k{=}0.5$, and $+0.78$ at $k{=}0.75$ (Figure~\ref{fig:sweeps}, right).
 The mean over the curve reaches $+0.79$ $[+0.61, +0.92]$.
+The headline replicates across completer families: rerunning the curve with a phi-4 completer on the 42 anchor traces it covered gives a curve mean of $+0.82$ $[+0.68, +0.91]$ and $+0.79$ $[+0.60, +0.95]$ at $k{=}0.75$ (\texttt{papers/analysis/pv\_completer\_crossfam.json}), so the signal is not an artifact of the Qwen completer family.
 This is the profile that ``the trace's reasoning causally supports its answer'' should produce.
 Controlling for difficulty via the $k{=}0$ arm, the prefix's added completability still carries $+0.69$.
 For scale: on the same labels every comparison metric sits at $|r| \le 0.33$, and the LLM judge reads $+0.89$.
 The curve mean's $+0.79$ (Pearson) is comparable in magnitude to the human inter-rater ceiling (Spearman $\rho = 0.79$, measured on a different, shared block of $n{=}20$); the statistic and the sample differ, so the comparison is indicative rather than exact.
-Its costs are real: thirty-two completions per solution (eight at each of four cut depths), and a completer whose strength must sit in a middle band.
-Too weak, and it cannot finish sound work; too strong, and it rescues broken work.
+Its costs are real: thirty-two completions per solution (eight at each of four cut depths), and a completer whose strength has to be chosen.
+We expect a middle band of completer strength to be required, since a completer too weak cannot finish sound work and one too strong rescues broken work.
+But the two completers we ran (Qwen2.5-14B and phi-4) are both mid-sized, so the middle-band requirement is a design expectation here, not a measured result.
 
 The curve's signal is largely mediated by final-answer correctness.
 At $k{=}0.75$ the correlation among correct-only solutions is $+0.19$ ($n{=}48$), and the curve mean drops to $+0.07$, with wide intervals at that sample size.
+The phi-4 completer reproduces this pattern: within-correct $+0.28$ at $k{=}0.75$ and $+0.02$ for the curve mean ($n{=}32$, intervals wide), so the correctness-mediation reading is not a completer-family artifact either.
 The honest claim is therefore this: the prefix-repair curve is a strong judge-free detector of whether the reasoning reaches the right answer, and only modestly more.
 It is not certified as a beyond-correctness grader on this anchor set.
 The beyond-correctness margin does not separate the classes either: \tfa's within-correct correlation of $+0.21$ ($n{=}48$, interval wide) ties or exceeds every verification signal's within-correct value (Appendix~\ref{app:classtable}), so no cheap signal, comparison or verification, demonstrably grades beyond correctness on this anchor set.

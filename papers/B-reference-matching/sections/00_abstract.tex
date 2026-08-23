@@ -4,6 +4,7 @@
 Many benchmarks ship a gold reference solution, so the cheapest way to evaluate a model's reasoning is to score a solution by how much it resembles that reference.
 % 2 the question
 We ask what reference matching actually measures, across seventeen models from seven families on eight math and code benchmarks, anchored to blind human grades of reasoning quality and to executed tests.
+The sharpest such metric, teacher-forced accuracy, was recently proposed as a judge-free evaluation signal; we do not introduce it but characterize it, mapping where it works, where it saturates, and where it fails.
 % 3 finding 1: grading null + mechanism
 No form of matching can grade an individual solution.
 Five metrics spanning the space, from teacher-forced accuracy to sentence embeddings, land in $[-0.33, +0.14]$ against human soundness grades; on 492 code solutions scored by executed tests, the two prediction-fit metrics, teacher-forced accuracy and gold-token log-probability, are indistinguishable from zero, and the output-similarity metrics carry only a weak positive signal (unigram-F1 $+0.14$, TF-IDF $+0.17$), far below any grading standard.

@@ -2,11 +2,24 @@
 \section{Related work}
 \label{sec:related}
 
+\paragraph{Teacher-forced accuracy.}
+\tfa{} was introduced by \textsc{Putnam-AXIOM}~\cite{gulati2025putnam} as a judge-free evaluation signal for mathematical reasoning.
+This paper does not introduce the metric; it characterizes it.
+Relative to that proposal, our results are a corrective map: \tfa{} ranks models where references are worth predicting, saturates and inverts on easy benchmarks, and never grades individual solutions, because most of its per-solution variance belongs to the reference.
+
+\paragraph{Model-level likelihood and ability.}
+That model-level likelihood tracks ability is established prior art: compression of held-out text correlates linearly with benchmark performance~\cite{huang2024compression}, and likelihood-based statistics support scaling-law prediction of generative-benchmark scores~\cite{schaeffer2025pretraining} and cross-scale forecasts of reasoning performance~\cite{koh2025rbridge}.
+We treat that model-level correlation as known.
+The delta here is the item-level, cross-family decomposition of the same signal, the saturation boundary it predicts, and the reference interventions that test the mechanism causally.
+
+\paragraph{Judges, reference metrics, and biases.}
 Reliability audits of LLM judges conclude that reliability without validity is the field's open problem, and they call for variance-component analysis of the kind performed here~\cite{zheng2023judging,tan2024judgebench}.
 Cheap reference-based metrics descend from text-generation evaluation~\cite{yuan2021bartscore}, where they are typically validated against human preferences of fluency; we test them against blind soundness grades and an executable oracle, and locate their variance in the reference itself.
 The style-over-substance literature documents evaluator biases in general response pools~\cite{wu2023style,dubois2024length,singhal2023long}; our contribution is complementary, a mechanism (the reference-nuisance decomposition) and an intervention (the short-reference collapse) for reference-anchored metrics specifically.
-Completion-based process values descend from rollout estimation in process supervision~\cite{lightman2023verify,wang2022selfconsistency}.
-The prefix-repair curve, its monotone depth profile, and its difficulty-controlled reading appear to be new, as does the class-level advance-prediction test of the comparison/verification taxonomy.
+
+\paragraph{Completion-based verification.}
+Completion-based process values descend from rollout estimation in process supervision~\cite{lightman2023verify,wang2022selfconsistency}, and completion-from-prefix scoring is the core of step-level verifiers such as Math-Shepherd~\cite{wang2024mathshepherd} and OmegaPRM~\cite{luo2024omegaprm}, which use Monte-Carlo rollouts from partial solutions to train process reward models.
+The prefix-repair curve adapts that rollout machinery from reward-model training to judge-free grading of full solutions against blind human soundness; its monotone depth profile, its difficulty-controlled reading, and the class-level advance-prediction test of the comparison/verification taxonomy are the parts we have not seen in that line.
 
 \section{Conclusion}
 \label{sec:conclusion}
@@ -14,7 +27,7 @@ The prefix-repair curve, its monotone depth profile, and its difficulty-controll
 Reference-based evaluation has been treated as a spectrum of increasingly good approximations to judgment.
 It is not a spectrum.
 It is two mechanisms.
-Signals that compare a solution to reference text measure the reference: $80\%$ reference perplexity, $83$--$92\%$ item nuisance.
+Signals that compare a solution to reference text measure the reference: $83$--$92\%$ cross-family item nuisance, and $80\%$ reference perplexity in the pooled corollary.
 No reweighting recovers a grading signal, because there is none to recover.
 Signals that verify a checkable endpoint grade in proportion to how much verification they perform, from a one-pass answer-swap margin, through the prefix-repair curve, to executed tests, though on this anchor set the grading they deliver is largely the detection of correctness itself.
 The boundary for leaderboard use is equally mechanistic: matching ranks models exactly when references are worth predicting, and reference perplexity can be measured in advance to check that condition.
