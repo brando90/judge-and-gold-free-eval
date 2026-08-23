@@ -114,10 +114,10 @@ def fig_class():
 
     ax.axvline(0.0, color=MUTED, lw=0.8, ls="--", zorder=0)
     ax.axvline(0.80, color=MUTED, lw=0.8, ls=":", zorder=0)
-    ax.axvline(0.894, color=MUTED, lw=0.8, ls=":", zorder=0)
+    ax.axvline(0.91, color=MUTED, lw=0.8, ls=":", zorder=0)
     ax.text(
         1.0, len(SIGNALS) + 0.15,
-        "dotted: inter-rater 0.80; implied ceiling 0.89 ($n{=}20$; indicative)",
+        "dotted: inter-rater 0.80; implied ceiling 0.91 (same-rubric $n{=}30$; indicative)",
         ha="right", va="center", fontsize=10, color=MUTED,
     )
 
