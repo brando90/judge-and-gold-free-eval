@@ -29,11 +29,16 @@ Code supplies one, and the mechanical-target audit of Section~\ref{sec:pressure}
 Its measured scope limit travels with it: the mechanical target predicted damage well and inflation-resistance only through protocol, so human-labeled nuisance axes remain necessary for the deception side.
 Where no oracle exists, humans grade the target axis, and the divergence-stratum construction (sample where cheap signals disagree) supplies power that random sampling cannot.
 
-A fully mechanical instantiation now exists as well, run after the human audit with expectations stated in the analysis header before execution (\texttt{papers/analysis/mech\_axes\_audit.py}).
-Substituting machine correctness for the target axis and log response length for the nuisance axis, at zero human labels, reproduces the audit's structure on the same thirteen configurations.
-Every honest referenced judge shows a high correctness partial ($+0.56$ to $+0.98$) with a length partial near zero, and both style-loaded evaluators are convicted anyway: the sabotaged frontier judge's correctness partial collapses to $+0.22$ $[-0.13, +0.52]$ while its length partial reaches $-0.74$ $[-0.84, -0.60]$, and the reward model reads $-0.03$ on correctness with $-0.54$ $[-0.70, -0.32]$ on length.
-The stated expectation E1 (honest judges clean) was confirmed and E2 (style convictions would not necessarily transfer to the length axis) was exceeded: style-loading manifests on the mechanical axis as a strong preference for short responses.
-The mechanical axes are coarser instruments (correctness is not soundness, and length is not style), so the human-labeled audit remains the resolution tier, but the procedure itself demonstrably runs end to end without an annotator and already catches both corrupted evaluators.
+A fully mechanical instantiation was also run after the human audit, with expectations stated in the analysis header before execution (\texttt{papers/analysis/mech\_axes\_audit.py}).
+It substitutes machine correctness for the target axis and log response length for the nuisance axis, at zero human labels, on the same thirteen configurations.
+Under a simple explicit verdict rule, flag a configuration if its length-partial CI excludes zero, six of the thirteen are flagged: the sabotaged frontier ($-0.74$ $[-0.84, -0.60]$), the reward model ($-0.54$ $[-0.70, -0.32]$), the sabotaged 14B ($-0.45$ $[-0.66, -0.21]$), the sabotaged 7B ($-0.41$ $[-0.61, -0.17]$), the referenced 1.5B ($-0.35$ $[-0.58, -0.08]$), and the referenced 3B ($-0.22$ $[-0.44, -0.01]$).
+Unflagged are the honest frontier ($+0.13$), the referenced 14B ($-0.03$), the referenced 7B ($-0.14$), the blind 14B ($+0.09$), the blind 7B ($+0.08$), and the blind 3B ($-0.29$, CI crossing zero); the blind 1.5B's bootstrap is degenerate, so its CI is unavailable and it is not flagged.
+The stated expectation E1, that honest judges come out clean, is therefore partially violated: two of the five honest referenced judges, the 1.5B and 3B, show significantly negative length partials.
+And E2 as stated, that style convictions would ``not necessarily'' transfer to the length axis, was unfalsifiable phrasing that no outcome could have contradicted, which is not pre-specification.
+The honest summary is this.
+The zero-label audit separates the two most corrupted evaluators by margin: the sabotaged frontier and the reward model carry the two largest length-partial magnitudes ($-0.74$ and $-0.54$), their correctness partials collapse ($+0.22$ $[-0.13, +0.52]$ and $-0.03$), and the honest frontier is clean (length $+0.13$, correctness $+0.98$).
+But the significance-based rule also flags four other configurations, including two honest referenced passes, so the mechanical axes are a coarse screen that orders corruption severity, not a verdict instrument; the human-labeled audit remains the verdict tier.
+The length signal does feed back into the human audit as a confound check, and the three-variable partial of Section~\ref{sec:audit} shows both style convictions survive controlling for length (\texttt{papers/analysis/style\_partial\_lencontrol.json}).
 
 \paragraph{Tier 3: the pressure test as the axis-agnostic backstop.}
 Any nuisance axis missing from Tiers 1--2 can still be exploited, and the best-of-$n$ experiment is the detector of last resort, run per domain.
@@ -41,6 +46,7 @@ Any nuisance axis missing from Tiers 1--2 can still be exploited, and the best-o
 \paragraph{Label economics, in place of a magic number.}
 The label budget is verdict-dependent, not fixed.
 Empirically, convictions stabilize by roughly 40 labels while boundary passes do not (Figure~\ref{fig:stability}); analytically, cross-rater components bound what labels can measure (soundness ceiling $\approx 0.89$, style $\approx 0.72$), and Spearman--Brown projections say how much a second rater buys ($0.80 \to 0.89$ for soundness).
+These ceilings come from $n{=}20$ shared items under a schema mismatch, so they carry wide uncertainty (the soundness inter-rater point estimate's 95\% CI spans roughly $[0.55, 0.92]$) and are indicative anchors, not walls.
 A registered prospective test applies these curves to predict the label budget for a second math dataset before its labels arrive.
 
 \paragraph{What remains non-generic.}

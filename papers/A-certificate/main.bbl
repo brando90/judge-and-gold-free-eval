@@ -63,6 +63,12 @@ Mohammad Beigi et~al.
   reward hacking.
 \newblock {\em arXiv preprint arXiv:2602.01750}, 2026.
 
+\bibitem{campbellfiske1959}
+Donald~T. Campbell and Donald~W. Fiske.
+\newblock Convergent and discriminant validation by the multitrait-multimethod
+  matrix.
+\newblock {\em Psychological Bulletin}, 56(2):81--105, 1959.
+
 \bibitem{coste2023ensembles}
 Thomas Coste et~al.
 \newblock Reward model ensembles help mitigate overoptimization.

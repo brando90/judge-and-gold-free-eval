@@ -14,8 +14,11 @@ Yes: it passes, convicts, and flips.
 The honest frontier judge passes with soundness partial $+0.90$ $[+0.77, +0.97]$ and style partial $-0.22$ $[-0.40, +0.05]$ ($n{=}60$).
 The sabotaged judge is convicted on the same items: style partial $+0.59$ $[+0.36, +0.76]$, soundness partial $+0.20$ $[-0.07, +0.44]$.
 The audit also convicts an evaluator class it was not designed around: a top open trained reward model (Skywork-Reward-Llama-3.1-8B) scores the same traces with soundness partial $-0.01$ $[-0.29, +0.28]$ and style partial $+0.54$ $[+0.34, +0.70]$, the same signature as the sabotaged judge, where naive validation ($r = +0.18$) would report only weakness.
-Under pressure the reward model shows the damage this verdict predicts: its math regret ($0.286$) is intermediate, worse than every certified referenced judge but better than every failed blind judge, and its code regret ($0.485$) is the worst observed in either domain.
+Under pressure the reward model shows the damage this verdict predicts: its math regret ($0.286$) is intermediate, worse than every certified referenced judge but better than every failed blind judge, and its code regret ($0.485$) is worse than every certified configuration's but below the worst blind and sabotaged code cells ($0.544$ and $0.559$).
 The reward model uses no reference, so no referenced-tier comparison applies; its computed excess gap is mechanically zero by construction, because a single scoring function serves as both selector and reporter, which is why Table~\ref{tab:h2h} marks it n/c.
+The mechanical audit of Section~\ref{sec:procedure} adds a confound to check: the reward model strongly prefers short responses (length partial $-0.54$), so part of its style conviction could be a length preference wearing style's labels, since the human style partial controls soundness but not length.
+A three-variable partial answers the check directly: controlling for soundness and log response length together, the reward model's style partial moves from $+0.54$ to $+0.42$ $[+0.22, +0.59]$ and the sabotaged frontier's from $+0.59$ to $+0.47$ $[+0.26, +0.65]$, while the honest frontier is essentially unchanged ($-0.22$ to $-0.24$ $[-0.43, +0.05]$) (\texttt{papers/analysis/style\_partial\_lencontrol.json}).
+Length therefore accounts for only a modest fraction of both convictions, which remain significantly positive with length controlled: the convictions are genuinely style.
 The verdict tracks protocol, not model identity: blind, the 1.5B judge reads style (partial $+0.51$), the 3B and 7B judges are too weak to certify, and the 14B judge clears the frozen pass rule by a hair (soundness partial $0.41$ against a $0.40$ cut), a threshold pass with no margin that Section~\ref{sec:pressure} shows to be a false pass; with the gold solution in context every honestly prompted ladder judge passes the frozen point-estimate rule (Table~\ref{tab:h2h}; the post-hoc revised rule of Section~\ref{sec:pressure} abstains on the referenced 1.5B and 3B, whose CIs straddle the bar).
 A reference changes what a judge measures, not merely how accurately it measures.
 
@@ -87,6 +90,12 @@ It fails second by offering no principled threshold: the separating value is kno
 The audit shares the threshold problem for its weak-judge boundary (the 3B-blind partials straddle zero within noise, and the 14B-blind false pass of Section~\ref{sec:pressure} is that problem realized), but its convictions do not: a significantly positive nuisance partial is a sign condition, fixed ex ante, and it alone identifies both style-loaded configurations.
 The audit's advantage is diagnosis and sign-anchored conviction, not a magically sharper threshold for weak judges.
 
+\paragraph{Incremental validity over a protocol bit.}
+The strongest trivial baseline is a protocol-bit classifier that predicts certified behavior iff a reference is present.
+On the same thirteen configurations it scores ten of thirteen: it is wrong on all three sabotaged referenced arms, which it cannot see, and right on the blind 14B, where the audit false-passes.
+The audit scores twelve of thirteen.
+The audit's incremental value is precisely detection of corrupted instructions and reward models that protocol bits cannot see, at the cost of one boundary miss.
+
 \paragraph{Multiple comparisons.}
 The conviction rule is a single pre-declared sign condition per configuration, a significantly positive nuisance partial, not a search over thresholds, which bounds the multiplicity concern.
 A Bonferroni correction across the eleven registered-era audited configurations leaves all three convictions significant: recomputing the style-partial bootstrap CIs at the corrected level keeps them wide of zero (sabotaged frontier $[+0.25, +0.80]$, reward model $[+0.20, +0.77]$), and the 1.5B-blind conviction's permutation test gives $p = 0.0017$ (two-sided, $n{=}53$), below the corrected level $0.05/11$ (corrected conviction CIs in \texttt{papers/analysis/conviction\_bonferroni.json}).
@@ -122,5 +131,5 @@ Part of small-judge weakness is protocol, not capability.
 \paragraph{When a reference hurts.}
 On tasks with many valid answers the reference lever inverts, statically and dynamically.
 Statically, any reference, whoever wrote it, costs $7$--$8$ points of verdict accuracy (paired, $p \le .0005$)~\cite{companionD}.
-Dynamically, under best-of-64 pressure on multi-valid tasks, the referenced judge is more inflated than the blind one at all four ladder sizes (for example 3B: gap $+0.55$ blind versus $+1.22$ referenced), and the mechanism is directly measurable: among equally valid answers, referenced judges score those matching the shown reference $+2.7$ to $+10.0$ points (of 10) above the rest, with total anchoring at 1.5B--3B, while blind judges show no such margin~\cite{companionD}.
+Dynamically, under best-of-64 pressure on multi-valid tasks, the referenced judge is more inflated than the blind one at all four ladder sizes (for example 3B: gap $+0.55$ blind versus $+1.21$ referenced), and the mechanism is directly measurable: among equally valid answers, referenced judges score those matching the shown reference $+2.7$ to $+10.0$ points (of 10) above the rest, with total anchoring at 1.5B--3B, while blind judges show no such margin~\cite{companionD}.
 A reference converts a judge into a verifier only when the task's answer is effectively unique and checking against the reference is within the judge's capability.

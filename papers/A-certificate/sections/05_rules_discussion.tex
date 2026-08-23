@@ -3,7 +3,8 @@
 
 \begin{enumerate}
 \item \textbf{Audit before you optimize, in the deployment domain.}
-A few dozen blind labels on separated axes, a decorrelated stratum, and partial correlations; labeling sixty traces on two axes at two to four minutes per trace is five to eight annotator-hours, and the frozen categorical verdicts predicted twelve of thirteen in-domain pressure outcomes per estimand (ten of eleven registered-era, plus two confirmatory post-registration sabotaged-ladder additions), with the one false pass sitting at the pass threshold (Section~\ref{sec:pressure}).
+A few dozen blind labels on separated axes, a decorrelated stratum, and partial correlations; labeling sixty traces on two axes at two to four minutes per trace is five to eight annotator-hours, and the frozen categorical verdicts predicted ten of eleven registered-era in-domain pressure outcomes per estimand (twelve of thirteen in the secondary count including two confirmatory post-registration sabotaged-ladder additions), with the one false pass sitting at the pass threshold (Section~\ref{sec:pressure}).
+Five to eight hours is the labeling cost alone; end-to-end certification also requires assembling the trace pool and cheap-signal battery, and the optional pressure backstop costs 64-samples-per-item generation plus judge calls per configuration, which dwarfs the labeling compute.
 \item \textbf{Do not substitute raw agreement.}
 It ranks but cannot diagnose, and it has no sign-anchored conviction (Table~\ref{tab:h2h}).
 \item \textbf{Choose nuisance axes by threat model, and treat the audit as a screen for the axes it instruments.}
@@ -22,6 +23,7 @@ Six things bound the claim.
 First, the labels: one annotator, an author, hypothesis-aware; a second rater and an external annotator are in progress, and every headline number is provisional until consensus labels land.
 The style axis is the noisier instrument (cross-rater $0.52$, ceiling $\approx 0.72$), which attenuates exactly the partials that carry convictions; against that ceiling the measured convictions ($+0.51$, $+0.59$) are proportionally large.
 The honest frontier judge's soundness partial ($+0.90$) sits at the single-rater ceiling ($\approx 0.89$), so it should be read as saturating what one rater's labels can measure, not as a claim about the remaining fraction.
+The ceilings themselves come from $n{=}20$ shared items under a schema mismatch, so they carry wide uncertainty (the soundness inter-rater point estimate's 95\% CI spans roughly $[0.55, 0.92]$) and are indicative anchors, not walls.
 Second, the weak-judge boundary: verdicts for judges near the pass line sit within CI overlap at these label counts; the subsampling analysis quantifies which verdicts are stable, and convictions are while boundaries are not.
 Third, scope of validation: one audited domain; code is extrapolation; the capability-gate explanation of the one miss is post hoc until the registered code audit runs.
 Fourth, the pressure test is selection, not training; the frontier failure mode is precisely where selection understates risk, and a DPO validation is registered to close the gap.
