@@ -6,7 +6,7 @@ import argparse, json, os
 from vllm import LLM, SamplingParams
 
 ap = argparse.ArgumentParser()
-ap.add_argument("--domain", choices=["math", "code", "mbpp"], required=True)
+ap.add_argument("--domain", choices=["math", "code", "mbpp", "ties"], required=True)
 ap.add_argument("--model", default="Qwen/Qwen2.5-7B-Instruct")
 ap.add_argument("--n", type=int, default=64)
 ap.add_argument("--out", default="runs/bon")
@@ -20,6 +20,11 @@ if args.domain == "math":
     def prompt_of(r):
         return ("Solve the following math problem. Show your reasoning step by step, "
                 "then give the final answer in \\boxed{}.\n\n" + r["problem"])
+elif args.domain == "ties":
+    tasks = [json.loads(l) for l in open("runs/bon_ties_tasks.jsonl")]
+    def prompt_of(r):
+        return ("Answer the following question. Think briefly if needed, then give your final "
+                "answer in \\boxed{}.\n\n" + r["problem"])
 elif args.domain == "mbpp":
     tasks = [json.loads(l) for l in open("runs/bon_mbpp_tasks.jsonl")]
     def prompt_of(r):
@@ -60,6 +65,9 @@ with open(out, mode) as f:
             row = dict(problem_id=pid, model=args.model, samples=[c.text for c in o.outputs])
             if args.domain == "math":
                 row.update(answer=r["answer"], level=r["level"], subject=r["subject"])
+            elif args.domain == "ties":
+                row.update(valid_answers=r["valid_answers"], ref_answer=r["ref_answer"],
+                           question=r["problem"])
             else:
                 row.update(test=r["test"], entry_point=r["entry_point"], question=r["prompt"])
             f.write(json.dumps(row) + "\n")

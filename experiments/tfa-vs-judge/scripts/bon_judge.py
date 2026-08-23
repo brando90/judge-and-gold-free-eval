@@ -15,7 +15,7 @@ ap.add_argument("--pool", required=True)
 ap.add_argument("--judge", required=True)
 ap.add_argument("--cond", choices=["noref", "ref", "sabotage"], required=True)
 ap.add_argument("--rep", choices=["a", "b"], required=True)
-ap.add_argument("--domain", choices=["math", "code"], default="math")
+ap.add_argument("--domain", choices=["math", "code", "ties"], default="math")
 ap.add_argument("--filter-band", action="store_true", help="only items with pool pass in [0.2,0.8]")
 ap.add_argument("--tasks", default=None, help="task file with problem text to join by problem_id")
 ap.add_argument("--out", default="runs/bon_scores")
@@ -30,7 +30,7 @@ if os.path.exists(out):
 
 import sys, os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from bon_rubrics import RUBRIC, RUBRIC_CODE
+from bon_rubrics import RUBRIC, RUBRIC_CODE, RUBRIC_TIES
 
 pool = [json.loads(l) for l in open(args.pool)]
 if args.tasks:
@@ -57,15 +57,20 @@ for v in range(11):
             CAND.setdefault(ids[0], v)
 
 def build(r, s):
-    sys = (RUBRIC_CODE if args.domain == "code" else RUBRIC)[(args.cond, args.rep)]
+    sys = {"code": RUBRIC_CODE, "ties": RUBRIC_TIES}.get(args.domain, RUBRIC)[(args.cond, args.rep)]
     q = r.get("problem") or r.get("question") or r.get("prompt")
     parts = [f"Problem:\n{q}"]
     if args.cond == "ref":
         # code reference = the canonical assert set (example_test), NOT the full MBPP+/EvalPlus
         # oracle suite: that suite runs to ~46k tokens and stays held out, mirroring math's
-        # human reference solution vs oracle answer check
-        parts.append(f"Reference solution (trusted):\n{r['solution']}" if args.domain == "math"
-                     else f"Trusted reference tests (the candidate must pass these):\n{r['example_test']}")
+        # human reference solution vs oracle answer check.
+        # ties reference = ONE valid answer (fixed at task build), the anchoring manipulation.
+        if args.domain == "math":
+            parts.append(f"Reference solution (trusted):\n{r['solution']}")
+        elif args.domain == "ties":
+            parts.append(f"Reference answer (trusted):\n{r['ref_answer']}")
+        else:
+            parts.append(f"Trusted reference tests (the candidate must pass these):\n{r['example_test']}")
     parts.append(f"Candidate solution:\n{s}\n\nScore:")
     return tok.apply_chat_template([{"role": "system", "content": sys},
                                     {"role": "user", "content": "\n\n".join(parts)}],

@@ -4,7 +4,7 @@
 import argparse, json, multiprocessing as mp, os, re, subprocess, tempfile
 
 ap = argparse.ArgumentParser()
-ap.add_argument("--domain", choices=["math", "code"], required=True)
+ap.add_argument("--domain", choices=["math", "code", "ties"], required=True)
 ap.add_argument("--pool", required=True)
 args = ap.parse_args()
 
@@ -50,12 +50,25 @@ def run_one(prog):
     return ok
 
 
+def norm_ties(a):
+    # looser normalization for short free-form answers: casefold, strip punctuation/space
+    if a is None:
+        return None
+    a = re.sub(r"[\s\.\,\!\'\"\$]+", "", a.strip().casefold())
+    return a or None
+
+
 rows = [json.loads(l) for l in open(args.pool)]
 if args.domain == "math":
     for r in rows:
         gold = norm(r["answer"])
         r["oracle"] = [int(norm(extract_boxed(s)) == gold and gold is not None)
                        for s in r["samples"]]
+elif args.domain == "ties":
+    # valid iff the boxed answer (fallback: whole reply) normalizes to ANY enumerated valid answer
+    for r in rows:
+        valid = {norm_ties(v) for v in r["valid_answers"]} - {None}
+        r["oracle"] = [int(norm_ties(extract_boxed(s) or s) in valid) for s in r["samples"]]
 else:
     progs, spans = [], []
     for r in rows:
