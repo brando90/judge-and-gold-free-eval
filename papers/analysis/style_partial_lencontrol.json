@@ -1,0 +1,29 @@
+{
+ "sabotage_gpt": {
+  "n": 60,
+  "style_partial_given_sound": 0.59,
+  "style_partial_given_sound_and_len": 0.47,
+  "ci": [
+   0.26,
+   0.65
+  ]
+ },
+ "skywork_rm": {
+  "n": 60,
+  "style_partial_given_sound": 0.54,
+  "style_partial_given_sound_and_len": 0.42,
+  "ci": [
+   0.22,
+   0.59
+  ]
+ },
+ "honest_gpt": {
+  "n": 60,
+  "style_partial_given_sound": -0.22,
+  "style_partial_given_sound_and_len": -0.24,
+  "ci": [
+   -0.43,
+   0.05
+  ]
+ }
+}
