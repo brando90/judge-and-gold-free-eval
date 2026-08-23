@@ -1,0 +1,82 @@
+[
+ {
+  "judge": "Qwen2.5-1.5B-Instruct",
+  "rep": "a",
+  "n_items": 16,
+  "delta": 0.46,
+  "ci": [
+   -0.03,
+   1.33
+  ]
+ },
+ {
+  "judge": "Qwen2.5-1.5B-Instruct",
+  "rep": "b",
+  "n_items": 16,
+  "delta": 0.22,
+  "ci": [
+   0.01,
+   0.48
+  ]
+ },
+ {
+  "judge": "Qwen2.5-3B-Instruct",
+  "rep": "a",
+  "n_items": 16,
+  "delta": 0.58,
+  "ci": [
+   -0.04,
+   1.62
+  ]
+ },
+ {
+  "judge": "Qwen2.5-3B-Instruct",
+  "rep": "b",
+  "n_items": 16,
+  "delta": 0.82,
+  "ci": [
+   0.01,
+   2.19
+  ]
+ },
+ {
+  "judge": "Qwen2.5-7B-Instruct",
+  "rep": "a",
+  "n_items": 16,
+  "delta": -0.44,
+  "ci": [
+   -1.2,
+   0.22
+  ]
+ },
+ {
+  "judge": "Qwen2.5-7B-Instruct",
+  "rep": "b",
+  "n_items": 16,
+  "delta": -0.28,
+  "ci": [
+   -0.67,
+   0.08
+  ]
+ },
+ {
+  "judge": "Qwen2.5-14B-Instruct",
+  "rep": "a",
+  "n_items": 16,
+  "delta": -0.36,
+  "ci": [
+   -1.08,
+   0.36
+  ]
+ },
+ {
+  "judge": "Qwen2.5-14B-Instruct",
+  "rep": "b",
+  "n_items": 16,
+  "delta": 0.38,
+  "ci": [
+   -0.43,
+   1.1
+  ]
+ }
+]
