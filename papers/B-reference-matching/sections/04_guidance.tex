@@ -2,23 +2,19 @@
 \section{Practical guidance}
 \label{sec:rules}
 
+Three rules cover every use of a reference we tested.
 \begin{enumerate}
 \item \textbf{Check the final answer before buying any deeper signal.}
-\begingroup
-\sloppy
-Wherever the gold final answer is extractable and matchable, the free answer-correct bit correlates $+0.92$ $[+0.78, +0.99]$ with blind human soundness on our anchor set, and no signal we tested, matching or verification, adds measurable grading information beyond it (Section~\ref{sec:verify}; \texttt{papers/analysis/free\_baseline.json}).
+Wherever the gold final answer is extractable and matchable, the free bit correlates $+0.92$ with blind human soundness on our anchor set, and no signal we tested, matching or verification, adds measurable grading information beyond it (Section~\ref{sec:verify}).
 Reach for completion-based verification only where a final answer cannot be extracted or matched, and note that we have not tested that setting.
-Where you do run it, the completer's strength barely matters on our anchor: the curve's validity is flat from a 1.5B to a 32B completer (Section~\ref{sec:verify}; \texttt{papers/analysis/completer\_sweep.json}).
-\par
-\endgroup
+Where you do run it, the completer's strength barely matters on our anchor: the curve's validity is flat from a 1.5B to a 32B completer (Appendix~\ref{app:completer}).
 \item \textbf{Never use a reference as a similarity target.}
 Its value is as context for a reader or as a checkable endpoint for a verifier (Section~\ref{sec:verify}).
-Any metric that scores resemblance to reference text inherits the nuisance decomposition of Section~\ref{sec:mechanism}, and the taxonomy correctly predicted the failure of every such metric before it was built.
-In particular, matching scores should never be used as per-solution rewards or filters.
-On math, no comparison metric clears zero against human soundness; unigram-F1's interval is weakly negative, an exclusion we read as suggestive rather than confirmatory because the five-metric battery carries no multiplicity correction (Section~\ref{sec:classnull}).
-On code, the prediction-fit metrics (\tfa{} and gold-token log-probability) are indistinguishable from zero against executed tests, while the output-similarity metrics carry only a weak positive signal (unigram-F1 $+0.13$ $[+0.06, +0.21]$, TF-IDF $+0.17$ $[+0.10, +0.23]$ on 492 solutions; \texttt{papers/analysis/code\_sims.json}), far below any grading standard.
+Any metric that scores resemblance to reference text inherits the nuisance decomposition of Section~\ref{sec:mechanism}, and the taxonomy correctly predicted the failure of every such metric before it was built; in particular, matching scores should never be used as per-solution rewards or filters.
+On math, no matching metric clears zero against human soundness, and unigram-F1's weakly negative exclusion is suggestive only, since the five-metric battery carries no multiplicity correction (Section~\ref{sec:classnull}).
+On code, the prediction-fit metrics are indistinguishable from zero against executed tests, and the output-similarity metrics carry only a weak positive signal, far below any grading standard (Section~\ref{sec:classnull}, Table~\ref{tab:robust}).
 \item \textbf{For leaderboards, run a three-step check before trusting matching.}
-First, compute mean reference perplexity (bits-per-character) over the benchmark's references under any strong open model; this costs one forward pass per reference.
+First, compute mean reference perplexity over the benchmark's references under any strong open model; this costs one forward pass per reference.
 Second, check whether the benchmark is saturated, meaning most models under comparison already score near ceiling, and whether the references are answer lines rather than worked solutions.
 Third, if either condition holds, do not use matching; if neither holds, use matching only in aggregate, and report the reference-perplexity figure alongside accuracy so readers can audit the condition.
 On answer-line references, matching measures style.

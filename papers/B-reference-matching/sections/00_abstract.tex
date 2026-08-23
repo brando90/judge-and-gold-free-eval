@@ -1,31 +1,10 @@
 % !TEX root = ../main.tex
 \begin{abstract}
-% 1 problem motivation
-Many benchmarks ship a gold reference solution, so the cheapest way to evaluate a model's reasoning is to score a solution by how much it resembles that reference.
-% 2 the question
-We ask what reference matching actually measures, across seventeen models from four model families on eight math and code benchmarks plus an agentic setting, anchored to blind human grades of reasoning quality and to executed tests.
-The sharpest such metric, teacher-forced accuracy (the fraction of reference tokens the model itself predicts as its top-1 continuation), was recently proposed as a judge-free evaluation signal; we do not introduce it but characterize it, mapping where it works, where it saturates, and where it fails.
-The answer is two-sided: no form of matching can grade an individual solution, matching can rank models only when the reference is worth predicting, and nothing we tested beats the free answer-correct bit.
-% 3 finding 1: grading null + mechanism
-No form of matching can grade an individual solution.
-Five metrics spanning the space, from teacher-forced accuracy to sentence embeddings, land in $[-0.33, +0.14]$ against human soundness grades; on 492 code solutions scored by executed tests, the two prediction-fit metrics, teacher-forced accuracy and gold-token log-probability, are indistinguishable from zero, and the output-similarity metrics carry only a weak positive signal (unigram-F1 $+0.13$, TF-IDF $+0.17$), far below any grading standard.
-The reason is mechanistic: $83$--$92\%$ of per-solution variance beyond model level is an item effect that replicates across model families, a property of the reference text rather than of any one model's solution, and pooled across 6{,}000 model--item pairs, teacher-forced accuracy is $80\%$ reference perplexity (bits-per-character).
-Every targeted repair we or our reviewers proposed failed to recover a grading signal; of the five pre-registered predictions, three landed as called, one registered null produced a sign flip, and one was falsified outright.
-% 4 finding 2: ranking boundary
-Matching can rank models, but only when the reference is worth predicting.
-Replacing each worked reference with its answer line collapses the ranking signal on the same items, from Spearman $+0.35$ to $+0.02$ as a point contrast on all seventeen models.
-The certified statement is narrower: an item-level paired bootstrap on the twelve models with per-item data, which conditions on those fixed models and so captures item-sampling uncertainty only, moves the subset's Spearman from $+0.14$ (full references) to $-0.10$ (answer lines), a paired delta of $+0.24$ $[+0.12, +0.33]$ that excludes zero.
-The point-estimate boundary runs from $+0.86$ on olympiad math to negative values on saturated benchmarks, meaning benchmarks where most models already score near ceiling; the robust version of this trend is the ladder count over family ladders (size-ordered model series within one family), with twelve of twelve hard-benchmark family ladders positive and five of twelve inverting on saturated data.
-% 5 finding 3: the free baseline tops the verification class
-On the verification side, the decisive baseline turns out to be free.
-Executed tests are a free correctness oracle where they exist, and on the math anchor set, the 60 human-graded solutions that every validity claim here is checked against, the machine-checked answer-correct bit alone correlates $+0.92$ $[+0.78, +0.99]$ with human soundness.
-The best verification signal we tested, a prefix-repair curve that truncates a solution and asks whether a fixed completer still reaches the right answer, is statistically indistinguishable from, and slightly below, that free bit ($+0.79$ $[+0.61, +0.92]$ versus $+0.92$ $[+0.78, +0.99]$).
-Its partial correlation with soundness given correctness is $-0.10$ $[-0.30, +0.22]$, while correctness given the curve retains $+0.77$ $[+0.55, +0.95]$, so the curve adds no measurable grading signal over the free answer-correct bit on this anchor set.
-The falsified register is the completer-strength prediction (P-C1), which called a middle band of required completer strength with washout at 1.5B; instead, swapping in Qwen2.5 completers from 1.5B to 32B leaves the curve's validity flat ($+0.78$ to $+0.88$) even as completer solve rates rise from $0.49$ to $0.83$, and within-correct values stay null at every size.
-Flatness is what the free-bit reading predicts, since any completer able to finish sound work returns the same correctness signal.
-The curve is a noisy proxy for the free correctness bit wherever the gold final answer is extractable; its residual use case is settings where a final answer cannot be extracted or matched, such as free-form proofs, and that use case is untested here.
-The registered class-level prediction still landed, since verification signals out-correlate every matching signal, but the register did not anticipate that the free bit would top the class.
-% 6 implications
-The resulting map is uniformly negative and mechanically explained: in the entire space we tested, matching or verification, no cheap signal grades beyond correctness, and correctness itself is free where references exist.
-Three rules follow: check the final answer before buying any deeper signal, use a reference only as an endpoint for a verifier and never as a similarity target, and for leaderboards, report reference perplexity alongside accuracy, because matching is legitimate exactly when references are worth predicting.
+Many benchmarks ship a worked reference solution, and the cheapest way to grade a model's solution is to score how closely it matches that reference.
+Across seventeen models from four families on eight math and code benchmarks plus an agentic setting, we measure what matching actually rewards, anchored to blind human grades of reasoning quality and to executed tests.
+The answer is two-sided: no form of matching can grade an individual solution, and matching can rank models only when the reference is worth predicting.
+Every matching metric we tested, from teacher-forced accuracy to sentence embeddings, lands in $[-0.33, +0.14]$ against human soundness grades, because most of a matching score's per-solution variance, $83$--$92\%$, is a property of the reference text, how predictable it is, rather than of the solution being graded.
+Signals that instead verify a checkable endpoint do carry signal, but nothing we tested beats the check everyone already has for free: the machine-checked answer-correct bit alone correlates $+0.92$ with human soundness.
+Our strongest verification signal, a completion-based curve, is statistically indistinguishable from that free bit and adds no measurable grading signal beyond it; most of our predictions, registered in advance, landed as called, and the misses, one sign flip and one falsification, are on record.
+Three rules follow: check the final answer before buying any deeper signal, use a reference only as a checkable endpoint for a verifier and never as a similarity target, and report reference perplexity alongside accuracy, because matching is legitimate exactly when references are worth predicting.
 \end{abstract}

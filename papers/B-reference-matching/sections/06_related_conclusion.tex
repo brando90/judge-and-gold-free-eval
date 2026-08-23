@@ -2,6 +2,8 @@
 \section{Related work}
 \label{sec:related}
 
+Four lines of work border this paper: the proposal of \tfa{} itself, model-level likelihood as an ability measure, judge and reference-metric audits, and completion-based verification.
+
 \paragraph{Teacher-forced accuracy.}
 \tfa{} was introduced by \textsc{Putnam-AXIOM}~\cite{gulati2025putnam} as a judge-free evaluation signal for mathematical reasoning.
 This paper does not introduce the metric; it characterizes it.
@@ -19,7 +21,7 @@ The style-over-substance literature documents evaluator biases in general respon
 
 \paragraph{Completion-based verification.}
 Completion-based process values descend from rollout estimation in process supervision~\cite{lightman2023verify,wang2022selfconsistency}, and completion-from-prefix scoring is the core of step-level verifiers such as Math-Shepherd~\cite{wang2024mathshepherd} and OmegaPRM~\cite{luo2024omegaprm}, which use Monte-Carlo rollouts from partial solutions to train process reward models.
-The prefix-repair curve adapts that rollout machinery from reward-model training to judge-free scoring of full solutions against blind human soundness; its depth profile (monotone in Pearson, non-monotone in Spearman), the class-level advance-prediction test of the comparison/verification taxonomy, and the free-baseline comparison showing the curve adds nothing over the answer-correct bit on our anchor set are the parts we have not seen in that line.
+The completion curve adapts that rollout machinery from reward-model training to judge-free scoring of full solutions against blind human soundness; its depth profile (monotone in Pearson, non-monotone in Spearman), the class-level advance-prediction test of the matching/verification taxonomy, and the free-baseline comparison showing the curve adds nothing over the free bit on our anchor set are the parts we have not seen in that line.
 
 \section{Conclusion}
 \label{sec:conclusion}
@@ -29,22 +31,9 @@ It is not a spectrum.
 It is two mechanisms, and neither grades beyond correctness.
 Signals that compare a solution to reference text measure the reference: an $83$--$92\%$ cross-family item share, and $80\%$ reference perplexity in the pooled corollary.
 No reweighting recovers a grading signal, because there is none to recover.
-Signals that verify a checkable endpoint carry real signal, but on our anchor set everything they carry is already in the endpoint itself: the free answer-correct bit correlates $+0.92$ $[+0.78, +0.99]$ with human soundness, the strongest verification signal we built, the prefix-repair curve, reaches $+0.79$ $[+0.61, +0.92]$, statistically indistinguishable from and slightly below the free bit, and the curve's partial correlation with soundness given correctness is $-0.10$ $[-0.30, +0.22]$.
+Signals that verify a checkable endpoint carry real signal, but on our anchor set everything they carry is already in the endpoint itself: the free bit correlates $+0.92$ with human soundness, the completion curve reaches $+0.79$, statistically indistinguishable from and slightly below it, and the curve's partial correlation with soundness given correctness is $-0.10$.
 The space we tested is therefore a clean negative map with a mechanism: no cheap signal, matching or verification, grades beyond correctness, and correctness itself is free where references exist.
 What remains open is the setting the map does not cover, solutions whose final answer cannot be extracted or matched, where completion-based verification is the natural candidate and is untested here.
 The boundary for leaderboard use is equally mechanistic: matching ranks models exactly when references are worth predicting, and reference perplexity can be measured in advance to check that condition.
-The answer-line intervention supports this reading, with its evidentiary weight stated precisely: the certified statement is the item-level paired delta on the twelve-model subset ($+0.24$ $[+0.12, +0.33]$, moving that subset's Spearman from $+0.14$ with full references to $-0.10$ with answer lines, conditioning on the fixed twelve models so the interval reflects item-sampling uncertainty only), while the $+0.35 \to +0.02$ collapse is the point contrast on all seventeen models, whose model-level delta ($+0.33$ $[-0.16, +0.81]$) does not exclude zero.
-Three of the five pre-registered predictions landed as called; the position-weighted register predicted a null, and the observed sign flip to $-0.37$ at last-four tokens means that register was directionally wrong, not confirmed.
-The completer-strength register (P-C1) predicted a middle band of required completer strength and was falsified: the curve's validity is flat from a 1.5B to a 32B completer.
-That falsification is a miss for the register and corroboration for the mechanism, since the middle-band prediction assumed graded process evaluation, which the within-correct nulls show the curve does not perform.
-The class-level register also did not anticipate that the free answer-correct bit would top the verification class.
-The registered record is therefore three hits, one sign flip, and one falsification, consistent with the class divide, with the misses on record.
-
-\vspace{1em}
-\begingroup
-\sloppy
-\noindent\textbf{Reproducibility.}
-All scores, labels, decompositions, and pre-registered analysis scripts are in the repository (\texttt{experiments/tfa-vs-judge}): the class table (\texttt{runs/metric\_class\_results.md}), the decomposition (\texttt{scripts/two\_way\_decomp.py}), the short-reference intervention (\texttt{scripts/tfa\_shortref.py}), the metric slate (\texttt{scripts/analyze\_metric\_ablations.py}, \texttt{scripts/analyze\_slate2.py}), the executable oracle (\texttt{scripts/run\_code\_tests.py}), and the labeling instruments with returned labels (\texttt{human\_eval/}).
-The figures regenerate from the canonical artifacts via \texttt{scripts/generate\_plots.py} in this paper's directory.
-\par
-\endgroup
+The answer-line intervention supports this reading, with its evidentiary weight stated precisely in Section~\ref{sec:mechanism}: the certified statement is the item-level paired delta on the twelve-model subset, which excludes zero while conditioning on the fixed models, and the seventeen-model collapse is a point contrast whose model-level delta does not (endpoints and intervals in Table~\ref{tab:robust}).
+The registered record is three of five predictions landed as called, one sign flip, and one falsification (Table~\ref{tab:ledger}); the completer-strength falsification is a miss for the register and corroboration for the mechanism, since the middle-band prediction assumed graded process evaluation, which the within-correct nulls show the curve does not perform, and the class-level register did not anticipate that the free bit would top the verification class.
