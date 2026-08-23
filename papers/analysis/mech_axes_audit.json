@@ -1,0 +1,171 @@
+{
+ "noref:Qwen2.5-1.5B-Instruct": {
+  "n": 53,
+  "corr_partial": 0.16,
+  "corr_ci": [
+   NaN,
+   NaN
+  ],
+  "len_partial": -0.24,
+  "len_ci": [
+   NaN,
+   NaN
+  ]
+ },
+ "noref:Qwen2.5-14B-Instruct": {
+  "n": 60,
+  "corr_partial": 0.42,
+  "corr_ci": [
+   0.13,
+   0.66
+  ],
+  "len_partial": 0.09,
+  "len_ci": [
+   -0.15,
+   0.3
+  ]
+ },
+ "noref:Qwen2.5-3B-Instruct": {
+  "n": 60,
+  "corr_partial": 0.16,
+  "corr_ci": [
+   -0.13,
+   0.5
+  ],
+  "len_partial": -0.29,
+  "len_ci": [
+   -0.52,
+   0.03
+  ]
+ },
+ "noref:Qwen2.5-7B-Instruct": {
+  "n": 60,
+  "corr_partial": 0.37,
+  "corr_ci": [
+   0.09,
+   0.65
+  ],
+  "len_partial": 0.08,
+  "len_ci": [
+   -0.13,
+   0.25
+  ]
+ },
+ "ref:Qwen2.5-1.5B-Instruct": {
+  "n": 56,
+  "corr_partial": 0.64,
+  "corr_ci": [
+   0.41,
+   0.84
+  ],
+  "len_partial": -0.35,
+  "len_ci": [
+   -0.58,
+   -0.08
+  ]
+ },
+ "ref:Qwen2.5-14B-Instruct": {
+  "n": 60,
+  "corr_partial": 0.78,
+  "corr_ci": [
+   0.57,
+   0.91
+  ],
+  "len_partial": -0.03,
+  "len_ci": [
+   -0.28,
+   0.2
+  ]
+ },
+ "ref:Qwen2.5-3B-Instruct": {
+  "n": 60,
+  "corr_partial": 0.56,
+  "corr_ci": [
+   0.37,
+   0.71
+  ],
+  "len_partial": -0.22,
+  "len_ci": [
+   -0.44,
+   -0.01
+  ]
+ },
+ "ref:Qwen2.5-7B-Instruct": {
+  "n": 60,
+  "corr_partial": 0.71,
+  "corr_ci": [
+   0.51,
+   0.88
+  ],
+  "len_partial": -0.14,
+  "len_ci": [
+   -0.37,
+   0.11
+  ]
+ },
+ "sabotage:Qwen2.5-14B-Instruct": {
+  "n": 60,
+  "corr_partial": 0.44,
+  "corr_ci": [
+   0.11,
+   0.66
+  ],
+  "len_partial": -0.45,
+  "len_ci": [
+   -0.66,
+   -0.21
+  ]
+ },
+ "sabotage:Qwen2.5-7B-Instruct": {
+  "n": 60,
+  "corr_partial": 0.35,
+  "corr_ci": [
+   0.14,
+   0.53
+  ],
+  "len_partial": -0.41,
+  "len_ci": [
+   -0.61,
+   -0.17
+  ]
+ },
+ "sabotage:GPT-5.2": {
+  "n": 60,
+  "corr_partial": 0.22,
+  "corr_ci": [
+   -0.13,
+   0.52
+  ],
+  "len_partial": -0.74,
+  "len_ci": [
+   -0.84,
+   -0.6
+  ]
+ },
+ "rm:Skywork-8B": {
+  "n": 60,
+  "corr_partial": -0.03,
+  "corr_ci": [
+   -0.31,
+   0.26
+  ],
+  "len_partial": -0.54,
+  "len_ci": [
+   -0.7,
+   -0.32
+  ]
+ },
+ "ref:GPT-5.2 (honest)": {
+  "n": 60,
+  "corr_partial": 0.98,
+  "corr_ci": [
+   0.96,
+   0.99
+  ],
+  "len_partial": 0.13,
+  "len_ci": [
+   -0.13,
+   0.32
+  ]
+ }
+}
