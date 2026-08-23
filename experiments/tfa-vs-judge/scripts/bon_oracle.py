@@ -4,7 +4,7 @@
 import argparse, json, multiprocessing as mp, os, re, subprocess, tempfile
 
 ap = argparse.ArgumentParser()
-ap.add_argument("--domain", choices=["math", "code", "ties"], required=True)
+ap.add_argument("--domain", choices=["math", "code", "ties", "synthk"], required=True)
 ap.add_argument("--pool", required=True)
 args = ap.parse_args()
 
@@ -64,7 +64,7 @@ if args.domain == "math":
         gold = norm(r["answer"])
         r["oracle"] = [int(norm(extract_boxed(s)) == gold and gold is not None)
                        for s in r["samples"]]
-elif args.domain == "ties":
+elif args.domain in ("ties", "synthk"):
     # valid iff the boxed answer (fallback: whole reply) normalizes to ANY enumerated valid answer
     for r in rows:
         valid = {norm_ties(v) for v in r["valid_answers"]} - {None}

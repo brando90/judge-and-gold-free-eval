@@ -13,9 +13,9 @@ from transformers import AutoTokenizer
 ap = argparse.ArgumentParser()
 ap.add_argument("--pool", required=True)
 ap.add_argument("--judge", required=True)
-ap.add_argument("--cond", choices=["noref", "ref", "sabotage"], required=True)
+ap.add_argument("--cond", choices=["noref", "ref", "sabotage", "refinst", "multiref"], required=True)
 ap.add_argument("--rep", choices=["a", "b"], required=True)
-ap.add_argument("--domain", choices=["math", "code", "ties"], default="math")
+ap.add_argument("--domain", choices=["math", "code", "ties", "synthk"], default="math")
 ap.add_argument("--filter-band", action="store_true", help="only items with pool pass in [0.2,0.8]")
 ap.add_argument("--tasks", default=None, help="task file with problem text to join by problem_id")
 ap.add_argument("--out", default="runs/bon_scores")
@@ -57,9 +57,19 @@ for v in range(11):
             CAND.setdefault(ids[0], v)
 
 def build(r, s):
-    sys = {"code": RUBRIC_CODE, "ties": RUBRIC_TIES}.get(args.domain, RUBRIC)[(args.cond, args.rep)]
+    cond_key = "ref" if args.cond in ("refinst", "multiref") else args.cond
+    sys = {"code": RUBRIC_CODE, "ties": RUBRIC_TIES, "synthk": RUBRIC_TIES}.get(args.domain, RUBRIC)[(cond_key, args.rep)]
+    if args.cond == "refinst":
+        sys += (" Note: the reference shown is one valid answer among possibly many; the "
+                "question may have several correct answers, and any correct answer deserves "
+                "full credit even if it differs from the reference.")
     q = r.get("problem") or r.get("question") or r.get("prompt")
     parts = [f"Problem:\n{q}"]
+    if args.cond == "multiref":
+        parts.append("Reference answers (trusted; a sample of the valid answers):\n"
+                     + "\n".join(r["multi_refs"]))
+    if args.cond == "refinst":
+        parts.append(f"Reference answer (trusted):\n{r['ref_answer']}")
     if args.cond == "ref":
         # code reference = the canonical assert set (example_test), NOT the full MBPP+/EvalPlus
         # oracle suite: that suite runs to ~46k tokens and stays held out, mirroring math's
@@ -67,7 +77,7 @@ def build(r, s):
         # ties reference = ONE valid answer (fixed at task build), the anchoring manipulation.
         if args.domain == "math":
             parts.append(f"Reference solution (trusted):\n{r['solution']}")
-        elif args.domain == "ties":
+        elif args.domain in ("ties", "synthk"):
             parts.append(f"Reference answer (trusted):\n{r['ref_answer']}")
         else:
             parts.append(f"Trusted reference tests (the candidate must pass these):\n{r['example_test']}")
