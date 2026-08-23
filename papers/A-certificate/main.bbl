@@ -40,6 +40,12 @@ Anonymous.
   multiplicity, 2026.
 \newblock Companion draft.
 
+\bibitem{judgebiasbench2026}
+Anonymous.
+\newblock Toward robust llm-based judges: Taxonomic bias evaluation and
+  debiasing optimization.
+\newblock {\em arXiv preprint arXiv:2603.08091}, 2026.
+
 \bibitem{companionB}
 Anonymous.
 \newblock What does matching a reference actually measure?, 2026.
@@ -78,6 +84,11 @@ Jacob Eisenstein et~al.
 Leo Gao, John Schulman, and Jacob Hilton.
 \newblock Scaling laws for reward model overoptimization.
 \newblock {\em arXiv preprint arXiv:2210.10760}, 2022.
+
+\bibitem{cobbler2023}
+Ryan Koo et~al.
+\newblock Benchmarking cognitive biases in large language models as evaluators.
+\newblock {\em arXiv preprint arXiv:2309.17012}, 2023.
 
 \bibitem{singhal2023long}
 Prasann Singhal et~al.
