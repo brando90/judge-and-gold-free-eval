@@ -13,6 +13,8 @@ The shared-block ceiling bounds what any signal can be credited with.
 Yes: it passes, convicts, and flips.
 The honest frontier judge passes with soundness partial $+0.90$ $[+0.77, +0.97]$ and style partial $-0.22$ $[-0.40, +0.05]$ ($n{=}60$).
 The sabotaged judge is convicted on the same items: style partial $+0.59$ $[+0.36, +0.76]$, soundness partial $+0.20$ $[-0.07, +0.44]$.
+The audit also convicts an evaluator class it was not designed around: a top open trained reward model (Skywork-Reward-Llama-3.1-8B) scores the same traces with soundness partial $-0.01$ $[-0.29, +0.28]$ and style partial $+0.54$ $[+0.34, +0.70]$, the same signature as the sabotaged judge, where naive validation ($r = +0.18$) would report only weakness.
+Under pressure the reward model shows the damage this verdict predicts, the worst regret of any referenced-tier evaluator ($0.286$ on math, $0.485$ on code); its inflation estimand is not comparable (a single scoring function has no independent reporting replicate), which the table marks n/c.
 The verdict tracks protocol, not model identity: blind, the 1.5B judge reads style (partial $+0.51$) and the 3B--14B judges are too weak to certify, while with the gold solution in context every ladder judge passes (Table~\ref{tab:h2h}).
 A reference changes what a judge measures, not merely how accurately it measures.
 
@@ -37,6 +39,8 @@ configuration & $n$ & raw $r$ & sound.\ partial & style partial & gap ($\sigma$)
 \midrule
 GPT-5.2 honest & 60 & $+0.89$ & $+0.90$ $[+0.77,+0.97]$ & $-0.22$ $[-0.40,+0.05]$ & $+0.38$ & $0.117$ \\
 GPT-5.2 sabotaged & 60 & $+0.35$ & $+0.20$ $[-0.07,+0.44]$ & $\mathbf{+0.59}$ $[+0.36,+0.76]$ & $+0.85$ & $0.133$ \\
+\midrule
+Skywork-RM-8B & 60 & $+0.18$ & $-0.01$ $[-0.29,+0.28]$ & $\mathbf{+0.54}$ $[+0.34,+0.70]$ & n/c & $0.286$ \\
 \bottomrule
 \end{tabular}
 \caption{\textbf{Naive validation versus the audit, against pressure outcomes (math; all ten in-domain-audited configurations).}
