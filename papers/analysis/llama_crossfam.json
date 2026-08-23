@@ -1,0 +1,74 @@
+{
+ "Qwen2.5-1.5B-Instruct__noref": {
+  "n": 176,
+  "excess_gap": 1.086,
+  "gap_ci": [
+   0.928,
+   1.231
+  ],
+  "regret": 0.358
+ },
+ "Qwen2.5-1.5B-Instruct__ref": {
+  "n": 176,
+  "excess_gap": 0.31,
+  "gap_ci": [
+   0.262,
+   0.363
+  ],
+  "regret": 0.057
+ },
+ "Qwen2.5-3B-Instruct__noref": {
+  "n": 176,
+  "excess_gap": 0.703,
+  "gap_ci": [
+   0.583,
+   0.837
+  ],
+  "regret": 0.364
+ },
+ "Qwen2.5-3B-Instruct__ref": {
+  "n": 176,
+  "excess_gap": 0.227,
+  "gap_ci": [
+   0.161,
+   0.297
+  ],
+  "regret": 0.108
+ },
+ "Qwen2.5-7B-Instruct__noref": {
+  "n": 176,
+  "excess_gap": 0.999,
+  "gap_ci": [
+   0.901,
+   1.11
+  ],
+  "regret": 0.261
+ },
+ "Qwen2.5-7B-Instruct__ref": {
+  "n": 176,
+  "excess_gap": 0.501,
+  "gap_ci": [
+   0.41,
+   0.6
+  ],
+  "regret": 0.176
+ },
+ "Qwen2.5-14B-Instruct__noref": {
+  "n": 176,
+  "excess_gap": 0.756,
+  "gap_ci": [
+   0.667,
+   0.844
+  ],
+  "regret": 0.273
+ },
+ "Qwen2.5-14B-Instruct__ref": {
+  "n": 176,
+  "excess_gap": 0.221,
+  "gap_ci": [
+   0.157,
+   0.289
+  ],
+  "regret": 0.136
+ }
+}
