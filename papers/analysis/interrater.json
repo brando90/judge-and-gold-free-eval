@@ -1,0 +1,103 @@
+{
+ "n": 30,
+ "labeler": "annotator_3 (hypothesis-blind, same rubric, blinded instrument)",
+ "reliability": {
+  "soundness_pearson": 0.83,
+  "soundness_pearson_ci": [
+   0.44,
+   0.97
+  ],
+  "soundness_spearman": 0.46,
+  "style_pearson": 0.48,
+  "style_pearson_ci": [
+   0.14,
+   0.71
+  ],
+  "style_spearman": 0.39,
+  "implied_single_rater_ceiling_soundness": 0.91,
+  "implied_single_rater_ceiling_style": 0.69
+ },
+ "audit_replication": {
+  "honest_gpt": {
+   "n": 30,
+   "author1": {
+    "sound_partial": 0.86,
+    "style_partial": -0.24,
+    "style_ci": [
+     -0.45,
+     0.16
+    ]
+   },
+   "annotator3": {
+    "sound_partial": 0.97,
+    "style_partial": -0.37,
+    "style_ci": [
+     -0.57,
+     -0.08
+    ]
+   },
+   "consensus": {
+    "sound_partial": 0.96,
+    "style_partial": -0.49,
+    "style_ci": [
+     -0.67,
+     -0.31
+    ]
+   }
+  },
+  "sabotage_gpt": {
+   "n": 30,
+   "author1": {
+    "sound_partial": 0.16,
+    "style_partial": 0.41,
+    "style_ci": [
+     -0.08,
+     0.74
+    ]
+   },
+   "annotator3": {
+    "sound_partial": 0.3,
+    "style_partial": 0.61,
+    "style_ci": [
+     0.3,
+     0.83
+    ]
+   },
+   "consensus": {
+    "sound_partial": 0.24,
+    "style_partial": 0.61,
+    "style_ci": [
+     0.23,
+     0.86
+    ]
+   }
+  },
+  "skywork_rm": {
+   "n": 30,
+   "author1": {
+    "sound_partial": -0.21,
+    "style_partial": 0.41,
+    "style_ci": [
+     -0.02,
+     0.72
+    ]
+   },
+   "annotator3": {
+    "sound_partial": -0.26,
+    "style_partial": 0.4,
+    "style_ci": [
+     -0.02,
+     0.7
+    ]
+   },
+   "consensus": {
+    "sound_partial": -0.25,
+    "style_partial": 0.48,
+    "style_ci": [
+     0.02,
+     0.73
+    ]
+   }
+  }
+ }
+}
