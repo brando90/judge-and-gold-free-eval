@@ -160,5 +160,11 @@
    "within_correct_n": 48,
    "style_partial": -0.10954018782862013
   }
+ },
+ "difficulty_controlled": {
+  "pv_v25_partial_v0": 0.514,
+  "pv_v5_partial_v0": 0.642,
+  "pv_v75_partial_v0": 0.688,
+  "pv_mean_partial_v0": 0.692
  }
 }

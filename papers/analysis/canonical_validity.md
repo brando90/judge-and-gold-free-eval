@@ -17,3 +17,5 @@
 | critic_opus | 60 | +0.88 [+0.74,+0.97] | +0.54 | +0.87 | +0.03 (48) |
 
 All numbers vs human soundness. Style partials (judge signals): judge_ref=-0.22, critic_gpt=-0.10, critic_opus=-0.11
+
+Difficulty-controlled partials (| pv_v0): pv_v25_partial_v0=+0.51, pv_v5_partial_v0=+0.64, pv_v75_partial_v0=+0.69, pv_mean_partial_v0=+0.69
