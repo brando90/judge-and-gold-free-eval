@@ -14,8 +14,14 @@ Nuisance axes should be discovered, not hand-picked, and discovered causally rat
 Our own history motivates the distinction: an observational length effect in the frontier judge's scores did not reproduce when we causally padded solutions holding content fixed, while the same causal probes measured a real first-position bias in one frontier judge (order-swap preference $0.62$) and none in another ($0.47$).
 We therefore register a fixed six-axis perturbation battery adapted from published evaluator-bias taxonomies~\cite{cobbler2023,judgebiasbench2026}: length padding, reformatting, authority cues, bandwagon cues, confident-tone injection, and hedging, each preserving mathematical content and the final answer.
 Its registered predictions include the validation that keeps the tier honest: across judge configurations, battery-measured presentation sensitivity must rank-correlate with the audit's independently measured style partials (P-B4).
-If Tier 1 predicts Tier 2, axis discovery is validated; if not, hand-chosen axes remain necessary, and we will report either outcome.
+If Tier 1 predicts Tier 2, axis discovery is validated; if not, hand-chosen axes remain necessary, and we report either outcome.
 Fixing the taxonomy before data is what blocks the circularity of discovering whichever axes make the audit look good.
+The two frontier arms of the battery have now been run, with per-axis score deltas and bootstrap CIs in \texttt{papers/analysis/battery\_gpt\_ref.json} and \texttt{battery\_gpt\_sabotage.json}.
+The honest frontier judge is insensitive on all six axes, every CI crossing zero (length $-0.05$ $[-0.18, +0.07]$, format $-0.03$, authority $-0.02$, bandwagon $-0.07$, confidence $-0.07$, hedging $+0.02$), confirming the registered null prediction P-B2.
+The sabotaged judge is significantly sensitive on three axes, but in the negative direction (length $-0.20$ $[-0.35, -0.03]$, bandwagon $-0.32$ $[-0.52, -0.08]$, hedging $-0.53$ $[-0.72, -0.37]$): appended social cues and hedges lower its score.
+The registered sign prediction P-B1, positive sensitivity on presentation axes, is therefore falsified in direction, while its magnitude prediction ($|\Delta| \ge 0.5$) is met only for hedging.
+Read honestly, the sabotaged judge punishes any appended imperfection rather than rewarding authority cues; that is still a presentation sensitivity the honest judge lacks, but the registered sign was wrong, and we report the outcome as promised.
+The remaining ladder arms and the rank-correlation validation (P-B3, P-B4) are queued and unclaimed.
 
 \paragraph{Tier 2: target-axis validation, with an oracle where one exists.}
 The target axis does not require human labels when the domain has an oracle.

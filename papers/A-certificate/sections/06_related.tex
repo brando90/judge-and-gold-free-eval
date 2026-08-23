@@ -2,7 +2,7 @@
 \label{sec:related}
 
 The closest question to ours is whether any static measure predicts downstream optimization failure.
-Benchmark accuracy does not~\cite{wen2024rethinking}; our contribution is a static, black-box, few-label measure whose registered verdicts did, with a construct-validity design explaining why.
+Benchmark accuracy does not~\cite{wen2024rethinking}; our contribution is a static, black-box, few-label measure whose frozen verdicts predicted ten of eleven in-domain outcomes, with a construct-validity design explaining why.
 Active auditing trains attackers against a frozen reward model~\cite{beigi2026ara}; the certificate needs no attacker.
 Judge reliability audits measure consistency and bias robustness~\cite{judgechanges2026,zheng2023judging}; validity against decorrelated human axes, with a positive control, is the missing piece we add.
 Style-over-substance biases are documented in general pools~\cite{wu2023style,dubois2024length,singhal2023long}; the audit measures the loading for a particular judge, task, and prompt.
@@ -12,16 +12,14 @@ RM-Bench tells you the class is fragile; the audit tells you whether your judge,
 References are known to improve judge accuracy~\cite{refguided2024,smalljudges2025}; we show they flip audit validity, that the effect is capability-gated, and that on multi-valid tasks any reference harms statically~\cite{generous2026,dobefore2025} and amplifies gaming dynamically~\cite{companionD}.
 Reward hacking is characterized post-hoc~\cite{gao2022scaling,skalse2022defining,coste2023ensembles,eisenstein2023helping,selfplay2026}; the certificate is ex-ante.
 
-\section*{Next steps (internal; remove before submission)}
-\begin{enumerate}
-\item Trained RM baseline: audit + BoN grids (running).
-\item Second rater + external annotator (instrument live); recompute on consensus labels.
-\item In-domain code audit (instrument exists); second math dataset (Putnam instrument to build).
-\item Ladder-sabotage audit scoring (closes the two unaudited configurations).
-\item Cross-family generator (Llama-3.1-8B) BoN on math.
-\item Deployment-pool labels (instrument live: artifact f9ac8781).
-\item Order-swap flip rate versus audit verdicts, quantitative.
-\item DPO validation: train against one certified and one convicted judge.
-\item Quantify realized selection pressure per judge (multiple-comparisons note now in Section 3).
-\item RM paraphrase-replicate inflation run (protocol now described in Section 6).
-\end{enumerate}
+% Internal next-steps list (not compiled):
+% 1. Trained RM baseline: audit + BoN grids (running).
+% 2. Second rater + external annotator (instrument live); recompute on consensus labels.
+% 3. In-domain code audit (instrument exists); second math dataset (Putnam instrument to build).
+% 4. Ladder-sabotage audit scoring (closes the two unaudited configurations).
+% 5. Cross-family generator (Llama-3.1-8B) BoN on math.
+% 6. Deployment-pool labels (instrument live: artifact f9ac8781).
+% 7. Order-swap flip rate versus audit verdicts, quantitative.
+% 8. DPO validation: train against one certified and one convicted judge.
+% 9. Quantify realized selection pressure per judge (multiple-comparisons note now in Section 3).
+% 10. RM paraphrase-replicate inflation run (protocol now described in Section 6).
