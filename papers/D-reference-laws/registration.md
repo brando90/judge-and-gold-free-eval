@@ -218,3 +218,38 @@ public timestamps (pending routine email approval, which does not affect the tim
   registered before any Putnam labels were collected, under the frozen revised CI rule.
 
 All earlier registrations in this file remain internal git timestamps only.
+
+## Outcome note (2026-08-23): clean preregistered replication (osf.io/ym5x9) run; all three predictions confirmed
+
+The replication registered at `osf.io/ym5x9` (2026-08-23, before any pool generation, with the
+analysis population, estimators, and primary endpoints frozen in the pre-committed
+`papers/analysis/repl_analysis.py`) has now run. All numbers:
+`papers/analysis/repl_results.json` (canonical; produced by the frozen script).
+
+Design as registered: 120 fresh tasks across five programmatically verifiable constraint
+families (CRT remainders, subset-sum, Goldbach pairs, divisor counts, digit sums), each with an
+exact answer-checkable validity oracle (no enumeration, no LLM adjudication); generator
+Llama-3.1-8B-Instruct (non-Qwen); judges Qwen2.5-7B-Instruct and phi-4 (cross-family pair),
+blind vs single-reference, two rubric replicates.
+
+Calibration disclosure: pass rates are in-band by design after a two-pass pilot calibration.
+The calibration passes adjusted task-family difficulty and added a mandatory-boxing instruction
+to the generation prompt; pilot items never enter the analysis. Final pool: 105/120 items in
+the registered [0.2, 0.8] band, mean pass rate 0.455.
+
+- **P-R1 (primary endpoint E1): CONFIRMED.** Pooled per-item paired referenced-minus-blind
+  excess-gap delta over the two judges, item-level cluster bootstrap: +1.19 [+1.02, +1.36],
+  n=105 in-band items. Per-judge deltas individually significant: Qwen-7B +1.29 [+1.07, +1.52];
+  phi-4 +1.08 [+0.94, +1.24].
+- **P-R2 (selection collapse): CONFIRMED.** Exact McNemar per judge on the 93 eligible items
+  (both matching and non-matching valid answers present): Qwen-7B 56 referenced-only vs 2
+  blind-only discordant items; phi-4 76 vs 0; both p < 1e-5 (reported as p < 10^-5).
+- **P-R3 (anchoring margins positive for both judges): CONFIRMED.** Qwen-7B +4.62
+  [+4.29, +4.94]; phi-4 +3.79 [+3.47, +4.09] (n=93).
+
+The replicated effect is roughly three times the original Ties-pool estimate (+0.41 checker
+labels / +0.50 label-corrected), on a pool where the checker is exact and the population was
+fixed in advance, so no post-hoc population or estimator freedom exists. The k=1-helps leg was
+not retested: the arms are blind vs single-reference only, and multiplicity varies across items
+without k being controlled per stratum. Integrated in the paper as Section RQ5 (Table 7), with
+the abstract, contributions, ledger, and Limitations updated accordingly.
