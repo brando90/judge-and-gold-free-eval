@@ -31,26 +31,21 @@
 
 \begin{abstract}
 % 1 problem motivation
-Many math and code benchmarks ship a gold reference solution, which invites a cheap evaluation recipe: score a model by how closely its output, or its next-token predictions, match the reference.
+Which automated signals can be trusted to grade a model's reasoning?
 % 2 assumption being challenged
-Cheap similarity metrics and expensive LLM judges are commonly framed as points on one cost--quality tradeoff, and whether a particular judge can be trusted is usually learned only after it has been deployed.
+Many benchmarks ship a gold reference solution, so the cheapest evaluators score a solution by how much it resembles that reference, the most expensive ask an LLM judge, and everything between is treated as a tradeoff of cost against quality.
 % 3 flip
-We find, across two domains and seventeen models, that neither framing holds.
-What determines whether an evaluation signal works is its \emph{mechanism}: every signal we tested that \emph{compares} text to a reference failed to grade individual solutions, for a measurable reason, while signals that \emph{verify} a checkable endpoint carried real signal.
-Trustworthiness, in turn, proved \emph{certifiable}: a small blind audit measured before deployment predicted whether each evaluator survived optimization pressure.
+We find the real divide is not cost but \emph{mechanism}: whether a signal \emph{compares} a solution to the reference, or \emph{verifies} it against something checkable.
 % 4 instantiation
-We test five comparison metrics spanning the space (teacher-forced accuracy, gold-token probability, TF-IDF, unigram-F1, sentence embeddings) across seventeen models from seven families on eight math and code benchmarks, anchored to blind human grades of soundness and style.
-All five land within noise of zero against human soundness, and indistinguishable from zero against executed tests.
-The reason is simple: teacher-forced accuracy is $80\%$ reference perplexity ($r=-0.895$), so most of its per-solution variance describes the reference, not the solution.
-Verification signals invert the picture.
-A prefix-repair curve, which truncates a solution and asks a fixed completer to finish it, reaches $r=+0.79$ with human soundness without any judge.
-A referenced LLM judge passes a 60-label blind certification audit; a deliberately style-loaded judge fails the same audit.
+Comparison does not grade.
+Across seventeen models and eight math and code benchmarks, five reference-similarity metrics were uncorrelated with blind human judgments of reasoning quality, because most of what they measure is a property of the reference itself: teacher-forced accuracy, the sharpest of them, is $80\%$ reference perplexity.
+Verification does grade.
+Executing tests is a free oracle where it exists; a completion test that asks whether a truncated solution still reaches the right answer correlates at $+0.79$ with human judgment, with no LLM involved; and an LLM judge grades reliably once it is anchored to a trusted reference it can check against.
 % 5 evaluation
-Under best-of-64 selection pressure against 25 judge configurations in two domains, every evaluator that failed the certificate was hacked on at least one of two pre-registered measures (score inflation up to $+1.45\sigma$; for blind judges, $32$--$54\%$ of achievable accuracy lost), and every evaluator certified in its domain resisted.
-The one cross-domain exception is itself predicted by the mechanism: a trusted reference stops helping a 1.5B judge when using it requires executing tests rather than comparing text.
+This divide can be measured before an evaluator is deployed.
+A blind audit built on sixty human labels tells the two mechanisms apart, and the audit's verdict predicts behavior under optimization pressure: in best-of-64 selection across 25 judge configurations, every judge that failed the audit was gamed, and every judge certified in its own domain resisted.
 % 6 implications
-The design rule that follows is to use references as inputs to readers and checkers, never as similarity targets, and to certify evaluators before optimizing against them.
-This turns ``can we trust this evaluator?''\ from a post-hoc discovery into a pre-registered measurement.
+Two practical rules follow: use a reference as input to a verifier, never as a similarity target, and audit an evaluator in its deployment domain before optimizing against it.
 \end{abstract}
 
 \section{Introduction}
