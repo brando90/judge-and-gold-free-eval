@@ -1,0 +1,194 @@
+{
+ "margin__Qwen__Qwen2.5-1.5B-Instruct__refinst2_a__k2": {
+  "n": 6,
+  "margin": 3.99,
+  "ci": [
+   1.41,
+   6.36
+  ]
+ },
+ "margin__Qwen__Qwen2.5-1.5B-Instruct__refinst2_a__k4": {
+  "n": 5,
+  "margin": 4.45,
+  "ci": [
+   2.84,
+   6.16
+  ]
+ },
+ "margin__Qwen__Qwen2.5-1.5B-Instruct__refinst2_a__k8": {
+  "n": 4,
+  "margin": 4.11,
+  "ci": [
+   1.5,
+   6.72
+  ]
+ },
+ "margin__Qwen__Qwen2.5-1.5B-Instruct__refinst2_a__k16": {
+  "n": 5,
+  "margin": 4.28,
+  "ci": [
+   2.22,
+   5.72
+  ]
+ },
+ "margin__Qwen__Qwen2.5-3B-Instruct__refinst2_a__k2": {
+  "n": 6,
+  "margin": 7.39,
+  "ci": [
+   6.62,
+   8.05
+  ]
+ },
+ "margin__Qwen__Qwen2.5-3B-Instruct__refinst2_a__k4": {
+  "n": 5,
+  "margin": 7.3,
+  "ci": [
+   5.18,
+   8.75
+  ]
+ },
+ "margin__Qwen__Qwen2.5-3B-Instruct__refinst2_a__k8": {
+  "n": 4,
+  "margin": 7.49,
+  "ci": [
+   6.87,
+   8.26
+  ]
+ },
+ "margin__Qwen__Qwen2.5-3B-Instruct__refinst2_a__k16": {
+  "n": 5,
+  "margin": 7.91,
+  "ci": [
+   6.69,
+   8.94
+  ]
+ },
+ "margin__Qwen__Qwen2.5-7B-Instruct__refinst2_a__k2": {
+  "n": 6,
+  "margin": 4.31,
+  "ci": [
+   3.25,
+   5.51
+  ]
+ },
+ "margin__Qwen__Qwen2.5-7B-Instruct__refinst2_a__k4": {
+  "n": 5,
+  "margin": 4.44,
+  "ci": [
+   3.17,
+   5.76
+  ]
+ },
+ "margin__Qwen__Qwen2.5-7B-Instruct__refinst2_a__k8": {
+  "n": 4,
+  "margin": 4.38,
+  "ci": [
+   3.93,
+   5.01
+  ]
+ },
+ "margin__Qwen__Qwen2.5-7B-Instruct__refinst2_a__k16": {
+  "n": 5,
+  "margin": 4.54,
+  "ci": [
+   4.05,
+   4.93
+  ]
+ },
+ "margin__Qwen__Qwen2.5-14B-Instruct__refinst2_a__k2": {
+  "n": 6,
+  "margin": 2.71,
+  "ci": [
+   1.71,
+   3.84
+  ]
+ },
+ "margin__Qwen__Qwen2.5-14B-Instruct__refinst2_a__k4": {
+  "n": 5,
+  "margin": 1.25,
+  "ci": [
+   0.22,
+   2.43
+  ]
+ },
+ "margin__Qwen__Qwen2.5-14B-Instruct__refinst2_a__k8": {
+  "n": 4,
+  "margin": 1.91,
+  "ci": [
+   0.53,
+   4.18
+  ]
+ },
+ "margin__Qwen__Qwen2.5-14B-Instruct__refinst2_a__k16": {
+  "n": 5,
+  "margin": 1.76,
+  "ci": [
+   0.39,
+   3.33
+  ]
+ },
+ "margin__meta-llama__Llama-3.1-8B-Instruct__refinst2_a__k2": {
+  "n": 6,
+  "margin": 2.2,
+  "ci": [
+   0.87,
+   3.55
+  ]
+ },
+ "margin__meta-llama__Llama-3.1-8B-Instruct__refinst2_a__k4": {
+  "n": 5,
+  "margin": 1.33,
+  "ci": [
+   0.79,
+   2.01
+  ]
+ },
+ "margin__meta-llama__Llama-3.1-8B-Instruct__refinst2_a__k8": {
+  "n": 4,
+  "margin": 1.98,
+  "ci": [
+   0.94,
+   3.62
+  ]
+ },
+ "margin__meta-llama__Llama-3.1-8B-Instruct__refinst2_a__k16": {
+  "n": 5,
+  "margin": 1.77,
+  "ci": [
+   0.97,
+   2.48
+  ]
+ },
+ "margin__microsoft__phi-4__refinst2_a__k2": {
+  "n": 6,
+  "margin": 0.46,
+  "ci": [
+   0.33,
+   0.58
+  ]
+ },
+ "margin__microsoft__phi-4__refinst2_a__k4": {
+  "n": 5,
+  "margin": 0.37,
+  "ci": [
+   0.11,
+   0.72
+  ]
+ },
+ "margin__microsoft__phi-4__refinst2_a__k8": {
+  "n": 4,
+  "margin": 0.18,
+  "ci": [
+   0.06,
+   0.4
+  ]
+ },
+ "margin__microsoft__phi-4__refinst2_a__k16": {
+  "n": 5,
+  "margin": 0.17,
+  "ci": [
+   0.08,
+   0.3
+  ]
+ }
+}
