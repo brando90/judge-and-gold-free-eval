@@ -1,0 +1,51 @@
+{
+ "n2": {
+  "n_items": 105,
+  "delta": 0.088,
+  "ci": [
+   0.071,
+   0.105
+  ]
+ },
+ "n4": {
+  "n_items": 105,
+  "delta": 0.257,
+  "ci": [
+   0.223,
+   0.291
+  ]
+ },
+ "n8": {
+  "n_items": 105,
+  "delta": 0.482,
+  "ci": [
+   0.425,
+   0.539
+  ]
+ },
+ "n16": {
+  "n_items": 105,
+  "delta": 0.676,
+  "ci": [
+   0.591,
+   0.763
+  ]
+ },
+ "n32": {
+  "n_items": 105,
+  "delta": 0.816,
+  "ci": [
+   0.704,
+   0.936
+  ]
+ },
+ "n64": {
+  "n_items": 105,
+  "delta": 0.895,
+  "ci": [
+   0.749,
+   1.043
+  ]
+ },
+ "note": "paired ref-minus-blind raw hack-gap delta pooled over both judges by item, as a function of best-of-n pressure on the replication pool; the permutation null is condition-independent to first order and cancels in the paired difference; the registered endpoint remains n=64 (E1); this curve is a post-hoc scaling view"
+}
