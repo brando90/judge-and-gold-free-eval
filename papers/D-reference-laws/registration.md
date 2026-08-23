@@ -168,4 +168,37 @@ Registered in the pipeline11 pre-run commit; the run has now completed. All numb
   Llama-8B +3.05 -> +2.30 -> +1.77 [+0.97, +2.48] (substantial); phi-4 +1.91 -> +0.03 ->
   +0.17 [+0.08, +0.30] (near-complete). The gate is therefore not a single-prompt artifact;
   the residual caveat (both phrasings are single-sentence system-prompt additions) is
-  recorded in the paper's Limitations.
+  recorded in the paper's Limitations. Scope note (recorded after the round-5 review): the
+  second-phrasing arm covers rubric-a margins at k>1 only, with no rubric-b replicate and no
+  inflation readout, so it tests exactly the registered gate-ordering claim and nothing
+  beyond it; this scope is disclosed in the paper (Table 6 caption, ledger, Limitations).
+
+## Post-hoc audit note (2026-08-23): label-corrected recompute of the headline delta
+
+Recorded after the round-5 review. POST HOC, not registered, no pre-registration weight.
+The round-5 review's top item asked what the checker's known validity undercounting (90% of
+checker-invalid samples adjudicated valid) does to the headline inflation delta, previously
+answered only by the a-priori conservative-direction argument. We measured it: every unique
+(item, answer) pair in the primary Ties pool was adjudicated (149 pairs, GPT-5.2, reference
+not shown, checker fallback where adjudication failed), corrected validity labels were built
+for all 3264 samples, and the paired pooled ref-minus-blind inflation delta was recomputed
+under the corrected labels. All numbers: `papers/analysis/ties_corrected_delta.json`
+(canonical).
+
+- **Outcome: the correction WIDENS the inversion.** Pooled delta +0.50 [+0.13, +0.87] under
+  corrected labels versus +0.41 [+0.07, +0.77] under checker labels. Per-scale corrected
+  deltas: 1.5B +0.44 [-0.08, +0.96], 3B +0.76 [+0.08, +1.48] (now individually significant),
+  7B +0.23 [-0.39, +0.85], 14B +0.56 [-0.08, +1.25].
+- The conservative-direction argument (checker false negatives fall exclusively on
+  non-matching answers, which blind judges select more often) is thereby confirmed as a
+  measurement, not an argument. The checker-label +0.41 remains the registered-era primary;
+  the corrected-label +0.50 is reported in the paper as an adjudication-robustness check
+  (Setup, RQ1, Table 1 notes, Limitations).
+- Saturation arithmetic, also recorded: combining the audits, roughly 97-98% of pool samples
+  are truly valid under the adjudicator (checker accepts 78%; 90% of its rejections are
+  adjudicated valid), so the pool is nearly saturated in true validity. Consequently the
+  regret-flavored readouts are compressed toward zero by construction (consistent with their
+  null CIs), and the registered in-band [0.2, 0.8] filter was computed on mismeasured pass
+  rates, an additional reason the registered n=7 population was uninformative.
+- Caveat: the corrected labels rest on the same LLM adjudicator, itself fallible and possibly
+  lenient; human adjudication of a checker sample remains future work.
