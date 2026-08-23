@@ -1,0 +1,602 @@
+{
+ "B001": {
+  "id": "PUT-2006_B4-OLMo-2-0325-",
+  "order": 1,
+  "dataset": "Putnam-AXIOM",
+  "model": "OLMo-2-0325-32B-Instruct",
+  "cell": "Q",
+  "tfa": "0.7380281690140845",
+  "judge": "0.0",
+  "machine_correct": "1"
+ },
+ "B002": {
+  "id": "PUT-1986_A1-Phi-3-medium",
+  "order": 2,
+  "dataset": "Putnam-AXIOM",
+  "model": "Phi-3-medium-4k-instruct",
+  "cell": "Q",
+  "tfa": "0.6903225806451613",
+  "judge": "0.0",
+  "machine_correct": "1"
+ },
+ "B003": {
+  "id": "PUT-2022_A6-Qwen2.5-14B-",
+  "order": 3,
+  "dataset": "Putnam-AXIOM",
+  "model": "Qwen2.5-14B-Instruct",
+  "cell": "Q",
+  "tfa": "0.8047337278106509",
+  "judge": "0.0",
+  "machine_correct": "0"
+ },
+ "B004": {
+  "id": "PUT-2005_B3-Mistral-Smal",
+  "order": 4,
+  "dataset": "Putnam-AXIOM",
+  "model": "Mistral-Small-Instruct-2409",
+  "cell": "Q",
+  "tfa": "0.665871121718377",
+  "judge": "0.0",
+  "machine_correct": "0"
+ },
+ "B005": {
+  "id": "PUT-A1-Qwen2.5-14B-",
+  "order": 5,
+  "dataset": "Putnam-AXIOM",
+  "model": "Qwen2.5-14B-Instruct",
+  "cell": "Q",
+  "tfa": "0.725",
+  "judge": "0.0",
+  "machine_correct": "0"
+ },
+ "B006": {
+  "id": "PUT-2022_A6-Mistral-Smal",
+  "order": 6,
+  "dataset": "Putnam-AXIOM",
+  "model": "Mistral-Small-Instruct-2409",
+  "cell": "Q",
+  "tfa": "0.7981260647359455",
+  "judge": "0.0",
+  "machine_correct": "1"
+ },
+ "B007": {
+  "id": "PUT-2014_B5-Mistral-Smal",
+  "order": 7,
+  "dataset": "Putnam-AXIOM",
+  "model": "Mistral-Small-Instruct-2409",
+  "cell": "Q",
+  "tfa": "0.7458064516129033",
+  "judge": "0.0",
+  "machine_correct": "1"
+ },
+ "B008": {
+  "id": "PUT-2012_A3-OLMo-2-0325-",
+  "order": 8,
+  "dataset": "Putnam-AXIOM",
+  "model": "OLMo-2-0325-32B-Instruct",
+  "cell": "Q",
+  "tfa": "0.7002652519893899",
+  "judge": "0.0",
+  "machine_correct": "1"
+ },
+ "B009": {
+  "id": "PUT-2020_A1-Qwen2.5-14B-",
+  "order": 9,
+  "dataset": "Putnam-AXIOM",
+  "model": "Qwen2.5-14B-Instruct",
+  "cell": "Q",
+  "tfa": "0.7817836812144212",
+  "judge": "0.0",
+  "machine_correct": "0"
+ },
+ "B010": {
+  "id": "PUT-2018_A2-OLMo-2-0325-",
+  "order": 10,
+  "dataset": "Putnam-AXIOM",
+  "model": "OLMo-2-0325-32B-Instruct",
+  "cell": "Q",
+  "tfa": "0.7829880043620502",
+  "judge": "0.0",
+  "machine_correct": "1"
+ },
+ "B011": {
+  "id": "PUT-2023_B6-OLMo-2-0325-",
+  "order": 11,
+  "dataset": "Putnam-AXIOM",
+  "model": "OLMo-2-0325-32B-Instruct",
+  "cell": "Q",
+  "tfa": "0.6796680497925311",
+  "judge": "0.0",
+  "machine_correct": "0"
+ },
+ "B012": {
+  "id": "PUT-2009_A3-Ministral-8B",
+  "order": 12,
+  "dataset": "Putnam-AXIOM",
+  "model": "Ministral-8B-Instruct-2410",
+  "cell": "Q",
+  "tfa": "0.7692307692307693",
+  "judge": "0.0",
+  "machine_correct": "1"
+ },
+ "B013": {
+  "id": "PUT-B2-Qwen2.5-7B-I",
+  "order": 13,
+  "dataset": "Putnam-AXIOM",
+  "model": "Qwen2.5-7B-Instruct",
+  "cell": "Q",
+  "tfa": "0.6466876971608833",
+  "judge": "0.0",
+  "machine_correct": "0"
+ },
+ "B014": {
+  "id": "PUT-2009_A3-Phi-3-medium",
+  "order": 14,
+  "dataset": "Putnam-AXIOM",
+  "model": "Phi-3-medium-4k-instruct",
+  "cell": "Q",
+  "tfa": "0.7741935483870968",
+  "judge": "0.0",
+  "machine_correct": "1"
+ },
+ "B015": {
+  "id": "PUT-2003_A1-Phi-3-medium",
+  "order": 15,
+  "dataset": "Putnam-AXIOM",
+  "model": "Phi-3-medium-4k-instruct",
+  "cell": "Q",
+  "tfa": "0.75",
+  "judge": "0.0",
+  "machine_correct": "1"
+ },
+ "B016": {
+  "id": "PUT-2010_A2-Phi-3.5-mini",
+  "order": 16,
+  "dataset": "Putnam-AXIOM",
+  "model": "Phi-3.5-mini-instruct",
+  "cell": "Q",
+  "tfa": "0.7033333333333334",
+  "judge": "0.0",
+  "machine_correct": "0"
+ },
+ "B017": {
+  "id": "PUT-2009_B2-OLMo-2-0325-",
+  "order": 17,
+  "dataset": "Putnam-AXIOM",
+  "model": "OLMo-2-0325-32B-Instruct",
+  "cell": "Q",
+  "tfa": "0.6796116504854369",
+  "judge": "0.0",
+  "machine_correct": "1"
+ },
+ "B018": {
+  "id": "PUT-1989_B5-OLMo-2-0325-",
+  "order": 18,
+  "dataset": "Putnam-AXIOM",
+  "model": "OLMo-2-0325-32B-Instruct",
+  "cell": "Q",
+  "tfa": "0.6722408026755853",
+  "judge": "0.0",
+  "machine_correct": "1"
+ },
+ "B019": {
+  "id": "PUT-1992_B1-Ministral-8B",
+  "order": 19,
+  "dataset": "Putnam-AXIOM",
+  "model": "Ministral-8B-Instruct-2410",
+  "cell": "Q",
+  "tfa": "0.8677966101694915",
+  "judge": "0.0",
+  "machine_correct": "1"
+ },
+ "B020": {
+  "id": "PUT-2020_B2-Phi-3.5-mini",
+  "order": 20,
+  "dataset": "Putnam-AXIOM",
+  "model": "Phi-3.5-mini-instruct",
+  "cell": "Q",
+  "tfa": "0.6739562624254473",
+  "judge": "0.0",
+  "machine_correct": "1"
+ },
+ "B021": {
+  "id": "PUT-2012_A5-OLMo-2-0325-",
+  "order": 21,
+  "dataset": "Putnam-AXIOM",
+  "model": "OLMo-2-0325-32B-Instruct",
+  "cell": "Q",
+  "tfa": "0.7205882352941176",
+  "judge": "0.0",
+  "machine_correct": "1"
+ },
+ "B022": {
+  "id": "PUT-1994_B3-OLMo-2-1124-",
+  "order": 22,
+  "dataset": "Putnam-AXIOM",
+  "model": "OLMo-2-1124-7B-Instruct",
+  "cell": "Q",
+  "tfa": "0.6811224489795918",
+  "judge": "0.0",
+  "machine_correct": "1"
+ },
+ "B023": {
+  "id": "PUT-2006_B5-Qwen2.5-1.5B",
+  "order": 23,
+  "dataset": "Putnam-AXIOM",
+  "model": "Qwen2.5-1.5B-Instruct",
+  "cell": "Q",
+  "tfa": "0.7642276422764228",
+  "judge": "0.0",
+  "machine_correct": "0"
+ },
+ "B024": {
+  "id": "PUT-A2-Qwen2.5-7B-I",
+  "order": 24,
+  "dataset": "Putnam-AXIOM",
+  "model": "Qwen2.5-7B-Instruct",
+  "cell": "Q",
+  "tfa": "0.6852941176470588",
+  "judge": "0.0",
+  "machine_correct": "0"
+ },
+ "B025": {
+  "id": "PUT-1986_A1-Mistral-Smal",
+  "order": 25,
+  "dataset": "Putnam-AXIOM",
+  "model": "Mistral-Small-Instruct-2409",
+  "cell": "Q",
+  "tfa": "0.7243589743589743",
+  "judge": "0.0",
+  "machine_correct": "1"
+ },
+ "B026": {
+  "id": "PUT-1991_B2-OLMo-2-0325-",
+  "order": 26,
+  "dataset": "Putnam-AXIOM",
+  "model": "OLMo-2-0325-32B-Instruct",
+  "cell": "Q",
+  "tfa": "0.6941176470588235",
+  "judge": "0.0",
+  "machine_correct": "1"
+ },
+ "B027": {
+  "id": "PUT-1991_B2-Phi-3.5-mini",
+  "order": 27,
+  "dataset": "Putnam-AXIOM",
+  "model": "Phi-3.5-mini-instruct",
+  "cell": "Q",
+  "tfa": "0.819672131147541",
+  "judge": "0.0",
+  "machine_correct": "0"
+ },
+ "B028": {
+  "id": "PUT-A5-Qwen2.5-0.5B",
+  "order": 28,
+  "dataset": "Putnam-AXIOM",
+  "model": "Qwen2.5-0.5B-Instruct",
+  "cell": "Q",
+  "tfa": "0.7959927140255009",
+  "judge": "0.0",
+  "machine_correct": "0"
+ },
+ "B029": {
+  "id": "PUT-1991_A5-Ministral-8B",
+  "order": 29,
+  "dataset": "Putnam-AXIOM",
+  "model": "Ministral-8B-Instruct-2410",
+  "cell": "Q",
+  "tfa": "0.7991360691144709",
+  "judge": "0.0",
+  "machine_correct": "1"
+ },
+ "B030": {
+  "id": "PUT-B1-Qwen2.5-3B-I",
+  "order": 30,
+  "dataset": "Putnam-AXIOM",
+  "model": "Qwen2.5-3B-Instruct",
+  "cell": "Q",
+  "tfa": "0.7964071856287425",
+  "judge": "0.0",
+  "machine_correct": "0"
+ },
+ "B031": {
+  "id": "PUT-A2-Qwen2.5-1.5B",
+  "order": 31,
+  "dataset": "Putnam-AXIOM",
+  "model": "Qwen2.5-1.5B-Instruct",
+  "cell": "Q",
+  "tfa": "0.8942307692307693",
+  "judge": "0.0",
+  "machine_correct": "0"
+ },
+ "B032": {
+  "id": "PUT-B5-Qwen2.5-14B-",
+  "order": 32,
+  "dataset": "Putnam-AXIOM",
+  "model": "Qwen2.5-14B-Instruct",
+  "cell": "Q",
+  "tfa": "0.814151747655584",
+  "judge": "0.0",
+  "machine_correct": "0"
+ },
+ "B033": {
+  "id": "PUT-A5-Qwen2.5-1.5B",
+  "order": 33,
+  "dataset": "Putnam-AXIOM",
+  "model": "Qwen2.5-1.5B-Instruct",
+  "cell": "Q",
+  "tfa": "0.8142076502732241",
+  "judge": "0.0",
+  "machine_correct": "0"
+ },
+ "B034": {
+  "id": "PUT-2023_B2-Qwen2.5-0.5B",
+  "order": 34,
+  "dataset": "Putnam-AXIOM",
+  "model": "Qwen2.5-0.5B-Instruct",
+  "cell": "Q",
+  "tfa": "0.7078260869565217",
+  "judge": "0.0",
+  "machine_correct": "0"
+ },
+ "B035": {
+  "id": "PUT-B1-Qwen2.5-1.5B",
+  "order": 35,
+  "dataset": "Putnam-AXIOM",
+  "model": "Qwen2.5-1.5B-Instruct",
+  "cell": "Q",
+  "tfa": "0.7142857142857143",
+  "judge": "0.0",
+  "machine_correct": "0"
+ },
+ "B036": {
+  "id": "PUT-2010_A2-Ministral-8B",
+  "order": 36,
+  "dataset": "Putnam-AXIOM",
+  "model": "Ministral-8B-Instruct-2410",
+  "cell": "Q",
+  "tfa": "0.717948717948718",
+  "judge": "0.0",
+  "machine_correct": "1"
+ },
+ "B037": {
+  "id": "PUT-2021_B6-Phi-3-medium",
+  "order": 37,
+  "dataset": "Putnam-AXIOM",
+  "model": "Phi-3-medium-4k-instruct",
+  "cell": "Q",
+  "tfa": "0.7992388201712655",
+  "judge": "0.0",
+  "machine_correct": "1"
+ },
+ "B038": {
+  "id": "PUT-1996_A2-Mistral-Smal",
+  "order": 38,
+  "dataset": "Putnam-AXIOM",
+  "model": "Mistral-Small-Instruct-2409",
+  "cell": "Q",
+  "tfa": "0.6920152091254753",
+  "judge": "0.0",
+  "machine_correct": "0"
+ },
+ "B039": {
+  "id": "PUT-A2-Qwen2.5-0.5B",
+  "order": 39,
+  "dataset": "Putnam-AXIOM",
+  "model": "Qwen2.5-0.5B-Instruct",
+  "cell": "Q",
+  "tfa": "0.7850467289719626",
+  "judge": "0.0",
+  "machine_correct": "0"
+ },
+ "B040": {
+  "id": "PUT-2009_A3-OLMo-2-1124-",
+  "order": 40,
+  "dataset": "Putnam-AXIOM",
+  "model": "OLMo-2-1124-7B-Instruct",
+  "cell": "Q",
+  "tfa": "0.6561085972850679",
+  "judge": "0.0",
+  "machine_correct": "1"
+ },
+ "B041": {
+  "id": "PUT-B6-Qwen2.5-3B-I",
+  "order": 41,
+  "dataset": "Putnam-AXIOM",
+  "model": "Qwen2.5-3B-Instruct",
+  "cell": "Q",
+  "tfa": "0.6376944190301921",
+  "judge": "0.0",
+  "machine_correct": "0"
+ },
+ "B042": {
+  "id": "PUT-1986_A1-Phi-3.5-mini",
+  "order": 42,
+  "dataset": "Putnam-AXIOM",
+  "model": "Phi-3.5-mini-instruct",
+  "cell": "Q",
+  "tfa": "0.7225806451612903",
+  "judge": "0.0",
+  "machine_correct": "1"
+ },
+ "B043": {
+  "id": "PUT-2021_B6-OLMo-2-1124-",
+  "order": 43,
+  "dataset": "Putnam-AXIOM",
+  "model": "OLMo-2-1124-7B-Instruct",
+  "cell": "Q",
+  "tfa": "0.7524177949709865",
+  "judge": "0.0",
+  "machine_correct": "1"
+ },
+ "B044": {
+  "id": "PUT-1986_A1-OLMo-2-0325-",
+  "order": 44,
+  "dataset": "Putnam-AXIOM",
+  "model": "OLMo-2-0325-32B-Instruct",
+  "cell": "Q",
+  "tfa": "0.7261146496815286",
+  "judge": "0.0",
+  "machine_correct": "1"
+ },
+ "B045": {
+  "id": "PUT-2013_B6-Phi-3.5-mini",
+  "order": 45,
+  "dataset": "Putnam-AXIOM",
+  "model": "Phi-3.5-mini-instruct",
+  "cell": "Q",
+  "tfa": "0.6121157323688969",
+  "judge": "0.0",
+  "machine_correct": "1"
+ },
+ "B046": {
+  "id": "PUT-1999_B3-Mistral-Smal",
+  "order": 46,
+  "dataset": "Putnam-AXIOM",
+  "model": "Mistral-Small-Instruct-2409",
+  "cell": "Q",
+  "tfa": "0.7830508474576271",
+  "judge": "0.0",
+  "machine_correct": "0"
+ },
+ "B047": {
+  "id": "PUT-2005_B3-OLMo-2-1124-",
+  "order": 47,
+  "dataset": "Putnam-AXIOM",
+  "model": "OLMo-2-1124-7B-Instruct",
+  "cell": "Q",
+  "tfa": "0.5325",
+  "judge": "0.0",
+  "machine_correct": "0"
+ },
+ "B048": {
+  "id": "PUT-2021_A3-Mistral-Smal",
+  "order": 48,
+  "dataset": "Putnam-AXIOM",
+  "model": "Mistral-Small-Instruct-2409",
+  "cell": "Q",
+  "tfa": "0.7624633431085044",
+  "judge": "0.0",
+  "machine_correct": "1"
+ },
+ "B049": {
+  "id": "PUT-A3-Qwen2.5-0.5B",
+  "order": 49,
+  "dataset": "Putnam-AXIOM",
+  "model": "Qwen2.5-0.5B-Instruct",
+  "cell": "Q",
+  "tfa": "0.6794682422451994",
+  "judge": "0.0",
+  "machine_correct": "0"
+ },
+ "B050": {
+  "id": "PUT-1989_B5-Ministral-8B",
+  "order": 50,
+  "dataset": "Putnam-AXIOM",
+  "model": "Ministral-8B-Instruct-2410",
+  "cell": "Q",
+  "tfa": "0.678082191780822",
+  "judge": "0.0",
+  "machine_correct": "1"
+ },
+ "B051": {
+  "id": "PUT-B2-Qwen2.5-7B-I",
+  "order": 51,
+  "dataset": "Putnam-AXIOM",
+  "model": "Qwen2.5-7B-Instruct",
+  "cell": "Q",
+  "tfa": "0.8160919540229885",
+  "judge": "2.0",
+  "machine_correct": "0"
+ },
+ "B052": {
+  "id": "PUT-2022_B5-OLMo-2-0325-",
+  "order": 52,
+  "dataset": "Putnam-AXIOM",
+  "model": "OLMo-2-0325-32B-Instruct",
+  "cell": "Q",
+  "tfa": "0.7214101461736887",
+  "judge": "0.0",
+  "machine_correct": "1"
+ },
+ "B053": {
+  "id": "PUT-B3-Qwen2.5-14B-",
+  "order": 53,
+  "dataset": "Putnam-AXIOM",
+  "model": "Qwen2.5-14B-Instruct",
+  "cell": "Q",
+  "tfa": "0.8054862842892768",
+  "judge": "2.0",
+  "machine_correct": "0"
+ },
+ "B054": {
+  "id": "PUT-2010_B4-OLMo-2-0325-",
+  "order": 54,
+  "dataset": "Putnam-AXIOM",
+  "model": "OLMo-2-0325-32B-Instruct",
+  "cell": "Q",
+  "tfa": "0.6491228070175439",
+  "judge": "0.0",
+  "machine_correct": "1"
+ },
+ "B055": {
+  "id": "PUT-2018_B3-Qwen2.5-7B-I",
+  "order": 55,
+  "dataset": "Putnam-AXIOM",
+  "model": "Qwen2.5-7B-Instruct",
+  "cell": "Q",
+  "tfa": "0.7527047913446677",
+  "judge": "1.0",
+  "machine_correct": "0"
+ },
+ "B056": {
+  "id": "PUT-B6-Qwen2.5-1.5B",
+  "order": 56,
+  "dataset": "Putnam-AXIOM",
+  "model": "Qwen2.5-1.5B-Instruct",
+  "cell": "Q",
+  "tfa": "0.7198697068403909",
+  "judge": "0.0",
+  "machine_correct": "0"
+ },
+ "B057": {
+  "id": "PUT-1988_A3-OLMo-2-0325-",
+  "order": 57,
+  "dataset": "Putnam-AXIOM",
+  "model": "OLMo-2-0325-32B-Instruct",
+  "cell": "Q",
+  "tfa": "0.7864583333333334",
+  "judge": "0.0",
+  "machine_correct": "0"
+ },
+ "B058": {
+  "id": "PUT-A1-Qwen2.5-14B-",
+  "order": 58,
+  "dataset": "Putnam-AXIOM",
+  "model": "Qwen2.5-14B-Instruct",
+  "cell": "Q",
+  "tfa": "0.7394594594594595",
+  "judge": "1.0",
+  "machine_correct": "0"
+ },
+ "B059": {
+  "id": "PUT-1988_B3-Qwen2.5-3B-I",
+  "order": 59,
+  "dataset": "Putnam-AXIOM",
+  "model": "Qwen2.5-3B-Instruct",
+  "cell": "Q",
+  "tfa": "0.6390041493775933",
+  "judge": "0.0",
+  "machine_correct": "0"
+ },
+ "B060": {
+  "id": "PUT-1986_B2-Mistral-Smal",
+  "order": 60,
+  "dataset": "Putnam-AXIOM",
+  "model": "Mistral-Small-Instruct-2409",
+  "cell": "Q",
+  "tfa": "0.7627118644067796",
+  "judge": "0.0",
+  "machine_correct": "1"
+ }
+}
