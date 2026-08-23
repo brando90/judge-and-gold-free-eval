@@ -1,1 +1,146 @@
-[]
+[
+ {
+  "config": "ties__Qwen__Qwen2.5-1.5B-Instruct__ref_a:ref",
+  "n_items": 4,
+  "margin": 9.37,
+  "ci": [
+   8.17,
+   9.99
+  ]
+ },
+ {
+  "config": "ties__Qwen__Qwen2.5-1.5B-Instruct__ref_a:noref",
+  "n_items": 4,
+  "margin": 0.86,
+  "ci": [
+   -2.13,
+   4.32
+  ]
+ },
+ {
+  "config": "ties__Qwen__Qwen2.5-1.5B-Instruct__ref_b:ref",
+  "n_items": 4,
+  "margin": 9.12,
+  "ci": [
+   7.83,
+   9.85
+  ]
+ },
+ {
+  "config": "ties__Qwen__Qwen2.5-1.5B-Instruct__ref_b:noref",
+  "n_items": 4,
+  "margin": 1.32,
+  "ci": [
+   -1.69,
+   5.33
+  ]
+ },
+ {
+  "config": "ties__Qwen__Qwen2.5-14B-Instruct__ref_a:ref",
+  "n_items": 4,
+  "margin": 3.38,
+  "ci": [
+   2.32,
+   4.42
+  ]
+ },
+ {
+  "config": "ties__Qwen__Qwen2.5-14B-Instruct__ref_a:noref",
+  "n_items": 4,
+  "margin": -0.0,
+  "ci": [
+   -0.31,
+   0.25
+  ]
+ },
+ {
+  "config": "ties__Qwen__Qwen2.5-14B-Instruct__ref_b:ref",
+  "n_items": 4,
+  "margin": 5.37,
+  "ci": [
+   2.53,
+   8.22
+  ]
+ },
+ {
+  "config": "ties__Qwen__Qwen2.5-14B-Instruct__ref_b:noref",
+  "n_items": 4,
+  "margin": -0.24,
+  "ci": [
+   -0.79,
+   0.16
+  ]
+ },
+ {
+  "config": "ties__Qwen__Qwen2.5-3B-Instruct__ref_a:ref",
+  "n_items": 4,
+  "margin": 9.49,
+  "ci": [
+   8.78,
+   9.95
+  ]
+ },
+ {
+  "config": "ties__Qwen__Qwen2.5-3B-Instruct__ref_a:noref",
+  "n_items": 4,
+  "margin": -2.06,
+  "ci": [
+   -4.18,
+   0.29
+  ]
+ },
+ {
+  "config": "ties__Qwen__Qwen2.5-3B-Instruct__ref_b:ref",
+  "n_items": 4,
+  "margin": 9.99,
+  "ci": [
+   9.98,
+   10.0
+  ]
+ },
+ {
+  "config": "ties__Qwen__Qwen2.5-3B-Instruct__ref_b:noref",
+  "n_items": 4,
+  "margin": -2.47,
+  "ci": [
+   -4.74,
+   -0.21
+  ]
+ },
+ {
+  "config": "ties__Qwen__Qwen2.5-7B-Instruct__ref_a:ref",
+  "n_items": 4,
+  "margin": 2.65,
+  "ci": [
+   0.74,
+   4.47
+  ]
+ },
+ {
+  "config": "ties__Qwen__Qwen2.5-7B-Instruct__ref_a:noref",
+  "n_items": 4,
+  "margin": -1.17,
+  "ci": [
+   -3.03,
+   0.05
+  ]
+ },
+ {
+  "config": "ties__Qwen__Qwen2.5-7B-Instruct__ref_b:ref",
+  "n_items": 4,
+  "margin": 4.09,
+  "ci": [
+   3.69,
+   4.76
+  ]
+ },
+ {
+  "config": "ties__Qwen__Qwen2.5-7B-Instruct__ref_b:noref",
+  "n_items": 4,
+  "margin": -0.05,
+  "ci": [
+   -2.91,
+   2.63
+  ]
+ }
+]
