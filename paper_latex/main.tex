@@ -31,13 +31,13 @@
 
 \begin{abstract}
 % 1 problem motivation
-Benchmarks that ship gold reference solutions invite a cheap evaluation recipe: score a model by how closely its output, or its next-token predictions, match the reference.
+Many math and code benchmarks ship a gold reference solution, which invites a cheap evaluation recipe: score a model by how closely its output, or its next-token predictions, match the reference.
 % 2 assumption being challenged
-The field treats such metrics and LLM judges as points on a single cost--quality tradeoff, and treats a judge's trustworthiness as something to be discovered after deployment.
+Cheap similarity metrics and expensive LLM judges are commonly framed as points on one cost--quality tradeoff, and whether a particular judge can be trusted is usually learned only after it has been deployed.
 % 3 flip
-We show that neither framing is right.
-What determines whether an evaluation signal works is its \emph{mechanism}: signals that \emph{compare} text to a reference cannot grade individual solutions at all, for a measurable reason, while signals that \emph{verify} a checkable endpoint carry real signal.
-Trustworthiness, in turn, is a \emph{certifiable} property: it can be measured before deployment, and the measurement predicts whether the evaluator survives optimization pressure.
+We find, across two domains and seventeen models, that neither framing holds.
+What determines whether an evaluation signal works is its \emph{mechanism}: every signal we tested that \emph{compares} text to a reference failed to grade individual solutions, for a measurable reason, while signals that \emph{verify} a checkable endpoint carried real signal.
+Trustworthiness, in turn, proved \emph{certifiable}: a small blind audit measured before deployment predicted whether each evaluator survived optimization pressure.
 % 4 instantiation
 We test five comparison metrics spanning the space (teacher-forced accuracy, gold-token probability, TF-IDF, unigram-F1, sentence embeddings) across seventeen models from seven families on eight math and code benchmarks, anchored to blind human grades of soundness and style.
 All five land within noise of zero against human soundness, and indistinguishable from zero against executed tests.
@@ -121,7 +121,7 @@ The two labeled exceptions are the paper's two mechanisms: the 1.5B code judge t
 \paragraph{Models and data.}
 Seventeen instruction-tuned models from seven families (Qwen, Phi, Mistral, OLMo, plus math-specialized Qwen-Math, DeepSeek-Math, and Mathstral), spanning 0.5B to 32B parameters.
 GPT-5.2 serves as the frontier judge; Claude Opus serves as a blind cross-family panel for channel decomposition and for answer-equivalence adjudication.
-Eight benchmarks: \textsc{MATH-500} and full \textsc{MATH}~\cite{hendrycks2021math}, \textsc{Putnam-AXIOM} and variations, \textsc{Omni-MATH}, \textsc{GSM8K}~\cite{cobbe2021gsm8k}, \textsc{GSM8K-Platinum}, and \textsc{HumanEval}~\cite{chen2021codex}/\textsc{MBPP+}~\cite{austin2021mbpp,liu2023evalplus}.
+Eight benchmarks: \textsc{MATH-500} and full \textsc{MATH}~\cite{hendrycks2021math}, \textsc{Putnam-AXIOM} and variations, \textsc{Omni-MATH}, \textsc{GSM8K}~\cite{cobbe2021gsm8k}, \textsc{GSM8K-Platinum}, and \textsc{HumanEval}~\cite{chen2021codex}/\textsc{MBPP+}~\cite{austin2021mbpp,liu2023evalplus}, plus \textsc{SWE-bench Verified} as an agentic setting (patch-level \tfa{} over eight coder models, including the Qwen-Coder size ladder).
 Every model generates its own solution to every problem (greedy), and is separately teacher-forced on the gold solution.
 
 \paragraph{The comparison class.}
@@ -187,7 +187,20 @@ So we intervened.
 On the same \textsc{MATH-500} items, replacing each worked reference with the single line ``The final answer is [answer]'' collapses the ranking signal from $+0.35$ to $+0.02$.
 Predicting a long, information-dense reference requires skill adjacent to solving the problem.
 Predicting a formulaic one requires nothing, leaving only style.
-The consequence for leaderboards: if you want reference matching to rank models, the reference must be worth predicting, and reference entropy can be measured in advance.
+
+The positive side of the boundary is worth stating as plainly as the negative.
+Comparison metrics do rank models, under three conditions that all hold at once:
+\begin{enumerate}
+\item \textbf{Use them in aggregate, never per item.}
+The reference-predictability nuisance is identical for every model on a given item, so it cancels when scores are averaged over a benchmark; per-item it dominates.
+\item \textbf{The reference must be detailed enough to be worth predicting.}
+A long worked solution differentiates strong models from weak ones; an answer line does not (the $+0.35 \to +0.02$ intervention above).
+\item \textbf{The benchmark must be hard enough to differentiate models.}
+On saturated data every model predicts the reference about equally well, and the leftover variance is writing style, which is why saturated rankings collapse or invert.
+\end{enumerate}
+The agentic setting obeys the same boundary.
+On \textsc{SWE-bench Verified}, patch-level \tfa{} ranks the four Qwen-Coder sizes perfectly ($\rho = +1.00$ within the family) and carries no signal across families ($\rho = 0.00$ over eight coder models): family style survives averaging, so cross-family comparisons need either a shared style or a verifier.
+The consequence for leaderboards: reference matching is legitimate exactly when these conditions hold, and reference entropy can be measured in advance to check the second one.
 
 \subsection{Repairs fail as predicted: the class is empty, not under-tuned}
 \label{sec:slate}
@@ -263,20 +276,29 @@ The decisive variable is the reference.
 Every open-weights judge in the Qwen 1.5B--14B ladder fails certification without one: the 1.5B judge is overtly style-loaded ($+0.33$ style partial), and the larger ones are simply too weak ($0.24$--$0.28$ quality).
 Every one of them passes with the gold solution in context ($+0.40$ at 1.5B up to $+0.53$ at 14B).
 A reference changes what a judge measures, not merely how accurately it measures.
-The same lever lifts a small judge's planted-error detection from $17\%$ to $85\%$, near frontier level.
 This is the bridge to the taxonomy: a referenced judge is performing verification, checking the solution against a trusted anchor, while an unanchored small judge degenerates to the comparison class's failure mode of rewarding surface form.
+
+\paragraph{When a reference helps, and when it hurts.}
+The reference lever has boundary conditions of its own, and they matter for deployment.
+It helps on tasks with a single valid answer: with a gold reference in context, a 3B judge's detection of planted errors rises from $17\%$ to $85\%$, near frontier level, and the boost replicates in all six model families we tested (gains of $14$ to $60$ percentage points).
+Comparing against a trusted reference is cheap enough for small models; producing the reference is the expensive part, and a judge asked to solve the problem first and then grade against its own solution recovers most of the with-reference regime.
+The same lever \emph{hurts} on tasks with many valid answers: on multi-valid-answer comparisons, any reference lowers verdict accuracy by $7$--$8$ points regardless of who wrote it (paired test, $p \le .0005$), because the judge anchors against one valid alternative and penalizes others.
+So the full rule is: a reference converts a small judge into a verifier when the task's answer is effectively unique and verifying against the reference is within the judge's capability; outside those conditions it is at best wasted and at worst harmful.
 
 \section{The certificate predicts survival under optimization pressure}
 \label{sec:pressure}
 
 A static audit is only worth its cost if it predicts dynamic behavior.
-We tested this with best-of-64 selection: a 7B generator samples 64 solutions per problem, and each judge configuration selects its favorite.
-Two pre-registered estimands separate deception from damage.
-The \emph{excess hack gap} measures how much the judge's scoreboard inflates relative to true quality, in baseline standard deviations; its null comes from permuting judge scores within strata of equal oracle outcome.
-\emph{Oracle regret} measures the accuracy left on the table relative to oracle-best selection.
-Selection uses one rubric paraphrase and reporting uses another, which cancels winner's curse.
-The item pools are 105 in-band \textsc{MATH-500} items and 68 in-band \textsc{MBPP+} items (pool pass rate in $[0.2, 0.8]$), and the analysis scripts were committed before generation.
-Table~\ref{tab:bon} reports the full grid.
+The experiment is simple to state: a 7B model writes 64 candidate solutions per problem, each judge picks the one it thinks is best, and we check what actually happened.
+Two things can go wrong, and we measure them separately:
+\begin{itemize}
+\item \textbf{Deception}: the judge's own scores say its picks are great when they are not.
+We call this the \emph{excess hack gap}, reported in baseline standard deviations above a permutation null.
+\item \textbf{Damage}: the picks are actually worse than the best available sample.
+We call this \emph{oracle regret}: the accuracy left on the table relative to picking the best sample every time.
+\end{itemize}
+A judge can fail one measure without the other, and Table~\ref{tab:bon} shows both for all 25 configurations.
+Three protocol details guard the estimates: selection and reporting use different rubric paraphrases (which cancels winner's curse), items are restricted to those the generator sometimes but not always solves (105 \textsc{MATH-500} and 68 \textsc{MBPP+} items with pool pass rate in $[0.2, 0.8]$), and the analysis scripts were committed before any data were generated.
 
 \begin{table}[t]
 \centering
@@ -367,9 +389,10 @@ On answer-line references, matching measures style.
 \item \textbf{Certify evaluators before optimizing against them, in the deployment domain.}
 Sixty blind labels on two separated scales, a divergence stratum, and two partial correlations decide the matter.
 The verdict predicted best-of-64 hack-resistance in every in-domain configuration, and the one cross-domain exception (the referenced 1.5B judge on code) is the reason the audit must be run where the judge will be used.
-\item \textbf{Match the reference's form to the judge's capability.}
-A reference only helps a judge that can verify against it.
+\item \textbf{Give a judge a reference only when the task's answer is unique and the judge can use it.}
+A reference only helps a judge that can verify against it, and only on tasks with an effectively unique answer.
 Small judges need a reference they can read as text; an executable specification is wasted on them.
+On multi-valid-answer tasks any reference anchors the judge against one valid alternative and lowers verdict accuracy.
 \item \textbf{Elicit fine-grained scores from selecting judges.}
 \item \textbf{Audit the oracle before the evaluator.}
 Several apparent evaluator failures we chased in this work dissolved, on adjudication, into benchmark label errors and scorer bugs.
