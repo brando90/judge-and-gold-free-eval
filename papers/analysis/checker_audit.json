@@ -1,0 +1,12 @@
+{
+ "match": {
+  "n": 408,
+  "boxed_rate": 1.0,
+  "checker_valid_rate": 1.0
+ },
+ "nomatch": {
+  "n": 2856,
+  "boxed_rate": 1.0,
+  "checker_valid_rate": 0.75
+ }
+}
