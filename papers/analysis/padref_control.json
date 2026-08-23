@@ -1,0 +1,11 @@
+{
+ "n_models": 17,
+ "spearman_padref": -0.11,
+ "ci": [
+  -0.57,
+  0.35
+ ],
+ "spearman_fullref": 0.35,
+ "mean_pad_tfa": 0.464,
+ "note": "fixed content-free boilerplate + answer line, length-matched to worked references"
+}
