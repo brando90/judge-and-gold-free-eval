@@ -36,11 +36,20 @@ Second, the weak-judge boundary: verdicts for judges near the pass line sit with
 
 Third, scope of validation: one audited domain; code is extrapolation; the capability-gate explanation of the one code miss is post hoc until the registered code audit runs.
 
-Fourth, the pressure test is selection, not training; the frontier failure mode is precisely where selection understates risk, and a DPO validation is registered to close the gap.
+Fourth, the primary pressure test is selection; the frontier failure mode is precisely where selection understates risk, and a registered DPO validation was designed to close the gap and has now run.
 Preference pairs are built from the frozen certified (honest referenced) and convicted (sabotaged) GPT-5.2 judges on the same in-band items (808 and 800 pairs), identical LoRA-DPO arms are trained on the generator model, and both arms are evaluated by oracle accuracy and by both frozen judges on train and held-out items.
-Its three registered predictions (P-D1--P-D3: the certified arm improves true accuracy with judge and true gains agreeing in sign; the convicted arm shows a larger judge-minus-true wedge and a smaller true gain; score gains are instrument-specific) are committed pre-run.
-The first run produced no detectable policy movement and was classified post hoc as a manipulation failure: one epoch at a conservative learning rate left training reward margins near zero, every true-accuracy gain within a percentage point, and every judge-score gain and wedge crossing zero, so the run tests nothing about the predictions and is recorded as no test, not as a falsification.
-A rerun with a stronger manipulation (four epochs, four times the learning rate) and a registered manipulation check (the trained arm must move its own judge's train-set score, or the run is again recorded as no test) is queued; no outcome is claimed here (ledger, Table~\ref{tab:ledger}).
+Its three registered predictions (P-D1--P-D3: the certified arm improves true accuracy with judge and true gains agreeing in sign; the convicted arm shows a larger judge-minus-true wedge and a smaller true gain; score gains are instrument-specific) were committed pre-run.
+The first run produced no detectable policy movement (one epoch at a conservative learning rate, training reward margins near zero, every gain and wedge crossing zero) and was classified post hoc as a manipulation failure, so it is recorded as no test, not as a falsification.
+The rerun, four epochs at learning rate $2 \times 10^{-5}$, was externally registered at \texttt{osf.io/jg4ak} with a frozen manipulation check and the same predictions before its evaluation was read.
+The manipulation check passed: the certified arm moves its own judge's train-set score by $+1.01$ $[+0.59, +1.43]$, with final training reward margins of $5.4$ to $6.4$, so the rerun counts as a test.
+The divergence that matters operationally, certified-safe versus convicted-harmful under actual DPO training, is now demonstrated.
+Training against the certified judge raises true accuracy on the training items by $+13.2$ points $[+7.7, +18.7]$, with the judge and true gains agreeing in sign, while training against the convicted judge degrades true accuracy, significantly on held-out items ($-3.0$ points $[-5.6, -0.6]$) and directionally on train ($-3.8$ $[-11.0, +3.3]$): the audit's verdicts predicted which judge was safe to optimize against and which was harmful.
+The registered legs come out mixed, and each is scored honestly.
+P-D1 splits: the train leg is strongly confirmed as above, but the certified arm's held-out true gain is exactly $0.000$ $[-0.018, +0.018]$, so the registered held-out leg fails; the LoRA gains did not generalize off the training items at this scale.
+P-D2's smaller-true-gain leg is confirmed (the convicted arm's true gains sit below the certified arm's on both splits, held-out significantly negative), but its wedge leg is falsified in direction: the convicted arm's judge-minus-true wedge is $-0.70$ on train and $-0.23$ held-out against a registered positive prediction, and the sabotage-trained policy scored lower under every judge (own-judge train gain $-1.40$ $[-1.75, -1.06]$).
+P-D3 is mixed: the certified arm's score gain is largest under its own judge ($+1.01$ versus $+0.31$ under the sabotaged judge, on train), while the convicted arm's loss is also largest under its own judge ($-1.40$ versus $-0.91$).
+The falsification is informative: a corrupted preference signal damaged the policy outright rather than teaching it to game the judge, so selection pressure, where the sabotaged judge did inflate its scoreboard, and training pressure express the corruption differently at this scale.
+The caveats travel with the result: one model, one task domain, LoRA at modest scale, and gains that did not generalize off the training items (ledger, Table~\ref{tab:ledger}).
 
 Fifth, population shift and family confound: the audit labels come from seventeen models' solutions while the primary pressure pools come from one generator, and all open-weights judges share that generator's family, so self-preference could in principle inflate blind-judge gaming.
 The registered cross-family run closes this: on a Llama-3.1-8B-generated pool (176 in-band items) the pattern replicates at every ladder size, with blind and referenced inflation intervals disjoint within each size (ranges in Table~\ref{tab:robust}).
@@ -48,8 +57,8 @@ Blind-judge gaming is therefore not a same-family artifact, though the reference
 A deployment-pool label set remains registered (the labeling instrument exists).
 
 Sixth, effective sample size: the thirteen audited configurations' verdicts are strongly collinear with one protocol bit, reference presence, and beyond it there are roughly four distinct verdict classes (blind-weak, referenced-pass, style-loaded, and sabotage-at-ladder-scale fail), so the validation is closer to four independent tests than thirteen.
-The registered DPO run and the reward-model paraphrase-replicate protocol below are the two designed tests that break this collinearity; the second has now run and confirmed its registered prediction.
-For the same reason we do not quote false-pass or false-convict rates for the certificate: four effective classes cannot estimate them, and the registered replications (Putnam, the code audit, DPO) are what will accumulate the outcomes such rates require.
+The registered DPO run and the reward-model paraphrase-replicate protocol below are the two designed tests that break this collinearity; both have now run, the reward model confirming its registered prediction and the DPO run confirming its core divergence with the mixed per-leg record above.
+For the same reason we do not quote false-pass or false-convict rates for the certificate: four effective classes cannot estimate them, and the registered replications (Putnam, the code audit) are what will accumulate the outcomes such rates require.
 The label count is what sufficed here, not a derived minimum.
 
 \paragraph{Making inflation comparable for reward models.}

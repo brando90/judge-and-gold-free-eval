@@ -30,7 +30,7 @@ The \emph{multi-valid-answer} tasks are RewardBench-2 items whose prompts admit 
 Every prediction, when it was registered, and how it came out is consolidated in one prediction ledger (Table~\ref{tab:ledger}); the prose elsewhere states only headline records and points there.
 Registration means internal git timestamps on committed drafts and code, not an external registry; commit hashes appear in the ledger rows.
 Internal timestamps establish ordering but cannot rule out selective disclosure the way an external registry would; we treat this as a limitation, and the ledger therefore reports every registered prediction including the falsified ones.
-Going forward, the pending experiments carry external OSF registrations with third-party timestamps (the DPO rerun at \texttt{osf.io/jg4ak}, registered before its evaluation was read; the Putnam replication at \texttt{osf.io/axp3s}, registered before any labels were collected), while the original registered-era predictions remain internal-timestamp only.
+Going forward, the later experiments carry external OSF registrations with third-party timestamps (the DPO rerun at \texttt{osf.io/jg4ak}, registered before its evaluation was read and reported in Section~\ref{sec:limits}; the Putnam replication at \texttt{osf.io/axp3s}, registered before any labels were collected and still pending), while the original registered-era predictions remain internal-timestamp only.
 The frozen numeric verdict rule is: \emph{convict} if the style partial exceeds $0.30$; \emph{pass} if the soundness partial exceeds $0.40$ and the style partial is below $0.20$; \emph{fail} otherwise (Appendix~\ref{app:subsample}).
 Section~\ref{sec:pressure} applies it uniformly to all thirteen configurations and reports its one false pass.
 
