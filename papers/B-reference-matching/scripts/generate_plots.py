@@ -108,9 +108,9 @@ def fig_class():
         )
 
     ax.axvline(0.0, color=MUTED, lw=0.8, ls="--", zorder=0)
-    ax.axvline(0.79, color=MUTED, lw=0.8, ls=":", zorder=0)
+    ax.axvline(0.80, color=MUTED, lw=0.8, ls=":", zorder=0)
     ax.text(
-        1.0, len(SIGNALS) + 0.15, "inter-rater ceiling (Spearman, shared block)",
+        1.0, len(SIGNALS) + 0.15, "approx. cross-rater ceiling (Pearson 0.80, shared block)",
         ha="right", va="center", fontsize=10, color=MUTED,
     )
 

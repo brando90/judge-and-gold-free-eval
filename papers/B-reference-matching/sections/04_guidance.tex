@@ -8,7 +8,7 @@ Its value is as context for a reader or as a checkable endpoint for a verifier (
 Any metric that scores resemblance to reference text inherits the nuisance decomposition of Section~\ref{sec:mechanism}, and the taxonomy correctly predicted the failure of every such metric before it was built.
 In particular, matching scores should never be used as per-solution rewards or filters.
 On math, no comparison metric clears zero against human soundness, and unigram-F1 is anti-correlated.
-On code, the prediction-fit metrics (\tfa{} and gold-token log-probability) are indistinguishable from zero against executed tests, while the output-similarity metrics carry only a weak positive signal (unigram-F1 $+0.14$, TF-IDF $+0.17$ on 492 solutions), far below any grading standard.
+On code, the prediction-fit metrics (\tfa{} and gold-token log-probability) are indistinguishable from zero against executed tests, while the output-similarity metrics carry only a weak positive signal (unigram-F1 $+0.14$, TF-IDF $+0.17$ on 492 solutions, point estimates), far below any grading standard.
 \item \textbf{For leaderboards, run a three-step check before trusting matching.}
 First, compute mean reference perplexity (bits-per-character) over the benchmark's references under any strong open model; this costs one forward pass per reference.
 Second, check whether the benchmark is saturated, meaning most models under comparison already score near ceiling, and whether the references are answer lines rather than worked solutions.

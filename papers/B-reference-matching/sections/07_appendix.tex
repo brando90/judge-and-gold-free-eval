@@ -30,7 +30,7 @@ LLM critic (Claude) & judge (protocol-dependent) & --- & --- & $+0.88$ $[+0.74,+
 \caption{\textbf{The full metric-class table, with the within-correct column.}
 Prediction-fit and weighted-similarity metrics rank on hard benchmarks and their saturated point estimates collapse or turn negative; raw overlap does not rank at all (its hard-benchmark inversion is a verbosity confound: controlling output length moves $-0.49$ to $-0.07$).
 Human columns are Pearson $r$ with bootstrap 95\% CIs on the 60-item set; gold-token logprob uses the $n{=}42$ subset with logprob available; the within-correct column is from the canonical analysis (\texttt{canonical\_validity.json}), with $n{=}48$ for every signal except gold-token logprob ($n{=}32$); the best full-set human-anchored value is in bold.
-The within-correct column shows that no cheap signal, comparison or verification, demonstrably grades beyond correctness on this anchor set: \tfa's $+0.21$ ($n{=}48$, interval wide) ties or exceeds every verification signal's within-correct value.
+The within-correct column shows that no cheap signal, comparison or verification, demonstrably grades beyond correctness on this anchor set: \tfa's $+0.21$ ties or exceeds every verification signal's within-correct value, though intervals at $n{=}48$ are wide and overlapping, the battery carries no multiplicity correction, and these are point comparisons.
 The referenced judge's $-0.14$ reflects range restriction on the random set; the same judge reads $+0.81$ within-correct on a divergence-selected stratum of the companion audit~\cite{companionA}, where selection inflates within-correct variance by construction, so its beyond-correctness grading is unresolved on the random set.
 \textbf{Takeaway:} on the full set no comparison metric grades and the deeper verification signals do, while on the within-correct margin nothing cheap is separable from noise.}
 \label{tab:classfull}
@@ -53,14 +53,33 @@ The \textsc{SWE-bench Verified} experiment uses a separate grid of eight coder m
 \label{app:counts}
 Item counts as used in this paper: \textsc{MATH-500}, 500 items (6{,}000 model--item pairs in the pooled mechanism analysis over the twelve per-token models); the 60-item random label set is drawn from \textsc{MATH-500}; the shared reliability block is $n{=}20$; the executed-test oracle covers 492 freshly generated code solutions over \textsc{HumanEval}/\textsc{MBPP+}.
 Counts as shipped by each benchmark: full \textsc{MATH}, 5{,}000 test items; \textsc{GSM8K}, 1{,}319 test items; \textsc{GSM8K-Platinum}, 1{,}209 items; \textsc{HumanEval}, 164 problems; \textsc{Putnam-AXIOM}, 522 problems; \textsc{SWE-bench Verified}, 500 tasks; \textsc{Omni-MATH} ships roughly 4{,}400 problems, of which the seven-model sweep uses 500.
-% TODO: state the shipped item count for Putnam-Variations.
+For \textsc{Putnam-Variations} we report only the 265-item scored subset below and do not restate a shipped count.
 The teacher-forcing sweeps use fixed per-model subsets on the larger benchmarks: full \textsc{MATH} 600, \textsc{GSM8K} and \textsc{GSM8K-Platinum} 500 each, \textsc{Putnam-AXIOM} 236, and \textsc{Putnam-Variations} 265.
 
-\subsection{The twelve saturated family-ladder cells}
+\subsection{The twelve hard-side and twelve saturated family-ladder cells}
 \label{app:ladders}
-The saturated-side ladder count of Section~\ref{sec:ranking} covers the four general families (Qwen: 0.5B--14B; Mistral: Mistral-7B, Ministral-8B, Mistral-Small; Phi: Phi-3.5-mini, Phi-3-medium, phi-4; OLMo: OLMo-2-7B, -13B, -32B) on the three saturated benchmarks, twelve cells in all.
+Both ladder counts of Section~\ref{sec:ranking} cover the four families (Qwen: 0.5B--14B; Mistral: Mistral-7B, Ministral-8B, Mistral-Small; Phi: Phi-3.5-mini, Phi-3-medium, phi-4; OLMo: OLMo-2-7B, -13B, -32B), on the three hard benchmarks with full family coverage and on the three saturated benchmarks, twelve cells per side.
 Each cell is the within-family Spearman correlation between mean \tfa{} and accuracy, recomputed from the released per-item scores (\texttt{runs/scores\_all\_corrected.jsonl}, corrected scorer); inverting cells are marked.
+\textsc{Omni-MATH} does not appear because its seven-model sweep contains only the Qwen ladder.
 Each family ladder has three to five models, so these Spearman values are coarsely quantized; the count and sign of inverting cells is the robust statistic, not any single cell's magnitude.
+
+The twelve hard-side cells, all positive:
+
+\begin{center}
+\small
+\begin{tabular}{lccc}
+\toprule
+family & \textsc{Putnam-AXIOM} & \textsc{Putnam-Variations} & \textsc{MATH-500} \\
+\midrule
+Qwen & $+1.00$ & $+0.90$ & $+0.90$ \\
+Mistral & $+1.00$ & $+1.00$ & $+1.00$ \\
+Phi & $+1.00$ & $+0.50$ & $+0.50$ \\
+OLMo & $+0.50$ & $+0.50$ & $+1.00$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The twelve saturated cells:
 
 \begin{center}
 \small
@@ -89,12 +108,17 @@ Blind protocol: annotators saw only the problem statement and the solution text,
 \label{app:completer}
 The fixed completer is Qwen2.5-14B-Instruct.
 At each cut depth $k \in \{0, 0.25, 0.5, 0.75\}$ it generates eight completions per cut point, for thirty-two completions per solution.
-A cross-family replication uses phi-4 as the completer under the same protocol; it covered 42 of the 60 anchor traces ($n{=}32$ within-correct), and its numbers ship as \texttt{papers/analysis/pv\_completer\_crossfam.json}.
+A cross-family replication uses phi-4 as the completer under the same protocol; it covers 42 of the 60 anchor traces ($n{=}32$ within-correct), and its numbers ship as \texttt{papers/analysis/pv\_completer\_crossfam.json} and \texttt{pv\_completer\_matched.json}.
+The 18 uncovered traces are exactly the 18 anchor traces generated by phi-4 itself (\texttt{missing\_by\_trace\_model}: phi-4, 18), so the replication contains zero Phi-family traces by construction and the missingness is deterministic, not selective.
+On the matched 42 traces the Qwen completer's curve mean is $+0.89$ $[+0.76, +0.97]$ against phi-4's $+0.82$ $[+0.68, +0.92]$, overlapping intervals.
+The Qwen matched-subset value exceeds its full-set $+0.79$ because the excluded phi-4-generated traces are harder to complete.
 
 \subsection{Reliability ceiling}
 \label{app:ceiling}
-The inter-rater ceiling (soundness Spearman $\rho = 0.79$, style $0.55$) is measured on the shared block of $n{=}20$ solutions graded by both annotators.
-It is a Spearman statistic on a different sample from the 60-item random label set, which is why the main text treats comparisons to it as indicative of magnitude rather than exact.
+Cross-rater agreement is measured on the shared block of $n{=}20$ solutions graded by both annotators: soundness Pearson $0.80$, Spearman $0.70$, and style Pearson $0.52$ (\texttt{papers/analysis/dependability.json}).
+The second rater graded overall quality under an older schema rather than soundness under this paper's rubric, and clarity rather than style, so these figures approximate the ceiling rather than replicate the rubric.
+The agreement is also measured on a different sample from the 60-item random label set.
+For both reasons the main text treats comparisons to this ceiling as indicative of magnitude rather than exact.
 
 \subsection{Analysis subsets}
 \label{app:subsets}
