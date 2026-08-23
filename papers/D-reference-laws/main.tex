@@ -12,7 +12,10 @@
 % papers/analysis/synthk_paired.py, a POST-HOC addition demanded by the
 % round-4 review, distinct from the frozen pre-registered synthk_analysis.py),
 % and checker_audit.json (stratified Ties extraction audit: boxed_rate 1.0 in
-% both match (n=408) and nomatch (n=2856) strata).
+% both match (n=408) and nomatch (n=2856) strata), and checker_adjudication.json
+% (GPT-5.2 adjudication of checker verdicts, reference not shown: 60/60
+% checker-valid nonmatch adjudicated valid; 54/60 = 90% of checker-invalid
+% adjudicated valid).
 % Producers: papers/analysis/ties_dynamics.py and ties_rot_controls.py (committed,
 % fixed Monte Carlo seeds). Math contrast quoted from companion A.
 % v7 (readability pass): no numbers changed; rigor relocated to tables.
@@ -126,6 +129,10 @@ An automatic checker extracts each sample's boxed answer (falling back to the wh
 Correct therefore means ``any valid answer,'' never ``the reference.''
 A post-hoc stratified audit of the checker on this pool finds boxed-answer extraction succeeds for $100\%$ of samples in both strata, reference-matching ($n{=}408$) and non-matching ($n{=}2856$), so extraction friction cannot bias the referenced-versus-blind comparisons that carry the primary dynamic result.
 The one extraction problem we did find, a $0.65$ boxed rate, is confined to the cross-generator synthetic pool and is disclosed where it bites (Section~\ref{sec:synthk}).
+A second post-hoc audit adjudicates the checker's verdicts themselves: GPT-5.2, shown the question and the candidate answer but not the reference, adjudicated 60 checker-valid non-matching samples and 60 checker-invalid samples from this pool (the adjudicator is an LLM, not a human).
+All 60 checker-valid non-matching samples were adjudicated valid, so no false positives were detected, but 54 of the 60 checker-invalid samples ($90\%$) were adjudicated valid, so the enumerated valid sets are substantially incomplete and the checker undercounts validity.
+This bias runs against our headline claim rather than for it: reference-matching answers are checker-valid by construction, so the checker's false negatives fall exclusively on non-matching answers, which blind judges select far more often than referenced judges, understating blind judges' measured true gains and overstating their measured inflation.
+The measured referenced-minus-blind inversion is therefore conservative, and correcting for valid-set incompleteness could only widen it, though an LLM adjudicator's validity judgment is itself fallible and may be lenient.
 The dynamic claim also does not rest solely on this checker: the synthetic grid of Section~\ref{sec:synthk} constructs tasks whose valid sets are enumerated exactly, so on that domain the checker is exact by construction, and the $k{=}1$-to-$k{>}1$ step replicates there for all six judges.
 
 \paragraph{Judges.}
@@ -189,6 +196,7 @@ Conditioning the assignment on pool contents is legitimate for the causal contra
 
 \paragraph{Reproducibility and provenance.}
 Every number in this paper is produced by committed analysis scripts run over committed score files in the released repository: one script produces all rotation-arm analyses (paired same-sample deltas, margins, blind margins, placebo and loser controls, and rotation-arm collapse rates with exact tests), a second all dynamic-inversion analyses (inflation, paired and pooled deltas, lost-accuracy deltas, original-arm collapse rates), the frozen pre-committed grid analysis scores the registered decision rules, and the post-hoc paired re-analysis lives in a separate committed script (Table~\ref{tab:ledger}).
+The two post-hoc checker audits, the stratified extraction audit and the GPT-5.2 adjudication of checker verdicts (Section~\ref{sec:setup}), are likewise released as committed artifacts alongside the score files.
 Monte Carlo seeds are fixed throughout, and third-decimal differences from earlier drafts reflect regenerated bootstrap and permutation estimators, not new data.
 Two earlier-draft errors are corrected here: the collapse inference now uses exact McNemar tests on paired per-item indicators (computed by the post-hoc script), superseding the unpaired Fisher tests of earlier drafts, and a script bug that let the blind baseline select only among valid samples is fixed, so both arms select over all 64 samples, exactly as the judges do.
 On the synthetic grid, the registered decision rules concern the specific P-S contrasts; the roughly 50 other quoted cells are descriptive, with no multiple-comparisons correction applied or implied, and Qwen2.5-7B-Instruct both generates the grid pool and sits on the judge ladder, so the Qwen-7B judge cells on that pool are a generator-equals-judge configuration.
@@ -520,8 +528,10 @@ Four-scale directional agreement has a sign-test floor of $p = 1/16$, the best a
 One generator (Qwen2.5-7B-Instruct) produced every candidate pool, so generator-specific answer distributions could modulate the dynamic effect sizes; that same distribution starved the original-arm margin analysis, since 6 of the 10 items with a valid reference-matching sample have no other valid answer among all 64 samples, leaving that arm 4 items and its conditional collapse rates 10, six of them forced, while the rotation rerun repowered the mechanism to $n{=}18$ items per cell for the margin, $n{=}40$ for the paired deltas, and $n{=}18$ for the collapse rates with exact tests.
 The rotation assignment was pool-aware (Section~\ref{sec:setup}), so the rotated references over-represent generator-produced answers, and the P-T2r registration adds little weight beyond its timestamp.
 The checker is loose-normalized membership in an enumerated set; answers valid in substance but outside the enumeration, or normalization misses, count as failures for every condition alike.
-In particular, the Ties enumerated valid sets could be incomplete, which would make the checker conservative, undercounting validity for non-matching answers.
-The stratified extraction audit (Section~\ref{sec:setup}) rules out extraction friction on this pool but not enumeration incompleteness, and a human adjudication of a checker sample is future work.
+In particular, the Ties enumerated valid sets are now known to be substantially incomplete: the LLM adjudication (Section~\ref{sec:setup}) found $90\%$ of checker-invalid samples (54 of 60) valid, so the checker materially undercounts validity.
+Because reference-matching answers are checker-valid by construction, this undercounting falls exclusively on non-matching answers, which blind judges select more often than referenced judges, so the incompleteness biases the headline inversion in the conservative direction and correcting for it could only widen the measured effect.
+The adjudicator is an LLM whose validity judgments are themselves fallible and possibly lenient, so a human adjudication of a checker sample remains future work.
+The stratified extraction audit (Section~\ref{sec:setup}) separately rules out extraction friction on this pool, but neither audit makes the enumerated sets complete.
 The analysis population is a registered/actual mismatch: the registration committed only the in-band $[0.2, 0.8]$ filter, which left $n{=}7$ items, and the full-pool primary is a post-hoc deviation adopted for power, with the registered analysis agreeing or tying in direction at every size (Section~\ref{sec:rq1}).
 The generator and all four ladder judges share the Qwen2.5 family, so family-specific answer styles or scoring habits could inflate or deflate ladder-level effect sizes, and the scale trend in anchoring should be read as within-family; the rotation experiment is immune to this confound, comparing the same judge on the same samples with only the shown reference varied, but the dynamic inversion is not, and the grid's registered cross-family replication (P-S4, P-S5) shows the inversion surviving cross-family judges and a cross-family generator while the $k{=}1$ help failed for the Qwen-7B judge on Llama-generated text (Section~\ref{sec:synthk}).
 The grid has its own limits: its tasks are two narrow arithmetic families chosen for enumerable valid sets rather than realism, and the per-stratum item counts entering the frozen estimator are small, 4 to 6 items per cell on the Qwen pool, so individual stratum CIs are wide and the cross-stratum pattern carries more weight than any single cell.
