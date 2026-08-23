@@ -1,0 +1,60 @@
+{
+ "n_items_total": 120,
+ "delta__Qwen__Qwen2.5-7B-Instruct": {
+  "n": 105,
+  "delta": 1.287,
+  "ci": [
+   1.066,
+   1.523
+  ]
+ },
+ "delta__microsoft__phi-4": {
+  "n": 105,
+  "delta": 1.084,
+  "ci": [
+   0.936,
+   1.235
+  ]
+ },
+ "E1_pooled": {
+  "n_items": 105,
+  "delta": 1.186,
+  "ci": [
+   1.017,
+   1.358
+  ],
+  "prediction": "P-R1: positive, CI excluding zero"
+ },
+ "collapse__Qwen__Qwen2.5-7B-Instruct": {
+  "eligible": 93,
+  "ref_only": 56,
+  "blind_only": 2,
+  "mcnemar_p": 0.0,
+  "prediction": "P-R2: p < 0.05"
+ },
+ "margin__Qwen__Qwen2.5-7B-Instruct": {
+  "n": 93,
+  "margin": 4.62,
+  "ci": [
+   4.29,
+   4.94
+  ],
+  "prediction": "P-R3: positive"
+ },
+ "collapse__microsoft__phi-4": {
+  "eligible": 93,
+  "ref_only": 76,
+  "blind_only": 0,
+  "mcnemar_p": 0.0,
+  "prediction": "P-R2: p < 0.05"
+ },
+ "margin__microsoft__phi-4": {
+  "n": 93,
+  "margin": 3.79,
+  "ci": [
+   3.47,
+   4.09
+  ],
+  "prediction": "P-R3: positive"
+ }
+}
