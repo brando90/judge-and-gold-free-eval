@@ -1,0 +1,74 @@
+[
+ {
+  "config": "Qwen2.5-1.5B-Instruct_ref_a:rotated",
+  "n_items": 18,
+  "margin": 9.0,
+  "ci": [
+   7.95,
+   9.74
+  ]
+ },
+ {
+  "config": "Qwen2.5-1.5B-Instruct_ref_b:rotated",
+  "n_items": 18,
+  "margin": 8.36,
+  "ci": [
+   7.15,
+   9.25
+  ]
+ },
+ {
+  "config": "Qwen2.5-3B-Instruct_ref_a:rotated",
+  "n_items": 18,
+  "margin": 9.05,
+  "ci": [
+   7.81,
+   9.85
+  ]
+ },
+ {
+  "config": "Qwen2.5-3B-Instruct_ref_b:rotated",
+  "n_items": 18,
+  "margin": 9.12,
+  "ci": [
+   7.79,
+   9.89
+  ]
+ },
+ {
+  "config": "Qwen2.5-7B-Instruct_ref_a:rotated",
+  "n_items": 18,
+  "margin": 4.75,
+  "ci": [
+   3.39,
+   6.19
+  ]
+ },
+ {
+  "config": "Qwen2.5-7B-Instruct_ref_b:rotated",
+  "n_items": 18,
+  "margin": 5.93,
+  "ci": [
+   4.51,
+   7.33
+  ]
+ },
+ {
+  "config": "Qwen2.5-14B-Instruct_ref_a:rotated",
+  "n_items": 18,
+  "margin": 3.26,
+  "ci": [
+   2.64,
+   3.92
+  ]
+ },
+ {
+  "config": "Qwen2.5-14B-Instruct_ref_b:rotated",
+  "n_items": 18,
+  "margin": 3.67,
+  "ci": [
+   2.79,
+   4.62
+  ]
+ }
+]
