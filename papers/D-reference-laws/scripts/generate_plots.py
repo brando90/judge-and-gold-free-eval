@@ -9,6 +9,8 @@ Data sources:
     papers/analysis/ties_rot_controls.py: ref_margin_rotated (n=18 items/cell),
     blind_margin_rotated (n=18), gainers (paired same-sample deltas, n=40),
     plus the placebo/loser/collapse controls quoted in the text)
+  - papers/analysis/synthk_results.json (synthetic-multiplicity grid: per-k excess
+    gaps and margins, qwen_pool + llama_pool; producer synthk_analysis.py)
   - Math gaps are the published companion-A values (hardcoded below, cited in the paper).
 
 Outputs vector PDFs into papers/D-reference-laws/figures/.
@@ -249,8 +251,71 @@ fig.tight_layout()
 fig.savefig(FIGDIR / "fig_anchoring.pdf", bbox_inches="tight")
 plt.close(fig)
 
+# --------------------------------------------------------------- fig_synthk
+# Dose-response panel for the synthetic-multiplicity grid (Section RQ4):
+# excess hack gap vs k for four context conditions, Qwen-7B and phi-4 judges,
+# Qwen-generator pool. Conditions carry marker shape and line style in
+# addition to color (secondary encoding).
+
+with open(ANALYSIS / "synthk_results.json") as f:
+    synthk = json.load(f)
+
+PURPLE = "#8047c2"  # ref + any-correct-answer instruction (refinst)
+TEAL = "#1f8a70"    # min(3, k) references shown (multiref)
+
+KS = [1, 2, 4, 8, 16]
+
+def synthk_gap(judge, cond, k, pool="qwen_pool"):
+    row = synthk[pool][f"gap__{judge}__{cond}__k{k}"]
+    return row["gap"], row["ci"]
+
+SYNTHK_JUDGES = [
+    ("Qwen__Qwen2.5-7B-Instruct", "Qwen2.5-7B judge"),
+    ("microsoft__phi-4", "phi-4 judge"),
+]
+SYNTHK_CONDS = [
+    ("noref", ORANGE, "o", "-", "blind"),
+    ("ref", BLUE, "s", "-", "single reference"),
+    ("refinst", PURPLE, "^", "--", "ref + any-correct instruction"),
+    ("multiref", TEAL, "D", "-.", r"$\min(3,k)$ references"),
+]
+
+fig, axes = plt.subplots(1, 2, figsize=(7.2, 3.0), sharey=True)
+xs = list(range(len(KS)))
+for ax, (judge, title) in zip(axes, SYNTHK_JUDGES):
+    for j, (cond, color, marker, ls, label) in enumerate(SYNTHK_CONDS):
+        dx = (j - 1.5) * 0.07  # de-overlap CI whiskers between conditions
+        gaps, lo_err, hi_err = [], [], []
+        for k in KS:
+            g, ci = synthk_gap(judge, cond, k)
+            gaps.append(g)
+            lo_err.append(g - ci[0])
+            hi_err.append(ci[1] - g)
+        xpos = [x + dx for x in xs]
+        ax.errorbar(xpos, gaps, yerr=[lo_err, hi_err], fmt="none",
+                    ecolor=color, elinewidth=1.0, capsize=2, alpha=0.5, zorder=2)
+        ax.plot(xpos, gaps, marker=marker, ls=ls, color=color, ms=5, lw=1.6,
+                markeredgecolor="white", markeredgewidth=0.8,
+                label=label if ax is axes[0] else None, zorder=3)
+    ax.set_xticks(xs, [str(k) for k in KS])
+    ax.set_title(title, loc="left", color=INK)
+    ax.set_xlabel("number of valid answers $k$")
+    ax.axhline(0, color=MUTED, lw=0.8, zorder=1)
+    ax.spines[["top", "right"]].set_visible(False)
+    ax.spines[["left", "bottom"]].set_color(MUTED)
+    ax.yaxis.grid(True, color=GRID, linewidth=0.8, zorder=0)
+    ax.set_axisbelow(True)
+    ax.tick_params(colors=INK, length=3)
+axes[0].set_ylabel("excess hack gap\n(baseline SD)")
+fig.legend(loc="lower center", bbox_to_anchor=(0.5, -0.10), ncols=4,
+           frameon=False, handletextpad=0.4, columnspacing=1.2, fontsize=8.5)
+fig.tight_layout(w_pad=1.6)
+fig.savefig(FIGDIR / "fig_synthk.pdf", bbox_inches="tight")
+plt.close(fig)
+
 print("wrote", FIGDIR / "fig_inversion.pdf")
 print("wrote", FIGDIR / "fig_anchoring.pdf")
+print("wrote", FIGDIR / "fig_synthk.pdf")
 print("margins used:")
 for k, v in MARGINS.items():
     print(" ", k, tuple(round(x, 2) for x in v))

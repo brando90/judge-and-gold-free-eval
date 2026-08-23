@@ -75,3 +75,46 @@ rotated margins, however, over-represent answers the generator actually produced
 - [ ] Generation + oracle + 16-run judge grid (`scripts/bon_chain_ties.sh`, 1 GPU) - blocked on
   cluster access at time of registration.
 - [ ] Analysis (`bon_analysis.py` on the ties pool) + P-T2 margin analysis.
+
+## Outcome note (2026-08-23): synthetic-multiplicity grid, P-S1 through P-S5
+
+The synthetic-multiplicity design registered at commit `c505c23` (60 tasks with exactly k valid
+answers, k in {1,2,4,8,16}, 12 per stratum; prime-window and divisor families with enumerable
+oracles; judges Qwen 1.5B/3B/7B/14B, Llama-3.1-8B, phi-4; conditions noref/ref/refinst/multiref
+with two rubric replicates; Qwen-7B generator pool plus a Llama-3.1-8B generator pool judged by
+Qwen-7B) has now run. All numbers: `papers/analysis/synthk_results.json`, produced by the
+pre-committed `papers/analysis/synthk_analysis.py`. Scored outcomes:
+
+- **P-S1 (dose-response; ref helps at k=1): CONFIRMED on the gap leg, FALSIFIED on the
+  margin-trend leg.** At k=1 the reference reduces the excess gap for all six judges
+  (Qwen-7B: +0.10 [+0.01,+0.20] ref vs +0.50 [+0.35,+0.67] blind; phi-4: +0.02 vs +0.56).
+  At k=16 the referenced gap exceeds blind for all six judges (Qwen-7B: ref
+  +0.91/+1.39/+1.71/+1.64 at k=2/4/8/16 vs blind +0.59/+0.32/+0.72/+0.33; phi-4: +1.42 vs
+  +0.77 at k=16). The sub-prediction that margins grow with k is falsified: margins saturate
+  immediately (Qwen-7B ref margins +4.4 to +6.2 at every k>1, flat in k).
+- **P-S2 (instruction mitigation reduces the margin): CAPABILITY-GATED** (neither cleanly
+  confirmed nor cleanly falsified). At k=16 (rep a), ref -> refinst margin: 1.5B +3.58 ->
+  +4.54 (worse), 3B +7.91 -> +7.75 (no help), 7B +5.01 -> +4.54 (marginal), 14B +3.34 ->
+  +1.21 (substantial), Llama-8B +3.05 -> +2.30 (partial), phi-4 +1.91 -> +0.03 (complete
+  fix). On gaps, refinst brings phi-4 to +0.33 at k=16, below its blind +0.77, while
+  Qwen-7B stays inflated at +1.93.
+- **P-S3 (multiple references reduce anchoring below single-ref): CONFIRMED on the Qwen
+  pool, POOL-DEPENDENT overall.** Margins toward the original reference collapse to null at
+  k=16 for all judges (-0.94 to +0.19); Qwen-7B multiref gaps +0.56/+0.81/+0.50/+1.13 vs
+  ref +0.91/+1.39/+1.71/+1.64, though not to blind level at k=16 (+0.33). On the Llama pool
+  the mitigation largely fails (+2.06 vs +2.19 at k=16; margins +4.73/+5.57 at k=8).
+- **P-S4 (cross-family judges replicate the inversion): CONFIRMED.** Llama-8B judge: k=1 ref
+  +0.38 vs blind +0.65; k=16 ref +1.27 vs blind +0.21. phi-4 as under P-S1.
+- **P-S5 (cross-family generator replicates): PARTIAL.** The k>1 inversion replicates on the
+  Llama pool (Qwen-7B judge: ref +2.19 [+1.81,+2.57] vs blind +0.89 [+0.66,+1.11] at k=16,
+  inverted at every k>=2), but the k=1 help does NOT replicate (ref +0.98 [+0.64,+1.31] vs
+  blind +0.78 [+0.54,+1.04], overlapping, reference slightly worse), and both mitigations
+  fail on this pool for the Qwen-7B judge (refinst +2.39, multiref +2.06 at k=16). Cause of
+  the k=1 non-replication left unattributed; blind gaps on this pool are elevated at every k
+  (+0.78 to +1.13), so the Qwen judge is generally less reliable on Llama text.
+
+Boundary status after this grid: the multiplicity half (only-if) is supported across six
+judges, two task families (Ties and synthetic), and two generators; the uniqueness half (if)
+is supported within-family and for the strongest cross-family judge but failed for a mid-size
+judge on cross-generator text. Reported in the paper as directionally established with one
+failed leg, conditional, not a law.

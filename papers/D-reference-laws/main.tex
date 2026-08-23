@@ -1,9 +1,12 @@
-% Status: DRAFT v5. Numbers: papers/analysis/ties_fullset.json,
+% Status: DRAFT v6. Numbers: papers/analysis/ties_fullset.json,
 % ties_paired.json, ties_pooled_delta.json, ties_regret_cis.json,
 % ties_collapse_conditional.json (both eligibility variants), ties_inband.json,
-% ties_p2_margin.json (original-arm margins, n=4), and ties_rot_controls.json
+% ties_p2_margin.json (original-arm margins, n=4), ties_rot_controls.json
 % (single rotation artifact: ref_margin_rotated, blind_margin_rotated, gainers,
-% losers, placebo_neither, collapse_rotated with Fisher p).
+% losers, placebo_neither, collapse_rotated with Fisher p), and
+% synthk_results.json (synthetic-multiplicity grid, per-k gaps and margins,
+% qwen_pool + llama_pool; producer papers/analysis/synthk_analysis.py,
+% committed before the run).
 % Producers: papers/analysis/ties_dynamics.py and ties_rot_controls.py (committed,
 % fixed Monte Carlo seeds). Math contrast quoted from companion A.
 % Build: pdflatex main && bibtex main && pdflatex main && pdflatex main
@@ -19,7 +22,7 @@
 
 \title{The Reference Lever Inverts:\\ \large Judge Anchoring under Answer Multiplicity}
 \author{Anonymous Authors}
-\date{Draft v5, August 23, 2026}
+\date{Draft v6, August 23, 2026}
 
 \begin{document}
 \maketitle
@@ -35,7 +38,9 @@ On unique-answer math the same lever collapses inflation $4$--$13\times$.
 The mechanism is anchoring, and a reference-rotation intervention makes it causal at the level of individual samples: re-judging the same frozen pools with the reference rotated to a different valid answer raises the score of the identical sample text by $+9.5$, $+9.3$, $+4.6$, and $+3.1$ points (0--10 scale) at 1.5B, 3B, 7B, and 14B when the rotated reference matches it ($n{=}40$ items per cell, every CI excluding zero, replicated across two rubric paraphrases), purely because the shown reference changed.
 Anchoring is saturated at 1.5B and 3B, where the deltas hit the ceiling of the 10-point scale, and decreases through 7B (roughly half the scale) and 14B (roughly a third); blind judges on the same split show mostly null margins with a mild preference for modal answers in two of eight cells, and even in the worst case (3B) the blind margins ($+1.36$, $+1.91$) are roughly a fifth of the referenced margins ($+9.05$, $+9.12$), with larger referenced-to-blind ratios at the other sizes.
 Whenever the sampled pool contains an answer matching the shown reference, referenced judges select it nearly always: $18/18$, $17/17$, $14/15$, and $17/17$ of selected-valid cases on the rotation arm versus $6/16$, $8/16$, $8/15$, and $7/17$ blind (Fisher exact $p < 0.05$ at every scale, $n{=}18$ items), with the smaller original arm ($n{=}10$ items, six of them forced) agreeing.
-We state the boundary as a conjecture awaiting a registered sharper test, not as an established equivalence: the evidence so far is consistent with a reference helping only when the answer is effectively unique and verification is within the judge's capability.
+A registered synthetic-multiplicity grid sharpens the boundary into a dose-response measurement: on 60 tasks with exactly $k$ valid answers ($k \in \{1, 2, 4, 8, 16\}$), six judges from three model families, and four context conditions, the reference helps every judge at $k{=}1$ (for the Qwen-7B judge the excess gap falls from $+0.50$ $[+0.35, +0.67]$ blind to $+0.10$ $[+0.01, +0.20]$ referenced) and inflates every judge at $k{=}16$ (for the same judge $+1.64$ referenced versus $+0.33$ blind).
+The two obvious mitigations underperform their reputations: telling the judge that any correct answer deserves credit works only in proportion to judge capability (phi-4's inflation drops below its blind level while a 1.5B judge gets worse), and showing several references nulls anchoring toward the original reference on one generator pool but transfers poorly to another.
+The boundary is therefore directionally established rather than conjectural, with one failed leg reported plainly: on a cross-family generator pool the $k{=}1$ help did not replicate for the mid-size judge we tested, so we keep the statement conditional, a reference helps only when the answer is effectively unique and verification is within the judge's capability.
 Under answer multiplicity it converts ``grade correctness'' into ``match my reference'' and manufactures the very gaming it was installed to prevent.
 \end{abstract}
 
@@ -69,7 +74,8 @@ Right: \textsc{RewardBench-2} Ties generation tasks with multiple valid answers 
 The answer is an inversion, and the mechanism behind it is directly manipulable.
 At all four judge scales the referenced judge inflates the scoreboard more than its blind twin, with oracle regret directionally worse as well (Figure~\ref{fig:inversion}, Table~\ref{tab:fullset}).
 The mechanism is anchoring, and rotating the reference proves it causal: re-judging the same frozen pools with the reference switched to a different valid answer raises the score of the identical sample text by $+3.1$ to $+9.5$ points on a 0--10 scale when the new reference matches it, every CI excluding zero ($n{=}40$ items per cell), so the premium follows the shown reference rather than any property of the answer (Figure~\ref{fig:anchoring}).
-Combined with companion A's capability gate on code, the two results suggest a two-condition boundary, which we offer as a conjecture awaiting a registered sharper test: a reference helps if and only if the answer is effectively unique and the judge can verify against it.
+Combined with companion A's capability gate on code, the two results suggest a two-condition boundary: a reference helps if and only if the answer is effectively unique and the judge can verify against it.
+A registered synthetic-multiplicity grid has since tested that boundary directly (Section~\ref{sec:synthk}): the multiplicity half now holds across six judges from three model families and two generators, the uniqueness half holds within family and for the strongest cross-family judge, and one leg failed, the $k{=}1$ help did not replicate for a mid-size judge on cross-generator text.
 
 \section{Setup}
 \label{sec:setup}
@@ -233,20 +239,94 @@ The static and dynamic results agree in sign, which the registration explicitly 
 
 Capability is the second condition, and it is independent of multiplicity.
 Companion A found that on code, where using the reference means mentally executing a test suite, a 1.5B judge gains nothing from the reference while 3B and above collapse their gaps; the reference only helps judges capable of verifying against it~\cite{companionA}.
-Together the two results give a practitioner's rule, which we state as a conjecture awaiting the registered sharper test of the next subsection, since it rests on one task family and one judge family so far: \emph{a trusted reference helps if and only if (i) the task's answer is effectively unique, and (ii) the judge can verify a candidate against it}.
+Together the two results give a practitioner's rule, now tested directly by the registered synthetic-multiplicity grid of the next subsection: \emph{a trusted reference helps if and only if (i) the task's answer is effectively unique, and (ii) the judge can verify a candidate against it}.
 Fail condition (ii) and the reference is inert.
 Fail condition (i) and the reference is actively harmful, statically and under optimization pressure, at every judge scale we tested.
 More capable judges reduce the anchoring premium but do not eliminate it.
+The grid supports the rule directionally rather than as a law: the multiplicity half (a reference is safe only if the answer is effectively unique) held across six judges, two task families, and two generators, while the uniqueness half (a reference helps when the answer is unique) held within family and for the strongest cross-family judge but failed for a mid-size judge on cross-generator text (Section~\ref{sec:synthk}).
 The operational advice is correspondingly simple: before installing a reference, ask whether a correct answer different from the reference exists; if yes, either enumerate the valid set and check membership, as our oracle does, or leave the judge blind.
+The two obvious in-context fixes do not change this advice (Section~\ref{sec:synthk}): instructing the judge that any correct answer deserves credit is a placebo or worse below frontier judge capability, and showing several references redistributes anchoring rather than eliminating it and is not robust across generator distributions.
 
-\subsection{Registered next test: synthetic multiplicity, dose and mitigation.}
+\subsection{RQ4: Controlled multiplicity: the inversion is a step function of \texorpdfstring{$k$}{k}, and the obvious fixes underperform.}
+\label{sec:synthk}
 
-The Ties pool fixes neither the number of valid answers nor the model families, so the boundary statement above is a conjecture awaiting a sharper test, and we have registered that test before running it.
-The design constructs synthetic tasks with exactly $k$ valid answers, $k \in \{1, 2, 4, 8, 16\}$, giving a dose-response curve in multiplicity with the $k{=}1$ control inside the same design.
-Two registered mitigation arms modify only the judge's context: an instruction stating that the reference is one valid answer among many, and showing $\min(3, k)$ references.
-The judge set includes cross-family models (Llama-3.1-8B, phi-4) and the generator is a Llama model, breaking the shared-family structure of the present ladder.
-Predictions P-S1 through P-S5 were committed before any generation (repository commit \texttt{c505c23}).
-No results from this design are claimed here.
+The Ties pool fixes neither the number of valid answers nor the model families, so we registered a sharper synthetic test and have now run it; this subsection scores each registered prediction against the outcome.
+The design constructs 60 synthetic tasks with exactly $k$ enumerated valid answers, $k \in \{1, 2, 4, 8, 16\}$, 12 tasks per stratum, drawn from two families with enumerable oracles (primes in a window and divisors of a composite), giving a dose-response curve in multiplicity with the $k{=}1$ control inside the same design.
+Qwen2.5-7B-Instruct generates the sample pools, and six judges spanning three model families (Qwen2.5 1.5B/3B/7B/14B, Llama-3.1-8B, phi-4) score them under four context conditions, each with two rubric replicates: blind (\texttt{noref}), a single reference (\texttt{ref}), the reference plus an instruction that it is one valid answer among many and any correct answer deserves full credit (\texttt{refinst}), and $\min(3, k)$ references shown (\texttt{multiref}).
+A second pool generated by Llama-3.1-8B and judged by Qwen-7B breaks the shared-family structure on the generator side.
+Excess gaps are computed per $k$ stratum with the frozen estimator, and reference-proximity margins (mean score of reference-matching valid samples minus other valid samples) per stratum for $k > 1$.
+Predictions P-S1 through P-S5 were committed before any generation (repository commit \texttt{c505c23}), and every number below is from the committed artifact \texttt{papers/analysis/synthk\_results.json}, produced by the pre-committed \texttt{synthk\_analysis.py}.
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{llccccc}
+\toprule
+Judge & Condition & $k{=}1$ & $k{=}2$ & $k{=}4$ & $k{=}8$ & $k{=}16$ \\
+\midrule
+Qwen-7B & blind    & $+0.50$ & $+0.59$ & $+0.32$ & $+0.72$ & $+0.33$ \\
+        & ref      & $+0.10$ & $+0.91$ & $+1.39$ & $+1.71$ & $+1.64$ \\
+        & refinst  & $+0.07$ & $+0.68$ & $+1.33$ & $+1.87$ & $+1.93$ \\
+        & multiref & $+0.09$ & $+0.56$ & $+0.81$ & $+0.50$ & $+1.13$ \\
+\midrule
+phi-4   & blind    & $+0.56$ & $+0.76$ & $+0.78$ & $+0.54$ & $+0.77$ \\
+        & ref      & $+0.02$ & $+0.60$ & $+0.64$ & $+1.38$ & $+1.42$ \\
+        & refinst  & $+0.03$ & $+0.18$ & $+0.09$ & $+0.14$ & $+0.33$ \\
+        & multiref & $+0.02$ & $+0.07$ & $+0.15$ & $+0.24$ & $+0.33$ \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{Takeaway: the reference helps at $k{=}1$ and inflates at high $k$ for both judges, the any-correct-answer instruction fixes phi-4 but not Qwen-7B, and multiple references help without reaching blind level at $k{=}16$ for Qwen-7B.}
+Excess hack gap (baseline SD) per multiplicity stratum on the synthetic Qwen-generator pool, for the Qwen2.5-7B and phi-4 judges under four context conditions.
+Values rounded from \texttt{synthk\_results.json}; per-stratum bootstrap CIs are quoted in the text.}
+\label{tab:synthk}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig_synthk.pdf}
+\caption{\textbf{Takeaway: the reference helps at $k{=}1$, inverts as $k$ grows, and the any-correct-answer instruction rescues the frontier judge (phi-4, right) while leaving the mid-size judge (Qwen-7B, left) inflated.}
+Excess hack gap versus number of valid answers $k$ on the synthetic Qwen-generator pool, under four context conditions; whiskers are 95\% bootstrap CIs from \texttt{synthk\_results.json}.
+Marker shapes and line styles distinguish conditions in addition to color.}
+\label{fig:synthk}
+\end{figure}
+
+\paragraph{P-S1 (dose-response): confirmed on the gap, falsified on the margin trend.}
+The gap leg held for all six judges.
+At $k{=}1$ the reference helps every judge: for the Qwen-7B judge the excess gap falls from $+0.50$ $[+0.35, +0.67]$ blind to $+0.10$ $[+0.01, +0.20]$ referenced, a five-fold reduction, and phi-4 is sharpest, $+0.56$ blind against $+0.02$ referenced, a near-perfect verifier when the answer is unique.
+At $k{=}16$ the lever has inverted for all six judges: the Qwen-7B referenced gaps at $k = 2/4/8/16$ are $+0.91$, $+1.39$, $+1.71$, $+1.64$ against blind $+0.59$, $+0.32$, $+0.72$, $+0.33$, and the phi-4 contrast at $k{=}16$ is $+1.42$ referenced against $+0.77$ blind (Table~\ref{tab:synthk}, Figure~\ref{fig:synthk}).
+The crossover point varies with judge strength: Qwen-7B is inverted at every $k \ge 2$, while phi-4's referenced gap stays at or below blind through $k{=}4$ ($+0.60$ versus $+0.76$ at $k{=}2$, $+0.64$ versus $+0.78$ at $k{=}4$) and crosses by $k{=}8$ ($+1.38$ versus $+0.54$).
+The margin sub-prediction is falsified: we predicted margins would grow with $k$, but they saturate immediately, with Qwen-7B referenced margins between $+4.4$ and $+6.2$ at every $k > 1$ across both rubric replicates, flat in $k$.
+Anchoring is a step function of multiplicity, not a ramp: one alternative valid answer is enough to switch the mechanism on at full strength.
+
+\paragraph{P-S2 (instruction mitigation): capability-gated, the most practically important new finding.}
+We predicted that telling the judge the reference is one valid answer among many, and that any correct answer deserves full credit, would reduce the margin.
+It does so exactly in proportion to the judge's capability to act on the instruction.
+At $k{=}16$ (rubric $a$) the referenced margin moves from $+3.58$ to $+4.54$ at 1.5B (the instruction makes anchoring worse), $+7.91$ to $+7.75$ at 3B (no help), $+5.01$ to $+4.54$ at 7B (marginal), $+3.34$ to $+1.21$ at 14B (substantial), $+3.05$ to $+2.30$ for Llama-8B (partial), and $+1.91$ to $+0.03$ for phi-4 (a complete fix).
+The gap readout agrees: with the instruction, phi-4's $k{=}16$ gap drops to $+0.33$, below its blind $+0.77$, while Qwen-7B's rises to $+1.93$, no better than its uninstructed $+1.64$.
+Below frontier capability the instruction is a placebo or worse.
+
+\paragraph{P-S3 (multiple references): confirmed on the Qwen pool, but pool-dependent.}
+Showing $\min(3, k)$ references collapses the margin toward the original reference on the Qwen pool: at $k{=}16$ the multiref margins are null for every judge, ranging from $-0.94$ to $+0.19$ across the six judges and two replicates.
+The gaps improve but do not reach blind level: Qwen-7B multiref gaps at $k = 2/4/8/16$ are $+0.56$, $+0.81$, $+0.50$, $+1.13$ against single-reference $+0.91$, $+1.39$, $+1.71$, $+1.64$, yet the $k{=}16$ value remains well above the blind $+0.33$.
+On the Llama-generator pool the mitigation largely fails for the Qwen-7B judge: the multiref gap at $k{=}16$ is $+2.06$ against single-reference $+2.19$, and mid-$k$ margins stay high, $+4.73$ and $+5.57$ at $k{=}8$ under the two replicates.
+Showing more references redistributes anchoring across the shown set rather than eliminating it, and its effectiveness depends on the generator distribution.
+
+\paragraph{P-S4 (cross-family judges): confirmed.}
+The inversion is not a Qwen artifact.
+The Llama-8B judge is helped at $k{=}1$ ($+0.38$ referenced against $+0.65$ blind) and inflated at $k{=}16$ ($+1.27$ against $+0.21$), and phi-4 shows the sharpest version of the same pattern, as reported under P-S1.
+
+\paragraph{P-S5 (cross-family generator): partial, with the failed leg reported plainly.}
+The $k > 1$ inversion replicates on the Llama-generated pool: judged by Qwen-7B, the referenced gap at $k{=}16$ is $+2.19$ $[+1.81, +2.57]$ against blind $+0.89$ $[+0.66, +1.11]$, inverted at every $k \ge 2$.
+The $k{=}1$ help does not replicate: referenced $+0.98$ $[+0.64, +1.31]$ against blind $+0.78$ $[+0.54, +1.04]$, overlapping CIs with the reference pointing slightly the wrong way.
+Both mitigations also fail on this pool for this judge: at $k{=}16$ the instructed gap is $+2.39$ and the multiref gap $+2.06$, neither below the single-reference $+2.19$.
+We leave the cause of the $k{=}1$ non-replication unattributed.
+The blind gaps on this pool are elevated at every $k$, $+0.78$ to $+1.13$, so the Qwen judge is generally less reliable on Llama-written text, which is consistent with the boundary's capability clause but is not proof of it.
+
+\paragraph{Boundary status.}
+The grid moves the boundary from a conjecture awaiting a sharper test to a directionally established statement with one failed leg.
+The multiplicity half (a reference is safe only if the answer is effectively unique) is now supported across six judges, two task families (Ties and synthetic), and two generators.
+The uniqueness half (a reference helps when the answer is unique) is supported within family and for the strongest cross-family judge, but failed for a mid-size judge on cross-generator text.
+We keep the statement conditional, not a law.
 
 \section{Limitations}
 
@@ -260,7 +340,10 @@ The rotation assignment was pool-aware (Section~\ref{sec:setup}), so the rotated
 The oracle is loose-normalized membership in an enumerated valid set; answers valid in substance but outside the enumeration, or normalization misses, would be scored as failures for every condition alike.
 The analysis population is a registered/actual mismatch: the registration committed only the in-band $[0.2, 0.8]$ filter, which left $n{=}7$ items, and the full-pool analysis reported as primary here is a post-hoc deviation adopted for power, with the registered in-band analysis agreeing or tying in direction at every size (Section~\ref{sec:rq1}).
 Finally, the generator and all four judges share the Qwen2.5 family, so family-specific answer styles or scoring habits could inflate or deflate the ladder-level effect sizes, and the scale trend in the anchoring effect should be read as within-family.
-The rotation intervention is immune to this confound, since it compares the same judge on the same samples and varies only the shown reference, but the dynamic inversion is not; cross-family replication with a Llama generator and Llama/phi judges is registered as predictions P-S4 and P-S5 of the synthetic-multiplicity design.
+The rotation intervention is immune to this confound, since it compares the same judge on the same samples and varies only the shown reference, but the dynamic inversion is not; the synthetic-multiplicity grid has now run the registered cross-family replication (P-S4, P-S5), and the inversion survives cross-family judges and a cross-family generator while the $k{=}1$ help failed to replicate for the Qwen-7B judge on Llama-generated text (Section~\ref{sec:synthk}).
+The synthetic-multiplicity grid has its own limits.
+Its tasks are two narrow arithmetic families (primes in a window and divisors of a composite), chosen for enumerable oracles rather than realism, and the per-stratum item counts entering the frozen estimator are small, 4 to 6 items per cell on the Qwen pool (per-cell $n$ in \texttt{synthk\_results.json}), so individual stratum CIs are wide and the cross-stratum dose-response pattern carries more weight than any single cell.
+The capability gate on the instruction mitigation rests on one instruction phrasing and one grid, and the cause of the $k{=}1$ non-replication on the Llama pool is left unattributed.
 
 \section{Related work}
 
@@ -272,7 +355,7 @@ Our results do not contradict this literature; they bound it, locating its valid
 The static half of the failure is prior art, and we position this paper accordingly.
 Independent work identifies a solution fixation bias, judges penalizing valid solutions that differ from the provided reference, as one of the biases that reference context induces in static grading~\cite{fixation2025}, reference-guided evaluation is reported to degrade on open-ended tasks~\cite{judgingref2026}, and our companion audit found the same $7$--$8$ point Ties cost for references of any authorship~\cite{companionA}.
 We claim none of that as new.
-What this paper adds is the dynamic result, the inversion under best-of-$n$ selection pressure with excess-gap and collapse estimands; the causal mechanism, anchoring demonstrated by reference rotation rather than inferred from static error rates; predictions committed before data (\texttt{registration.md}, git-timestamped); and the boundary conjecture, help if and only if the answer is effectively unique and verification is within judge capability, with the $k{=}1$ control registered inside the same synthetic-multiplicity design.
+What this paper adds is the dynamic result, the inversion under best-of-$n$ selection pressure with excess-gap and collapse estimands; the causal mechanism, anchoring demonstrated by reference rotation rather than inferred from static error rates; predictions committed before data (\texttt{registration.md}, git-timestamped); and the boundary statement, help if and only if the answer is effectively unique and verification is within judge capability, with the $k{=}1$ control run inside the same registered synthetic-multiplicity design (Section~\ref{sec:synthk}).
 The anchoring result also bears on a recommended practice: having the judge generate its own reference before grading~\cite{dobefore2025} is contraindicated on multi-valid tasks, since the static any-author result shows self-generated references anchor just as external ones do.
 
 \textsc{RewardBench-2} supplies the multi-valid substrate.
@@ -285,6 +368,7 @@ Companion A establishes the unique-answer collapse, the capability gate, and the
 The reference lever is not a safety default; it is a conditional instrument with a sign.
 Unique answer and a capable judge: it collapses gaming.
 Multiple valid answers: it becomes the attack surface, and the judge's trust in the answer key is exactly what gets exploited.
+Of the obvious fixes, instructing the judge that any correct answer counts is a placebo below frontier judge capability, and showing several references helps without being complete or distribution-robust; enumerating the valid set and checking membership, or leaving the judge blind, remain the safe operations.
 
 \bibliographystyle{plain}
 \bibliography{references}
