@@ -1,0 +1,48 @@
+{
+ "qwen14b_full": {
+  "n": 60,
+  "pearson": 0.79,
+  "ci": [
+   0.61,
+   0.92
+  ],
+  "within_correct": 0.07,
+  "wc_n": 48
+ },
+ "phi4_full": {
+  "n": 42,
+  "pearson": 0.82,
+  "ci": [
+   0.68,
+   0.91
+  ],
+  "within_correct": 0.02,
+  "wc_n": 32
+ },
+ "qwen14b_matched": {
+  "n": 42,
+  "pearson": 0.89,
+  "ci": [
+   0.76,
+   0.97
+  ],
+  "within_correct": 0.06,
+  "wc_n": 32
+ },
+ "phi4_matched": {
+  "n": 42,
+  "pearson": 0.82,
+  "ci": [
+   0.68,
+   0.92
+  ],
+  "within_correct": 0.02,
+  "wc_n": 32
+ },
+ "missing_by_trace_model": {
+  "phi-4": 18
+ },
+ "qwen_completer_meanV_excluded_traces": 0.776,
+ "qwen_completer_meanV_matched_traces": 0.725,
+ "note": "excluded = the 18 phi-4-generated anchor traces; matched = the 42 Qwen-generated"
+}

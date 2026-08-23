@@ -1,34 +1,98 @@
 {
- "1.5B_noref": {
-  "rate": 0.7,
-  "n": 10
+ "1.5B_noref_ref_in_pool": {
+  "rate": 0.78,
+  "n": 10,
+  "selected_valid": 9,
+  "matched": 7
  },
- "1.5B_ref": {
+ "1.5B_noref_both_kinds": {
+  "rate": 0.5,
+  "n": 4,
+  "selected_valid": 4,
+  "matched": 2
+ },
+ "1.5B_ref_ref_in_pool": {
   "rate": 1.0,
-  "n": 10
+  "n": 10,
+  "selected_valid": 10,
+  "matched": 10
  },
- "3B_noref": {
-  "rate": 0.7,
-  "n": 10
- },
- "3B_ref": {
+ "1.5B_ref_both_kinds": {
   "rate": 1.0,
-  "n": 10
+  "n": 4,
+  "selected_valid": 4,
+  "matched": 4
  },
- "7B_noref": {
+ "3B_noref_ref_in_pool": {
   "rate": 0.7,
-  "n": 10
+  "n": 10,
+  "selected_valid": 10,
+  "matched": 7
  },
- "7B_ref": {
+ "3B_noref_both_kinds": {
+  "rate": 0.25,
+  "n": 4,
+  "selected_valid": 4,
+  "matched": 1
+ },
+ "3B_ref_ref_in_pool": {
+  "rate": 1.0,
+  "n": 10,
+  "selected_valid": 10,
+  "matched": 10
+ },
+ "3B_ref_both_kinds": {
+  "rate": 1.0,
+  "n": 4,
+  "selected_valid": 4,
+  "matched": 4
+ },
+ "7B_noref_ref_in_pool": {
+  "rate": 0.7,
+  "n": 10,
+  "selected_valid": 10,
+  "matched": 7
+ },
+ "7B_noref_both_kinds": {
+  "rate": 0.25,
+  "n": 4,
+  "selected_valid": 4,
+  "matched": 1
+ },
+ "7B_ref_ref_in_pool": {
   "rate": 0.9,
-  "n": 10
+  "n": 10,
+  "selected_valid": 10,
+  "matched": 9
  },
- "14B_noref": {
+ "7B_ref_both_kinds": {
+  "rate": 0.75,
+  "n": 4,
+  "selected_valid": 4,
+  "matched": 3
+ },
+ "14B_noref_ref_in_pool": {
   "rate": 0.7,
-  "n": 10
+  "n": 10,
+  "selected_valid": 10,
+  "matched": 7
  },
- "14B_ref": {
+ "14B_noref_both_kinds": {
+  "rate": 0.25,
+  "n": 4,
+  "selected_valid": 4,
+  "matched": 1
+ },
+ "14B_ref_ref_in_pool": {
   "rate": 1.0,
-  "n": 10
+  "n": 10,
+  "selected_valid": 10,
+  "matched": 10
+ },
+ "14B_ref_both_kinds": {
+  "rate": 1.0,
+  "n": 4,
+  "selected_valid": 4,
+  "matched": 4
  }
 }

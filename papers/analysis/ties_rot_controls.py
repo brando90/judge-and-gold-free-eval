@@ -1,16 +1,16 @@
-# Rotation-arm controls and provenance for Paper D (single canonical script; run from
-# experiments/tfa-vs-judge). Produces ties_rot_controls.json with:
-#  provenance: per-arm counts of reference-in-pool items (the rotated assignment was
-#    constructed pool-aware, preferring a valid answer present among the pool's valid
-#    samples, to make the paired within-answer analysis possible; disclosed, not hidden)
-#  blind_margin_rotated: the blind judges' margin on the rotated-split items (placebo:
-#    blind scores are fixed under rotation, so a nonzero value means modal-answer preference)
-#  placebo: across-run paired deltas for valid samples matching NEITHER reference
-#  losers: across-run paired deltas for samples matching the original but not rotated ref
-#  collapse_rotated: repowered conditional selection collapse on the rotation arm
-import glob
+# Rotation-arm analyses for Paper D, single canonical producer (run from
+# experiments/tfa-vs-judge). The rotated pool holds the SAME 51 items and IDENTICAL
+# 64-sample lists as the original pool; only ref_answer differs (verified: 51/51 identical
+# sample lists, 51/51 changed refs), so all pairing is by index.
+# Produces ties_rot_controls.json:
+#  provenance: pool-aware rotation coverage counts (10/51 original vs 40/51 rotated)
+#  ref_margin_rotated: referenced judges' anchoring margin on the rotated assignment
+#  blind_margin_rotated: same margin under blind scores (placebo axis 1)
+#  gainers / losers / placebo_neither: across-run paired same-sample deltas
+#  collapse_rotated: conditional selection collapse, BOTH arms selecting over all 64
+#    samples (rep-a scores), with Fisher exact p for ref vs blind match rates
 import json
-import os
+import math
 import re
 
 import numpy as np
@@ -38,10 +38,26 @@ def boot_ci(vals, B=2000):
     return [round(float(np.percentile(b, 2.5)), 2), round(float(np.percentile(b, 97.5)), 2)]
 
 
+def fisher_exact_p(a, b, c, d):
+    # two-sided Fisher for [[a,b],[c,d]] via hypergeometric enumeration
+    def lchoose(n, k):
+        return math.lgamma(n + 1) - math.lgamma(k + 1) - math.lgamma(n - k + 1)
+    r1, r2, c1 = a + b, c + d, a + c
+    n = r1 + r2
+    lo, hi = max(0, c1 - r2), min(r1, c1)
+    logps = {x: lchoose(r1, x) + lchoose(r2, c1 - x) - lchoose(n, c1)
+             for x in range(lo, hi + 1)}
+    pobs = logps[a]
+    tot = sum(math.exp(v) for v in logps.values())
+    return sum(math.exp(v) for v in logps.values() if v <= pobs + 1e-9) / tot
+
+
 orig_pool = {r["problem_id"]: r for r in
              (json.loads(l) for l in open("runs/bon/bon_ties__Qwen__Qwen2.5-7B-Instruct.jsonl"))}
 rot_pool = {r["problem_id"]: r for r in
             (json.loads(l) for l in open("runs/bon/bon_tiesrot__Qwen__Qwen2.5-7B-Instruct.jsonl"))}
+for pid in rot_pool:
+    assert orig_pool[pid]["samples"] == rot_pool[pid]["samples"]
 
 JUDGES = ["Qwen2.5-1.5B-Instruct", "Qwen2.5-3B-Instruct", "Qwen2.5-7B-Instruct",
           "Qwen2.5-14B-Instruct"]
@@ -52,20 +68,15 @@ def scores(d, jm, cond, rep):
             for l in open(f"{d}/ties__Qwen__{jm}__{cond}_{rep}.jsonl")}
 
 
-def valid_answer_of(item, i):
+def ans(item, i):
     s = item["samples"][i]
     return norm(boxed(s) or s)
 
 
-# ------------------------------------------------------------------ provenance
 def ref_in_pool(pool):
-    n = 0
-    for it in pool.values():
-        refn = norm(it["ref_answer"])
-        if any(ok and valid_answer_of(it, i) == refn
-               for i, ok in enumerate(it["oracle"])):
-            n += 1
-    return n
+    return sum(1 for it in pool.values()
+               if any(ok and ans(it, i) == norm(it["ref_answer"])
+                      for i, ok in enumerate(it["oracle"])))
 
 
 out = {"provenance": dict(
@@ -73,39 +84,41 @@ out = {"provenance": dict(
     orig_ref_in_pool=ref_in_pool(orig_pool),
     rotated_ref_in_pool=ref_in_pool(rot_pool),
     note="rotated assignment constructed pool-aware (prefers a different valid answer "
-         "present among the pool's valid samples) to enable the paired analysis")}
+         "present among the pool's valid samples) to enable the paired analysis; "
+         "sample lists are identical across the two pools, pairing is by index")}
 
-# --------------------------------------------------- blind margin, rotated split
-res = []
-for jm in JUDGES:
-    for rep in ("a", "b"):
-        sc = scores("runs/bon_scores_ties_full", jm, "noref", rep)
-        margins = []
-        for pid, it in rot_pool.items():
-            if pid not in sc:
-                continue
-            refn = norm(it["ref_answer"])
-            # blind scores come from the ORIGINAL run; align samples by text
-            o_it = orig_pool[pid]
-            o_idx = {}
-            for i, (s, ok) in enumerate(zip(o_it["samples"], o_it["oracle"])):
-                if ok:
-                    o_idx.setdefault(s, i)
-            ms, os_ = [], []
-            for i, (s, ok) in enumerate(zip(it["samples"], it["oracle"])):
-                if not ok or s not in o_idx:
+
+def margin_rows(score_dir, cond):
+    # margin among oracle-valid samples: mean(score | matches rotated ref) - mean(other valid)
+    rows = []
+    for jm in JUDGES:
+        for rep in ("a", "b"):
+            sc = scores(score_dir, jm, cond, rep)
+            margins = []
+            for pid, it in rot_pool.items():
+                if pid not in sc:
                     continue
-                (ms if valid_answer_of(it, i) == refn else os_).append(sc[pid][o_idx[s]])
-            if ms and os_:
-                margins.append(float(np.mean(ms) - np.mean(os_)))
-        if len(margins) >= 3:
-            res.append(dict(judge=jm, rep=rep, n_items=len(margins),
-                            margin=round(float(np.mean(margins)), 2), ci=boot_ci(margins)))
-out["blind_margin_rotated"] = res
+                refn = norm(it["ref_answer"])
+                ms, os_ = [], []
+                for i, ok in enumerate(it["oracle"]):
+                    if not ok:
+                        continue
+                    (ms if ans(it, i) == refn else os_).append(sc[pid][i])
+                if ms and os_:
+                    margins.append(float(np.mean(ms) - np.mean(os_)))
+            if len(margins) >= 3:
+                rows.append(dict(judge=jm, rep=rep, n_items=len(margins),
+                                 margin=round(float(np.mean(margins)), 2),
+                                 ci=boot_ci(margins)))
+    return rows
 
-# ------------------------------------------------------- paired placebo / losers
+
+out["ref_margin_rotated"] = margin_rows("runs/bon_scores_ties_rot", "ref")
+out["blind_margin_rotated"] = margin_rows("runs/bon_scores_ties_full", "noref")
+
+
 def paired(kind):
-    res = []
+    rows = []
     for jm in JUDGES:
         for rep in ("a", "b"):
             so = scores("runs/bon_scores_ties_full", jm, "ref", rep)
@@ -114,75 +127,58 @@ def paired(kind):
             for pid, it in rot_pool.items():
                 if pid not in so or pid not in sr:
                     continue
-                o_it = orig_pool[pid]
-                refo, refr = norm(o_it["ref_answer"]), norm(it["ref_answer"])
+                refo, refr = norm(orig_pool[pid]["ref_answer"]), norm(it["ref_answer"])
                 if refo == refr:
                     continue
-                o_idx = {}
-                for i, (s, ok) in enumerate(zip(o_it["samples"], o_it["oracle"])):
-                    if ok:
-                        o_idx.setdefault(s, i)
                 ds = []
-                for i, (s, ok) in enumerate(zip(it["samples"], it["oracle"])):
-                    if not ok or s not in o_idx:
+                for i, ok in enumerate(it["oracle"]):
+                    if not ok:
                         continue
-                    a = valid_answer_of(it, i)
+                    a = ans(it, i)
                     hit = (a == refr and a != refo) if kind == "gainers" else \
                           (a == refo and a != refr) if kind == "losers" else \
                           (a != refo and a != refr)
                     if hit:
-                        ds.append(sr[pid][i] - so[pid][o_idx[s]])
+                        ds.append(sr[pid][i] - so[pid][i])
                 if ds:
                     deltas.append(float(np.mean(ds)))
             if len(deltas) >= 3:
-                res.append(dict(judge=jm, rep=rep, n_items=len(deltas),
-                                delta=round(float(np.mean(deltas)), 2), ci=boot_ci(deltas)))
-    return res
+                rows.append(dict(judge=jm, rep=rep, n_items=len(deltas),
+                                 delta=round(float(np.mean(deltas)), 2), ci=boot_ci(deltas)))
+    return rows
 
 
 out["gainers"] = paired("gainers")
 out["placebo_neither"] = paired("neither")
 out["losers"] = paired("losers")
 
-# --------------------------------------------- repowered conditional collapse
-# Among rotation-arm items whose valid samples include both ref-matching and non-matching
-# answers, select with rep-a scores at n=64; report P(selected matches shown ref | selected
-# valid). Blind baseline: same items, blind rep-a selection, same match test.
+# ---------------- conditional collapse, both arms over ALL 64 samples (rep-a selection)
 res = []
 for jm in JUDGES:
     row = {"judge": jm}
-    for cond, d, pool_for_scores in (("ref", "runs/bon_scores_ties_rot", "rot"),
-                                     ("noref", "runs/bon_scores_ties_full", "orig")):
+    cells = {}
+    for cond, d in (("ref", "runs/bon_scores_ties_rot"), ("noref", "runs/bon_scores_ties_full")):
         sc = scores(d, jm, cond, "a")
         n_el = n_valid = n_match = 0
         for pid, it in rot_pool.items():
             if pid not in sc:
                 continue
             refn = norm(it["ref_answer"])
-            if cond == "noref":
-                o_it = orig_pool[pid]
-                o_idx = {}
-                for i, (s, ok) in enumerate(zip(o_it["samples"], o_it["oracle"])):
-                    if ok:
-                        o_idx.setdefault(s, i)
-                idxs = [i for i, s in enumerate(it["samples"]) if s in o_idx]
-                if not idxs:
-                    continue
-                esc = {i: sc[pid][o_idx[it["samples"][i]]] for i in idxs}
-            else:
-                esc = {i: sc[pid][i] for i in range(len(it["samples"]))}
-            answers = {i: valid_answer_of(it, i) for i in esc if it["oracle"][i]}
-            kinds = {a == refn for a in answers.values()}
+            kinds = {ans(it, i) == refn for i, ok in enumerate(it["oracle"]) if ok}
             if kinds != {True, False}:
                 continue
             n_el += 1
-            sel = max(esc, key=esc.get)
+            sel = int(np.argmax(sc[pid]))
             if it["oracle"][sel]:
                 n_valid += 1
-                if valid_answer_of(it, sel) == refn:
+                if ans(it, sel) == refn:
                     n_match += 1
-        row[cond] = dict(eligible=n_el, selected_valid=n_valid, matched_ref=n_match,
-                         rate=round(n_match / n_valid, 2) if n_valid else None)
+        cells[cond] = dict(eligible=n_el, selected_valid=n_valid, matched_ref=n_match,
+                           rate=round(n_match / n_valid, 2) if n_valid else None)
+        row[cond] = cells[cond]
+    a, b = cells["ref"]["matched_ref"], cells["ref"]["selected_valid"] - cells["ref"]["matched_ref"]
+    c, dd = cells["noref"]["matched_ref"], cells["noref"]["selected_valid"] - cells["noref"]["matched_ref"]
+    row["fisher_p"] = round(fisher_exact_p(a, b, c, dd), 5)
     res.append(row)
 out["collapse_rotated"] = res
 
