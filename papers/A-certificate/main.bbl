@@ -85,10 +85,21 @@ Leo Gao, John Schulman, and Jacob Hilton.
 \newblock Scaling laws for reward model overoptimization.
 \newblock {\em arXiv preprint arXiv:2210.10760}, 2022.
 
+\bibitem{kim2025lens}
+Sunghwan Kim et~al.
+\newblock Evaluating reward models through the lens of reward overoptimization.
+\newblock {\em arXiv preprint arXiv:2505.12763}, 2025.
+
 \bibitem{cobbler2023}
 Ryan Koo et~al.
 \newblock Benchmarking cognitive biases in large language models as evaluators.
 \newblock {\em arXiv preprint arXiv:2309.17012}, 2023.
+
+\bibitem{rmbench2024}
+Yantao Liu, Zijun Yao, Rui Min, Yixin Cao, Lei Hou, and Juanzi Li.
+\newblock Rm-bench: Benchmarking reward models of language models with subtlety
+  and style.
+\newblock {\em arXiv preprint arXiv:2410.16184}, 2024.
 
 \bibitem{singhal2023long}
 Prasann Singhal et~al.

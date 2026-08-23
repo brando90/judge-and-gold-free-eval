@@ -10,10 +10,12 @@ Item pools are 105 \textsc{MATH-500} and 68 \textsc{MBPP+} items on which the ge
 
 \subsection*{RQ3: Does the audit's verdict predict gaming?}
 
-In-domain, completely.
+In-domain, yes, and the answer is per estimand.
 The registered predictions were categorical: blind ladder judges fail the audit and referenced ones pass; the sabotaged judge is convicted; failed evaluators are gamed.
-On the ten configurations audited in-domain, outcomes separate completely and in the registered direction: every certified configuration shows less inflation (maximum $+0.38\sigma$) and less regret (maximum $0.117$) than every failed or convicted configuration (minimum $+0.44\sigma$; minimum blind regret $0.324$; the sabotaged frontier's regret $0.133$ is the one low-damage failure, and its failure mode is inflation).
-We do not claim a pre-frozen numeric threshold; we claim registered categorical verdicts plus complete observed separation, with the full 25-configuration accounting in Appendix~\ref{app:confusion}.
+On inflation, every failed or convicted configuration (minimum $+0.44\sigma$) exceeds every certified one (maximum $+0.38\sigma$), and the sabotaged frontier's excess gap $+0.85$ $[0.70, 1.00]$ is disjoint from the honest frontier's $+0.38$ $[0.28, 0.51]$.
+On regret, every failed blind configuration (minimum $0.324$) exceeds every certified one (maximum $0.117$), but the sabotaged frontier does not separate: its regret $0.133$ is statistically indistinguishable from the honest frontier's $0.117$ (paired difference $+0.014$ $[-0.058, +0.085]$, $n{=}105$ items).
+That asymmetry is itself a finding: a style-loaded frontier judge corrupts the scoreboard before it corrupts selection, which is exactly the failure a naive accuracy check cannot see.
+We do not claim a pre-frozen numeric threshold; we claim registered categorical verdicts plus the per-estimand separation just stated, with the full 25-configuration accounting in Appendix~\ref{app:confusion}.
 
 \begin{figure}[t]
 \centering
@@ -47,7 +49,7 @@ Excess hack gap at $n{=}64$ without (orange) and with (blue) a trusted reference
 
 \paragraph{Two failure modes, and capability trades one for the other.}
 Across the sabotage arms, damage falls and self-inflation rises with judge capability.
-The sabotaged 7B damages without inflating (regret $0.400$, gap $+0.13$, not significant); sabotaged GPT-5.2 inflates without damaging (gap $+0.85$, regret $0.133$).
+The sabotaged 7B damages without inflating (regret $0.400$, gap $+0.13$, not significant); sabotaged GPT-5.2 inflates without measurable damage (gap $+0.85$; regret $0.133$, indistinguishable from the honest frontier's $0.117$).
 A blind cross-family panel confirms the channel: sabotage-selected solutions are more styled ($+0.27$ $[0.10, 0.44]$) with no detectable soundness loss.
 The frontier mode, deceiving the metric while selecting well, is the one that menaces training.
 

@@ -12,7 +12,8 @@ The second is that nothing better is available, so gaming can only be characteri
 Recent work has already damaged the first assumption from one side: benchmark accuracy, the standard static measure of reward-model quality, predicts downstream optimization outcomes poorly~\cite{wen2024rethinking}.
 We damage it from the other side, and replace it.
 
-Our contribution is a \emph{certificate}: a pre-deployment audit that measures what an evaluator reads, using a few dozen blind human labels, whose registered categorical verdicts separated gaming outcomes in every configuration audited in its own domain.
+Our contribution is a \emph{certificate}: a pre-deployment audit that measures what an evaluator reads, using a few dozen blind human labels, whose registered categorical verdicts predicted the gaming outcome of every configuration audited in its own domain.
+That style bias exists in judges and reward models is established at the class level~\cite{wu2023style,rmbench2024}; what the certificate adds is a per-deployment instrument that measures whether a particular judge, on a particular task and prompt, reads substance before it is deployed.
 Four design choices distinguish the audit from raw-agreement validation.
 Humans grade on separated axes rather than one quality number: a target axis (here, soundness of reasoning) and nuisance axes chosen for the threat model (here, style; length, format, and position are probed separately in Section~\ref{sec:rules}).
 A single number makes nuisance-loading unmeasurable in principle, and the axes are an instantiation, not a fixed pair.
@@ -27,7 +28,8 @@ A judge sits on one side or the other depending on protocol and scale, and the a
 
 We validate the certificate by registering predictions and applying pressure.
 A 7B generator writes 64 candidates per problem; each judge configuration selects its favorite; two pre-registered estimands separate scoreboard inflation from real accuracy loss.
-On the ten configurations audited in-domain, certified and failed configurations separate completely on both estimands (Figure~\ref{fig:h2h}), and the separation grows with optimization strength (Figure~\ref{fig:curves}).
+On the ten configurations audited in-domain, verdicts predict outcomes per estimand: failed blind configurations separate from certified ones on both inflation and regret, and the sabotaged frontier separates on inflation alone, corrupting the scoreboard before it corrupts selection (Figure~\ref{fig:h2h}).
+The inflation separation grows with optimization strength (Figure~\ref{fig:curves}).
 A cross-domain extrapolation to thirteen code configurations succeeds in twelve and misses exactly where a post-hoc mechanism, the capability gate, says the audit itself would have failed to transfer.
 That miss yields the operational lesson: certification is a property of a judge, task, and prompt triple, and must be measured where the judge will be used.
 

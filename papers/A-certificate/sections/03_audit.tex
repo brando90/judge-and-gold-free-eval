@@ -71,6 +71,10 @@ It fails second by offering no principled threshold: the separating value is kno
 The audit shares the threshold problem for its weak-judge boundary (the 3B-blind partials straddle zero within noise), but its convictions do not: a significantly positive nuisance partial is a sign condition, fixed ex ante, and it alone identifies both style-loaded configurations.
 The audit's advantage is diagnosis and sign-anchored conviction, not a magically sharper threshold for weak judges.
 
+\paragraph{Multiple comparisons.}
+The conviction rule is a single pre-declared sign condition per configuration, a significantly positive nuisance partial, not a search over thresholds, which bounds the multiplicity concern.
+A Bonferroni correction across the eleven audited configurations leaves both convictions significant: recomputing the style-partial bootstrap CIs at the corrected level keeps them wide of zero (sabotaged frontier $[+0.25, +0.80]$, reward model $[+0.20, +0.77]$).
+
 \paragraph{Verdict stability.}
 Convictions and strong passes stabilize with the fewest labels.
 At 40 labels, the sabotage conviction and the honest frontier pass reproduce in $100\%$ of label resamples, while boundary configurations (the 1.5B referenced pass, the 14B blind near-pass) remain unstable below $50$ labels (Figure~\ref{fig:stability}).

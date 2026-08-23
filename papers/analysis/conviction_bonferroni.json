@@ -1,0 +1,18 @@
+{
+ "sabotage_gpt": {
+  "style_partial": 0.59,
+  "ci_bonf11": [
+   0.25,
+   0.8
+  ],
+  "n": 60
+ },
+ "skywork_rm": {
+  "style_partial": 0.54,
+  "ci_bonf11": [
+   0.2,
+   0.77
+  ],
+  "n": 60
+ }
+}

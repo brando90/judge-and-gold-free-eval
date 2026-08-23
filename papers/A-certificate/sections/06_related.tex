@@ -6,6 +6,9 @@ Benchmark accuracy does not~\cite{wen2024rethinking}; our contribution is a stat
 Active auditing trains attackers against a frozen reward model~\cite{beigi2026ara}; the certificate needs no attacker.
 Judge reliability audits measure consistency and bias robustness~\cite{judgechanges2026,zheng2023judging}; validity against decorrelated human axes, with a positive control, is the missing piece we add.
 Style-over-substance biases are documented in general pools~\cite{wu2023style,dubois2024length,singhal2023long}; the audit measures the loading for a particular judge, task, and prompt.
+The existence of style-substance conflation in trained reward models is likewise established at the class level: RM-Bench evaluates reward models on curated style-controlled pairs and finds the class fragile to exactly this conflation~\cite{rmbench2024}, and reward-model benchmarks have been re-examined through the lens of reward overoptimization~\cite{kim2025lens}.
+Those benchmarks characterize the evaluator class on fixed public data; the certificate is a per-deployment diagnostic that spends a few dozen labels to measure whether a particular judge on a particular distribution reads substance, with a positive control, sign-anchored ex-ante conviction rules, and validation of verdicts against selection-pressure outcomes on the same deployment distribution.
+RM-Bench tells you the class is fragile; the audit tells you whether your judge, on your task and prompt, reads substance before you deploy it.
 References are known to improve judge accuracy~\cite{refguided2024,smalljudges2025}; we show they flip audit validity, that the effect is capability-gated, and that on multi-valid tasks any reference harms statically~\cite{generous2026,dobefore2025} and amplifies gaming dynamically~\cite{companionD}.
 Reward hacking is characterized post-hoc~\cite{gao2022scaling,skalse2022defining,coste2023ensembles,eisenstein2023helping,selfplay2026}; the certificate is ex-ante.
 
@@ -19,5 +22,6 @@ Reward hacking is characterized post-hoc~\cite{gao2022scaling,skalse2022defining
 \item Deployment-pool labels (instrument live: artifact f9ac8781).
 \item Order-swap flip rate versus audit verdicts, quantitative.
 \item DPO validation: train against one certified and one convicted judge.
-\item Multiple-comparisons note; quantify realized selection pressure per judge.
+\item Quantify realized selection pressure per judge (multiple-comparisons note now in Section 3).
+\item RM paraphrase-replicate inflation run (protocol now described in Section 6).
 \end{enumerate}

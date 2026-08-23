@@ -1,8 +1,8 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.22)  23 AUG 2026 00:25
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.22)  23 AUG 2026 01:06
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**main.tex
+**main
 (./main.tex
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
@@ -436,40 +436,41 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 (./sections/00_abstract.tex) (./sections/01_intro.tex [1
 
 {/usr/local/texlive/2026/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-<figures/fig_concept.pdf, id=71, 714.56966pt x 259.30476pt>
+<figures/fig_concept.pdf, id=73, 714.56966pt x 259.30476pt>
 File: figures/fig_concept.pdf Graphic file (type pdf)
 <use figures/fig_concept.pdf>
-Package pdftex.def Info: figures/fig_concept.pdf  used on input line 36.
+Package pdftex.def Info: figures/fig_concept.pdf  used on input line 38.
 (pdftex.def)             Requested size: 469.75502pt x 170.46507pt.
 ) (./sections/02_setup.tex
-[2 <./figures/fig_concept.pdf>]) (./sections/03_audit.tex [3]
-<figures/fig_h2h.pdf, id=223, 658.38802pt x 239.17316pt>
+[2]) (./sections/03_audit.tex [3 <./figures/fig_concept.pdf>]
+<figures/fig_h2h.pdf, id=226, 658.38802pt x 239.17316pt>
 File: figures/fig_h2h.pdf Graphic file (type pdf)
 <use figures/fig_h2h.pdf>
 Package pdftex.def Info: figures/fig_h2h.pdf  used on input line 56.
 (pdftex.def)             Requested size: 469.75502pt x 170.64984pt.
  [4]
-<figures/fig_stability.pdf, id=234, 382.43472pt x 224.1173pt>
+<figures/fig_stability.pdf, id=237, 382.43472pt x 224.1173pt>
 File: figures/fig_stability.pdf Graphic file (type pdf)
 <use figures/fig_stability.pdf>
-Package pdftex.def Info: figures/fig_stability.pdf  used on input line 81.
+Package pdftex.def Info: figures/fig_stability.pdf  used on input line 85.
 (pdftex.def)             Requested size: 291.2458pt x 170.68999pt.
-)
-(./sections/04_pressure.tex [5 <./figures/fig_h2h.pdf>]
-<figures/fig_curves.pdf, id=283, 658.38802pt x 231.94615pt>
+ [5 <./figures/fig_h2h.pdf>]) (./sections/04_pressure.tex [6 <./figures/fig_sta
+bility.pdf>]
+<figures/fig_curves.pdf, id=313, 658.38802pt x 231.94615pt>
 File: figures/fig_curves.pdf Graphic file (type pdf)
 <use figures/fig_curves.pdf>
-Package pdftex.def Info: figures/fig_curves.pdf  used on input line 20.
+Package pdftex.def Info: figures/fig_curves.pdf  used on input line 22.
 (pdftex.def)             Requested size: 469.75502pt x 165.49338pt.
- [6 <./figures/fig_stability.pdf>]
-<figures/fig_gate.pdf, id=313, 665.42259pt x 203.03815pt>
+
+[7 <./figures/fig_curves.pdf>]
+<figures/fig_gate.pdf, id=386, 665.42259pt x 203.03815pt>
 File: figures/fig_gate.pdf Graphic file (type pdf)
 <use figures/fig_gate.pdf>
-Package pdftex.def Info: figures/fig_gate.pdf  used on input line 41.
+Package pdftex.def Info: figures/fig_gate.pdf  used on input line 43.
 (pdftex.def)             Requested size: 422.77664pt x 129.00214pt.
-) (./sections/05_generalization.tex [7 <./figures/fig_curves.pdf>]
-[8 <./figures/fig_gate.pdf>]) (./sections/05_rules_discussion.tex)
-(./sections/06_related.tex [9] [10]) (./main.bbl [11])
+) (./sections/05_generalization.tex [8 <./figures/fig_gate.pdf>]) (./sections/0
+5_rules_discussion.tex [9])
+(./sections/06_related.tex [10]) (./main.bbl [11] [12])
 (./sections/07_appendix.tex)
 Overfull \hbox (2.41624pt too wide) in paragraph at lines 17--33
 \OML/cmm/m/it/10.95 n[]\OT1/cmr/m/n/10.95 105$); code $+0\OML/cmm/m/it/10.95 :\
@@ -485,7 +486,7 @@ OML/cmm/m/it/10.95 ; \OT1/cmr/m/n/10.95 +0\OML/cmm/m/it/10.95 :\OT1/cmr/m/n/10.
 /10.95 :\OT1/cmr/m/n/10.95 95]$
  []
 
-[12] (./main.aux)
+[13] (./main.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
@@ -494,13 +495,13 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: F40C43A5E4D4AF425824F1E4D631E4EB;1766.
  ) 
 Here is how much of TeX's memory you used:
- 12248 strings out of 467525
- 191300 string characters out of 5418982
- 625804 words of memory out of 5000000
- 40905 multiletter control sequences out of 15000+600000
+ 12256 strings out of 467525
+ 191394 string characters out of 5418982
+ 625873 words of memory out of 5000000
+ 40907 multiletter control sequences out of 15000+600000
  639495 words of font info for 85 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,11n,79p,897b,564s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,11n,79p,893b,571s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb>
@@ -511,10 +512,10 @@ sr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr
 ocal/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/lo
 cal/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/loc
 al/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on main.pdf (12 pages, 330745 bytes).
+Output written on main.pdf (13 pages, 335039 bytes).
 PDF statistics:
- 558 PDF objects out of 1000 (max. 8388607)
- 330 compressed objects within 4 object streams
- 90 named destinations out of 1000 (max. 500000)
+ 574 PDF objects out of 1000 (max. 8388607)
+ 345 compressed objects within 4 object streams
+ 96 named destinations out of 1000 (max. 500000)
  114 words of extra memory for PDF output out of 10000 (max. 10000000)
 
