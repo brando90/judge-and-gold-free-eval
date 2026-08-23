@@ -14,12 +14,12 @@
 \citation{chen2021codex}
 \citation{austin2021mbpp}
 \citation{liu2023evalplus}
-\@writefile{toc}{\contentsline {section}{\numberline {2}Setup}{2}{section.2}\protected@file@percent }
-\newlabel{sec:setup}{{2}{2}{Setup}{section.2}{}}
-\@writefile{toc}{\contentsline {paragraph}{Models and data.}{2}{section*.1}\protected@file@percent }
 \citation{lightman2023verify}
 \citation{wang2022selfconsistency}
 \citation{companionA}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Setup}{3}{section.2}\protected@file@percent }
+\newlabel{sec:setup}{{2}{3}{Setup}{section.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{Models and data.}{3}{section*.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{The comparison class.}{3}{section*.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{The verification class.}{3}{section*.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{Human grades.}{3}{section*.4}\protected@file@percent }
@@ -37,18 +37,22 @@
 \newlabel{sec:ranking}{{3.3}{5}{RQ3: When can matching rank models? When references are worth predicting}{subsection.3.3}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces \textbf  {Teacher-forced accuracy is reference perplexity.} Per-solution \textsc  {TFA}{} against the reference's bits-per-character under the same model, pooled over 6{,}000 model--item pairs on \textsc  {MATH-500}, with the least-squares fit. \textbf  {Takeaway:} at $r = -0.895$, reference compressibility explains $80\%$ of pooled \textsc  {TFA}{} variance, so \textsc  {TFA}{} meters the reference rather than grading the solution.}}{6}{figure.caption.7}\protected@file@percent }
 \newlabel{fig:mechanism}{{2}{6}{\textbf {Teacher-forced accuracy is reference perplexity.} Per-solution \tfa {} against the reference's bits-per-character under the same model, pooled over 6{,}000 model--item pairs on \textsc {MATH-500}, with the least-squares fit. \textbf {Takeaway:} at $r = -0.895$, reference compressibility explains $80\%$ of pooled \tfa {} variance, so \tfa {} meters the reference rather than grading the solution}{figure.caption.7}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Repairs fail as predicted: the class is empty, not under-tuned}{6}{subsection.3.4}\protected@file@percent }
-\newlabel{sec:slate}{{3.4}{6}{Repairs fail as predicted: the class is empty, not under-tuned}{subsection.3.4}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces \textbf  {The boundary map: where reference matching ranks models.} Cross-family Spearman correlation between mean \textsc  {TFA}{} and accuracy (17 models; bootstrap CIs) per benchmark; the within-family column is the Qwen size ladder specifically, and best values are in bold. Ranking degrades from olympiad to saturated benchmarks, with code sitting mid-scale; the Qwen ladder stays positive everywhere, but across all families five of twelve ladders invert on the easiest benchmarks (see body), because family style cancels inside a family and survives across families. \textbf  {Takeaway:} matching ranks models only on hard benchmarks with information-dense references, and cross-family comparison needs a shared style or a verifier.}}{7}{table.caption.8}\protected@file@percent }
-\newlabel{tab:map}{{1}{7}{\textbf {The boundary map: where reference matching ranks models.} Cross-family Spearman correlation between mean \tfa {} and accuracy (17 models; bootstrap CIs) per benchmark; the within-family column is the Qwen size ladder specifically, and best values are in bold. Ranking degrades from olympiad to saturated benchmarks, with code sitting mid-scale; the Qwen ladder stays positive everywhere, but across all families five of twelve ladders invert on the easiest benchmarks (see body), because family style cancels inside a family and survives across families. \textbf {Takeaway:} matching ranks models only on hard benchmarks with information-dense references, and cross-family comparison needs a shared style or a verifier}{table.caption.8}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces \textbf  {The boundary map: where reference matching ranks models.} Cross-family Spearman correlation between mean \textsc  {TFA}{} and accuracy (17 models; bootstrap CIs) per benchmark; the within-family column is the Qwen size ladder specifically, and best values are in bold. Ranking degrades from olympiad to saturated benchmarks, with code sitting mid-scale; the Qwen ladder stays positive everywhere, but across all families five of twelve ladders invert on the easiest benchmarks (Appendix~\ref {app:ladders}), because family style cancels inside a family and survives across families. \textbf  {Takeaway:} matching ranks models only on hard benchmarks with information-dense references, and cross-family comparison needs a shared style or a verifier.}}{7}{table.caption.8}\protected@file@percent }
+\newlabel{tab:map}{{1}{7}{\textbf {The boundary map: where reference matching ranks models.} Cross-family Spearman correlation between mean \tfa {} and accuracy (17 models; bootstrap CIs) per benchmark; the within-family column is the Qwen size ladder specifically, and best values are in bold. Ranking degrades from olympiad to saturated benchmarks, with code sitting mid-scale; the Qwen ladder stays positive everywhere, but across all families five of twelve ladders invert on the easiest benchmarks (Appendix~\ref {app:ladders}), because family style cancels inside a family and survives across families. \textbf {Takeaway:} matching ranks models only on hard benchmarks with information-dense references, and cross-family comparison needs a shared style or a verifier}{table.caption.8}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces \textbf  {The taxonomy makes correct advance predictions.} All four pre-registered predictions landed as called (the seven reweighting variants predate the registration protocol and are included for completeness); the strongest judge-free signal is in bold. The two verification-class entries are described in Section~\ref {sec:verify}; the prefix-repair headline is largely correctness-mediated (among correct-only solutions its curve mean is $+0.07$). \textbf  {Takeaway:} every comparison-class repair failed and every verification-class signal worked, exactly as registered before the data existed.}}{7}{table.caption.9}\protected@file@percent }
 \newlabel{tab:slate}{{2}{7}{\textbf {The taxonomy makes correct advance predictions.} All four pre-registered predictions landed as called (the seven reweighting variants predate the registration protocol and are included for completeness); the strongest judge-free signal is in bold. The two verification-class entries are described in Section~\ref {sec:verify}; the prefix-repair headline is largely correctness-mediated (among correct-only solutions its curve mean is $+0.07$). \textbf {Takeaway:} every comparison-class repair failed and every verification-class signal worked, exactly as registered before the data existed}{table.caption.9}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}RQ4: What does grade? Verification signals, with a correctness caveat.}{7}{subsection.3.5}\protected@file@percent }
-\newlabel{sec:verify}{{3.5}{7}{RQ4: What does grade? Verification signals, with a correctness caveat}{subsection.3.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Repairs fail as predicted: the class is empty, not under-tuned}{7}{subsection.3.4}\protected@file@percent }
+\newlabel{sec:slate}{{3.4}{7}{Repairs fail as predicted: the class is empty, not under-tuned}{subsection.3.4}{}}
 \citation{companionA}
 \@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces \textbf  {The two registered sweeps move in opposite directions, as the taxonomy predicts.} Left: up-weighting late reference tokens (the intuitive repair) decays \textsc  {TFA}'s twelve-model ranking signal past $\gamma {=}1$, through the answer-only-reference null and beyond it (the decay is a trend, not strictly monotone: $\gamma {=}1$ ticks up to $+0.15$ and last-16 sits above $\gamma {=}8$). Right: the prefix-repair signal rises with truncation depth, from a pure difficulty probe ($k{=}0$) to $+0.78$ against human soundness at $k{=}0.75$, with a curve mean of $+0.79$; among correct-only solutions the $k{=}0.75$ point is $+0.19$ and the curve mean $+0.07$ (Section~\ref {sec:verify}). \textbf  {Takeaway:} repairing a comparison metric destroys it while deepening a verification signal strengthens it, which is the class divide made visible.}}{8}{figure.caption.10}\protected@file@percent }
 \newlabel{fig:sweeps}{{3}{8}{\textbf {The two registered sweeps move in opposite directions, as the taxonomy predicts.} Left: up-weighting late reference tokens (the intuitive repair) decays \tfa 's twelve-model ranking signal past $\gamma {=}1$, through the answer-only-reference null and beyond it (the decay is a trend, not strictly monotone: $\gamma {=}1$ ticks up to $+0.15$ and last-16 sits above $\gamma {=}8$). Right: the prefix-repair signal rises with truncation depth, from a pure difficulty probe ($k{=}0$) to $+0.78$ against human soundness at $k{=}0.75$, with a curve mean of $+0.79$; among correct-only solutions the $k{=}0.75$ point is $+0.19$ and the curve mean $+0.07$ (Section~\ref {sec:verify}). \textbf {Takeaway:} repairing a comparison metric destroys it while deepening a verification signal strengthens it, which is the class divide made visible}{figure.caption.10}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}RQ4: What does grade? Verification signals, with a correctness caveat.}{8}{subsection.3.5}\protected@file@percent }
+\newlabel{sec:verify}{{3.5}{8}{RQ4: What does grade? Verification signals, with a correctness caveat}{subsection.3.5}{}}
 \citation{companionA}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Practical guidance}{9}{section.4}\protected@file@percent }
+\newlabel{sec:rules}{{4}{9}{Practical guidance}{section.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Limitations}{9}{section.5}\protected@file@percent }
+\newlabel{sec:limits}{{5}{9}{Limitations}{section.5}{}}
 \citation{zheng2023judging}
 \citation{tan2024judgebench}
 \citation{yuan2021bartscore}
@@ -57,20 +61,16 @@
 \citation{singhal2023long}
 \citation{lightman2023verify}
 \citation{wang2022selfconsistency}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Practical guidance}{9}{section.4}\protected@file@percent }
-\newlabel{sec:rules}{{4}{9}{Practical guidance}{section.4}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Limitations}{9}{section.5}\protected@file@percent }
-\newlabel{sec:limits}{{5}{9}{Limitations}{section.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Related work}{10}{section.6}\protected@file@percent }
+\newlabel{sec:related}{{6}{10}{Related work}{section.6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Conclusion}{10}{section.7}\protected@file@percent }
+\newlabel{sec:conclusion}{{7}{10}{Conclusion}{section.7}{}}
 \bibstyle{plain}
 \bibdata{references}
 \bibcite{austin2021mbpp}{1}
 \bibcite{companionA}{2}
 \bibcite{chen2021codex}{3}
 \bibcite{cobbe2021gsm8k}{4}
-\@writefile{toc}{\contentsline {section}{\numberline {6}Related work}{10}{section.6}\protected@file@percent }
-\newlabel{sec:related}{{6}{10}{Related work}{section.6}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {7}Conclusion}{10}{section.7}\protected@file@percent }
-\newlabel{sec:conclusion}{{7}{10}{Conclusion}{section.7}{}}
 \bibcite{dubois2024length}{5}
 \bibcite{hendrycks2021math}{6}
 \bibcite{lightman2023verify}{7}
@@ -83,24 +83,26 @@
 \bibcite{zheng2023judging}{14}
 \citation{companionA}
 \citation{companionA}
-\@writefile{toc}{\contentsline {section}{\numberline {A}The full metric-class table}{11}{appendix.A}\protected@file@percent }
-\newlabel{app:classtable}{{A}{11}{The full metric-class table}{appendix.A}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces \textbf  {The full metric-class table, with the within-correct column.} Prediction-fit and weighted-similarity metrics rank on hard benchmarks and their saturated point estimates collapse or turn negative; raw overlap does not rank at all (its hard-benchmark inversion is a verbosity confound: controlling output length moves $-0.49$ to $-0.07$). Human columns are Pearson $r$ with bootstrap 95\% CIs on the 60-item set; gold-token logprob uses the $n{=}42$ subset with logprob available; the within-correct column is from the canonical analysis (\texttt  {canonical\_validity.json}), with $n{=}48$ for every signal except gold-token logprob ($n{=}32$); the best full-set human-anchored value is in bold. The within-correct column shows that no cheap signal, comparison or verification, demonstrably grades beyond correctness on this anchor set: \textsc  {TFA}'s $+0.21$ ($n{=}48$, interval wide) ties or exceeds every verification signal's within-correct value. The referenced judge's $-0.14$ reflects range restriction on the random set; the same judge reads $+0.81$ within-correct on the divergence-selected stratum of the companion audit~\cite  {companionA}, and is the only signal shown to grade beyond correctness. \textbf  {Takeaway:} on the full set no comparison metric grades and the deeper verification signals do, while on the within-correct margin nothing cheap is separable from noise.}}{12}{table.caption.12}\protected@file@percent }
-\newlabel{tab:classfull}{{3}{12}{\textbf {The full metric-class table, with the within-correct column.} Prediction-fit and weighted-similarity metrics rank on hard benchmarks and their saturated point estimates collapse or turn negative; raw overlap does not rank at all (its hard-benchmark inversion is a verbosity confound: controlling output length moves $-0.49$ to $-0.07$). Human columns are Pearson $r$ with bootstrap 95\% CIs on the 60-item set; gold-token logprob uses the $n{=}42$ subset with logprob available; the within-correct column is from the canonical analysis (\texttt {canonical\_validity.json}), with $n{=}48$ for every signal except gold-token logprob ($n{=}32$); the best full-set human-anchored value is in bold. The within-correct column shows that no cheap signal, comparison or verification, demonstrably grades beyond correctness on this anchor set: \tfa 's $+0.21$ ($n{=}48$, interval wide) ties or exceeds every verification signal's within-correct value. The referenced judge's $-0.14$ reflects range restriction on the random set; the same judge reads $+0.81$ within-correct on the divergence-selected stratum of the companion audit~\cite {companionA}, and is the only signal shown to grade beyond correctness. \textbf {Takeaway:} on the full set no comparison metric grades and the deeper verification signals do, while on the within-correct margin nothing cheap is separable from noise}{table.caption.12}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {A}The full metric-class table}{12}{appendix.A}\protected@file@percent }
+\newlabel{app:classtable}{{A}{12}{The full metric-class table}{appendix.A}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces \textbf  {The full metric-class table, with the within-correct column.} Prediction-fit and weighted-similarity metrics rank on hard benchmarks and their saturated point estimates collapse or turn negative; raw overlap does not rank at all (its hard-benchmark inversion is a verbosity confound: controlling output length moves $-0.49$ to $-0.07$). Human columns are Pearson $r$ with bootstrap 95\% CIs on the 60-item set; gold-token logprob uses the $n{=}42$ subset with logprob available; the within-correct column is from the canonical analysis (\texttt  {canonical\_validity.json}), with $n{=}48$ for every signal except gold-token logprob ($n{=}32$); the best full-set human-anchored value is in bold. The within-correct column shows that no cheap signal, comparison or verification, demonstrably grades beyond correctness on this anchor set: \textsc  {TFA}'s $+0.21$ ($n{=}48$, interval wide) ties or exceeds every verification signal's within-correct value. The referenced judge's $-0.14$ reflects range restriction on the random set; the same judge reads $+0.81$ within-correct on a divergence-selected stratum of the companion audit~\cite  {companionA}, where selection inflates within-correct variance by construction, so its beyond-correctness grading is unresolved on the random set. \textbf  {Takeaway:} on the full set no comparison metric grades and the deeper verification signals do, while on the within-correct margin nothing cheap is separable from noise.}}{12}{table.caption.12}\protected@file@percent }
+\newlabel{tab:classfull}{{3}{12}{\textbf {The full metric-class table, with the within-correct column.} Prediction-fit and weighted-similarity metrics rank on hard benchmarks and their saturated point estimates collapse or turn negative; raw overlap does not rank at all (its hard-benchmark inversion is a verbosity confound: controlling output length moves $-0.49$ to $-0.07$). Human columns are Pearson $r$ with bootstrap 95\% CIs on the 60-item set; gold-token logprob uses the $n{=}42$ subset with logprob available; the within-correct column is from the canonical analysis (\texttt {canonical\_validity.json}), with $n{=}48$ for every signal except gold-token logprob ($n{=}32$); the best full-set human-anchored value is in bold. The within-correct column shows that no cheap signal, comparison or verification, demonstrably grades beyond correctness on this anchor set: \tfa 's $+0.21$ ($n{=}48$, interval wide) ties or exceeds every verification signal's within-correct value. The referenced judge's $-0.14$ reflects range restriction on the random set; the same judge reads $+0.81$ within-correct on a divergence-selected stratum of the companion audit~\cite {companionA}, where selection inflates within-correct variance by construction, so its beyond-correctness grading is unresolved on the random set. \textbf {Takeaway:} on the full set no comparison metric grades and the deeper verification signals do, while on the within-correct margin nothing cheap is separable from noise}{table.caption.12}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {B}Datasheet and protocol details}{12}{appendix.B}\protected@file@percent }
 \newlabel{app:dnb}{{B}{12}{Datasheet and protocol details}{appendix.B}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {B.1}Model grid}{12}{subsection.B.1}\protected@file@percent }
 \newlabel{app:models}{{B.1}{12}{Model grid}{subsection.B.1}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {B.2}Per-benchmark item counts}{12}{subsection.B.2}\protected@file@percent }
-\newlabel{app:counts}{{B.2}{12}{Per-benchmark item counts}{subsection.B.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {B.3}Grading rubric and blind protocol}{12}{subsection.B.3}\protected@file@percent }
-\newlabel{app:rubric}{{B.3}{12}{Grading rubric and blind protocol}{subsection.B.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {B.4}Prefix-repair completer}{13}{subsection.B.4}\protected@file@percent }
-\newlabel{app:completer}{{B.4}{13}{Prefix-repair completer}{subsection.B.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {B.5}Reliability ceiling}{13}{subsection.B.5}\protected@file@percent }
-\newlabel{app:ceiling}{{B.5}{13}{Reliability ceiling}{subsection.B.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {B.6}Analysis subsets}{13}{subsection.B.6}\protected@file@percent }
-\newlabel{app:subsets}{{B.6}{13}{Analysis subsets}{subsection.B.6}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {B.7}Released artifacts}{13}{subsection.B.7}\protected@file@percent }
-\newlabel{app:artifacts}{{B.7}{13}{Released artifacts}{subsection.B.7}{}}
-\gdef \@abspage@last{13}
+\@writefile{toc}{\contentsline {subsection}{\numberline {B.2}Per-benchmark item counts}{13}{subsection.B.2}\protected@file@percent }
+\newlabel{app:counts}{{B.2}{13}{Per-benchmark item counts}{subsection.B.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {B.3}The twelve saturated family-ladder cells}{13}{subsection.B.3}\protected@file@percent }
+\newlabel{app:ladders}{{B.3}{13}{The twelve saturated family-ladder cells}{subsection.B.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {B.4}Grading rubric and blind protocol}{13}{subsection.B.4}\protected@file@percent }
+\newlabel{app:rubric}{{B.4}{13}{Grading rubric and blind protocol}{subsection.B.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {B.5}Prefix-repair completer}{13}{subsection.B.5}\protected@file@percent }
+\newlabel{app:completer}{{B.5}{13}{Prefix-repair completer}{subsection.B.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {B.6}Reliability ceiling}{13}{subsection.B.6}\protected@file@percent }
+\newlabel{app:ceiling}{{B.6}{13}{Reliability ceiling}{subsection.B.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {B.7}Analysis subsets}{14}{subsection.B.7}\protected@file@percent }
+\newlabel{app:subsets}{{B.7}{14}{Analysis subsets}{subsection.B.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {B.8}Released artifacts}{14}{subsection.B.8}\protected@file@percent }
+\newlabel{app:artifacts}{{B.8}{14}{Released artifacts}{subsection.B.8}{}}
+\gdef \@abspage@last{14}

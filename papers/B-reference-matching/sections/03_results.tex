@@ -13,11 +13,11 @@ On the 60-item random label set, the five comparison metrics correlate with huma
 Every interval includes zero except unigram-F1's, which is weakly negative.
 On the same solutions the LLM judge reaches $+0.89$, and the single-point prefix-repair signal at $k{=}0.5$ reaches $+0.76$.
 
-Code replicates the null for the two prediction-fit metrics against an oracle no one can argue with.
-On 492 freshly generated solutions scored by executing the official test suites, \tfa's correlation with passing is $0.00$, and stays within $[-0.04, +0.06]$ inside each model.
+Code sharpens the picture into a two-part statement against an oracle no one can argue with.
+On 492 freshly generated solutions scored by executing the official test suites, the prediction-fit metrics carry nothing: \tfa's correlation with passing is $0.00$, staying within $[-0.04, +0.06]$ inside each model, and the soft log-probability version is likewise indistinguishable from zero.
 (This is the per-solution correlation; the model-level code ranking is Table~\ref{tab:map}'s $+0.43$ row.)
-The soft log-probability version does no better.
-The other three comparison metrics were not run on code, so the code null is established for \tfa{} and gold-token log-probability only.
+The output-similarity metrics retain a weak positive signal on the same solutions: unigram-F1 correlates $+0.14$ $[+0.06, +0.21]$ and TF-IDF $+0.17$ $[+0.09, +0.23]$ with test outcomes (\texttt{papers/analysis/code\_sim\_u1.json}, \texttt{code\_sim\_tfidf.json}), far below any grading standard.
+Sentence embeddings were not run on code, so the code evidence covers four of the five comparison metrics.
 
 \begin{figure}[t]
 \centering
@@ -64,7 +64,7 @@ Per-solution \tfa{} against the reference's bits-per-character under the same mo
 \label{sec:ranking}
 
 Averaged over a benchmark, mean \tfa{} ranks models by accuracy on hard data and not at all on easy data.
-Every family ladder is positive on the three olympiad benchmarks (twelve of twelve family--benchmark cells), while on the easiest benchmarks five of twelve family ladders invert.
+Every family ladder is positive on the three olympiad benchmarks (twelve of twelve family--benchmark cells), while on the easiest benchmarks five of twelve family ladders invert (the twelve saturated cells are enumerated in Appendix~\ref{app:ladders}).
 Table~\ref{tab:map} shows the full boundary: the pooled cross-family point estimate runs from $\rho = +0.86$ on olympiad math down through zero to $-0.25$ on saturated data, though the saturated-benchmark intervals are wide and straddle zero, so the reversal reading is a point-estimate trend and the ladder counts above are the robust statement.
 
 \begin{table}[t]
@@ -88,7 +88,7 @@ benchmark & regime & cross-family $\rho$ [95\% CI] & within-family $\rho$ \\
 \end{tabular}
 \caption{\textbf{The boundary map: where reference matching ranks models.}
 Cross-family Spearman correlation between mean \tfa{} and accuracy (17 models; bootstrap CIs) per benchmark; the within-family column is the Qwen size ladder specifically, and best values are in bold.
-Ranking degrades from olympiad to saturated benchmarks, with code sitting mid-scale; the Qwen ladder stays positive everywhere, but across all families five of twelve ladders invert on the easiest benchmarks (see body), because family style cancels inside a family and survives across families.
+Ranking degrades from olympiad to saturated benchmarks, with code sitting mid-scale; the Qwen ladder stays positive everywhere, but across all families five of twelve ladders invert on the easiest benchmarks (Appendix~\ref{app:ladders}), because family style cancels inside a family and survives across families.
 \textbf{Takeaway:} matching ranks models only on hard benchmarks with information-dense references, and cross-family comparison needs a shared style or a verifier.}
 \label{tab:map}
 \end{table}
@@ -111,8 +111,7 @@ The consequence for leaderboards: reference matching is legitimate exactly when 
 
 \subsection{Repairs fail as predicted: the class is empty, not under-tuned}
 \label{sec:slate}
-No reweighting rescues the per-solution metric, and the mechanism predicted every failure in advance.
-A natural response to RQ1 is that some reweighting rescues the metric; the mechanism predicts otherwise, and we tested that prediction adversarially.
+A natural response to RQ1 is that some reweighting rescues the per-solution metric; the mechanism predicts otherwise, we tested that prediction adversarially, and every failure landed as predicted.
 Every variant in Table~\ref{tab:slate} was proposed either by our reviewers or by the mechanism itself, and the directional outcome was registered in the repository before the run.
 
 \begin{table}[t]
@@ -158,7 +157,7 @@ Right: the prefix-repair signal rises with truncation depth, from a pure difficu
 \subsection{RQ4: What does grade? Verification signals, with a correctness caveat.}
 \label{sec:verify}
 
-Executed tests are the ceiling case: a free, perfect oracle wherever they exist, and the standard against which \tfa{} scored $0.00$.
+Executed tests are the ceiling case: a free correctness oracle, up to test coverage, wherever they exist, and the standard against which \tfa{} scored $0.00$.
 
 The prefix-repair curve is the strongest cheap signal we found.
 Against the 60-item random label set, its correlation with soundness rises with truncation depth: $+0.54$ at $k{=}0$ (solving from scratch, a pure difficulty probe), $+0.68$ at $k{=}0.25$, $+0.76$ at $k{=}0.5$, and $+0.78$ at $k{=}0.75$ (Figure~\ref{fig:sweeps}, right).
@@ -175,7 +174,7 @@ At $k{=}0.75$ the correlation among correct-only solutions is $+0.19$ ($n{=}48$)
 The honest claim is therefore this: the prefix-repair curve is a strong judge-free detector of whether the reasoning reaches the right answer, and only modestly more.
 It is not certified as a beyond-correctness grader on this anchor set.
 The beyond-correctness margin does not separate the classes either: \tfa's within-correct correlation of $+0.21$ ($n{=}48$, interval wide) ties or exceeds every verification signal's within-correct value (Appendix~\ref{app:classtable}), so no cheap signal, comparison or verification, demonstrably grades beyond correctness on this anchor set.
-The only signal that demonstrably does is the referenced frontier judge, which reads $+0.81$ within-correct on the divergence-selected stratum of the companion audit~\cite{companionA}.
+The strongest candidate is the referenced frontier judge, which reads $+0.81$ within-correct on a divergence-selected stratum of the companion audit~\cite{companionA}, where selection inflates within-correct variance by construction; on the random set here it reads $-0.14$, so its beyond-correctness grading is unresolved as well.
 
 The answer-swap counterfactual is the cheap end of the same class: one forward pass, no judge, no completion.
 It is positive in 8 of 9 models (mean within-model $r = +0.13$, best $+0.34$), confirming the class prediction in direction while remaining too weak to use alone.

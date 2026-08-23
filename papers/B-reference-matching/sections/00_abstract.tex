@@ -6,7 +6,7 @@ Many benchmarks ship a gold reference solution, so the cheapest way to evaluate 
 We ask what reference matching actually measures, across seventeen models from seven families on eight math and code benchmarks, anchored to blind human grades of reasoning quality and to executed tests.
 % 3 finding 1: grading null + mechanism
 No form of matching can grade an individual solution.
-Five metrics spanning the space, from teacher-forced accuracy to sentence embeddings, land in $[-0.33, +0.14]$ against human soundness grades, and the two prediction-fit metrics run on code, teacher-forced accuracy and gold-token log-probability, land at $0.00$ against executed tests on 492 code solutions.
+Five metrics spanning the space, from teacher-forced accuracy to sentence embeddings, land in $[-0.33, +0.14]$ against human soundness grades; on 492 code solutions scored by executed tests, the two prediction-fit metrics, teacher-forced accuracy and gold-token log-probability, are indistinguishable from zero, and the output-similarity metrics carry only a weak positive signal (unigram-F1 $+0.14$, TF-IDF $+0.17$), far below any grading standard.
 The reason is mechanistic: $83$--$92\%$ of per-solution variance beyond model level is reference-specific nuisance, and pooled across 6{,}000 model--item pairs, teacher-forced accuracy is $80\%$ reference perplexity (bits-per-character).
 Every targeted repair we or our reviewers proposed failed as predicted, with four predictions pre-registered.
 % 4 finding 2: ranking boundary

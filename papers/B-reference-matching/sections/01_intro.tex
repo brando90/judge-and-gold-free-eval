@@ -19,7 +19,7 @@ That assumption fails.
 The operative axis is not cost but \emph{mechanism}.
 Evaluation signals divide into a \emph{comparison class}, which scores resemblance to the reference text, and a \emph{verification class}, which checks whether the solution reaches or supports a checkable endpoint.
 The comparison class does not degrade gracefully.
-It measures nothing about the individual solution at any price point, because its variance is dominated by a property of the reference itself.
+At no price point does it meet any grading standard for the individual solution, because its variance is dominated by a property of the reference itself.
 
 % P4: instantiation
 We anchor everything to blind human grades on two deliberately separated scales: soundness of the reasoning and quality of the writing.
@@ -30,7 +30,7 @@ We test three judge-free verification signals: executed tests, a prefix-repair c
 
 % P5: evaluation summary, organized as four questions
 We organize the results as four research questions.
-\textbf{RQ1} asks whether reference-similarity metrics can grade individual solutions, and the answer is a class-level null: against human soundness on the 60-item random label set, all five comparison metrics land in $[-0.33, +0.14]$, where a frontier LLM judge reaches $+0.89$ on identical items, and the two prediction-fit metrics run on code, \tfa{} and gold-token log-probability, are indistinguishable from zero against executed tests on 492 code solutions.
+\textbf{RQ1} asks whether reference-similarity metrics can grade individual solutions, and the answer is a class-level null: against human soundness on the 60-item random label set, all five comparison metrics land in $[-0.33, +0.14]$, where a frontier LLM judge reaches $+0.89$ on identical items, and on 492 code solutions the two prediction-fit metrics, \tfa{} and gold-token log-probability, are indistinguishable from zero against executed tests, while the output-similarity metrics carry only a weak positive signal there ($+0.14$ to $+0.17$).
 \textbf{RQ2} asks why, and the answer is mechanistic: for \tfa, $83$--$92\%$ of per-solution variance beyond model level is reference-specific nuisance, pooled across 6{,}000 model--item pairs \tfa{} correlates at $-0.895$ with reference perplexity (bits-per-character), and replacing worked references with answer lines collapses what signal exists.
 It meters compressibility, not quality.
 \textbf{RQ3} asks when matching can still rank models, and the answer is a boundary the mechanism predicts: ranking survives on hard data with information-dense references ($+0.86$ on olympiad math) and degrades on saturated data, benchmarks where most models already score near ceiling, where the point estimates turn negative, all twelve hard-benchmark family ladders stay positive, five of twelve saturated ladders invert, and every targeted repair we or our reviewers proposed left the per-solution signal at zero or made it worse.
