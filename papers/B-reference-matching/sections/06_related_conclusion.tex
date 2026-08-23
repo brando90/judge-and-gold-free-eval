@@ -29,7 +29,8 @@ It is not a spectrum.
 It is two mechanisms.
 Signals that compare a solution to reference text measure the reference: $83$--$92\%$ cross-family item nuisance, and $80\%$ reference perplexity in the pooled corollary.
 No reweighting recovers a grading signal, because there is none to recover.
-Signals that verify a checkable endpoint grade in proportion to how much verification they perform, from a one-pass answer-swap margin, through the prefix-repair curve, to executed tests, though on this anchor set the grading they deliver is largely the detection of correctness itself.
+Signals that verify a checkable endpoint deliver something narrower than grading: executed tests are a correctness oracle, and the prefix-repair curve is a judge-free detector of whether reasoning reaches the right answer, requiring the gold final answer, with a difficulty-controlled partial of $+0.69$ and a class-level success called by a pre-registered prediction.
+The evidence that any cheap signal grades beyond correctness is absent on this anchor set, so the beyond-correctness grader remains an open problem.
 The boundary for leaderboard use is equally mechanistic: matching ranks models exactly when references are worth predicting, and reference perplexity can be measured in advance to check that condition.
 The answer-line intervention supports this reading with a large point contrast ($+0.35 \to +0.02$) whose model-level paired delta is still uncertain ($+0.33$, 95\% CI $[-0.16, +0.81]$, $n{=}17$ models), so it is supporting evidence rather than standalone proof.
 Three of the four pre-registered predictions landed as called; the position-weighted register predicted a null, and the observed sign flip to $-0.37$ at last-four tokens means that register was directionally wrong, not confirmed.

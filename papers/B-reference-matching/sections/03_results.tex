@@ -14,12 +14,16 @@ Every interval includes zero except unigram-F1's, which is weakly negative.
 The five-metric battery carries no multiplicity correction, so this single-interval exclusion is suggestive, not confirmatory.
 On the same solutions the LLM judge reaches $+0.89$, and the single-point prefix-repair signal at $k{=}0.5$ reaches $+0.76$.
 
+\begingroup
+\sloppy
 Code sharpens the picture into a two-part statement against an oracle no one can argue with.
 On 492 freshly generated solutions scored by executing the official test suites, the prediction-fit metrics carry nothing: \tfa's correlation with passing is $0.00$, staying within $[-0.04, +0.06]$ inside each model, and the soft log-probability version is likewise indistinguishable from zero.
 (This is the per-solution correlation; the model-level code ranking is Table~\ref{tab:map}'s $+0.43$ row.)
-The output-similarity metrics retain a weak positive signal on the same solutions: unigram-F1 correlates $+0.14$ and TF-IDF $+0.17$ with test outcomes (\texttt{papers/analysis/code\_sim\_u1.json}, \texttt{code\_sim\_tfidf.json}), far below any grading standard.
-These are point estimates; the canonical artifacts ship without interval estimates, so we report none.
+The output-similarity metrics retain a weak positive signal on the same solutions: unigram-F1 correlates $+0.13$ $[+0.06, +0.21]$ and TF-IDF $+0.17$ $[+0.10, +0.23]$ with test outcomes ($n{=}492$; \texttt{papers/analysis/code\_sims.json}), far below any grading standard.
+Both intervals exclude zero, and the code-side unigram-F1 is positive, the opposite sign from its anchor-set math value of $-0.33$; the two numbers describe different settings (test outcomes on code versus human soundness on math), so we keep them distinct and do not pool them.
 Sentence embeddings were not run on code, so the code evidence covers four of the five comparison metrics.
+\par
+\endgroup
 
 \begin{figure}[t]
 \centering
@@ -27,7 +31,8 @@ Sentence embeddings were not run on code, so the code evidence covers four of th
 \caption{\textbf{The class-level null on the 60-item random label set.}
 Pearson correlation with blind human soundness, with bootstrap 95\% CIs, for every signal in the canonical analysis: comparison metrics in orange, verification signals in blue, and LLM judges (expensive comparison points) as hollow markers.
 \textbf{Takeaway:} every comparison metric straddles zero or sits weakly negative (unigram-F1's CI excludes zero, uncorrected for the five-metric battery), while the deeper verification signals grade.
-The prefix-repair curve mean's $+0.79$ (Pearson) sits near the approximate cross-rater Pearson agreement of $0.80$ measured on a different shared block (Spearman $0.70$; the second rater used an older overall-quality schema, so the ceiling is approximate), but its Spearman is $+0.41$ and its signal is largely correctness-mediated (Section~\ref{sec:verify}): among correct-only solutions the curve mean drops to $+0.07$.}
+Dotted lines mark the inter-rater Pearson $0.80$ and the implied single-rater ceiling $0.89$ (Section~\ref{sec:setup}); the judge ($+0.89$) and the GPT critic ($+0.91$) sit at the single-rater ceiling, while the prefix-repair curve mean's $+0.79$ sits clearly below it.
+The curve mean's Spearman is $+0.41$ and its signal is largely correctness-mediated (Section~\ref{sec:verify}): among correct-only solutions it drops to $+0.07$ $[-0.21, +0.33]$.}
 \label{fig:class}
 \end{figure}
 
@@ -98,7 +103,7 @@ benchmark & regime & cross-family $\rho$ [95\% CI] & within-family $\rho$ \\
 \end{tabular}
 \caption{\textbf{The boundary map: where reference matching ranks models.}
 Cross-family Spearman correlation between mean \tfa{} and accuracy (17 models; bootstrap CIs) per benchmark; the within-family column is the Qwen size ladder specifically, and best values are in bold.
-Within-family Spearmans are computed on ladders of three to six models, where the statistic takes only a few discrete values, so read signs and consistency rather than magnitudes; the \textsc{SWE-bench} within-family entry is a four-model ladder and is a preliminary observation (Section~\ref{sec:ranking}).
+Within-family Spearmans are computed on ladders of three to five models, where the statistic takes only a few discrete values, so read signs and consistency rather than magnitudes; the \textsc{SWE-bench} within-family entry is a four-model ladder and is a preliminary observation (Section~\ref{sec:ranking}).
 Ranking degrades from olympiad to saturated benchmarks, with code sitting mid-scale; the Qwen ladder stays positive everywhere, but across all families five of twelve ladders invert on the easiest benchmarks (Appendix~\ref{app:ladders}), because family style cancels inside a family and survives across families.
 \textbf{Takeaway:} matching ranks models only on hard benchmarks with information-dense references, and cross-family comparison needs a shared style or a verifier.}
 \label{tab:map}
@@ -168,7 +173,7 @@ Right: the prefix-repair signal rises with truncation depth in Pearson, from a p
 \label{fig:sweeps}
 \end{figure}
 
-\subsection{RQ4: What does grade? Verification signals, with a correctness caveat.}
+\subsection{RQ4: What does grade? Verification detects correctness; grading beyond it stays open.}
 \label{sec:verify}
 
 Executed tests are the ceiling case: a free correctness oracle, up to test coverage, wherever they exist, and the standard against which \tfa{} scored $0.00$.
@@ -177,32 +182,38 @@ The prefix-repair curve is the strongest cheap signal we found.
 Against the 60-item random label set, its Pearson correlation with soundness rises with truncation depth: $+0.54$ at $k{=}0$ (solving from scratch, a pure difficulty probe), $+0.68$ at $k{=}0.25$, $+0.76$ at $k{=}0.5$, and $+0.78$ at $k{=}0.75$ (Figure~\ref{fig:sweeps}, right).
 The mean over the curve reaches $+0.79$ $[+0.61, +0.92]$.
 The monotone rise holds in Pearson only: the Spearman profile is non-monotone ($+0.47$, $+0.32$, $+0.48$, $+0.46$ at the four depths), and the curve mean's Spearman is $+0.41$, so we do not claim a monotone depth profile in rank terms.
-The headline replicates across completer families: rerunning the curve with a phi-4 completer on the 42 anchor traces it covers gives a curve mean of $+0.82$ $[+0.68, +0.92]$ and $+0.79$ $[+0.60, +0.95]$ at $k{=}0.75$ (\texttt{papers/analysis/pv\_completer\_crossfam.json}, \texttt{pv\_completer\_matched.json}).
+The headline replicates across completer families: rerunning the curve with a phi-4 completer on the 42 anchor traces it covers gives a curve mean of $+0.82$ $[+0.68, +0.91]$ (\texttt{papers/analysis/pv\_completer.json}).
 The 18 uncovered traces are exactly the 18 anchor traces generated by phi-4 itself, so the phi-4 completer grades zero Phi-family traces by construction, and the missingness is deterministic, not selective; the same-family-contamination worry is structurally excluded rather than merely sampled around.
-On the matched 42 traces the Qwen-14B completer gives $+0.89$ $[+0.76, +0.97]$, overlapping the phi-4 interval, so the signal is not an artifact of the Qwen completer family.
-The Qwen number on this matched subset is higher than its full-set $+0.79$ because the excluded phi-4-generated traces are harder to complete.
+On the matched 42 traces the Qwen-14B completer gives $+0.89$ $[+0.76, +0.97]$, overlapping the phi-4 completer's $+0.82$ $[+0.68, +0.92]$ there, so the signal is not an artifact of the Qwen completer family.
+The matched 42 traces are all Qwen-generated, and sixteen of them were generated by the Qwen-14B completer model itself, so the matched comparison should be read with that composition in mind.
+The Qwen completer's matched-subset value ($+0.89$) and its full-set value ($+0.79$) differ by subset composition, and we do not attribute a cause.
+A direct check rules out one candidate explanation: the Qwen completer's mean process value is $0.776$ on the 18 excluded phi-4 traces versus $0.725$ on the 42 covered traces, so the excluded traces are, if anything, easier to complete, not harder.
 This is the profile that ``the trace's reasoning causally supports its answer'' should produce.
 Controlling for difficulty via the $k{=}0$ arm, the prefix's added completability still carries $+0.69$.
 For scale: on the same labels every comparison metric sits at $|r| \le 0.33$, and the LLM judge reads $+0.89$ (Pearson) with a Spearman of $+0.43$.
-In rank terms the curve mean ($\rho = +0.41$) and the judge ($\rho = +0.43$) are essentially tied, and the range-restriction account given for the judge's Spearman in Section~\ref{sec:setup} applies equally to the curve mean's.
-The curve mean's $+0.79$ (Pearson) sits near the approximate cross-rater agreement measured on a different, shared block of $n{=}20$ (Pearson $0.80$, Spearman $0.70$).
-That agreement is itself approximate: the second rater graded overall quality under an older schema rather than soundness under this paper's rubric, so we treat the comparison as indicative of magnitude only, and in Spearman terms the curve mean sits well below it.
+In rank terms the curve mean ($\rho = +0.41$) ties the referenced judge ($\rho = +0.43$) but trails the critic protocols ($0.61$ for the GPT critic, $0.54$ for the Claude critic) by $0.13$ to $0.20$; the range-restriction account given for the judge's Spearman in Section~\ref{sec:setup} applies equally to the curve mean's, but not to the critics', which are computed on the same restricted set.
+Against the ceiling comparator of Section~\ref{sec:setup}, the judge ($+0.89$) and the GPT critic ($+0.91$) sit at the implied single-rater ceiling of $0.89$, while the curve mean's $+0.79$ sits clearly below it.
+That three signals exceed the inter-rater Pearson of $0.80$ is itself evidence that the inter-rater figure is not the attainable ceiling for a signal correlated with a single rater's labels.
 Its costs are real: thirty-two completions per solution (eight at each of four cut depths), and a completer whose strength has to be chosen.
 We expect a middle band of completer strength to be required, since a completer too weak cannot finish sound work and one too strong rescues broken work.
 But the two completers we ran (Qwen2.5-14B and phi-4) are both mid-sized, so the middle-band requirement is a design expectation here, not a measured result.
 
+\begingroup
+\sloppy
 The curve's signal is largely mediated by final-answer correctness.
-At $k{=}0.75$ the correlation among correct-only solutions is $+0.19$ ($n{=}48$), and the curve mean drops to $+0.07$, with wide intervals at that sample size.
-The phi-4 completer reproduces this pattern: within-correct $+0.28$ at $k{=}0.75$ and $+0.02$ for the curve mean ($n{=}32$, intervals wide), so the correctness-mediation reading is not a completer-family artifact either.
-The honest claim is therefore this: the prefix-repair curve is a strong judge-free detector of whether the reasoning reaches the right answer, and only modestly more.
-It is not certified as a beyond-correctness grader on this anchor set.
-The beyond-correctness margin does not separate the classes either: \tfa's within-correct correlation of $+0.21$ ties or exceeds every verification signal's within-correct value (Appendix~\ref{app:classtable}), so no cheap signal, comparison or verification, demonstrably grades beyond correctness on this anchor set.
-These within-correct comparisons are point comparisons: intervals at $n{=}48$ are wide and overlapping, and the five-metric battery has no multiplicity correction, so single-interval exclusions elsewhere in the battery (unigram-F1's $-0.33$) are suggestive, not confirmatory.
-The strongest candidate is the referenced frontier judge, which reads $+0.81$ within-correct on a divergence-selected stratum of the companion audit~\cite{companionA}, where selection inflates within-correct variance by construction; on the random set here it reads $-0.14$, so its beyond-correctness grading is unresolved as well.
+Among correct-only solutions ($n{=}48$) the $k{=}0.75$ point is $+0.19$ $[-0.20, +0.55]$ and the curve mean is $+0.07$ $[-0.21, +0.33]$ (\texttt{papers/analysis/within\_correct\_cis.json}).
+The phi-4 completer reproduces this pattern with a within-correct curve mean of $+0.02$ ($n{=}32$), so the correctness-mediation reading is not a completer-family artifact either.
+The certified claim is therefore this: the prefix-repair curve is a judge-free detector of whether the reasoning reaches the right answer, it requires the gold final answer to run, and it is not certified as a beyond-correctness grader on this anchor set.
+No cheap signal is: every within-correct value from a cheap signal, comparison or verification, sits inside wide overlapping intervals (\tfa{} $+0.21$ $[-0.10, +0.47]$; Appendix~\ref{app:classtable}), so no cheap signal demonstrably grades beyond correctness on this anchor set.
+The five-metric battery also carries no multiplicity correction, so single-interval exclusions elsewhere in the battery (unigram-F1's $-0.33$) are suggestive, not confirmatory.
+The referenced frontier judge's within-correct value on this random set is negative ($-0.14$ $[-0.25, -0.09]$), which we attribute to range restriction; the same judge reads $+0.81$ within-correct on a divergence-selected stratum of the companion audit~\cite{companionA}, where selection inflates within-correct variance by construction, so its beyond-correctness grading is unresolved as well.
+The constructive results that survive this scoping are the difficulty-controlled partial ($+0.69$ after controlling for the $k{=}0$ arm) and the class-level advance prediction that verification signals would carry signal where comparison metrics carry none, which landed as registered.
+\par
+\endgroup
 
 The answer-swap counterfactual is the cheap end of the same class: one forward pass, no judge, no completion.
 It is positive in 8 of 9 models (mean within-model $r = +0.13$, best $+0.34$), confirming the class prediction in direction while remaining too weak to use alone.
-The ordering within the verification class (tests, then the repair curve, then answer-swap) tracks how much verification each performs, which is the taxonomy's internal consistency check.
+The full-set ordering within the verification class (tests, then the repair curve, then answer-swap) tracks how much verification each performs, which is the taxonomy's internal consistency check; on the within-correct margin, none of the cheap signals separates from zero.
 
 What the working signals share is that none treats the reference text as a target.
 Executed tests consume the reference behavior, the prefix-repair curve uses only the reference's final answer as a checkable endpoint, and the answer-swap margin uses that answer as a counterfactual contrast.

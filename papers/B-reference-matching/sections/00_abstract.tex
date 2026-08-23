@@ -3,21 +3,22 @@
 % 1 problem motivation
 Many benchmarks ship a gold reference solution, so the cheapest way to evaluate a model's reasoning is to score a solution by how much it resembles that reference.
 % 2 the question
-We ask what reference matching actually measures, across seventeen models from four model families on eight math and code benchmarks, anchored to blind human grades of reasoning quality and to executed tests.
+We ask what reference matching actually measures, across seventeen models from four model families on eight math and code benchmarks plus an agentic setting, anchored to blind human grades of reasoning quality and to executed tests.
 The sharpest such metric, teacher-forced accuracy, was recently proposed as a judge-free evaluation signal; we do not introduce it but characterize it, mapping where it works, where it saturates, and where it fails.
 % 3 finding 1: grading null + mechanism
 No form of matching can grade an individual solution.
-Five metrics spanning the space, from teacher-forced accuracy to sentence embeddings, land in $[-0.33, +0.14]$ against human soundness grades; on 492 code solutions scored by executed tests, the two prediction-fit metrics, teacher-forced accuracy and gold-token log-probability, are indistinguishable from zero, and the output-similarity metrics carry only a weak positive signal (unigram-F1 $+0.14$, TF-IDF $+0.17$), far below any grading standard.
-The reason is mechanistic: $83$--$92\%$ of per-solution variance beyond model level is reference-specific nuisance, and pooled across 6{,}000 model--item pairs, teacher-forced accuracy is $80\%$ reference perplexity (bits-per-character).
+Five metrics spanning the space, from teacher-forced accuracy to sentence embeddings, land in $[-0.33, +0.14]$ against human soundness grades; on 492 code solutions scored by executed tests, the two prediction-fit metrics, teacher-forced accuracy and gold-token log-probability, are indistinguishable from zero, and the output-similarity metrics carry only a weak positive signal (unigram-F1 $+0.13$, TF-IDF $+0.17$), far below any grading standard.
+The reason is mechanistic: $83$--$92\%$ of per-solution variance beyond model level is an item effect that replicates across model families, nuisance that can only be a property of the reference, and pooled across 6{,}000 model--item pairs, teacher-forced accuracy is $80\%$ reference perplexity (bits-per-character).
 Every targeted repair we or our reviewers proposed failed to recover a grading signal; of the four pre-registered predictions, three landed as called and one registered null instead produced a sign flip.
 % 4 finding 2: ranking boundary
 Matching can rank models, but only when the reference is worth predicting.
 Replacing each worked reference with its answer line collapses the ranking signal on the same items (Spearman $+0.35 \to +0.02$), though the model-level paired delta of $+0.33$ has a 95\% CI of $[-0.16, +0.81]$ at seventeen models, so the intervention supports the mechanism rather than proving it on its own.
 The point-estimate boundary runs from $+0.86$ on olympiad math to negative values on saturated benchmarks, meaning benchmarks where most models already score near ceiling; the robust version of this trend is the ladder count, with twelve of twelve hard-benchmark family ladders positive and five of twelve inverting on saturated data.
-% 5 finding 3: what grades
-What does grade is verification.
-Executed tests are a free oracle where they exist, and a prefix-repair curve, which truncates a solution and asks whether a fixed completer still reaches the right answer, correlates at Pearson $+0.79$ (Spearman $+0.41$) with human soundness with no LLM judge involved.
-That signal is largely correctness-mediated: among correct-only solutions the curve mean drops to $+0.07$, so the curve is a strong judge-free detector of whether reasoning reaches the right answer, and only modestly more.
+% 5 finding 3: what grades (certified scope)
+What we can certify on the verification side is narrower than a grading claim.
+Executed tests are a free correctness oracle where they exist.
+A prefix-repair curve, which truncates a solution and asks whether a fixed completer still reaches the right answer, is a judge-free detector of whether reasoning reaches the right answer: it requires the gold final answer, correlates at Pearson $+0.79$ with human soundness with no LLM judge involved, retains $+0.69$ after controlling for problem difficulty, and its class-level success was called by a pre-registered prediction.
+The evidence that it grades beyond correctness is modest: among correct-only solutions the curve mean drops to $+0.07$ inside a wide interval, so a cheap beyond-correctness grader remains an open problem.
 % 6 implications
 Two rules follow: use a reference as an endpoint for a verifier, never as a similarity target, and for leaderboards, report reference perplexity alongside accuracy, because matching is legitimate exactly when references are worth predicting.
 \end{abstract}

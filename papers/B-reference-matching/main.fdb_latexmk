@@ -1,13 +1,13 @@
 # Fdb version 4
-["bibtex main"] 1787470653.44106 "main.aux" "main.bbl" "main" 1787470654.20038 0
-  "./references.bib" 1787469243.30098 4295 6bd16cff0d0c0e56e168dd3ec06225ed ""
+["bibtex main"] 1787475107.73745 "main.aux" "main.bbl" "main" 1787475195.44469 0
+  "./references.bib" 1787472346.80401 6280 cbb8f56995f9a5fc8c92483f48dd9ddb ""
   "/usr/local/texlive/2026/texmf-dist/bibtex/bst/base/plain.bst" 1292289607 20613 bd3fbfa9f64872b81ac57a0dd2ed855f ""
-  "main.aux" 1787470653.96302 17301 4329bc8696787d6cf44104847610d4d1 "pdflatex"
+  "main.aux" 1787475195.21331 20961 ca76e72f8f183ba28fa1718ffdfe20b5 "pdflatex"
   (generated)
   "main.bbl"
   "main.blg"
   (rewritten before read)
-["pdflatex"] 1787470653.53647 "main.tex" "main.pdf" "main" 1787470654.20051 0
+["pdflatex"] 1787475194.77135 "main.tex" "main.pdf" "main" 1787475195.44483 0
   "/usr/local/texlive/2026/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
   "/usr/local/texlive/2026/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1246382020 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -122,21 +122,21 @@
   "/usr/local/texlive/2026/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1776476254 5573038 b99aad5e4898a9034e953632f940512b ""
   "/usr/local/texlive/2026/texmf-var/web2c/pdftex/pdflatex.fmt" 1774209607 3636776 dc5fa9b6b1453b9d196cd42edf876004 ""
   "/usr/local/texlive/2026/texmf.cnf" 1774209515 577 648cd9f92f9c0eac486f4c71c85cfbbe ""
-  "figures/fig_class.pdf" 1787469252.04645 26788 9009d92c0d6f14514dbd3a3e1605d1bd ""
-  "figures/fig_mechanism.pdf" 1787469252.23282 104900 4f4739e6c8bcdb17c0671ff743cdfee0 ""
-  "figures/fig_sweeps.pdf" 1787469252.40177 25657 5b6ff0b5362d4b9645a736784b92bfef ""
-  "main.aux" 1787470653.96302 17301 4329bc8696787d6cf44104847610d4d1 "pdflatex"
-  "main.bbl" 1787470653.53452 3659 632e89ba129742d928c2c6521bb4b464 "bibtex main"
-  "main.out" 1787470653.96409 4581 f02816dfb2dfb5b19cb8c277dba408d6 "pdflatex"
+  "figures/fig_class.pdf" 1787475089.30306 22916 2f065d8ea81d901ddb71bfeba8357a13 ""
+  "figures/fig_mechanism.pdf" 1787475089.45424 100579 738c66767b8653c0b8a46a84c2d7f88f ""
+  "figures/fig_sweeps.pdf" 1787475089.56981 18777 9c3a2046042eb71b06e0b8038b5f9326 ""
+  "main.aux" 1787475195.21331 20961 ca76e72f8f183ba28fa1718ffdfe20b5 "pdflatex"
+  "main.bbl" 1787475107.83593 5331 ae4ae1dae09f5b9343fcb97cdeb17b87 "bibtex main"
+  "main.out" 1787475195.21428 4705 222c22ac7e07aa9b586a105cf24a9f66 "pdflatex"
   "main.tex" 1787468994.44347 1407 9a2770f7160545a3bc1bab6bba6b5040 ""
-  "sections/00_abstract.tex" 1787470585.63759 2715 a3117e94579ef58d8b7804049173a2aa ""
-  "sections/01_intro.tex" 1787470649.34568 5133 5e7fdb428412b56ab44e61d27e93ec89 ""
-  "sections/02_setup.tex" 1787469049.61292 4503 dc0edd154fae7dcc2d3d2b987934e547 ""
-  "sections/03_results.tex" 1787470633.71587 17714 76c5155794174f2455ace7a24f14e97f ""
-  "sections/04_guidance.tex" 1787470588.07885 1659 5850f374ca71f6bd00e2cdc6a219e423 ""
-  "sections/05_limitations.tex" 1787470636.3424 1748 01458df2745d0ba79684f6704592d78b ""
-  "sections/06_related_conclusion.tex" 1787469185.62338 3086 d80ea4b50ee27b4663ded98f0819098d ""
-  "sections/07_appendix.tex" 1787470629.51677 9060 5f58c7e09ba655951836712a6cd4de59 ""
+  "sections/00_abstract.tex" 1787474884.37675 3612 0e2203b197d30b18eaa940a90d52e3eb ""
+  "sections/01_intro.tex" 1787474893.41804 5890 87e0e244011a0647ee14ff3357a960de ""
+  "sections/02_setup.tex" 1787474901.5962 5468 06cd28bea7f47035c9a98e75a2b230f5 ""
+  "sections/03_results.tex" 1787475184.63488 23885 85c4ff7e46919b4f4d49f4e28f4ee537 ""
+  "sections/04_guidance.tex" 1787474971.77533 1900 c7d481162c2165b57688f987dba4efd7 ""
+  "sections/05_limitations.tex" 1787474988.43718 3400 f037ce674252db85f53e0b144519b648 ""
+  "sections/06_related_conclusion.tex" 1787475000.11369 5432 5171e103931f2beda56fd28b899c33fb ""
+  "sections/07_appendix.tex" 1787475158.5266 12446 a8e14789bf1fb932dd091a497298c865 ""
   (generated)
   "main.aux"
   "main.log"

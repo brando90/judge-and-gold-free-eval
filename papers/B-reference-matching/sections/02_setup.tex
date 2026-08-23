@@ -24,12 +24,13 @@ LLM judges sit in either class depending on protocol; auditing judges is the sub
 \paragraph{Human grades.}
 Annotators graded solutions blind, with no model names and no metric scores, on two 0--10 scales with written anchors: \emph{soundness} (is every step valid; ignore the writing) and \emph{style} (is it clear and well-organized; ignore correctness).
 Two annotators graded a shared block of $n{=}20$ solutions to estimate cross-rater agreement: soundness Pearson $0.80$, Spearman $0.70$, and style Pearson $0.52$ (\texttt{papers/analysis/dependability.json}).
-The second rater graded overall quality under an older schema rather than soundness under this paper's rubric, and clarity rather than style, so these figures are an approximate reliability ceiling, not a same-rubric replication.
+The second rater graded overall quality under an older schema rather than soundness under this paper's rubric, and clarity rather than style, so these figures are an approximate reliability estimate, not a same-rubric replication.
+Because every validity correlation in this paper compares a signal to a single rater's labels, the relevant ceiling is not the inter-rater Pearson $0.80$ but the implied single-rater ceiling $\sqrt{0.80} = 0.89$ (\texttt{one\_rater\_ceiling} in the same artifact), and we use $0.89$ as the ceiling comparator throughout.
 The primary anchor is a single uniformly random label set of 60 \textsc{MATH-500} solutions, the \emph{60-item random label set}; every human-grade correlation in this paper joins against these labels.
 A frontier LLM judge (GPT-5.2, with the gold solution in context) graded the same items and serves as an expensive-reader comparison point.
 The judge's Pearson correlation with human soundness is $+0.89$ $[+0.76, +0.97]$; its Spearman is $+0.43$, depressed by range restriction, because most judge scores concentrate near the top of the scale.
 The same two frontier model families also graded the items as \emph{critics} (\texttt{critic\_gpt} and \texttt{critic\_opus} in Figure~\ref{fig:class}): the same frontier models under a two-scale panel rubric, with the reference in context.
-Their Pearson correlations with human soundness are $+0.91$ and $+0.88$, and the spread across the three protocols shows that raw validity is sensitive to the judging protocol, not only to the underlying model.
+Their Pearson correlations with human soundness are $+0.91$ and $+0.88$, close to the judge's $+0.89$, but the protocols separate in rank terms (Spearman $0.43$ for the referenced judge versus $0.61$ for the GPT critic) and on the within-correct margin ($-0.14$ versus $+0.17$), so validity is sensitive to the judging protocol, not only to the underlying model.
 All figures come from the canonical analysis (\texttt{papers/analysis/canonical\_validity.md}).
 For code correctness no human is needed: we execute the tests.
 
