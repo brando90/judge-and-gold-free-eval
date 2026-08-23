@@ -19,11 +19,12 @@ TF-IDF cosine & weighted similarity & $+0.72$ / $+0.12$ & $69$ / $8$ / $23$ & $-
 sentence embeddings & semantic similarity & $+0.87$ / $+0.29$ & $\sim$$70$ / $8$ / $21$ & $+0.14$ $[-0.08,+0.40]$ & $+0.13$ & $-0.01$ \\
 unigram-F1 & raw overlap & $-0.49$ / $+0.18$ & $45$--$55$ / $12$--$15$ / $32$--$41$ & $-0.33$ $[-0.58,-0.12]$ & $-0.29$ & $+0.06$ \\
 \midrule
+free answer-correct bit & verification (endpoint only) & --- & --- & $\mathbf{+0.92}$ $[+0.78,+0.99]$ & --- & (constant) \\
 prefix repair ($k{=}0.5$) & verification & --- & --- & $+0.76$ $[+0.56,+0.91]$ & $+0.48$ & $+0.02$ \\
 prefix repair ($k{=}0.75$) & verification & --- & --- & $+0.78$ $[+0.60,+0.91]$ & $+0.46$ & $+0.19$ $[-0.20,+0.55]$ \\
 prefix-repair curve mean & verification & --- & --- & $+0.79$ $[+0.61,+0.92]$ & $+0.41$ & $+0.07$ $[-0.21,+0.33]$ \\
 \midrule
-LLM judge (referenced) & judge (protocol-dependent) & --- & --- & $\mathbf{+0.89}$ $[+0.76,+0.97]$ & $+0.43$ & $-0.14$ $[-0.25,-0.09]$ \\
+LLM judge (referenced) & judge (protocol-dependent) & --- & --- & $+0.89$ $[+0.76,+0.97]$ & $+0.43$ & $-0.14$ $[-0.25,-0.09]$ \\
 LLM critic (GPT) & judge (protocol-dependent) & --- & --- & $+0.91$ $[+0.77,+0.98]$ & $\mathbf{+0.61}$ & $+0.17$ \\
 LLM critic (Claude) & judge (protocol-dependent) & --- & --- & $+0.88$ $[+0.74,+0.97]$ & $+0.54$ & $+0.03$ \\
 \bottomrule
@@ -32,10 +33,12 @@ LLM critic (Claude) & judge (protocol-dependent) & --- & --- & $+0.88$ $[+0.74,+
 \caption{\textbf{The full metric-class table, with the Spearman and within-correct columns.}
 Prediction-fit and weighted-similarity metrics rank on hard benchmarks and their saturated point estimates collapse or turn negative; raw overlap does not rank at all (its hard-benchmark inversion is a verbosity confound: controlling output length moves $-0.49$ to $-0.07$).
 Human columns are Pearson $r$ with bootstrap 95\% CIs and Spearman $\rho$ on the 60-item set; gold-token logprob uses the $n{=}42$ subset with logprob available; the within-correct column is from the canonical analysis (\texttt{canonical\_validity.json}), with $n{=}48$ for every signal except gold-token logprob ($n{=}32$), and bootstrap CIs where computed (\texttt{within\_correct\_cis.json}); the best value in each of the Pearson and Spearman columns is in bold.
+The free answer-correct bit row is from \texttt{papers/analysis/free\_baseline.json}; it is constant within the correct-only subset, so its within-correct entry is undefined by construction, and its Spearman was not computed in that artifact.
+No signal in the table beats the free bit's $+0.92$: the prefix-repair curve mean's partial correlation with soundness given the bit is $-0.10$ $[-0.30,+0.22]$, while the bit's partial given the curve retains $+0.77$ $[+0.55,+0.95]$ (Section~\ref{sec:verify}).
 In rank terms the curve mean ($+0.41$) ties the referenced judge ($+0.43$) but trails the critic protocols ($+0.61$, $+0.54$) by $0.13$ to $0.20$.
 The within-correct column shows that no cheap signal, comparison or verification, demonstrably grades beyond correctness on this anchor set: every cheap signal's within-correct value sits inside wide overlapping intervals (\tfa{} $+0.21$ $[-0.10,+0.47]$), and the battery carries no multiplicity correction.
 The referenced judge's $-0.14$ $[-0.25,-0.09]$ reflects range restriction on the random set; the same judge reads $+0.81$ within-correct on a divergence-selected stratum of the companion audit~\cite{companionA}, where selection inflates within-correct variance by construction, so its beyond-correctness grading is unresolved on the random set.
-\textbf{Takeaway:} on the full set no comparison metric grades and the deeper verification signals do, while on the within-correct margin nothing cheap is separable from noise.}
+\textbf{Takeaway:} on the full set no comparison metric carries signal and the verification signals do, but the free answer-correct bit tops the field, and on the within-correct margin nothing cheap is separable from noise.}
 \label{tab:classfull}
 \end{table}
 
@@ -130,8 +133,9 @@ Cross-rater agreement is measured on the shared block of $n{=}20$ solutions grad
 The second rater graded overall quality under an older schema rather than soundness under this paper's rubric, and clarity rather than style, so these figures approximate reliability rather than replicate the rubric.
 The agreement is also measured on a different sample from the 60-item random label set.
 Because the validity correlations compare each signal to a single rater's labels, the comparator used in the main text is the implied single-rater ceiling $\sqrt{0.80} = 0.89$ (\texttt{one\_rater\_ceiling} in \texttt{dependability.json}), not the inter-rater $0.80$.
-Three signals (the referenced judge and both critics) exceed $0.80$ on the anchor set, which is itself evidence that the inter-rater figure is not the attainable ceiling for such comparisons.
-For all these reasons the main text treats ceiling comparisons as indicative of magnitude rather than exact.
+At $n{=}20$ the inter-rater Pearson carries a wide interval, roughly $[0.55, 0.92]$, which propagates to the implied ceiling.
+Four signals (the free answer-correct bit, the referenced judge, and both critics) exceed $0.80$ on the anchor set, which is itself evidence that the inter-rater figure is not the attainable ceiling for such comparisons.
+For all these reasons the main text treats every ceiling comparison as indicative only.
 \par
 \endgroup
 

@@ -23,6 +23,7 @@ import numpy as np
 PAPER_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FIG_DIR = os.path.join(PAPER_DIR, "figures")
 CANONICAL = os.path.join(PAPER_DIR, "..", "analysis", "canonical_validity.json")
+FREE_BASELINE = os.path.join(PAPER_DIR, "..", "analysis", "free_baseline.json")
 TFA_BPC = os.path.join(
     PAPER_DIR, "..", "..", "experiments", "tfa-vs-judge", "runs", "tfa_bpc_math500.jsonl"
 )
@@ -75,6 +76,7 @@ SIGNALS = [
     ("pv_v5", "Prefix-repair $k{=}0.5$", "verification"),
     ("pv_v75", "Prefix-repair $k{=}0.75$", "verification"),
     ("pv_mean", "Prefix-repair curve mean", "verification"),
+    ("free_bit", "Free answer-correct bit", "verification"),
     ("critic_opus", "LLM critic (Claude)", "judge"),
     ("judge_ref", "LLM judge (referenced)", "judge"),
     ("critic_gpt", "LLM critic (GPT)", "judge"),
@@ -84,6 +86,9 @@ SIGNALS = [
 def fig_class():
     with open(CANONICAL) as f:
         data = json.load(f)["signals"]
+    with open(FREE_BASELINE) as f:
+        fb = json.load(f)["answer_correct_vs_soundness"]
+    data["free_bit"] = {"pearson": fb["r"], "ci": fb["ci"]}
 
     fig, ax = plt.subplots(figsize=(6.6, 4.6))
     ys = np.arange(len(SIGNALS))
@@ -112,7 +117,7 @@ def fig_class():
     ax.axvline(0.894, color=MUTED, lw=0.8, ls=":", zorder=0)
     ax.text(
         1.0, len(SIGNALS) + 0.15,
-        "dotted: inter-rater 0.80; implied single-rater ceiling 0.89",
+        "dotted: inter-rater 0.80; implied ceiling 0.89 ($n{=}20$; indicative)",
         ha="right", va="center", fontsize=10, color=MUTED,
     )
 
@@ -202,6 +207,13 @@ def fig_sweeps():
     axL.set_title("up-weighting late tokens: decay", fontsize=10, color=INK)
     axL.set_ylim(-0.45, 0.3)
 
+    with open(FREE_BASELINE) as f:
+        free_bit = json.load(f)["answer_correct_vs_soundness"]["r"]
+    axR.axhline(free_bit, color=MUTED, lw=0.9, ls="--", zorder=1)
+    axR.text(
+        0.0, free_bit + 0.012,
+        f"free answer-correct bit ($+{free_bit:.2f}$)", fontsize=9, color=MUTED,
+    )
     axR.plot(ks, pv, "-o", color=VERIFICATION, lw=2, markersize=6, zorder=2)
     for k, v in zip(ks, pv):
         axR.annotate(
@@ -211,8 +223,8 @@ def fig_sweeps():
     axR.set_xticks(ks)
     axR.set_xlabel("truncation depth $k$")
     axR.set_ylabel("$r$ vs. human soundness")
-    axR.set_title("prefix repair: rise", fontsize=10, color=INK)
-    axR.set_ylim(0.45, 0.9)
+    axR.set_title("prefix repair: rise, below the free bit", fontsize=10, color=INK)
+    axR.set_ylim(0.45, 1.0)
 
     for ax in (axL, axR):
         ax.grid(axis="y", color=GRID, lw=0.6, zorder=0)

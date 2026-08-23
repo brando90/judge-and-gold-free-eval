@@ -3,6 +3,13 @@
 \label{sec:rules}
 
 \begin{enumerate}
+\item \textbf{Check the final answer before buying any deeper signal.}
+\begingroup
+\sloppy
+Wherever the gold final answer is extractable and matchable, the free answer-correct bit correlates $+0.92$ $[+0.78, +0.99]$ with blind human soundness on our anchor set, and no signal we tested, matching or verification, adds measurable grading information beyond it (Section~\ref{sec:verify}; \texttt{papers/analysis/free\_baseline.json}).
+Reach for completion-based verification only where a final answer cannot be extracted or matched, and note that we have not tested that setting.
+\par
+\endgroup
 \item \textbf{Never use a reference as a similarity target.}
 Its value is as context for a reader or as a checkable endpoint for a verifier (Section~\ref{sec:verify}).
 Any metric that scores resemblance to reference text inherits the nuisance decomposition of Section~\ref{sec:mechanism}, and the taxonomy correctly predicted the failure of every such metric before it was built.

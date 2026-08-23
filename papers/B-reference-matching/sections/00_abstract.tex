@@ -8,17 +8,21 @@ The sharpest such metric, teacher-forced accuracy, was recently proposed as a ju
 % 3 finding 1: grading null + mechanism
 No form of matching can grade an individual solution.
 Five metrics spanning the space, from teacher-forced accuracy to sentence embeddings, land in $[-0.33, +0.14]$ against human soundness grades; on 492 code solutions scored by executed tests, the two prediction-fit metrics, teacher-forced accuracy and gold-token log-probability, are indistinguishable from zero, and the output-similarity metrics carry only a weak positive signal (unigram-F1 $+0.13$, TF-IDF $+0.17$), far below any grading standard.
-The reason is mechanistic: $83$--$92\%$ of per-solution variance beyond model level is an item effect that replicates across model families, nuisance that can only be a property of the reference, and pooled across 6{,}000 model--item pairs, teacher-forced accuracy is $80\%$ reference perplexity (bits-per-character).
+The reason is mechanistic: $83$--$92\%$ of per-solution variance beyond model level is an item effect that replicates across model families, a property of the reference text rather than of any one model's solution, and pooled across 6{,}000 model--item pairs, teacher-forced accuracy is $80\%$ reference perplexity (bits-per-character).
 Every targeted repair we or our reviewers proposed failed to recover a grading signal; of the four pre-registered predictions, three landed as called and one registered null instead produced a sign flip.
 % 4 finding 2: ranking boundary
 Matching can rank models, but only when the reference is worth predicting.
-Replacing each worked reference with its answer line collapses the ranking signal on the same items (Spearman $+0.35 \to +0.02$); an item-level paired bootstrap on the twelve models with per-item data puts the collapse at $+0.24$ $[+0.12, +0.33]$, excluding zero.
+Replacing each worked reference with its answer line collapses the ranking signal on the same items, from Spearman $+0.35$ to $+0.02$ as a point contrast on all seventeen models.
+The certified statement is narrower: an item-level paired bootstrap on the twelve models with per-item data, which conditions on those fixed models and so captures item-sampling uncertainty only, moves the subset's Spearman from $+0.14$ (full references) to $-0.10$ (answer lines), a paired delta of $+0.24$ $[+0.12, +0.33]$ that excludes zero.
 The point-estimate boundary runs from $+0.86$ on olympiad math to negative values on saturated benchmarks, meaning benchmarks where most models already score near ceiling; the robust version of this trend is the ladder count, with twelve of twelve hard-benchmark family ladders positive and five of twelve inverting on saturated data.
-% 5 finding 3: what grades (certified scope)
-What we can certify on the verification side is narrower than a grading claim.
-Executed tests are a free correctness oracle where they exist.
-A prefix-repair curve, which truncates a solution and asks whether a fixed completer still reaches the right answer, is a judge-free detector of whether reasoning reaches the right answer: it requires the gold final answer, correlates at Pearson $+0.79$ with human soundness with no LLM judge involved, retains $+0.69$ after controlling for problem difficulty, and its class-level success was called by a pre-registered prediction.
-The evidence that it grades beyond correctness is modest: among correct-only solutions the curve mean drops to $+0.07$ inside a wide interval, so a cheap beyond-correctness grader remains an open problem.
+% 5 finding 3: the free baseline tops the verification class
+On the verification side, the decisive baseline turns out to be free.
+Executed tests are a free correctness oracle where they exist, and on the 60-item math anchor set the machine-checked answer-correct bit alone correlates $+0.92$ $[+0.78, +0.99]$ with human soundness.
+The best verification signal we tested, a prefix-repair curve that truncates a solution and asks whether a fixed completer still reaches the right answer, is statistically indistinguishable from, and slightly below, that free bit ($+0.79$ $[+0.61, +0.92]$ versus $+0.92$ $[+0.78, +0.99]$).
+Its partial correlation with soundness given correctness is $-0.10$ $[-0.30, +0.22]$, while correctness given the curve retains $+0.77$ $[+0.55, +0.95]$, so the curve adds no measurable grading signal over the free answer-correct bit on this anchor set.
+The curve is a noisy proxy for the free correctness bit wherever the gold final answer is extractable; its residual use case is settings where a final answer cannot be extracted or matched, such as free-form proofs, and that use case is untested here.
+The registered class-level prediction still landed, since verification signals out-correlate every matching signal, but the register did not anticipate that the free bit would top the class.
 % 6 implications
-Two rules follow: use a reference as an endpoint for a verifier, never as a similarity target, and for leaderboards, report reference perplexity alongside accuracy, because matching is legitimate exactly when references are worth predicting.
+The resulting map is uniformly negative and mechanically explained: in the entire space we tested, matching or verification, no cheap signal grades beyond correctness, and correctness itself is free where references exist.
+Three rules follow: check the final answer before buying any deeper signal, use a reference only as an endpoint for a verifier and never as a similarity target, and for leaderboards, report reference perplexity alongside accuracy, because matching is legitimate exactly when references are worth predicting.
 \end{abstract}
