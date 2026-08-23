@@ -12,7 +12,7 @@ The reason is mechanistic: $83$--$92\%$ of per-solution variance beyond model le
 Every targeted repair we or our reviewers proposed failed to recover a grading signal; of the four pre-registered predictions, three landed as called and one registered null instead produced a sign flip.
 % 4 finding 2: ranking boundary
 Matching can rank models, but only when the reference is worth predicting.
-Replacing each worked reference with its answer line collapses the ranking signal on the same items (Spearman $+0.35 \to +0.02$), though the model-level paired delta of $+0.33$ has a 95\% CI of $[-0.16, +0.81]$ at seventeen models, so the intervention supports the mechanism rather than proving it on its own.
+Replacing each worked reference with its answer line collapses the ranking signal on the same items (Spearman $+0.35 \to +0.02$); an item-level paired bootstrap on the twelve models with per-item data puts the collapse at $+0.24$ $[+0.12, +0.33]$, excluding zero.
 The point-estimate boundary runs from $+0.86$ on olympiad math to negative values on saturated benchmarks, meaning benchmarks where most models already score near ceiling; the robust version of this trend is the ladder count, with twelve of twelve hard-benchmark family ladders positive and five of twelve inverting on saturated data.
 % 5 finding 3: what grades (certified scope)
 What we can certify on the verification side is narrower than a grading claim.

@@ -58,9 +58,9 @@ A score that is four-fifths about the reference cannot grade the solution in fro
 An intervention on the references supports the mechanism.
 Across benchmarks, the model-ranking signal of Section~\ref{sec:ranking} correlates $+0.89$ with mean reference perplexity and $-0.81$ with saturation, but the two are confounded in observational data.
 So we intervened: on the same \textsc{MATH-500} items, replacing each worked reference with the single line ``The final answer is [answer]'' collapses the ranking signal from $+0.35$ to $+0.02$.
-The paired unit is the model, and a model-level paired bootstrap over the seventeen models gives a delta of $+0.33$ with 95\% CI $[-0.16, +0.81]$ (\texttt{papers/analysis/answerline\_delta\_ci.json}).
-The point contrast is large, but the delta is not distinguishable from zero at $n{=}17$ models, so the intervention is supporting evidence for the mechanism, not standalone proof.
-Item-level pairing, which would sharpen this contrast, is future work.
+A model-level paired bootstrap over the seventeen models gives a delta of $+0.33$ with 95\% CI $[-0.16, +0.81]$, not distinguishable from zero at $n{=}17$ models (\texttt{papers/analysis/answerline\_delta\_ci.json}).
+Item-level pairing sharpens it: on the twelve models with per-item data for both reference variants, resampling the 500 items and recomputing both Spearmans gives a paired delta of $+0.24$ with 95\% CI $[+0.12, +0.33]$, excluding zero (\texttt{papers/analysis/answerline\_delta\_itemlevel.json}).
+On the subset where full pairing is possible the intervention effect is significant, and the seventeen-model contrast agrees in sign and size, so we read the intervention as confirmed on the paired subset and directionally supported on the full set.
 Predicting a long, information-dense reference requires skill adjacent to solving the problem.
 Predicting a formulaic one requires nothing, leaving only style.
 
