@@ -13,7 +13,7 @@ Recent work has already damaged the first assumption from one side: benchmark ac
 We damage it from the other side, and replace it.
 
 Our contribution is a \emph{certificate}: a pre-deployment audit that measures what an evaluator reads, using a few dozen blind human labels, whose frozen categorical verdicts predicted the gaming outcome of ten of the eleven configurations audited in its own domain.
-The one false pass sits at the pass threshold (soundness partial $0.41$ against a $0.40$ cut) and is the verdict the label-subsampling analysis already marks unstable below 50 labels (Section~\ref{sec:pressure}).
+The one false pass sits at the pass threshold (soundness partial $0.41$ against a $0.40$ cut) and is the verdict the label-subsampling analysis already marks unstable at 50 labels and below, with full reproduction only at 60 (Section~\ref{sec:pressure}).
 That style bias exists in judges and reward models is established at the class level~\cite{wu2023style,rmbench2024}; what the certificate adds is a per-deployment instrument that measures whether a particular judge, on a particular task and prompt, reads substance before it is deployed.
 Four design choices distinguish the audit from raw-agreement validation.
 Humans grade on separated axes rather than one quality number: a target axis (here, soundness of reasoning) and nuisance axes chosen for the threat model (here, style; length, format, and position are probed separately in Section~\ref{sec:rules}).

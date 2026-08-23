@@ -16,7 +16,7 @@ The sabotaged judge is convicted on the same items: style partial $+0.59$ $[+0.3
 The audit also convicts an evaluator class it was not designed around: a top open trained reward model (Skywork-Reward-Llama-3.1-8B) scores the same traces with soundness partial $-0.01$ $[-0.29, +0.28]$ and style partial $+0.54$ $[+0.34, +0.70]$, the same signature as the sabotaged judge, where naive validation ($r = +0.18$) would report only weakness.
 Under pressure the reward model shows the damage this verdict predicts: its math regret ($0.286$) is intermediate, worse than every certified referenced judge but better than every failed blind judge, and its code regret ($0.485$) is the worst observed in either domain.
 The reward model uses no reference, so no referenced-tier comparison applies; its computed excess gap is mechanically zero by construction, because a single scoring function serves as both selector and reporter, which is why Table~\ref{tab:h2h} marks it n/c.
-The verdict tracks protocol, not model identity: blind, the 1.5B judge reads style (partial $+0.51$), the 3B and 7B judges are too weak to certify, and the 14B judge clears the frozen pass rule by a hair (soundness partial $0.41$ against a $0.40$ cut), a threshold pass with no margin that Section~\ref{sec:pressure} shows to be a false pass; with the gold solution in context every ladder judge passes (Table~\ref{tab:h2h}).
+The verdict tracks protocol, not model identity: blind, the 1.5B judge reads style (partial $+0.51$), the 3B and 7B judges are too weak to certify, and the 14B judge clears the frozen pass rule by a hair (soundness partial $0.41$ against a $0.40$ cut), a threshold pass with no margin that Section~\ref{sec:pressure} shows to be a false pass; with the gold solution in context every ladder judge passes the frozen point-estimate rule (Table~\ref{tab:h2h}; the post-hoc revised rule of Section~\ref{sec:pressure} abstains on the referenced 1.5B and 3B, whose CIs straddle the bar).
 A reference changes what a judge measures, not merely how accurately it measures.
 
 \begin{table}[t]
@@ -77,11 +77,11 @@ The audit's advantage is diagnosis and sign-anchored conviction, not a magically
 
 \paragraph{Multiple comparisons.}
 The conviction rule is a single pre-declared sign condition per configuration, a significantly positive nuisance partial, not a search over thresholds, which bounds the multiplicity concern.
-A Bonferroni correction across the eleven audited configurations leaves all three convictions significant: recomputing the style-partial bootstrap CIs at the corrected level keeps them wide of zero (sabotaged frontier $[+0.25, +0.80]$, reward model $[+0.20, +0.77]$), and the 1.5B-blind conviction's permutation test gives $p = 0.0017$ (two-sided, $n{=}53$), below the corrected level $0.05/11$ (\texttt{papers/analysis/gap\_cis.json}).
+A Bonferroni correction across the eleven audited configurations leaves all three convictions significant: recomputing the style-partial bootstrap CIs at the corrected level keeps them wide of zero (sabotaged frontier $[+0.25, +0.80]$, reward model $[+0.20, +0.77]$), and the 1.5B-blind conviction's permutation test gives $p = 0.0017$ (two-sided, $n{=}53$), below the corrected level $0.05/11$ (corrected conviction CIs in \texttt{papers/analysis/conviction\_bonferroni.json}).
 
 \paragraph{Verdict stability.}
 Convictions and strong passes stabilize with the fewest labels.
-At 40 labels, the sabotage conviction and the honest frontier pass reproduce in $100\%$ of label resamples, while boundary configurations (the 1.5B referenced pass, the 14B blind threshold pass that Section~\ref{sec:pressure} shows to be false) remain unstable below $50$ labels (Figure~\ref{fig:stability}).
+At 40 labels, the sabotage conviction and the honest frontier pass reproduce in $100\%$ of label resamples, while boundary configurations (the 1.5B referenced pass, the 14B blind threshold pass that Section~\ref{sec:pressure} shows to be false) remain unstable at $50$ labels and below, reproducing fully only at the complete $60$-label set (Figure~\ref{fig:stability}).
 A few dozen labels certify clear cases; boundary verdicts honestly demand more.
 
 \begin{figure}[t]

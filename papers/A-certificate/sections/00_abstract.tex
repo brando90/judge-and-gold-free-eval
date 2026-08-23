@@ -1,15 +1,11 @@
 \begin{abstract}
-Anyone about to filter data, rank models, or run best-of-$n$ with an automated evaluator faces the same question: can this judge be trusted?
-Today the answer arrives too late.
-Judges are validated by raw agreement with human labels, deployed, and found gameable only after something optimizes against them, and the field's standard static predictor of downstream failure, benchmark accuracy, is known to predict it poorly.
-We show that trust can be measured beforehand, with a few dozen blind human labels.
-The audit grades solutions on a target axis and at least one nuisance axis chosen for the deployment's threat model; our instantiation uses soundness of reasoning and quality of writing, with a deliberately decorrelated stratum, and reads its verdict from partial correlations.
-It passes an honest frontier judge (soundness partial $+0.90$ $[+0.77, +0.97]$), convicts a deliberately style-loaded one (style partial $+0.59$ $[+0.36, +0.76]$), and flips every open-weights judge to a pass when a trusted reference is added.
-Raw agreement cannot do this: the sabotaged frontier judge ($r=+0.35$) is indistinguishable from an honest mid-size judge ($r=+0.37$), yet under best-of-64 selection pressure one damages selections while the other inflates its own scoreboard.
-Across the eleven configurations audited in-domain, the frozen categorical rule predicts the pressure outcome of ten.
-The one false pass, the blind 14B judge, clears the pass cut with no margin (soundness partial $0.41$ against a $0.40$ cut) yet lands in the failed cluster, and the label-subsampling analysis already marks that verdict unstable below 50 labels; a disclosed post-hoc revision, requiring the confidence interval rather than the point estimate to clear the bar, reclassifies it as insufficient evidence and is frozen for a registered replication.
-Failed and convicted configurations cluster above certified ones on both inflation and accuracy loss, though one boundary pair is not statistically separable (blind 3B versus the honest frontier, paired inflation difference $+0.06$ $[-0.10, +0.22]$).
-The sabotaged frontier separates on inflation only (excess gap $+0.85$ $[+0.70, +1.01]$ versus the honest frontier's $+0.38$ $[+0.28, +0.50]$), its regret statistically indistinguishable from honest ($+0.014$ $[-0.058, +0.085]$).
-A style-loaded frontier judge thus corrupts the scoreboard without measurably corrupting selection at this pressure, exactly the failure a raw accuracy check cannot see.
+Automated judges now filter data, rank models, and steer best-of-$n$ selection, so every deployment starts with the same question: can this judge be trusted?
+Today that question is answered by raw agreement with human labels, and the true answer arrives only after something optimizes against the judge.
+The field's standard static predictor of downstream failure, benchmark accuracy, is known to predict it poorly, and no pre-deployment measurement fills the gap.
+We show that a few dozen blind human labels, graded on a target axis and a threat-model nuisance axis and read through partial correlations, can certify a judge before any optimization runs; our instantiation uses soundness of reasoning against quality of writing, with a deliberately decorrelated stratum and a sabotaged judge as positive control.
+Across the eleven configurations audited in-domain, the frozen categorical verdicts predict the best-of-64 pressure outcome of ten, and under the original point-estimate rule adding a trusted reference flips every open-weights judge to a pass.
+The one false pass, the blind 14B judge, clears the pass cut with no margin and lands in the failed cluster; a disclosed post-hoc revision requiring the confidence interval to clear the bar reclassifies it as insufficient evidence, at the cost of also abstaining on two threshold-adjacent referenced judges that behaved well under pressure.
+The verdicts are per estimand: the convicted style-loaded frontier judge (style partial $+0.59$) inflates its own scoreboard (excess gap $+0.85\sigma$ against the honest frontier's $+0.38\sigma$) while its selection regret stays statistically indistinguishable from honest ($+0.014$ $[-0.058, +0.085]$).
+A style-loaded frontier judge thus corrupts the scoreboard without measurably corrupting selection at this pressure, exactly the failure a raw accuracy check cannot see, since raw agreement scores the sabotaged frontier and an honest mid-size judge nearly identically.
 Certification turns evaluator trust from a post-hoc discovery into a pre-registered measurement, at five to eight annotator-hours per judge, task, and prompt.
 \end{abstract}

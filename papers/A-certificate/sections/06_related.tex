@@ -11,15 +11,3 @@ Those benchmarks characterize the evaluator class on fixed public data; the cert
 RM-Bench tells you the class is fragile; the audit tells you whether your judge, on your task and prompt, reads substance before you deploy it.
 References are known to improve judge accuracy~\cite{refguided2024,smalljudges2025}; we show they flip audit validity, that the effect is capability-gated, and that on multi-valid tasks any reference harms statically~\cite{generous2026,dobefore2025} and amplifies gaming dynamically~\cite{companionD}.
 Reward hacking is characterized post-hoc~\cite{gao2022scaling,skalse2022defining,coste2023ensembles,eisenstein2023helping,selfplay2026}; the certificate is ex-ante.
-
-% Internal next-steps list (not compiled):
-% 1. Trained RM baseline: audit + BoN grids (running).
-% 2. Second rater + external annotator (instrument live); recompute on consensus labels.
-% 3. In-domain code audit (instrument exists); second math dataset (Putnam instrument to build).
-% 4. Ladder-sabotage audit scoring (closes the two unaudited configurations).
-% 5. Cross-family generator (Llama-3.1-8B) BoN on math.
-% 6. Deployment-pool labels (instrument live: artifact f9ac8781).
-% 7. Order-swap flip rate versus audit verdicts, quantitative.
-% 8. DPO validation: train against one certified and one convicted judge.
-% 9. Quantify realized selection pressure per judge (multiple-comparisons note now in Section 3).
-% 10. RM paraphrase-replicate inflation run (protocol now described in Section 6).

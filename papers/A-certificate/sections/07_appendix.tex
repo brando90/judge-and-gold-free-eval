@@ -4,12 +4,13 @@
 \label{app:confusion}
 All 25 pressure-tested configurations: 12 math (4 blind, 4 referenced, frontier honest, frontier sabotaged, plus two sabotaged ladder configurations never audited) and 13 code (4 blind, 4 referenced, frontier blind, frontier referenced, frontier sabotaged, two sabotaged ladder).
 Audited in-domain: the 11 configurations of Table~\ref{tab:h2h} (four blind, four referenced, the honest and sabotaged frontier, and the trained reward model).
-Applying the frozen rule of Appendix~\ref{app:subsample} uniformly yields eight passes and three convictions; ten of the eleven verdicts match their pressure outcomes per estimand.
+Applying the frozen rule of Appendix~\ref{app:subsample} uniformly yields six passes (the four referenced ladder judges, the honest frontier, and the blind 14B), two fails (blind 3B, soundness partial $0.19$; blind 7B, $0.32$), and three convictions (blind 1.5B, the sabotaged frontier, and the reward model); ten of the eleven verdicts match their pressure outcomes per estimand, the blind 14B pass being the single miss.
 The blind 14B is a false pass: soundness partial $+0.41$ $[+0.12, +0.64]$ against the $0.40$ cut, style partial $-0.21$, yet excess gap $+0.63$ $[+0.42, +0.84]$ and regret $0.324$, both in the failed cluster.
 The sabotaged frontier separates on inflation only (its regret is statistically indistinguishable from the honest frontier's, paired difference $+0.014$ $[-0.058, +0.085]$).
-Under the post-hoc revised rule of Section~\ref{sec:pressure}, which requires the soundness-partial CI to clear the bar, the blind 14B returns insufficient evidence to certify; that revision was adopted after the false pass was observed and is frozen for the Putnam replication.
+Under the post-hoc revised rule of Section~\ref{sec:pressure}, which requires the soundness-partial CI to clear the bar, the blind 14B returns insufficient evidence to certify, and so do the referenced 1.5B (CI $[+0.21, +0.75]$) and referenced 3B ($[+0.36, +0.70]$), whose intervals straddle $0.40$; the revised-rule record is eight predictions (three passes, two fails, three convictions), eight correct, three abstentions.
+That revision was adopted after the false pass was observed and is frozen for the Putnam replication.
 Never audited: sabotaged 7B (math gap $+0.13$ ns, regret $0.400$; code $+0.84$, $0.559$) and sabotaged 14B (math $+0.61$, $0.324$; code $+0.96$, $0.426$); both are excluded from prediction claims, and an audit run for them is registered.
-Code: the mechanical-target audit rows (within-item correlation with executed tests, bootstrap CIs) are in \texttt{papers/analysis/code\_oracle\_audit.json}.
+Code: the mechanical-target audit rows (within-item correlation with executed tests, bootstrap CIs) are in \texttt{papers/analysis/code\_oracle\_audit.json}, and the code-side pressure summaries (per-configuration excess gaps with CIs, regrets, and tie fractions) are mirrored at \texttt{papers/analysis/bon\_code\_full.json}.
 Excluding the two never-audited sabotaged code ladder cells leaves eleven eligible code configurations; extrapolated verdicts match the pressure outcome in ten, with the referenced 1.5B the single miss (gap $+1.40$, regret $0.441$), coinciding with its null reference gain on the target axis.
 Code verdict predictions were not registered, and the extrapolation scoring is post hoc.
 
