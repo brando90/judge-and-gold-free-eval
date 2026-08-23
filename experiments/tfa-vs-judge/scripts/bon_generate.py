@@ -6,7 +6,7 @@ import argparse, json, os
 from vllm import LLM, SamplingParams
 
 ap = argparse.ArgumentParser()
-ap.add_argument("--domain", choices=["math", "code", "mbpp", "ties", "synthk", "replpilot", "repl"], required=True)
+ap.add_argument("--domain", choices=["math", "code", "mbpp", "ties", "synthk", "replpilot", "repl", "kstrat"], required=True)
 ap.add_argument("--model", default="Qwen/Qwen2.5-7B-Instruct")
 ap.add_argument("--n", type=int, default=64)
 ap.add_argument("--out", default="runs/bon")
@@ -20,8 +20,9 @@ if args.domain == "math":
     def prompt_of(r):
         return ("Solve the following math problem. Show your reasoning step by step, "
                 "then give the final answer in \\boxed{}.\n\n" + r["problem"])
-elif args.domain in ("replpilot", "repl"):
-    fn = "runs/repl_pilot_tasks.jsonl" if args.domain == "replpilot" else "runs/repl_main_tasks.jsonl"
+elif args.domain in ("replpilot", "repl", "kstrat"):
+    fn = {"replpilot": "runs/repl_pilot_tasks.jsonl", "repl": "runs/repl_main_tasks.jsonl",
+          "kstrat": "runs/kstrat_tasks.jsonl"}[args.domain]
     tasks = [json.loads(l) for l in open(fn)]
     def prompt_of(r):
         return ("Answer the following question. Think step by step if needed. You MUST end "
@@ -77,7 +78,7 @@ with open(out, mode) as f:
             row = dict(problem_id=pid, model=args.model, samples=[c.text for c in o.outputs])
             if args.domain == "math":
                 row.update(answer=r["answer"], level=r["level"], subject=r["subject"])
-            elif args.domain in ("ties", "synthk", "replpilot", "repl"):
+            elif args.domain in ("ties", "synthk", "replpilot", "repl", "kstrat"):
                 row.update(valid_answers=r["valid_answers"], ref_answer=r["ref_answer"],
                            question=r["problem"], k=r.get("k"), multi_refs=r.get("multi_refs"))
             else:

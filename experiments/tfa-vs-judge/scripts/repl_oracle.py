@@ -88,7 +88,8 @@ def valid(params, answer_text):
 
 rows = [json.loads(l) for l in open(args.pool)]
 if rows and "params" not in rows[0]:
-    tf = args.tasks or ("runs/repl_pilot_tasks.jsonl" if "replpilot" in args.pool
+    tf = args.tasks or ("runs/kstrat_tasks.jsonl" if "kstrat" in args.pool else
+                        "runs/repl_pilot_tasks.jsonl" if "replpilot" in args.pool
                         else "runs/repl_main_tasks.jsonl")
     tmap = {json.loads(l)["problem_id"]: json.loads(l) for l in open(tf)}
     for r in rows:

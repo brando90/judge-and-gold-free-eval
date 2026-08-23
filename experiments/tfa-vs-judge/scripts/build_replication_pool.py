@@ -135,11 +135,94 @@ def build(rng, n, hard_frac, prefix):
 
 
 ap = argparse.ArgumentParser()
+ap.add_argument("--kstrat", action="store_true", help="build the k-stratified pool (OSF qugbd)")
 ap.add_argument("--hard-frac", type=float, default=0.5,
                 help="fraction of hard-tier items (the pilot's calibration knob)")
 ap.add_argument("--n-main", type=int, default=120)
 ap.add_argument("--n-pilot", type=int, default=20)
 args = ap.parse_args()
+
+if args.kstrat:
+    # exactly k valid answers per stratum, 15 items per k, drawn from the same five families
+    KS = [1, 2, 4, 8, 16]
+    rng = random.Random(20260826)
+
+    def raw_candidates(rng):
+        """Family instances WITHOUT the accept windows, so any solution count can appear."""
+        # crt: window sized so the solution count varies freely
+        m, n = rng.choice([3, 5, 7]), rng.choice([2, 4, 9])
+        import math as _m
+        if _m.gcd(m, n) == 1:
+            a, b = rng.randrange(m), rng.randrange(n)
+            lo = rng.randrange(10, 400)
+            hi = lo + rng.randrange(m * n - 1, m * n * 17)
+            sols = [str(x) for x in range(lo, hi + 1) if x % m == a and x % n == b]
+            if sols:
+                yield (f"Give one integer x with {lo} <= x <= {hi} such that x leaves remainder "
+                       f"{a} when divided by {m} and remainder {b} when divided by {n}.",
+                       dict(fam="crt", lo=lo, hi=hi, m=m, a=a, n=n, b=b), sols)
+        # divcount
+        k2 = rng.choice([2, 3, 4, 6, 8])
+        lo = rng.randrange(10, 300); hi = lo + rng.randrange(5, 120)
+        sols = [str(x) for x in range(lo, hi + 1) if ndiv(x) == k2]
+        if sols:
+            yield (f"Give one integer x with {lo} <= x <= {hi} that has exactly {k2} positive "
+                   f"divisors (including 1 and x).", dict(fam="divcount", lo=lo, hi=hi, k=k2), sols)
+        # digitsum
+        d = rng.choice([2, 3]); qq = rng.choice([2, 3, 5, 7, 11]); sm = rng.randrange(3, 20)
+        lo, hi = 10 ** (d - 1), 10 ** d - 1
+        sols = [str(x) for x in range(lo, hi + 1) if x % qq == 0 and sum(map(int, str(x))) == sm]
+        if sols:
+            yield (f"Give one {d}-digit number that is divisible by {qq} and whose digits "
+                   f"sum to {sm}.", dict(fam="digitsum", d=d, q=qq, s=sm), sols)
+        # goldbach
+        N = rng.randrange(10, 400, 2)
+        pairs = [f"{p},{N - p}" for p in PRIMES if p < N and (N - p) in PSET and p < N - p]
+        if pairs:
+            yield (f"Give one pair of distinct primes p and q with p < q and p + q = {N}. "
+                   f"Write the pair as p,q inside the box, for example \\boxed{{3,{N - 3}}}.",
+                   dict(fam="goldbach", N=N), pairs)
+        # subset
+        kk = rng.choice([5, 6]); vals = sorted(rng.sample(range(3, 45), kk))
+        target = sum(rng.sample(vals, rng.randrange(2, 4)))
+        sols = []
+        for mask in range(1, 1 << kk):
+            sub = [vals[i] for i in range(kk) if mask >> i & 1]
+            if sum(sub) == target:
+                sols.append(",".join(map(str, sorted(sub))))
+        if sols:
+            yield (f"From the numbers {{{', '.join(map(str, vals))}}}, give one subset whose "
+                   f"elements sum to exactly {target}. Write the subset as comma-separated "
+                   f"numbers inside the box, for example \\boxed{{{vals[0]},{vals[1]}}}.",
+                   dict(fam="subset", vals=vals, target=target), sols)
+
+    rows = []
+    for k in KS:
+        made = 0
+        tries = 0
+        while made < 15 and tries < 400000:
+            tries += 1
+            got = None
+            for cand in raw_candidates(rng):
+                if len(cand[2]) == k:
+                    got = cand
+                    break
+            if got is None:
+                continue
+            q, params, sols = got
+            rows.append(dict(problem_id=f"kstrat/{params['fam']}-k{k}-{made}", problem=q,
+                             params=params, k=k, hard=False,
+                             ref_answer=rng.choice(sols), n_solutions=len(sols),
+                             valid_answers=sols))
+            made += 1
+        print(f"k={k}: {made} items ({tries} tries)")
+    with open("runs/kstrat_tasks.jsonl", "w") as f:
+        for r in rows:
+            f.write(json.dumps(r) + "\n")
+    from collections import Counter
+    print("kstrat pool:", len(rows), dict(Counter(r["k"] for r in rows)),
+          dict(Counter(r["params"]["fam"] for r in rows)))
+    raise SystemExit
 
 rng = random.Random(20260825)
 pilot = build(rng, args.n_pilot, args.hard_frac, "pilot")
