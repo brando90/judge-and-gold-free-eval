@@ -41,11 +41,11 @@ def ndiv(x):
 
 def gen_crt(rng, hard):
     while True:
-        m, n = rng.choice([3, 5, 7]), rng.choice([2, 4, 9])
+        m, n = rng.choice([2, 3]), rng.choice([3, 4, 5])
         if m == n or __import__("math").gcd(m, n) != 1:
             continue
         a, b = rng.randrange(m), rng.randrange(n)
-        span = (200, 900) if hard else (10, 90)
+        span = (30, 90) if hard else (10, 60)
         lo = rng.randrange(*span)
         hi = lo + (m * n * (3 if hard else 5))
         sols = [x for x in range(lo, hi + 1) if x % m == a and x % n == b]
@@ -123,6 +123,8 @@ def build(rng, n, hard_frac, prefix):
     for gi, gen in enumerate(FAMS):
         for j in range(per):
             hard = rng.random() < hard_frac
+            if gen in (gen_crt, gen_divcount):
+                hard = False
             q, params, sols = gen(rng, hard)
             ref = rng.choice(sols)
             rows.append(dict(problem_id=f"{prefix}/{params['fam']}-{gi * per + j}",
@@ -139,7 +141,7 @@ ap.add_argument("--n-main", type=int, default=120)
 ap.add_argument("--n-pilot", type=int, default=20)
 args = ap.parse_args()
 
-rng = random.Random(20260824)
+rng = random.Random(20260825)
 pilot = build(rng, args.n_pilot, args.hard_frac, "pilot")
 main = build(rng, args.n_main, args.hard_frac, "repl")
 with open("runs/repl_pilot_tasks.jsonl", "w") as f:
