@@ -1,0 +1,46 @@
+{
+ "qwen14b": {
+  "pv_v75": {
+   "n": 60,
+   "pearson": 0.78,
+   "ci": [
+    0.6,
+    0.91
+   ],
+   "within_correct": 0.19,
+   "wc_n": 48
+  },
+  "pv_mean": {
+   "n": 60,
+   "pearson": 0.79,
+   "ci": [
+    0.61,
+    0.92
+   ],
+   "within_correct": 0.07,
+   "wc_n": 48
+  }
+ },
+ "phi4": {
+  "pv_v75": {
+   "n": 42,
+   "pearson": 0.79,
+   "ci": [
+    0.6,
+    0.95
+   ],
+   "within_correct": 0.28,
+   "wc_n": 32
+  },
+  "pv_mean": {
+   "n": 42,
+   "pearson": 0.82,
+   "ci": [
+    0.68,
+    0.91
+   ],
+   "within_correct": 0.02,
+   "wc_n": 32
+  }
+ }
+}
