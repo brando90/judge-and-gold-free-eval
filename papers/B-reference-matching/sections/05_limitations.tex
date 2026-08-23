@@ -2,15 +2,17 @@
 \section{Limitations}
 \label{sec:limits}
 
-The main limits concern the human anchor, two queued or completed registers, the completer's family, the unresolved beyond-correctness margin, and the scope of the ranking evidence.
+The main limits concern the human anchor, one running and one completed register, the decomposition's point estimates, the completer's family, the unresolved beyond-correctness margin, and the scope of the ranking evidence.
 
-The human anchor is the 60-item anchor set, graded by one annotator who is also an author.
+The human anchor is the 60-item anchor set, graded by one annotator who is also an author, with its reliability measured rather than assumed.
 A hypothesis-blind annotator external to the author list regraded 30 of the 60 items under the same rubric, on a blinded instrument with model names and machine scores stripped, agreeing at $0.83$ on soundness; this matches the earlier cross-construct estimate from a shared block, which retroactively supports the older anchor (both reliability cells and implied ceilings in Appendix~\ref{app:ceiling}, Table~\ref{tab:robust}).
 The residual caveats: the same-rubric replication covers half the anchor items, its intervals are wide at that sample size, so every ceiling comparison in this paper remains indicative only, and its soundness Spearman is compressed by ties rather than by disagreement on levels.
 The free-baseline comparison is computed on the same 60 anchor items, so its partial-correlation nulls inherit that set's width, and the completion curve's residual use case, settings where a final answer cannot be extracted or matched, is untested here.
 
-One registered follow-up is queued and not yet run: the length-matched uninformative-reference control for the answer-line intervention (P-L1; Table~\ref{tab:ledger}), which will separate information loss from variance compression in the collapse.
-The other queued register, the completer-strength sweep (P-C1), has since run and falsified its middle-band prediction: the curve's validity is flat from a 1.5B to a 32B completer, and the within-correct curve mean stays null at every size (Section~\ref{sec:verify}).
+One registered follow-up is currently running and has not yet reported: the length-matched uninformative-reference control for the answer-line intervention (P-L1; Table~\ref{tab:ledger}), which will separate information loss from variance compression in the collapse.
+No result from that control appears in this paper, and every mechanistic use of the answer-line intervention is marked provisional until it reports.
+The variance-decomposition shares ($83$--$92\%$) are point estimates from one fixed-effects procedure; interval estimates and robustness checks under alternative decompositions remain open, and the mechanism claim rests on the decomposition and its cross-family replication, with the intervention as provisional corroboration only.
+The other register from the earlier draft, the completer-strength sweep (P-C1), has since run and falsified its middle-band prediction: the curve's validity is flat from a 1.5B to a 32B completer, and the within-correct curve mean stays null at every size (Section~\ref{sec:verify}).
 
 The original completer shares a model family with a subset of the graded traces.
 A cross-family replication with a phi-4 completer reproduces the curve's magnitude with overlapping intervals, contains zero same-family traces by construction (its missingness is deterministic, not selective), and its full composition accounting, including the matched-subset comparison and the check that the excluded traces are, if anything, easier to complete, is in Appendix~\ref{app:completer}.

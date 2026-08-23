@@ -8,7 +8,7 @@ Each answer below leads with its finding; point estimates appear in prose, and e
 \subsection{RQ1: Can matching metrics grade individual solutions? No.}
 \label{sec:classnull}
 
-No matching metric grades individual solutions against blind human soundness.
+None of the five matching metrics we tested grades individual solutions against blind human soundness.
 One distinction should be stated before any number: \tfa{} and gold-token log-probability never read the generated solution at all, so their per-solution grading null is structural, a property of the metric's type signature rather than an empirical discovery.
 The empirical content of the null therefore lies with the output-similarity metrics, which do read the solution, and with the measured magnitudes and the cross-family replication for all five.
 On the anchor set, the five matching metrics land between $-0.33$ (unigram-F1) and $+0.14$ (embeddings) against human soundness; Figure~\ref{fig:class} plots the full field, and Table~\ref{tab:classfull} (page~\pageref{tab:classfull}) tabulates it.
@@ -39,7 +39,8 @@ Most of a matching score's per-solution variance is a property of the reference,
 The primary evidence is a cross-family, item-level decomposition.
 We decomposed per-solution \tfa{} across a grid of fifteen to sixteen models from four families (the count varies by benchmark with model availability), after removing each model's overall level.
 Between $83\%$ and $92\%$ of the remaining variance is an \emph{item effect}: a component identical across families.
-The shares are sum-of-squares shares from a fixed-effects decomposition of the model-centered score grid, with the item effect estimated as the unweighted cross-family mean of the model-centered scores; they are point estimates, and we report no interval estimates for them.
+The shares are sum-of-squares shares from a fixed-effects decomposition of the model-centered score grid, with the item effect estimated as the unweighted cross-family mean of the model-centered scores.
+They are point estimates: we report no interval estimates for them, we have not tested robustness to alternative decompositions, and no interval-based claim in this paper rests on the shares themselves.
 Such a component is a property of the reference text, namely how predictable this particular gold text is, rather than of any one family's solutions.
 Two entangled ingredients live inside it, reference predictability and problem difficulty, and difficulty is not nuisance for a grader, so the cross-family replication establishes that the component is a text property, not that it is worthless.
 The cleaner statement of the grading consequence: after removing model and item effects, only $5$--$11\%$ of per-solution variance remains, and no evidence in our data shows that this residual tracks quality.
@@ -51,13 +52,14 @@ Taken alone, this number is partially tautological, since both statistics summar
 The correlation is informative here only because the decomposition above shows the item effect survives cross-family transfer, which a mere restatement of one model's capability would not need to do.
 To first order, \tfa{} measures how compressible the reference is; a score that is four-fifths about the reference cannot grade the solution in front of it.
 
-An intervention on the references supports the mechanism.
+The mechanism claim rests on the decomposition and its cross-family replication above; an intervention on the references corroborates it, and we state that corroboration as provisional.
 Across benchmarks, the model-ranking signal of Section~\ref{sec:ranking} correlates $+0.89$ with mean reference perplexity and $-0.81$ with saturation, but the two are confounded in observational data.
 So we intervened: on the same \textsc{MATH-500} items, replacing each worked reference with the single line ``The final answer is [answer]'' collapses the ranking signal from $+0.35$ to $+0.02$ as a point contrast on all seventeen models.
 The certified statement is the item-level paired bootstrap on the twelve models with per-item data for both reference variants: a paired delta of $+0.24$, excluding zero; the model-level delta on all seventeen is not distinguishable from zero at that sample size, and the subset endpoints and both intervals are in Table~\ref{tab:robust}.
 The item-level bootstrap conditions on the fixed twelve models, so its interval captures item-sampling uncertainty only, not model-sampling uncertainty; we read the intervention as confirmed on the paired subset and directionally supported on the full set, which agrees in sign.
 One alternative reading survives: answer-line references are far shorter than worked references, so the collapse could partly reflect variance compression from scoring fewer tokens rather than loss of information content.
-A length-matched uninformative-reference control that separates these readings is registered and queued (P-L1; Table~\ref{tab:ledger}); until it lands, the position-weighting convergence to the answer-line null (Section~\ref{sec:slate}) is partial corroboration only, since it also shortens the effective scored span.
+A length-matched uninformative-reference control that separates these readings is registered and currently running (P-L1; Table~\ref{tab:ledger}), and no result from it appears in this paper.
+Until it reports, every mechanistic use of the intervention in this paper is provisional, and the position-weighting convergence to the answer-line null (Section~\ref{sec:slate}) is partial corroboration only, since it also shortens the effective scored span.
 Predicting a long, information-dense reference requires skill adjacent to solving the problem.
 Predicting a formulaic one requires nothing, leaving only style.
 
@@ -101,7 +103,7 @@ benchmark & regime & cross-family $\rho$ [95\% CI] & within-family $\rho$ \\
 \caption{\textbf{The boundary map: where reference matching ranks models.}
 Cross-family Spearman correlation between mean \tfa{} and accuracy (17 models; bootstrap CIs) per benchmark; the within-family column is the Qwen size ladder specifically, and best values are in bold.
 Within-family Spearmans are computed on ladders of three to five models, where the statistic takes only a few discrete values, so read signs and consistency rather than magnitudes; the \textsc{SWE-bench} within-family entry is a four-model ladder and is a preliminary observation (Section~\ref{sec:ranking}).
-Ranking degrades from olympiad to saturated benchmarks, with code sitting mid-scale; the Qwen ladder stays positive everywhere, but across all families five of twelve ladders invert on the easiest benchmarks (Appendix~\ref{app:ladders}), because family style cancels inside a family and survives across families.
+Ranking degrades from olympiad to saturated benchmarks, with code sitting mid-scale; the Qwen ladder stays positive everywhere, but across all families five of twelve ladders invert on the easiest benchmarks (Appendix~\ref{app:ladders}), a pattern we read as family style canceling inside a family and surviving across families, an interpretive attribution since output style is not directly measured here.
 \textbf{Takeaway:} matching ranks models only on hard benchmarks with information-dense references, and cross-family comparison needs a shared style or a verifier.}
 \label{tab:map}
 \end{table}
@@ -112,7 +114,7 @@ Matching metrics do rank models, under three conditions that all hold at once:
 \item \textbf{Use them in aggregate, never per item.}
 The reference-predictability nuisance is identical for every model on a given item, so it cancels when scores are averaged over a benchmark; per-item it dominates.
 \item \textbf{The reference must be detailed enough to be worth predicting.}
-A long worked solution differentiates strong models from weak ones; an answer line does not (the intervention of Section~\ref{sec:mechanism}; endpoints in Table~\ref{tab:robust}).
+A long worked solution differentiates strong models from weak ones; an answer line does not (the intervention of Section~\ref{sec:mechanism}, provisional pending its length-matched control; endpoints in Table~\ref{tab:robust}).
 \item \textbf{The benchmark must be hard enough to differentiate models.}
 On saturated data every model predicts the reference about equally well, and the leftover variance is writing style, which is why saturated point estimates collapse or turn negative.
 \end{enumerate}
@@ -151,7 +153,7 @@ Each row is one pre-registered directional prediction, committed to the reposito
 The position-weighted register predicted a null, and the observed $-0.37$ at last-four tokens is a sign flip, so that register was directionally wrong, not confirmed.
 The completer-strength register (P-C1) predicted that curve validity would require a middle band of completer strength; the flat outcome falsifies the register while corroborating the free-bit mechanism (Section~\ref{sec:verify}).
 The class-level divide, verification signals carrying signal where matching carries none, was called in advance, but the register did not anticipate that the free bit would top the class.
-Two notes: seven earlier reweighting variants (IDF, surprisal, masking, \dots) predate the registration protocol and all came out $\le 0$; a sixth register, the length-matched uninformative-reference control (P-L1, prediction: ranking stays collapsed), is queued and not yet run.}
+Two notes: seven earlier reweighting variants (IDF, surprisal, masking, \dots) predate the registration protocol and all came out $\le 0$; a sixth register, the length-matched uninformative-reference control (P-L1, prediction: ranking stays collapsed), is currently running, has not yet reported, and contributes no result to this paper.}
 \label{tab:ledger}
 \end{table}
 
@@ -177,10 +179,12 @@ Right: the completion-curve signal rises with truncation depth in Pearson, from 
 \subsection{RQ4: What does grade? Nothing we tested beats the free bit.}
 \label{sec:verify}
 
-Nothing we tested, matching or verification, beats the free answer-correct bit.
+On the anchor set, nothing we tested, matching or verification, beats the free answer-correct bit.
 Executed tests are the ceiling case, a free correctness oracle, up to test coverage, wherever they exist, and the standard against which \tfa{} scored $0.00$.
 On math the analogous baseline is the free bit, and it tops everything: on the anchor set it alone correlates $+0.92$ with human soundness.
-It costs nothing wherever the gold final answer is extractable and matchable, so it is the baseline every cheaper-than-a-judge proposal has to beat, and no signal in this paper beats it.
+That correlation is a baseline, not a discovery: soundness and answer correctness overlap by construction, since unsound reasoning usually lands on a wrong answer, and raters may not fully separate the two constructs even under a rubric that asks them to (Section~\ref{sec:setup}).
+The grading question therefore lives on the within-correct margin, whose intervals on this anchor set are wide (Table~\ref{tab:citwin}).
+The bit costs nothing wherever the gold final answer is extractable and matchable, so it is the baseline every cheaper-than-a-judge proposal has to beat, and no signal in this paper beats it.
 
 The completion curve is the strongest verification signal we built, and it does not beat the free bit either.
 Its Pearson correlation with soundness rises with truncation depth, from a pure difficulty probe at $k{=}0$ to $+0.78$ at $k{=}0.75$; the full depth profile is in Table~\ref{tab:robust} and Figure~\ref{fig:sweeps} (right).

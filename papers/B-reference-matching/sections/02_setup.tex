@@ -35,6 +35,8 @@ Judge and critic Pearson values are close, but the protocols separate in rank te
 \paragraph{Statistics and pre-registration.}
 Headline correlations are Spearman or Pearson with bootstrap 95\% intervals (Appendix~\ref{app:citwin}).
 Grading claims control for final-answer correctness where stated, because checking the final answer is free and is not what anyone needs a grader for.
+The free bit's high raw correlation with soundness is expected by construction, since unsound reasoning usually lands on a wrong answer and raters may not fully separate the two constructs even under a rubric that asks them to; we therefore treat the bit as the baseline to beat, not as a finding, and place the grading question on the within-correct margin.
+The recurring analysis subsets, the 60-item anchor set, its 48-item correct-only margin, the 42-item logprob and completer-replication subset, the twelve-model per-token grid, and the nine-model answer-swap grid, are enumerated in Appendix~\ref{app:subsets} and the notes to Table~\ref{tab:citwin}.
 The paper designates three primary endpoints: the class-level grading null (RQ1), the item-share decomposition (RQ2), and the ranking-boundary ladder counts (RQ3); all other interval-excluding results, including individual ladder cells, intervention deltas, completer replications, and depth points, are secondary and uncorrected for multiplicity.
 Five directional predictions were pre-registered: analysis scripts and predictions were committed to the repository before the corresponding data were generated, and the complete ledger of calls and outcomes is Table~\ref{tab:ledger}.
 
