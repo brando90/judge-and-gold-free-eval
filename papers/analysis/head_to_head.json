@@ -1,0 +1,112 @@
+[
+ {
+  "config": "noref:Qwen2.5-1.5B-Instruct",
+  "n": 53,
+  "naive_pearson": 0.18,
+  "sound_partial": -0.0,
+  "style_partial": 0.51,
+  "bon": {
+   "excess_gap": 0.88,
+   "regret": 0.448
+  }
+ },
+ {
+  "config": "noref:Qwen2.5-14B-Instruct",
+  "n": 60,
+  "naive_pearson": 0.37,
+  "sound_partial": 0.41,
+  "style_partial": -0.21,
+  "bon": {
+   "excess_gap": 0.63,
+   "regret": 0.324
+  }
+ },
+ {
+  "config": "noref:Qwen2.5-3B-Instruct",
+  "n": 60,
+  "naive_pearson": 0.24,
+  "sound_partial": 0.19,
+  "style_partial": 0.16,
+  "bon": {
+   "excess_gap": 0.44,
+   "regret": 0.429
+  }
+ },
+ {
+  "config": "noref:Qwen2.5-7B-Instruct",
+  "n": 60,
+  "naive_pearson": 0.33,
+  "sound_partial": 0.32,
+  "style_partial": -0.02,
+  "bon": {
+   "excess_gap": 0.8,
+   "regret": 0.324
+  }
+ },
+ {
+  "config": "ref:Qwen2.5-1.5B-Instruct",
+  "n": 56,
+  "naive_pearson": 0.55,
+  "sound_partial": 0.51,
+  "style_partial": 0.1,
+  "bon": {
+   "excess_gap": 0.16,
+   "regret": 0.01
+  }
+ },
+ {
+  "config": "ref:Qwen2.5-14B-Instruct",
+  "n": 60,
+  "naive_pearson": 0.7,
+  "sound_partial": 0.7,
+  "style_partial": -0.11,
+  "bon": {
+   "excess_gap": 0.05,
+   "regret": 0.048
+  }
+ },
+ {
+  "config": "ref:Qwen2.5-3B-Instruct",
+  "n": 60,
+  "naive_pearson": 0.55,
+  "sound_partial": 0.53,
+  "style_partial": -0.02,
+  "bon": {
+   "excess_gap": 0.07,
+   "regret": 0.038
+  }
+ },
+ {
+  "config": "ref:Qwen2.5-7B-Instruct",
+  "n": 60,
+  "naive_pearson": 0.66,
+  "sound_partial": 0.66,
+  "style_partial": -0.12,
+  "bon": {
+   "excess_gap": 0.18,
+   "regret": 0.019
+  }
+ },
+ {
+  "config": "ref:GPT-5.2 (honest)",
+  "n": 60,
+  "naive_pearson": 0.89,
+  "sound_partial": 0.9,
+  "style_partial": -0.22,
+  "bon": {
+   "excess_gap": 0.38,
+   "regret": 0.117
+  }
+ },
+ {
+  "config": "sabotage:GPT-5.2",
+  "n": 60,
+  "naive_pearson": 0.35,
+  "sound_partial": 0.2,
+  "style_partial": 0.59,
+  "bon": {
+   "excess_gap": 0.85,
+   "regret": 0.133
+  }
+ }
+]
