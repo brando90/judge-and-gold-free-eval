@@ -202,3 +202,19 @@ under the corrected labels. All numbers: `papers/analysis/ties_corrected_delta.j
   rates, an additional reason the registered n=7 population was uninformative.
 - Caveat: the corrected labels rest on the same LLM adjudicator, itself fallible and possibly
   lenient; human adjudication of a checker sample remains future work.
+
+## External registration note (2026-08-23): OSF registrations posted
+
+Three registrations were posted to the Open Science Framework on 2026-08-23, with immutable
+public timestamps (pending routine email approval, which does not affect the timestamps):
+
+- `osf.io/ym5x9`: the clean preregistered replication of the reference-lever inversion
+  (this paper), registered before any pool generation, with the population, estimators,
+  and both primary endpoints pre-specified.
+- `osf.io/jg4ak`: the DPO training-pressure rerun (companion paper A), registered before
+  the rerun's evaluation was read, with the frozen manipulation check and predictions
+  P-D1..P-D3.
+- `osf.io/axp3s`: the Putnam second-dataset audit replication (companion paper A),
+  registered before any Putnam labels were collected, under the frozen revised CI rule.
+
+All earlier registrations in this file remain internal git timestamps only.
