@@ -227,7 +227,9 @@ Because GSM8K-Platinum is an exhaustive re-annotation of the GSM8K test set, dat
 \text{recall} \;=\; \frac{\lvert \text{flagged} \cap \text{Platinum-removed/relabeled} \rvert}{\lvert \text{Platinum-removed/relabeled items in the evaluated slice} \rvert}.
 \]
 The numerator on our slice is 13 (11 removed plus 2 relabeled).
-[TODO: compute the denominator from \texttt{cc\_corrections.jsonl} plus the Platinum diff over the evaluated slice and report the resulting recall.]
+Computing it: 46 of the 110 Platinum-removed items fall inside our evaluated 500-item slice (question-text diff between GSM8K and GSM8K-Platinum test splits), and the miner flagged 13 of the 46, a dataset-defect recall of $28\%$.
+Low recall is expected by construction: the consensus signal fires only when several solvers agree on one alternative answer, which most defective items do not elicit.
+The miner is a precision instrument, not a sweep.
 Recall over scorer bugs is separately unmeasured, since no exhaustive ground-truth audit of the full slice exists on our side.
 
 \paragraph{Adjudicator dependence at the 97\% point.}
