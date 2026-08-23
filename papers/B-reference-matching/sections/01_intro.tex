@@ -2,6 +2,41 @@
 \section{Introduction}
 \label{sec:intro}
 
+\begin{table}[t!]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{1.2pt}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llccccc}
+\toprule
+metric & mechanism & boundary (hard / sat.) & item / fam / resid \% & vs.\ human (Pearson) & Spearman $\rho$ & within-corr.\ $r$ \\
+\midrule
+free answer-correct bit & verification (endpoint only) & --- & --- & $\mathbf{+0.92}$ $[+0.78,+0.99]$ & --- & (constant) \\
+\midrule
+prefix repair ($k{=}0.5$) & verification & --- & --- & $+0.76$ $[+0.56,+0.91]$ & $+0.48$ & $+0.02$ \\
+prefix repair ($k{=}0.75$) & verification & --- & --- & $+0.78$ $[+0.60,+0.91]$ & $+0.46$ & $+0.19$ $[-0.20,+0.55]$ \\
+prefix-repair curve mean & verification & --- & --- & $+0.79$ $[+0.61,+0.92]$ & $+0.41$ & $+0.07$ $[-0.21,+0.33]$ \\
+\midrule
+\tfa{} (argmax) & prediction fit & $+0.60$ / $-0.25$ & $83$--$92$ / $3$--$7$ / $5$--$11$ & $-0.16$ $[-0.46,+0.13]$ & $-0.12$ & $+0.21$ $[-0.10,+0.47]$ \\
+gold-token logprob & prediction fit & $+0.43$ / $-0.23$ & $83$--$91$ / $7$--$11$ / $1$--$6$ & $-0.27$ $[-0.54,+0.04]$ & $-0.18$ & $+0.15$ \\
+TF-IDF cosine & weighted similarity & $+0.72$ / $+0.12$ & $69$ / $8$ / $23$ & $-0.08$ $[-0.33,+0.18]$ & $-0.09$ & $+0.16$ \\
+sentence embeddings & semantic similarity & $+0.87$ / $+0.29$ & $\sim$$70$ / $8$ / $21$ & $+0.14$ $[-0.08,+0.40]$ & $+0.13$ & $-0.01$ \\
+unigram-F1 & raw overlap & $-0.49$ / $+0.18$ & $45$--$55$ / $12$--$15$ / $32$--$41$ & $-0.33$ $[-0.58,-0.12]$ & $-0.29$ & $+0.06$ \\
+\midrule
+LLM judge (referenced) & judge (protocol-dependent) & --- & --- & $+0.89$ $[+0.76,+0.97]$ & $+0.43$ & $-0.14$ $[-0.25,-0.09]$ \\
+LLM critic (GPT) & judge (protocol-dependent) & --- & --- & $+0.91$ $[+0.77,+0.98]$ & $\mathbf{+0.61}$ & $+0.17$ \\
+LLM critic (Claude) & judge (protocol-dependent) & --- & --- & $+0.88$ $[+0.74,+0.97]$ & $+0.54$ & $+0.03$ \\
+\bottomrule
+\end{tabular}%
+}
+\caption{\textbf{No cheap signal grades beyond the free correctness bit: every reference-matching metric lands in $[-0.33, +0.14]$ against blind human soundness, the verification signals carry real signal, and the free machine-checked answer-correct bit tops the entire field at $+0.92$ $[+0.78, +0.99]$.}
+Each row is one evaluation signal, scored against blind human soundness grades on the same anchor set of 60 human-graded solutions: its Pearson correlation (bootstrap 95\% CI) and Spearman, its within-correct correlation (restricted to solutions whose final answer is correct, the margin a grader must win), its model-ranking boundary (pooled cross-family Spearman, hard versus saturated benchmarks), and its variance decomposition (item / family-style / residual shares).
+Prefix repair truncates a solution, lets a fixed completer finish it, and scores whether the completion reaches the right answer.
+Nothing beats the free bit: the prefix-repair curve mean's partial correlation with soundness given the bit is $-0.10$ $[-0.30,+0.22]$, while the bit's partial given the curve retains $+0.77$ $[+0.55,+0.95]$ (Section~\ref{sec:verify}).
+Notes: gold-token logprob uses the $n{=}42$ subset with logprob available; within-correct entries use $n{=}48$ ($n{=}32$ for logprob); the free bit is constant within the correct-only subset, so its within-correct entry is undefined by construction; unigram-F1's hard-benchmark inversion ($-0.49$) is a verbosity confound, moving to $-0.07$ when output length is controlled; the five-metric battery carries no multiplicity correction, and the judge rows' within-correct caveats are in Sections~\ref{sec:verify} and~\ref{sec:limits}.}
+\label{tab:classfull}
+\end{table}
+
 % P1: problem motivation
 Most benchmarks that matter ship with a gold reference: a worked solution or a canonical program known to be correct.
 This is true of grade-school math, competition math, and program synthesis alike~\cite{cobbe2021gsm8k,hendrycks2021math,chen2021codex}.
@@ -29,11 +64,12 @@ We anchor everything to blind human grades on two deliberately separated scales:
 If a metric is validated only by its agreement with an LLM judge, that is reliability, not validity; if the judge scores surface style, a metric tracking it may be succeeding at the wrong thing.
 So the ground truth here is human grades, collected blind, plus executed tests on code, where no human is needed.
 We test five comparison metrics spanning the space, from \tfa{} to sentence embeddings, along with targeted repairs of each.
-We test three judge-free verification signals: executed tests, a prefix-repair completion curve, and an answer-swap counterfactual.
+We test three judge-free verification signals: executed tests; a prefix-repair completion curve, which truncates a solution, lets a fixed completer finish it, and scores whether the completion reaches the right answer; and an answer-swap counterfactual.
+Table~\ref{tab:classfull} shows the full field of signals on one page.
 
 % P5: evaluation summary, organized as four questions
 We organize the results as four research questions.
-\textbf{RQ1} asks whether reference-similarity metrics can grade individual solutions, and the answer is a class-level null: against human soundness on the 60-item random label set, all five comparison metrics land in $[-0.33, +0.14]$, where a frontier LLM judge reaches $+0.89$ on identical items, and on 492 code solutions the two prediction-fit metrics, \tfa{} and gold-token log-probability, are indistinguishable from zero against executed tests, while the output-similarity metrics carry only a weak positive signal there ($+0.13$ to $+0.17$).
+\textbf{RQ1} asks whether reference-similarity metrics can grade individual solutions, and the answer is a class-level null: against human soundness on the 60-item random label set (the \emph{anchor set} of human-graded solutions used throughout), all five comparison metrics land in $[-0.33, +0.14]$, where a frontier LLM judge reaches $+0.89$ on identical items, and on 492 code solutions the two prediction-fit metrics, \tfa{} and gold-token log-probability, are indistinguishable from zero against executed tests, while the output-similarity metrics carry only a weak positive signal there ($+0.13$ to $+0.17$).
 \textbf{RQ2} asks why, and the answer is mechanistic: for \tfa, $83$--$92\%$ of per-solution variance beyond model level is an item effect that replicates across model families, so it is a property of the reference text, not of the solution being graded; as a pooled corollary \tfa{} correlates at $-0.895$ with reference perplexity (bits-per-character) across 6{,}000 model--item pairs, and replacing worked references with answer lines collapses the point estimate of the ranking signal, though the model-level paired delta is not distinguishable from zero at seventeen models.
 Reference predictability and problem difficulty are entangled inside that item effect, so the decomposition establishes that comparison scores meter a text property, not that the property is worthless; either way, the score is not grading the solution in front of it.
 \textbf{RQ3} asks when matching can still rank models, and the answer is a boundary the mechanism predicts: ranking survives on hard data with information-dense references ($+0.86$ on olympiad math) and degrades on saturated data, benchmarks where most models already score near ceiling, where the point estimates turn negative, all twelve hard-benchmark family ladders stay positive, five of twelve saturated ladders invert, and every targeted repair we or our reviewers proposed left the per-solution signal at zero or made it worse.
