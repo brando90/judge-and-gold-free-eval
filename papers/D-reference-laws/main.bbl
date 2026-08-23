@@ -1,4 +1,4 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 
 \bibitem{refguided2024}
 Anonymous.
@@ -12,11 +12,23 @@ Anonymous.
   evaluation.
 \newblock {\em arXiv preprint arXiv:2509.19880}, 2025.
 
+\bibitem{fixation2025}
+Anonymous.
+\newblock Solution fixation bias: {LLM} judges penalize valid solutions that
+  differ from the provided reference.
+\newblock {\em arXiv preprint arXiv:2509.03419}, 2025.
+
 \bibitem{companionA}
 Anonymous.
 \newblock Certify before you optimize: A cheap blind audit that predicts which
   llm judges get gamed, 2026.
 \newblock Companion draft.
+
+\bibitem{judgingref2026}
+Anonymous.
+\newblock Judging against the reference: Reference-guided evaluation degrades
+  on open-ended tasks.
+\newblock {\em arXiv preprint arXiv:2601.07506}, 2026.
 
 \bibitem{generous2026}
 Anonymous.

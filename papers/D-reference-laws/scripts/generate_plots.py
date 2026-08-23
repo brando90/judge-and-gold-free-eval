@@ -4,7 +4,10 @@
 Data sources:
   - papers/analysis/ties_fullset.json   (excess hack gap + regret per config, n=51)
   - papers/analysis/ties_inband.json    (registered in-band [0.2,0.8] subset, n=7)
-  - papers/analysis/ties_p2_margin.json (anchoring margins per judge/rep/cond)
+  - papers/analysis/ties_p2_margin.json (anchoring margins per judge/rep/cond, original-reference arm)
+  - papers/analysis/ties_rot_margin.json (anchoring margins, reference-rotation arm, n=18 items)
+  - papers/analysis/ties_rot_within_answer.json (paired same-sample score deltas under
+    rotation, n=40 items per cell)
   - Math gaps are the published companion-A values (hardcoded below, cited in the paper).
 
 Outputs vector PDFs into papers/D-reference-laws/figures/.
@@ -89,11 +92,43 @@ def margin_cells(size, cond):
         out.append((row["margin"], row["ci"]))
     return out
 
+# Reference-rotation arm (same frozen pools, ref rotated to a different valid
+# answer; registered addendum P-T2r), n=18 items per cell.
+with open(ANALYSIS / "ties_rot_margin.json") as f:
+    rot_raw = json.load(f)
+
+def rot_cells(size):
+    out = []
+    for rep in ("a", "b"):
+        key = f"Qwen2.5-{size}-Instruct_ref_{rep}:rotated"
+        row = next(r for r in rot_raw if r["config"] == key)
+        out.append((row["margin"], row["ci"]))
+    return out
+
+# Within-answer paired deltas (same sample text, reference rotated to match it),
+# n=40 items per cell; the headline causal readout.
+with open(ANALYSIS / "ties_rot_within_answer.json") as f:
+    within_raw = json.load(f)
+
+def within_cells(size):
+    out = []
+    for rep in ("a", "b"):
+        row = next(r for r in within_raw
+                   if r["judge"] == f"Qwen2.5-{size}-Instruct" and r["rep"] == rep)
+        out.append((row["delta"], row["ci"]))
+    return out
+
 # Average the two rubric reps; whiskers span the union of the two rep CIs.
 MARGINS = {}
 for size in SIZES:
     for cond in ("ref", "noref"):
         cells = margin_cells(size, cond)
+        avg = sum(m for m, _ in cells) / len(cells)
+        lo = min(ci[0] for _, ci in cells)
+        hi = max(ci[1] for _, ci in cells)
+        MARGINS[(size, cond)] = (avg, lo, hi)
+    for cond, cell_fn in (("rot", rot_cells), ("within", within_cells)):
+        cells = cell_fn(size)
         avg = sum(m for m, _ in cells) / len(cells)
         lo = min(ci[0] for _, ci in cells)
         hi = max(ci[1] for _, ci in cells)
@@ -170,13 +205,18 @@ plt.close(fig)
 
 # ------------------------------------------------------------- fig_anchoring
 
-fig, ax = plt.subplots(figsize=(5.6, 3.0))
+NAVY = "#22417f"       # paired same-sample delta under rotation (headline)
+LIGHTBLUE = "#9db6e8"  # referenced, original-reference arm
+
+fig, ax = plt.subplots(figsize=(7.0, 3.1))
 x = range(len(SIZES))
-w = 0.36
+w = 0.21
 for i, size in enumerate(SIZES):
     for cond, color, dx, label in (
-        ("ref", BLUE, -w / 2, "referenced judge"),
-        ("noref", ORANGE, +w / 2, "blind judge"),
+        ("within", NAVY, -1.5 * w, "same sample, ref rotated to match ($n{=}40$)"),
+        ("rot", BLUE, -0.5 * w, "rotated-ref margin ($n{=}18$)"),
+        ("ref", LIGHTBLUE, +0.5 * w, "original-ref margin ($n{=}4$)"),
+        ("noref", ORANGE, +1.5 * w, "blind placebo ($n{=}4$)"),
     ):
         avg, lo, hi = MARGINS[(size, cond)]
         ax.bar(i + dx, avg, width=w - 0.04, color=color, zorder=3,
@@ -190,7 +230,7 @@ for i, size in enumerate(SIZES):
 ax.axhline(0, color=MUTED, lw=1.0, zorder=2)
 ax.set_xticks(list(x), SIZES)
 ax.set_xlabel("judge size")
-ax.set_ylabel("anchoring margin\n(score points, 0–10 scale)")
+ax.set_ylabel("anchoring effect\n(score points, 0–10 scale)")
 ax.set_ylim(-6.4, 11.2)
 ax.spines[["top", "right"]].set_visible(False)
 ax.spines[["left", "bottom"]].set_color(MUTED)
@@ -198,7 +238,7 @@ ax.yaxis.grid(True, color=GRID, linewidth=0.8, zorder=0)
 ax.set_axisbelow(True)
 ax.tick_params(colors=INK, length=3)
 ax.legend(loc="lower center", bbox_to_anchor=(0.5, 1.01), ncols=2,
-          frameon=False, handletextpad=0.4, columnspacing=1.4)
+          frameon=False, handletextpad=0.4, columnspacing=1.0, fontsize=8.5)
 fig.tight_layout()
 fig.savefig(FIGDIR / "fig_anchoring.pdf", bbox_inches="tight")
 plt.close(fig)
