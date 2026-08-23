@@ -9,7 +9,7 @@ The sharpest such metric, teacher-forced accuracy, was recently proposed as a ju
 No form of matching can grade an individual solution.
 Five metrics spanning the space, from teacher-forced accuracy to sentence embeddings, land in $[-0.33, +0.14]$ against human soundness grades; on 492 code solutions scored by executed tests, the two prediction-fit metrics, teacher-forced accuracy and gold-token log-probability, are indistinguishable from zero, and the output-similarity metrics carry only a weak positive signal (unigram-F1 $+0.13$, TF-IDF $+0.17$), far below any grading standard.
 The reason is mechanistic: $83$--$92\%$ of per-solution variance beyond model level is an item effect that replicates across model families, a property of the reference text rather than of any one model's solution, and pooled across 6{,}000 model--item pairs, teacher-forced accuracy is $80\%$ reference perplexity (bits-per-character).
-Every targeted repair we or our reviewers proposed failed to recover a grading signal; of the four pre-registered predictions, three landed as called and one registered null instead produced a sign flip.
+Every targeted repair we or our reviewers proposed failed to recover a grading signal; of the five pre-registered predictions, three landed as called, one registered null produced a sign flip, and one was falsified outright.
 % 4 finding 2: ranking boundary
 Matching can rank models, but only when the reference is worth predicting.
 Replacing each worked reference with its answer line collapses the ranking signal on the same items, from Spearman $+0.35$ to $+0.02$ as a point contrast on all seventeen models.
@@ -20,6 +20,8 @@ On the verification side, the decisive baseline turns out to be free.
 Executed tests are a free correctness oracle where they exist, and on the 60-item math anchor set the machine-checked answer-correct bit alone correlates $+0.92$ $[+0.78, +0.99]$ with human soundness.
 The best verification signal we tested, a prefix-repair curve that truncates a solution and asks whether a fixed completer still reaches the right answer, is statistically indistinguishable from, and slightly below, that free bit ($+0.79$ $[+0.61, +0.92]$ versus $+0.92$ $[+0.78, +0.99]$).
 Its partial correlation with soundness given correctness is $-0.10$ $[-0.30, +0.22]$, while correctness given the curve retains $+0.77$ $[+0.55, +0.95]$, so the curve adds no measurable grading signal over the free answer-correct bit on this anchor set.
+The falsified register is the completer-strength prediction (P-C1), which called a middle band of required completer strength with washout at 1.5B; instead, swapping in Qwen2.5 completers from 1.5B to 32B leaves the curve's validity flat ($+0.78$ to $+0.88$) even as completer solve rates rise from $0.49$ to $0.83$, and within-correct values stay null at every size.
+Flatness is what the free-bit reading predicts, since any completer able to finish sound work returns the same correctness signal.
 The curve is a noisy proxy for the free correctness bit wherever the gold final answer is extractable; its residual use case is settings where a final answer cannot be extracted or matched, such as free-form proofs, and that use case is untested here.
 The registered class-level prediction still landed, since verification signals out-correlate every matching signal, but the register did not anticipate that the free bit would top the class.
 % 6 implications

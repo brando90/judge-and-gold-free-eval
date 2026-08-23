@@ -34,9 +34,11 @@ The space we tested is therefore a clean negative map with a mechanism: no cheap
 What remains open is the setting the map does not cover, solutions whose final answer cannot be extracted or matched, where completion-based verification is the natural candidate and is untested here.
 The boundary for leaderboard use is equally mechanistic: matching ranks models exactly when references are worth predicting, and reference perplexity can be measured in advance to check that condition.
 The answer-line intervention supports this reading, with its evidentiary weight stated precisely: the certified statement is the item-level paired delta on the twelve-model subset ($+0.24$ $[+0.12, +0.33]$, moving that subset's Spearman from $+0.14$ with full references to $-0.10$ with answer lines, conditioning on the fixed twelve models so the interval reflects item-sampling uncertainty only), while the $+0.35 \to +0.02$ collapse is the point contrast on all seventeen models, whose model-level delta ($+0.33$ $[-0.16, +0.81]$) does not exclude zero.
-Three of the four pre-registered predictions landed as called; the position-weighted register predicted a null, and the observed sign flip to $-0.37$ at last-four tokens means that register was directionally wrong, not confirmed.
+Three of the five pre-registered predictions landed as called; the position-weighted register predicted a null, and the observed sign flip to $-0.37$ at last-four tokens means that register was directionally wrong, not confirmed.
+The completer-strength register (P-C1) predicted a middle band of required completer strength and was falsified: the curve's validity is flat from a 1.5B to a 32B completer.
+That falsification is a miss for the register and corroboration for the mechanism, since the middle-band prediction assumed graded process evaluation, which the within-correct nulls show the curve does not perform.
 The class-level register also did not anticipate that the free answer-correct bit would top the verification class.
-The registered record is therefore consistent with the class divide, with those misses on record.
+The registered record is therefore three hits, one sign flip, and one falsification, consistent with the class divide, with the misses on record.
 
 \vspace{1em}
 \begingroup

@@ -8,6 +8,7 @@
 \sloppy
 Wherever the gold final answer is extractable and matchable, the free answer-correct bit correlates $+0.92$ $[+0.78, +0.99]$ with blind human soundness on our anchor set, and no signal we tested, matching or verification, adds measurable grading information beyond it (Section~\ref{sec:verify}; \texttt{papers/analysis/free\_baseline.json}).
 Reach for completion-based verification only where a final answer cannot be extracted or matched, and note that we have not tested that setting.
+Where you do run it, the completer's strength barely matters on our anchor: the curve's validity is flat from a 1.5B to a 32B completer (Section~\ref{sec:verify}; \texttt{papers/analysis/completer\_sweep.json}).
 \par
 \endgroup
 \item \textbf{Never use a reference as a similarity target.}

@@ -159,6 +159,7 @@ prefix-repair curve & verification & works & $+0.79$ vs.\ human soundness \\
 The position-weighted register predicted a null, and the observed $-0.37$ at last-four tokens is a sign flip, so that register was directionally wrong, not confirmed; the other three registered predictions landed as called (the seven reweighting variants predate the registration protocol and are included for completeness).
 The two verification-class entries are described in Section~\ref{sec:verify}; the prefix-repair curve's $+0.79$ sits below the free answer-correct bit's $+0.92$, and its partial correlation with soundness given correctness is $-0.10$, so it is not a headline grading signal.
 The register called the class divide but did not anticipate that the free bit would top the class.
+A fifth register, the completer-strength middle band (P-C1), was run after this slate and falsified (Section~\ref{sec:verify}), so the full registered record is three hits, one sign flip, and one falsification.
 \textbf{Takeaway:} every comparison-class repair failed and every verification-class signal out-correlated the comparison class, but none beat free answer correctness, and one comparison-class register called a null where the outcome was a sign flip.}
 \label{tab:slate}
 \end{table}
@@ -213,9 +214,16 @@ That partial controls for the completer's base rate on the problem, not for the 
 For scale: on the same labels every comparison metric sits at $|r| \le 0.33$, and the LLM judge reads $+0.89$ (Pearson) with a Spearman of $+0.43$.
 In rank terms the curve mean ($\rho = +0.41$) ties the referenced judge ($\rho = +0.43$) but trails the critic protocols ($0.61$ for the GPT critic, $0.54$ for the Claude critic) by $0.13$ to $0.20$; the range-restriction account given for the judge's Spearman in Section~\ref{sec:setup} applies equally to the curve mean's, but not to the critics', which are computed on the same restricted set.
 We do not lean on ceiling comparisons: the inter-rater estimate comes from an $n{=}20$ cross-schema block with a wide interval (roughly $[0.55, 0.92]$), so where a signal sits relative to $0.80$ or $0.89$ is indicative only (Section~\ref{sec:setup}).
-The curve's costs are also real: thirty-two completions per solution (eight at each of four cut depths), and a completer whose strength has to be chosen.
-We expect a middle band of completer strength to be required, since a completer too weak cannot finish sound work and one too strong rescues broken work.
-But the two completers we ran (Qwen2.5-14B and phi-4) are both mid-sized, so the middle-band requirement is a design expectation here, not a measured result; a registered completer-strength sweep (P-C1) is queued on the cluster to measure it.
+The curve's costs are real: thirty-two completions per solution (eight at each of four cut depths).
+The completer's strength, by contrast, barely matters on this anchor.
+We had expected a middle band of completer strength to be required, since a completer too weak cannot finish sound work and one too strong rescues broken work, and we registered that expectation as P-C1: validity washes out at a 1.5B completer, rises through 3B and 7B, and gains little at 32B.
+The completed sweep falsifies that register.
+Across Qwen2.5 completers at 1.5B, 3B, 7B, and 32B, the curve mean's Pearson with human soundness is $+0.78$ $[+0.63, +0.89]$, $+0.80$ $[+0.64, +0.91]$, $+0.88$ $[+0.73, +0.96]$, and $+0.87$ $[+0.73, +0.96]$ (each $n{=}42$, the anchor traces the pairs file covers), alongside the original 14B completer's $+0.79$ $[+0.60, +0.92]$ ($n{=}60$; \texttt{papers/analysis/completer\_sweep.json}).
+The completers do differ in strength, with base solve rates rising from $0.49$ at 1.5B to $0.83$ at 32B, yet the curve's validity is flat across a twenty-fold size range: no washout, no middle band.
+The within-correct curve mean stays null at every size ($+0.06$, $+0.12$, $+0.23$, $+0.02$ across the sweep sizes, $+0.07$ for the 14B completer).
+This is a miss for the register and a win for the mechanism, and both statements stand.
+The middle-band prediction assumed the curve performs graded process evaluation, which should depend on completer strength; the within-correct nulls say it does not.
+On the free-correctness-bit reading, any completer strong enough to complete correct reasoning from a sound prefix yields the same correctness signal, and flatness in completer strength is exactly what that reading predicts.
 
 \begingroup
 \sloppy
