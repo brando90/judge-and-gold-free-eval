@@ -88,6 +88,28 @@
   }
  },
  {
+  "config": "sabotage:Qwen2.5-14B-Instruct",
+  "n": 60,
+  "naive_pearson": 0.45,
+  "sound_partial": 0.38,
+  "style_partial": 0.24,
+  "bon": {
+   "excess_gap": 0.61,
+   "regret": 0.324
+  }
+ },
+ {
+  "config": "sabotage:Qwen2.5-7B-Instruct",
+  "n": 60,
+  "naive_pearson": 0.34,
+  "sound_partial": 0.28,
+  "style_partial": 0.17,
+  "bon": {
+   "excess_gap": 0.13,
+   "regret": 0.4
+  }
+ },
+ {
   "config": "ref:GPT-5.2 (honest)",
   "n": 60,
   "naive_pearson": 0.89,
