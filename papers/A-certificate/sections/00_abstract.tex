@@ -3,7 +3,7 @@ LLM judges now rank models, filter data, and pick the best of $n$ samples, and t
 That check fails in the worst way: a judge can agree with humans on unoptimized data and still be gamed the moment something optimizes against it.
 We introduce a pre-deployment audit: a few dozen blind human labels, graded separately for soundness and for style, reveal whether a judge scores substance or presentation, and yield a verdict of pass, fail, or convict.
 We validate the verdicts by running best-of-$n$ selection against every judge and checking who actually gets gamed: the frozen verdicts called the outcome for ten of eleven registered configurations.
-Under externally registered DPO training against each judge, the certified judge's arm gained real accuracy on its training items while the convicted judge's arm degraded it.
+Under externally registered DPO training against each judge, the certified judge's arm gained real accuracy on its training items (with no held-out gain) while the convicted judge's arm degraded held-out accuracy.
 The registered inflation-wedge prediction was falsified in direction: the corrupted preference signal damaged the policy rather than teaching it to game the judge.
 The audit convicts a deliberately sabotaged frontier judge and a top open reward model, two evaluators that raw agreement cannot tell apart from honest mid-size judges.
 The honest pass and the sabotage conviction reproduce significantly on labels from a hypothesis-blind annotator outside the author list; the reward-model conviction reproduces in sign on those labels and is significant on two-rater consensus.
