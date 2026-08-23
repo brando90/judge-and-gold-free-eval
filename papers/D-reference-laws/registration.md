@@ -118,3 +118,37 @@ judges, two task families (Ties and synthetic), and two generators; the uniquene
 is supported within-family and for the strongest cross-family judge but failed for a mid-size
 judge on cross-generator text. Reported in the paper as directionally established with one
 failed leg, conditional, not a law.
+
+## Post-hoc re-analysis note (2026-08-23): paired inference, McNemar, k=1 audit; P-S2b queued
+
+Recorded after the round-4 review. The additions below are POST HOC, demanded by review, and
+carry no pre-registration weight; they are produced by the committed
+`papers/analysis/synthk_paired.py` into `papers/analysis/synthk_paired.json`, distinct from the
+frozen pre-registered `synthk_analysis.py`, which alone scored the registered decision rules.
+
+- **Paired step contrast (the licensed universal).** The mean per-item paired ref-minus-blind
+  gap delta over the k>1 strata minus the same delta at k=1 is positive with a CI excluding
+  zero for all six judges: 1.5B +0.55 [+0.26,+0.85], 3B +2.55 [+1.50,+3.67], 7B +1.22
+  [+0.70,+1.73], 14B +0.46 [+0.13,+0.80], Llama-8B +0.74 [+0.25,+1.24], phi-4 +0.80
+  [+0.30,+1.28]. The paired k>1 inflation LEVEL is individually significant for only three of
+  six judges (3B +2.41, 7B +0.89, Llama-8B +0.46; 1.5B +0.07, 14B +0.08, phi-4 +0.22 all cross
+  zero), and the k=1 paired delta is negative (reference helps) with CIs excluding zero for
+  five of six (Llama-8B -0.28 [-0.65,+0.07] crosses). Per-judge slope per log2(k) beyond the
+  step is null for 1.5B/3B/7B and positive for 14B +0.23 [+0.00,+0.46], Llama-8B +0.36
+  [+0.08,+0.65], phi-4 +0.37 [+0.06,+0.70]. Paper claims downgraded accordingly: the step is
+  the universal, the per-cell k=16 universal of earlier drafts is withdrawn.
+- **Rotation-arm collapse contrast re-tested with exact McNemar** on the 18 paired items
+  (replacing the unpaired Fisher tests): discordant counts 12/0 at 1.5B (p=0.0005), 9/0 at 3B
+  (p=0.004), 7/1 at 7B (p=0.070, marginal), 10/0 at 14B (p=0.002).
+- **k=1 audit outcome.** On the Llama-generator pool's k=1 stratum the oracle's
+  boxed-extraction rate is 0.65 versus 0.89 on the Qwen pool (oracle pass rates 0.53 versus
+  0.83, 12 tasks per pool), so the k=1 non-replication under P-S5 has a likely proximate cause
+  in answer-extraction friction on Llama formatting rather than judge verification failure;
+  likely cause, not proof.
+- **P-S2b (second instruction phrasing): REGISTERED AND QUEUED.** A second, do-not-compare
+  phrasing of the instruction mitigation will be run on the same grid. Registered prediction:
+  the capability-graded pattern of P-S2 replicates under the do-not-compare phrasing (ordered
+  improvement with judge capability, phi-4 closest to complete, no reliable improvement at
+  1.5B/3B). Also recorded: the 1.5B instruction-worsens result holds only under rubric a
+  (+3.58 -> +4.54 at k=16); rubric b improves (+2.52 -> +2.12), so the paper's wording is now
+  "a placebo below the capability gate, with one rubric showing worse at 1.5B".
