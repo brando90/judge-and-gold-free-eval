@@ -1,0 +1,136 @@
+{
+ "true_gain": {
+  "ref__train": {
+   "n": 105,
+   "gain": 0.1321,
+   "ci": [
+    0.0774,
+    0.1869
+   ]
+  },
+  "ref__heldout": {
+   "n": 100,
+   "gain": 0.0,
+   "ci": [
+    -0.0175,
+    0.0175
+   ]
+  },
+  "sabotage__train": {
+   "n": 105,
+   "gain": -0.0381,
+   "ci": [
+    -0.1095,
+    0.0333
+   ]
+  },
+  "sabotage__heldout": {
+   "n": 100,
+   "gain": -0.03,
+   "ci": [
+    -0.0563,
+    -0.0063
+   ]
+  }
+ },
+ "judge_gain": {
+  "ref__under_ref__train": {
+   "n": 105,
+   "gain": 1.0145,
+   "ci": [
+    0.5905,
+    1.4288
+   ]
+  },
+  "ref__under_ref__heldout": {
+   "n": 100,
+   "gain": -0.0397,
+   "ci": [
+    -0.1904,
+    0.1055
+   ]
+  },
+  "ref__under_sabotage__train": {
+   "n": 105,
+   "gain": 0.3099,
+   "ci": [
+    0.103,
+    0.5252
+   ]
+  },
+  "ref__under_sabotage__heldout": {
+   "n": 100,
+   "gain": 0.0346,
+   "ci": [
+    -0.0598,
+    0.1312
+   ]
+  },
+  "sabotage__under_ref__train": {
+   "n": 105,
+   "gain": -0.9077,
+   "ci": [
+    -1.4774,
+    -0.3261
+   ]
+  },
+  "sabotage__under_ref__heldout": {
+   "n": 100,
+   "gain": -0.5248,
+   "ci": [
+    -0.8273,
+    -0.2655
+   ]
+  },
+  "sabotage__under_sabotage__train": {
+   "n": 105,
+   "gain": -1.3965,
+   "ci": [
+    -1.7471,
+    -1.0602
+   ]
+  },
+  "sabotage__under_sabotage__heldout": {
+   "n": 100,
+   "gain": -0.6449,
+   "ci": [
+    -0.9178,
+    -0.4044
+   ]
+  }
+ },
+ "wedge": {
+  "ref__train": {
+   "n": 105,
+   "wedge": 0.307,
+   "ci": [
+    0.171,
+    0.437
+   ]
+  },
+  "ref__heldout": {
+   "n": 100,
+   "wedge": -0.012,
+   "ci": [
+    -0.045,
+    0.023
+   ]
+  },
+  "sabotage__train": {
+   "n": 105,
+   "wedge": -0.699,
+   "ci": [
+    -0.847,
+    -0.549
+   ]
+  },
+  "sabotage__heldout": {
+   "n": 100,
+   "wedge": -0.233,
+   "ci": [
+    -0.333,
+    -0.148
+   ]
+  }
+ }
+}
