@@ -1,0 +1,30 @@
+% !TEX root = ../main.tex
+\section{The full metric-class table}
+\label{app:classtable}
+
+All five comparison metrics under the same four tests: model-level boundary (hard-benchmark / \textsc{GSM8K} pooled $\rho$), variance decomposition (item / item$\times$family / residual shares, four families), and correlation with blind human soundness (the 60-item random label set).
+
+\begin{table}[ht]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{2.2pt}
+\begin{tabular}{llccc}
+\toprule
+metric & mechanism & boundary (hard / sat.) & item / fam / resid \% & vs.\ human \\
+\midrule
+\tfa{} (argmax) & prediction fit & $+0.60$ / $-0.25$ & $83$--$92$ / $3$--$7$ / $5$--$11$ & $-0.16$ $[-0.46, +0.13]$ \\
+gold-token logprob & prediction fit & $+0.43$ / $-0.23$ & $83$--$91$ / $7$--$11$ / $1$--$6$ & $-0.27$ $[-0.54, +0.04]$ \\
+TF-IDF cosine & weighted similarity & $+0.72$ / $+0.12$ & $69$ / $8$ / $23$ & $-0.08$ $[-0.33, +0.18]$ \\
+sentence embeddings & semantic similarity & $+0.87$ / $+0.29$ & $\sim$$70$ / $8$ / $21$ & $+0.14$ $[-0.08, +0.40]$ \\
+unigram-F1 & raw overlap & $-0.49$ / $+0.18$ & $45$--$55$ / $12$--$15$ / $32$--$41$ & $-0.33$ $[-0.58, -0.12]$ \\
+\midrule
+LLM judge (referenced) & verification & --- & --- & $\mathbf{+0.89}$ $[+0.76, +0.97]$ \\
+completion value ($k{=}0.5$) & verification & --- & --- & $+0.76$ $[+0.56, +0.91]$ \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{The full metric-class table.}
+Prediction-fit and weighted-similarity metrics rank on hard benchmarks and die or invert on saturated ones; raw overlap does not rank at all (its hard-benchmark inversion is a verbosity confound: controlling output length moves $-0.49$ to $-0.07$).
+Human columns are Pearson $r$ with bootstrap 95\% CIs on the 60-item set; gold-token logprob uses the $n{=}42$ subset with logprob available; the best human-anchored value is in bold.
+\textbf{Takeaway:} no comparison metric grades against human soundness, and both verification signals do.}
+\label{tab:classfull}
+\end{table}

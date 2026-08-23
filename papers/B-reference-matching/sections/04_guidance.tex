@@ -1,0 +1,13 @@
+% !TEX root = ../main.tex
+\section{Practical guidance}
+\label{sec:rules}
+
+\begin{enumerate}
+\item \textbf{Never use a reference as a similarity target.}
+Its value is as context for a reader or as a checkable endpoint for a verifier (Section~\ref{sec:verify}).
+Any metric that scores resemblance to reference text inherits the nuisance decomposition of Section~\ref{sec:mechanism}, and the taxonomy correctly predicted the failure of every such metric before it was built.
+In particular, matching scores should never be used as per-solution rewards or filters: the per-solution signal is not weak, it is absent, across the entire metric class, in two domains, against both human grades and executed tests.
+\item \textbf{For leaderboards, matching is legitimate exactly when references are worth predicting.}
+Report reference entropy alongside accuracy.
+On answer-line references, matching measures style.
+\end{enumerate}

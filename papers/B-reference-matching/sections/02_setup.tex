@@ -1,0 +1,35 @@
+% !TEX root = ../main.tex
+\section{Setup}
+\label{sec:setup}
+
+\paragraph{Models and data.}
+Seventeen instruction-tuned models from seven families (Qwen, Phi, Mistral, OLMo, plus math-specialized Qwen-Math, DeepSeek-Math, and Mathstral), spanning 0.5B to 32B parameters.
+Eight benchmarks: \textsc{MATH-500} and full \textsc{MATH}~\cite{hendrycks2021math}, \textsc{Putnam-AXIOM} and variations, \textsc{Omni-MATH}, \textsc{GSM8K}~\cite{cobbe2021gsm8k}, \textsc{GSM8K-Platinum}, and \textsc{HumanEval}~\cite{chen2021codex}/\textsc{MBPP+}~\cite{austin2021mbpp,liu2023evalplus}, plus \textsc{SWE-bench Verified} as an agentic setting (patch-level \tfa{} over eight coder models, including the Qwen-Coder size ladder).
+Every model generates its own solution to every problem (greedy), and is separately teacher-forced on the gold solution.
+
+\paragraph{The comparison class.}
+Five ways of scoring a solution against the reference, chosen to span the space: \tfa{} (hard argmax match on gold tokens), gold-token log-probability (the soft version), TF-IDF cosine, unigram-F1, and sentence-embedding cosine.\footnote{TF-IDF and unigram-F1 are recomputed with a self-contained implementation (IDF fit over the 500 references); values differ slightly from earlier runs, and the canonical script is authoritative.}
+The first two measure the model's predictive fit to the reference text.
+The last three measure how much the model's own output resembles it.
+
+\paragraph{The verification class.}
+Three judge-free signals that consume the reference only through a checkable endpoint.
+\emph{Executed tests}: for code, run the official suite.
+\emph{Prefix-repair curve}: truncate the solution at depth $k \in \{0, 0.25, 0.5, 0.75\}$, let a fixed mid-sized completer finish it, and score the fraction of completions that reach the correct final answer~\cite{lightman2023verify,wang2022selfconsistency}.
+The profile over $k$ is the signal, and $k{=}0$ is a pure problem-difficulty probe.
+\emph{Answer-swap counterfactual}: the per-token log-probability margin a fixed scorer assigns the solution's own final answer over a swapped alternative, given the reasoning prefix.
+LLM judges sit in either class depending on protocol; auditing judges is the subject of companion work, and one frontier judge configuration appears here only as a comparison point.
+
+\paragraph{Human grades.}
+Annotators graded solutions blind, with no model names and no metric scores, on two 0--10 scales with written anchors: \emph{soundness} (is every step valid; ignore the writing) and \emph{style} (is it clear and well-organized; ignore correctness).
+Two annotators graded a shared block to establish a reliability ceiling (soundness $\rho = 0.79$, style $0.55$).
+The primary anchor is a single uniformly random label set of 60 \textsc{MATH-500} solutions, the \emph{60-item random label set}; every human-grade correlation in this paper joins against these labels.
+A frontier LLM judge (GPT-5.2, with the gold solution in context) graded the same items and serves as an expensive-reader comparison point.
+The judge's Pearson correlation with human soundness is $+0.89$ $[+0.76, +0.97]$; its Spearman is $+0.43$, depressed by range restriction, because most judge scores concentrate near the top of the scale.
+Both figures come from the canonical analysis (\texttt{papers/analysis/canonical\_validity.md}).
+For code correctness no human is needed: we execute the tests.
+
+\paragraph{Statistics and pre-registration.}
+Headline correlations are Spearman or Pearson with bootstrap 95\% intervals.
+Grading claims control for final-answer correctness where stated, because checking the final answer is free and is not what anyone needs a grader for.
+The four new-metric predictions of Section~\ref{sec:slate} were pre-registered: analysis scripts and directional predictions were committed to the repository before the corresponding data were generated.

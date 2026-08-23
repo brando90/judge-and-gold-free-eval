@@ -1,0 +1,42 @@
+% !TEX root = ../main.tex
+\section{Introduction}
+\label{sec:intro}
+
+% P1: problem motivation
+Most benchmarks that matter ship with a gold reference: a worked solution or a canonical program known to be correct.
+This is true of grade-school math, competition math, and program synthesis alike~\cite{cobbe2021gsm8k,hendrycks2021math,chen2021codex}.
+Evaluating against the reference without a judge is appealing.
+It is deterministic, costs one forward pass, cannot be sweet-talked, and anyone can audit it.
+The sharpest version is teacher-forced accuracy (\tfa): feed the model the problem and the gold solution one token at a time, and score the fraction of gold tokens the model would have predicted itself.
+As models are increasingly evaluated, filtered, and trained by automated signals, knowing which of those signals measure quality has become a bottleneck for the field.
+
+% P2: the assumption
+Prior work organizes this space along a single axis of cost versus quality: string and embedding metrics at the cheap end~\cite{yuan2021bartscore}, LLM judges at the expensive end~\cite{zheng2023judging}, and the practical question is how far down the cost axis one can afford to go.
+An assumption hides in this framing: that reference similarity degrades gracefully, so that a cheaper metric measures the same thing with more noise.
+
+% P3: the flip
+That assumption fails.
+The operative axis is not cost but \emph{mechanism}.
+Evaluation signals divide into a \emph{comparison class}, which scores resemblance to the reference text, and a \emph{verification class}, which checks whether the solution reaches or supports a checkable endpoint.
+The comparison class does not degrade gracefully.
+It measures nothing about the individual solution at any price point, because its variance is dominated by a property of the reference itself.
+
+% P4: instantiation
+We anchor everything to blind human grades on two deliberately separated scales: soundness of the reasoning and quality of the writing.
+If a metric is validated only by its agreement with an LLM judge, that is reliability, not validity; if the judge scores surface style, a metric tracking it may be succeeding at the wrong thing.
+So the ground truth here is human grades, collected blind, plus executed tests on code, where no human is needed.
+We test five comparison metrics spanning the space, from \tfa{} to sentence embeddings, along with targeted repairs of each.
+We test three judge-free verification signals: executed tests, a prefix-repair completion curve, and an answer-swap counterfactual.
+
+% P5: evaluation summary, organized as four questions
+We organize the results as four research questions.
+\textbf{RQ1} asks whether reference-similarity metrics can grade individual solutions, and the answer is a class-level null: against human soundness on the 60-item random label set, all five comparison metrics land in $[-0.33, +0.14]$, where a frontier LLM judge reaches \judgetbd{} on identical items, and against executed tests on 492 code solutions they are indistinguishable from zero.
+\textbf{RQ2} asks why, and the answer is mechanistic: for \tfa, $83$--$92\%$ of per-solution variance beyond model level is reference-specific nuisance, pooled across 6{,}000 model--item pairs \tfa{} correlates at $-0.895$ with reference perplexity, and replacing worked references with answer lines collapses what signal exists.
+It meters compressibility, not quality.
+\textbf{RQ3} asks when matching can still rank models, and the answer is a boundary the mechanism predicts: ranking survives on hard data with information-dense references ($+0.86$ on olympiad math) and dies on saturated data with formulaic ones, while every targeted repair we or our reviewers proposed left the per-solution signal at zero or made it worse.
+\textbf{RQ4} asks what does grade, and the answer is verification: the prefix-repair curve reaches $+0.79$ with human soundness with no judge involved, sitting numerically at the human inter-rater ceiling.
+
+% P6: implications
+These results replace a folk cost--quality tradeoff with a taxonomy that made correct advance predictions for every new metric we built.
+For benchmark builders, a reference's value is as an endpoint for a checker, or as context for a reader, never as a similarity target.
+For leaderboards, reference matching is legitimate exactly when references are worth predicting, and reference entropy can be measured in advance to check that condition.
