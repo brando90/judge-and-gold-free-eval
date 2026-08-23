@@ -37,7 +37,7 @@ Dotted lines mark the inter-rater agreement and implied single-rater ceiling; bo
 
 Most of a matching score's per-solution variance is a property of the reference, not of the solution.
 The primary evidence is a cross-family, item-level decomposition.
-We decomposed per-solution \tfa{} across a grid of fifteen to sixteen models from four families (the count varies by benchmark with model availability), after removing each model's overall level.
+We decomposed per-solution \tfa{} across a grid of eleven to fifteen models from four families (the count varies by benchmark with model availability), after removing each model's overall level.
 Between $83\%$ and $92\%$ of the remaining variance is an \emph{item effect}: a component identical across families.
 The shares are sum-of-squares shares from a fixed-effects decomposition of the model-centered score grid, with the item effect estimated as the unweighted cross-family mean of the model-centered scores.
 The shares carry item-level bootstrap 95\% intervals and a model-deletion jackknife: $0.896$ $[0.881, 0.910]$ on \textsc{MATH-500}, $0.828$ $[0.811, 0.845]$ on full \textsc{MATH}, $0.917$ $[0.898, 0.932]$ on \textsc{Putnam-AXIOM}, and $0.828$ $[0.807, 0.848]$ on \textsc{GSM8K}, with interval widths of $0.03$--$0.04$ (all four rows in Table~\ref{tab:robust}).
@@ -45,7 +45,7 @@ Deleting any single model moves each share only within a narrow jackknife range,
 Such a component is a property of the reference text, namely how predictable this particular gold text is, rather than of any one family's solutions.
 Two entangled ingredients live inside it, reference predictability and problem difficulty, and difficulty is not nuisance for a grader, so the cross-family replication establishes that the component is a text property, not that it is worthless.
 The cleaner statement of the grading consequence: after removing model and item effects, only $5$--$11\%$ of per-solution variance remains, and no evidence in our data shows that this residual tracks quality.
-A further share of about $3$--$7\%$ is family-specific style, and this style channel roughly doubles on saturated benchmarks; the same structure appears in code and, attenuated, in every similarity metric (per-benchmark and per-metric shares in Tables~\ref{tab:citwin} and~\ref{tab:robust}).
+A further share of about $3$--$7\%$ is family-specific style, and this style channel roughly two-and-a-half-fold larger on saturated benchmarks; the same structure appears in code and, attenuated, in every similarity metric (per-benchmark and per-metric shares in Tables~\ref{tab:citwin} and~\ref{tab:robust}).
 
 The item effect has a name: reference perplexity.
 A pooled correlation follows as a corollary of the decomposition, not as independent evidence: across 6{,}000 model--item pairs on \textsc{MATH-500}, \tfa{} correlates with reference perplexity at $r = -0.895$ (Figure~\ref{fig:mechanism}), which explains $80\%$ of the pooled variance.
@@ -106,7 +106,7 @@ benchmark & regime & cross-family $\rho$ [95\% CI] & within-family $\rho$ \\
 \bottomrule
 \end{tabular}
 \caption{\textbf{The boundary map: where reference matching ranks models.}
-Cross-family Spearman correlation between mean \tfa{} and accuracy (17 models; bootstrap CIs) per benchmark; the within-family column is the Qwen size ladder specifically, and best values are in bold.
+Cross-family Spearman correlation between mean \tfa{} and accuracy (11--17 models by row; Omni-MATH uses a seven-model sweep and SWE-bench eight coder models; bootstrap CIs) per benchmark; the within-family column is the Qwen size ladder specifically, and best values are in bold.
 Within-family Spearmans are computed on ladders of three to five models, where the statistic takes only a few discrete values, so read signs and consistency rather than magnitudes; the \textsc{SWE-bench} within-family entry is a four-model ladder and is a preliminary observation (Section~\ref{sec:ranking}).
 Ranking degrades from olympiad to saturated benchmarks, with code sitting mid-scale; the Qwen ladder stays positive everywhere, but across all families five of twelve ladders invert on the easiest benchmarks (Appendix~\ref{app:ladders}), a pattern we read as family style canceling inside a family and surviving across families, an interpretive attribution since output style is not directly measured here.
 \textbf{Takeaway:} matching ranks models only on hard benchmarks with information-dense references, and cross-family comparison needs a shared style or a verifier.}
