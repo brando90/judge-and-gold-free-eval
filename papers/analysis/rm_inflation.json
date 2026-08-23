@@ -1,0 +1,10 @@
+{
+ "n": 105,
+ "excess_gap": 1.458,
+ "ci": [
+  1.329,
+  1.579
+ ],
+ "regret": 0.286,
+ "note": "selection on original-sample RM scores, reporting on paraphrase-replicate RM scores; paraphrases by Qwen-7B, content-preserving instruction, seed 1"
+}
