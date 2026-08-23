@@ -1,0 +1,12 @@
+{
+ "math": {
+  "n": 105,
+  "excess_gap": -0.0,
+  "regret": 0.286
+ },
+ "code": {
+  "n": 68,
+  "excess_gap": 0.0,
+  "regret": 0.485
+ }
+}
