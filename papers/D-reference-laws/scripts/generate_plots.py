@@ -5,11 +5,10 @@ Data sources:
   - papers/analysis/ties_fullset.json   (excess hack gap + regret per config, n=51)
   - papers/analysis/ties_inband.json    (registered in-band [0.2,0.8] subset, n=7)
   - papers/analysis/ties_p2_margin.json (anchoring margins per judge/rep/cond, original-reference arm)
-  - papers/analysis/ties_rot_margin.json (anchoring margins, reference-rotation arm, n=18 items)
-  - papers/analysis/ties_rot_within_answer.json (paired same-sample score deltas under
-    rotation, n=40 items per cell)
-  - papers/analysis/ties_rot_controls.json (blind margins on the rotated split,
-    n=18 items per cell; also carries the placebo/loser controls quoted in the text)
+  - papers/analysis/ties_rot_controls.json (single rotation-arm artifact, produced by
+    papers/analysis/ties_rot_controls.py: ref_margin_rotated (n=18 items/cell),
+    blind_margin_rotated (n=18), gainers (paired same-sample deltas, n=40),
+    plus the placebo/loser/collapse controls quoted in the text)
   - Math gaps are the published companion-A values (hardcoded below, cited in the paper).
 
 Outputs vector PDFs into papers/D-reference-laws/figures/.
@@ -94,44 +93,31 @@ def margin_cells(size, cond):
         out.append((row["margin"], row["ci"]))
     return out
 
-# Reference-rotation arm (same frozen pools, ref rotated to a different valid
-# answer; registered addendum P-T2r), n=18 items per cell.
-with open(ANALYSIS / "ties_rot_margin.json") as f:
-    rot_raw = json.load(f)
-
-def rot_cells(size):
-    out = []
-    for rep in ("a", "b"):
-        key = f"Qwen2.5-{size}-Instruct_ref_{rep}:rotated"
-        row = next(r for r in rot_raw if r["config"] == key)
-        out.append((row["margin"], row["ci"]))
-    return out
-
-# Within-answer paired deltas (same sample text, reference rotated to match it),
-# n=40 items per cell; the headline causal readout.
-with open(ANALYSIS / "ties_rot_within_answer.json") as f:
-    within_raw = json.load(f)
-
-def within_cells(size):
-    out = []
-    for rep in ("a", "b"):
-        row = next(r for r in within_raw
-                   if r["judge"] == f"Qwen2.5-{size}-Instruct" and r["rep"] == rep)
-        out.append((row["delta"], row["ci"]))
-    return out
-
-# Blind margins on the rotated split (n=18 items per cell): the placebo for the
-# rotated-ref margin, from the consolidated rotation-controls analysis.
+# Consolidated rotation-arm artifact (same frozen pools, ref rotated to a
+# different valid answer; registered addendum P-T2r), produced by
+# papers/analysis/ties_rot_controls.py.
 with open(ANALYSIS / "ties_rot_controls.json") as f:
     rot_controls = json.load(f)
 
-def blind_rot_cells(size):
+def _controls_cells(section, value_key, size):
     out = []
     for rep in ("a", "b"):
-        row = next(r for r in rot_controls["blind_margin_rotated"]
+        row = next(r for r in rot_controls[section]
                    if r["judge"] == f"Qwen2.5-{size}-Instruct" and r["rep"] == rep)
-        out.append((row["margin"], row["ci"]))
+        out.append((row[value_key], row["ci"]))
     return out
+
+def rot_cells(size):
+    """Cross-sectional referenced margins on the rotated split, n=18 items/cell."""
+    return _controls_cells("ref_margin_rotated", "margin", size)
+
+def within_cells(size):
+    """Paired same-sample deltas (gainers), n=40 items/cell; the headline causal readout."""
+    return _controls_cells("gainers", "delta", size)
+
+def blind_rot_cells(size):
+    """Blind margins on the rotated split, n=18 items/cell (placebo for rot_cells)."""
+    return _controls_cells("blind_margin_rotated", "margin", size)
 
 # Average the two rubric reps; whiskers span the union of the two rep CIs.
 MARGINS = {}

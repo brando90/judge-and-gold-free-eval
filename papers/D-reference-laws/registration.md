@@ -56,6 +56,17 @@ sampled pool contains a valid reference-matching sample, 6 have zero other-valid
 - **Prediction (P-T2r):** under rotation the referenced margin remains positive and tracks
   whichever answer is designated as the reference; blind margins remain near zero.
 
+## Correction note (2026-08-23): rotation deviated from the registered assignment mechanism
+
+The implemented rotation deviated from the seeded permutation registered in the addendum above.
+Instead of a blind seeded permutation over each item's valid set, the rotated `ref_answer` was
+constructed pool-aware: for each item it prefers a different valid answer that also appears among
+the pool's oracle-valid samples, to maximize paired coverage (rotated reference in pool on 40/51
+items versus 10/51 for the original build-time reference). This deviation is disclosed in the
+paper (Setup and RQ2). The within-sample paired contrast is unaffected by the assignment
+mechanism, since the samples are frozen and only the shown reference varies; the cross-sectional
+rotated margins, however, over-represent answers the generator actually produced.
+
 ## Status
 
 - [x] Task file built (51 items) and committed.

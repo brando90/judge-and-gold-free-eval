@@ -1,9 +1,11 @@
-% Status: DRAFT v4. Numbers: papers/analysis/ties_fullset.json,
-% ties_paired.json, ties_p2_margin.json, ties_rot_margin.json (rotation arm, n=18),
-% ties_regret_cis.json (regret deltas, all CIs cross zero), ties_pooled_delta.json,
-% ties_collapse_conditional.json, ties_inband.json, ties_rot_controls.json
-% (rotation provenance, blind rotated margins, placebo, losers, repowered collapse; canonical); in-band n=7 numbers
-% from ties_inband.json (registered [0.2,0.8] filter); math contrast quoted from companion A.
+% Status: DRAFT v5. Numbers: papers/analysis/ties_fullset.json,
+% ties_paired.json, ties_pooled_delta.json, ties_regret_cis.json,
+% ties_collapse_conditional.json (both eligibility variants), ties_inband.json,
+% ties_p2_margin.json (original-arm margins, n=4), and ties_rot_controls.json
+% (single rotation artifact: ref_margin_rotated, blind_margin_rotated, gainers,
+% losers, placebo_neither, collapse_rotated with Fisher p).
+% Producers: papers/analysis/ties_dynamics.py and ties_rot_controls.py (committed,
+% fixed Monte Carlo seeds). Math contrast quoted from companion A.
 % Build: pdflatex main && bibtex main && pdflatex main && pdflatex main
 \documentclass[11pt]{article}
 \usepackage[margin=1in]{geometry}
@@ -17,7 +19,7 @@
 
 \title{The Reference Lever Inverts:\\ \large Judge Anchoring under Answer Multiplicity}
 \author{Anonymous Authors}
-\date{Draft v4, August 23, 2026}
+\date{Draft v5, August 23, 2026}
 
 \begin{document}
 \maketitle
@@ -28,11 +30,11 @@ A trusted reference answer in an LLM judge's context is widely treated as a gene
 We show the lever has two faces, and on tasks with multiple valid answers it points the wrong way.
 Statically this failure is established: our prior audit found that on \textsc{RewardBench-2} Ties comparisons any reference, whoever wrote it, costs $7$--$8$ points of verdict accuracy (paired, $p \le .0005$)~\cite{companionA}, and independent work reports the same fixation bias in static pairwise grading~\cite{fixation2025,judgingref2026}.
 This paper tests what the bias does under optimization pressure, and why.
-Dynamically, in a pre-registered best-of-64 selection experiment on 51 Ties-derived generation tasks with a membership oracle over enumerated valid answers, the referenced judge inflates more than its blind twin at all four Qwen judge scales: a cluster bootstrap over items pooling the four scales' per-item excess-gap deltas is significant at $+0.39$ $[+0.04, +0.75]$, while the accompanying oracle-regret deltas are directionally worse but cross zero individually and pooled.
+Dynamically, in a pre-registered best-of-64 selection experiment on 51 Ties-derived generation tasks with a membership oracle over enumerated valid answers, the referenced judge inflates more than its blind twin at all four Qwen judge scales: a post-hoc cluster bootstrap pooled across scales over the per-item excess-gap deltas is significant at $+0.41$ $[+0.07, +0.77]$, while the accompanying oracle-regret deltas are directionally worse but cross zero individually and pooled.
 On unique-answer math the same lever collapses inflation $4$--$13\times$.
 The mechanism is anchoring, and a reference-rotation intervention makes it causal at the level of individual samples: re-judging the same frozen pools with the reference rotated to a different valid answer raises the score of the identical sample text by $+9.5$, $+9.3$, $+4.6$, and $+3.1$ points (0--10 scale) at 1.5B, 3B, 7B, and 14B when the rotated reference matches it ($n{=}40$ items per cell, every CI excluding zero, replicated across two rubric paraphrases), purely because the shown reference changed.
-Anchoring is saturated at 1.5B and 3B, where the deltas hit the ceiling of the 10-point scale, and decreases through 7B (roughly half the scale) and 14B (roughly a third); blind judges on the same split show margins an order of magnitude smaller, mostly null, with a mild preference for modal answers in two of eight cells.
-Whenever the sampled pool contains an answer matching the shown reference, referenced judges select it $90$--$100\%$ of the time versus $70\%$ blind ($n{=}10$ items), and on the repowered rotation arm $93$--$100\%$ versus $39$--$50\%$ blind ($n{=}18$ items).
+Anchoring is saturated at 1.5B and 3B, where the deltas hit the ceiling of the 10-point scale, and decreases through 7B (roughly half the scale) and 14B (roughly a third); blind judges on the same split show mostly null margins with a mild preference for modal answers in two of eight cells, and even in the worst case (3B) the blind margins ($+1.36$, $+1.91$) are roughly a fifth of the referenced margins ($+9.05$, $+9.12$), with larger referenced-to-blind ratios at the other sizes.
+Whenever the sampled pool contains an answer matching the shown reference, referenced judges select it nearly always: $18/18$, $17/17$, $14/15$, and $17/17$ of selected-valid cases on the rotation arm versus $6/16$, $8/16$, $8/15$, and $7/17$ blind (Fisher exact $p \le 0.035$ at every scale, $n{=}18$ items), with the smaller original arm ($n{=}10$ items, six of them forced) agreeing.
 We state the boundary as a conjecture awaiting a registered sharper test, not as an established equivalence: the evidence so far is consistent with a reference helping only when the answer is effectively unique and verification is within the judge's capability.
 Under answer multiplicity it converts ``grade correctness'' into ``match my reference'' and manufactures the very gaming it was installed to prevent.
 \end{abstract}
@@ -107,7 +109,8 @@ The original build-time reference lands in the pool on only 10 of 51 items; the 
 Conditioning the treatment assignment on pool contents is legitimate for the causal contrast, because the within-sample comparison holds the samples fixed and varies only the shown reference, but it means the rotated references are disproportionately answers the generator actually produced.
 It also means the P-T2r registration adds little inferential weight beyond its git timestamp, since the $n{=}4$ original-arm margins were already known when the addendum was committed.
 Its results are reported in Section~\ref{sec:rq2}.
-All rotation-arm analyses reported there (paired same-sample deltas, cross-sectional and blind margins, the placebo and loser controls, and the conditional collapse rates) are produced by a single committed script, \texttt{papers/analysis/ties\_rot\_controls.py}, run over the committed score files.
+All rotation-arm analyses reported there (paired same-sample deltas, cross-sectional and blind margins, the placebo and loser controls, and the rotation-arm collapse rates with their exact tests) are produced by the committed script \texttt{papers/analysis/ties\_rot\_controls.py}, and all dynamic-inversion analyses (excess gaps, paired and pooled gap deltas, regret deltas, and the original-arm collapse rates) by the committed script \texttt{papers/analysis/ties\_dynamics.py}, both run over the committed score files.
+Monte Carlo seeds are fixed in both scripts, and third-decimal differences from earlier drafts reflect the regenerated bootstrap and permutation estimators, not new data.
 
 \section{Results}
 
@@ -123,35 +126,35 @@ All rotation-arm analyses reported there (paired same-sample deltas, cross-secti
 \cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7}
 Judge & blind & ref & blind & ref & $\Delta$ & 95\% CI \\
 \midrule
-1.5B & $+1.05$ & $+1.41$ & $0.137$ & $0.157$ & $+0.35$ & $[-0.11, 0.79]$ \\
-3B   & $+0.55$ & $+1.22$ & $0.137$ & $0.157$ & $+0.65$ & $[-0.03, 1.35]$ \\
-7B   & $+0.82$ & $+0.91$ & $0.118$ & $0.137$ & $+0.08$ & $[-0.49, 0.61]$ \\
-14B  & $+0.67$ & $+1.15$ & $0.078$ & $0.098$ & $+0.47$ & $[-0.21, 1.19]$ \\
+1.5B & $+1.05$ & $+1.43$ & $0.137$ & $0.157$ & $+0.38$ & $[-0.09, 0.85]$ \\
+3B   & $+0.55$ & $+1.21$ & $0.137$ & $0.157$ & $+0.66$ & $[-0.02, 1.34]$ \\
+7B   & $+0.83$ & $+0.93$ & $0.118$ & $0.137$ & $+0.10$ & $[-0.45, 0.64]$ \\
+14B  & $+0.66$ & $+1.16$ & $0.078$ & $0.098$ & $+0.49$ & $[-0.16, 1.20]$ \\
 \midrule
-\multicolumn{5}{l}{Pooled item-level $\Delta$gap (4 scales averaged, cluster bootstrap)} & $+0.39$ & $[+0.04, +0.75]$ \\
+\multicolumn{5}{l}{Pooled item-level $\Delta$gap (4 scales averaged, cluster bootstrap)} & $+0.41$ & $[+0.07, +0.77]$ \\
 \bottomrule
 \end{tabular}
 \caption{\textbf{Best-of-64 on 51 multi-valid Ties tasks (full-pool analysis; post-hoc deviation from the registered in-band filter, adopted for power).}
 Excess hack gap (baseline SD over the within-oracle-stratum permutation null) and oracle regret per judge scale and condition, with paired item-level ref-minus-noref gap deltas and bootstrap CIs.
-The reference worsens both readouts directionally on every row; per-scale gap deltas do not individually reach significance at $n{=}51$, the pooled gap delta does, and the regret deltas ($+0.020$ per scale, pooled $+0.020$ $[-0.025, +0.069]$) all cross zero.
+The reference worsens both readouts directionally on every row; per-scale gap deltas do not individually reach significance at $n{=}51$, the pooled gap delta does, and the regret deltas ($+0.020$ per scale, pooled $+0.020$ $[-0.029, +0.069]$) all cross zero.
 \textbf{Takeaway: adding the reference never helps, directionally hurts on every row, and the pooled gap inflation excludes zero.}}
 \label{tab:fullset}
 \end{table}
 
 Both registered outcome predictions hold directionally at every judge scale, with the gap carrying the significant evidence and the regret consistent but weaker.
 P-T1 held directionally: oracle regret is higher under the reference at every scale, $0.137 \to 0.157$ at 1.5B and at 3B, $0.118 \to 0.137$ at 7B, and $0.078 \to 0.098$ at 14B, so the reference never buys back selection quality.
-The regret deltas are small, however: each per-scale delta is $+0.020$ with a bootstrap CI crossing zero (for example $[-0.039, +0.078]$ at 1.5B), and the pooled regret delta is $+0.020$ $[-0.025, +0.069]$, so the regret evidence is directionally consistent but not individually significant, and we do not lean on it.
-P-T3 held: the excess hack gap is higher under the reference at all four scales, $+1.05 \to +1.41$ at 1.5B, $+0.55 \to +1.22$ at 3B, $+0.82 \to +0.91$ at 7B, and $+0.67 \to +1.15$ at 14B (Table~\ref{tab:fullset}).
+The regret deltas are small, however: each per-scale delta is $+0.020$ with a bootstrap CI crossing zero (for example $[-0.039, +0.098]$ at 1.5B), and the pooled regret delta is $+0.020$ $[-0.029, +0.069]$, so the regret evidence is directionally consistent but not individually significant, and we do not lean on it.
+P-T3 held: the excess hack gap is higher under the reference at all four scales, $+1.05 \to +1.43$ at 1.5B, $+0.55 \to +1.21$ at 3B, $+0.83 \to +0.93$ at 7B, and $+0.66 \to +1.16$ at 14B (Table~\ref{tab:fullset}).
 
-The paired item-level gap deltas are positive at all four scales ($+0.35$, $+0.65$, $+0.08$, $+0.47$) but each per-scale 95\% CI crosses zero at $n{=}51$ items.
-Pooling across scales gives a significant effect: a cluster bootstrap that resamples the 51 items and, for each item, averages the four scales' per-item ref-minus-blind gap deltas yields $+0.39$ $[+0.04, +0.75]$, a CI excluding zero (Table~\ref{tab:fullset}, bottom row).
+The paired item-level gap deltas are positive at all four scales ($+0.38$, $+0.66$, $+0.10$, $+0.49$) but each per-scale 95\% CI crosses zero at $n{=}51$ items.
+Pooling across scales gives a significant effect: a cluster bootstrap that resamples the 51 items and, for each item, averages the four scales' per-item ref-minus-blind gap deltas yields $+0.41$ $[+0.07, +0.77]$, a CI excluding zero (Table~\ref{tab:fullset}, bottom row).
 Like the full-pool population, this pooled estimator is a post-hoc choice and was not registered (Section~\ref{sec:setup}).
 The four judge scales share items and a generator, so they are not independent replications; the pooled estimator treats scale as a fixed effect and items as the sole resampling unit, and it upgrades the dynamic claim from directional to significant at the pooled level, not to four separately significant replications.
-What carries the inference is the conjunction of the individually significant pieces: the pooled item-level gap delta of $+0.39$ $[+0.04, +0.75]$, the conditional selection collapse of Section~\ref{sec:rq2} ($90$--$100\%$ referenced versus $70\%$ blind on the original arm, $93$--$100\%$ versus $39$--$50\%$ on the repowered rotation arm), the causal anchoring effect under reference rotation (paired same-sample deltas, cross-sectional margins, and mirror-symmetric loser deltas, every CI excluding zero), and an opposite-signed effect of the same lever on math measured with identical estimators.
+What carries the inference is the conjunction of the individually significant pieces: the pooled item-level gap delta of $+0.41$ $[+0.07, +0.77]$, the conditional selection collapse of Section~\ref{sec:rq2} ($93$--$100\%$ referenced versus $38$--$53\%$ blind on the repowered rotation arm, Fisher exact $p \le 0.035$ at every scale, with the smaller original arm agreeing), the causal anchoring effect under reference rotation (paired same-sample deltas, cross-sectional margins, and roughly symmetric loser deltas, every CI excluding zero), and an opposite-signed effect of the same lever on math measured with identical estimators.
 The regret deltas and the per-scale gap deltas are directionally consistent supporting evidence, not standalone results.
 
 The registered primary analysis agrees or ties in direction at every size.
-On the $n{=}7$ in-band items that survive the registered $[0.2, 0.8]$ filter, the referenced gap exceeds the blind gap at all four sizes ($+1.19 \to +1.88$ at 1.5B, $+0.90 \to +1.89$ at 3B, $+1.22 \to +1.74$ at 7B, $+0.53 \to +1.58$ at 14B), and referenced regret is worse at three of four sizes ($0.14 \to 0.43$ at 1.5B, $0.43 \to 0.57$ at 3B, $0.43 \to 0.57$ at 7B, and a tie at $0.29$ at 14B).
+On the $n{=}7$ in-band items that survive the registered $[0.2, 0.8]$ filter, the referenced gap exceeds the blind gap at all four sizes ($+1.19 \to +1.88$ at 1.5B, $+0.85 \to +1.86$ at 3B, $+1.20 \to +1.79$ at 7B, $+0.58 \to +1.63$ at 14B), and referenced regret is worse at three of four sizes ($0.14 \to 0.43$ at 1.5B, $0.43 \to 0.57$ at 3B, $0.43 \to 0.57$ at 7B, and a tie at $0.29$ at 14B).
 Seven items support no significance claim, but the analysis the registration actually committed points the same way as the full-pool deviation on every row (hollow markers in Figure~\ref{fig:inversion}).
 
 The contrast with unique-answer math is the point.
@@ -164,14 +167,14 @@ The same lever, the same judges, the same estimators, and the sign flips with th
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.88\textwidth]{figures/fig_anchoring.pdf}
-\caption{\textbf{Takeaway: the anchoring premium follows whichever valid answer is shown as the reference, moving with the reference even for identical sample text; blind margins on the same splits are an order of magnitude smaller.}
+\caption{\textbf{Takeaway: the anchoring premium follows whichever valid answer is shown as the reference, moving with the reference even for identical sample text; blind margins on the same splits are far smaller, roughly a fifth of the referenced margin in the worst case (3B) and a smaller fraction elsewhere.}
 Anchoring effects (0--10 score scale) per judge scale, averaged over the two rubric paraphrases; whiskers span the union of the two paraphrases' 95\% bootstrap CIs.
 Navy: paired same-sample deltas, the score gain of the identical sample when the reference is rotated to match it ($n{=}40$ items per cell).
 Blue: cross-sectional margin of valid matching over valid non-matching samples in the rotation arm ($n{=}18$).
 Orange: blind judges on the same rotated split ($n{=}18$).
 Light blue: the referenced margin in the original-reference arm ($n{=}4$).
 Light orange: blind judges on the original-arm split ($n{=}4$).
-The placebo (neither-matching samples flat across runs) and loser (original-matching samples dropping symmetrically) controls are reported in the text.}
+The placebo (neither-matching samples near-flat across runs) and loser (original-matching samples dropping by a roughly symmetric amount) controls are reported in the text.}
 \label{fig:anchoring}
 \end{figure}
 
@@ -182,7 +185,7 @@ If the judge graded answer quality, a sample's score would not depend on which v
 
 The strongest readout is within-unit and paired: the identical sample text, scored twice.
 For every oracle-valid sample whose answer matches the rotated reference but not the original, we pair its judge score across the two runs, same item, same rubric, nothing changed but the reference.
-The score of the identical sample rises by $+9.48$ $[+8.94, +9.84]$ at 1.5B, $+9.28$ $[+8.72, +9.69]$ at 3B, $+4.57$ $[+3.60, +5.53]$ at 7B, and $+3.07$ $[+2.45, +3.69]$ at 14B under rubric $a$, with rubric $b$ replicating at $+8.73$, $+9.58$, $+5.96$, and $+3.47$ ($n{=}40$ items per cell, every CI excluding zero; Figure~\ref{fig:anchoring}, navy bars).
+The score of the identical sample rises by $+9.48$ $[+8.93, +9.86]$ at 1.5B, $+9.29$ $[+8.72, +9.70]$ at 3B, $+4.57$ $[+3.62, +5.55]$ at 7B, and $+3.07$ $[+2.48, +3.72]$ at 14B under rubric $a$, with rubric $b$ replicating at $+8.73$, $+9.58$, $+5.96$, and $+3.47$ ($n{=}40$ items per cell, every CI excluding zero; Figure~\ref{fig:anchoring}, navy bars).
 Nothing about the answer changed, so the premium is caused by the reference, full stop.
 The effect is saturated at 1.5B and 3B, where the deltas hit the ceiling of the 10-point scale (3B is at or above 1.5B in three of four readouts, so the two smallest scales are indistinguishable at ceiling), and decreases through 7B (roughly half the scale) and 14B (roughly a third).
 Judges above 3B anchor less, but none stop.
@@ -194,20 +197,28 @@ Every CI excludes zero, the same scale pattern holds (ceiling at 1.5B and 3B, de
 
 The original-reference arm agrees, with an honest caveat on its size.
 That arm has only $n{=}4$ items where both sample types coexist, because of the 10 items whose pool contains a valid reference-matching sample, 6 have zero other-valid samples (all 64 samples give the same answer), a property of the generator's answer distribution.
-On those 4 items the referenced margin is $+2.6$ to $+9.99$ with all eight referenced cells excluding zero, and the extreme 3B rubric-$b$ cell ($+9.99$ $[+9.98, +10.0]$) is ceiling-limited by score saturation rather than precisely estimated.
+On those 4 items the referenced margin is $+2.65$ to $+9.99$ with all eight referenced cells excluding zero, and the extreme 3B rubric-$b$ cell ($+9.99$ $[+9.98, +10.0]$) is ceiling-limited by score saturation rather than precisely estimated.
 On the original-arm split ($n{=}4$ items) no blind cell has a positive margin distinguishable from zero: seven of eight straddle zero, and the one exclusion is negative ($-2.5$ $[-4.7, -0.2]$ at 3B, rubric $b$).
-On the rotated split ($n{=}18$ items) the blind margins are mostly null (1.5B $+0.17$ $[-1.16, +1.56]$ and $+0.61$; 7B $+0.35$ and $+0.14$; 14B rubric $b$ $+0.04$), with two weakly positive cells (3B rubric $b$ $+1.91$ $[+0.36, +3.64]$; 14B rubric $a$ $+0.70$ $[+0.02, +1.50]$), indicating a mild blind preference for answers the generator produces often.
-That preference is real but an order of magnitude below the referenced margins, so it cannot account for the referenced premium.
+On the rotated split ($n{=}18$ items) the eight blind cells, in full, are $+0.16$ $[-1.23, +1.58]$ and $+0.61$ $[-0.94, +2.10]$ at 1.5B, $+1.36$ $[-0.10, +2.88]$ and $+1.91$ $[+0.37, +3.59]$ at 3B, $+0.31$ $[-0.35, +1.06]$ and $+0.14$ $[-0.49, +0.84]$ at 7B, and $+0.69$ $[+0.04, +1.46]$ and $+0.04$ $[-0.10, +0.16]$ at 14B, under rubrics $a$/$b$.
+Two of the eight cells exclude zero on the positive side, against roughly $0.4$ exclusions expected by chance across eight cells at the $95\%$ level, indicating a mild but real blind preference for answers the generator produces often.
+That preference is far too small to account for the referenced premium: in the worst case, at 3B, the blind margins ($+1.36$, $+1.91$) are roughly a fifth of the referenced margins ($+9.05$, $+9.12$) and the referenced-minus-blind margin is still over $7$ points, and at the other sizes the referenced-to-blind ratio is larger.
+One confound deserves naming: because the rotation deliberately selects generator-produced answers as references, these cross-sectional referenced margins partially include the blind modal-answer preference, and the paired same-sample deltas, which are immune to it, are primary for exactly this reason.
 
 Two further controls complete the causal signature.
-First, a placebo: for oracle-valid samples matching neither the original nor the rotated reference, the across-run paired deltas are flat, ranging from $-0.44$ to $+0.82$ across the eight judge-by-rubric cells with CIs straddling or barely touching zero ($n{=}16$ items per cell), so rerun or context drift cannot explain the flip.
-Second, losers mirror gainers: samples matching the original but not the rotated reference drop by $-9.65$/$-9.42$ at 1.5B, $-8.85$/$-9.80$ at 3B, $-3.14$/$-4.70$ at 7B, and $-2.78$/$-3.81$ at 14B under rubrics $a$/$b$ ($n{=}10$ items per cell, every CI excluding zero).
-Gainers up, losers down by a symmetric amount, and unaffected samples flat: this three-way signature is what an anchoring mechanism predicts and what a rescaling or drift artifact cannot produce.
+First, a placebo: for oracle-valid samples matching neither the original nor the rotated reference, the across-run paired deltas range from $-0.44$ to $+0.82$ across the eight judge-by-rubric cells ($n{=}16$ items per cell).
+Two of the eight cells exclude zero on the positive side (1.5B rubric $b$ $+0.22$ $[+0.01, +0.48]$; 3B rubric $b$ $+0.82$ $[+0.01, +2.14]$), where roughly $0.4$ exclusions would be expected by chance across eight cells at the $95\%$ level, so two is mildly above chance and the honest reading is a small real rerun drift rather than pure noise.
+That drift is $4$ to $20$ times smaller than the corresponding gainer deltas ($+8.73$ and $+9.58$ in the same cells, comparing even the placebo CI upper bounds), so rerun drift cannot explain the flip.
+Second, losers mirror gainers: samples matching the original but not the rotated reference drop by $-9.65$/$-9.42$ at 1.5B, $-8.85$/$-9.80$ at 3B, $-3.14$/$-4.71$ at 7B, and $-2.78$/$-3.81$ at 14B under rubrics $a$/$b$ ($n{=}10$ items per cell, every CI excluding zero).
+Gainers up, losers down by a roughly symmetric amount (at 7B rubric $a$ the gain is $+4.57$ against a drop of $-3.14$), and unaffected samples near-flat: this three-way signature is what an anchoring mechanism predicts and what a rescaling or drift artifact cannot produce.
 
-The margin translates into near-deterministic selection.
-Conditional on the sampled pool containing at least one sample whose answer matches the shown reference, which happens on 10 of the 51 items in the original arm, referenced judges select a reference-matching sample $10/10$, $10/10$, $9/10$, and $10/10$ times at 1.5B, 3B, 7B, and 14B, versus $7/10$ for the blind judge at every size.
-The rotation arm repowers this readout: on the 18 rotation-arm items whose valid samples include both reference-matching and non-matching answers, referenced judges' best-of-64 selection picks a reference-matching valid answer in $100\%$, $100\%$, $93\%$, and $100\%$ of selected-valid cases at 1.5B, 3B, 7B, and 14B, versus $39\%$, $44\%$, $50\%$, and $39\%$ for the same judges blind on the same items.
-Whenever the reference-matching answer is on offer, the referenced judge takes it $90$--$100\%$ of the time in both arms, while blind selection tracks the base rates of the pool.
+The margin translates into near-deterministic selection, and the rotation arm carries the primary collapse evidence because it supports exact tests.
+On the 18 rotation-arm items whose valid samples include both reference-matching and non-matching answers, best-of-64 selection picks a reference-matching valid answer in $18/18$, $17/17$, $14/15$, and $17/17$ of selected-valid cases at 1.5B, 3B, 7B, and 14B when referenced, versus $6/16$, $8/16$, $8/15$, and $7/17$ for the same judges blind on the same items (Fisher exact $p = 6\times10^{-5}$, $9\times10^{-4}$, $0.035$, and $3\times10^{-4}$).
+An earlier draft's blind baseline selected only among oracle-valid samples, a script bug now fixed; both arms select over all 64 samples, exactly as the judges do.
+The original arm agrees but its headline rates are mechanically inflated.
+Conditional on the pool containing at least one reference-matching sample, which happens on 10 of the 51 original-arm items, referenced judges match on $10/10$, $10/10$, $9/10$, and $10/10$ of selected-valid cases, versus blind rates of $0.78$, $0.70$, $0.70$, and $0.70$.
+Six of those ten items are forced, however: every valid sample matches the reference, so any judge that selects a valid sample matches by construction, in either condition.
+On the four free items, where matching and non-matching valid answers coexist, blind judges match only $0.25$ to $0.50$ of the time while referenced judges match $0.75$ to $1.0$.
+Whenever a reference-matching answer is genuinely on offer, the referenced judge takes it $75$--$100\%$ of the time in both arms, while blind selection tracks the base rates of the pool.
 
 The margin also explains the inversion rather than merely accompanying it: a judge that boosts one valid answer and buries the rest turns best-of-64 into a lottery over reference proximity.
 That lottery inflates reported scores relative to true quality (the gap, significantly) while directionally degrading the chance of selecting a correct answer (the regret), which is exactly the pattern of Table~\ref{tab:fullset}.
@@ -239,11 +250,11 @@ No results from this design are claimed here.
 \section{Limitations}
 
 The task pool is small and single-sourced.
-All dynamic results rest on 51 Ties-derived items; the per-scale paired gap deltas individually cross zero at this $n$, and only the pooled item-level delta ($+0.39$ $[+0.04, +0.75]$), computed with a post-hoc unregistered estimator, excludes zero.
-The regret deltas are directionally consistent but never individually significant: $+0.020$ at every scale with all CIs crossing zero, pooled $+0.020$ $[-0.025, +0.069]$, so the selection-quality half of P-T1 is supported in direction only.
+All dynamic results rest on 51 Ties-derived items; the per-scale paired gap deltas individually cross zero at this $n$, and only the pooled item-level delta ($+0.41$ $[+0.07, +0.77]$), computed with a post-hoc unregistered estimator, excludes zero.
+The regret deltas are directionally consistent but never individually significant: $+0.020$ at every scale with all CIs crossing zero, pooled $+0.020$ $[-0.029, +0.069]$, so the selection-quality half of P-T1 is supported in direction only.
 The four-scale directional agreement has a sign-test floor of $p = 1/16$, the best attainable with four paired observations, and the four judge scales share items and a generator, so the pooled estimate treats scale as a fixed effect rather than as independent replications.
 One generator (Qwen2.5-7B-Instruct) produced every candidate pool, so generator-specific answer distributions could modulate the dynamic effect sizes; the same distribution is what starved the original-arm margin analysis, since 6 of the 10 items with a valid reference-matching sample have no other valid answer among all 64 samples.
-That original anchoring arm therefore rests on 4 items, and its conditional selection-collapse rates on 10; the rotation rerun repowered the mechanism to $n{=}18$ items per cell for the cross-sectional margin, $n{=}40$ for the paired same-sample deltas, and $n{=}18$ for the collapse rates.
+That original anchoring arm therefore rests on 4 items, and its conditional selection-collapse rates on 10, six of them forced (Section~\ref{sec:rq2}); the rotation rerun repowered the mechanism to $n{=}18$ items per cell for the cross-sectional margin, $n{=}40$ for the paired same-sample deltas, and $n{=}18$ for the collapse rates with exact tests.
 The rotation assignment was pool-aware (Section~\ref{sec:setup}), so the rotated references over-represent answers the generator actually produced, and the P-T2r registration adds little inferential weight beyond its timestamp.
 The oracle is loose-normalized membership in an enumerated valid set; answers valid in substance but outside the enumeration, or normalization misses, would be scored as failures for every condition alike.
 The analysis population is a registered/actual mismatch: the registration committed only the in-band $[0.2, 0.8]$ filter, which left $n{=}7$ items, and the full-pool analysis reported as primary here is a post-hoc deviation adopted for power, with the registered in-band analysis agreeing or tying in direction at every size (Section~\ref{sec:rq1}).
