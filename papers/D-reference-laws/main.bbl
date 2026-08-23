@@ -12,23 +12,11 @@ Anonymous.
   evaluation.
 \newblock {\em arXiv preprint arXiv:2509.19880}, 2025.
 
-\bibitem{fixation2025}
-Anonymous.
-\newblock Solution fixation bias: {LLM} judges penalize valid solutions that
-  differ from the provided reference.
-\newblock {\em arXiv preprint arXiv:2509.03419}, 2025.
-
 \bibitem{companionA}
 Anonymous.
 \newblock Certify before you optimize: A cheap blind audit that predicts which
   llm judges get gamed, 2026.
 \newblock Companion draft.
-
-\bibitem{judgingref2026}
-Anonymous.
-\newblock Judging against the reference: Reference-guided evaluation degrades
-  on open-ended tasks.
-\newblock {\em arXiv preprint arXiv:2601.07506}, 2026.
 
 \bibitem{generous2026}
 Anonymous.
@@ -44,6 +32,21 @@ Anonymous.
 Leo Gao, John Schulman, and Jacob Hilton.
 \newblock Scaling laws for reward model overoptimization.
 \newblock {\em arXiv preprint arXiv:2210.10760}, 2022.
+
+\bibitem{judgingref2026}
+Dongryeol Lee, Yerin Hwang, Taegwan Kang, Minwoo Lee, Younhyung Chae, and
+  Kyomin Jung.
+\newblock Judging against the reference: Uncovering knowledge-driven failures
+  in {LLM}-judges on {QA} evaluation.
+\newblock {\em arXiv preprint arXiv:2601.07506}, 2026.
+
+\bibitem{fixation2025}
+Weiyuan Li, Xintao Wang, Siyu Yuan, Rui Xu, Jiangjie Chen, Qingqing Dong,
+  Yanghua Xiao, and Deqing Yang.
+\newblock Curse of knowledge: When complex evaluation context benefits yet
+  biases {LLM} judges.
+\newblock In {\em Findings of EMNLP}, 2025.
+\newblock arXiv:2509.03419.
 
 \bibitem{malik2025rewardbench2}
 Saumya Malik, Valentina Pyatkin, et~al.
