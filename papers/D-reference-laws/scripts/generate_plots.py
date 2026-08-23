@@ -8,6 +8,8 @@ Data sources:
   - papers/analysis/ties_rot_margin.json (anchoring margins, reference-rotation arm, n=18 items)
   - papers/analysis/ties_rot_within_answer.json (paired same-sample score deltas under
     rotation, n=40 items per cell)
+  - papers/analysis/ties_rot_controls.json (blind margins on the rotated split,
+    n=18 items per cell; also carries the placebo/loser controls quoted in the text)
   - Math gaps are the published companion-A values (hardcoded below, cited in the paper).
 
 Outputs vector PDFs into papers/D-reference-laws/figures/.
@@ -118,6 +120,19 @@ def within_cells(size):
         out.append((row["delta"], row["ci"]))
     return out
 
+# Blind margins on the rotated split (n=18 items per cell): the placebo for the
+# rotated-ref margin, from the consolidated rotation-controls analysis.
+with open(ANALYSIS / "ties_rot_controls.json") as f:
+    rot_controls = json.load(f)
+
+def blind_rot_cells(size):
+    out = []
+    for rep in ("a", "b"):
+        row = next(r for r in rot_controls["blind_margin_rotated"]
+                   if r["judge"] == f"Qwen2.5-{size}-Instruct" and r["rep"] == rep)
+        out.append((row["margin"], row["ci"]))
+    return out
+
 # Average the two rubric reps; whiskers span the union of the two rep CIs.
 MARGINS = {}
 for size in SIZES:
@@ -127,7 +142,8 @@ for size in SIZES:
         lo = min(ci[0] for _, ci in cells)
         hi = max(ci[1] for _, ci in cells)
         MARGINS[(size, cond)] = (avg, lo, hi)
-    for cond, cell_fn in (("rot", rot_cells), ("within", within_cells)):
+    for cond, cell_fn in (("rot", rot_cells), ("within", within_cells),
+                          ("blind_rot", blind_rot_cells)):
         cells = cell_fn(size)
         avg = sum(m for m, _ in cells) / len(cells)
         lo = min(ci[0] for _, ci in cells)
@@ -205,28 +221,32 @@ plt.close(fig)
 
 # ------------------------------------------------------------- fig_anchoring
 
-NAVY = "#22417f"       # paired same-sample delta under rotation (headline)
-LIGHTBLUE = "#9db6e8"  # referenced, original-reference arm
+NAVY = "#22417f"        # paired same-sample delta under rotation (headline)
+LIGHTBLUE = "#9db6e8"   # referenced, original-reference arm
+LIGHTORANGE = "#e8b48c" # blind, original-arm split
 
-fig, ax = plt.subplots(figsize=(7.0, 3.1))
+fig, ax = plt.subplots(figsize=(7.4, 3.1))
 x = range(len(SIZES))
-w = 0.21
+w = 0.17
 for i, size in enumerate(SIZES):
     for cond, color, dx, label in (
-        ("within", NAVY, -1.5 * w, "same sample, ref rotated to match ($n{=}40$)"),
-        ("rot", BLUE, -0.5 * w, "rotated-ref margin ($n{=}18$)"),
-        ("ref", LIGHTBLUE, +0.5 * w, "original-ref margin ($n{=}4$)"),
-        ("noref", ORANGE, +1.5 * w, "blind placebo ($n{=}4$)"),
+        ("within", NAVY, -2.0 * w, "same sample, ref rotated to match ($n{=}40$)"),
+        ("rot", BLUE, -1.0 * w, "rotated-ref margin ($n{=}18$)"),
+        ("blind_rot", ORANGE, 0.0, "blind margin, rotated split ($n{=}18$)"),
+        ("ref", LIGHTBLUE, +1.0 * w, "original-ref margin ($n{=}4$)"),
+        ("noref", LIGHTORANGE, +2.0 * w, "blind margin, original split ($n{=}4$)"),
     ):
         avg, lo, hi = MARGINS[(size, cond)]
-        ax.bar(i + dx, avg, width=w - 0.04, color=color, zorder=3,
+        ax.bar(i + dx, avg, width=w - 0.03, color=color, zorder=3,
                label=label if i == 0 else None)
         ax.errorbar(i + dx, avg, yerr=[[avg - lo], [hi - avg]],
                     fmt="none", ecolor=INK, elinewidth=1.2, capsize=3, zorder=4)
         va = "bottom" if avg >= 0 else "top"
-        ytext = hi + 0.25 if avg >= 0 else lo - 0.25
+        # stagger alternate labels so tall neighboring bars do not collide
+        stagger = 0.55 if cond in ("rot", "ref") else 0.0
+        ytext = hi + 0.25 + stagger if avg >= 0 else lo - 0.25 - stagger
         ax.text(i + dx, ytext, f"{avg:+.1f}", ha="center", va=va,
-                fontsize=10, color=MUTED)
+                fontsize=8.5, color=MUTED)
 ax.axhline(0, color=MUTED, lw=1.0, zorder=2)
 ax.set_xticks(list(x), SIZES)
 ax.set_xlabel("judge size")
@@ -237,8 +257,8 @@ ax.spines[["left", "bottom"]].set_color(MUTED)
 ax.yaxis.grid(True, color=GRID, linewidth=0.8, zorder=0)
 ax.set_axisbelow(True)
 ax.tick_params(colors=INK, length=3)
-ax.legend(loc="lower center", bbox_to_anchor=(0.5, 1.01), ncols=2,
-          frameon=False, handletextpad=0.4, columnspacing=1.0, fontsize=8.5)
+ax.legend(loc="lower center", bbox_to_anchor=(0.5, 1.01), ncols=3,
+          frameon=False, handletextpad=0.4, columnspacing=1.0, fontsize=8)
 fig.tight_layout()
 fig.savefig(FIGDIR / "fig_anchoring.pdf", bbox_inches="tight")
 plt.close(fig)
