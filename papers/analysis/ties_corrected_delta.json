@@ -1,0 +1,42 @@
+{
+ "Qwen2.5-1.5B-Instruct": {
+  "n": 51,
+  "delta": 0.439,
+  "ci": [
+   -0.075,
+   0.962
+  ]
+ },
+ "Qwen2.5-3B-Instruct": {
+  "n": 51,
+  "delta": 0.757,
+  "ci": [
+   0.075,
+   1.477
+  ]
+ },
+ "Qwen2.5-7B-Instruct": {
+  "n": 51,
+  "delta": 0.228,
+  "ci": [
+   -0.386,
+   0.847
+  ]
+ },
+ "Qwen2.5-14B-Instruct": {
+  "n": 51,
+  "delta": 0.557,
+  "ci": [
+   -0.075,
+   1.245
+  ]
+ },
+ "pooled": {
+  "delta": 0.495,
+  "ci": [
+   0.126,
+   0.872
+  ]
+ },
+ "note": "pooled ref-minus-blind excess-gap delta recomputed under GPT-5.2-adjudicated validity labels (unique item-answer adjudication, checker fallback for failures); compare ties_pooled_delta.json +0.41 [+0.07,+0.77] under checker labels"
+}
