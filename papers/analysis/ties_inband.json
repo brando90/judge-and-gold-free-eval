@@ -1,0 +1,42 @@
+{
+ "ties__Qwen__Qwen2.5-1.5B-Instruct__noref": {
+  "n": 7,
+  "excess_gap": 1.187,
+  "regret": 0.143
+ },
+ "ties__Qwen__Qwen2.5-1.5B-Instruct__ref": {
+  "n": 7,
+  "excess_gap": 1.88,
+  "regret": 0.429
+ },
+ "ties__Qwen__Qwen2.5-3B-Instruct__noref": {
+  "n": 7,
+  "excess_gap": 0.899,
+  "regret": 0.429
+ },
+ "ties__Qwen__Qwen2.5-3B-Instruct__ref": {
+  "n": 7,
+  "excess_gap": 1.886,
+  "regret": 0.571
+ },
+ "ties__Qwen__Qwen2.5-7B-Instruct__noref": {
+  "n": 7,
+  "excess_gap": 1.217,
+  "regret": 0.429
+ },
+ "ties__Qwen__Qwen2.5-7B-Instruct__ref": {
+  "n": 7,
+  "excess_gap": 1.743,
+  "regret": 0.571
+ },
+ "ties__Qwen__Qwen2.5-14B-Instruct__noref": {
+  "n": 7,
+  "excess_gap": 0.531,
+  "regret": 0.286
+ },
+ "ties__Qwen__Qwen2.5-14B-Instruct__ref": {
+  "n": 7,
+  "excess_gap": 1.582,
+  "regret": 0.286
+ }
+}
