@@ -4,7 +4,8 @@
 
 The human anchor is the 60-item random label set, graded by one annotator who is also an author, with a shared block graded by two annotators supplying the reliability ceiling.
 A second rater on thirty random items and an external non-author annotator are pending, and the prefix-repair headline ($+0.79$) should be treated as provisional until they land.
-The prefix-repair completer shares a model family with a subset of the graded traces, and its signal is substantially correctness-mediated: among correct-only solutions the $k{=}0.75$ point drops to $+0.19$ and the curve mean to $+0.07$.
+The prefix-repair completer shares a model family with a subset of the graded traces, and its signal is substantially correctness-mediated: among correct-only solutions the $k{=}0.75$ point drops to $+0.19$ ($n{=}48$) and the curve mean to $+0.07$.
+The beyond-correctness margin is unresolved on this anchor set: \tfa's within-correct $+0.21$ ($n{=}48$, interval wide) ties or exceeds the verification signals' within-correct values (Appendix~\ref{app:classtable}), so no cheap signal here, comparison or verification, demonstrably grades beyond correctness, and the only signal shown to do so is the referenced judge at $+0.81$ on the divergence-selected stratum of the companion audit~\cite{companionA}.
 All anchor-set numbers come from a single canonical analysis script (\texttt{papers/analysis/canonical\_validity.py}); earlier drafts and decks quoted values from heterogeneous scripts and estimators, and where they differ the canonical values supersede them.
 Human-grade validity claims cover one math dataset plus executable code; a second labeled dataset is future work.
 Pooled seventeen-model rankings have wide intervals, so we rest the ranking claims on the within-family ladders, which are individually consistent.

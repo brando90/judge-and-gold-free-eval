@@ -7,6 +7,12 @@ Jacob Austin, Augustus Odena, Maxwell Nye, Maarten Bosma, Henryk Michalewski,
 \newblock Program synthesis with large language models.
 \newblock {\em arXiv preprint arXiv:2108.07732}, 2021.
 
+\bibitem{companionA}
+Anonymous Authors.
+\newblock Certify before you optimize: A cheap blind audit that predicts which
+  {LLM} judges get gamed.
+\newblock {\em Companion paper, in submission}, 2026.
+
 \bibitem{chen2021codex}
 Mark Chen, Jerry Tworek, Heewoo Jun, Qiming Yuan, et~al.
 \newblock Evaluating large language models trained on code.

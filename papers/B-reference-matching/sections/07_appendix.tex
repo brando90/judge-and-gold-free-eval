@@ -2,29 +2,84 @@
 \section{The full metric-class table}
 \label{app:classtable}
 
-All five comparison metrics under the same four tests: model-level boundary (hard-benchmark / \textsc{GSM8K} pooled $\rho$), variance decomposition (item / item$\times$family / residual shares, four families), and correlation with blind human soundness (the 60-item random label set).
+All comparison metrics and verification signals under the same tests: model-level boundary (hard-benchmark / \textsc{GSM8K} pooled $\rho$), variance decomposition (item / item$\times$family / residual shares, four families), correlation with blind human soundness (the 60-item random label set), and the within-correct correlation (the same anchor restricted to solutions whose final answer is correct).
 
 \begin{table}[ht]
 \centering
-\footnotesize
-\setlength{\tabcolsep}{2.2pt}
-\begin{tabular}{llccc}
+\scriptsize
+\setlength{\tabcolsep}{1.2pt}
+\begin{tabular}{llcccc}
 \toprule
-metric & mechanism & boundary (hard / sat.) & item / fam / resid \% & vs.\ human \\
+metric & mechanism & boundary (hard / sat.) & item / fam / resid \% & vs.\ human & within-corr.\ $r$ \\
 \midrule
-\tfa{} (argmax) & prediction fit & $+0.60$ / $-0.25$ & $83$--$92$ / $3$--$7$ / $5$--$11$ & $-0.16$ $[-0.46, +0.13]$ \\
-gold-token logprob & prediction fit & $+0.43$ / $-0.23$ & $83$--$91$ / $7$--$11$ / $1$--$6$ & $-0.27$ $[-0.54, +0.04]$ \\
-TF-IDF cosine & weighted similarity & $+0.72$ / $+0.12$ & $69$ / $8$ / $23$ & $-0.08$ $[-0.33, +0.18]$ \\
-sentence embeddings & semantic similarity & $+0.87$ / $+0.29$ & $\sim$$70$ / $8$ / $21$ & $+0.14$ $[-0.08, +0.40]$ \\
-unigram-F1 & raw overlap & $-0.49$ / $+0.18$ & $45$--$55$ / $12$--$15$ / $32$--$41$ & $-0.33$ $[-0.58, -0.12]$ \\
+\tfa{} (argmax) & prediction fit & $+0.60$ / $-0.25$ & $83$--$92$ / $3$--$7$ / $5$--$11$ & $-0.16$ $[-0.46,+0.13]$ & $+0.21$ \\
+gold-token logprob & prediction fit & $+0.43$ / $-0.23$ & $83$--$91$ / $7$--$11$ / $1$--$6$ & $-0.27$ $[-0.54,+0.04]$ & $+0.15$ \\
+TF-IDF cosine & weighted similarity & $+0.72$ / $+0.12$ & $69$ / $8$ / $23$ & $-0.08$ $[-0.33,+0.18]$ & $+0.16$ \\
+sentence embeddings & semantic similarity & $+0.87$ / $+0.29$ & $\sim$$70$ / $8$ / $21$ & $+0.14$ $[-0.08,+0.40]$ & $-0.01$ \\
+unigram-F1 & raw overlap & $-0.49$ / $+0.18$ & $45$--$55$ / $12$--$15$ / $32$--$41$ & $-0.33$ $[-0.58,-0.12]$ & $+0.06$ \\
 \midrule
-LLM judge (referenced) & verification & --- & --- & $\mathbf{+0.89}$ $[+0.76, +0.97]$ \\
-completion value ($k{=}0.5$) & verification & --- & --- & $+0.76$ $[+0.56, +0.91]$ \\
+prefix repair ($k{=}0.5$) & verification & --- & --- & $+0.76$ $[+0.56,+0.91]$ & $+0.02$ \\
+prefix repair ($k{=}0.75$) & verification & --- & --- & $+0.78$ $[+0.60,+0.91]$ & $+0.19$ \\
+prefix-repair curve mean & verification & --- & --- & $+0.79$ $[+0.61,+0.92]$ & $+0.07$ \\
+\midrule
+LLM judge (referenced) & verification & --- & --- & $\mathbf{+0.89}$ $[+0.76,+0.97]$ & $-0.14$ \\
+LLM critic (GPT) & verification & --- & --- & $+0.91$ $[+0.77,+0.98]$ & $+0.17$ \\
+LLM critic (Claude) & verification & --- & --- & $+0.88$ $[+0.74,+0.97]$ & $+0.03$ \\
 \bottomrule
 \end{tabular}
-\caption{\textbf{The full metric-class table.}
-Prediction-fit and weighted-similarity metrics rank on hard benchmarks and die or invert on saturated ones; raw overlap does not rank at all (its hard-benchmark inversion is a verbosity confound: controlling output length moves $-0.49$ to $-0.07$).
-Human columns are Pearson $r$ with bootstrap 95\% CIs on the 60-item set; gold-token logprob uses the $n{=}42$ subset with logprob available; the best human-anchored value is in bold.
-\textbf{Takeaway:} no comparison metric grades against human soundness, and both verification signals do.}
+\caption{\textbf{The full metric-class table, with the within-correct column.}
+Prediction-fit and weighted-similarity metrics rank on hard benchmarks and their saturated point estimates collapse or turn negative; raw overlap does not rank at all (its hard-benchmark inversion is a verbosity confound: controlling output length moves $-0.49$ to $-0.07$).
+Human columns are Pearson $r$ with bootstrap 95\% CIs on the 60-item set; gold-token logprob uses the $n{=}42$ subset with logprob available; the within-correct column is from the canonical analysis (\texttt{canonical\_validity.json}), with $n{=}48$ for every signal except gold-token logprob ($n{=}32$); the best full-set human-anchored value is in bold.
+The within-correct column shows that no cheap signal, comparison or verification, demonstrably grades beyond correctness on this anchor set: \tfa's $+0.21$ ($n{=}48$, interval wide) ties or exceeds every verification signal's within-correct value.
+The referenced judge's $-0.14$ reflects range restriction on the random set; the same judge reads $+0.81$ within-correct on the divergence-selected stratum of the companion audit~\cite{companionA}, and is the only signal shown to grade beyond correctness.
+\textbf{Takeaway:} on the full set no comparison metric grades and the deeper verification signals do, while on the within-correct margin nothing cheap is separable from noise.}
 \label{tab:classfull}
 \end{table}
+
+\section{Datasheet and protocol details}
+\label{app:dnb}
+
+\subsection{Model grid}
+\label{app:models}
+The seventeen-model grid comprises the instruct versions of the following models.
+Qwen family: Qwen2.5-0.5B, Qwen2.5-1.5B, Qwen2.5-3B, Qwen2.5-7B, Qwen2.5-14B, Qwen2.5-32B, and Qwen2.5-Math-7B.
+Phi family: Phi-3-medium, Phi-3.5-mini, and phi-4.
+OLMo family: OLMo-2-7B, OLMo-2-13B, and OLMo-2-32B.
+Mistral family: Mistral-7B-v0.3, Ministral-8B, Mistral-Small, and Mathstral-7B.
+DeepSeek-Math-7B-Instruct additionally appears in the per-token sweep artifact (Appendix~\ref{app:subsets}) although it is outside the seventeen-model map grid.
+The \textsc{SWE-bench Verified} experiment uses a separate grid of eight coder models, including the Qwen-Coder size ladder.
+
+\subsection{Per-benchmark item counts}
+\label{app:counts}
+Item counts as used in this paper: \textsc{MATH-500}, 500 items (6{,}000 model--item pairs in the pooled mechanism analysis over the twelve per-token models); the 60-item random label set is drawn from \textsc{MATH-500}; the shared reliability block is $n{=}20$; the executed-test oracle covers 492 freshly generated code solutions over \textsc{HumanEval}/\textsc{MBPP+}.
+Counts for full \textsc{MATH}, \textsc{Putnam-AXIOM}, \textsc{Putnam-Variations}, \textsc{Omni-MATH}, \textsc{GSM8K}, \textsc{GSM8K-Platinum}, and \textsc{SWE-bench Verified} are as shipped by each benchmark [see repo].
+
+\subsection{Grading rubric and blind protocol}
+\label{app:rubric}
+Soundness anchors (0--10 scale, verbatim): ``2 = major logical error or unjustified leap; 5 = partly justified, real gaps; 8 = fully valid, at most minor slips.''
+Style anchors (0--10 scale, verbatim): ``2 = confusing or rambling; 5 = readable; 8 = clear and well-structured.''
+Annotators also answered two binary questions per solution: \emph{answer-correct} (is the final answer correct?) and \emph{lucky-correct} (is the final answer correct even though the reasoning does not soundly support it?).
+Blind protocol: annotators saw only the problem statement and the solution text, with no model names, no metric scores, and no other annotator's grades, and items were presented in randomized order.
+
+\subsection{Prefix-repair completer}
+\label{app:completer}
+The fixed completer is Qwen2.5-14B-Instruct.
+At each cut depth $k \in \{0, 0.25, 0.5, 0.75\}$ it generates eight completions per cut point, for thirty-two completions per solution.
+
+\subsection{Reliability ceiling}
+\label{app:ceiling}
+The inter-rater ceiling (soundness Spearman $\rho = 0.79$, style $0.55$) is measured on the shared block of $n{=}20$ solutions graded by both annotators.
+It is a Spearman statistic on a different sample from the 60-item random label set, which is why the main text treats comparisons to it as indicative of magnitude rather than exact.
+
+\subsection{Analysis subsets}
+\label{app:subsets}
+\begingroup
+\sloppy
+The twelve-model position-weighting sweep uses the twelve models with per-token hit vectors: Qwen2.5-1.5B-Instruct, Qwen2.5-7B-Instruct, Qwen2.5-14B-Instruct, Qwen2.5-Math-7B-Instruct, OLMo-2-7B-Instruct, OLMo-2-32B-Instruct, Phi-3-medium-4k-instruct, Phi-3.5-mini-instruct, DeepSeek-Math-7B-Instruct, Mathstral-7B, Ministral-8B-Instruct, and Mistral-Small-Instruct.
+The nine-model answer-swap subset is the set of models with local traces: Qwen2.5-1.5B-Instruct, Qwen2.5-7B-Instruct, Qwen2.5-14B-Instruct, OLMo-2-7B-Instruct, OLMo-2-32B-Instruct, Phi-3-medium-4k-instruct, Phi-3.5-mini-instruct, Ministral-8B-Instruct, and Mistral-Small-Instruct.
+\par
+\endgroup
+
+\subsection{Released artifacts}
+\label{app:artifacts}
+All scores, labels, per-token hit vectors, decomposition outputs, labeling instruments with returned labels, pre-registered predictions, and analysis scripts are released in the accompanying repository, and the canonical anchor-set numbers ship as \texttt{papers/analysis/canonical\_validity.\{md,json\}}.

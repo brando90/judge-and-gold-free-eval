@@ -6,15 +6,17 @@ Many benchmarks ship a gold reference solution, so the cheapest way to evaluate 
 We ask what reference matching actually measures, across seventeen models from seven families on eight math and code benchmarks, anchored to blind human grades of reasoning quality and to executed tests.
 % 3 finding 1: grading null + mechanism
 No form of matching can grade an individual solution.
-Five metrics spanning the space, from teacher-forced accuracy to sentence embeddings, land in $[-0.33, +0.14]$ against human soundness grades and at $0.00$ against executed tests on 492 code solutions.
-The reason is mechanistic: $83$--$92\%$ of per-solution variance beyond model level is reference-specific nuisance, and pooled across 6{,}000 model--item pairs, teacher-forced accuracy is $80\%$ reference perplexity.
-Every targeted repair we or our reviewers proposed failed exactly as pre-registered predictions said it would.
+Five metrics spanning the space, from teacher-forced accuracy to sentence embeddings, land in $[-0.33, +0.14]$ against human soundness grades, and the two prediction-fit metrics run on code, teacher-forced accuracy and gold-token log-probability, land at $0.00$ against executed tests on 492 code solutions.
+The reason is mechanistic: $83$--$92\%$ of per-solution variance beyond model level is reference-specific nuisance, and pooled across 6{,}000 model--item pairs, teacher-forced accuracy is $80\%$ reference perplexity (bits-per-character).
+Every targeted repair we or our reviewers proposed failed as predicted, with four predictions pre-registered.
 % 4 finding 2: ranking boundary
 Matching can rank models, but only when the reference is worth predicting.
-Replacing each worked reference with its answer line collapses the ranking signal on the same items (Spearman $+0.35 \to +0.02$), and the boundary runs from $+0.86$ on olympiad math into reversal on saturated data.
+Replacing each worked reference with its answer line collapses the ranking signal on the same items (Spearman $+0.35 \to +0.02$).
+The point-estimate boundary runs from $+0.86$ on olympiad math to negative values on saturated benchmarks, meaning benchmarks where most models already score near ceiling; the robust version of this trend is the ladder count, with twelve of twelve hard-benchmark family ladders positive and five of twelve inverting on saturated data.
 % 5 finding 3: what grades
 What does grade is verification.
-Executed tests are a free oracle where they exist, and a prefix-repair curve, which truncates a solution and asks whether a fixed completer still reaches the right answer, correlates at $+0.79$ with human soundness with no LLM judge involved, at the human inter-rater ceiling.
+Executed tests are a free oracle where they exist, and a prefix-repair curve, which truncates a solution and asks whether a fixed completer still reaches the right answer, correlates at $+0.79$ with human soundness with no LLM judge involved.
+That signal is largely correctness-mediated: among correct-only solutions the curve mean drops to $+0.07$, so the curve is a strong judge-free detector of whether reasoning reaches the right answer, and only modestly more.
 % 6 implications
-Two rules follow: use a reference as an endpoint for a verifier, never as a similarity target, and for leaderboards, report reference entropy alongside accuracy, because matching is legitimate exactly when references are worth predicting.
+Two rules follow: use a reference as an endpoint for a verifier, never as a similarity target, and for leaderboards, report reference perplexity alongside accuracy, because matching is legitimate exactly when references are worth predicting.
 \end{abstract}

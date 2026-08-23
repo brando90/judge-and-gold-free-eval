@@ -7,7 +7,9 @@
 Its value is as context for a reader or as a checkable endpoint for a verifier (Section~\ref{sec:verify}).
 Any metric that scores resemblance to reference text inherits the nuisance decomposition of Section~\ref{sec:mechanism}, and the taxonomy correctly predicted the failure of every such metric before it was built.
 In particular, matching scores should never be used as per-solution rewards or filters: the per-solution signal is not weak, it is absent, across the entire metric class, in two domains, against both human grades and executed tests.
-\item \textbf{For leaderboards, matching is legitimate exactly when references are worth predicting.}
-Report reference entropy alongside accuracy.
+\item \textbf{For leaderboards, run a three-step check before trusting matching.}
+First, compute mean reference perplexity (bits-per-character) over the benchmark's references under any strong open model; this costs one forward pass per reference.
+Second, check whether the benchmark is saturated, meaning most models under comparison already score near ceiling, and whether the references are answer lines rather than worked solutions.
+Third, if either condition holds, do not use matching; if neither holds, use matching only in aggregate, and report the reference-perplexity figure alongside accuracy so readers can audit the condition.
 On answer-line references, matching measures style.
 \end{enumerate}

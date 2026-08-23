@@ -3,7 +3,7 @@
 \label{sec:setup}
 
 \paragraph{Models and data.}
-Seventeen instruction-tuned models from seven families (Qwen, Phi, Mistral, OLMo, plus math-specialized Qwen-Math, DeepSeek-Math, and Mathstral), spanning 0.5B to 32B parameters.
+Seventeen instruction-tuned models from seven families (Qwen, Qwen-Math, Phi, OLMo, Mistral, Ministral, and Mathstral), spanning 0.5B to 32B parameters; the full list is in Appendix~\ref{app:dnb}.
 Eight benchmarks: \textsc{MATH-500} and full \textsc{MATH}~\cite{hendrycks2021math}, \textsc{Putnam-AXIOM} and variations, \textsc{Omni-MATH}, \textsc{GSM8K}~\cite{cobbe2021gsm8k}, \textsc{GSM8K-Platinum}, and \textsc{HumanEval}~\cite{chen2021codex}/\textsc{MBPP+}~\cite{austin2021mbpp,liu2023evalplus}, plus \textsc{SWE-bench Verified} as an agentic setting (patch-level \tfa{} over eight coder models, including the Qwen-Coder size ladder).
 Every model generates its own solution to every problem (greedy), and is separately teacher-forced on the gold solution.
 
@@ -15,18 +15,20 @@ The last three measure how much the model's own output resembles it.
 \paragraph{The verification class.}
 Three judge-free signals that consume the reference only through a checkable endpoint.
 \emph{Executed tests}: for code, run the official suite.
-\emph{Prefix-repair curve}: truncate the solution at depth $k \in \{0, 0.25, 0.5, 0.75\}$, let a fixed mid-sized completer finish it, and score the fraction of completions that reach the correct final answer~\cite{lightman2023verify,wang2022selfconsistency}.
+\emph{Prefix-repair curve}: truncate the solution at depth $k \in \{0, 0.25, 0.5, 0.75\}$, let a fixed mid-sized completer (Qwen2.5-14B-Instruct, eight completions per cut point; Appendix~\ref{app:dnb}) finish it, and score the fraction of completions that reach the correct final answer~\cite{lightman2023verify,wang2022selfconsistency}.
 The profile over $k$ is the signal, and $k{=}0$ is a pure problem-difficulty probe.
 \emph{Answer-swap counterfactual}: the per-token log-probability margin a fixed scorer assigns the solution's own final answer over a swapped alternative, given the reasoning prefix.
-LLM judges sit in either class depending on protocol; auditing judges is the subject of companion work, and one frontier judge configuration appears here only as a comparison point.
+LLM judges sit in either class depending on protocol; auditing judges is the subject of companion work~\cite{companionA}, and three frontier judge configurations appear here only as comparison points.
 
 \paragraph{Human grades.}
 Annotators graded solutions blind, with no model names and no metric scores, on two 0--10 scales with written anchors: \emph{soundness} (is every step valid; ignore the writing) and \emph{style} (is it clear and well-organized; ignore correctness).
-Two annotators graded a shared block to establish a reliability ceiling (soundness $\rho = 0.79$, style $0.55$).
+Two annotators graded a shared block of $n{=}20$ solutions to establish a reliability ceiling (soundness Spearman $\rho = 0.79$, style $0.55$).
 The primary anchor is a single uniformly random label set of 60 \textsc{MATH-500} solutions, the \emph{60-item random label set}; every human-grade correlation in this paper joins against these labels.
 A frontier LLM judge (GPT-5.2, with the gold solution in context) graded the same items and serves as an expensive-reader comparison point.
 The judge's Pearson correlation with human soundness is $+0.89$ $[+0.76, +0.97]$; its Spearman is $+0.43$, depressed by range restriction, because most judge scores concentrate near the top of the scale.
-Both figures come from the canonical analysis (\texttt{papers/analysis/canonical\_validity.md}).
+The same two frontier model families also graded the items as \emph{critics} (\texttt{critic\_gpt} and \texttt{critic\_opus} in Figure~\ref{fig:class}): the same frontier models under a two-scale panel rubric, with the reference in context.
+Their Pearson correlations with human soundness are $+0.91$ and $+0.88$, and the spread across the three protocols shows that raw validity is sensitive to the judging protocol, not only to the underlying model.
+All figures come from the canonical analysis (\texttt{papers/analysis/canonical\_validity.md}).
 For code correctness no human is needed: we execute the tests.
 
 \paragraph{Statistics and pre-registration.}
