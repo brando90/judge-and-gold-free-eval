@@ -27,6 +27,7 @@ Two robustness checks back the convictions; their per-cell values are in Table~\
 First, length: the reward model strongly prefers short responses (length partial $-0.54$), so part of its style conviction could be a length preference in disguise.
 A three-variable partial answers directly: with soundness and length both controlled, the reward model's style partial moves only from $+0.54$ to $+0.42$, the sabotaged frontier's shifts similarly, and the honest frontier stays clean --- the convictions are genuinely style.
 Second, the annotator: a hypothesis-blind non-author regraded a 30-item subset under the same rubric, and on those labels the honest pass and both convictions reproduce (the sabotage conviction is in fact stronger on the blind rater's labels than on the author's).
+Style is also the noisier of the two axes, and label noise attenuates rather than inflates a partial correlation, so the measured convictions understate the true style loading (Section~\ref{sec:limits}).
 
 The verdict tracks protocol, not model identity.
 Blind, the 1.5B judge reads style (style partial $+0.51$, a conviction), the 3B and 7B are too weak to certify, and the 14B clears the frozen pass rule by a hair (soundness partial $0.41$ against a $0.40$ cut) --- a no-margin pass that Section~\ref{sec:pressure} shows to be false.

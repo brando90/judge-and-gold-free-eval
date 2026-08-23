@@ -15,11 +15,13 @@ Yes, for ten of the eleven registered configurations, and the answer is per esti
 Applying the frozen rule uniformly to all thirteen audited configurations yields six passes, four fails, and three convictions; twelve of thirteen verdicts predict the pressure outcome (registered predictions and outcomes: Table~\ref{tab:ledger}; full accounting: Appendix~\ref{app:confusion}).
 All four fails land in the failed cluster on regret, all three convictions show the predicted damage or inflation, and five of the six passes are certified correctly.
 Two of the thirteen --- the sabotaged 7B and 14B --- were scored after their outcomes were known, so they count only toward the secondary twelve-of-thirteen record.
+These thirteen configurations are not thirteen independent tests: their verdicts are collinear with reference presence and collapse to roughly four verdict classes (Section~\ref{sec:limits}), so the count overstates the independent evidence, and the incremental-validity comparison of Section~\ref{sec:audit} is the sharper statement of what the audit adds over that protocol bit.
 
 The exception is the blind 14B, a false pass, and it is informative.
 Its soundness partial clears the $0.40$ cut by $0.01$, yet under pressure it sits in the failed cluster (inflation $+0.63$; Table~\ref{tab:h2h}); the label-subsampling analysis had already marked this verdict unstable below the full label set (Appendix~\ref{app:subsample}).
 A threshold pass with no margin is not a certification.
 We therefore revise the rule, explicitly post hoc: certification requires the soundness-partial \emph{confidence interval}, not the point estimate, to clear the bar.
+The revision can only withdraw certifications, never grant one, so it cannot convert the disclosed failure into a success, and every headline record in this paper is scored under the original frozen rule with the revised rule reported separately.
 Under the revised rule the blind 14B returns insufficient evidence rather than pass --- but the revision is not free, and we account for its full retrospective effect.
 Two threshold-adjacent referenced judges (1.5B and 3B) whose intervals also straddle the bar become abstentions, even though both behaved well under pressure (regrets $0.010$ and $0.038$, the first- and third-lowest observed).
 The revised rule's retrospective record is eight predictions, eight correct, three abstentions (per-configuration intervals in Table~\ref{tab:robust}); the revision trades coverage for safety and is frozen for the registered Putnam replication.

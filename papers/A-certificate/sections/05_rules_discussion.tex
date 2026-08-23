@@ -37,7 +37,9 @@ Third, scope of validation: one audited domain; code is extrapolation; the capab
 
 Fourth, the pressure test is selection, not training; the frontier failure mode is precisely where selection understates risk, and a DPO validation is registered to close the gap.
 Preference pairs are built from the frozen certified (honest referenced) and convicted (sabotaged) GPT-5.2 judges on the same in-band items (808 and 800 pairs), identical LoRA-DPO arms are trained on the generator model, and both arms are evaluated by oracle accuracy and by both frozen judges on train and held-out items.
-Its three registered predictions (P-D1--P-D3: the certified arm improves true accuracy with judge and true gains agreeing in sign; the convicted arm shows a larger judge-minus-true wedge and a smaller true gain; score gains are instrument-specific) are committed pre-run; the run is queued and no outcome is claimed here (ledger, Table~\ref{tab:ledger}).
+Its three registered predictions (P-D1--P-D3: the certified arm improves true accuracy with judge and true gains agreeing in sign; the convicted arm shows a larger judge-minus-true wedge and a smaller true gain; score gains are instrument-specific) are committed pre-run.
+The first run completed as a manipulation failure: one epoch at a conservative learning rate left training reward margins near zero, every true-accuracy gain within a percentage point, and every judge-score gain and wedge crossing zero, so the run tests nothing about the predictions and is recorded as no test, not as a falsification.
+A rerun with a stronger manipulation (four epochs, four times the learning rate) and a registered manipulation check (the trained arm must move its own judge's train-set score, or the run is again recorded as no test) is queued; no outcome is claimed here (ledger, Table~\ref{tab:ledger}).
 
 Fifth, population shift and family confound: the audit labels come from seventeen models' solutions while the primary pressure pools come from one generator, and all open-weights judges share that generator's family, so self-preference could in principle inflate blind-judge gaming.
 The registered cross-family run closes this: on a Llama-3.1-8B-generated pool (176 in-band items) the pattern replicates at every ladder size, with blind and referenced inflation intervals disjoint within each size (ranges in Table~\ref{tab:robust}).
@@ -46,6 +48,7 @@ A deployment-pool label set remains registered (the labeling instrument exists).
 
 Sixth, effective sample size: the thirteen audited configurations' verdicts are strongly collinear with one protocol bit, reference presence, and beyond it there are roughly four distinct verdict classes (blind-weak, referenced-pass, style-loaded, and sabotage-at-ladder-scale fail), so the validation is closer to four independent tests than thirteen.
 The registered DPO run and the reward-model paraphrase-replicate protocol below are the two designed tests that break this collinearity; the second has now run and confirmed its registered prediction.
+For the same reason we do not quote false-pass or false-convict rates for the certificate: four effective classes cannot estimate them, and the registered replications (Putnam, the code audit, DPO) are what will accumulate the outcomes such rates require.
 The label count is what sufficed here, not a derived minimum.
 
 \paragraph{Making inflation comparable for reward models.}

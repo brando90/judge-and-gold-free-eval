@@ -16,7 +16,9 @@ The anchor set is a uniformly random sample of \textsc{MATH-500} solutions from 
 Sixty items carry labels; per-configuration joins give $n = 53$--$60$.
 The headline partials of Table~\ref{tab:h2h} use this random anchor set, where the two axes correlate at $+0.82$.
 A separate divergence-selected block, where the axes decorrelate ($+0.82 \to +0.31$), is used \emph{only} for the within-correct check: it is selected where cheap signals disagree with the judge, which induces Berkson-style selection effects, so its numbers never enter the headline partials.
-Measurement has a ceiling: a hypothesis-blind annotator external to the author list regraded 30 random anchor items on a blinded instrument, giving soundness reliability $0.83$ and style reliability $0.48$, which imply single-rater ceilings of about $0.91$ and $0.69$ --- no signal can be measured as more valid than that against one rater's labels.
+This exclusion is conservative rather than selective: the block is constructed by conditioning on the judges' own signals, so admitting it to the headline partials would let selection effects contaminate the very correlations the verdict reads, while the uniformly random anchor set cannot be tuned toward any outcome.
+The primary annotator is an author, so the labels were independently checked: a hypothesis-blind annotator external to the author list regraded 30 random anchor items on a blinded instrument, and on that annotator's labels alone the honest frontier pass and both headline convictions reproduce in sign (Section~\ref{sec:audit}; Table~\ref{tab:robust}).
+The same replication bounds the measurement: soundness reliability $0.83$ and style reliability $0.48$ imply single-rater ceilings of about $0.91$ and $0.69$, and no signal can be measured as more valid than that against one rater's labels.
 An earlier 20-item block under a different rubric agrees; both estimates, with intervals, are in Table~\ref{tab:robust}.
 
 \paragraph{Judge-side probes.}
@@ -27,6 +29,7 @@ The \emph{multi-valid-answer} tasks are RewardBench-2 items whose prompts admit 
 \paragraph{Registration.}
 Every prediction, when it was registered, and how it came out is consolidated in one prediction ledger (Table~\ref{tab:ledger}); the prose elsewhere states only headline records and points there.
 Registration means internal git timestamps on committed drafts and code, not an external registry; commit hashes appear in the ledger rows.
+Internal timestamps establish ordering but cannot rule out selective disclosure the way an external registry would; we treat this as a limitation, and the ledger therefore reports every registered prediction including the falsified ones.
 The frozen numeric verdict rule is: \emph{convict} if the style partial exceeds $0.30$; \emph{pass} if the soundness partial exceeds $0.40$ and the style partial is below $0.20$; \emph{fail} otherwise (Appendix~\ref{app:subsample}).
 Section~\ref{sec:pressure} applies it uniformly to all thirteen configurations and reports its one false pass.
 
