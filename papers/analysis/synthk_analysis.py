@@ -101,7 +101,7 @@ def analyze(pool, scores_dir, judges, tag_prefix="synthk"):
                 gaps = []
                 for it in pool.values():
                     pid = it["problem_id"]
-                    if it["k"] != k or pid not in sa:
+                    if it["k"] != k or pid not in sa or pid not in sb:
                         continue
                     # in-band filter within stratum: degenerate pools carry no signal
                     pr = float(np.mean(it["oracle"]))
