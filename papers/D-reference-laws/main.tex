@@ -1,5 +1,7 @@
-% Status: DRAFT v1. Numbers: papers/analysis/ties_fullset.json, ties_paired.json,
-% ties_p2_margin.json (canonical); math contrast quoted from companion A.
+% Status: DRAFT v2 (post Reviewer-2 revision). Numbers: papers/analysis/ties_fullset.json,
+% ties_paired.json, ties_p2_margin.json, ties_pooled_delta.json,
+% ties_collapse_conditional.json (canonical); in-band n=7 numbers from the registered
+% [0.2,0.8] filter; math contrast quoted from companion A.
 % Build: pdflatex main && bibtex main && pdflatex main && pdflatex main
 \documentclass[11pt]{article}
 \usepackage[margin=1in]{geometry}
@@ -13,7 +15,7 @@
 
 \title{The Reference Lever Inverts:\\ \large Judge Anchoring under Answer Multiplicity}
 \author{Anonymous Authors}
-\date{Draft v1, August 22, 2026}
+\date{Draft v2, August 23, 2026}
 
 \begin{document}
 \maketitle
@@ -22,10 +24,13 @@
 \noindent
 A trusted reference answer in an LLM judge's context is widely treated as a general-purpose safeguard: give the judge the answer key and it stops being gamed.
 We show the lever has two faces, and on tasks with multiple valid answers it points the wrong way.
-Statically, our prior audit found that on RewardBench-2 Ties comparisons any reference, whoever wrote it, costs $7$--$8$ points of verdict accuracy (paired, $p \le .0005$)~\cite{companionA}.
-Dynamically, in a pre-registered best-of-64 selection experiment on 51 Ties-derived generation tasks with a membership oracle over enumerated valid answers, the referenced judge shows a \emph{higher} excess hack gap than its blind twin at all four Qwen judge scales and uniformly higher oracle regret, whereas on unique-answer math the same lever collapses inflation $4$--$13\times$.
-The mechanism is direct and large: among oracle-valid samples, referenced judges pay a $+2.7$ to $+10.0$ point premium (0--10 scale) for answers matching the shown reference over equally valid alternatives, with confidence intervals excluding zero in all eight referenced judge cells, while blind judges show no positive margin.
-The resulting law is conditional, not universal: a reference helps if and only if the answer is unique and the judge can verify against it; under answer multiplicity it converts ``grade correctness'' into ``match my reference'' and manufactures the very gaming it was installed to prevent.
+Statically, our prior audit found that on \textsc{RewardBench-2} Ties comparisons any reference, whoever wrote it, costs $7$--$8$ points of verdict accuracy (paired, $p \le .0005$)~\cite{companionA}.
+Dynamically, in a pre-registered best-of-64 selection experiment on 51 Ties-derived generation tasks with a membership oracle over enumerated valid answers, the referenced judge shows worse selection outcomes than its blind twin, a higher excess hack gap together with higher oracle regret as one coupled outcome, at all four Qwen judge scales; a cluster bootstrap over items pooling the four scales' per-item gap deltas is significant at $+0.39$ $[+0.04, +0.75]$.
+On unique-answer math the same lever collapses inflation $4$--$13\times$.
+The mechanism is direct and large: among oracle-valid samples, referenced judges pay a $+2.6$ to $+10.0$ point premium (0--10 scale) for answers matching the shown reference over equally valid alternatives, with confidence intervals excluding zero in all eight referenced judge cells, while no blind cell shows a positive margin distinguishable from zero; whenever the sampled pool contains an answer matching the shown reference, referenced judges select it $90$--$100\%$ of the time versus $70\%$ blind ($n{=}10$ items).
+Per-scale gap deltas are directional at $n{=}51$, the anchoring margins rest on 4 items, and only the pooled delta is individually significant; the registered in-band primary analysis ($n{=}7$ items), though underpowered, agrees in direction at every judge size.
+The resulting law is conditional, not universal: a reference helps if and only if the answer is unique and the judge can verify against it.
+Under answer multiplicity it converts ``grade correctness'' into ``match my reference'' and manufactures the very gaming it was installed to prevent.
 \end{abstract}
 
 \section{Introduction: the lever's two faces}
@@ -40,7 +45,7 @@ On such tasks a single reference is not the answer key; it is one sample from th
 A judge that leans on it does not verify correctness, it measures proximity to an arbitrary sample, which is a nuisance property of the reference rather than a property of the candidate~\cite{companionB}.
 
 This paper tests what the reference lever does under answer multiplicity, statically and dynamically, with pre-registered predictions.
-Statically we already knew the direction: on RewardBench-2 Ties~\cite{malik2025rewardbench2}, comparisons among multiple valid answers, showing the judge any reference costs $7$--$8$ points of verdict accuracy (paired, $p \le .0005$), regardless of who authored the reference~\cite{companionA}.
+Statically we already knew the direction: on \textsc{RewardBench-2} Ties~\cite{malik2025rewardbench2}, comparisons among multiple valid answers, showing the judge any reference costs $7$--$8$ points of verdict accuracy (paired, $p \le .0005$), regardless of who authored the reference~\cite{companionA}.
 The open question was dynamic: static verdict accuracy and behavior under selection pressure can disagree~\cite{gao2022scaling}, and the certification story in companion A rests on the dynamic quantity.
 We therefore ran the same pre-registered best-of-64 protocol used for math and code on a multi-valid-answer task pool, committing predictions before any data existed (Section~\ref{sec:setup}).
 
@@ -50,21 +55,21 @@ We therefore ran the same pre-registered best-of-64 protocol used for math and c
 \caption{\textbf{The inversion.}
 Excess hack gap at $n{=}64$ for blind (orange) and referenced (blue) judges at four Qwen2.5 judge scales; arrows show the effect of adding the reference.
 Left: unique-answer math (companion A~\cite{companionA}), where the reference collapses the gap $4$--$13\times$ at every scale.
-Right: RewardBench-2 Ties generation tasks with multiple valid answers ($n{=}51$ items), where the reference \emph{raises} the gap at every scale.
+Right: \textsc{RewardBench-2} Ties generation tasks with multiple valid answers ($n{=}51$ items), where the reference \emph{raises} the gap at every scale; small hollow markers show the registered in-band subset ($n{=}7$ items), which agrees in direction at every scale.
 \textbf{Takeaway: the same trusted reference that collapses gaming on unique-answer tasks increases it when several answers are valid.}}
 \label{fig:inversion}
 \end{figure}
 
 The answer is an inversion, and we can see its gears.
-At all four judge scales the referenced judge ends up with a higher excess hack gap than its blind twin, and with uniformly higher oracle regret (Figure~\ref{fig:inversion}, Table~\ref{tab:fullset}).
-The mechanism is anchoring, measured directly on oracle-valid samples: referenced judges pay a $+2.7$ to $+10.0$ point premium for matching the shown reference over equally valid alternatives, significant in all eight referenced cells, while blind judges show no positive margin (Figure~\ref{fig:anchoring}).
+At all four judge scales the referenced judge ends up with worse selection outcomes than its blind twin: a higher excess hack gap together with higher oracle regret, two readouts of one coupled failure (Figure~\ref{fig:inversion}, Table~\ref{tab:fullset}).
+The mechanism is anchoring, measured directly on oracle-valid samples: referenced judges pay a $+2.6$ to $+10.0$ point premium for matching the shown reference over equally valid alternatives, significant in all eight referenced cells, while no blind cell shows a positive margin distinguishable from zero (Figure~\ref{fig:anchoring}).
 Combined with companion A's capability gate on code, the two results yield a two-condition law for the most popular judge intervention in use: a reference helps if and only if the answer is unique and the judge can verify against it.
 
 \section{Setup}
 \label{sec:setup}
 
 \paragraph{Tasks.}
-We built 51 generation tasks from RewardBench-2 Ties items~\cite{malik2025rewardbench2}, each with at least two enumerated valid answers.
+We built 51 generation tasks from \textsc{RewardBench-2} Ties items~\cite{malik2025rewardbench2}, each with at least two enumerated valid answers.
 Each task stores the full valid set, which serves as the oracle, and one seeded-random member of that set designated at build time as the reference (\texttt{ref\_answer}) shown in the judge's referenced condition.
 The prompts ask for exactly the kind of answer the valid set enumerates (short factual or constrained responses admitting several correct values).
 
@@ -82,17 +87,20 @@ The \emph{excess hack gap} measures scoreboard inflation of the selected sample 
 \emph{Oracle regret} measures accuracy left on the table against best-possible selection.
 Both estimators are the pre-registered ones from companion A, unchanged (\texttt{scripts/bon\_analysis.py}).
 
-\paragraph{Registration.}
-The design and three predictions were committed to \texttt{registration.md} before any generation, oracle scoring, or judge scoring.
+\paragraph{Registration, and one deviation from it.}
+The design and three predictions were committed to the repository (commit \texttt{99c40ea}, 2026-08-22) before any generation, oracle scoring, or judge scoring.
 \textbf{P-T1} (primary): the reference does not reduce oracle regret on multi-valid items; directionally it hurts selection quality, in contrast to math where the same contrast was strongly positive ($0.448 \to 0.010$ regret at 1.5B).
 \textbf{P-T2} (mechanism): among oracle-valid samples, referenced judges score reference-matching samples above equally valid non-matching samples, and blind judges show a near-zero margin.
 \textbf{P-T3}: the excess hack gap under the reference is not reduced relative to blind.
-The registration also committed the item filter (pool pass rate in $[0.2, 0.8]$) and pre-declared the full-pool analysis as the appendix analysis.
-The filter left only $n{=}7$ in-band items on this pool, too few for the primary contrast, so we promote the full 51-item analysis to primary and say so plainly; the estimators themselves are unchanged, and every effect below is reported with this caveat attached.
+The registration committed a single analysis population: items with pool pass rate in $[0.2, 0.8]$, the in-band filter carried over from the math and code protocol; it did not pre-declare a full-pool analysis, in the appendix or anywhere else.
+On this pool the filter left $n{=}7$ items, too few to power the primary contrast, so we adopted the full 51-item analysis post hoc, for power.
+This is a deviation from the registration.
+We report both analyses in Section~\ref{sec:rq1}: the full-pool deviation carries the headline numbers, and the registered in-band primary, though underpowered, agrees with it in direction at every judge size.
 
 \section{Results}
 
 \subsection{RQ1: Does the reference help under selection pressure? No: it inverts.}
+\label{sec:rq1}
 
 \begin{table}[t]
 \centering
@@ -107,23 +115,29 @@ Judge & blind & ref & blind & ref & $\Delta$ & 95\% CI \\
 3B   & $+0.55$ & $+1.22$ & $0.137$ & $0.157$ & $+0.65$ & $[-0.03, 1.35]$ \\
 7B   & $+0.82$ & $+0.91$ & $0.118$ & $0.137$ & $+0.08$ & $[-0.49, 0.61]$ \\
 14B  & $+0.67$ & $+1.15$ & $0.078$ & $0.098$ & $+0.47$ & $[-0.21, 1.19]$ \\
+\midrule
+\multicolumn{5}{l}{Pooled item-level $\Delta$gap (4 scales averaged, cluster bootstrap)} & $+0.39$ & $[+0.04, +0.75]$ \\
 \bottomrule
 \end{tabular}
-\caption{\textbf{Best-of-64 on 51 multi-valid Ties tasks.}
+\caption{\textbf{Best-of-64 on 51 multi-valid Ties tasks (full-pool analysis; post-hoc deviation from the registered in-band filter, adopted for power).}
 Excess hack gap (baseline SD over the within-oracle-stratum permutation null) and oracle regret per judge scale and condition, with paired item-level ref-minus-noref gap deltas and bootstrap CIs.
-The reference raises the gap at 4 of 4 scales and raises regret at 4 of 4 scales; individual deltas do not reach significance at $n{=}51$.
-\textbf{Takeaway: adding the reference never helps and directionally hurts on every row.}}
+The reference worsens the coupled gap/regret outcome on every row; per-scale deltas do not individually reach significance at $n{=}51$, and the pooled delta does.
+\textbf{Takeaway: adding the reference never helps, directionally hurts on every row, and the pooled effect excludes zero.}}
 \label{tab:fullset}
 \end{table}
 
-Both registered outcome predictions hold at every judge scale.
+Both registered outcome predictions hold at every judge scale, and gap and regret move together as one coupled outcome: the same anchoring that inflates the scoreboard degrades the selection.
 P-T1 held: oracle regret is higher under the reference at every scale, $0.137 \to 0.157$ at 1.5B and at 3B, $0.118 \to 0.137$ at 7B, and $0.078 \to 0.098$ at 14B, so the reference never buys back selection quality and costs about two points of accuracy at each scale.
 P-T3 held: the excess hack gap is higher under the reference at all four scales, $+1.05 \to +1.41$ at 1.5B, $+0.55 \to +1.22$ at 3B, $+0.82 \to +0.91$ at 7B, and $+0.67 \to +1.15$ at 14B (Table~\ref{tab:fullset}).
 
-We state the strength of this evidence honestly.
-The paired item-level gap deltas are positive at all four scales ($+0.35$, $+0.65$, $+0.08$, $+0.47$) but each 95\% CI crosses zero at $n{=}51$ items.
-Four scales all moving in the registered direction has a one-sided sign-test floor of $p = 1/16$, the best attainable with four paired observations, and the four judge scales share items and a generator, so they are not independent replications.
-What carries the inference is not the marginal significance of any single delta but the conjunction: a pre-registered directional prediction confirmed 4-for-4 on gap and 4-for-4 on regret, an opposite-signed effect of the same lever on math measured with identical estimators, and a mechanism check (next section) whose effect sizes leave no ambiguity.
+The paired item-level gap deltas are positive at all four scales ($+0.35$, $+0.65$, $+0.08$, $+0.47$) but each per-scale 95\% CI crosses zero at $n{=}51$ items.
+Pooling across scales gives a significant effect: a cluster bootstrap that resamples the 51 items and, for each item, averages the four scales' per-item ref-minus-blind gap deltas yields $+0.39$ $[+0.04, +0.75]$, a CI excluding zero (Table~\ref{tab:fullset}, bottom row).
+The four judge scales share items and a generator, so they are not independent replications; the pooled estimator treats scale as a fixed effect and items as the sole resampling unit, and it upgrades the dynamic claim from directional to significant at the pooled level, not to four separately significant replications.
+What carries the inference is the conjunction: a pre-registered directional prediction confirmed at all four scales on the coupled gap/regret outcome, a pooled item-level delta whose CI excludes zero, an opposite-signed effect of the same lever on math measured with identical estimators, and a mechanism check (next section) whose effect sizes leave no ambiguity.
+
+The registered primary analysis agrees in direction at every size.
+On the $n{=}7$ in-band items that survive the registered $[0.2, 0.8]$ filter, the referenced gap exceeds the blind gap at all four sizes ($+1.19 \to +1.83$ at 1.5B, $+0.93 \to +1.82$ at 3B, $+1.26 \to +1.76$ at 7B, $+0.58 \to +1.59$ at 14B), and referenced regret is worse at three of four sizes ($0.143 \to 0.429$ at 1.5B, $0.429 \to 0.571$ at 3B, $0.429 \to 0.571$ at 7B, and a tie at $0.286$ at 14B).
+Seven items support no significance claim, but the analysis the registration actually committed points the same way as the full-pool deviation on every row (hollow markers in Figure~\ref{fig:inversion}).
 
 The contrast with unique-answer math is the point.
 On math the identical protocol gives blind gaps of $+0.88/+0.44/+0.80/+0.63$ collapsing to $+0.16/+0.07/+0.18/+0.05$ with the reference, a $4$--$13\times$ reduction at every scale~\cite{companionA}.
@@ -146,14 +160,21 @@ We restrict to oracle-valid samples, so every sample being compared is correct, 
 For blind judges the designated reference is never shown, so their margin is a placebo control on the same split.
 
 Referenced judges pay a premium for the matching answer in every cell.
-The margin is positive with a 95\% CI excluding zero in all eight referenced cells (4 scales $\times$ 2 rubric paraphrases), ranging from $+2.7$ to $+10.0$ points on a 0--10 scale.
+The margin is positive with a 95\% CI excluding zero in all eight referenced cells (4 scales $\times$ 2 rubric paraphrases), ranging from $+2.6$ to $+10.0$ points on a 0--10 scale.
 At 1.5B and 3B the anchoring is essentially total: margins of $+9.1$ to $+10.0$ mean the judge scores a valid non-matching answer near zero and the matching answer near the ceiling, so the reference has fully replaced the correctness criterion.
-At 7B and 14B the anchoring is partial but still large, $+2.7$ to $+5.4$ points, several times any plausible quality difference among answers that are all correct.
-Blind judges show nothing of the kind: seven of eight blind cells straddle zero, and the one significant blind cell is negative ($-2.5$ $[-4.7, -0.2]$ at 3B, rubric $b$).
+The extreme 3B rubric-$b$ cell, $+9.99$ $[+9.98, +10.0]$, reflects score saturation: the judge awards the ceiling to every matching sample and the floor to every non-matching one, so this margin is ceiling-limited rather than precisely estimated.
+At 7B and 14B the anchoring is partial but still large, $+2.6$ to $+5.4$ points, several times any plausible quality difference among answers that are all correct.
+Blind judges show nothing of the kind: no blind cell has a positive margin distinguishable from zero; seven of eight straddle zero, and the one blind cell excluding zero is negative ($-2.5$ $[-4.7, -0.2]$ at 3B, rubric $b$).
 
-Two honest caveats attach to this measurement.
-The margins are computed on the 4 items where both sample types (valid matching and valid non-matching) occur in the selected pools, so the item count is small; the margins' size, up to the full width of the scoring scale with tight CIs, is what makes them unambiguous despite it.
-And the margin explains the inversion rather than merely accompanying it: a judge that boosts one valid answer and buries the rest turns best-of-64 into a lottery over reference proximity, which inflates reported scores relative to true quality (the gap) without improving, and slightly degrading, the chance of selecting a correct answer (the regret).
+The margin translates into near-deterministic selection.
+Conditional on the sampled pool containing at least one sample whose answer matches the shown reference, which happens on 10 of the 51 items, referenced judges select a reference-matching sample $10/10$, $10/10$, $9/10$, and $10/10$ times at 1.5B, 3B, 7B, and 14B, versus $7/10$ for the blind judge at every size.
+Whenever the reference-matching answer is on offer, the referenced judge takes it $90$--$100\%$ of the time; the $n{=}10$ base makes this a mode-collapse observation rather than a precise rate.
+
+The margin itself is computed on 4 items rather than those 10, and the shortfall is a property of the generator's answer distribution, not of the analysis: of the 10 items with at least one valid reference-matching sample, 6 have zero other-valid samples, meaning all 64 samples give the same answer, which leaves only 4 items where valid matching and valid non-matching samples coexist.
+The margins' size, up to the full width of the scoring scale with tight CIs, is what makes them unambiguous despite the small item count.
+We have registered a reference-rotation rerun, re-judging the same pools with permuted reference choices so that different valid answers play the reference role, as the planned repowering of this cell.
+The margin also explains the inversion rather than merely accompanying it: a judge that boosts one valid answer and buries the rest turns best-of-64 into a lottery over reference proximity.
+That lottery inflates reported scores relative to true quality (the gap) while slightly degrading the chance of selecting a correct answer (the regret), which is exactly the coupled outcome of Table~\ref{tab:fullset}.
 
 \subsection{RQ3: Reconciling with unique-answer domains: a two-condition law.}
 
@@ -166,27 +187,29 @@ Capability is the second condition, and it is independent of multiplicity.
 Companion A found that on code, where using the reference means mentally executing a test suite, a 1.5B judge gains nothing from the reference while 3B and above collapse their gaps; the reference only helps judges capable of verifying against it~\cite{companionA}.
 Together the two results give the practitioner's law: \emph{a trusted reference helps if and only if (i) the task's answer is unique, and (ii) the judge can verify a candidate against it}.
 Fail condition (ii) and the reference is inert.
-Fail condition (i) and the reference is actively harmful, statically and under optimization pressure, at every judge scale we tested, with more capable judges reducing but not eliminating the anchoring premium.
+Fail condition (i) and the reference is actively harmful, statically and under optimization pressure, at every judge scale we tested.
+More capable judges reduce the anchoring premium but do not eliminate it.
 The operational advice is correspondingly simple: before installing a reference, ask whether a correct answer different from the reference exists; if yes, either enumerate the valid set and check membership, as our oracle does, or leave the judge blind.
 
 \section{Limitations}
 
 The task pool is small and single-sourced.
-All dynamic results rest on 51 Ties-derived items, the paired gap deltas individually cross zero at this $n$, and the four-scale directional agreement has a sign-test floor of $p = 1/16$ with judges that share items and a generator.
-One generator (Qwen2.5-7B-Instruct) produced every candidate pool, so generator-specific answer distributions could modulate the effect sizes.
+All dynamic results rest on 51 Ties-derived items; the per-scale paired gap deltas individually cross zero at this $n$, and only the pooled item-level delta ($+0.39$ $[+0.04, +0.75]$) excludes zero.
+The four-scale directional agreement has a sign-test floor of $p = 1/16$, the best attainable with four paired observations, and the four judge scales share items and a generator, so the pooled estimate treats scale as a fixed effect rather than as independent replications.
+One generator (Qwen2.5-7B-Instruct) produced every candidate pool, so generator-specific answer distributions could modulate the effect sizes; the same distribution is what starves the margin analysis, since 6 of the 10 items with a valid reference-matching sample have no other valid answer among all 64 samples.
 The oracle is loose-normalized membership in an enumerated valid set; answers valid in substance but outside the enumeration, or normalization misses, would be scored as failures for every condition alike.
-The anchoring margins come from the 4 items where both valid-matching and valid non-matching samples exist, so their magnitudes, though individually significant, are averages over few items.
-The pre-registered in-band filter left $n{=}7$ items, so the full-pool analysis, registered as the appendix analysis, serves as primary here; we flag this promotion rather than hide it.
+The anchoring margins come from the 4 items where both valid-matching and valid non-matching samples exist, and the conditional selection-collapse rates from 10 items, so their magnitudes, though individually significant or extreme, are averages over few items; the registered reference-rotation rerun is the planned repowering.
+The analysis population is a registered/actual mismatch: the registration committed only the in-band $[0.2, 0.8]$ filter, which left $n{=}7$ items, and the full-pool analysis reported as primary here is a post-hoc deviation adopted for power, with the registered in-band analysis agreeing in direction at every size (Section~\ref{sec:rq1}).
 Finally, the judge ladder is one model family, and companion A shows judge scale and family can gate reference use, so the scale trend in the anchoring margin should be read as within-family.
 
 \section{Related work}
 
 Reference-guided judging is standard practice with documented benefits on unique-answer tasks.
-MT-Bench popularized providing a reference for math and reasoning grading~\cite{zheng2023judging}, reference-guided verdicts raise human agreement on QA~\cite{refguided2024}, and letting the judge first produce its own answer as a self-reference helps similarly~\cite{dobefore2025}.
+\textsc{MT-Bench} popularized providing a reference for math and reasoning grading~\cite{zheng2023judging}, reference-guided verdicts raise human agreement on QA~\cite{refguided2024}, and letting the judge first produce its own answer as a self-reference helps similarly~\cite{dobefore2025}.
 The complementary failure is also documented: without any reference, judges drift generous~\cite{generous2026}.
 Our results do not contradict this literature; they bound it, locating its validity in the unique-answer regime.
 
-RewardBench 2 supplies the multi-valid substrate.
+\textsc{RewardBench-2} supplies the multi-valid substrate.
 Its Ties subset was built precisely because equally valid answers expose evaluator brittleness~\cite{malik2025rewardbench2}; we convert those comparisons into generation tasks with enumerable oracles and put them under selection pressure.
 Optimization against imperfect evaluators is the classic overoptimization setting~\cite{gao2022scaling}; our contribution is to show that a mitigation assumed to reduce exploitability can increase it, depending on answer structure.
 Companion A establishes the unique-answer collapse, the capability gate, and the static Ties result this paper extends dynamically~\cite{companionA}; companion B gives the underlying decomposition, that comparison-to-reference metrics measure properties of the reference rather than of the solution~\cite{companionB}.

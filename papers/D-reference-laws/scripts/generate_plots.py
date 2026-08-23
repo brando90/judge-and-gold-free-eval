@@ -56,6 +56,16 @@ def ties_gap(size, cond):
 
 TIES = {s: (ties_gap(s, "noref"), ties_gap(s, "ref")) for s in SIZES}
 
+# Registered in-band primary analysis (pool pass rate in [0.2, 0.8]; n=7 items),
+# per the registration (commit 99c40ea). (noref, ref) excess hack gaps; quoted in
+# the paper's RQ1 as the underpowered registered primary that agrees in direction.
+TIES_INBAND = {
+    "1.5B": (1.19, 1.83),
+    "3B":   (0.93, 1.82),
+    "7B":   (1.26, 1.76),
+    "14B":  (0.58, 1.59),
+}
+
 # Math best-of-64 excess hack gaps (noref, ref) from companion paper A (same
 # estimators, same judge ladder); quoted, not recomputed here.
 MATH = {
@@ -96,11 +106,20 @@ def style_axis(ax):
     ax.xaxis.grid(True, color=GRID, linewidth=0.8, zorder=0)
     ax.set_axisbelow(True)
 
-def dumbbell(ax, data, title):
+def dumbbell(ax, data, title, inband=None):
     ys = range(len(SIZES))
     off = 0.055  # horizontal label offset (data units)
     for y, size in zip(ys, SIZES):
         noref, ref = data[size]
+        if inband is not None:
+            # registered in-band subset: small hollow markers, offset above the
+            # full-pool row; same hue carries the same condition identity.
+            ib_noref, ib_ref = inband[size]
+            dy = 0.26
+            ax.plot([ib_noref], [y + dy], "o", ms=4.5, markerfacecolor="none",
+                    markeredgecolor=ORANGE, markeredgewidth=1.2, zorder=3)
+            ax.plot([ib_ref], [y + dy], "o", ms=4.5, markerfacecolor="none",
+                    markeredgecolor=BLUE, markeredgewidth=1.2, zorder=3)
         ax.annotate(
             "", xy=(ref, y), xytext=(noref, y),
             arrowprops=dict(arrowstyle="-|>", color=MUTED, lw=1.4,
@@ -123,23 +142,26 @@ def dumbbell(ax, data, title):
                     fontsize=10, color=MUTED)
     ax.set_yticks(list(ys), SIZES)
     ax.set_ylim(-0.6, len(SIZES) - 0.4)
-    ax.set_xlim(-0.32, 1.78)
+    ax.set_xlim(-0.32, 2.02)
     ax.set_title(title, loc="left", color=INK)
     ax.set_xlabel("excess hack gap at $n{=}64$ (baseline SD)")
     style_axis(ax)
 
 fig, axes = plt.subplots(1, 2, figsize=(7.2, 2.9), sharey=True)
 dumbbell(axes[0], MATH, "Math (unique answer)")
-dumbbell(axes[1], TIES, "Ties (multiple valid answers)")
+dumbbell(axes[1], TIES, "Ties (multiple valid answers)", inband=TIES_INBAND)
 axes[0].set_ylabel("judge size")
 handles = [
     plt.Line2D([], [], marker="o", ls="", ms=8, color=ORANGE,
                markeredgecolor="white", markeredgewidth=1.5, label="blind judge"),
     plt.Line2D([], [], marker="o", ls="", ms=8, color=BLUE,
                markeredgecolor="white", markeredgewidth=1.5, label="referenced judge"),
+    plt.Line2D([], [], marker="o", ls="", ms=4.5, color="none",
+               markeredgecolor=MUTED, markeredgewidth=1.2,
+               label="in-band subset ($n{=}7$)"),
 ]
-axes[1].legend(handles=handles, loc="lower left", frameon=False,
-               handletextpad=0.3, borderaxespad=0.1, labelspacing=0.25)
+fig.legend(handles=handles, loc="lower center", bbox_to_anchor=(0.5, -0.08),
+           ncols=3, frameon=False, handletextpad=0.3, columnspacing=1.6)
 fig.tight_layout(w_pad=1.6)
 fig.savefig(FIGDIR / "fig_inversion.pdf", bbox_inches="tight")
 plt.close(fig)
