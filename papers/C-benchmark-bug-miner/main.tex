@@ -1,0 +1,290 @@
+% Status: DRAFT (revised per Reviewer-2)
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{url}
+\usepackage{microtype}
+
+\title{Auditing Evaluation Pipelines with Cheap Models:\\ An Unsupervised Miner for Verdict Errors}
+\author{Anonymous}
+\date{August 2026 (draft)}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Automatic benchmark evaluations produce a per-record 0/1 correctness verdict from an answer key plus a scorer, and downstream work treats that verdict as ground truth.
+When models disagree with the verdict, the standard reading is that the models failed.
+We show that for one specific and cheap signal the opposite reading is usually correct.
+We flag any record where three or more solver models, all officially graded incorrect, nevertheless agree with one another on the final answer.
+On GSM8K, validated externally against GSM8K-Platinum human re-annotation~\cite{platinum} plus mechanical checks, 89\% of these flags (66 of 74) mark genuine evaluation-pipeline verdict errors, decomposing into 72\% bugs in our own scorer, 15\% items Platinum removed as broken, and roughly 3\% genuinely wrong answer keys.
+Measured against dataset-level defects alone (broken items plus wrong keys), the same flags have 18\% precision (13 of 74).
+A second, more expensive signal, in which two frontier models independently re-solve the problem and both contradict the official verdict, reaches 97\% precision (39 of 40) on its flagged slice, subject to an adjudicator-circularity caveat.
+The miner is unsupervised and needs no human labels to run.
+Our motivation is cautionary: three apparent judge-failure laws in our own experiments dissolved under adjudication; in the attractor case study, 96\% of flagged cases (83\% scorer bugs plus 13\% label errors or suspect items) were not judge failures, and in the detection-hierarchy case study, 71\% were verdict errors.
+We release the audit and a ledger of 751 correctness-label upgrades across GSM8K, GSM8K-Platinum, and a Putnam-Axiom variant.
+The implication for the judge-evaluation literature is direct: scoring judges against noisy verdicts can manufacture failure laws, so pipeline audits must come first.
+\end{abstract}
+
+\section{Introduction}
+
+Every automatic benchmark evaluation rests on a chain of trust.
+The dataset supplies an answer key, a scorer compares model output to that key, and the resulting 0/1 verdict is treated as ground truth.
+Work on LLM judges inherits this chain.
+A judge that calls an officially-wrong solution correct is recorded as a false positive, and aggregate false-positive rates become claims about judge reliability.
+
+This paper reports what happened when we stopped trusting the chain.
+In a study of judge reliability on GSM8K and MATH we found three clean, quantitative laws of judge failure.
+All three dissolved under adjudication.
+In the attractor case study, 96\% of the flagged cases (83\% scorer bugs plus 13\% label errors or suspect items) were not judge failures at all.
+In the detection-hierarchy case study, 71\% of the flagged cases were verdict errors.
+The failures were wrong answer keys, broken questions, or bugs in our own string-matching scorer, not failures of the judges.
+
+The dissolution suggested an inversion.
+If disagreement with the official verdict is dominated by verdict noise, then such disagreement is not a model-failure detector.
+It is a verdict-error detector.
+We operationalize this as a miner whose primary signal requires no judge at all: flag any record where three or more solver models, all officially graded incorrect by the pipeline, agree with one another on the extracted final answer.
+Validated against GSM8K-Platinum human re-annotation~\cite{platinum} and mechanical checks, and using no frontier model anywhere in flagging or adjudication, 89\% of the flags (66/74) mark genuine pipeline-verdict errors, and 18\% (13/74) mark dataset-level defects.
+
+Our contributions are:
+(1) three documented case studies in which plausible judge-failure laws reduce to verdict artifacts;
+(2) an unsupervised verdict-error miner with externally validated 89\% precision (66/74) for pipeline-verdict errors and 18\% (13/74) for dataset-level defects, plus a frontier-arbitrated variant at 97\% (39/40) that carries a circularity caveat;
+(3) released artifacts, including a 751-record ledger of correctness-label corrections.
+
+\section{The Failure Mode: Three Laws That Dissolved}
+\label{sec:laws}
+
+All three case studies come from a study of judge reliability on GSM8K and MATH-500 solutions produced by 17 open-weights solvers, scored by an automatic pipeline (answer key plus string-matching scorer), and judged by a ladder of Qwen2.5-Instruct models (0.5B--14B) plus two frontier judges (GPT-5.2 and Claude Opus).
+Each judge scores a candidate solution on a 0--10 scale, where 0 means certainly incorrect and 10 means certainly correct.
+We call a score of at least 7 on an officially-wrong solution a judge false positive.
+Table~\ref{tab:laws} summarizes the pattern.
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{@{}p{3.1cm}p{4.6cm}p{5.6cm}@{}}
+\toprule
+Apparent law & Raw signal & After adjudication \\
+\midrule
+Attractor effect & Judges fooled by ``attractor'' wrong answers; within-item score gap $+6.41$ on GSM8K & 83\% of the 101 flagged records were scorer bugs and 13\% label errors or suspect items (96\% non-judge causes); on the 4\% genuine residue, judge false positives were 0\% \\
+\addlinespace
+Capability-gap degradation & Judge false positives peak on stronger solvers' errors & Frontier-adjudicated residual disagreement is $\sim$2\% (circularity caveat, Section~\ref{sec:capgap}) and flat across solver strength; universal fools are $\sim$0.2\% of wrong solutions \\
+\addlinespace
+Detection hierarchy & $P(\text{frontier fooled})$ rises $1\%\!\to\!6.5\%\!\to\!60.5\%\!\to\!94\%$ as $k=0..3$ weak judges are fooled & 71\% of $k\ge2$ cases were verdict errors; conditioned on confirmed-wrong, frontier FP at $k\ge2$ is 6.2\% (GPT-5.2) and 8.3\% (Opus) vs.\ baselines of 2.0\% and 1.5\% \\
+\bottomrule
+\end{tabular}
+\caption{Three judge-failure laws and what adjudication left of them.}
+\label{tab:laws}
+\end{table}
+
+\subsection{The attractor effect}
+
+The first pass suggested that wrong answers shared by many solvers (``attractors'') systematically fool judges.
+On GSM8K, attractor wrong answers received judge scores 6.41 points higher, on the 0--10 scale, than other wrong answers to the same item.
+Adjudicating all 101 attractor records against robust answer normalization and GSM8K-Platinum dissolved the effect.
+83\% were bugs in our own scorer: the model's answer equaled the gold answer, the string matcher misparsed it, and both judges had scored the solution near 9.7 out of 10.
+The judges were right and the oracle was wrong.
+Another 13\% were label errors or suspect items, so 96\% of the flagged cases had non-judge causes.
+On the 4\% of records that were genuinely wrong, judges scored a mean of 2.5 with a 0\% false-positive rate.
+
+\subsection{The capability-gap confound}
+\label{sec:capgap}
+
+The second pass suggested that judge reliability degrades when solvers outgrow judges, the folklore version of the oversight problem.
+The raw judge-by-solver surface even showed a false-positive peak at the 14B-solver column for every judge.
+After flipping the adjudicated verdict errors, the frontier false-positive rate on genuine natural errors is about 2\%, flat across solver strength, weak-judge consensus, and difficulty.
+This $\sim$2\% figure is a residual of frontier-adjudicated disagreement rather than a ground-truth error rate, because correlated frontier families supply both the judgments and the adjudication.
+Errors that fool every judge are about 0.2\% of wrong solutions.
+On cleaned wrong sets, frontier false positives (score $\ge 7$) are 2--3\% on MATH and 0.7--0.9\% on Putnam.
+The GSM8K residual of $\sim$17\% still contained unflipped verdict errors at the time of measurement.
+
+\subsection{The detection hierarchy}
+
+The third pass produced the sharpest raw pattern.
+The number of weak judges (1.5B/3B/7B) fooled by a wrong candidate seemed to predict frontier failure: $P(\text{frontier fooled})$ rose from 1\% at $k=0$ to 94\% at $k=3$, a $\sim$94$\times$ lift.
+Adjudication dissolved it.
+A solve-first binary adjudication of all 55 cases with $k\ge2$ found that 71\% were verdict errors: the candidate solution was actually correct (GSM8K 32/40 even after Platinum cleaning; MATH 7/15).
+An independent arbiter from a second frontier family agreed on 55 of 55 adjudications.
+Conditioned on confirmed-wrong solutions, frontier false positives at $k\ge2$ are 6.2\% for GPT-5.2 and 8.3\% for Opus, against baselines of 2.0\% and 1.5\% respectively.
+Weak-judge consensus carries almost no signal about frontier failure on genuine errors.
+What it detects, with high reliability, is bad verdicts.
+
+\section{The Miner}
+\label{sec:miner}
+
+The dissolved patterns are not subtlety meters.
+They are verdict-error miners, and we use them as such.
+Two distinct signals are involved, and we describe them separately because they were generated by different model pools, validated by different adjudicators, and achieve different precisions.
+
+\paragraph{Signal 1: multi-solver answer consensus (primary; source of the 74 flags).}
+For each benchmark record (a problem, candidate solutions, and the official 0/1 correctness verdicts from key plus scorer), collect the extracted final answers of the solver pool used in the evaluation.
+Flag the item when three or more solvers whose solutions the pipeline graded incorrect nevertheless agree with one another on the final answer.
+The consensus answer may equal the official key, which indicates a scorer misparse, or differ from it, which indicates a wrong key or a broken item.
+The consensus pools in the released audit span three to nine solvers per flag and include models from the Mistral, Microsoft Phi, DeepSeek, AI2 OLMo, and Qwen families.
+These are the evaluation's solvers, not judges: many of them (e.g.\ Mathstral, Phi-3.5-mini, deepseek-math-7b, OLMo-2, Ministral) appear in no judge ladder.
+The signal is unsupervised, involves no threshold tuning on labels and no human in the loop, and adds no model calls beyond the solver runs the evaluation already performed.
+This signal generated all 74 flags validated in Section~\ref{sec:validation} at 89\% precision for pipeline-verdict errors.
+
+\paragraph{Signal 2: frontier re-solve verdicts (separate, more expensive).}
+Independently of Signal 1, two frontier models (GPT-5.2 and Claude Opus) each re-solve the problem from scratch and issue a binary verdict on the candidate solution.
+A record is flagged when both re-solve verdicts contradict the official verdict.
+In the measured cell this signal reached 97\% precision (39 of 40), and the two frontier families agreed on 55 of 55 adjudications.
+This figure is frontier-adjudicated: correlated frontier families both raise and adjudicate the flags, so the 97\% carries an adjudicator-circularity caveat and we do not treat it as externally validated.
+
+\paragraph{A third, related variant: judge-ladder unanimity.}
+A ladder of small open-weights judges (Qwen2.5-Instruct at 1.5B, 3B, and 7B) can also be run over each record, flagging when every judge on the ladder disagrees with the official verdict.
+A compliance gate (parseable verdicts plus planted calibration pairs) screens out judges that cannot follow the protocol; specialized models can fail this gate.
+This variant is related to Signals 1 and 2 but is not what generated the 74 externally validated flags, and the numbers in Section~\ref{sec:validation} should not be attributed to it.
+
+\paragraph{What a flag means.}
+A flag does not distinguish among failure types by itself.
+Adjudication of flags separates three error classes: wrong answer keys, broken or ambiguous questions, and scorer bugs (the model's answer matches the key but the grading harness misparses it).
+All three corrupt the recorded verdict, and therefore corrupt downstream judge evaluation, equally.
+
+\section{Validation}
+\label{sec:validation}
+
+\paragraph{External validation, no frontier models.}
+The circularity risk in Section~\ref{sec:laws} is that frontier models adjudicated flags raised partly by frontier models.
+We therefore validated the consensus miner (Signal 1) externally.
+We ran multi-solver consensus flags on original GSM8K verdicts and adjudicated every flag using only GSM8K-Platinum human re-annotation~\cite{platinum} and mechanical answer checks, with no frontier model anywhere in flagging or adjudication.
+Result: 66 of 74 flags were genuine pipeline-verdict errors, a precision of 89\% (Wilson 95\% interval $[0.80, 0.94]$).
+Measured against dataset-level defects alone (broken items plus wrong keys), precision is 18\% (13 of 74).
+Table~\ref{tab:validation} gives the breakdown.\footnote{The counts here differ superficially from the audit file, which lists 60 scorer bugs and 4 Platinum-removed items: 7 items appear in the audit's scorer-bug appendix but were also removed by Platinum, and the table counts each flag once, assigning those 7 double-counted items to the broken-item row ($53 = 60 - 7$; $11 = 4 + 7$).}
+
+\begin{table}[t]
+\centering
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Flag outcome & Count & Share \\
+\midrule
+Scorer bug (answer matches key; grader misparsed) & 53 & 72\% \\
+Broken item (removed by Platinum re-annotation) & 11 & 15\% \\
+Wrong key (relabeled by Platinum) & 2 & 3\% \\
+\midrule
+Confirmed pipeline-verdict error (total) & 66 & 89\% \\
+\quad of which dataset-level defect (broken $+$ wrong key) & 13 & 18\% \\
+Models wrong together (miner false alarm) & 8 & 11\% \\
+\midrule
+Total flags & 74 & 100\% \\
+\bottomrule
+\end{tabular}
+\caption{External adjudication of multi-solver consensus flags on GSM8K against GSM8K-Platinum and mechanical checks. No frontier model is used in flagging or adjudication.}
+\label{tab:validation}
+\end{table}
+
+\paragraph{Frontier-arbitrated operating point.}
+With the separate frontier re-solve signal (Signal 2), precision on the flagged slice was 97\% (39/40), and the two frontier families agreed on 55/55 adjudications.
+We report 89\% as the headline because it is the externally validated number; the 97\% figure inherits adjudicator circularity (Section~\ref{sec:miner}).
+
+\paragraph{Seed audit examples.}
+The qualitative audit behind these counts is released alongside the paper.
+Two examples of genuine key errors on GSM8K, both confirmed by Platinum:
+item 403 (air-conditioner energy) has official key 81 while the model consensus and Platinum give 135;
+item 454 (apples eaten by two people) has official key 150 while consensus and Platinum give 240.
+The audit also lists 4 items Platinum removed as broken or ambiguous, a further 7 removed items recorded in the scorer-bug appendix, 8 contrast cases where the flag fired but the key was right, and 60 scorer bugs in our own grading pipeline.
+
+\paragraph{Effect on measured judge quality.}
+Verdict errors are not cosmetic.
+In our own pipeline the scorer-bug rate over the GSM8K records in the GPT-judged runs was 4.1\% overall, and cleaning raised the measured judge-quality signal on that slice from 0.656 to 0.753.
+Noisy verdicts had been understating judge quality throughout.
+
+\section{Released Artifacts}
+
+\paragraph{Correction ledger.}
+We release \texttt{cc\_corrections.jsonl}, a ledger of 751 correctness-label upgrades (0 to 1) produced by re-scoring legacy score files with robust answer normalization backed by a math-equivalence checker.
+The upgrades concentrate exactly in the diagnosed bug class: 256 on GSM8K, 249 on GSM8K-Platinum, 246 on a Putnam-Axiom variant, and zero on MATH files that use boxed-answer formatting.
+The retrofit is upgrade-only: records originally scored correct are never re-litigated, because the validated failure mode of the scorer is false negatives.
+Spot-checked upgrades are formatting mismatches such as \texttt{\$57.00} versus \texttt{57}, ``Answer: 38'', and comma-grouped numbers.
+
+\paragraph{Audit file.}
+We release the full seed audit of flagged GSM8K and MATH-500 items, split into genuine key errors, Platinum-removed items, frontier-adjudicated verdict errors (39 of 55 matrix-study cases), contrast cases where the key was right, and scorer bugs.
+
+\paragraph{Miner recipe.}
+The consensus rule, the frontier re-solve protocol, and the judge-ladder variant (ladder, prompts, compliance gate, unanimity rule) are specified so that the miner can be re-run on any benchmark with per-record correctness verdicts.
+
+\section{Limitations}
+
+\paragraph{The target is the recorded verdict, not only the key.}
+The 89\% precision is for the recorded correctness verdict, which is the product of key and scorer.
+72\% of confirmed errors were scorer bugs in our own harness.
+Precision for dataset-level defects alone is 18\% (13/74: 15\% broken items plus 3\% relabels).
+Teams with more robust scorers should expect lower flag yields and a higher share of dataset defects among flags.
+
+\paragraph{Domain scope.}
+All validation is on oracle-verifiable math (GSM8K, with supporting evidence from MATH-500).
+Precision on other domains, including code and open-ended tasks, is untested here.
+
+\paragraph{Single benchmark for the headline number.}
+The external 89\% figure comes from one benchmark and 74 flags.
+The Wilson 95\% interval for 66/74 is $[0.80, 0.94]$.
+
+\paragraph{Recall.}
+We validate precision on the flagged slice.
+Because GSM8K-Platinum is an exhaustive re-annotation of the GSM8K test set, dataset-defect recall is computable as the fraction of Platinum-removed or relabeled items in our evaluated slice that the miner flagged:
+\[
+\text{recall} \;=\; \frac{\lvert \text{flagged} \cap \text{Platinum-removed/relabeled} \rvert}{\lvert \text{Platinum-removed/relabeled items in the evaluated slice} \rvert}.
+\]
+The numerator on our slice is 13 (11 removed plus 2 relabeled).
+[TODO: compute the denominator from \texttt{cc\_corrections.jsonl} plus the Platinum diff over the evaluated slice and report the resulting recall.]
+Recall over scorer bugs is separately unmeasured, since no exhaustive ground-truth audit of the full slice exists on our side.
+
+\paragraph{Adjudicator dependence at the 97\% point.}
+The frontier-arbitrated figure inherits adjudicator circularity, since correlated frontier families both flag and adjudicate.
+That is exactly why we report the Platinum-only 89\% figure as primary.
+
+\section{Related Work}
+
+\paragraph{Benchmark label noise.}
+Label errors in widely-used test sets are a documented, general phenomenon~\cite{pervasive}, and confident-learning methods estimate and clean such noise from model confidence statistics~\cite{confident}.
+GSM8K-Platinum re-annotates GSM8K~\cite{gsm8k} with human review and removes or relabels defective items~\cite{platinum}.
+Our delta is not the existence of label noise but the instrument and the audit: answer consensus among the open-weights solvers an evaluation already runs suffices to mine pipeline-verdict errors unsupervised at 89\% precision, where prior cleaning pipelines used frontier models and humans.
+Our audit also shows that most mined errors (72\%) live in the evaluation pipeline's own scorer rather than in the dataset, a layer that dataset-cleaning work does not target.
+
+\paragraph{Judge evaluation.}
+The judge-evaluation literature routinely scores judges against benchmark oracles, from holistic LLM-as-a-judge protocols such as MT-Bench~\cite{mtbench} to step-level error identification in ProcessBench~\cite{processbench}, on datasets including GSM8K and MATH~\cite{gsm8k,math}.
+Our case studies show that this practice can manufacture quantitative judge-failure laws from verdict noise.
+We view the miner as a mandatory preprocessing step for that literature: run it, adjudicate the flags, then measure the judge.
+
+\begin{thebibliography}{9}
+
+\bibitem{gsm8k}
+K.~Cobbe et al.
+Training Verifiers to Solve Math Word Problems.
+arXiv:2110.14168, 2021.
+
+\bibitem{math}
+D.~Hendrycks et al.
+Measuring Mathematical Problem Solving With the MATH Dataset.
+arXiv:2103.03874, 2021.
+
+\bibitem{platinum}
+J.~Vendrow, E.~Vendrow, S.~Beery, and A.~Madry.
+Do Large Language Model Benchmarks Test Reliability?
+arXiv:2502.03461, 2025.
+(Introduces the platinum benchmarks, including GSM8K-Platinum.)
+
+\bibitem{pervasive}
+C.~G. Northcutt, A.~Athalye, and J.~Mueller.
+Pervasive Label Errors in Test Sets Destabilize Machine Learning Benchmarks.
+arXiv:2103.14749, 2021.
+
+\bibitem{confident}
+C.~G. Northcutt, L.~Jiang, and I.~L. Chuang.
+Confident Learning: Estimating Uncertainty in Dataset Labels.
+arXiv:1911.00068, 2019.
+
+\bibitem{mtbench}
+L.~Zheng et al.
+Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena.
+arXiv:2306.05685, 2023.
+
+\bibitem{processbench}
+C.~Zheng et al.
+ProcessBench: Identifying Process Errors in Mathematical Reasoning.
+arXiv:2412.06559, 2024.
+
+\end{thebibliography}
+
+\end{document}

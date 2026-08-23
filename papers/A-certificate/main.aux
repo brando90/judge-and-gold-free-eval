@@ -8,34 +8,40 @@
 \@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
 \newlabel{sec:intro}{{1}{1}{Introduction}{section.1}{}}
 \citation{companionB}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces \textbf  {Why a sixty-label audit can predict gaming.} Comparison-shaped evaluators reward resemblance to a reference, so their scores load on style and reference predictability; verification-shaped evaluators check the solution against something trusted. The audit (bottom) reads which mechanism a judge uses from two partial correlations, and the verdict predicts behavior under optimization pressure (Section~\ref {sec:pressure}).}}{2}{figure.caption.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces \textbf  {Why a small audit can predict gaming.} Comparison-shaped evaluators reward resemblance to a reference, loading on nuisance axes such as style; verification-shaped evaluators check the solution against something trusted. The audit reads which mechanism a judge uses from partial correlations on separated axes, and the verdict predicts behavior under optimization pressure (Section~\ref {sec:pressure}).}}{2}{figure.caption.1}\protected@file@percent }
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{fig:concept}{{1}{2}{\textbf {Why a sixty-label audit can predict gaming.} Comparison-shaped evaluators reward resemblance to a reference, so their scores load on style and reference predictability; verification-shaped evaluators check the solution against something trusted. The audit (bottom) reads which mechanism a judge uses from two partial correlations, and the verdict predicts behavior under optimization pressure (Section~\ref {sec:pressure})}{figure.caption.1}{}}
+\newlabel{fig:concept}{{1}{2}{\textbf {Why a small audit can predict gaming.} Comparison-shaped evaluators reward resemblance to a reference, loading on nuisance axes such as style; verification-shaped evaluators check the solution against something trusted. The audit reads which mechanism a judge uses from partial correlations on separated axes, and the verdict predicts behavior under optimization pressure (Section~\ref {sec:pressure})}{figure.caption.1}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {2}Setup}{2}{section.2}\protected@file@percent }
 \newlabel{sec:setup}{{2}{2}{Setup}{section.2}{}}
 \@writefile{toc}{\contentsline {paragraph}{Evaluators.}{2}{section*.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{Human labels.}{3}{section*.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Pre-registration.}{3}{section*.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Registration.}{3}{section*.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {3}The audit}{3}{section.3}\protected@file@percent }
 \newlabel{sec:audit}{{3}{3}{The audit}{section.3}{}}
 \@writefile{toc}{\contentsline {paragraph}{Protocol.}{3}{section*.5}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{The audit passes, convicts, and flips.}{3}{section*.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Head-to-head: what raw agreement misses.}{3}{section*.8}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{When a reference helps.}{3}{section*.9}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces \textbf  {Naive validation versus the audit, against pressure outcomes (math).} Naive raw agreement ranks the ladder but cannot diagnose: the sabotaged frontier judge ($+0.35$) is indistinguishable from the honest blind 14B ($+0.37$), yet one inflates its scoreboard ($+0.85\sigma $, regret $0.133$) and the other damages selections (gap $+0.63$, regret $0.324$). The style partial separates them ($+0.59$ vs.\ $-0.21$) and identifies the failure mode in advance. Naive thresholds are also unprincipled ex ante; the audit's verdict is anchored to the sign and axis of the partials.}}{4}{table.caption.7}\protected@file@percent }
-\newlabel{tab:h2h}{{1}{4}{\textbf {Naive validation versus the audit, against pressure outcomes (math).} Naive raw agreement ranks the ladder but cannot diagnose: the sabotaged frontier judge ($+0.35$) is indistinguishable from the honest blind 14B ($+0.37$), yet one inflates its scoreboard ($+0.85\sigma $, regret $0.133$) and the other damages selections (gap $+0.63$, regret $0.324$). The style partial separates them ($+0.59$ vs.\ $-0.21$) and identifies the failure mode in advance. Naive thresholds are also unprincipled ex ante; the audit's verdict is anchored to the sign and axis of the partials}{table.caption.7}{}}
-\@writefile{toc}{\contentsline {paragraph}{When a reference hurts.}{4}{section*.10}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4}The certificate under pressure}{4}{section.4}\protected@file@percent }
-\newlabel{sec:pressure}{{4}{4}{The certificate under pressure}{section.4}{}}
-\@writefile{toc}{\contentsline {paragraph}{The certificate predicts, in-domain.}{4}{section*.11}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{And it is domain-specific.}{4}{section*.12}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Head-to-head: what raw agreement adds and misses.}{3}{section*.8}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces \textbf  {Naive validation versus the audit, against pressure outcomes (math; all ten in-domain-audited configurations).} Gap = excess hack gap at best-of-64: how much the judge's own scores inflate relative to true quality, in baseline standard deviations over a permutation null. Regret = accuracy left on the table versus best-possible selection. Bootstrap 95\% CIs in brackets (1.5B-blind CIs omitted: degenerate resamples from concentrated scores). Naive raw agreement ranks the ladder but cannot diagnose: the sabotaged frontier judge ($+0.35$) is indistinguishable from the honest blind 14B ($+0.37$), yet one inflates ($+0.85\sigma $, regret $0.133$) and the other damages (gap $+0.63$, regret $0.324$). The style partial separates them and identifies the failure mode.}}{4}{table.caption.7}\protected@file@percent }
+\newlabel{tab:h2h}{{1}{4}{\textbf {Naive validation versus the audit, against pressure outcomes (math; all ten in-domain-audited configurations).} Gap = excess hack gap at best-of-64: how much the judge's own scores inflate relative to true quality, in baseline standard deviations over a permutation null. Regret = accuracy left on the table versus best-possible selection. Bootstrap 95\% CIs in brackets (1.5B-blind CIs omitted: degenerate resamples from concentrated scores). Naive raw agreement ranks the ladder but cannot diagnose: the sabotaged frontier judge ($+0.35$) is indistinguishable from the honest blind 14B ($+0.37$), yet one inflates ($+0.85\sigma $, regret $0.133$) and the other damages (gap $+0.63$, regret $0.324$). The style partial separates them and identifies the failure mode}{table.caption.7}{}}
+\@writefile{toc}{\contentsline {paragraph}{Verdict stability.}{4}{section*.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{What the certificate covers: outcomes, not process.}{4}{section*.10}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{A zero-label pre-screen.}{4}{section*.11}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{When a reference helps.}{4}{section*.12}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{When a reference hurts.}{5}{section*.13}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}The certificate under pressure}{5}{section.4}\protected@file@percent }
+\newlabel{sec:pressure}{{4}{5}{The certificate under pressure}{section.4}{}}
+\@writefile{toc}{\contentsline {paragraph}{The registered claim, and what the data show.}{5}{section*.14}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{The separation grows with optimization strength.}{5}{section*.15}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Cross-domain extrapolation, and the miss that teaches.}{5}{section*.16}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Two failure modes, and capability trades one for the other.}{5}{section*.18}\protected@file@percent }
 \citation{companionC}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces \textbf  {The capability gate.} Excess hack gap without (orange) and with (blue) a trusted reference. On math the reference collapses inflation at every scale; on code the lever works only at 3B and above, and the frontier judge needs it only for scoreboard honesty.}}{5}{figure.caption.13}\protected@file@percent }
-\newlabel{fig:gate}{{2}{5}{\textbf {The capability gate.} Excess hack gap without (orange) and with (blue) a trusted reference. On math the reference collapses inflation at every scale; on code the lever works only at 3B and above, and the frontier judge needs it only for scoreboard honesty}{figure.caption.13}{}}
-\@writefile{toc}{\contentsline {paragraph}{Two failure modes, and capability trades one for the other.}{5}{section*.14}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Granularity beats scale once a reference is in hand.}{5}{section*.15}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {5}Design rules}{5}{section.5}\protected@file@percent }
-\newlabel{sec:rules}{{5}{5}{Design rules}{section.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces \textbf  {The capability gate.} Excess hack gap without (orange) and with (blue) a trusted reference. On math the reference collapses inflation at every scale; on code the lever works only at 3B and above.}}{6}{figure.caption.17}\protected@file@percent }
+\newlabel{fig:gate}{{2}{6}{\textbf {The capability gate.} Excess hack gap without (orange) and with (blue) a trusted reference. On math the reference collapses inflation at every scale; on code the lever works only at 3B and above}{figure.caption.17}{}}
+\@writefile{toc}{\contentsline {paragraph}{Granularity beats scale once a reference is in hand.}{6}{section*.19}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}Design rules}{6}{section.5}\protected@file@percent }
+\newlabel{sec:rules}{{5}{6}{Design rules}{section.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Discussion and limitations}{6}{section.6}\protected@file@percent }
+\newlabel{sec:limits}{{6}{6}{Discussion and limitations}{section.6}{}}
 \citation{wen2024rethinking}
 \citation{beigi2026ara}
 \citation{judgechanges2026}
@@ -52,12 +58,10 @@
 \citation{coste2023ensembles}
 \citation{eisenstein2023helping}
 \citation{selfplay2026}
-\@writefile{toc}{\contentsline {section}{\numberline {6}Discussion and limitations}{6}{section.6}\protected@file@percent }
-\newlabel{sec:limits}{{6}{6}{Discussion and limitations}{section.6}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {7}Related work}{6}{section.7}\protected@file@percent }
-\newlabel{sec:related}{{7}{6}{Related work}{section.7}{}}
 \bibcite{wen2024rethinking}{1}
 \bibcite{beigi2026ara}{2}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Related work}{7}{section.7}\protected@file@percent }
+\newlabel{sec:related}{{7}{7}{Related work}{section.7}{}}
 \bibcite{judgechanges2026}{3}
 \bibcite{zheng2023judging}{4}
 \bibcite{wu2023style}{5}
@@ -74,6 +78,12 @@
 \bibcite{selfplay2026}{16}
 \bibcite{companionB}{17}
 \bibcite{companionC}{18}
-\@writefile{toc}{\contentsline {section}{\numberline {A}Paired-contrast confidence intervals}{7}{appendix.A}\protected@file@percent }
-\newlabel{app:cis}{{A}{7}{Paired-contrast confidence intervals}{appendix.A}{}}
-\gdef \@abspage@last{7}
+\@writefile{toc}{\contentsline {section}{\numberline {A}Full configuration accounting}{8}{appendix.A}\protected@file@percent }
+\newlabel{app:confusion}{{A}{8}{Full configuration accounting}{appendix.A}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {B}Pressure curves}{9}{appendix.B}\protected@file@percent }
+\newlabel{app:curves}{{B}{9}{Pressure curves}{appendix.B}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {C}Verdict stability under label subsampling}{9}{appendix.C}\protected@file@percent }
+\newlabel{app:subsample}{{C}{9}{Verdict stability under label subsampling}{appendix.C}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {D}Paired-contrast confidence intervals}{9}{appendix.D}\protected@file@percent }
+\newlabel{app:cis}{{D}{9}{Paired-contrast confidence intervals}{appendix.D}{}}
+\gdef \@abspage@last{9}
