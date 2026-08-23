@@ -1,0 +1,41 @@
+{
+ "missing_by_trace_model": {
+  "phi-4": 18
+ },
+ "covered_by_trace_model": {
+  "Qwen2.5-14B-Instruct": 16,
+  "Qwen2.5-7B-Instruct": 26
+ },
+ "phi4_matched": {
+  "n": 42,
+  "pearson": 0.82,
+  "ci": [
+   0.68,
+   0.92
+  ]
+ },
+ "qwen_matched": {
+  "n": 42,
+  "pearson": 0.89,
+  "ci": [
+   0.76,
+   0.97
+  ]
+ },
+ "phi4_matched_excl_phitraces": {
+  "n": 42,
+  "pearson": 0.82,
+  "ci": [
+   0.68,
+   0.92
+  ]
+ },
+ "qwen_matched_excl_phitraces": {
+  "n": 42,
+  "pearson": 0.89,
+  "ci": [
+   0.74,
+   0.97
+  ]
+ }
+}

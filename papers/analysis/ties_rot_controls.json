@@ -1,0 +1,398 @@
+{
+ "provenance": {
+  "n_items": 51,
+  "orig_ref_in_pool": 10,
+  "rotated_ref_in_pool": 40,
+  "note": "rotated assignment constructed pool-aware (prefers a different valid answer present among the pool's valid samples) to enable the paired analysis"
+ },
+ "blind_margin_rotated": [
+  {
+   "judge": "Qwen2.5-1.5B-Instruct",
+   "rep": "a",
+   "n_items": 18,
+   "margin": 0.17,
+   "ci": [
+    -1.16,
+    1.56
+   ]
+  },
+  {
+   "judge": "Qwen2.5-1.5B-Instruct",
+   "rep": "b",
+   "n_items": 18,
+   "margin": 0.61,
+   "ci": [
+    -0.81,
+    2.14
+   ]
+  },
+  {
+   "judge": "Qwen2.5-3B-Instruct",
+   "rep": "a",
+   "n_items": 18,
+   "margin": 1.36,
+   "ci": [
+    -0.13,
+    2.87
+   ]
+  },
+  {
+   "judge": "Qwen2.5-3B-Instruct",
+   "rep": "b",
+   "n_items": 18,
+   "margin": 1.91,
+   "ci": [
+    0.36,
+    3.64
+   ]
+  },
+  {
+   "judge": "Qwen2.5-7B-Instruct",
+   "rep": "a",
+   "n_items": 18,
+   "margin": 0.35,
+   "ci": [
+    -0.29,
+    1.05
+   ]
+  },
+  {
+   "judge": "Qwen2.5-7B-Instruct",
+   "rep": "b",
+   "n_items": 18,
+   "margin": 0.14,
+   "ci": [
+    -0.54,
+    0.85
+   ]
+  },
+  {
+   "judge": "Qwen2.5-14B-Instruct",
+   "rep": "a",
+   "n_items": 18,
+   "margin": 0.7,
+   "ci": [
+    0.02,
+    1.5
+   ]
+  },
+  {
+   "judge": "Qwen2.5-14B-Instruct",
+   "rep": "b",
+   "n_items": 18,
+   "margin": 0.04,
+   "ci": [
+    -0.1,
+    0.15
+   ]
+  }
+ ],
+ "gainers": [
+  {
+   "judge": "Qwen2.5-1.5B-Instruct",
+   "rep": "a",
+   "n_items": 40,
+   "delta": 9.48,
+   "ci": [
+    8.94,
+    9.84
+   ]
+  },
+  {
+   "judge": "Qwen2.5-1.5B-Instruct",
+   "rep": "b",
+   "n_items": 40,
+   "delta": 8.73,
+   "ci": [
+    7.91,
+    9.39
+   ]
+  },
+  {
+   "judge": "Qwen2.5-3B-Instruct",
+   "rep": "a",
+   "n_items": 40,
+   "delta": 9.28,
+   "ci": [
+    8.72,
+    9.69
+   ]
+  },
+  {
+   "judge": "Qwen2.5-3B-Instruct",
+   "rep": "b",
+   "n_items": 40,
+   "delta": 9.58,
+   "ci": [
+    9.2,
+    9.85
+   ]
+  },
+  {
+   "judge": "Qwen2.5-7B-Instruct",
+   "rep": "a",
+   "n_items": 40,
+   "delta": 4.57,
+   "ci": [
+    3.6,
+    5.53
+   ]
+  },
+  {
+   "judge": "Qwen2.5-7B-Instruct",
+   "rep": "b",
+   "n_items": 40,
+   "delta": 5.96,
+   "ci": [
+    4.98,
+    6.93
+   ]
+  },
+  {
+   "judge": "Qwen2.5-14B-Instruct",
+   "rep": "a",
+   "n_items": 40,
+   "delta": 3.07,
+   "ci": [
+    2.45,
+    3.69
+   ]
+  },
+  {
+   "judge": "Qwen2.5-14B-Instruct",
+   "rep": "b",
+   "n_items": 40,
+   "delta": 3.47,
+   "ci": [
+    2.76,
+    4.22
+   ]
+  }
+ ],
+ "placebo_neither": [
+  {
+   "judge": "Qwen2.5-1.5B-Instruct",
+   "rep": "a",
+   "n_items": 16,
+   "delta": 0.46,
+   "ci": [
+    -0.03,
+    1.26
+   ]
+  },
+  {
+   "judge": "Qwen2.5-1.5B-Instruct",
+   "rep": "b",
+   "n_items": 16,
+   "delta": 0.22,
+   "ci": [
+    0.02,
+    0.46
+   ]
+  },
+  {
+   "judge": "Qwen2.5-3B-Instruct",
+   "rep": "a",
+   "n_items": 16,
+   "delta": 0.58,
+   "ci": [
+    -0.05,
+    1.63
+   ]
+  },
+  {
+   "judge": "Qwen2.5-3B-Instruct",
+   "rep": "b",
+   "n_items": 16,
+   "delta": 0.82,
+   "ci": [
+    0.01,
+    2.18
+   ]
+  },
+  {
+   "judge": "Qwen2.5-7B-Instruct",
+   "rep": "a",
+   "n_items": 16,
+   "delta": -0.44,
+   "ci": [
+    -1.19,
+    0.18
+   ]
+  },
+  {
+   "judge": "Qwen2.5-7B-Instruct",
+   "rep": "b",
+   "n_items": 16,
+   "delta": -0.28,
+   "ci": [
+    -0.65,
+    0.09
+   ]
+  },
+  {
+   "judge": "Qwen2.5-14B-Instruct",
+   "rep": "a",
+   "n_items": 16,
+   "delta": -0.36,
+   "ci": [
+    -1.13,
+    0.36
+   ]
+  },
+  {
+   "judge": "Qwen2.5-14B-Instruct",
+   "rep": "b",
+   "n_items": 16,
+   "delta": 0.38,
+   "ci": [
+    -0.44,
+    1.13
+   ]
+  }
+ ],
+ "losers": [
+  {
+   "judge": "Qwen2.5-1.5B-Instruct",
+   "rep": "a",
+   "n_items": 10,
+   "delta": -9.65,
+   "ci": [
+    -9.89,
+    -9.37
+   ]
+  },
+  {
+   "judge": "Qwen2.5-1.5B-Instruct",
+   "rep": "b",
+   "n_items": 10,
+   "delta": -9.42,
+   "ci": [
+    -9.66,
+    -9.17
+   ]
+  },
+  {
+   "judge": "Qwen2.5-3B-Instruct",
+   "rep": "a",
+   "n_items": 10,
+   "delta": -8.85,
+   "ci": [
+    -9.79,
+    -7.4
+   ]
+  },
+  {
+   "judge": "Qwen2.5-3B-Instruct",
+   "rep": "b",
+   "n_items": 10,
+   "delta": -9.8,
+   "ci": [
+    -10.0,
+    -9.41
+   ]
+  },
+  {
+   "judge": "Qwen2.5-7B-Instruct",
+   "rep": "a",
+   "n_items": 10,
+   "delta": -3.14,
+   "ci": [
+    -5.19,
+    -1.31
+   ]
+  },
+  {
+   "judge": "Qwen2.5-7B-Instruct",
+   "rep": "b",
+   "n_items": 10,
+   "delta": -4.7,
+   "ci": [
+    -6.49,
+    -2.97
+   ]
+  },
+  {
+   "judge": "Qwen2.5-14B-Instruct",
+   "rep": "a",
+   "n_items": 10,
+   "delta": -2.78,
+   "ci": [
+    -3.55,
+    -2.27
+   ]
+  },
+  {
+   "judge": "Qwen2.5-14B-Instruct",
+   "rep": "b",
+   "n_items": 10,
+   "delta": -3.81,
+   "ci": [
+    -5.08,
+    -2.69
+   ]
+  }
+ ],
+ "collapse_rotated": [
+  {
+   "judge": "Qwen2.5-1.5B-Instruct",
+   "ref": {
+    "eligible": 18,
+    "selected_valid": 18,
+    "matched_ref": 18,
+    "rate": 1.0
+   },
+   "noref": {
+    "eligible": 18,
+    "selected_valid": 18,
+    "matched_ref": 7,
+    "rate": 0.39
+   }
+  },
+  {
+   "judge": "Qwen2.5-3B-Instruct",
+   "ref": {
+    "eligible": 18,
+    "selected_valid": 17,
+    "matched_ref": 17,
+    "rate": 1.0
+   },
+   "noref": {
+    "eligible": 18,
+    "selected_valid": 18,
+    "matched_ref": 8,
+    "rate": 0.44
+   }
+  },
+  {
+   "judge": "Qwen2.5-7B-Instruct",
+   "ref": {
+    "eligible": 18,
+    "selected_valid": 15,
+    "matched_ref": 14,
+    "rate": 0.93
+   },
+   "noref": {
+    "eligible": 18,
+    "selected_valid": 18,
+    "matched_ref": 9,
+    "rate": 0.5
+   }
+  },
+  {
+   "judge": "Qwen2.5-14B-Instruct",
+   "ref": {
+    "eligible": 18,
+    "selected_valid": 17,
+    "matched_ref": 17,
+    "rate": 1.0
+   },
+   "noref": {
+    "eligible": 18,
+    "selected_valid": 18,
+    "matched_ref": 7,
+    "rate": 0.39
+   }
+  }
+ ]
+}

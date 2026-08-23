@@ -1,0 +1,10 @@
+{
+ "n_models": 17,
+ "spearman_full": 0.35,
+ "spearman_short": 0.02,
+ "delta": 0.33,
+ "delta_ci": [
+  -0.16,
+  0.81
+ ]
+}
