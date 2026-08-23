@@ -152,3 +152,20 @@ frozen pre-registered `synthk_analysis.py`, which alone scored the registered de
   1.5B/3B). Also recorded: the 1.5B instruction-worsens result holds only under rubric a
   (+3.58 -> +4.54 at k=16); rubric b improves (+2.52 -> +2.12), so the paper's wording is now
   "a placebo below the capability gate, with one rubric showing worse at 1.5B".
+
+## Outcome note (2026-08-23): P-S2b second-phrasing replication
+
+Registered in the pipeline11 pre-run commit; the run has now completed. All numbers:
+`papers/analysis/synthk_refinst2.json` (canonical).
+
+- **P-S2b (second instruction phrasing): CONFIRMED.** The do-not-compare phrasing ("do not
+  compare the candidate's answer to the reference; use the reference only to understand the
+  problem; verify the candidate's answer on its own merits") reproduces the capability-graded
+  pattern with the identical gate ordering. At k=16 (rubric a), ref -> refinst -> refinst2
+  margins: 1.5B +3.58 -> +4.54 -> +4.28 [+2.22, +5.72] (no help, slightly worse under both
+  phrasings); 3B +7.91 -> +7.75 -> +7.91 [+6.69, +8.94] (no effect); 7B +5.01 -> +4.54 ->
+  +4.54 [+4.05, +4.93] (marginal); 14B +3.34 -> +1.21 -> +1.76 [+0.39, +3.33] (substantial);
+  Llama-8B +3.05 -> +2.30 -> +1.77 [+0.97, +2.48] (substantial); phi-4 +1.91 -> +0.03 ->
+  +0.17 [+0.08, +0.30] (near-complete). The gate is therefore not a single-prompt artifact;
+  the residual caveat (both phrasings are single-sentence system-prompt additions) is
+  recorded in the paper's Limitations.
