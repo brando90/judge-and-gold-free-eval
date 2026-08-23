@@ -29,6 +29,12 @@ Code supplies one, and the mechanical-target audit of Section~\ref{sec:pressure}
 Its measured scope limit travels with it: the mechanical target predicted damage well and inflation-resistance only through protocol, so human-labeled nuisance axes remain necessary for the deception side.
 Where no oracle exists, humans grade the target axis, and the divergence-stratum construction (sample where cheap signals disagree) supplies power that random sampling cannot.
 
+A fully mechanical instantiation now exists as well, run after the human audit with expectations stated in the analysis header before execution (\texttt{papers/analysis/mech\_axes\_audit.py}).
+Substituting machine correctness for the target axis and log response length for the nuisance axis, at zero human labels, reproduces the audit's structure on the same thirteen configurations.
+Every honest referenced judge shows a high correctness partial ($+0.56$ to $+0.98$) with a length partial near zero, and both style-loaded evaluators are convicted anyway: the sabotaged frontier judge's correctness partial collapses to $+0.22$ $[-0.13, +0.52]$ while its length partial reaches $-0.74$ $[-0.84, -0.60]$, and the reward model reads $-0.03$ on correctness with $-0.54$ $[-0.70, -0.32]$ on length.
+The stated expectation E1 (honest judges clean) was confirmed and E2 (style convictions would not necessarily transfer to the length axis) was exceeded: style-loading manifests on the mechanical axis as a strong preference for short responses.
+The mechanical axes are coarser instruments (correctness is not soundness, and length is not style), so the human-labeled audit remains the resolution tier, but the procedure itself demonstrably runs end to end without an annotator and already catches both corrupted evaluators.
+
 \paragraph{Tier 3: the pressure test as the axis-agnostic backstop.}
 Any nuisance axis missing from Tiers 1--2 can still be exploited, and the best-of-$n$ experiment is the detector of last resort, run per domain.
 
