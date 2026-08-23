@@ -1,0 +1,54 @@
+{
+ "MATH-500": {
+  "n_models": 15,
+  "n_items": 500,
+  "item_share": 0.896,
+  "boot_ci": [
+   0.881,
+   0.91
+  ],
+  "model_jackknife_range": [
+   0.887,
+   0.913
+  ]
+ },
+ "MATH (full)": {
+  "n_models": 14,
+  "n_items": 600,
+  "item_share": 0.828,
+  "boot_ci": [
+   0.811,
+   0.845
+  ],
+  "model_jackknife_range": [
+   0.818,
+   0.846
+  ]
+ },
+ "Putnam-AXIOM": {
+  "n_models": 14,
+  "n_items": 236,
+  "item_share": 0.917,
+  "boot_ci": [
+   0.898,
+   0.932
+  ],
+  "model_jackknife_range": [
+   0.909,
+   0.937
+  ]
+ },
+ "GSM8K": {
+  "n_models": 11,
+  "n_items": 500,
+  "item_share": 0.828,
+  "boot_ci": [
+   0.807,
+   0.848
+  ],
+  "model_jackknife_range": [
+   0.8,
+   0.883
+  ]
+ }
+}
