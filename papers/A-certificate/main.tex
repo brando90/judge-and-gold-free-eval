@@ -1,0 +1,283 @@
+% Status: DRAFT (Paper A, the flagship). Certificate-first restructure, 2026-08-22.
+% All anchor-set numbers from papers/analysis/canonical_validity.md; head-to-head from
+% papers/analysis/head_to_head.md; BoN numbers from runs/bon_v2_full.json / bon_code_full.json.
+% Pending experiments feed the Next Steps section at the end (remove before submission).
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage{caption}
+\captionsetup{font=small,labelfont=bf}
+
+\title{Certify Before You Optimize:\\ \large A Sixty-Label Audit That Predicts Which LLM Judges Get Gamed}
+\author{Anonymous Authors}
+\date{Draft, August 22, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+% problem
+Anyone about to filter data, rank models, or run best-of-$n$ with an automated evaluator faces the same question: can this judge be trusted?
+% assumption
+Today the answer arrives too late.
+Judges are validated by raw agreement with human labels, deployed, and found gameable only after something optimizes against them, and the field's standard static predictor of downstream failure, benchmark accuracy, is known to predict it poorly.
+% flip
+We show that trust can be measured beforehand.
+% method
+The instrument is a blind audit built on roughly sixty human labels: solutions graded on two separated scales, soundness of reasoning and quality of writing, with a deliberately decorrelated stratum, and the verdict read from two partial correlations.
+% results
+The audit passes an honest frontier judge (soundness partial $+0.90$, style partial $-0.22$), convicts a deliberately style-loaded one (style partial $+0.59$), and flips every open-weights judge from fail to pass when a trusted reference is added.
+Raw agreement cannot do this: the sabotaged frontier judge ($r=+0.35$) is indistinguishable from an honest mid-size judge ($r=+0.37$) under naive validation, yet under best-of-64 selection pressure one damages selections while the other inflates its own scoreboard by $+0.85\sigma$.
+Across 25 judge configurations and two domains, every configuration that failed the audit was gamed on at least one of two pre-registered measures, and every configuration certified in its own domain resisted.
+% implications
+Certification turns evaluator trust from a post-hoc discovery into a pre-registered measurement, at the cost of five to eight annotator-hours per judge, task, and prompt.
+\end{abstract}
+
+\section{Introduction}
+\label{sec:intro}
+
+Automated evaluators now sit inside leaderboards, data filters, reward pipelines, and best-of-$n$ serving.
+The practitioner's question is always the same: will this evaluator measure what I think it measures, and will it keep doing so when something optimizes against it?
+Current practice answers by correlating the judge with human labels, deploying it, and hoping.
+When the answer is no, it is discovered in the worst way: scores go up, quality does not, and the evaluator has been reward-hacked~\cite{gao2022scaling,skalse2022defining}.
+
+Two assumptions prop up this workflow.
+The first is that raw human agreement is an adequate validation.
+The second is that nothing better is available, so gaming can only be characterized after the fact.
+Recent work has already damaged the first assumption from one side: benchmark accuracy, the standard static measure of reward-model quality, predicts downstream optimization outcomes poorly~\cite{wen2024rethinking}.
+We damage it from the other side, and replace it.
+
+This paper contributes a \emph{certificate}: a pre-deployment audit that measures what an evaluator reads, using roughly sixty blind human labels, and whose verdict predicted gaming outcomes under selection pressure in every configuration certified in its own domain.
+Four things make the audit work, and each is a departure from raw-agreement validation.
+Humans grade on two separated scales, soundness and style, because a single quality number makes style-loading unmeasurable in principle.
+A deliberately decorrelated stratum supplies the statistical power that random data cannot, since soundness and style correlate at $+0.82$ in the wild.
+The verdict is a pair of partial correlations, not an agreement rate.
+And a sabotaged judge serves as a positive control, evidence the instrument can convict and not merely bless.
+
+The audit is cheap because evaluator failure is mechanistic.
+In companion work we show that every signal which \emph{compares} a solution to a reference text fails to grade it, because most of such a signal's variance is a property of the reference; teacher-forced accuracy, the sharpest comparison signal, is $80\%$ reference perplexity~\cite{companionB}.
+Signals that \emph{verify} against something checkable do grade.
+An LLM judge sits on one side or the other depending on protocol and scale, and the audit detects which (Figure~\ref{fig:concept}).
+Because there is one dominant failure axis, a small instrument aimed at it catches the failures that matter.
+
+We validate the certificate the only way a predictive claim can be validated: by registering predictions and applying pressure.
+A 7B generator writes 64 candidates per problem; each of 25 judge configurations selects its favorite; two pre-registered estimands separate scoreboard inflation from real accuracy loss.
+Every configuration that failed the audit was gamed.
+Every configuration certified in-domain resisted.
+The single cross-domain exception, a 1.5B judge whose reference is a test suite it cannot execute, is predicted by the mechanism and yields the paper's sharpest operational lesson: certification is a property of a judge, task, and prompt triple, and must be measured where the judge will be used.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{figs/fig0_concept.png}
+\caption{\textbf{Why a sixty-label audit can predict gaming.}
+Comparison-shaped evaluators reward resemblance to a reference, so their scores load on style and reference predictability; verification-shaped evaluators check the solution against something trusted.
+The audit (bottom) reads which mechanism a judge uses from two partial correlations, and the verdict predicts behavior under optimization pressure (Section~\ref{sec:pressure}).}
+\label{fig:concept}
+\end{figure}
+
+\section{Setup}
+\label{sec:setup}
+
+\paragraph{Evaluators.}
+Open-weights judges (Qwen2.5 1.5B, 3B, 7B, 14B), each deployed blind and with the gold reference in context; GPT-5.2 as the frontier judge; the same frontier model prompted to reward presentation as the sabotaged positive control; Claude Opus as a blind cross-family panel.
+A trained reward model baseline (Skywork-Reward-Llama-3.1-8B) is being added under registered predictions [pending; Next Steps].
+
+\paragraph{Human labels.}
+A uniformly random 60-item sample of \textsc{MATH-500} solutions from seventeen models, graded blind by one annotator on two 0--10 scales with written anchors: \emph{soundness} (is every step valid; ignore the writing) and \emph{style} (is it clear and well-organized; ignore correctness).
+A divergence-selected block, where soundness and style decorrelate ($+0.82 \to +0.31$), graded by two annotators (inter-rater soundness $\rho = 0.79$, style $0.55$).
+Every signal-versus-human number in this paper comes from one canonical analysis script over these labels; legacy values from earlier heterogeneous scripts are superseded.
+
+\paragraph{Pre-registration.}
+The pressure experiment's analysis code and directional predictions were committed to the repository before generation; the sabotage control, ladder, and reference-flip predictions were registered in an earlier draft before those results landed.
+
+\section{The audit}
+\label{sec:audit}
+
+\paragraph{Protocol.}
+Score the judge's outputs against the human labels and read two numbers: the partial correlation with soundness holding style fixed, and the partial correlation with style holding soundness fixed.
+A substance-reading judge shows the first high and the second near zero.
+A style-loaded judge shows the reverse.
+Two auxiliary checks complete the instrument: the within-correct test (among solutions whose final answer is right, does the judge separate sound from lucky reasoning, run on the decorrelated stratum where range restriction does not bind), and the human-human ceiling from the shared block, which bounds what any signal can be credited with.
+
+\paragraph{The audit passes, convicts, and flips.}
+The honest frontier judge passes: soundness partial $+0.90$, style partial $-0.22$ (canonical, $n{=}60$); on the decorrelated stratum with two-rater consensus, $+0.86$ and $-0.06$; within correct-answer solutions it still tracks soundness at $+0.81$.
+The sabotaged judge is convicted: style partial $+0.59$, soundness partial $+0.20$, on the same items.
+And the verdict is not fixed by model identity: every open-weights judge fails blind (the 1.5B reads style, partial $+0.51$; the larger ones are too weak) and every one passes with the gold solution in context.
+A reference changes what a judge measures, not merely how accurately it measures.
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lccccc}
+\toprule
+& & \multicolumn{1}{c}{naive} & \multicolumn{2}{c}{audit} & pressure outcome \\
+configuration & $n$ & raw $r$ & sound.\ partial & style partial & gap / regret \\
+\midrule
+1.5B blind & 53 & $+0.18$ & $-0.00$ & $+0.51$ & $+0.88$ / $0.448$ \\
+3B blind & 60 & $+0.24$ & $+0.19$ & $+0.16$ & $+0.44$ / $0.429$ \\
+7B blind & 60 & $+0.33$ & $+0.32$ & $-0.02$ & $+0.80$ / $0.324$ \\
+14B blind & 60 & $+0.37$ & $+0.41$ & $-0.21$ & $+0.63$ / $0.324$ \\
+\midrule
+1.5B referenced & 56 & $+0.55$ & $+0.51$ & $+0.10$ & $+0.16$ / $\mathbf{0.010}$ \\
+3B referenced & 60 & $+0.55$ & $+0.53$ & $-0.02$ & $+0.07$ / $0.038$ \\
+7B referenced & 60 & $+0.66$ & $+0.66$ & $-0.12$ & $+0.18$ / $0.019$ \\
+14B referenced & 60 & $+0.70$ & $+0.70$ & $-0.11$ & $+0.05$ / $0.048$ \\
+\midrule
+GPT-5.2 honest & 60 & $+0.89$ & $+0.90$ & $-0.22$ & $+0.38$ / $0.117$ \\
+GPT-5.2 sabotaged & 60 & $+0.35$ & $+0.20$ & $\mathbf{+0.59}$ & $+0.85$ / $0.133$ \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{Naive validation versus the audit, against pressure outcomes (math).}
+Naive raw agreement ranks the ladder but cannot diagnose: the sabotaged frontier judge ($+0.35$) is indistinguishable from the honest blind 14B ($+0.37$), yet one inflates its scoreboard ($+0.85\sigma$, regret $0.133$) and the other damages selections (gap $+0.63$, regret $0.324$).
+The style partial separates them ($+0.59$ vs.\ $-0.21$) and identifies the failure mode in advance.
+Naive thresholds are also unprincipled ex ante; the audit's verdict is anchored to the sign and axis of the partials.}
+\label{tab:h2h}
+\end{table}
+
+\paragraph{Head-to-head: what raw agreement misses.}
+Table~\ref{tab:h2h} runs standard validation and the audit side by side on identical labels, with the pressure outcomes each would need to predict.
+Raw agreement is not useless: referenced judges score higher than blind ones.
+It fails in the two ways that matter.
+It conflates weak-honest with capable-corrupt, the exact distinction that determines the failure mode under pressure.
+And it offers no principled threshold: the value separating the clusters here ($\sim$$0.45$) is knowable only after the outcomes it is supposed to predict.
+The audit's verdict is anchored before deployment: a positive style partial convicts, a near-zero soundness partial fails, and each failure type maps to a distinct predicted behavior.
+
+\paragraph{When a reference helps.}
+On a planted-error detection task (known-correct solutions mechanically corrupted, every corruption verified), the ladder detects $3/17/49/75\%$ of errors blind and $21/85/85/90\%$ with the gold reference; the 3B jump replicates in six model families ($+14$ to $+60$ points).
+Producing a reference is the hard part, not using one: a judge that first solves the problem and then grades against its own solution detects $59/60/85/95\%$, above gold at 1.5B and 14B, matching at 7B, trailing at 3B.
+Part of small-judge weakness is protocol, not capability.
+
+\paragraph{When a reference hurts.}
+On tasks with many valid answers, any reference, whoever wrote it, costs $7$--$8$ points of verdict accuracy (paired, $p \le .0005$): the judge anchors on one valid alternative and penalizes the rest.
+A reference converts a judge into a verifier only when the task's answer is effectively unique and checking against the reference is within the judge's capability.
+Both conditions are measurable before deployment, and Section~\ref{sec:pressure} shows the second one binding.
+
+\section{The certificate under pressure}
+\label{sec:pressure}
+
+A static audit earns its keep only if it predicts dynamic behavior.
+The experiment: a 7B generator writes 64 candidates per problem, each judge configuration picks its favorite, and we check what happened.
+Two pre-registered estimands separate deception from damage.
+The \emph{excess hack gap} measures scoreboard inflation relative to true quality, in baseline standard deviations over a within-oracle-stratum permutation null.
+\emph{Oracle regret} measures accuracy left on the table against best-possible selection.
+Selection and reporting use different rubric paraphrases, canceling winner's curse; item pools are 105 in-band \textsc{MATH-500} and 68 in-band \textsc{MBPP+} items; analysis scripts were committed before generation.
+
+\paragraph{The certificate predicts, in-domain.}
+Every configuration that failed the audit is gamed on at least one estimand: blind configurations lose $32$--$54\%$ of achievable accuracy with gaps to $+1.45\sigma$; sabotaged configurations fail in one of two modes below.
+Every configuration certified on math resists on math: twelve of twelve, with the reference collapsing inflation $4$--$13\times$ and regret $7$--$45\times$ (paired contrasts exclude zero; Appendix~\ref{app:cis}).
+
+\paragraph{And it is domain-specific.}
+On code, protocol-inferred verdicts predict twelve of thirteen configurations.
+The exception is the referenced 1.5B judge, gamed as badly as its blind twin, because its reference is a test suite it cannot mentally execute (Figure~\ref{fig:gate}).
+The same 1.5B judge, referenced, was the \emph{best} selector on math (regret $0.010$, beating GPT-5.2's $0.117$).
+Using a reference means comparing text on math and executing tests on code, and the capability gate sits exactly there.
+Operationally: a judge certified on math is not thereby certified on code; run the audit where the judge will be used.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.9\textwidth]{figs/fig3_gate.png}
+\caption{\textbf{The capability gate.}
+Excess hack gap without (orange) and with (blue) a trusted reference.
+On math the reference collapses inflation at every scale; on code the lever works only at 3B and above, and the frontier judge needs it only for scoreboard honesty.}
+\label{fig:gate}
+\end{figure}
+
+\paragraph{Two failure modes, and capability trades one for the other.}
+Across the sabotage ladder, damage falls and self-inflation rises with judge capability.
+The 7B sabotaged judge damages without inflating (regret $0.400$, gap $+0.13$ ns).
+Sabotaged GPT-5.2 inflates without damaging (gap $+0.85$, regret $0.133$; on code $+0.61$ and $0.241$).
+A blind cross-family panel confirms the channel: sabotage-selected solutions are more styled ($+0.27$ $[0.10, 0.44]$) with no detectable soundness loss.
+The frontier mode, deceiving the metric while selecting well, is the one that menaces training, since a policy optimized against it would internalize style.
+
+\paragraph{Granularity beats scale once a reference is in hand.}
+The 1.5B referenced judge outselects GPT-5.2 on math because the frontier's 0--10 scale ties $78\%$ of items at the top and random tie-breaks admit wrong answers, while the small judge's continuous expected scores stay sharp.
+Selecting judges should elicit fine-grained scores.
+
+\section{Design rules}
+\label{sec:rules}
+
+\begin{enumerate}
+\item \textbf{Audit before you optimize, in the deployment domain.}
+Sixty blind labels on two separated scales, a decorrelated stratum, and two partial correlations; the verdict predicted gaming in every in-domain configuration.
+\item \textbf{Do not substitute raw agreement.}
+It ranks but cannot diagnose, and its thresholds are unprincipled ex ante (Table~\ref{tab:h2h}).
+\item \textbf{Give a judge a reference only when the answer is unique and the judge can use it.}
+On multi-valid-answer tasks any reference anchors the judge against valid alternatives; on verification-heavy references (test suites) small judges gain nothing.
+\item \textbf{Treat the audit as a screen for its instrumented axes.}
+Style is the dominant documented nuisance axis; length, format, and duplication were causally probed and cleared for these judges, and position bias is measurable label-free by order-swap.
+A nuisance axis orthogonal to all of these could evade the audit; the pressure test is the axis-agnostic backstop.
+\item \textbf{Audit the oracle before the evaluator.}
+Apparent evaluator failures in our own data dissolved, on adjudication, into benchmark label errors and scorer bugs~\cite{companionC}.
+\end{enumerate}
+
+\section{Discussion and limitations}
+\label{sec:limits}
+
+Three things bound the claim.
+First, the human anchor is sixty items from one annotator who is an author; a second rater and an external annotator are in progress, and every headline number is provisional until they land.
+The shared-block ceiling (soundness $0.79$) bounds all correlations from above.
+Second, ``predicts gaming'' currently means selection pressure.
+Training against a convicted judge is the harder test, and the frontier failure mode is precisely the case where selection experiments understate risk; a DPO validation is registered as future work.
+Third, the audit was measured in-domain only on math; the code verdicts were protocol-inferred, and the paper's own lesson is that this shortcut has a failure mode.
+The audit also certifies prompted judges; whether the same instrument transfers to trained reward models is under test [pending].
+Sixty is the label count that sufficed here, not a derived minimum; a subsampling analysis is registered to chart verdict stability against label count.
+
+\section{Related work}
+\label{sec:related}
+
+The closest question is whether any static measure predicts downstream optimization failure; benchmark accuracy does not~\cite{wen2024rethinking}, and our contribution is a static measure that did, with the construct-validity design explaining why.
+Active auditing trains attackers against a frozen reward model~\cite{beigi2026ara}; the certificate is complementary: black-box, sixty labels, no attacker.
+Judge reliability audits measure consistency and bias robustness~\cite{judgechanges2026,zheng2023judging}; validity against decorrelated human axes, with a positive control, is the missing piece we add.
+Style-over-substance biases are documented in general pools~\cite{wu2023style,dubois2024length,singhal2023long}; the audit measures the loading for a particular judge, task, and prompt.
+References are known to improve judge accuracy~\cite{refguided2024,smalljudges2025}; we show they flip audit \emph{validity}, that the effect is capability-gated, and that on multi-valid tasks any reference harms~\cite{generous2026,dobefore2025}.
+Reward hacking and overoptimization are characterized post-hoc~\cite{gao2022scaling,skalse2022defining,coste2023ensembles,eisenstein2023helping,selfplay2026}; the certificate is ex-ante.
+
+\section*{Next steps (internal; remove before submission)}
+\begin{enumerate}
+\item Trained RM baseline: Skywork-8B audit + BoN grids (registered; running).
+\item Multi-valid BoN grid (registered; running) and its P-T2 anchoring-margin analysis.
+\item Second rater + external annotator; recompute canonical numbers on consensus labels.
+\item In-domain code audit using the code labeling instrument; second math dataset.
+\item Raw-agreement head-to-head: add bootstrap CIs per cell; add RM row.
+\item Tie-handling ablation (frontier judge, 0--100 scale).
+\item Second BoN generator (14B) on math.
+\item Label-count subsampling curve for the audit verdict.
+\item Order-swap flip-rate as a zero-label pre-screen; test whether it predicts audit verdicts.
+\item DPO validation: train against one certified and one convicted judge.
+\item Statistics: n=4 sign-test floor stated, multiple-comparisons note, realized-pressure quantification.
+\item Citations: resolve companion references and remaining benchmark cites.
+\end{enumerate}
+
+\begin{thebibliography}{20}
+\small
+\bibitem{wen2024rethinking} X.~Wen et al. Rethinking Reward Model Evaluation: Are We Barking up the Wrong Tree? arXiv:2410.05584, 2024.
+\bibitem{beigi2026ara} M.~Beigi et al. Adversarial Reward Auditing for Active Detection and Mitigation of Reward Hacking. arXiv:2602.01750, 2026.
+\bibitem{judgechanges2026} When the Judge Changes, So Does the Measurement: Auditing LLM-as-Judge Reliability. arXiv:2607.08535, 2026.
+\bibitem{zheng2023judging} L.~Zheng et al. Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena. arXiv:2306.05685, 2023.
+\bibitem{wu2023style} M.~Wu and A.~F.~Aji. Style Over Substance: Evaluation Biases for Large Language Models. arXiv:2307.03025, 2023.
+\bibitem{dubois2024length} Y.~Dubois et al. Length-Controlled AlpacaEval. arXiv:2404.04475, 2024.
+\bibitem{singhal2023long} P.~Singhal et al. A Long Way to Go: Investigating Length Correlations in RLHF. arXiv:2310.03716, 2023.
+\bibitem{refguided2024} Reference-Guided Verdict: LLMs-as-Judges in Automatic Evaluation of Free-Form QA. arXiv:2408.09235, 2024.
+\bibitem{smalljudges2025} Thinking Small Models are Efficient LLM Judges. arXiv:2509.13332, 2025.
+\bibitem{generous2026} LLM Judges Can Be Too Generous When There Is No Reference Answer. arXiv:2607.12885, 2026.
+\bibitem{dobefore2025} Do Before You Judge: Self-Reference as a Pathway to Better LLM Evaluation. arXiv:2509.19880, 2025.
+\bibitem{gao2022scaling} L.~Gao, J.~Schulman, J.~Hilton. Scaling Laws for Reward Model Overoptimization. arXiv:2210.10760, 2022.
+\bibitem{skalse2022defining} J.~Skalse et al. Defining and Characterizing Reward Hacking. arXiv:2209.13085, 2022.
+\bibitem{coste2023ensembles} T.~Coste et al. Reward Model Ensembles Help Mitigate Overoptimization. arXiv:2310.02743, 2023.
+\bibitem{eisenstein2023helping} J.~Eisenstein et al. Helping or Herding? arXiv:2312.09244, 2023.
+\bibitem{selfplay2026} More Convincing, Not More Correct: Self-Play Reward Hacking of Reference-Free LLM Judges. arXiv:2607.05904, 2026.
+\bibitem{companionB} Anonymous. What Does Matching a Reference Actually Measure? Companion draft, 2026.
+\bibitem{companionC} Anonymous. An Unsupervised Miner for Benchmark Label Bugs. Companion draft, 2026.
+\end{thebibliography}
+
+\appendix
+\section{Paired-contrast confidence intervals}
+\label{app:cis}
+Per-size paired contrasts of the excess hack gap, blind minus referenced, per-item bootstrap 95\% intervals: math $+0.72$ $[+0.57,+0.86]$, $+0.37$ $[+0.24,+0.51]$, $+0.62$ $[+0.48,+0.76]$, $+0.57$ $[+0.36,+0.78]$ (1.5B/3B/7B/14B, $n{=}105$); code $+0.05$ $[-0.29,+0.40]$, $+0.63$ $[+0.44,+0.83]$, $+0.56$ $[+0.32,+0.81]$, $+0.67$ $[+0.41,+0.95]$ ($n{=}68$).
+The code 1.5B null is the capability gate.
+
+\end{document}
