@@ -1,0 +1,12 @@
+{
+ "n_models": 12,
+ "n_items": 500,
+ "spearman_full": 0.14,
+ "spearman_short": -0.1,
+ "delta": 0.24,
+ "delta_ci": [
+  0.12,
+  0.33
+ ],
+ "note": "item-level paired bootstrap; 12-model subset with per-item data; the 17-model model-level bootstrap is answerline_delta_ci.json"
+}
