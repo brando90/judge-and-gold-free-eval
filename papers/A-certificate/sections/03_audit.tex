@@ -18,7 +18,8 @@ The sabotaged judge is convicted (style partial $+0.59$).
 And the audit convicts an evaluator class it was not designed around: the Skywork reward model scores the same traces with the sabotaged judge's signature (style partial $+0.54$, soundness partial $-0.01$), where naive validation ($r = +0.18$) would report only weakness.
 
 Under pressure the reward model shows the damage this verdict predicts.
-Its math regret ($0.286$) is intermediate: worse than every certified referenced judge, better than every failed blind one, and its code regret ($0.485$) sits in the same intermediate position.
+Its math regret ($0.286$) is intermediate: worse than every certified referenced judge, better than every failed blind one.
+Its code regret ($0.485$) is not intermediate: it sits inside the failed-blind code cluster ($0.368$--$0.544$), worse than three of the four blind code judges, which makes the conviction more damning, not less.
 Measuring its scoreboard inflation needs care, because a single scoring function cannot supply the independent selection and reporting replicates the inflation estimand requires; the paraphrase-replicate protocol of Section~\ref{sec:limits} supplies them.
 The registered prediction that the convicted reward model would out-inflate the certified referenced tier is confirmed: its inflation is $+1.46\sigma$ (Table~\ref{tab:h2h}; ledger row P-R1).
 That value is the largest in the table, but its replicate is candidate-side rather than rubric-side, so cross-configuration magnitude comparisons carry an estimand caveat and the clean statement is that it exceeds every certified configuration under the registered prediction.
@@ -27,7 +28,7 @@ The number carries a dual reading --- true winner's-curse inflation, or score mo
 Two robustness checks back the convictions; their per-cell values are in Table~\ref{tab:robust}.
 First, length: the reward model strongly prefers short responses (length partial $-0.54$), so part of its style conviction could be a length preference in disguise.
 A three-variable partial answers directly: with soundness and length both controlled, the reward model's style partial moves only from $+0.54$ to $+0.42$, the sabotaged frontier's shifts similarly, and the honest frontier stays clean --- the convictions are genuinely style.
-Second, the annotator: a hypothesis-blind non-author regraded a 30-item subset under the same rubric, and on those labels the honest pass and both convictions reproduce (the sabotage conviction is in fact stronger on the blind rater's labels than on the author's).
+Second, the annotator: a hypothesis-blind non-author regraded a 30-item subset under the same rubric, and on those labels alone the honest pass and the sabotage conviction reproduce significantly (the sabotage conviction is in fact stronger on the blind rater's labels than on the author's), while the reward-model conviction reproduces in sign ($+0.40$ $[-0.02, +0.70]$) and reaches significance on two-rater consensus ($+0.48$ $[+0.02, +0.73]$).
 Style is also the noisier of the two axes, and label noise attenuates rather than inflates a partial correlation, so the measured convictions understate the true style loading (Section~\ref{sec:limits}).
 
 The verdict tracks protocol, not model identity.
@@ -73,7 +74,7 @@ The conviction rule is a single pre-declared sign condition per configuration, n
 
 \paragraph{Verdict stability.}
 Convictions and strong passes stabilize with the fewest labels; boundary verdicts are the expensive ones.
-At 40 labels, the sabotage conviction and the honest frontier pass reproduce in every label resample, while boundary configurations (the referenced 1.5B pass, the false blind-14B pass) remain unstable at 50 labels and below (Figure~\ref{fig:stability}; Appendix~\ref{app:subsample}).
+At 40 labels, the sabotage conviction and the honest frontier pass reproduce in every label resample; the boundary configurations differ from each other, the referenced-1.5B pass stabilizing by 50 labels ($0.94$ of resamples at $n{=}50$) while the false blind-14B pass is still unstable there ($0.59$ at $n{=}50$), reproducing only at the full label set (Figure~\ref{fig:stability}; Appendix~\ref{app:subsample}).
 A few dozen labels certify clear cases; boundary verdicts honestly demand more.
 
 \begin{figure}[t]

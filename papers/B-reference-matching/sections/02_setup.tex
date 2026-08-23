@@ -42,3 +42,4 @@ Six directional predictions were pre-registered: analysis scripts and prediction
 
 \paragraph{Reproducibility.}
 Every number in this paper is produced by committed analysis scripts in the released repository, which also ships the scores, labels, per-token hit vectors, decomposition outputs, labeling instruments with returned labels, and the pre-registered predictions; all anchor-set numbers come from a single canonical analysis script, and the figures regenerate from the released artifacts.
+Bootstrap intervals are computed with fixed seeds committed alongside the scripts, and independently seeded runs of the same estimator can differ in the last quoted digit; where two such runs are quoted, as with the phi-4 completer interval ($[+0.68, +0.91]$ full-set, $[+0.68, +0.92]$ matched-set), each figure is labeled with its run (Appendix~\ref{app:completer}).

@@ -26,14 +26,15 @@ Under the revised rule the blind 14B returns insufficient evidence rather than p
 Two threshold-adjacent referenced judges (1.5B and 3B) whose intervals also straddle the bar become abstentions, even though both behaved well under pressure (regrets $0.010$ and $0.038$, the first- and third-lowest observed).
 The revised rule's retrospective record is eight predictions, eight correct, three abstentions (per-configuration intervals in Table~\ref{tab:robust}); the revision trades coverage for safety and is frozen for the registered Putnam replication.
 
-On inflation, the failed-or-convicted cluster (minimum $+0.44\sigma$) sits above the certified cluster (maximum $+0.38\sigma$).
+On inflation, over the registered eleven, the failed-or-convicted cluster (minimum $+0.44\sigma$) sits above the correctly certified cluster (maximum $+0.38\sigma$).
+That statement names its exclusions: the blind-14B pass (inflation $+0.63$, regret $0.324$) is excluded as the disclosed false pass, and the late-scored sabotaged 7B sits on the fail side with an inflation ($+0.13$, not significant) below the cluster minimum, its fail carried by regret.
 That is a cluster-level statement, not eleven pairwise separations: the one boundary pair (blind 3B against the honest frontier's own elevated inflation) is not statistically separable, while the informative contrasts --- sabotaged versus honest frontier, blind versus referenced, false pass versus honest --- all separate (paired contrasts with intervals in Table~\ref{tab:robust}).
 The sabotaged frontier's inflation ($+0.85$) is disjoint from the honest frontier's ($+0.38$).
-The convicted reward model completes the picture: its inflation ($+1.46\sigma$, the largest measured; ledger row P-R1) and its regret ($0.286$) both separate from every certified configuration (certified maxima $+0.38$ and $0.117$).
-Every registered conviction now shows measured inflation, and no certified configuration approaches the convicted cluster on either estimand.
+The convicted reward model completes the picture: its inflation ($+1.46\sigma$, the largest measured; ledger row P-R1) and its regret ($0.286$) both separate from every correctly certified configuration (their maxima $+0.38$ and $0.117$).
+Every registered conviction now shows measured inflation, and no correctly certified configuration approaches the convicted cluster on either estimand.
 Of the two late-scored sabotaged-ladder rows, the 14B fails on both estimands while the 7B damages without inflating (regret $0.400$ carries its fail).
 
-On regret, every failed configuration (minimum $0.32$) exceeds every certified one (maximum $0.12$) --- but the sabotaged frontier does not separate: its regret is statistically indistinguishable from the honest frontier's (paired difference in Table~\ref{tab:robust}).
+On regret, every failed configuration (minimum $0.32$) exceeds every correctly certified one (maximum $0.12$) --- but the sabotaged frontier does not separate: its regret is statistically indistinguishable from the honest frontier's (paired difference in Table~\ref{tab:robust}).
 That asymmetry is itself a finding: a style-loaded frontier judge corrupts the scoreboard without measurably corrupting selection at this pressure, which is exactly the failure a naive accuracy check cannot see.
 The in-domain pattern also survives a generator-family change: on a Llama-generated pool the blind-versus-referenced separation replicates at every ladder size (Section~\ref{sec:limits}; Table~\ref{tab:robust}).
 Beyond the frozen categorical rule we do not claim a pre-frozen numeric threshold; the full 25-configuration accounting is in Appendix~\ref{app:confusion}.
@@ -56,7 +57,7 @@ Failed configurations generally steepen (the blind 3B's code gap runs $+0.64 \to
 \paragraph{Cross-domain transfer, and an in-domain audit with a mechanical target axis.}
 The audit generalizes beyond human labels wherever the target axis has an oracle, and code supplies one: executed tests.
 We audited every code configuration by the within-item correlation of its scores with test outcomes, no human labels involved.
-Two accounting caveats apply: code verdict predictions were not registered, so this scoring is post hoc, and the two sabotaged code ladder cells remain unaudited under the paper's exclusion policy, leaving eleven eligible configurations.
+Two accounting caveats apply: code verdict predictions were not registered, so this scoring is post hoc, and the two sabotaged code ladder cells remain unaudited under the paper's exclusion policy, leaving eleven eligible configurations (the reward model's code cell is scored the same way but accounted separately in Appendix~\ref{app:confusion}).
 The extrapolated verdicts match the pressure outcome in ten of those eleven, and the measured rows explain the single miss directly: the 1.5B judge's reference adds nothing to its target-axis validity on code ($+0.15$ blind, $+0.16$ referenced) --- the capability gate measured rather than inferred --- and that configuration is gamed as badly as its blind twin (Figure~\ref{fig:gate}).
 The frontier tier separates cleanly ($+0.52$ blind, $+0.62$ referenced), and sabotage measurably degrades target validity even against a mechanical target ($+0.62 \to +0.42$).
 One honest nuance: the 3B judge shows equal target validity blind and referenced ($+0.10$) yet resists inflation only when referenced, so the mechanical-target audit predicts damage well but inflation resistance only through the reference protocol; human-labeled axes remain necessary for the deception side.

@@ -59,8 +59,10 @@ The certified statement is the item-level paired bootstrap on the twelve models 
 The item-level bootstrap conditions on the fixed twelve models, so its interval captures item-sampling uncertainty only, not model-sampling uncertainty; we read the intervention as confirmed on the paired subset and directionally supported on the full set, which agrees in sign.
 One alternative reading required a control: answer-line references are far shorter than worked references, so the collapse could partly reflect variance compression from scoring fewer tokens rather than loss of information content.
 The registered length-matched uninformative-reference control (P-L1; Table~\ref{tab:ledger}) separates these readings, and it has run and landed as predicted: each worked reference is replaced by a fixed content-free boilerplate paragraph, identical across items and length-matched to the mean worked reference, followed by the same answer line.
-The padded reference keeps per-token predictability high for every model, with a mean \tfa{} of $0.46$ across the same seventeen models, yet it ranks models no better than chance, a Spearman of $-0.11$ $[-0.57, +0.35]$ against benchmark accuracy versus $+0.35$ for the worked references.
-Length matching does not restore the signal, so the collapse tracks informativeness, not token count, and the variance-compression alternative is excluded by a run control.
+The padded reference keeps per-token predictability high for every model, with a mean \tfa{} of $0.46$ across the same seventeen models, yet it ranks models no better than chance.
+The certified statement is again item-level: on the twelve-model per-item subset the worked references rank at $+0.14$ and the padded references at $-0.27$ over the same 500 items, a paired worked-minus-padded delta of $+0.41$ $[+0.35, +0.46]$, which excludes zero decisively.
+The seventeen-model model-level contrast agrees in sign, a padded-reference Spearman of $-0.11$ $[-0.57, +0.35]$ versus $+0.35$ for the worked references, but that interval is wide at seventeen models, so we report it as a point contrast only (both levels in Table~\ref{tab:robust}).
+Length matching does not restore the signal, so the collapse tracks informativeness, not token count, and the variance-compression alternative is excluded by the certified item-level paired delta rather than by the model-level comparison alone.
 The intervention's mechanistic reading therefore stands, and the position-weighting convergence to the answer-line null (Section~\ref{sec:slate}) is consistent with it, though that sweep also shortens the effective scored span.
 Predicting a long, information-dense reference requires skill adjacent to solving the problem.
 Predicting a formulaic one requires nothing, leaving only style.
@@ -147,16 +149,17 @@ entropy-normalized \tfa{} & matching & null & ranking $+0.13 \to -0.17$; item-le
 answer-swap check & verification & carries signal & positive in 8/9 models, mean $+0.13$ & hit \\
 completion curve & verification & carries signal & $+0.79$ vs.\ human soundness & hit \\
 completer strength (P-C1) & verification & middle band; washout at 1.5B & flat $+0.78$--$+0.88$, 1.5B--32B & falsified \\
-length-matched control (P-L1) & matching & ranking stays collapsed & padded-reference ranking $-0.11$ vs.\ $+0.35$ worked & hit \\
+length-matched control (P-L1) & matching & ranking stays collapsed & item-level paired delta $+0.41$ $[+0.35,+0.46]$ (worked $-$ padded) & hit \\
 \bottomrule
 \end{tabular}%
 }
 \caption{\textbf{The prediction ledger: four of six registered predictions landed as called, with one sign flip and one falsification on record.}
 Each row is one pre-registered directional prediction, committed to the repository before its data were generated, with its outcome and verdict.
 The position-weighted register predicted a null, and the observed $-0.37$ at last-four tokens is a sign flip, so that register was directionally wrong, not confirmed.
-The completer-strength register (P-C1) predicted that curve validity would require a middle band of completer strength; the flat outcome falsifies the register while corroborating the free-bit mechanism (Section~\ref{sec:verify}).
+The completer-strength register (P-C1) predicted a middle band of completer strength in three legs: washout at 1.5B, gains through 7B, little at 32B.
+The washout-at-1.5B leg is decisively falsified, since the 1.5B completer already reaches $+0.78$; the gains-through-7B and little-at-32B legs are point-wise compatible with the observed ordering but flat within overlapping CIs, so the register as a whole is falsified while corroborating the free-bit mechanism (Section~\ref{sec:verify}).
 The class-level divide, verification signals carrying signal where matching carries none, was called in advance, but the register did not anticipate that the free bit would top the class.
-Two notes: seven earlier reweighting variants (IDF, surprisal, masking, \dots) predate the registration protocol and all came out $\le 0$; the length-matched uninformative-reference control (P-L1) ran after its prediction was committed and landed as predicted, with the result in Section~\ref{sec:mechanism} and its endpoints in Table~\ref{tab:robust}.}
+Two notes: seven earlier reweighting variants (IDF, surprisal, masking, \dots) predate the registration protocol and all came out $\le 0$; the length-matched uninformative-reference control (P-L1) ran after its prediction was committed and landed as predicted, with the certified item-level paired delta in Section~\ref{sec:mechanism} and both evidence levels in Table~\ref{tab:robust}.}
 \label{tab:ledger}
 \end{table}
 
@@ -191,8 +194,8 @@ The bit costs nothing wherever the gold final answer is extractable and matchabl
 
 The completion curve is the strongest verification signal we built, and it does not beat the free bit either.
 Its Pearson correlation with soundness rises with truncation depth, from a pure difficulty probe at $k{=}0$ to $+0.78$ at $k{=}0.75$; the full depth profile is in Table~\ref{tab:robust} and Figure~\ref{fig:sweeps} (right).
-The curve mean reaches $+0.79$, statistically indistinguishable from, and slightly below, the free bit's $+0.92$.
-The partial correlations settle what the curve adds: the curve's partial correlation with soundness given the free bit is $-0.10$, nothing, while the bit's partial given the curve retains $+0.77$.
+The curve mean reaches $+0.79$, and the free bit at $+0.92$ sits significantly above it: a paired bootstrap of the correlation difference on the same 60 anchor items gives a bit-minus-curve delta of $+0.13$ $[+0.05, +0.24]$, excluding zero (Table~\ref{tab:robust}).
+The paired test agrees with the partial correlations, which settle what the curve adds: the curve's partial correlation with soundness given the free bit is $-0.10$, nothing, while the bit's partial given the curve retains $+0.77$.
 On this anchor set the curve therefore adds no measurable grading signal over the free bit.
 The honest reading is that the completion curve is a noisy proxy for the free bit wherever the gold final answer is extractable; its residual use case is settings where a final answer cannot be extracted or matched, such as free-form proofs, and that use case is untested here.
 Two qualifications on the profile: the monotone rise holds in Pearson only, since the Spearman profile is non-monotone (Table~\ref{tab:robust}), and controlling for difficulty via the $k{=}0$ arm leaves the prefix's added completability at $+0.69$, a partial that controls for the completer's base rate on the problem but not for the solution's correctness, so it does not rescue a beyond-correctness claim.
@@ -206,6 +209,8 @@ The curve's costs are real: thirty-two completions per solution, eight at each o
 The completer's strength, by contrast, barely matters, and this falsified a registered prediction.
 We had expected a middle band of completer strength to be required, since a completer too weak cannot finish sound work and one too strong rescues broken work, and we registered that expectation as P-C1: washout at 1.5B, gains through 7B, little at 32B.
 The completed sweep falsifies it: across Qwen2.5 completers from 1.5B to 32B the curve's validity is flat, $+0.78$ to $+0.88$, even as completer base solve rates rise sharply, and the within-correct curve mean stays null at every size (full ladder in Appendix~\ref{app:completer}, Table~\ref{tab:robust}).
+The largest within-correct value in the sweep, the 7B completer's $+0.23$, sits at $n{=}32$, where a Fisher-order interval has half-width of roughly $\pm 0.35$, so it is noise-compatible and we do not read a 7B peak (Appendix~\ref{app:completer}).
+The falsification is precise about which leg failed: the washout-at-1.5B leg is decisively falsified, while the gains-through-7B and little-at-32B legs are point-wise compatible with the observed ordering but flat within overlapping CIs (Table~\ref{tab:ledger}).
 This is a miss for the register and a win for the mechanism, and both statements stand.
 The middle-band prediction assumed the curve performs graded process evaluation, which should depend on completer strength; the within-correct nulls say it does not.
 On the free-bit reading, any completer strong enough to complete correct reasoning from a sound prefix yields the same correctness signal, and flatness in completer strength is exactly what that reading predicts.
@@ -214,7 +219,8 @@ The within-correct view agrees with the partials.
 Among correct-only solutions the curve mean sits at $+0.07$, with the $k{=}0.75$ point at $+0.19$, both inside wide zero-straddling intervals (Table~\ref{tab:citwin}); the phi-4 completer reproduces the pattern at $+0.02$, so the correctness-mediation reading is not a completer-family artifact either.
 The certified claim is therefore this: the completion curve is a noisy proxy for the free bit, it requires the gold final answer to run, and it adds no measurable grading signal over that bit on this anchor set.
 No cheap signal does: every within-correct value from a cheap signal, matching or verification, sits inside wide overlapping intervals (Table~\ref{tab:citwin}), so no cheap signal demonstrably grades beyond correctness on this anchor set, and the battery's single-interval exclusions elsewhere remain uncorrected for multiplicity.
-The referenced judge's within-correct value on this random set is negative ($-0.14$), which we attribute to range restriction; the same judge reads $+0.81$ within-correct on a divergence-selected stratum of the companion audit~\cite{companionA}, where selection inflates within-correct variance by construction, so its beyond-correctness grading is unresolved as well.
+The referenced judge's within-correct value on this random set is $-0.14$, inside a wide Fisher interval of $[-0.41, +0.15]$ that straddles zero (Table~\ref{tab:citwin}), so the wide-overlapping-intervals reading holds uniformly, for the judge as well as for the cheap signals.
+We attribute the low point value to range restriction without any significance claim; the same judge reads $+0.81$ within-correct on a divergence-selected stratum of the companion audit~\cite{companionA}, where selection inflates within-correct variance by construction, so its beyond-correctness grading is unresolved as well.
 The constructive result that survives this scoping is the class-level advance prediction that verification signals would carry signal where matching metrics carry none, which landed as registered; the register did not anticipate that the free bit would top the class (Table~\ref{tab:ledger}).
 
 The answer-swap check is the cheap end of the same class: one forward pass, no judge, no completion.

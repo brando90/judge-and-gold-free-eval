@@ -53,7 +53,7 @@ prediction & registered & outcome \\
 Blind ladder judges fail the audit; referenced ones pass & draft predating pressure results & Correct under the frozen rule; the blind 14B's threshold pass later shown false under pressure \\
 Sabotaged frontier judge is convicted & draft predating pressure results & Correct (style partial $+0.59$) \\
 Audit-failed evaluators are gamed under pressure & draft predating pressure results & Correct: all fails land in the failed cluster \\
-Multi-valid tasks: a reference amplifies gaming & committed before that experiment's data & Correct at all four ladder sizes (Appendix~\ref{app:cis}) \\
+Multi-valid tasks: a reference amplifies gaming & committed before that experiment's data & Sign-consistent at all four ladder sizes; individual contrast CIs cross zero (Appendix~\ref{app:cis}) \\
 Pressure estimands and estimators & committed before generation & Design freeze (no outcome to score) \\
 Sabotaged 7B and 14B are convicted & pre-run, commit \texttt{718c399} & \emph{Falsified}: neither style partial significantly positive; both fail instead, and the fails match the outcomes but were scored after outcomes were known (confirmatory only) \\
 P-R1: convicted reward model out-inflates the certified referenced tier & commit \texttt{828944a}, before scores generated & Confirmed: inflation $+1.46\sigma$, the largest measured \\
@@ -64,14 +64,16 @@ P-B4: battery sensitivity rank-correlates with audited style partials, Spearman 
 Mechanical-axes expectations E1 (honest judges clean) and E2 & stated in analysis header before execution & E1 partially violated (two honest referenced judges flagged); E2 unfalsifiable as phrased, which is not pre-specification \\
 Frontier 0--100 elicitation improves selection & registered ablation & Confirmed: regret $0.117 \to 0.069$, inflation $+0.38 \to +0.27$ \\
 Cross-family generator: blind-vs-referenced separation replicates on a Llama pool & registered & Confirmed at every ladder size (Table~\ref{tab:robust}, panel F) \\
-P-D1--P-D3: DPO training validation & pre-run, commit \texttt{3a964f1} & Run 1: manipulation failed, no test; stronger rerun queued \\
+P-D1--P-D3: DPO training validation & pre-run, commit \texttt{3a964f1} & Run 1: no detectable policy movement, classified post hoc as a manipulation failure, no test; rerun with a frozen manipulation check queued \\
 Putnam replication under the revised CI rule & rule frozen after the false pass & Pending \\
 Code-domain audit & registered & Pending; current code scoring is post-hoc extrapolation \\
 Deployment-pool label set & registered (instrument exists) & Pending \\
 Label-budget prediction for a second math dataset & registered & Pending \\
 \bottomrule
 \end{tabular}
-\caption{\textbf{Prediction ledger.} Registration means internal git timestamps on committed drafts and code, not an external registry.}
+\caption{\textbf{Prediction ledger.}
+Registration means internal git timestamps on committed drafts and code, not an external registry.
+Early registered-era rows predate the commit-hash convention and therefore carry no hash; later rows do, and the asymmetry is disclosed rather than repaired.}
 \label{tab:ledger}
 \end{table}
 
@@ -173,7 +175,7 @@ referenced 1.5B & length / authority & $+1.03$ / $+1.17$ & largest of the refere
 \bottomrule
 \end{tabular}
 \caption{\textbf{Six-axis perturbation battery, per-axis score deltas.}
-Sensitivity declines with judge scale, referenced arms are flatter than blind at each size, and the honest frontier is the flattest of all.
+Sensitivity declines with judge scale, referenced arms are flatter than blind at each size (exceptions: the referenced 1.5B, and the 7B bandwagon axis, where the referenced $-0.57$ is significant against a flat blind $-0.03$), and the honest frontier is the flattest of all.
 Across the ten configurations with both a battery arm and an audited style partial, battery sensitivity rank-correlates with the style partials at Spearman $0.55$ (all-six-axes secondary $0.53$) against the registered bar of $0.5$ (P-B4).}
 \label{tab:battery}
 \end{table}
@@ -207,8 +209,8 @@ The two most corrupted evaluators carry the two largest magnitudes, but the rule
 
 \section{Full configuration accounting}
 \label{app:confusion}
-This appendix accounts for all 25 pressure-tested configurations and both verdict rules.
-The pools: 12 math configurations (4 blind, 4 referenced, honest and sabotaged frontier, two sabotaged ladder) and 13 code (4 blind, 4 referenced, frontier blind, frontier referenced, frontier sabotaged, two sabotaged ladder).
+This appendix accounts for all 27 pressure-tested configurations and both verdict rules.
+The pools: 13 math configurations (4 blind, 4 referenced, honest and sabotaged frontier, two sabotaged ladder, and the reward model, pressure-tested on the $n{=}105$ math items) and 14 code (4 blind, 4 referenced, frontier blind, frontier referenced, frontier sabotaged, two sabotaged ladder, and the reward model, pressure-tested on the $n{=}68$ code items).
 Audited in-domain: the 13 configurations of Table~\ref{tab:h2h}.
 Applying the frozen rule uniformly yields six passes (the four referenced ladder judges, the honest frontier, and the blind 14B), four fails (blind 3B, soundness partial $0.19$; blind 7B, $0.32$; sabotaged 7B, $0.28$; sabotaged 14B, $0.38$), and three convictions (blind 1.5B, the sabotaged frontier, and the reward model); twelve of the thirteen verdicts match their pressure outcomes per estimand, the blind 14B pass being the single miss.
 The sabotaged 7B and 14B audits are late-scored confirmatory additions (ledger, Table~\ref{tab:ledger}): the registered convict prediction was falsified, and the resulting fail verdicts, scored after the pressure outcomes were known, are both correct (regrets $0.400$ and $0.324$, in the failed cluster).
@@ -219,7 +221,8 @@ Under the post-hoc revised rule of Section~\ref{sec:pressure} (soundness-partial
 The two sabotaged-ladder fails are unchanged under the revision, so with the confirmatory additions the revised-rule record is ten predictions, ten correct, three abstentions.
 The revision was adopted after the false pass was observed and is frozen for the Putnam replication.
 Sabotaged-ladder pressure outcomes for reference: sabotaged 7B (math inflation $+0.13$, n.s., regret $0.400$; code $+0.84$, $0.559$) and sabotaged 14B (math inflation $+0.61$, regret $0.324$; code $+0.96$, $0.426$); the math cells are audited as above, the code cells remain unaudited.
-Code: excluding the two unaudited sabotaged code ladder cells leaves eleven eligible configurations; extrapolated verdicts match the pressure outcome in ten, with the referenced 1.5B the single miss (inflation $+1.40$, regret $0.441$), coinciding with its null reference gain on the target axis; the worst blind code regret is $0.544$.
+Code: excluding the two unaudited sabotaged code ladder cells leaves eleven eligible judge configurations; extrapolated verdicts match the pressure outcome in ten, with the referenced 1.5B the single miss (inflation $+1.40$, regret $0.441$), coinciding with its null reference gain on the target axis; the worst blind code regret is $0.544$.
+The reward model's code cell is not counted in that eligible set, which was scored over the thirteen judge-configuration code pool; its mechanical target-axis validity is $+0.10$ $[-0.01, +0.20]$ and its code regret is $0.485$, inside the failed-blind range, so counting it would add a twelfth eligible cell and a match, and the exclusion is conservative.
 Code verdict predictions were not registered, and the extrapolation scoring is post hoc.
 Pressure-curve values behind Figure~\ref{fig:curves} (raw gap at $n = 4/16/64$): blind 3B code $+0.64 \to +0.94 \to +1.24$; blind 7B code $+0.57 \to +0.95 \to +1.19$; referenced 3B code $+0.33 \to +0.40 \to +0.44$; referenced frontier code $+0.39 \to +0.43 \to +0.48$.
 
