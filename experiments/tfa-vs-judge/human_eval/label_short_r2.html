@@ -2722,6 +2722,9 @@ So, <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>
 </div>
 
 <script>
+(function(){var KEY='tfa_label_short_r2_v1';var P={"S030": {"answer_correct": "no", "soundness": "7", "style": "6", "lucky": "n/a", "notes": ""}, "S028": {"answer_correct": "yes", "soundness": "10", "style": "6", "lucky": "no", "notes": ""}, "S031": {"answer_correct": "no", "soundness": "3", "style": "8", "lucky": "no", "notes": ""}, "S043": {"answer_correct": "no", "soundness": "2", "style": "7", "lucky": "n/a", "notes": ""}, "S007": {"answer_correct": "no", "soundness": "2", "style": "9", "lucky": "n/a", "notes": ""}, "S023": {"answer_correct": "no", "soundness": "2", "style": "9", "lucky": "n/a", "notes": ""}, "S038": {"answer_correct": "no", "soundness": "2", "style": "6", "lucky": "n/a", "notes": ""}, "S047": {"answer_correct": "yes", "soundness": "9", "style": "6", "lucky": "no", "notes": ""}, "S013": {"answer_correct": "yes", "soundness": "9", "style": "9", "lucky": "no", "notes": ""}, "S025": {"answer_correct": "yes", "soundness": "9", "style": "9", "lucky": "no", "notes": ""}};try{var st=JSON.parse(localStorage.getItem(KEY)||'{}');var n=0;Object.keys(P).forEach(function(id){if(!st[id]||st[id].soundness==null){st[id]=P[id];n++;}});if(n)localStorage.setItem(KEY,JSON.stringify(st));window.__CARRIED=P;}catch(e){}})();
+</script>
+<script>
 const KEY='tfa_label_short_r2_v1';
 const store=JSON.parse(localStorage.getItem(KEY)||'{}');
 const who=document.getElementById('who');
@@ -2802,3 +2805,7 @@ restore();
 (function(){var OPTS={delimiters:[{left:'$$',right:'$$',display:true},{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false},{left:'$',right:'$',display:false}],throwOnError:false,ignoredTags:['script','style','textarea','pre','code','input','button']};var p=null;function R(){p=null;try{renderMathInElement(document.body,OPTS);}catch(e){}}function S2(){if(!p)p=setTimeout(R,120);}window.addEventListener('load',function(){R();new MutationObserver(function(m){for(var x of m){if(x.type==='childList'&&x.addedNodes.length){var o=false;x.addedNodes.forEach(function(n){if(n.nodeType===1&&n.classList&&n.classList.contains('katex'))o=true;});if(!o){S2();return;}}}}).observe(document.body,{childList:true,subtree:true});});})();
 </script>
 <style>.asyfig{background:#fff;border:1px solid var(--bd);border-radius:8px;padding:14px;margin:10px 0;overflow-x:auto;text-align:center}.asyfig svg{max-width:100%;height:auto}details.asyraw{background:#f6f7f9;border:1px solid #e3e5ea;border-radius:8px;padding:8px 12px;margin:8px 0}details.asyraw summary{cursor:pointer;font:600 12px/1.6 system-ui,sans-serif;color:#5b6070}details.asyraw pre{font:12px/1.45 ui-monospace,Menlo,monospace;white-space:pre-wrap;color:#3b4048;margin:6px 0 0}</style>
+
+
+<style>.card.carried{box-shadow:inset 4px 0 0 #9bd39b}.carried-tag{display:inline-block;margin-left:8px;padding:1px 7px;border-radius:999px;background:#e8f5e9;color:#2f6b34;font:600 11px/1.6 system-ui,sans-serif}</style>
+<script>window.addEventListener('load',function(){var P=window.__CARRIED||{};document.querySelectorAll('.card').forEach(function(c){if(!P[c.dataset.id])return;c.classList.add('carried');var m=c.querySelector('.meta');if(m&&!m.querySelector('.carried-tag')){var s=document.createElement('span');s.className='carried-tag';s.textContent='carried over from your 120-item pass';m.appendChild(s);}});});</script>

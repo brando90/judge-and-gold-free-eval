@@ -1,0 +1,72 @@
+{
+ "S030": {
+  "answer_correct": "no",
+  "soundness": "7",
+  "style": "6",
+  "lucky": "n/a",
+  "notes": ""
+ },
+ "S028": {
+  "answer_correct": "yes",
+  "soundness": "10",
+  "style": "6",
+  "lucky": "no",
+  "notes": ""
+ },
+ "S031": {
+  "answer_correct": "no",
+  "soundness": "3",
+  "style": "8",
+  "lucky": "no",
+  "notes": ""
+ },
+ "S043": {
+  "answer_correct": "no",
+  "soundness": "2",
+  "style": "7",
+  "lucky": "n/a",
+  "notes": ""
+ },
+ "S007": {
+  "answer_correct": "no",
+  "soundness": "2",
+  "style": "9",
+  "lucky": "n/a",
+  "notes": ""
+ },
+ "S023": {
+  "answer_correct": "no",
+  "soundness": "2",
+  "style": "9",
+  "lucky": "n/a",
+  "notes": ""
+ },
+ "S038": {
+  "answer_correct": "no",
+  "soundness": "2",
+  "style": "6",
+  "lucky": "n/a",
+  "notes": ""
+ },
+ "S047": {
+  "answer_correct": "yes",
+  "soundness": "9",
+  "style": "6",
+  "lucky": "no",
+  "notes": ""
+ },
+ "S013": {
+  "answer_correct": "yes",
+  "soundness": "9",
+  "style": "9",
+  "lucky": "no",
+  "notes": ""
+ },
+ "S025": {
+  "answer_correct": "yes",
+  "soundness": "9",
+  "style": "9",
+  "lucky": "no",
+  "notes": ""
+ }
+}
