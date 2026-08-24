@@ -150,6 +150,20 @@ Partial correlations on the anchor set: the completion-curve mean given the free
 \label{tab:citwin}
 \end{table}
 
+\subsection{Stronger matching baselines (post-hoc, in response to review)}
+\label{app:strong}
+
+The five matching metrics of Table~\ref{tab:citwin} are the paper's primary battery.
+Reviewers asked whether the class-level null survives against stronger matching signals, so we ran four more against the same anchors, with the same estimators and bootstrap intervals; the block is post-hoc and exploratory, and none of it was registered in advance (Table~\ref{tab:ledger}).
+The protocols are as follows.
+\emph{Modern retrieval embedder}: cosine similarity between the candidate trace and the gold solution under E5-base-v2, with the query/passage prefixes the encoder expects, scored against human soundness on the 60-item anchor set.
+\emph{NLI entailment}: the entailment probability of a DeBERTa-v3 cross-encoder for the candidate trace as premise and the gold solution as hypothesis, on the same 60 items.
+\emph{Code AST similarity}: sequence similarity between the AST dumps of the candidate and canonical solutions, correlated with executed-test outcomes on the same 492 code solutions used for unigram-F1 and TF-IDF; unparseable candidates fall back to raw source.
+\emph{Symbolic answer equivalence}: equivalence of the extracted final answers, decided by \texttt{sympy} where both parse and by string identity otherwise, on the same 60 items.
+The first three land inside the band occupied by the primary battery on their respective anchors.
+The fourth does not, and the reason is that it is not a text-similarity signal: it reads only the final answers, which makes it a lossy reimplementation of the free answer-correct bit, and the loss (parse failures on answers \texttt{sympy} cannot handle) is exactly why it reads $+0.59$ where the bit itself reads $+0.92$.
+The row values are in Table~\ref{tab:robust}, and the analysis script is released with the other artifacts (Appendix~\ref{app:artifacts}).
+
 \subsection{Deferred point estimates and robustness ladders}
 \label{app:robust}
 
@@ -157,7 +171,7 @@ Table~\ref{tab:robust} collects the numbers that back single-number claims in th
 
 \begin{table}[t]
 \centering
-\footnotesize
+\scriptsize
 \setlength{\tabcolsep}{2pt}
 \begin{tabular}{ll}
 \toprule
@@ -198,6 +212,12 @@ quantity & value \\
 \quad \tfa{} vs.\ passing (range across models) & $0.00$, within $[-0.04, +0.06]$ per model \\
 \quad unigram-F1; TF-IDF cosine & $+0.13$ $[+0.06, +0.21]$; $+0.17$ $[+0.10, +0.23]$ \\
 \midrule
+\multicolumn{2}{l}{\emph{Stronger matching baselines (post-hoc, not registered; Appendix~\ref{app:strong})}} \\
+\quad E5-base-v2 cosine vs.\ soundness (math anchor, $n{=}60$) & $+0.02$ $[-0.15, +0.22]$ \\
+\quad DeBERTa NLI entailment vs.\ soundness ($n{=}60$) & $+0.05$ $[-0.18, +0.25]$ \\
+\quad code AST similarity vs.\ executed tests ($n{=}492$) & $+0.14$ $[+0.07, +0.21]$ \\
+\quad symbolic answer equivalence vs.\ soundness ($n{=}60$) & $+0.59$ $[+0.41, +0.76]$ \\
+\midrule
 \multicolumn{2}{l}{\emph{Decomposition extras (Section~\ref{sec:mechanism})}} \\
 \quad item share, \textsc{MATH-500} (15 models $\times$ 500 items) & $0.896$ $[0.881, 0.910]$; jackknife $0.887$--$0.913$ \\
 \quad item share, full \textsc{MATH} (14 models $\times$ 600 items) & $0.828$ $[0.811, 0.845]$; jackknife $0.818$--$0.846$ \\
@@ -214,7 +234,8 @@ quantity & value \\
 \end{tabular}
 \caption{\textbf{Deferred numbers: every interval, ladder, and subset endpoint quoted as a single number in the prose.}
 All intervals are bootstrap 95\%; the completer-sweep and phi-4 rows are computed on the 42 anchor traces the pairs file covers, and the item-level paired bootstraps (the answer-line intervention and the P-L1 control alike) condition on the fixed twelve models, so they capture item-sampling uncertainty only.
-The item-share rows report the bootstrap CI over items alongside the range of the share under deletion of any single model (the model-deletion jackknife).}
+The item-share rows report the bootstrap CI over items alongside the range of the share under deletion of any single model (the model-deletion jackknife).
+The stronger-baseline block is post-hoc and exploratory; its symbolic-equivalence row is the only matching signal in the paper above the band, and it reads final answers rather than solutions, so it is the free answer-correct bit under another name (Appendix~\ref{app:strong}).}
 \label{tab:robust}
 \end{table}
 

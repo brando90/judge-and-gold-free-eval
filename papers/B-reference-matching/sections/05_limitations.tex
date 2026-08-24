@@ -2,7 +2,7 @@
 \section{Limitations}
 \label{sec:limits}
 
-The main limits concern the human anchor, two since-completed registers, the decomposition's single fixed-effects procedure, the completer's family, the unresolved beyond-correctness margin, and the scope of the ranking evidence.
+The main limits concern the human anchor, two since-completed registers, the decomposition's single fixed-effects procedure, the completer's family, the unresolved beyond-correctness margin, the coverage of the matching baselines tested, and the scope of the ranking evidence.
 
 The human anchor is the 60-item anchor set, graded by one annotator who is also an author, with its reliability measured rather than assumed.
 A hypothesis-blind annotator external to the author list regraded 30 of the 60 items under the same rubric, on a blinded instrument with model names and machine scores stripped, agreeing at $0.83$ on soundness; this matches the earlier cross-construct estimate from a shared block, which retroactively supports the older anchor (both reliability cells and implied ceilings in Appendix~\ref{app:ceiling}, Table~\ref{tab:robust}).
@@ -24,6 +24,11 @@ The beyond-correctness margin is unresolved on this anchor set.
 Every cheap signal's within-correct value, matching or verification, sits inside wide overlapping intervals with no multiplicity correction across the battery (Table~\ref{tab:citwin}), so no cheap signal here demonstrably grades beyond correctness; the referenced judge reads $-0.14$ within-correct on the random set, inside a wide Fisher interval of $[-0.41, +0.15]$ that straddles zero, consistent with range restriction without any significance claim, and $+0.81$ only on a divergence-selected stratum of the companion audit~\cite{companionA}, where selection inflates within-correct variance by construction.
 An equivalence test quantifies what these nulls exclude: at $n{=}48$, TOST at $\alpha{=}.05$ (90\% Fisher-$z$ bounds) excludes within-correct effects larger than about $0.43$ for \tfa, $0.41$ for the curve at $k{=}0.75$, $0.31$ for the curve mean, and $0.37$ for the referenced judge.
 The honest claim is therefore that no within-correct effect is detected and effects above roughly $0.4$ are excluded, while moderate effects below that bound cannot be ruled out.
+
+The strawman objection to the class-level null, that it might hold only for weak similarity metrics, is addressed for four stronger baselines and no further.
+A modern retrieval embedder, an NLI entailment model, and code AST similarity were run against the same anchors and land inside the same band, and symbolic answer equivalence lands above it while reading only the final answers, which makes it the free correctness bit rather than a similarity signal (Section~\ref{sec:classnull}, Appendix~\ref{app:strong}).
+Two classes remain untested: similarity metrics trained or fine-tuned on this task, which could in principle learn to score soundness rather than resemblance, and LLM-based semantic similarity run at scale, which we did not price out against the judge baselines already reported.
+These four baselines were added post hoc in response to review, so they are exploratory rather than registered, and they appear in no row of Table~\ref{tab:ledger}.
 
 All anchor-set numbers come from a single canonical analysis script; earlier drafts and decks quoted values from heterogeneous scripts and estimators, and where they differ the canonical values supersede them.
 Human-grade validity claims cover one math dataset plus executable code; a second labeled dataset is future work.

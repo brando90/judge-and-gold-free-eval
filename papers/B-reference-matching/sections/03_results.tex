@@ -8,7 +8,7 @@ Each answer below leads with its finding; point estimates appear in prose, and e
 \subsection{RQ1: Can matching metrics grade individual solutions? No.}
 \label{sec:classnull}
 
-None of the five matching metrics we tested grades individual solutions against blind human soundness.
+None of the five matching metrics in our primary battery grades individual solutions against blind human soundness, and neither do the four stronger baselines we added later in response to review.
 One distinction should be stated before any number: \tfa{} and gold-token log-probability never read the generated solution at all, so their per-solution grading null is structural, a property of the metric's type signature rather than an empirical discovery.
 The empirical content of the null therefore lies with the output-similarity metrics, which do read the solution, and with the measured magnitudes and the cross-family replication for all five.
 On the anchor set, the five matching metrics land between $-0.33$ (unigram-F1) and $+0.14$ (embeddings) against human soundness; Figure~\ref{fig:class} plots the full field, and Table~\ref{tab:classfull} (page~\pageref{tab:classfull}) tabulates it.
@@ -21,6 +21,13 @@ On 492 freshly generated solutions scored by executing the official test suites,
 The output-similarity metrics retain a weak positive signal on the same solutions, unigram-F1 at $+0.13$ and TF-IDF at $+0.17$ against test outcomes, far below any grading standard (intervals in Table~\ref{tab:robust}).
 Both intervals exclude zero, and the code-side unigram-F1 is positive, the opposite sign from its anchor-set math value of $-0.33$; the two numbers describe different settings (test outcomes on code versus human soundness on math), so we keep them distinct and do not pool them.
 Sentence embeddings were not run on code, so the code evidence covers four of the five matching metrics.
+
+The obvious objection to a class-level null is that the class might have been stocked with weak metrics, so we tested it against the strongest matching signals we could construct, on the same anchors with the same estimators.
+A modern retrieval embedder (E5-base-v2 cosine between the candidate trace and the gold solution) reads $+0.02$ against human soundness, and an NLI entailment model (a DeBERTa cross-encoder scoring the probability that the gold solution follows from the candidate) reads $+0.05$; both intervals sit inside the same band as the five primary metrics (Appendix~\ref{app:strong}).
+On code, AST-level similarity to the canonical solution reads $+0.14$ against executed tests over the same 492 solutions, comparable to the text-similarity metrics on that data ($+0.13$ unigram-F1, $+0.17$ TF-IDF) rather than an improvement on them.
+The sole exception is symbolic answer equivalence at $+0.59$, well above the band, and it is not a text-similarity signal at all: it compares extracted final answers rather than solutions, so it is a reimplementation of the free answer-correct bit, and it lands below that bit's own $+0.92$ only because symbolic parsing fails on some answers.
+The exception therefore states the thesis rather than threatening it, since the only matching that grades is matching the answer, and that check is already free.
+These four baselines are post-hoc additions made in response to review, not registered predictions, and they carry no entry in the ledger of Table~\ref{tab:ledger}.
 
 \begin{figure}[t]
 \centering
@@ -160,7 +167,7 @@ The position-weighted register predicted a null, and the observed $-0.37$ at las
 The completer-strength register (P-C1) predicted a middle band of completer strength in three legs: washout at 1.5B, gains through 7B, little at 32B.
 The washout-at-1.5B leg is decisively falsified, since the 1.5B completer already reaches $+0.78$; the gains-through-7B and little-at-32B legs are point-wise compatible with the observed ordering but flat within overlapping CIs, so the register as a whole is falsified while corroborating the free-bit mechanism (Section~\ref{sec:verify}).
 The class-level divide, verification signals carrying signal where matching carries none, was called in advance, but the register did not anticipate that the free bit would top the class.
-Two notes: seven earlier reweighting variants (IDF, surprisal, masking, \dots) predate the registration protocol and all came out $\le 0$; the length-matched uninformative-reference control (P-L1) ran after its prediction was committed and landed as predicted, with the certified item-level paired delta in Section~\ref{sec:mechanism} and both evidence levels in Table~\ref{tab:robust}.}
+Three notes: seven earlier reweighting variants (IDF, surprisal, masking, \dots) predate the registration protocol and all came out $\le 0$; the length-matched uninformative-reference control (P-L1) ran after its prediction was committed and landed as predicted, with the certified item-level paired delta in Section~\ref{sec:mechanism} and both evidence levels in Table~\ref{tab:robust}; and the four stronger matching baselines of Section~\ref{sec:classnull} and Appendix~\ref{app:strong} were added post hoc in response to review, so they are exploratory and appear in no row of this ledger.}
 \label{tab:ledger}
 \end{table}
 

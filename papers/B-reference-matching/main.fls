@@ -242,6 +242,7 @@ INPUT ./sections/05_limitations.tex
 INPUT ./sections/05_limitations.tex
 INPUT ./sections/05_limitations.tex
 INPUT sections/05_limitations.tex
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/cm/cmtt10.tfm
 INPUT ./sections/06_related_conclusion.tex
 INPUT ./sections/06_related_conclusion.tex
 INPUT ./sections/06_related_conclusion.tex
@@ -255,6 +256,7 @@ INPUT ./sections/07_appendix.tex
 INPUT ./sections/07_appendix.tex
 INPUT ./sections/07_appendix.tex
 INPUT sections/07_appendix.tex
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/tfm/public/cm/cmti8.tfm
 INPUT main.aux
 INPUT ./main.out
 INPUT ./main.out
@@ -275,5 +277,7 @@ INPUT /usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.p
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmti8.pfb
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmti9.pfb
+INPUT /usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb
 INPUT /usr/local/texlive/2026/texmf-dist/fonts/type1/public/cm-super/sfrm1095.pfb
