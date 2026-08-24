@@ -347,6 +347,8 @@ The checker is exact rather than an incomplete enumeration: validity checking is
 Because that compliance rate is low, we test post hoc whether extraction friction manufactures the endpoint, by splitting items on their own boxed-compliance rate.
 It does not, though it does inflate it: on the cleaner half of the pool E1 is $+0.94$ $[+0.71, +1.16]$ ($n{=}56$) and on the top tercile $+0.90$ $[+0.65, +1.16]$ ($n{=}40$), against $+1.49$ $[+1.27, +1.70]$ on the messier half, with a per-item correlation between compliance and the delta of $r{=}-0.29$ $[-0.43, -0.12]$.
 The effect therefore survives on the items where extraction is cleanest, at roughly twice the original Ties-pool estimate rather than two and a half times, and $+0.9$ is the conservative reading of the headline number (\texttt{repl\_disclosures.json}).
+The gradient itself has a reading that is not about extraction at all: the two halves differ in difficulty, base accuracy $0.600$ against $0.365$, and decomposing the delta shows the extra inflation on the messier half sits almost entirely in the true-accuracy term ($-0.14$ against $-0.05$) rather than the judge-score term ($+0.85$ against $+0.76$).
+Harder items give the reference more room to cost real accuracy; that is the same phenomenon the paper is about, not a measurement failure that mimics it.
 The population was fixed in advance and the estimators were frozen in committed code before any data existed.
 Each judge is individually significant, not only the pool.
 The pairing is structurally cleaner too: the generator is non-Qwen, so no judge on this pool grades its own family's text against itself, which is the configuration that carried the original headline.
