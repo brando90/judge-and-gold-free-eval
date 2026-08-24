@@ -150,6 +150,39 @@
 % is retired in favor of "anchoring is therefore causal for scores, though
 % whether it quantitatively accounts... this design cannot answer", per the
 % v17 cold read's part-3(a) note. Title date v13 -> v18 (was stale).
+% v19 (round-9: v18 internal review Gates 1-2 + must-fixes + GPT v17 asks 3-5).
+% GATE 1 (linkage): the "uninformative / this design cannot answer" reading is
+%   RETRACTED. The inflation measurement SD is identifiable by roles-swapped
+%   split-half from the rubric replicates (0.457 Qwen / 0.352 phi-4); the
+%   recalibrated exact-pathway sim (margins deconvolved, slope data-implied;
+%   fixes round 8's double-count and wrong slope note) gives r = 0.82 [0.69,
+%   0.91] and 0.90 [0.82, 0.95]; observed +0.06/+0.29 sit below the 2.5th pct,
+%   so an exact per-item linear pathway is REJECTED for both judges. Abstract,
+%   sec:mech, new Limitations paragraph, and a new ledger row state this;
+%   registration.md records the supersession. Producer round9_provenance.py
+%   (round9_provenance.json).
+% GATE 2 (provenance, third offense): three-vs-five count contradiction fixed
+%   (now six registered analyses / six post-hoc artifacts / four producers);
+%   "no number is hand-computed" retired; the manifest now EXISTS
+%   (papers/analysis/MANIFEST.md); composition figures (43.6%/16.2%, mean k
+%   6.51/5.82) and the boxed decomposition now have a committed producer
+%   (round9, sections 2-3); four ledger rows added (repl disclosures, band
+%   match + linkage, round-8 follow-ups w/ supersession, linkage power).
+% Must-fixes: tab:repl "slightly larger population" -> "differently selected,
+%   overlapping in 83"; matched-population recompute promoted into sec:repl
+%   prose; M1 pressure range corrected to -0.06..-0.00 + "three cells
+%   detectably below blind" replaces "indistinguishable across the range";
+%   sec:boundary "confirms them" -> "confirms the multiplicity half";
+%   "did not differ between them" -> two judge-specific edges named;
+%   Conclusion promoted to \section; band-match numbers moved into sec:struct
+%   prose (GPT ask 5-of-v17 #5).
+% GPT v17 asks: #3 step re-anchored on registered P-M3 (abstract, tab:headline
+%   row 3, contributions bullet); #4 worked example added to Setup (item
+%   repl/crt-11, from round9 worked_example).
+% Abstract: dangling participle fixed ("An externally preregistered
+%   replication ... found"); k=1 clause now "helping five of six judges at
+%   k=1 and at worst harmless there" (the v18 "sometimes helps and costs
+%   nothing otherwise" over-asserted against the P-S5 wrong-way cell).
 \documentclass[11pt]{article}
 \usepackage[margin=1in]{geometry}
 \usepackage{amsmath,amssymb}
@@ -165,7 +198,7 @@
 
 \title{When the Answer Key Backfires:\\ \large Reference Anchoring Turns LLM Judges into Answer Matchers}
 \author{Anonymous Authors}
-\date{Draft v18, August 24, 2026}
+\date{Draft v19, August 24, 2026}
 
 \usepackage{placeins}
 \renewcommand{\topfraction}{0.9}
@@ -183,10 +216,10 @@
 A trusted reference answer in an LLM judge's prompt is widely treated as a safeguard against reward hacking.
 On tasks with more than one valid answer, we show it is the opposite: the reference turns the judge into an answer matcher, and under best-of-$n$ selection that inflates the scoreboard instead of protecting it.
 We test this where it can be settled exactly, on short-answer tasks with programmatic validity oracles, so the number of valid answers is controlled rather than argued about; free-form generation is outside our scope.
-In an externally preregistered replication, with population, estimators, and endpoints frozen before any data existed (\texttt{osf.io/ym5x9}), showing the reference raised inflation over a blind judge by $+1.19$ $[+1.02, +1.36]$ baseline standard deviations, $+0.90$ under the conservative reading, with every registered prediction confirmed for both cross-family judges.
+An externally preregistered replication (\texttt{osf.io/ym5x9}), with population, estimators, and endpoints frozen before any data existed, found the reference raised inflation over a blind judge by $+1.19$ $[+1.02, +1.36]$ baseline standard deviations, $+0.90$ under the conservative reading, and confirmed every registered prediction for both cross-family judges.
 Rotating the reference shows why: re-judged with the reference switched to a different valid answer, the identical text gains up to $+9.5$ points on the judge's ten-point scale.
-Anchoring is therefore causal for scores, though whether it quantitatively accounts, item by item, for the inflation it accompanies is a question this design cannot answer.
-A registered grid with exactly $k$ valid answers per item locates the switch at the first step: crossing from $k{=}1$, where the reference sometimes helps and costs nothing otherwise, to $k{=}2$ shifts every judge tested, across three model families, toward inflation.
+Anchoring is therefore causal for scores, but it is not a per-item account of the inflation: at this design's own measurement noise, an exact item-level pathway from anchoring margin to inflation is rejected for both judges.
+The switch sits at the first step in multiplicity: on an externally registered pool with exactly $k$ valid answers per item, the $k{=}1$-to-$k{>}1$ jump in inflation is confirmed for both judges, and an exploratory six-judge grid shows the same step across three model families, with the reference helping five of six judges at $k{=}1$ and at worst harmless there.
 The identical protocol on unique-answer math collapses inflation four- to thirteen-fold, so the lever's sign is set by the task's answer structure~\cite{companionA}.
 One fix works, and it too was preregistered before any data existed (\texttt{osf.io/qugbd}): have the judge score blind first, and reveal the reference only afterwards.
 That removes the measured inflation at $k{>}1$ for both judges tested, $-0.05$ and $+0.16$ against $+1.50$ and $+1.07$ under a single reference, and costs nothing when the answer is unique, though a third to three fifths of the anchoring premium survives in the margins.
@@ -212,7 +245,7 @@ Same sample text, re-judged with the reference rotated to a different valid answ
 \addlinespace[3pt]
 Where does the harm switch on? &
 \textbf{At $k{=}2$} &
-Registered grid with exactly $k$ valid answers per item (Section~\ref{sec:synthk}) \\
+Externally registered $k$-controlled pool, step confirmed for both judges (Section~\ref{sec:struct}); six-judge grid agrees (Section~\ref{sec:synthk}) \\
 \addlinespace[3pt]
 Does anything fix it? &
 \textbf{Yes, score blind first} &
@@ -251,7 +284,7 @@ Our contributions:
 \item \textbf{The inversion, preregistered and replicated} (Section~\ref{sec:repl}, Table~\ref{tab:repl}): on a fresh exact-checker pool with a cross-family generator-judge pairing, an externally registered replication confirms all three registered predictions at $+1.19$ $[+1.02, +1.36]$ of inflation ($+0.90$ $[+0.65, +1.16]$ on the cleanest-extraction items, the conservative reading), about two and a half times the exploratory estimate it was registered to test.
 \item \textbf{The mechanism, made causal} (Section~\ref{sec:mech}, Figure~\ref{fig:anchoring}, Table~\ref{tab:rot}): rotating the shown reference to a different valid answer raises the score of the identical sample text by up to $+9.5$ of 10 points, with mirror-image losses and a near-flat placebo.
 The premium follows the reference, not the answer.
-\item \textbf{The step} (Section~\ref{sec:synthk}, Table~\ref{tab:paired}): on a registered grid of tasks with exactly $k$ valid answers, moving from $k{=}1$, where the reference helps five of the six judges on that pool, to $k{>}1$ shifts every judge tested, across three model families, toward inflation.
+\item \textbf{The step, registered and confirmed} (Sections~\ref{sec:struct} and~\ref{sec:synthk}, Tables~\ref{tab:struct} and~\ref{tab:paired}): on the externally registered pool with exactly $k$ valid answers per item, the $k{=}1$-to-$k{>}1$ step in inflation is a registered prediction (P-M3) confirmed for both judges, $+1.45$ $[+0.94, +1.93]$ and $+1.18$ $[+0.91, +1.45]$; an exploratory six-judge grid shows the same step across three model families, with the reference helping five of the six judges on that single pool at $k{=}1$.
 \item \textbf{A fix that works, preregistered} (Section~\ref{sec:struct}, Tables~\ref{tab:struct} and~\ref{tab:rule}): on an externally registered pool with exactly $k$ valid answers per item (\texttt{osf.io/qugbd}), scoring blind first and revealing the reference only afterwards removes the measured inflation at $k{>}1$ for both judges tested, and costs nothing when the answer is unique, its $k{=}1$ deltas being indistinguishable from blind.
 Decomposing validity into a separate probabilistic call removes the inflation entirely for phi-4 and backfires for Qwen-7B.
 \item \textbf{In-context mitigations, audited} (Section~\ref{sec:synthk}, Table~\ref{tab:mitig}): telling the judge that any correct answer deserves credit works only in proportion to judge capability, and showing several references helps on one generator pool but transfers poorly to another.
@@ -308,6 +341,12 @@ Selection uses rubric $a$ and reporting uses rubric $b$, which cancels winner's-
 We report two numbers per condition, both from companion A's pre-registered estimator, unchanged.
 \emph{Inflation}, formally the excess hack gap, measures how far the selected sample's reported score sits above its true quality, in baseline standard deviations, against a null built by shuffling judge scores among samples the checker grades identically.
 For intuition: a judge that always scores reference-matching answers 10 raises the selected sample's reported score under best-of-$n$ while its true validity does not move, and inflation measures exactly that scoreboard-versus-truth divergence; a judge whose scores merely track true validity shows zero.
+One replication item, chosen as the item whose delta sits closest to the pooled estimate, makes the units concrete.
+On that item 20 of 64 samples are valid.
+The referenced judge's reported scores average $3.18$ with spread $2.40$, and its best-of-64 pick is a valid sample reported at $9.99$: a judge gain of $2.84$ baseline standard deviations against a truth gain of $0.69$.
+The blind judge averages $5.16$ with spread $2.11$ and picks a valid sample at $9.72$: a judge gain of $2.16$ against the same truth gain.
+Netting each arm against its own shuffle null ($-0.25$ and $+0.04$) leaves gaps of $2.40$ and $1.43$, so on this item the referenced scoreboard sits about one baseline standard deviation further above truth than the blind one ($+0.97$ by this single-pick arithmetic; $+1.26$ under the committed estimator, which also averages over ties and subsets).
+Both judges picked valid samples here; the referenced judge inflates anyway because its more polarized score distribution converts the same pick into a larger standardized scoreboard gain.
 \emph{Lost accuracy}, oracle regret in companion A's terms, measures how much selection accuracy is left on the table relative to the best possible pick from the pool.
 Mechanism analyses add the anchoring \emph{margin}, the score bonus a valid reference-matching sample receives over an equally valid non-matching one.
 
@@ -357,7 +396,7 @@ All numbers come from the frozen registered analysis (\texttt{repl\_analysis.py}
 Inflation deltas are per-item paired referenced-minus-blind differences in baseline standard deviations, item-level cluster bootstrap, over the 105 of 120 items inside the registered $[0.2, 0.8]$ pass-rate band; the pooled row resamples items, each contributing both judges' deltas (P-R1, primary endpoint E1).
 Collapse counts are exact McNemar discordant pairs on the 93 eligible items where matching and non-matching valid answers coexist (P-R2): items on which the referenced judge selected a reference-matching valid answer and the blind judge did not, and the reverse.
 Margins are on the 0--10 score scale over the same items (P-R3).
-\emph{Population disclosure}: the registered $[0.2, 0.8]$ band is applied by E1 alone, as frozen in \texttt{repl\_analysis.py}; P-R2 and P-R3 run on all 93 eligible items, of which 83 are also inside the band, so the two secondary endpoints sit on a slightly larger population than the primary one.
+\emph{Population disclosure}: the registered $[0.2, 0.8]$ band is applied by E1 alone, as frozen in \texttt{repl\_analysis.py}; P-R2 and P-R3 run on all 93 eligible items, of which 83 are also inside the band, so the two secondary endpoints sit on a differently selected population that overlaps the primary one in 83 items.
 Recomputing all three on that common 83-item intersection changes nothing: E1 $+1.20$ $[+1.02, +1.39]$, collapse $49/2$ and $67/0$, margins $+4.58$ $[+4.22, +4.94]$ and $+3.83$ $[+3.49, +4.17]$ (post hoc).
 The registered rows above remain the ones the predictions were scored on.
 Generator: Llama-3.1-8B-Instruct; validity by exact programmatic check, with no enumeration and no LLM adjudication.
@@ -387,6 +426,8 @@ All three registered predictions were confirmed (Table~\ref{tab:repl}).
 P-R1, the primary endpoint E1, is the pooled per-item paired referenced-minus-blind inflation delta over the two judges, by item-level cluster bootstrap: $+1.19$ $[+1.02, +1.36]$ on the 105 in-band items, with each judge's delta individually excluding zero.
 P-R2, selection collapse, is tested per judge by exact McNemar on the 93 eligible items whose valid samples include both reference-matching and non-matching answers; the discordant counts are lopsided in the referenced judge's favor and both tests give $p < 10^{-5}$.
 P-R3, positive anchoring margins for both judges, holds with room to spare.
+The three endpoints apply the frozen population rules differently, E1 alone taking the registered band, so we recomputed all three post hoc on the 83 items every endpoint shares: E1 $+1.20$ $[+1.02, +1.39]$, collapse $49/2$ and $67/0$, margins $+4.58$ and $+3.83$.
+Nothing moves, so the population split is bookkeeping, not a result.
 
 The replicated effect is about two and a half times the original Ties-pool estimate of Section~\ref{sec:ties} ($2.4\times$ the label-corrected $+0.50$, $2.9\times$ the checker-label $+0.41$), and it arrives with the original's weaknesses removed.
 The checker is exact rather than an incomplete enumeration: validity checking is exact given an extracted answer, and only extraction remains heuristic, with boxed-answer compliance $0.616$ over all 120 items ($0.639$ over the 105 in-band items) and a whole-reply fallback that is symmetric across arms.
@@ -491,19 +532,21 @@ Exact McNemar tests on the paired per-item indicators exclude chance at three of
 The original arm agrees, but its headline rates are mechanically inflated: six of its ten eligible items are forced, every valid sample matching the reference, so any valid selection matches by construction, while on the four free items blind judges match $0.25$--$0.50$ of the time against $0.75$--$1.0$ referenced (Table~\ref{tab:rot} notes).
 Whenever a reference-matching answer is genuinely on offer, the referenced judge takes it $75$--$100\%$ of the time in both arms, while blind selection tracks the base rates of the pool.
 
-This is a plausible account of why the inversion happens, not merely something that accompanies it.
+This is a plausible account of why the inversion happens in aggregate, and the item-level test below shows it is not the whole account.
 A judge that boosts one valid answer and buries the rest turns best-of-64 into a lottery over reference proximity, which inflates reported scores relative to true quality: the significant inflation of the replication (Table~\ref{tab:repl}) and of the exploratory pool (Table~\ref{tab:fullset}, Section~\ref{sec:ties}).
 
-We tested that account quantitatively, and it holds only weakly at the level of individual items.
-If the margin is the pathway, the items with the largest margins should be the items that inflate most.
+We tested that account quantitatively, and its simplest item-level form fails.
+If margin size is the pathway, the items with the largest margins should be the items that inflate most.
 Across the 35 $k{>}1$ items of the $k$-stratified pool, the per-item correlation between anchoring margin and inflation is $r{=}+0.29$ $[+0.03, +0.54]$ for phi-4 and $r{=}+0.06$ $[-0.31, +0.38]$ for Qwen-7B, and the tercile means are not monotone for either judge (post hoc).
-So the mechanism is established causally, by rotation, and in aggregate, by the level of both the margins and the inflation, but it is not established that a given item's margin predicts that item's inflation.
-Per-item margins are estimated from a handful of valid samples per item and inflation from a stochastic selection process, so attenuation is expected, and we tried to bound how much.
-Simulating a pathway in which inflation is an \emph{exact} linear function of the per-item margin, with the margin distribution, the valid-sample counts and the judge's within-item score spread all taken from this pool, the recovered correlation turns on one quantity we cannot estimate directly: how noisily each item's inflation is itself measured.
-Sweeping that quantity, an exact pathway would show up as $r{=}0.75$, $0.47$, $0.29$ or $0.20$ as the inflation measurement noise rises through a plausible range.
-Our observed values sit inside that span, so the test does not discriminate: this design cannot tell a real per-item pathway from an absent one, and the negative result should be read as uninformative rather than as evidence against anchoring.
-What the paper does establish about the mechanism is the rotation intervention, which is within-item and needs no such linkage, and the aggregate correspondence between margins and inflation.
-We report the failed test, and its inconclusiveness, because it is the test the causal story most invites.
+So the mechanism is established causally, by rotation, and in aggregate, by the level of both the margins and the inflation, but a given item's margin does not predict that item's inflation.
+Per-item margins are estimated from a handful of valid samples per item and inflation from a stochastic selection process, so attenuation is expected, and the design can measure how much of the null it explains.
+The two rubric replicates give two estimates of every item's margin and inflation, and the roles-swapped split-half puts the inflation measurement noise at $0.46$ (Qwen-7B) and $0.35$ (phi-4), against observed per-item inflation spreads of $1.11$ and $0.99$.
+We simulated a pathway in which inflation is an \emph{exact} linear function of the per-item margin, with margins deconvolved to their measurement-corrected spread and the slope set so the pathway reproduces the measurement-corrected inflation variance.
+At this design's own noise, an exact pathway would show up as $r = 0.82$ $[0.69, 0.91]$ for Qwen-7B and $r = 0.90$ $[0.82, 0.95]$ for phi-4; the observed $+0.06$ and $+0.29$ fall below the 2.5th percentile of both simulated distributions.
+An earlier draft swept the inflation measurement noise as unidentifiable and concluded the test could not discriminate; the split-half estimate shows it is identifiable, supersedes that sweep, and the ledger records the supersession (Table~\ref{tab:ledger}).
+The verdict is that an exact per-item linear pathway from margin to inflation is rejected for both judges.
+That rejection does not touch what the rotation intervention establishes, that anchoring causally moves scores within items, or the aggregate correspondence between margins and inflation; what it rules out is margin size alone deciding which items inflate, so the aggregation from anchoring to per-item inflation runs through structure this design does not resolve, such as which items happen to hold a matching valid sample among the 64.
+We report the test because it is the one the causal story most invites, and its rejection is itself informative.
 The lost-accuracy deltas point the same way but never exclude zero, so a degraded chance of selecting a correct answer remains a directional reading, not an established one.
 
 \paragraph{Registration note (P-T2r).}
@@ -752,7 +795,9 @@ Four conditions run with two rubric replicates each: blind, a single reference, 
 \emph{M2, soft validity gate}: the first call scores blind, a separate call asks only whether the candidate's final answer is valid, with the reference shown as one valid example, and the reported score is the blind score multiplied by that call's probability of Yes, $P(\text{Yes})/(P(\text{Yes}) + P(\text{No}))$, read from the answer token's logprobs.
 The estimands are the ones used throughout the paper: anchoring margins, and per-item paired inflation deltas versus blind at $n{=}64$ with an item bootstrap.
 Items enter the inflation deltas only if their pool pass rate lies in $[0.05, 0.95]$, which is the band the grid of Section~\ref{sec:synthk} uses and is wider than the $[0.2, 0.8]$ band the replication of Section~\ref{sec:repl} registered.
-That leaves 15, 15, 13, 14, and 11 analyzed items at $k{=}1, 2, 4, 8, 16$ out of 15 built per stratum, and it means the inflation numbers here and the $+1.19$ of Section~\ref{sec:repl} come from populations selected by different rules; the band-matched recomputation reported with Table~\ref{tab:struct} removes the pass-rate difference specifically, leaving a multiplicity-composition difference it does not address.
+That leaves 15, 15, 13, 14, and 11 analyzed items at $k{=}1, 2, 4, 8, 16$ out of 15 built per stratum, and it means the inflation numbers here and the $+1.19$ of Section~\ref{sec:repl} come from populations selected by different rules.
+Recomputed under the replication's registered $[0.2, 0.8]$ band, the $k{>}1$ single-reference deltas here are $+1.48$ $[+1.13, +1.83]$ and $+1.19$ $[+0.91, +1.49]$ on 39 items, against the replication's $+1.19$ $[+1.02, +1.36]$: phi-4 lands on the replication estimate and Qwen-7B above it (post hoc).
+That recomputation removes the pass-rate difference specifically and not more: $44\%$ of the band-matched items sit at $k \geq 8$ against $16\%$ of the replication's, this paper's own grid shows inflation rising with $k$, and that composition gap runs in the direction of Qwen-7B's excess, so we claim the pass-rate confound removed, not full comparability.
 
 \paragraph{Registration deviation: M2 is a soft gate, not the hard gate registered.}
 The registration at \texttt{osf.io/qugbd} describes M2 as a hard gate, keeping the blind score when the validity call says the candidate is valid and setting it to zero otherwise.
@@ -777,11 +822,12 @@ On the registered contrast, M1 against the single reference pooled over $k > 1$,
 Against blind, M1's own delta at $k > 1$ is $-0.05$ $[-0.32, +0.21]$ and $+0.16$ $[+0.00, +0.33]$, against $+1.50$ and $+1.07$ under a single reference (Table~\ref{tab:struct}).
 What that removes is the measured inflation at $n{=}64$, not the anchoring channel itself: margins roughly halve rather than vanish, from $+5.02$ to $+2.98$ for Qwen-7B and from $+3.73$ to $+1.79$ for phi-4 at $k{=}2$, against blind margins of $+0.08$ and $+0.11$, and the residual stays between a third and a half of the single-reference margin at $k{=}4$ and $k{=}8$ as well, rather than shrinking with $k$ (Table~\ref{tab:struct}, margin columns).
 Whether that residual premium re-emerges as inflation under more optimization is the obvious worry, and within the range we can measure it does not.
-Sweeping the selection budget from best-of-2 to best-of-64 on the same $k{>}1$ items, the single reference's hack-gap premium over blind climbs monotonically, $+0.07$ to $+1.44$ for Qwen-7B and $+0.08$ to $+0.83$ for phi-4, while M1's stays flat and indistinguishable from blind across the whole range, spanning $-0.06$ to $-0.03$ and $-0.12$ to $+0.03$ (post hoc).
+Sweeping the selection budget from best-of-2 to best-of-64 on the same $k{>}1$ items, the single reference's hack-gap premium over blind climbs monotonically, $+0.07$ to $+1.44$ for Qwen-7B and $+0.08$ to $+0.83$ for phi-4, while M1's stays flat, spanning $-0.06$ to $-0.00$ and $-0.12$ to $+0.03$ (post hoc).
+M1 is never above blind at any budget; three of its twelve budget cells sit detectably below blind, all in M1's favor.
 So the residual sits in the margins without converting into inflation over a thirty-two-fold change in selection pressure; budgets far beyond 64, and optimizers that adapt to the judge rather than sampling independently, remain untested.
 At $k{=}1$ the honest statement is that M1 costs nothing rather than that it preserves a benefit.
 Its $k{=}1$ deltas, $+0.41$ $[-0.09, +0.84]$ for Qwen-7B and $+0.04$ $[-0.13, +0.27]$ for phi-4, are indistinguishable from blind, but the only $k{=}1$ benefit measured in this experiment is phi-4's single-reference $-0.11$ $[-0.14, -0.07]$, and neither M1 interval reproduces it; the Qwen-7B point estimate is the largest $k{=}1$ harm in the table.
-Unlike the one-sentence any-correct-answer instruction of Section~\ref{sec:synthk}, which is inert for the mid-size judge, M1 removes the inflation for both judges tested, so its effect did not differ between them.
+Unlike the one-sentence any-correct-answer instruction of Section~\ref{sec:synthk}, which is inert for the mid-size judge, M1 removes the measured inflation for both judges tested, with two judge-specific edges: phi-4's pooled $k{>}1$ delta has a lower bound sitting exactly on zero, and phi-4 alone shows the $k{=}16$ residual noted above.
 Ordering the judge's own calls is a stronger lever than telling it what to believe.
 One residual remains visible at the highest multiplicity for phi-4, whose M1 delta at $k{=}16$ is $+0.44$ $[+0.13, +0.76]$, the only M1 cell whose interval excludes zero.
 
@@ -1021,7 +1067,7 @@ More capable judges reduce the anchoring premium but do not eliminate it.
 The two halves of that rule do not stand equally, which is why we state it directionally rather than as a law.
 The multiplicity half, that a reference is safe only if the answer is effectively unique, held across six judges, two task families, and two generators on the grid, and is preregistered and replicated on the fresh pool of Section~\ref{sec:repl}.
 The uniqueness half, that a reference helps when the answer is unique, held within family and for the strongest cross-family judge, but failed for a mid-size judge on cross-generator text (ledger, P-S5).
-The $k$-stratified experiment of Section~\ref{sec:struct} retests both halves under external preregistration with $k$ fixed per item, and confirms them: at $k{=}1$ a single reference costs nothing, with the only measured benefit phi-4's and Qwen-7B's $k{=}1$ delta a null, and at $k > 1$ it adds $+1.50$ $[+1.17, +1.82]$ and $+1.07$ $[+0.81, +1.34]$ of inflation over blind.
+The $k$-stratified experiment of Section~\ref{sec:struct} retests both halves under external preregistration with $k$ fixed per item, confirms the multiplicity half, and leaves the uniqueness half resting on one judge: at $k > 1$ a single reference adds $+1.50$ $[+1.17, +1.82]$ and $+1.07$ $[+0.81, +1.34]$ of inflation over blind, while at $k{=}1$ it costs nothing, with the only measured benefit phi-4's and Qwen-7B's $k{=}1$ delta a null.
 
 The operational advice is correspondingly simple, and it is now a procedure rather than only a prohibition.
 \textbf{Score blind first, then reveal the reference and let it correct only demonstrated errors.}
@@ -1099,25 +1145,30 @@ P-M4 & Per-$k$ trend of each protocol on the $k$-stratified pool & \emph{explora
 Registered P-M contrasts & The contrasts P-M1, P-M2, and P-M3 were registered on, computed directly rather than read off adjacent columns, plus the M2 validity-multiplier audit & computed after the round-6 review, from the same frozen scores & \emph{Post hoc computation of registered statistics}: P-M3 step $+1.45$ and $+1.18$; M1 versus single reference $-1.55$ and $-0.91$; M2 versus single reference $-0.19$ (crossing zero) and $-1.14$; multiplier audit $0.998$ versus $0.422$ (Qwen-7B) and $0.987$ versus $0.965$ (phi-4). Artifact named in the notes to Table~\ref{tab:struct} \\
 \addlinespace[1pt]
 Selection-pressure curve & Paired referenced-minus-blind hack gap on the replication pool as a function of the best-of-$n$ budget & not registered & \emph{Post hoc}: monotone and excluding zero from $n{=}2$ ($+0.076$) to $n{=}64$ ($+0.895$), in raw hack-gap units rather than baseline SD, so not comparable with E1 (Table~\ref{tab:pressure}) \\
+\addlinespace[1pt]
+Replication disclosures & Boxed compliance, pass-rate attribution, pilot-overlap sensitivity, and eligible-versus-in-band counts on the replication pool & not registered & \emph{Post hoc}, demanded by the round-6 review; quoted in Section~\ref{sec:repl} \\
+\addlinespace[1pt]
+Band match and margin linkage & The $k$-stratified $k{>}1$ deltas recomputed under the replication's band, and the per-item margin-to-inflation correlation & not registered & \emph{Post hoc}, demanded by the v15 reviews: band-matched $+1.48$ and $+1.19$ on 39 items; linkage $r = +0.06$ and $+0.29$ (Sections~\ref{sec:mech} and~\ref{sec:struct}) \\
+\addlinespace[1pt]
+Round-8 follow-ups & Matched-population recompute ($n{=}83$), M1 under rising selection pressure, and an attenuation sweep treating the inflation measurement noise as unidentifiable & not registered & \emph{Post hoc}; the matched recompute and pressure sweep stand, the attenuation sweep is \emph{superseded}: its noise parameter is identifiable after all (next row) \\
+\addlinespace[1pt]
+Linkage power analysis & Split-half estimate of the inflation measurement noise from the rubric replicates, and the exact-pathway simulation recomputed at that noise; also the band-match composition figures, the boxed-compliance decomposition, and the worked example of Section~\ref{sec:setup} & not registered & \emph{Post hoc}, demanded by the v18 review: an exact per-item linear pathway would show $r = 0.82$ and $0.90$ at this design's noise; the observed $+0.06$ and $+0.29$ fall below its 2.5th percentile, so the pathway is rejected and the earlier ``uninformative'' reading is retracted (Section~\ref{sec:mech}) \\
 \end{longtable}
 \endgroup
 
 \paragraph{Reproducibility and provenance.}
 Every number in this paper is computed from committed score files in the released repository, and every number that scores a registered prediction comes from a committed analysis script written before the corresponding run.
-Three artifacts are post hoc rather than pre-run: the round-6 disclosure numbers, the registered P-M contrasts and validity-multiplier audit, and the selection-pressure curve were all computed after the fact from those same committed score files.
-They are reproducible but not preregistered.
-One qualification matters: the P-M1, P-M2 and P-M3 verdicts are read off the contrasts artifact, so while the \emph{statistics} those predictions name were registered in advance, the \emph{computation} of them was done after the round-6 review.
+The repository's manifest lists every canonical artifact, its committed producer, and whether that producer was frozen before the run or written after a review round, so this text can stay free of filenames; the split is six registered analyses and, after four review rounds, six post-hoc artifacts regenerated end to end by four committed producers.
+One qualification matters: the P-M1, P-M2 and P-M3 verdicts are read off the post-hoc contrasts artifact, so while the \emph{statistics} those predictions name were registered in advance, the \emph{computation} of them was done after the round-6 review.
 The remaining confirmatory verdicts do not depend on any post-hoc artifact.
 One script produces all rotation-arm analyses: paired same-sample deltas, margins, blind margins, placebo and loser controls, and rotation-arm collapse rates with exact tests.
 A second produces all dynamic-inversion analyses: inflation, paired and pooled deltas, lost-accuracy deltas, and original-arm collapse rates.
 The frozen pre-committed grid analysis scores the registered decision rules, and the post-hoc paired re-analysis lives in a separate committed script (Table~\ref{tab:ledger}).
 The three post-hoc checker audits are likewise released as committed artifacts alongside the score files, and the $k$-stratified structural-mitigation numbers come from a separate committed script written and registered before the run (\texttt{mitigation\_analysis.py}; Section~\ref{sec:struct}).
-Five post-hoc artifacts in total are released, covering the disclosures, the registered contrasts, the pressure curve, the band-matched and margin-linkage analyses, and the round-8 follow-ups; three committed producers regenerate all five end to end, so no number in this paper is hand-computed.
-Every canonical artifact is named in the released repository's manifest rather than in this text, so that the argument here can be read without filenames.
 One provenance note prevents a name from misleading: the rotation-arm McNemar collapse tests are produced by the paired-inference script (\texttt{synthk\_paired.py}), despite that script's synthetic-grid name.
 Monte Carlo seeds are fixed throughout, and small differences from earlier drafts, up to about $0.02$ on a bootstrap bound, reflect regenerated bootstrap and permutation estimators, not new data.
-Two earlier-draft errors are corrected here.
-The collapse inference now uses exact McNemar tests on paired per-item indicators, superseding the unpaired Fisher tests, and a script bug that let the blind baseline select only among valid samples is fixed, so both arms now select over all 64 samples, exactly as the judges do.
+Three earlier-draft errors are corrected here.
+The collapse inference now uses exact McNemar tests on paired per-item indicators, superseding the unpaired Fisher tests; a script bug that let the blind baseline select only among valid samples is fixed, so both arms now select over all 64 samples, exactly as the judges do; and the round-8 attenuation sweep, which treated the inflation measurement noise as unidentifiable, is superseded by the split-half power analysis of Section~\ref{sec:mech}, which shows that noise is identifiable from the rubric replicates and that the earlier ``cannot discriminate'' conclusion was wrong.
 One standing caveat closes the bookkeeping: Qwen2.5-7B-Instruct both generates the grid pool and sits on the judge ladder, so the Qwen-7B judge cells on that pool are a generator-equals-judge configuration.
 
 \FloatBarrier
@@ -1173,9 +1224,14 @@ Both also cost two judge calls per candidate instead of one, a real practical tr
 We have not tested whether the blind-then-reveal ordering survives when the reference is long or itself uncertain, nor whether it holds on free-form generation where validity is not programmatically checkable.
 
 \paragraph{Post-hoc analyses carry no registration weight.}
-The paired inference, the McNemar collapse tests, the boxed-extraction audit of the Llama pool, the selection-pressure curve of Table~\ref{tab:pressure}, and the validity-multiplier audit behind M2's failure mechanism are post-hoc additions demanded by review (Table~\ref{tab:ledger}).
+The paired inference, the McNemar collapse tests, the boxed-extraction audit of the Llama pool, the selection-pressure curve of Table~\ref{tab:pressure}, the band-match and linkage analyses, and the validity-multiplier audit behind M2's failure mechanism are post-hoc additions demanded by review (Table~\ref{tab:ledger}).
 The registered P-M contrasts were also computed after the fact, though they are the statistics the predictions were registered on rather than new statistics.
 The roughly 50 descriptive grid cells quoted here are uncorrected for multiple comparisons, with the pre-registered decision rules confined to the specific P-S contrasts.
+
+\paragraph{The mechanism is causal for scores, not a per-item account of inflation.}
+Rotation proves anchoring moves scores within items, but the per-item linkage test of Section~\ref{sec:mech} rejects an exact linear pathway from anchoring margin to inflation for both judges at this design's own measurement noise.
+How anchoring aggregates into per-item inflation is therefore unresolved: margin size alone does not decide which items inflate, and candidates for the missing structure, such as whether a matching valid sample happens to exist among the 64, are not separated by this design.
+An earlier draft called this test uninformative; that reading was wrong and is retracted in Section~\ref{sec:mech} and the ledger.
 
 \section{Related work}
 
@@ -1200,8 +1256,7 @@ Its Ties subset was built precisely because equally valid answers expose evaluat
 Optimization against imperfect evaluators is the classic overoptimization setting~\cite{gao2022scaling}; our contribution is to show that a mitigation assumed to reduce exploitability can increase it, depending on answer structure.
 Companion A establishes the unique-answer collapse, the capability gate, and the static Ties result this paper extends dynamically~\cite{companionA}; companion B gives the underlying decomposition, that comparison-to-reference metrics measure properties of the reference rather than of the solution~\cite{companionB}.
 
-\medskip
-\noindent\textbf{Conclusion.}
+\section{Conclusion}
 The reference lever is not a safety default; it is a conditional instrument with a sign.
 Unique answer and a capable judge: it collapses gaming.
 Multiple valid answers: it becomes the attack surface, and the judge's trust in the answer key is exactly what gets exploited.

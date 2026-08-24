@@ -120,6 +120,12 @@ out["m1_pressure"] = dict(note=("paired hack-gap delta versus blind at k>1, raw 
                                 "climb with n the way the single reference's does"), by_judge=press)
 
 # ================= (3) can a real effect show a null per-item correlation? ==========
+# SUPERSEDED (round 9): this sweep treated the inflation measurement SD as unidentifiable.
+# It is identifiable by roles-swapped split-half from the two rubric replicates; see
+# round9_provenance.py (linkage_power), which also fixes two defects here: true margins are
+# drawn from the OBSERVED margins and measurement noise re-added (double-counting), and the
+# stipulated slope note ("slope only sets scale, not the correlation") is wrong -- with
+# additive noise the slope enters r directly. Kept unchanged for the record.
 # Anchoring drives inflation exactly, item-for-item, then both are measured with the sampling
 # noise the real design has. Two of the three noise parameters are ESTIMATED FROM THE POOL rather
 # than stipulated; the third (how noisily per-item inflation itself is measured) is not directly

@@ -725,3 +725,35 @@ number comes from," placed after Results.
 the most-read object in the paper; the "helps five of six judges" tally now discloses that it is
 one pool rather than six replications, and that the single judge it fails for is the only one
 tested on a different generator's text.
+
+---
+
+## Round 9 (v19): the "uninformative" reading of the linkage null is RETRACTED
+
+**Deviation/supersession disclosure, 2026-08-24.** The round-8 attenuation sweep (previous
+section) treated the inflation measurement SD as "NOT identifiable from the data." The v18
+internal review showed it IS identifiable: the two rubric replicates give two estimates of every
+item's margin and inflation, and the roles-swapped split-half (estimates (a,b) vs (b,a),
+SD of the difference divided by sqrt(2)) puts the inflation measurement SD at 0.457 (Qwen-7B)
+and 0.352 (phi-4), against observed per-item inflation spreads of 1.107 and 0.987. Rerunning the
+exact-pathway simulation at that data-implied noise, with two corrections to the round-8 sim
+(margins deconvolved before the pathway is applied, where round 8 drew true margins from the
+OBSERVED margins and re-added measurement noise, double-counting; slope set so the exact pathway
+reproduces the measurement-corrected inflation variance, where round 8 stipulated 0.22 and
+wrongly noted that slope "only sets scale"):
+
+| judge | exact-pathway r at data-implied noise | observed r | percentile |
+|---|---|---|---|
+| Qwen-7B | 0.818 [0.687, 0.906] | +0.06 | 0.0 |
+| phi-4   | 0.901 [0.824, 0.951] | +0.29 | 0.0 |
+
+Both observed values fall below the 2.5th percentile. The design does discriminate, and an exact
+per-item linear pathway from anchoring margin to inflation is REJECTED for both judges. The
+round-8 conclusion ("uninformative") is retracted; the paper, ledger, and Limitations now state
+the rejection. The rotation result (anchoring causally moves scores within items) and the
+aggregate correspondence are unaffected. Producer: papers/analysis/round9_provenance.py
+(artifact round9_provenance.json), which also commits producers for three previously
+hand-computed quantities (band-match multiplicity composition 43.6% vs 16.2% k>=8, mean k 6.51
+vs 5.82; the boxed-compliance decomposition previously computed by boxed_diag.py, which wrote
+nothing; a worked example of the inflation estimator on item repl/crt-11). The artifact
+manifest the paper references now exists at papers/analysis/MANIFEST.md.

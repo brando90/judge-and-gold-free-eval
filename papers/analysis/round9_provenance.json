@@ -1,0 +1,103 @@
+{
+ "linkage_power": {
+  "note": "exact-pathway simulation at the DATA-IMPLIED inflation measurement SD, estimated by roles-swapped split-half from the two rubric replicates; margins deconvolved before the pathway is applied; slope set so the exact pathway reproduces the deconvolved inflation variance. observed_r_percentile_in_sim < 2.5 rejects an exact per-item linear pathway at that noise level.",
+  "by_judge": {
+   "Qwen__Qwen2.5-7B-Instruct": {
+    "n_items": 35,
+    "observed_r_ab": 0.075,
+    "infl_measurement_sd": 0.457,
+    "margin_measurement_sd": 0.497,
+    "obs_infl_sd": 1.107,
+    "obs_margin_sd": 1.182,
+    "implied_exact_slope": 0.94,
+    "sim_r_mean": 0.818,
+    "sim_r_pct2_5": 0.687,
+    "sim_r_pct97_5": 0.906,
+    "observed_r_percentile_in_sim": 0.0,
+    "mean_valid_matching": 7.77,
+    "mean_valid_other": 22.17,
+    "within_item_judge_score_sd": 1.284
+   },
+   "microsoft__phi-4": {
+    "n_items": 35,
+    "observed_r_ab": 0.296,
+    "infl_measurement_sd": 0.352,
+    "margin_measurement_sd": 0.393,
+    "obs_infl_sd": 0.987,
+    "obs_margin_sd": 1.595,
+    "implied_exact_slope": 0.596,
+    "sim_r_mean": 0.901,
+    "sim_r_pct2_5": 0.824,
+    "sim_r_pct97_5": 0.951,
+    "observed_r_percentile_in_sim": 0.0,
+    "mean_valid_matching": 7.77,
+    "mean_valid_other": 22.17,
+    "within_item_judge_score_sd": 0.773
+   }
+  }
+ },
+ "composition": {
+  "band_matched_kstrat": {
+   "n": 39,
+   "share_k_ge_8": 0.436,
+   "mean_k": 6.51
+  },
+  "replication_inband": {
+   "n": 105,
+   "share_k_ge_8": 0.162,
+   "mean_k": 5.82
+  },
+  "note": "multiplicity composition of the two populations compared in the band-match"
+ },
+ "boxed_decomposition": {
+  "median_boxed_rate": 0.641,
+  "by_stratum": {
+   "clean_ge_median": {
+    "n": 56,
+    "base_acc": 0.6,
+    "judge_gain_ref": 1.751,
+    "judge_gain_blind": 0.99,
+    "judge_gain_delta": 0.761,
+    "true_gain_ref": 0.141,
+    "true_gain_blind": 0.194,
+    "true_gain_delta": -0.053
+   },
+   "messy_lt_median": {
+    "n": 49,
+    "base_acc": 0.365,
+    "judge_gain_ref": 2.2,
+    "judge_gain_blind": 1.355,
+    "judge_gain_delta": 0.845,
+    "true_gain_ref": 0.451,
+    "true_gain_blind": 0.594,
+    "true_gain_delta": -0.143
+   }
+  }
+ },
+ "worked_example": {
+  "selection_rule": "in-band item with Qwen-7B per-item delta closest to the per-judge E1 point estimate",
+  "problem_id": "repl/crt-11",
+  "per_item_delta": 1.256,
+  "referenced": {
+   "selected_reported_score": 9.99,
+   "pool_mean_score": 3.18,
+   "pool_score_sd": 2.4,
+   "selected_valid": true,
+   "pool_valid_rate": 0.312,
+   "judge_gain_sd_units": 2.84,
+   "true_gain": 0.688
+  },
+  "blind": {
+   "selected_reported_score": 9.72,
+   "pool_mean_score": 5.16,
+   "pool_score_sd": 2.11,
+   "selected_valid": true,
+   "pool_valid_rate": 0.312,
+   "judge_gain_sd_units": 2.16,
+   "true_gain": 0.688
+  },
+  "permutation_null_ref": -0.25,
+  "permutation_null_blind": 0.044,
+  "note": "hack gap per arm = judge_gain - true_gain - permutation null; the per-item inflation delta differences the two arms' gaps. The tie-splitting selection in per_item_curves makes the committed estimator's per-item delta differ slightly from the single-argmax unpacking shown here, which is illustrative only."
+ }
+}
