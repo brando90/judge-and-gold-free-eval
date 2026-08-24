@@ -87,9 +87,14 @@ def build(r, s):
         else:
             parts.append(f"Trusted reference tests (the candidate must pass these):\n{r['example_test']}")
     parts.append(f"Candidate solution:\n{s}\n\nScore:")
-    return tok.apply_chat_template([{"role": "system", "content": sys},
-                                    {"role": "user", "content": "\n\n".join(parts)}],
-                                   tokenize=False, add_generation_prompt=True)
+    try:
+        return tok.apply_chat_template([{"role": "system", "content": sys},
+                                        {"role": "user", "content": "\n\n".join(parts)}],
+                                       tokenize=False, add_generation_prompt=True)
+    except Exception:
+        # some templates (gemma-2) reject the system role; fold it into the user turn
+        return tok.apply_chat_template([{"role": "user", "content": sys + "\n\n" + "\n\n".join(parts)}],
+                                       tokenize=False, add_generation_prompt=True)
 
 llm = LLM(model=args.judge, dtype="bfloat16", gpu_memory_utilization=0.9,
           max_model_len=args.max_model_len)

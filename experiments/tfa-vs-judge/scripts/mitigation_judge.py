@@ -46,9 +46,14 @@ NO = [i for s in ("No", " No", "NO", "no", " no") for i in [tok.encode(s, add_sp
 NO = {i[0] for i in NO}
 
 def chat(sysmsg, user):
-    return tok.apply_chat_template([{"role": "system", "content": sysmsg},
-                                    {"role": "user", "content": user}],
-                                   tokenize=False, add_generation_prompt=True)
+    try:
+        return tok.apply_chat_template([{"role": "system", "content": sysmsg},
+                                        {"role": "user", "content": user}],
+                                       tokenize=False, add_generation_prompt=True)
+    except Exception:
+        # some templates (gemma-2) reject the system role; fold it into the user turn
+        return tok.apply_chat_template([{"role": "user", "content": sysmsg + "\n\n" + user}],
+                                       tokenize=False, add_generation_prompt=True)
 
 def blind_prompt(r, s):
     return chat(RUBRIC_TIES[("noref", args.rep)],

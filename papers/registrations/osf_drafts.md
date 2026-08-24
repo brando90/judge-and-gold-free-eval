@@ -133,3 +133,52 @@ P-M4 (exploratory, no confirmatory claim): mitigation effectiveness as a functio
 (margins, paired gaps over the bon_analysis machinery, item-level cluster bootstrap, exact
 McNemar where selection collapse is reported); the analysis script will be committed before
 the main pool is generated, and any deviation will be reported as a deviation.
+
+---
+
+## Registration 5: judge-coverage extension of the k-stratified structural-mitigation experiment
+
+**Status at registration.** The osf.io/qugbd pool (75 tasks, exactly k valid answers per
+stratum, k in {1, 2, 4, 8, 16}) and its Llama-3.1-8B-Instruct best-of-64 sample pools exist
+and are frozen; they are reused unchanged. NO judging by any judge named below has been run,
+and no score file for these judges exists. Registered before any new data.
+
+**Motivation.** The mitigation recommendation (M1, blind-then-reveal) currently rests on two
+judges. This extension tests whether the single-reference harm and M1's removal of it
+replicate on judges from two additional model families plus one capability step within an
+existing family.
+
+**Judges.** google/gemma-2-9b-it (Google family, new), mistralai/Mistral-7B-Instruct-v0.3
+(Mistral family, new), Qwen/Qwen2.5-14B-Instruct (same family as the original Qwen-7B judge,
+twice the size). Substitution rule, decided before any scores are examined: a judge that
+fails to load or produce scores in the committed vLLM harness is replaced by
+01-ai/Yi-1.5-9B-Chat, and the failure is reported; no other substitution is permitted.
+One harness change is committed before the run: the prompt builder folds the system message
+into the user turn for chat templates that reject a system role (gemma-2); all other judges
+are unaffected.
+
+**Conditions.** Identical to osf.io/qugbd: blind, single reference, M1 blind-then-reveal,
+M2 equivalence-gated (the soft-gate implementation actually used there, disclosed at
+osf.io/kszeu), each with two rubric replicates (selection on a, reporting on b).
+
+**Primary endpoints.** The frozen estimators of the committed mitigation_analysis.py,
+applied unchanged: per-judge anchoring margins per condition, and per-item paired
+condition-minus-blind excess-gap deltas at n = 64, item-level cluster bootstrap, pooled over
+k > 1 and per stratum; plus the registered contrasts of the committed contrasts producer
+(M1 minus single reference at k > 1; the k=1-to-k>1 step).
+
+**Predictions.**
+P-X1 (harm replicates): for EACH new judge, the single-reference k > 1 pooled inflation
+delta versus blind is positive with 95% CI excluding zero.
+P-X2 (M1 harm-removal replicates): for EACH new judge, the M1-minus-single-reference
+contrast at k > 1 is negative with 95% CI excluding zero.
+P-X3 (M1 near blind, directional): for each new judge, |M1's k > 1 delta versus blind| is
+smaller than the single reference's; stated directionally, no CI requirement.
+P-X4 (M2, exploratory): M2's judge-dependence is recorded per judge (removes inflation, or
+backfires above blind); no confirmatory prediction, given the observed Qwen/phi-4 split.
+Scoring: P-X1 and P-X2 are confirmed only if they hold for every new judge that runs;
+a judge replaced under the substitution rule is scored on the substitute.
+
+**Analysis.** mitigation_analysis.py and the contrasts machinery, committed before this
+registration, applied without modification beyond extending the judge list; any deviation
+will be reported as a deviation.
