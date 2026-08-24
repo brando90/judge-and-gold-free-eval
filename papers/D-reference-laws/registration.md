@@ -257,3 +257,84 @@ the abstract, contributions, ledger, and Limitations updated accordingly.
 
 ## Public-visibility note (2026-08-23)
 All three OSF registrations (jg4ak, axp3s, ym5x9) were approved by the registrant and are publicly visible with anonymous access; registration timestamps 2026-08-23 19:29 UTC precede all corresponding data.
+
+## Outcome note (2026-08-23): k-stratified structural mitigations (osf.io/qugbd); P-M1 confirmed, P-M2 partial, P-M3 confirmed
+
+Externally registered at `osf.io/qugbd` on 2026-08-23 22:56, before any pool was built and before
+any data was generated. This is the paper's fourth external registration. All numbers below:
+`papers/analysis/mitigation_results.json` (canonical; produced by the committed
+`papers/analysis/mitigation_analysis.py`, written and registered before the run).
+
+Design as registered: 75 tasks with EXACTLY k valid answers, 15 items per stratum at
+k in {1, 2, 4, 8, 16}, drawn from the same five programmatically verifiable families as the
+ym5x9 replication, so validity is exact by construction (all 465 stored answers verified against
+the family oracles). Generator: Llama-3.1-8B-Instruct. Judges: Qwen2.5-7B-Instruct and phi-4
+(the same cross-family pair as the replication). Four conditions, each with two rubric
+replicates:
+
+- **blind**: no reference.
+- **ref**: single reference in context (the paper's standard referenced condition).
+- **M1, blind-then-reveal**: call one scores the candidate blind; call two shows the reference
+  plus the judge's own blind score, instructing that a correct answer differing from the
+  reference keeps its score.
+- **M2, equivalence-gated**: call one scores blind; a separate call asks only whether the
+  candidate's final answer is valid, with the reference shown as one valid example; the final
+  score is the blind score if the candidate is judged valid, and zero otherwise.
+
+Estimands identical to the rest of the paper: anchoring margins (E1, rubric a, defined for
+k > 1 on items where matching and non-matching valid answers coexist) and per-item paired
+condition-minus-blind excess-gap deltas at n=64 with an item bootstrap (E2). Per-stratum item
+counts entering E2: 15, 15, 13, 14, 11 at k = 1, 2, 4, 8, 16 (k>1 pooled n=53). Margin item
+counts: 15 at k=2, 12 at k=4, 10 at k=8; the k=16 stratum has too few coexistence items to
+report a margin.
+
+- **P-M3 (single reference helps at k=1, harms at k>1): CONFIRMED**, now with exact per-item k
+  control and external preregistration. Gap delta vs blind at k=1: +0.05 [-0.30, +0.43]
+  (Qwen-7B) and -0.11 [-0.14, -0.07] (phi-4), i.e. no harm, or a benefit, when the answer is
+  unique. Pooled over k>1: +1.50 [+1.17, +1.82] (Qwen-7B) and +1.07 [+0.81, +1.34] (phi-4).
+  Trend: the harm steps up at k=2 and stays elevated, Qwen-7B +0.96 [+0.58, +1.34] at k=2 and
+  +1.39 [+0.71, +2.05] at k=16; phi-4 +0.58 [+0.29, +0.87] and +1.28 [+0.89, +1.69].
+- **P-M1 (M1 reduces margin and gap at k>1, preserves the k=1 benefit): CONFIRMED**, and
+  importantly NOT capability-gated. M1 gap delta vs blind at k>1 pooled: -0.05 [-0.32, +0.21]
+  (Qwen-7B) and +0.16 [+0.00, +0.33] (phi-4), against single-reference +1.50 and +1.07. Margins
+  roughly halve for both judges: at k=2, Qwen-7B 5.02 [4.45, 5.51] -> 2.98 [2.35, 3.57] and
+  phi-4 3.73 [3.04, 4.39] -> 1.79 [1.18, 2.36]. The k=1 benefit is preserved: M1 deltas at k=1
+  are +0.41 [-0.09, +0.84] (Qwen-7B) and +0.04 [-0.13, +0.27] (phi-4), both indistinguishable
+  from blind. Unlike the one-sentence any-correct-answer instruction (P-S2/P-S2b), which is a
+  placebo below frontier capability, M1 works for the mid-size judge and the strong judge alike.
+- **P-M2 (M2 removes the margin, CI including zero at every k>1, gap at or below blind):
+  PARTIALLY CONFIRMED**, capability-gated in the OPPOSITE direction from the instruction fix.
+  For phi-4 M2 fully neutralizes anchoring: k=2 margin +0.14 [-0.07, +0.34], CI including zero
+  and indistinguishable from that judge's blind margin of +0.11 [-0.06, +0.28]; gap delta at
+  k>1 pooled -0.07 [-0.11, -0.03], with no stratum above blind by more than sampling noise
+  (per-k -0.07, -0.11, +0.03, -0.15 at k=2,4,8,16). For Qwen2.5-7B M2 fails and is worse than a
+  plain reference: k=2 margin +6.62 [5.60, 7.56] against +5.02 for single reference, gap delta
+  at k>1 +1.31 [+0.91, +1.77]. Mechanism of the failure: the standalone validity call is
+  unreliable at that scale, and a wrong invalid verdict zeroes an otherwise good blind score.
+  Below the capability line the instruction fix was inert and harmless, while M2 is actively
+  harmful, so protocol choice is itself capability-dependent.
+- **P-M4 (per-k trend across protocols): EXPLORATORY**, not individually registered, reported
+  descriptively. The single-reference harm steps up at k=2 and stays elevated for both judges.
+  M1 sits near zero at every stratum for Qwen-7B (deltas -0.30 to +0.12 across k=2,4,8,16) and
+  for phi-4 except a residual at k=16, +0.44 [+0.13, +0.76], the only M1 cell whose interval
+  excludes zero. M2 splits by judge at every k: phi-4 spans -0.15 to +0.03 and never rises above
+  blind detectably, while Qwen-7B climbs with multiplicity to +2.77 [+1.75, +3.89] at k=16, the
+  largest single cell in the experiment.
+
+Practitioner payoff, now stated in the paper rather than only a prohibition: score blind first
+and let the reference only correct demonstrated errors. That removes the measured harm at k>1
+for both judges tested while preserving the k=1 benefit, and where the judge is strong enough to
+decide validity on its own, decomposing validity into a separate call removes the harm entirely.
+
+Scope stated in the paper's Limitations: 75 items, five constraint families of the same
+programmatic kind as the replication rather than free-form generation, one generator, two
+judges, two protocol families; margins are rubric-a only and the k=16 stratum yields no margin;
+M2's failure at mid scale means protocol choice is capability-dependent and neither protocol
+should be assumed to transfer without auditing the validity call on the deployment's own tasks;
+and both protocols cost two judge calls per candidate, roughly doubling judge inference, which
+is a real practical trade against leaving the judge blind at single cost.
+
+Integrated in the paper as Section 3.4 (`sec:struct`, "Structural mitigations: judge blind
+first, then reveal", Table 6 `tab:struct`), placed after the k-grid section and before the
+exploratory Ties section, with the abstract, contributions, boundary/practitioner rule,
+conclusion, ledger (rows P-M1..P-M4), and Limitations updated accordingly.
