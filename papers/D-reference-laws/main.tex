@@ -137,6 +137,19 @@
 %   trimmed; k=4 and k=8 margins added to tab:struct; M1/M2 defined in the notes
 %   of tab:struct and tab:rule.
 % Build: pdflatex main && bibtex main && pdflatex main && pdflatex main
+% v18 (abstract rewrite, craft only): the 19-sentence abstract is rewritten to
+% 12 sentences on the 6-point structure (problem, assumption, flip, method,
+% evaluation, implication). NO claim, number, or registration changed. Facts
+% moved out of the abstract all retain body homes: 105/120 item detail
+% (sec:repl), the 2.5x exploratory comparison (contributions, tab:repl notes),
+% the five-of-six tally + one-pool disclosure (contributions, tab:paired
+% caption, sec:synthk), M2's split outcome (contributions, tab:struct,
+% sec:struct), the P-S5 k=1 non-replication (contributions, ledger), and the
+% attenuation-simulation sentence (sec:mech; the abstract keeps "a question
+% this design cannot answer"). "Anchoring is the mechanism we can demonstrate"
+% is retired in favor of "anchoring is therefore causal for scores, though
+% whether it quantitatively accounts... this design cannot answer", per the
+% v17 cold read's part-3(a) note. Title date v13 -> v18 (was stale).
 \documentclass[11pt]{article}
 \usepackage[margin=1in]{geometry}
 \usepackage{amsmath,amssymb}
@@ -152,7 +165,7 @@
 
 \title{When the Answer Key Backfires:\\ \large Reference Anchoring Turns LLM Judges into Answer Matchers}
 \author{Anonymous Authors}
-\date{Draft v13, August 24, 2026}
+\date{Draft v18, August 24, 2026}
 
 \usepackage{placeins}
 \renewcommand{\topfraction}{0.9}
@@ -167,25 +180,18 @@
 
 \begin{abstract}
 \noindent
-A trusted reference answer in an LLM judge's context is widely treated as a safeguard against gaming.
-On tasks with several valid answers it does the opposite.
-We show this on short-answer tasks with exact programmatic validity oracles, where ``several valid answers'' can be controlled and verified rather than argued about; free-form generation is outside what we test.
-Within that scope the result is an externally preregistered replication, with population, estimators, and endpoints frozen before any pool generation (\texttt{osf.io/ym5x9}).
-On 105 in-band items of 120 fresh exact-checker tasks, with a non-Qwen generator and two cross-family judges, the reference raises scoreboard inflation over the blind judge by $+1.19$ $[+1.02, +1.36]$ baseline standard deviations, and all three registered predictions are confirmed.
-Restricted to the items where answer extraction is cleanest, the same estimate is $+0.90$ $[+0.65, +1.16]$, which we take as the conservative reading.
-That is about two and a half times the exploratory best-of-$n$ effect it was registered to test, in which referenced judges out-inflated their blind twins at every judge scale on multi-valid \textsc{RewardBench-2} Ties tasks.
-On unique-answer math the same reference collapses inflation four- to thirteen-fold~\cite{companionA}.
-Anchoring is the mechanism we can demonstrate, and rotating the reference proves it causal: re-judged with the reference switched to a different valid answer, the identical sample text gains up to $+9.5$ points on the judge's ten-point scale, purely because the shown reference now matches it.
-What we cannot yet show is the rest of that pathway: across items a larger anchoring margin does not reliably predict a larger inflation, and a calibrated simulation shows this design could not have detected such a link even if it were exact, so anchoring is demonstrably causal for scores without yet being a quantitative account of the inflation it accompanies.
-A registered grid of synthetic tasks with a controlled number of valid answers, $k$, locates the switch: crossing from $k{=}1$, where the reference helps five of the six judges tested, to $k{>}1$ shifts every judge, across model families, toward inflation.
-That five-of-six tally is one pool, not six replications: the single judge it fails for is also the only one tested on text from a different generator.
-The harm half of that boundary is the robust half: the benefit half holds on the grid but does not survive a change of generator, and is a null for one of the two judges in the registered $k$-controlled pool.
-One fix works, and it is externally preregistered too (\texttt{osf.io/qugbd}, registered before any data existed, on a pool with exactly $k$ valid answers per item).
-Have the judge score blind first, and reveal the reference only afterwards, to correct demonstrated errors.
-That removes the measured inflation at $k{>}1$ for both judges tested, $-0.05$ and $+0.16$ against $+1.50$ and $+1.07$ under a single reference, and it costs nothing when the answer is unique, though it leaves a third to three fifths of the anchoring premium in place.
-Splitting validity into a separate probabilistic call removes the inflation for one of the two judges tested and backfires for the other.
-In-context fixes underperform: the any-correct-answer instruction is a placebo below frontier capability, and the $k{=}1$ benefit did not replicate for a mid-size judge on cross-family text.
-A raw reference is safe only when the answer is effectively unique and the judge can verify against it, and is worth showing only when a judge strong enough to use it is doing the verifying.
+A trusted reference answer in an LLM judge's prompt is widely treated as a safeguard against reward hacking.
+On tasks with more than one valid answer, we show it is the opposite: the reference turns the judge into an answer matcher, and under best-of-$n$ selection that inflates the scoreboard instead of protecting it.
+We test this where it can be settled exactly, on short-answer tasks with programmatic validity oracles, so the number of valid answers is controlled rather than argued about; free-form generation is outside our scope.
+In an externally preregistered replication, with population, estimators, and endpoints frozen before any data existed (\texttt{osf.io/ym5x9}), showing the reference raised inflation over a blind judge by $+1.19$ $[+1.02, +1.36]$ baseline standard deviations, $+0.90$ under the conservative reading, with every registered prediction confirmed for both cross-family judges.
+Rotating the reference shows why: re-judged with the reference switched to a different valid answer, the identical text gains up to $+9.5$ points on the judge's ten-point scale.
+Anchoring is therefore causal for scores, though whether it quantitatively accounts, item by item, for the inflation it accompanies is a question this design cannot answer.
+A registered grid with exactly $k$ valid answers per item locates the switch at the first step: crossing from $k{=}1$, where the reference sometimes helps and costs nothing otherwise, to $k{=}2$ shifts every judge tested, across three model families, toward inflation.
+The identical protocol on unique-answer math collapses inflation four- to thirteen-fold, so the lever's sign is set by the task's answer structure~\cite{companionA}.
+One fix works, and it too was preregistered before any data existed (\texttt{osf.io/qugbd}): have the judge score blind first, and reveal the reference only afterwards.
+That removes the measured inflation at $k{>}1$ for both judges tested, $-0.05$ and $+0.16$ against $+1.50$ and $+1.07$ under a single reference, and costs nothing when the answer is unique, though a third to three fifths of the anchoring premium survives in the margins.
+Prompting does not: telling the judge to accept any valid answer is a placebo below frontier capability.
+A reference answer is a lever, not a safeguard: safe when the answer is effectively unique, inflationary under selection when it is not, and disarmed by ordering, not instructions.
 \end{abstract}
 
 \begin{table}[t!]
