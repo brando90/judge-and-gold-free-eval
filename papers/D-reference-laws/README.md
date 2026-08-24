@@ -30,7 +30,11 @@ python ../../papers/analysis/mitigation_analysis.py  # -> mitigation_results.jso
 python ../../papers/analysis/synthk_analysis.py      # -> synthk_results.json    (grid, Tables 4-5)
 python ../../papers/analysis/ties_dynamics.py        # -> ties_*.json            (exploratory section)
 python ../../papers/analysis/ties_rot_controls.py    # -> ties_rot_controls.json (rotation, Table 3)
-python ../../papers/analysis/ties_p2_margin.py       # -> ties_p2_margin.json    (original-arm margins)
+python ../../papers/analysis/ties_p2_margin.py runs/bon_scores_ties_full
+                                                     # -> ties_p2_margin.json    (original-arm margins)
+                                                     # NOTE: the argument is required to reproduce the canonical
+                                                     # artifact; the no-arg default (runs/bon_scores_v2) is the
+                                                     # in-band smoke test and yields an empty result set
 
 # Post-hoc producers (review-round additions):
 python ../../papers/analysis/synthk_paired.py        # paired step/level/trend + rotation McNemar
