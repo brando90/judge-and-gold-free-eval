@@ -8,29 +8,37 @@
    1.927
   ]
  },
- "PM3_step__microsoft__phi-4": {
-  "n_hi": 53,
-  "n_lo": 15,
-  "step": 1.176,
-  "ci": [
-   0.901,
-   1.449
-  ]
- },
  "m1_vs_ref__Qwen__Qwen2.5-7B-Instruct": {
   "n": 53,
   "delta": -1.546,
   "ci": [
-   -1.889,
-   -1.189
+   -1.9,
+   -1.199
   ]
  },
  "m2_vs_ref__Qwen__Qwen2.5-7B-Instruct": {
   "n": 53,
   "delta": -0.187,
   "ci": [
-   -0.573,
-   0.248
+   -0.584,
+   0.259
+  ]
+ },
+ "m2_gate__Qwen__Qwen2.5-7B-Instruct": {
+  "n_match": 591,
+  "n_other": 1335,
+  "mean_mult_matching": 0.998,
+  "mean_mult_other": 0.422,
+  "frac_soft_matching": 0.0,
+  "frac_soft_other": 0.149
+ },
+ "PM3_step__microsoft__phi-4": {
+  "n_hi": 53,
+  "n_lo": 15,
+  "step": 1.176,
+  "ci": [
+   0.91,
+   1.453
   ]
  },
  "m1_vs_ref__microsoft__phi-4": {
@@ -48,14 +56,6 @@
    -1.399,
    -0.883
   ]
- },
- "m2_gate__Qwen__Qwen2.5-7B-Instruct": {
-  "n_match": 591,
-  "n_other": 1335,
-  "mean_mult_matching": 0.998,
-  "mean_mult_other": 0.422,
-  "frac_soft_matching": 0.0,
-  "frac_soft_other": 0.149
  },
  "m2_gate__microsoft__phi-4": {
   "n_match": 591,

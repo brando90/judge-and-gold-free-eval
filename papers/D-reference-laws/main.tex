@@ -317,7 +317,8 @@ Llama-3.1-8B-Instruct, a non-Qwen generator, writes the 64-sample pools, and the
 One design step is disclosed plainly.
 Pass rates were brought in band by design, through a two-pass pilot calibration that adjusted task-family difficulty and added a mandatory-boxing instruction to the generation prompt; an uncalibrated main-pool generation launched between the passes was killed before any scoring or analysis.
 Pilot items are excluded from the analysis population by construction, with one caveat: six main-pool items duplicate pilot problem text through seeded-window collisions, of which two survive the band filter and enter the primary endpoint.
-Excluding those two leaves the endpoint unchanged, $+1.19$ $[+1.02, +1.36]$ on $n{=}103$ against $+1.19$ $[+1.02, +1.36]$ on $n{=}105$ (\texttt{repl\_disclosures.json}).
+Excluding those two leaves the endpoint unchanged, $+1.20$ $[+1.02, +1.36]$ on $n{=}103$ against $+1.19$ $[+1.02, +1.35]$ on $n{=}105$ (\texttt{repl\_disclosures.json}).
+This sensitivity is an independent recomputation, so it differs from the frozen registered estimate of Table~\ref{tab:repl} in the third decimal through Monte Carlo variation alone.
 The final pool lands 105 of 120 items in the registered $[0.2, 0.8]$ band; the mean pass rate is $0.455$ over all 120 items and $0.491$ over the 105 in-band items.
 
 All three registered predictions were confirmed (Table~\ref{tab:repl}).
