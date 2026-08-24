@@ -442,20 +442,30 @@ New canonical artifact: `papers/analysis/repl_disclosures.json` (committed).
   attributed 0.455 to the in-band pool.
 - Pilot overlap: six main-pool items duplicate pilot problem text through seeded-window
   collisions, of which two survive the band filter. Excluding those two leaves E1 unchanged:
-  +1.19 [+1.02, +1.36] on n=103 versus +1.19 [+1.02, +1.36] on n=105. The earlier sensitivity
-  figure (+1.20 [+1.03, +1.37], "two items") is superseded.
+  +1.20 [+1.04, +1.37] on n=103 versus +1.19 [+1.03, +1.36] on n=105, as produced by the
+  committed `round6_disclosures.py` (seeded). Earlier drafts quoted +1.19/+1.19 and +1.20
+  [+1.03, +1.37] for this same contrast; those differ only in the bootstrap's third digit.
+  The producer's seeded output is now the canonical figure, and bootstrap bounds carry a
+  Monte Carlo tolerance of roughly +/-0.02 against the frozen registered run. The conclusion
+  is unaffected either way: the endpoint does not move when the two overlapping items are
+  dropped.
 - The reproducibility paragraph is corrected: every number is computed from committed score
   files, and every number scoring a registered prediction comes from a committed pre-run script,
-  but the three round-6 artifacts (`repl_disclosures.json`,
-  `mitigation_registered_contrasts.json`, `repl_pressure_curve.json`) were computed after the
-  fact and are released as committed JSON rather than as pre-existing scripts.
+  and the three round-6 artifacts (`repl_disclosures.json`,
+  `mitigation_registered_contrasts.json`, `repl_pressure_curve.json`) are post-hoc but are
+  now regenerated end to end by one committed producer, `papers/analysis/round6_disclosures.py`.
+  They were computed after the fact, so they carry no registered status; they are reproducible,
+  not preregistered.
 
 ### 7. Selection-pressure curve (post hoc, added to the paper)
 
 New canonical artifact: `papers/analysis/repl_pressure_curve.json` (committed). The paired
 referenced-minus-blind hack gap on the same 105 replication items as a function of the best-of-n
-budget: n=2 +0.088 [0.071, 0.105], n=4 +0.257 [0.223, 0.291], n=8 +0.482 [0.425, 0.539],
-n=16 +0.676 [0.591, 0.763], n=32 +0.816 [0.704, 0.936], n=64 +0.895 [0.749, 1.043]. Monotone,
+budget: n=2 +0.076 [0.056, 0.096], n=4 +0.267 [0.233, 0.302], n=8 +0.468 [0.415, 0.525],
+n=16 +0.671 [0.585, 0.759], n=32 +0.810 [0.701, 0.924], n=64 +0.895 [0.748, 1.048]. (Earlier
+drafts quoted a hand-run version of this curve, n=2 +0.088 to n=64 +0.895; the values above are
+the seeded output of the committed producer and supersede it. The shape and every sign are
+unchanged.) Monotone,
 every interval excludes zero. UNITS CAVEAT, stated in the paper: this curve is in RAW hack-gap
 units, not baseline standard deviations, so it is not comparable with E1's +1.19 and must not be
 read as a smaller version of it. Post hoc, not registered; the registered endpoint remains n=64.
@@ -470,3 +480,70 @@ per margin cell, since a margin needs matching and non-matching valid answers to
 Also corrected in the same pass: "Qwen-7B's referenced inflation roughly triples over blind by
 k=8" was wrong (it is 2.4x, +1.71 against +0.72), and the chance expectation for positive-side
 CI exclusions over 8 cells is 0.2, not the 0.4 stated at three sites.
+
+
+## Round 7 (2026-08-23, after the v13 dual review)
+
+### 9. G8: float-placement regression, fixed
+
+Tables 7, 8 and 10 of v13 typeset on pages 25 to 27, after the Conclusion, because an `[h]`
+placement on `tab:pressure` jammed the float queue. Both reviewers marked the compiled PDF
+unreviewable and both scored readability down for it. Fixed by removing the `[h]`, raising the
+float fractions, and adding `placeins` barriers at subsection boundaries. All ten tables now
+typeset inside their own sections. This was a typesetting bug, not a scientific one, but it is
+recorded here because it, not the disclosure load, is the likely cause of the v13 readability
+drop in both reviews.
+
+### 10. G9: the extraction-rate contradiction, and the sensitivity that resolves it
+
+The v13 text claimed "the one extraction problem we found, a 0.65 boxed rate, is confined to the
+cross-generator synthetic pool." That is false: the replication pool's own boxed rate is 0.616.
+The claim is withdrawn. The correct distinction, now stated in the paper, is not where the
+friction occurs but whether it can act on the contrast: in the replication and the Ties pool the
+referenced and blind arms score the SAME samples with the same fallback, so extraction failure is
+common to both arms and differences out; in the cross-generator pool the compared strata are
+different sample populations from different generators, so a 0.65-versus-0.89 gap is a difference
+between the things being compared.
+
+That argument is now also measured rather than asserted. NEW post-hoc analysis (producer:
+`round6_disclosures.py`, artifact `repl_disclosures.json`): split the 105 in-band replication
+items by their own boxed-compliance rate (pool median 0.641).
+
+- E1 on the cleaner half: +0.94 [+0.71, +1.16], n=56
+- E1 on the top tercile:  +0.90 [+0.65, +1.16], n=40
+- E1 on the messier half: +1.49 [+1.27, +1.70], n=49
+- per-item correlation between compliance and delta: r = -0.29 [-0.43, -0.12]
+
+The correlation is NEGATIVE: messier items show LARGER inflation. Reported in full because it
+cuts against the headline number's size. The endpoint survives on the cleanest items, so
+extraction friction does not manufacture the effect, but it does inflate it, and +0.9 is stated
+in the paper as the conservative reading of the headline +1.19.
+
+Decomposition of that gradient (diagnostic, not in the paper's claim set): the extra inflation on
+messy items comes overwhelmingly from the TRUE-accuracy term, not the judge-score term. Clean
+half: judge-gain difference +0.761, true-gain difference -0.054. Messy half: judge-gain difference
++0.845, true-gain difference -0.143. The two halves also differ in difficulty (base accuracy 0.600
+clean versus 0.365 messy), so the boxed split is partly a difficulty split, and the natural
+reading is that harder items give the reference more room to cost real accuracy rather than that
+extraction noise fakes the judge inflation.
+
+### 11. Confirmatory and exploratory separated in the main narrative
+
+Both reviewers asked for this. The post-hoc selection-pressure curve was moved out of the
+replication section into a new subsection, "Exploratory analyses (not registered, not claims),"
+and a "How to read this section" signpost at the top of Results names which subsections are
+confirmatory and which are not. No analysis changed; only where it is presented and what it is
+labelled.
+
+### 12. Corrections in the same pass
+
+- "roughly three times the original estimate" was wrong against the paper's own preferred
+  comparator. It is 2.4x the label-corrected +0.50 and 2.9x the checker-label +0.41. Now stated
+  as "about two and a half times," with both ratios given once.
+- P-M3's "helps at k=1" leg is carried by phi-4 alone; Qwen-7B's k=1 delta is a null. The
+  attribution is now explicit at both sites where the claim appears.
+- The k>1 shape is non-monotone (a k=4 to k=8 hump), not flat; "does not grow much after" replaced.
+- `tab:struct`'s residual band widened from "a third to a half" to "a third to three fifths"
+  (Qwen k=2 is 59%).
+- `repl_pressure_curve.json` was the last artifact without a producer; `round6_disclosures.py`
+  now generates it.
