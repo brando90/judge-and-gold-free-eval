@@ -338,3 +338,135 @@ Integrated in the paper as Section 3.4 (`sec:struct`, "Structural mitigations: j
 first, then reveal", Table 6 `tab:struct`), placed after the k-grid section and before the
 exploratory Ties section, with the abstract, contributions, boundary/practitioner rule,
 conclusion, ledger (rows P-M1..P-M4), and Limitations updated accordingly.
+
+## Deviation and rescoring note (2026-08-24): M2 soft gate, registered P-M contrasts, P-M1 downgraded to PARTIAL
+
+Recorded after the round-6 review. Three items: a protocol deviation we had not disclosed, the
+registered contrasts that P-M1/P-M2/P-M3 were actually registered on (now computed), and the
+consequent rescoring of P-M1. New canonical artifact:
+`papers/analysis/mitigation_registered_contrasts.json` (committed). It was computed after the
+round-6 review from the same frozen score files, so it carries no pre-registration weight of its
+own; the statistics in it, however, are the ones the P-M predictions were registered on.
+
+### 1. DEVIATION: M2 is a soft probabilistic gate, not the hard gate registered
+
+The `osf.io/qugbd` registration and the M2 description above both state a HARD gate: "the final
+score is the blind score if the candidate is judged valid, and zero otherwise". The implementation
+(`experiments/tfa-vs-judge/scripts/mitigation_judge.py`) instead multiplies the blind score by the
+validity call's probability of Yes, `P(Yes) / (P(Yes) + P(No))`, read from the answer token's
+logprobs, with a text fallback when that mass is below 0.05. Every M2 number reported in the paper
+and above is the SOFT version. Nothing was rerun; the deviation is disclosed rather than repaired.
+
+A public amendment recording this deviation was posted to the OSF project wiki
+(`osf.io/kszeu`, 2026-08-24), so the correction carries a third-party timestamp of its own.
+The paper discloses it in Section `sec:struct` (a dedicated "Registration deviation" paragraph),
+in the notes to `tab:struct` and `tab:rule`, in the P-M2 ledger row, and in Limitations.
+
+### 2. MEASURED failure mechanism for M2, replacing the earlier hand-waved one
+
+The earlier explanation ("the standalone validity call is unreliable at that scale, and a wrong
+invalid verdict zeroes an otherwise good blind score") was an inference from the protocol, not a
+measurement, and it also described the hard gate. The soft gate exposes its multiplier, so the
+mechanism is now measured directly, averaged over 591 reference-matching and 1335 equally valid
+non-matching answers per judge:
+
+- Qwen2.5-7B: mean multiplier 0.998 for reference-matching valid answers versus 0.422 for
+  equally valid non-matching ones.
+- phi-4: 0.987 versus 0.965.
+
+The validity call still shows the reference. For the weaker judge the anchoring channel therefore
+RELOCATES into the validity call rather than being removed, which is why M2's k=2 margin (+6.62)
+exceeds the raw reference's (+5.02). For phi-4 the multiplier is nearly flat across answer types
+and the channel is genuinely removed. This is stated in the paper as the measured mechanism.
+
+### 3. Registered contrasts, now computed
+
+P-M3 was registered on the STEP, and P-M1 and P-M2 on contrasts against the SINGLE REFERENCE.
+Earlier drafts scored them by reading adjacent columns of `tab:struct` instead. The registered
+statistics (Qwen2.5-7B then phi-4, n=53 items at k>1, n=15 at k=1):
+
+- **P-M3 step (k>1 delta minus k=1 delta):** +1.45 [+0.94, +1.93] and +1.18 [+0.90, +1.45].
+  Both exclude zero, so P-M3 is CONFIRMED on its registered statistic, not on a side-by-side
+  comparison of two columns.
+- **M1 versus single reference at k>1:** -1.55 [-1.89, -1.19] and -0.91 [-1.10, -0.72].
+  Both exclude zero.
+- **M2 versus single reference at k>1:** -0.19 [-0.57, +0.25] and -1.14 [-1.40, -0.88].
+  The Qwen-7B interval CROSSES ZERO, so M2 does NOT significantly improve on simply showing the
+  reference for the weaker judge. Recorded in the P-M2 ledger row.
+
+### 4. RESCORING: P-M1 is downgraded from CONFIRMED to PARTIAL
+
+P-M1 was registered as two legs: (a) M1 reduces the margin and the inflation versus a single
+reference at k>1, and (b) M1 preserves the k=1 benefit. The earlier "CONFIRMED" scored both.
+
+- **Leg (a): CONFIRMED.** Registered contrast -1.55 [-1.89, -1.19] and -0.91 [-1.10, -0.72];
+  deltas versus blind at k>1 -0.05 [-0.32, +0.21] and +0.16 [+0.00, +0.33].
+- **Leg (b): NOT DEMONSTRATED.** The only k=1 benefit this experiment measures is phi-4's
+  single-reference -0.11 [-0.14, -0.07]. M1's k=1 deltas are +0.04 [-0.13, +0.27] (phi-4) and
+  +0.41 [-0.09, +0.84] (Qwen-7B, the largest k=1 harm point estimate in the table). Both are
+  indistinguishable from blind, which supports "M1 costs nothing at k=1" and does NOT support
+  "M1 preserves the k=1 benefit".
+
+The paper now says "costs nothing when the answer is unique (its k=1 deltas are indistinguishable
+from blind)" in all six places that previously claimed benefit preservation (abstract,
+contributions, `tab:struct` caption, `tab:rule` M1 and M2 k=1 cells, `sec:boundary`, conclusion),
+and `tab:rule`'s k=1 cells for M1 and M2 read "No cost (not shown to preserve the benefit)".
+P-M1's ledger row is rescored PARTIAL.
+
+Related softening in the same pass: "M1 removes the harm" is now "M1 removes the measured
+inflation at n=64 while leaving roughly half the anchoring premium" (margins +2.98 Qwen-7B and
++1.79 phi-4 at k=2 against blind +0.08 and +0.11), with the note that whether the residual
+re-emerges under optimization stronger than best-of-64 is untested. "Capability-gated" language
+for M2 is replaced by "differed between the two judges tested, in a direction consistent with
+capability but not isolated from it (N=2 judges)".
+
+### 5. Population disclosures added in the same pass
+
+- **Mitigation pool (this experiment).** Items enter the inflation deltas only if their pool pass
+  rate lies in [0.05, 0.95], which is WIDER than the [0.2, 0.8] band registered for the ym5x9
+  replication. Analyzed counts 15/15/13/14/11 at k=1/2/4/8/16 out of 15 built per stratum. The
+  paper now flags that cross-experiment comparisons (+1.50 / +1.07 here versus +1.19 on the
+  replication pool) span populations selected by different rules.
+- **Replication pool (ym5x9).** P-R2 and P-R3 are computed on all 93 eligible items, of which 83
+  are also inside the registered [0.2, 0.8] band; E1 alone applies the band, as frozen in
+  `repl_analysis.py`. Disclosed in the Table 1 notes; the claim of uniform population discipline
+  across all three endpoints is withdrawn.
+
+### 6. Corrected disclosure numbers on the replication pool
+
+New canonical artifact: `papers/analysis/repl_disclosures.json` (committed).
+
+- Boxed-answer compliance is 0.616 over all 120 items and 0.639 over the 105 in-band items. The
+  paper previously said "0.62" without saying which.
+- Mean pass rate 0.455 is over all 120 items; the in-band mean is 0.491. The paper previously
+  attributed 0.455 to the in-band pool.
+- Pilot overlap: six main-pool items duplicate pilot problem text through seeded-window
+  collisions, of which two survive the band filter. Excluding those two leaves E1 unchanged:
+  +1.19 [+1.02, +1.36] on n=103 versus +1.19 [+1.02, +1.36] on n=105. The earlier sensitivity
+  figure (+1.20 [+1.03, +1.37], "two items") is superseded.
+- The reproducibility paragraph is corrected: every number is computed from committed score
+  files, and every number scoring a registered prediction comes from a committed pre-run script,
+  but the three round-6 artifacts (`repl_disclosures.json`,
+  `mitigation_registered_contrasts.json`, `repl_pressure_curve.json`) were computed after the
+  fact and are released as committed JSON rather than as pre-existing scripts.
+
+### 7. Selection-pressure curve (post hoc, added to the paper)
+
+New canonical artifact: `papers/analysis/repl_pressure_curve.json` (committed). The paired
+referenced-minus-blind hack gap on the same 105 replication items as a function of the best-of-n
+budget: n=2 +0.088 [0.071, 0.105], n=4 +0.257 [0.223, 0.291], n=8 +0.482 [0.425, 0.539],
+n=16 +0.676 [0.591, 0.763], n=32 +0.816 [0.704, 0.936], n=64 +0.895 [0.749, 1.043]. Monotone,
+every interval excludes zero. UNITS CAVEAT, stated in the paper: this curve is in RAW hack-gap
+units, not baseline standard deviations, so it is not comparable with E1's +1.19 and must not be
+read as a smaller version of it. Post hoc, not registered; the registered endpoint remains n=64.
+
+### 8. Analysis-n corrections in four captions
+
+Four captions stated design n where the analysis n is smaller, and now state both: `tab:synthk`
+and `fig:synthk` (12 tasks built per stratum, 4 to 6 items per cell after the [0.05, 0.95]
+pass-rate filter), `tab:paired` (n=6 at k=1, n=20 pooled over k>1), and `tab:mitig` (n=5 items
+per margin cell, since a margin needs matching and non-matching valid answers to coexist).
+
+Also corrected in the same pass: "Qwen-7B's referenced inflation roughly triples over blind by
+k=8" was wrong (it is 2.4x, +1.71 against +0.72), and the chance expectation for positive-side
+CI exclusions over 8 cells is 0.2, not the 0.4 stated at three sites.
