@@ -1,0 +1,27 @@
+{
+ "boxed_compliance_all": 0.616,
+ "boxed_compliance_inband": 0.639,
+ "mean_pass_all_items": 0.455,
+ "mean_pass_inband": 0.491,
+ "pilot_overlap_total": 6,
+ "pilot_overlap_inband": 2,
+ "E1_full": {
+  "delta": 1.186,
+  "ci": [
+   1.022,
+   1.357
+  ],
+  "n": 105
+ },
+ "E1_excluding_pilot_overlap": {
+  "delta": 1.192,
+  "ci": [
+   1.023,
+   1.363
+  ],
+  "n": 103
+ },
+ "eligible_items_total": 93,
+ "eligible_and_inband": 83,
+ "note": "G3: P-R2/P-R3 use all eligible items (coexisting matching and non-matching valid answers); E1 alone applies the registered [0.2,0.8] band"
+}
