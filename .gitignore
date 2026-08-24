@@ -220,3 +220,8 @@ __marimo__/
 # TFA experiment: raw per-item traces (regenerable; large). Keep slim scores + crux json.
 experiments/tfa-vs-judge/runs/math500/
 experiments/tfa-vs-judge/.venv/
+
+# macOS junk and stray LaTeX build logs
+.DS_Store
+**/.DS_Store
+texput.log

@@ -27,6 +27,17 @@ tool calls), **2 frontier judges**.
 Full writeup: **[`experiments/tfa-vs-judge/paper/PAPER.md`](experiments/tfa-vs-judge/paper/PAPER.md)**.
 Unified paper draft: **[`paper_latex/main.pdf`](paper_latex/main.pdf)** ("Verify, Don't Compare"; LaTeX source in [`paper_latex/main.tex`](paper_latex/main.tex)).
 
+## The papers (start here if you're joining the project)
+
+The project's second phase put LLM judges under best-of-n and DPO **optimization pressure**
+and produced three papers, each with preregistered predictions and a canonical analysis
+layer where every quoted number traces to a committed producer script. The index, compile
+instructions, and house rules are in **[`papers/README.md`](papers/README.md)**:
+
+- **A — Certify Before You Optimize** ([`papers/A-certificate/`](papers/A-certificate/)): a few dozen blind human labels predict which judges get gamed before any optimization runs.
+- **B — Grading the Answer Key, Not the Student** ([`papers/B-reference-matching/`](papers/B-reference-matching/)): reference-similarity metrics measure the reference's predictability, not the solution.
+- **D — When the Answer Key Backfires** ([`papers/D-reference-laws/`](papers/D-reference-laws/)): on multi-valid-answer tasks a trusted reference *inflates* best-of-n scores; blind-then-reveal fixes it. **Its [README](papers/D-reference-laws/README.md) is the full experiment runbook** — no-GPU reproduction of every number, cluster launch, and the registered next experiment ready to run.
+
 ## Artifacts
 
 Slide decks (hosted on claude.ai):
@@ -185,6 +196,13 @@ failure mode an overseer must not have.
 ## Repo layout
 
 ```
+papers/                                 the papers phase (see papers/README.md)
+  A-certificate/  B-reference-matching/  D-reference-laws/   paper sources + PDFs
+  analysis/                               canonical number layer: JSON artifacts + committed producers (MANIFEST.md)
+  registrations/                          external OSF preregistration texts (R1-R5)
+  reviews/                                adversarial GPT-5.2 review rounds
+  share/                                  share-ready PDFs, blurbs, reading guides
+
 docs/                                   research plans and executable briefs
   plan-A-tfa-with-ground-truth.md         the gold-reference track (the study that ran)
   plan-B-agentic-sparse-feedback.md       the sparse-feedback / agentic track
