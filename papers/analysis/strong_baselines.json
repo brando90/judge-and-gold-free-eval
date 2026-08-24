@@ -1,0 +1,38 @@
+{
+ "sympy_equiv_math": {
+  "n": 60,
+  "r": 0.59,
+  "ci": [
+   0.41,
+   0.76
+  ],
+  "note": "symbolic equivalence of extracted final answers, sympy where parseable else string identity"
+ },
+ "embed_e5_math": {
+  "n": 60,
+  "r": 0.02,
+  "ci": [
+   -0.15,
+   0.22
+  ],
+  "note": "E5-base-v2 cosine, candidate trace vs gold solution"
+ },
+ "nli_entail_math": {
+  "n": 60,
+  "r": 0.05,
+  "ci": [
+   -0.18,
+   0.25
+  ],
+  "note": "DeBERTa NLI entailment probability, candidate -> gold"
+ },
+ "ast_sim_code": {
+  "n": 492,
+  "r": 0.143,
+  "ci": [
+   0.07,
+   0.21
+  ],
+  "note": "AST-dump sequence similarity vs canonical solution, correlated with executed-test outcome"
+ }
+}
