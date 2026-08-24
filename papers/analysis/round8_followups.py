@@ -121,29 +121,53 @@ out["m1_pressure"] = dict(note=("paired hack-gap delta versus blind at k>1, raw 
 
 # ================= (3) can a real effect show a null per-item correlation? ==========
 # Anchoring drives inflation exactly, item-for-item, then both are measured with the sampling
-# noise the real design has: margins from the handful of valid samples per item, inflation from
-# a stochastic best-of-n selection. Question: what per-item r does an honest analyst recover?
-def sim(n_items=35, n_valid_match=4, n_valid_other=6, score_sd=1.6, infl_noise=0.55, reps=400):
+# noise the real design has. Two of the three noise parameters are ESTIMATED FROM THE POOL rather
+# than stipulated; the third (how noisily per-item inflation itself is measured) is not directly
+# identifiable, so it is swept and the recovered correlation reported across the sweep.
+cal_match, cal_other, cal_sd, cal_margins = [], [], [], []
+for j in JUD:
+    ra, _ = ksc(j, "ref", "a"), None
+    for pid, it in kpool.items():
+        if it["k"] <= 1 or pid not in ra: continue
+        if not (0.05 <= float(np.mean(it["oracle"])) <= 0.95): continue
+        refn = norm(it["ref_answer"])
+        ms, os_ = [], []
+        for i, ok in enumerate(it["oracle"]):
+            if not ok: continue
+            (ms if norm(boxed(it["samples"][i]) or it["samples"][i]) == refn else os_).append(ra[pid][i])
+        if not (ms and os_): continue
+        cal_match.append(len(ms)); cal_other.append(len(os_))
+        if len(ms) > 1: cal_sd.append(float(np.std(ms, ddof=1)))
+        if len(os_) > 1: cal_sd.append(float(np.std(os_, ddof=1)))
+        cal_margins.append(float(np.mean(ms) - np.mean(os_)))
+nm, no = float(np.mean(cal_match)), float(np.mean(cal_other))
+sd = float(np.mean(cal_sd))
+obs_margins = np.array(cal_margins)
+
+def sim(infl_noise, n_items=35, slope=0.22, reps=400):
     rs = []
     for _ in range(reps):
-        true_margin = rng.uniform(1.0, 7.0, n_items)          # the real per-item anchoring
-        true_infl = 0.22 * true_margin                        # exact linear pathway, no slack
-        obs_margin = true_margin + rng.normal(0, score_sd, n_items) * np.sqrt(
-            1.0 / n_valid_match + 1.0 / n_valid_other)
+        true_margin = rng.choice(obs_margins, n_items)   # empirical margin distribution
+        true_infl = slope * true_margin                  # exact linear pathway, no slack
+        obs_margin = true_margin + rng.normal(0, sd, n_items) * np.sqrt(1.0 / nm + 1.0 / no)
         obs_infl = true_infl + rng.normal(0, infl_noise, n_items)
         rs.append(float(np.corrcoef(obs_margin, obs_infl)[0, 1]))
     rs = np.array(rs)
     return dict(mean_r=round(float(rs.mean()), 3),
                 pct2_5=round(float(np.percentile(rs, 2.5)), 3),
-                pct97_5=round(float(np.percentile(rs, 97.5)), 3),
-                frac_r_below_0_35=round(float(np.mean(rs < 0.35)), 3),
-                frac_ci_would_include_zero=round(float(np.mean(rs < 0.334)), 3))
+                pct97_5=round(float(np.percentile(rs, 97.5)), 3))
+sweep = {f"infl_noise={x}": sim(x) for x in (0.25, 0.55, 1.0, 1.5)}
 out["linkage_sim"] = dict(
     note=("ground truth: inflation is an exact linear function of the per-item anchoring margin. "
-          "Both are then observed with the sampling noise this design actually has. The recovered "
-          "per-item correlation is what an honest analyst would report."),
-    params=dict(n_items=35, valid_matching_samples=4, valid_other_samples=6,
-                judge_score_sd=1.6, inflation_measurement_sd=0.55, slope=0.22),
-    recovered=sim())
+          "Margins are drawn from the pool's own empirical margin distribution and observed with "
+          "the pool's own judge-score SD and valid-sample counts. The inflation measurement SD is "
+          "not directly identifiable from the data, so it is swept."),
+    calibrated_from_data=dict(mean_valid_matching_samples=round(nm, 2),
+                              mean_valid_other_samples=round(no, 2),
+                              within_item_judge_score_sd=round(sd, 3),
+                              n_items_with_margins=len(obs_margins),
+                              observed_margin_mean=round(float(obs_margins.mean()), 2)),
+    stipulated=dict(slope=0.22, n_items=35, note="slope only sets scale, not the correlation"),
+    swept_inflation_measurement_sd=sweep)
 json.dump(out, open("../../papers/analysis/round8_followups.json", "w"), indent=1)
 print(json.dumps(out, indent=1))

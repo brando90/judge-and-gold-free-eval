@@ -248,21 +248,40 @@
   }
  },
  "linkage_sim": {
-  "note": "ground truth: inflation is an exact linear function of the per-item anchoring margin. Both are then observed with the sampling noise this design actually has. The recovered per-item correlation is what an honest analyst would report.",
-  "params": {
-   "n_items": 35,
-   "valid_matching_samples": 4,
-   "valid_other_samples": 6,
-   "judge_score_sd": 1.6,
-   "inflation_measurement_sd": 0.55,
-   "slope": 0.22
+  "note": "ground truth: inflation is an exact linear function of the per-item anchoring margin. Margins are drawn from the pool's own empirical margin distribution and observed with the pool's own judge-score SD and valid-sample counts. The inflation measurement SD is not directly identifiable from the data, so it is swept.",
+  "calibrated_from_data": {
+   "mean_valid_matching_samples": 7.77,
+   "mean_valid_other_samples": 22.17,
+   "within_item_judge_score_sd": 1.028,
+   "n_items_with_margins": 70,
+   "observed_margin_mean": 4.65
   },
-  "recovered": {
-   "mean_r": 0.481,
-   "pct2_5": 0.226,
-   "pct97_5": 0.698,
-   "frac_r_below_0_35": 0.14,
-   "frac_ci_would_include_zero": 0.122
+  "stipulated": {
+   "slope": 0.22,
+   "n_items": 35,
+   "note": "slope only sets scale, not the correlation"
+  },
+  "swept_inflation_measurement_sd": {
+   "infl_noise=0.25": {
+    "mean_r": 0.751,
+    "pct2_5": 0.582,
+    "pct97_5": 0.864
+   },
+   "infl_noise=0.55": {
+    "mean_r": 0.473,
+    "pct2_5": 0.171,
+    "pct97_5": 0.71
+   },
+   "infl_noise=1.0": {
+    "mean_r": 0.289,
+    "pct2_5": -0.029,
+    "pct97_5": 0.545
+   },
+   "infl_noise=1.5": {
+    "mean_r": 0.199,
+    "pct2_5": -0.098,
+    "pct97_5": 0.483
+   }
   }
  }
 }
