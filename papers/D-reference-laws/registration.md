@@ -620,3 +620,57 @@ this is weak evidence against a tight link rather than evidence for a competing 
 - Canonical artifact filenames were cut from narrative prose and table notes (17 mentions down to
   9), surviving only in the reproducibility paragraph, the ledger, and the two registered-analysis
   script names where they are load-bearing for the preregistration claim.
+
+### 16. Round-8 additions demanded by the v15 cold read (producer: `round8_followups.py`)
+
+**Matched-population recomputation, closing the endpoint-population footnote.**
+The replication table's three endpoints ran on different populations (E1 on the 105 in-band items,
+P-R2/P-R3 on all 93 eligible items). Recomputed on the 83-item intersection: E1 +1.200
+[1.022, 1.387]; selection collapse 49/2 (Qwen-7B) and 67/0 (phi-4); anchoring margins +4.58
+[4.219, 4.937] and +3.83 [3.491, 4.172]. Every conclusion is unchanged from the registered rows,
+which remain the ones the predictions were scored on. Post hoc.
+
+**M1 under rising selection pressure: the residual premium does NOT convert into inflation.**
+M1 removes measured inflation at best-of-64 but leaves a third to three fifths of the anchoring
+premium standing in the margins, and both reviews asked whether that residual re-emerges under
+more optimization. Paired hack-gap delta versus blind at k>1, by selection budget:
+
+| n | ref (Qwen) | M1 (Qwen) | ref (phi-4) | M1 (phi-4) |
+|---|---|---|---|---|
+| 2 | +0.07 | -0.03 | +0.08 | +0.03 |
+| 4 | +0.29 | -0.00 | +0.25 | -0.02 |
+| 8 | +0.55 | -0.01 | +0.39 | -0.08 |
+| 16 | +0.87 | -0.00 | +0.53 | -0.11 |
+| 32 | +1.13 | -0.01 | +0.70 | -0.12 |
+| 64 | +1.44 | -0.06 | +0.83 | -0.09 |
+
+The single reference's premium climbs monotonically across a 32x range of selection pressure;
+M1's stays flat and indistinguishable from blind throughout. This is the strongest available
+evidence that M1's residual anchoring is inert rather than merely dormant. It does not cover
+budgets beyond 64, nor optimizers that adapt to the judge rather than sampling independently.
+Post hoc, not registered.
+
+**Simulation bounding the negative linkage result (item 13).**
+Ground truth: inflation is an EXACT linear function of the per-item anchoring margin. Both
+quantities are then observed through this design's sampling noise (about 4 matching and 6
+non-matching valid samples per item, judge score SD 1.6, inflation measurement SD 0.55, 35 items,
+400 replicates). The recovered per-item correlation is r = 0.481 on average, 95% spread
+[0.226, 0.698]; 12% of replicates would yield a CI including zero.
+
+Interpretation, stated in the paper without spin: phi-4's observed +0.29 sits at the bottom of
+that range, so it is consistent with a real pathway attenuated by noise. Qwen-7B's +0.06 falls
+BELOW the range, so noise does not explain it away. The simulation therefore bounds the negative
+result rather than rescuing it, and the paper's summary is that anchoring is causal for scores
+(by rotation), tracks inflation in aggregate, and is NOT established as a per-item quantitative
+pathway.
+
+### 17. Claim language corrected in the same pass
+
+- Abstract: "The mechanism is anchoring" -> "Anchoring is the mechanism we can demonstrate," with
+  the per-item negative result stated in the abstract itself rather than only in Section 3.2.
+- The k=1 benefit had been over-weakened in v15 to "measurable for one of our two judges." That
+  understated the paper's own grid evidence, where the reference helps at k=1 for five of six
+  judges with CIs excluding zero. Restated precisely: it helps five of six judges on the grid, does
+  not survive a change of generator (P-S5), and is a null for one of the two judges in the
+  registered k-controlled pool. Two table captions asserting a flat "the reference helps at k=1"
+  were corrected to match.

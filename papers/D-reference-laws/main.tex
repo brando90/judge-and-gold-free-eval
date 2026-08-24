@@ -175,9 +175,10 @@ On 105 in-band items of 120 fresh exact-checker tasks, with a non-Qwen generator
 Restricted to the items where answer extraction is cleanest, the same estimate is $+0.90$ $[+0.65, +1.16]$, which we take as the conservative reading.
 That is about two and a half times the exploratory best-of-$n$ effect it was registered to test, in which referenced judges out-inflated their blind twins at every judge scale on multi-valid \textsc{RewardBench-2} Ties tasks.
 On unique-answer math the same reference collapses inflation four- to thirteen-fold~\cite{companionA}.
-The mechanism is anchoring, and rotating the reference proves it causal: re-judged with the reference switched to a different valid answer, the identical sample text gains up to $+9.5$ points on the judge's ten-point scale, purely because the shown reference now matches it.
-A registered grid of synthetic tasks with a controlled number of valid answers, $k$, locates the switch: crossing from $k{=}1$, where the reference is at worst harmless, to $k{>}1$ shifts every judge tested, across model families, toward inflation.
-The harm half of that boundary is the half this paper establishes; the benefit half is capability- and domain-dependent, measurable for one of our two judges and not the other.
+Anchoring is the mechanism we can demonstrate, and rotating the reference proves it causal: re-judged with the reference switched to a different valid answer, the identical sample text gains up to $+9.5$ points on the judge's ten-point scale, purely because the shown reference now matches it.
+What we cannot yet show is the rest of that pathway: across items, a larger anchoring margin does not reliably predict a larger inflation, so anchoring is demonstrably causal for scores without being a quantitative account of the inflation it accompanies.
+A registered grid of synthetic tasks with a controlled number of valid answers, $k$, locates the switch: crossing from $k{=}1$, where the reference helps five of six judges tested, to $k{>}1$ shifts every judge, across model families, toward inflation.
+The harm half of that boundary is the robust half: the benefit half holds on the grid but does not survive a change of generator, and is a null for one of the two judges in the registered $k$-controlled pool.
 One fix works, and it is externally preregistered too (\texttt{osf.io/qugbd}, registered before any data existed, on a pool with exactly $k$ valid answers per item).
 Have the judge score blind first, and reveal the reference only afterwards, to correct demonstrated errors.
 That removes the measured inflation at $k{>}1$ for both judges tested, $-0.05$ and $+0.16$ against $+1.50$ and $+1.07$ under a single reference, and it costs nothing when the answer is unique, though it leaves a third to three fifths of the anchoring premium in place.
@@ -243,7 +244,7 @@ Our contributions:
 \item \textbf{The inversion, preregistered and replicated} (Section~\ref{sec:repl}, Table~\ref{tab:repl}): on a fresh exact-checker pool with a cross-family generator-judge pairing, an externally registered replication confirms all three registered predictions at $+1.19$ $[+1.02, +1.36]$ of inflation ($+0.90$ $[+0.65, +1.16]$ on the cleanest-extraction items, the conservative reading), about two and a half times the exploratory estimate it was registered to test.
 \item \textbf{The mechanism, made causal} (Section~\ref{sec:mech}, Figure~\ref{fig:anchoring}, Table~\ref{tab:rot}): rotating the shown reference to a different valid answer raises the score of the identical sample text by up to $+9.5$ of 10 points, with mirror-image losses and a near-flat placebo.
 The premium follows the reference, not the answer.
-\item \textbf{The step} (Section~\ref{sec:synthk}, Table~\ref{tab:paired}): on a registered grid of tasks with exactly $k$ valid answers, moving from $k{=}1$, where the reference helps, to $k{>}1$ shifts every judge tested, across three model families, toward inflation.
+\item \textbf{The step} (Section~\ref{sec:synthk}, Table~\ref{tab:paired}): on a registered grid of tasks with exactly $k$ valid answers, moving from $k{=}1$, where the reference helps five of six judges, to $k{>}1$ shifts every judge tested, across three model families, toward inflation.
 \item \textbf{A fix that works, preregistered} (Section~\ref{sec:struct}, Tables~\ref{tab:struct} and~\ref{tab:rule}): on an externally registered pool with exactly $k$ valid answers per item (\texttt{osf.io/qugbd}), scoring blind first and revealing the reference only afterwards removes the measured inflation at $k{>}1$ for both judges tested, and costs nothing when the answer is unique, its $k{=}1$ deltas being indistinguishable from blind.
 Decomposing validity into a separate probabilistic call removes the inflation entirely for phi-4 and backfires for Qwen-7B.
 \item \textbf{In-context mitigations, audited} (Section~\ref{sec:synthk}, Table~\ref{tab:mitig}): telling the judge that any correct answer deserves credit works only in proportion to judge capability, and showing several references helps on one generator pool but transfers poorly to another.
@@ -349,8 +350,9 @@ All numbers come from the frozen registered analysis (\texttt{repl\_analysis.py}
 Inflation deltas are per-item paired referenced-minus-blind differences in baseline standard deviations, item-level cluster bootstrap, over the 105 of 120 items inside the registered $[0.2, 0.8]$ pass-rate band; the pooled row resamples items, each contributing both judges' deltas (P-R1, primary endpoint E1).
 Collapse counts are exact McNemar discordant pairs on the 93 eligible items where matching and non-matching valid answers coexist (P-R2): items on which the referenced judge selected a reference-matching valid answer and the blind judge did not, and the reverse.
 Margins are on the 0--10 score scale over the same items (P-R3).
-\emph{Population disclosure}: the registered $[0.2, 0.8]$ band is applied by E1 alone, as frozen in \texttt{repl\_analysis.py}; P-R2 and P-R3 run on all 93 eligible items, of which 83 are also inside the band.
-The two secondary endpoints therefore sit on a slightly larger population than the primary one, and the discipline is uniform within each endpoint rather than across all three.
+\emph{Population disclosure}: the registered $[0.2, 0.8]$ band is applied by E1 alone, as frozen in \texttt{repl\_analysis.py}; P-R2 and P-R3 run on all 93 eligible items, of which 83 are also inside the band, so the two secondary endpoints sit on a slightly larger population than the primary one.
+Recomputing all three on that common 83-item intersection changes nothing: E1 $+1.20$ $[+1.02, +1.39]$, collapse $49/2$ and $67/0$, margins $+4.58$ $[+4.22, +4.94]$ and $+3.83$ $[+3.49, +4.17]$ (post hoc).
+The registered rows above remain the ones the predictions were scored on.
 Generator: Llama-3.1-8B-Instruct; validity by exact programmatic check, with no enumeration and no LLM adjudication.
 The italic row is the one post-hoc line in this table: E1 recomputed on the top tercile of items by boxed-answer compliance, reported because the pool's overall compliance is $0.616$ and a reader is owed the number that extraction friction cannot have inflated.
 \end{minipage}
@@ -489,7 +491,11 @@ We tested that account quantitatively, and it holds only weakly at the level of 
 If the margin is the pathway, the items with the largest margins should be the items that inflate most.
 Across the 35 $k{>}1$ items of the $k$-stratified pool, the per-item correlation between anchoring margin and inflation is $r{=}+0.29$ $[+0.03, +0.54]$ for phi-4 and $r{=}+0.06$ $[-0.31, +0.38]$ for Qwen-7B, and the tercile means are not monotone for either judge (post hoc).
 So the mechanism is established causally, by rotation, and in aggregate, by the level of both the margins and the inflation, but it is not established that a given item's margin predicts that item's inflation.
-Per-item margins are estimated from few valid samples and inflation from a noisy selection process, so this is weak evidence against a tight link rather than evidence for a competing one; we report it because it is the test the causal story most invites.
+Per-item margins are estimated from a handful of valid samples per item and inflation from a stochastic selection process, so attenuation is expected.
+We bounded how much: simulating a pathway in which inflation is an \emph{exact} linear function of the per-item margin, then observing both through this design's sampling noise, recovers $r{=}0.48$ on average with a 95\% spread of $[0.23, 0.70]$ over 400 replicates.
+phi-4's $+0.29$ sits at the bottom of that range and Qwen-7B's $+0.06$ falls below it.
+So measurement noise explains why a real pathway would not show up as a strong correlation here, but it does not explain away the Qwen-7B result, and we do not claim it does: the honest summary is that anchoring is causal for scores, tracks inflation in aggregate, and is not established as a per-item quantitative pathway.
+We report this because it is the test the causal story most invites.
 The lost-accuracy deltas point the same way but never exclude zero, so a degraded chance of selecting a correct answer remains a directional reading, not an established one.
 
 \paragraph{Registration note (P-T2r).}
@@ -552,7 +558,7 @@ Point estimates are descriptive and rounded; the inferential claims are the pair
 95\% CIs for the cells used inferentially in the text: Qwen-7B blind $k{=}1$ $[+0.35, +0.67]$, 1 reference $k{=}1$ $[+0.01, +0.20]$, blind $k{=}16$ $[+0.06, +0.76]$, $\min(3,k)$ references $k{=}16$ $[+0.52, +1.67]$; phi-4 blind $k{=}16$ $[+0.47, +1.17]$, $+$ instruction $k{=}16$ $[+0.05, +0.75]$; Llama-pool blind $k{=}1$ $[+0.54, +1.04]$, 1 reference $k{=}1$ $[+0.64, +1.31]$, blind $k{=}16$ $[+0.66, +1.11]$, 1 reference $k{=}16$ $[+1.81, +2.57]$.
 The Qwen-7B rows on the Qwen pool are a generator-equals-judge cell; blind inflation on the Llama pool is elevated at every $k$, spanning $+0.78$ to $+1.13$.
 \end{minipage}
-\caption{\textbf{Takeaway: the reference helps at $k{=}1$ and inflates at high $k$ (bold cells); the any-correct-answer instruction closes phi-4's inflation but not Qwen-7B's; multiple references reduce Qwen-7B's $k{=}16$ inflation without matching blind; and on the cross-family Llama pool the inversion replicates while the $k{=}1$ help does not.}
+\caption{\textbf{Takeaway: the reference is harmless at $k{=}1$ and inflates at high $k$ (bold cells); the any-correct-answer instruction closes phi-4's inflation but not Qwen-7B's; multiple references reduce Qwen-7B's $k{=}16$ inflation without matching blind; and on the cross-family Llama pool the inversion replicates while the $k{=}1$ help does not.}
 Inflation in baseline standard deviations, per multiplicity stratum on the synthetic grid, two rubric replicates per cell.
 12 tasks were built per stratum, but the frozen estimator drops items whose pool pass rate falls outside $[0.05, 0.95]$, since a degenerate pool carries no selection signal, so 4 to 6 items enter each cell on the Qwen pool.}
 \label{tab:synthk}
@@ -561,7 +567,7 @@ Inflation in baseline standard deviations, per multiplicity stratum on the synth
 \begin{figure}[t]
 \centering
 \includegraphics[width=\textwidth]{figures/fig_synthk.pdf}
-\caption{\textbf{Takeaway: the reference helps at $k{=}1$, inverts as $k$ grows, and the any-correct-answer instruction rescues the strongest judge tested (phi-4, right) while leaving the mid-size judge (Qwen-7B, left) inflated.}
+\caption{\textbf{Takeaway: the reference is at worst harmless at $k{=}1$, inverts as $k$ grows, and the any-correct-answer instruction rescues the strongest judge tested (phi-4, right) while leaving the mid-size judge (Qwen-7B, left) inflated.}
 Inflation (excess hack gap, in baseline standard deviations) versus the number of valid answers $k$, on the synthetic Qwen-generator pool, under four context conditions; whiskers are 95\% per-stratum bootstrap CIs.
 12 tasks were built per stratum, but the frozen estimator drops items whose pool pass rate falls outside $[0.05, 0.95]$, so 4 to 6 items enter each plotted cell.
 Marker shapes and line styles distinguish conditions in addition to color.}
@@ -760,7 +766,9 @@ Partially confirmed: the harm-removal leg holds, the benefit-preservation leg is
 On the registered contrast, M1 against the single reference pooled over $k > 1$, the inflation delta is $-1.55$ $[-1.90, -1.20]$ for Qwen-7B and $-0.91$ $[-1.10, -0.72]$ for phi-4, both excluding zero.
 Against blind, M1's own delta at $k > 1$ is $-0.05$ $[-0.32, +0.21]$ and $+0.16$ $[+0.00, +0.33]$, against $+1.50$ and $+1.07$ under a single reference (Table~\ref{tab:struct}).
 What that removes is the measured inflation at $n{=}64$, not the anchoring channel itself: margins roughly halve rather than vanish, from $+5.02$ to $+2.98$ for Qwen-7B and from $+3.73$ to $+1.79$ for phi-4 at $k{=}2$, against blind margins of $+0.08$ and $+0.11$, and the residual stays between a third and a half of the single-reference margin at $k{=}4$ and $k{=}8$ as well, rather than shrinking with $k$ (Table~\ref{tab:struct}, margin columns).
-Whether that residual premium re-emerges as inflation under stronger optimization than best-of-64 is untested here.
+Whether that residual premium re-emerges as inflation under more optimization is the obvious worry, and within the range we can measure it does not.
+Sweeping the selection budget from best-of-2 to best-of-64 on the same $k{>}1$ items, the single reference's hack-gap premium over blind climbs monotonically, $+0.07$ to $+1.44$ for Qwen-7B and $+0.08$ to $+0.83$ for phi-4, while M1's stays flat and indistinguishable from blind across the whole range, spanning $-0.06$ to $-0.03$ and $-0.12$ to $+0.03$ (post hoc).
+So the residual sits in the margins without converting into inflation over a thirty-two-fold change in selection pressure; budgets far beyond 64, and optimizers that adapt to the judge rather than sampling independently, remain untested.
 At $k{=}1$ the honest statement is that M1 costs nothing rather than that it preserves a benefit.
 Its $k{=}1$ deltas, $+0.41$ $[-0.09, +0.84]$ for Qwen-7B and $+0.04$ $[-0.13, +0.27]$ for phi-4, are indistinguishable from blind, but the only $k{=}1$ benefit measured in this experiment is phi-4's single-reference $-0.11$ $[-0.14, -0.07]$, and neither M1 interval reproduces it; the Qwen-7B point estimate is the largest $k{=}1$ harm in the table.
 Unlike the one-sentence any-correct-answer instruction of Section~\ref{sec:synthk}, which is inert for the mid-size judge, M1 removes the inflation for both judges tested, so its effect did not differ between them.

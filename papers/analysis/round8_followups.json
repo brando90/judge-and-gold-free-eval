@@ -1,0 +1,268 @@
+{
+ "matched_population": {
+  "n_items": 83,
+  "note": "all three endpoints on the 83 items that are both eligible and in-band",
+  "E1": {
+   "delta": 1.2,
+   "ci": [
+    1.022,
+    1.387
+   ]
+  },
+  "selection_collapse": {
+   "Qwen__Qwen2.5-7B-Instruct": {
+    "referenced_only": 49,
+    "blind_only": 2
+   },
+   "microsoft__phi-4": {
+    "referenced_only": 67,
+    "blind_only": 0
+   }
+  },
+  "anchoring_margin": {
+   "Qwen__Qwen2.5-7B-Instruct": {
+    "n": 83,
+    "margin": 4.58,
+    "ci": [
+     4.219,
+     4.937
+    ]
+   },
+   "microsoft__phi-4": {
+    "n": 83,
+    "margin": 3.83,
+    "ci": [
+     3.491,
+     4.172
+    ]
+   }
+  }
+ },
+ "m1_pressure": {
+  "note": "paired hack-gap delta versus blind at k>1, raw units; if M1's residual anchoring re-emerged under optimization its curve would climb with n the way the single reference's does",
+  "by_judge": {
+   "Qwen__Qwen2.5-7B-Instruct": {
+    "ref": {
+     "n=2": {
+      "n_items": 53,
+      "delta": 0.067,
+      "ci": [
+       0.023,
+       0.112
+      ]
+     },
+     "n=4": {
+      "n_items": 53,
+      "delta": 0.286,
+      "ci": [
+       0.215,
+       0.361
+      ]
+     },
+     "n=8": {
+      "n_items": 53,
+      "delta": 0.553,
+      "ci": [
+       0.45,
+       0.663
+      ]
+     },
+     "n=16": {
+      "n_items": 53,
+      "delta": 0.87,
+      "ci": [
+       0.721,
+       1.012
+      ]
+     },
+     "n=32": {
+      "n_items": 53,
+      "delta": 1.13,
+      "ci": [
+       0.937,
+       1.323
+      ]
+     },
+     "n=64": {
+      "n_items": 53,
+      "delta": 1.437,
+      "ci": [
+       1.145,
+       1.73
+      ]
+     }
+    },
+    "m1": {
+     "n=2": {
+      "n_items": 53,
+      "delta": -0.033,
+      "ci": [
+       -0.065,
+       -0.001
+      ]
+     },
+     "n=4": {
+      "n_items": 53,
+      "delta": -0.003,
+      "ci": [
+       -0.04,
+       0.035
+      ]
+     },
+     "n=8": {
+      "n_items": 53,
+      "delta": -0.014,
+      "ci": [
+       -0.078,
+       0.05
+      ]
+     },
+     "n=16": {
+      "n_items": 53,
+      "delta": -0.001,
+      "ci": [
+       -0.104,
+       0.099
+      ]
+     },
+     "n=32": {
+      "n_items": 53,
+      "delta": -0.01,
+      "ci": [
+       -0.172,
+       0.145
+      ]
+     },
+     "n=64": {
+      "n_items": 53,
+      "delta": -0.06,
+      "ci": [
+       -0.321,
+       0.192
+      ]
+     }
+    }
+   },
+   "microsoft__phi-4": {
+    "ref": {
+     "n=2": {
+      "n_items": 53,
+      "delta": 0.081,
+      "ci": [
+       0.039,
+       0.124
+      ]
+     },
+     "n=4": {
+      "n_items": 53,
+      "delta": 0.252,
+      "ci": [
+       0.177,
+       0.325
+      ]
+     },
+     "n=8": {
+      "n_items": 53,
+      "delta": 0.389,
+      "ci": [
+       0.276,
+       0.5
+      ]
+     },
+     "n=16": {
+      "n_items": 53,
+      "delta": 0.534,
+      "ci": [
+       0.376,
+       0.7
+      ]
+     },
+     "n=32": {
+      "n_items": 53,
+      "delta": 0.703,
+      "ci": [
+       0.477,
+       0.951
+      ]
+     },
+     "n=64": {
+      "n_items": 53,
+      "delta": 0.827,
+      "ci": [
+       0.558,
+       1.106
+      ]
+     }
+    },
+    "m1": {
+     "n=2": {
+      "n_items": 53,
+      "delta": 0.029,
+      "ci": [
+       -0.003,
+       0.059
+      ]
+     },
+     "n=4": {
+      "n_items": 53,
+      "delta": -0.018,
+      "ci": [
+       -0.073,
+       0.042
+      ]
+     },
+     "n=8": {
+      "n_items": 53,
+      "delta": -0.084,
+      "ci": [
+       -0.158,
+       -0.007
+      ]
+     },
+     "n=16": {
+      "n_items": 53,
+      "delta": -0.109,
+      "ci": [
+       -0.204,
+       -0.016
+      ]
+     },
+     "n=32": {
+      "n_items": 53,
+      "delta": -0.119,
+      "ci": [
+       -0.24,
+       0.001
+      ]
+     },
+     "n=64": {
+      "n_items": 53,
+      "delta": -0.09,
+      "ci": [
+       -0.232,
+       0.053
+      ]
+     }
+    }
+   }
+  }
+ },
+ "linkage_sim": {
+  "note": "ground truth: inflation is an exact linear function of the per-item anchoring margin. Both are then observed with the sampling noise this design actually has. The recovered per-item correlation is what an honest analyst would report.",
+  "params": {
+   "n_items": 35,
+   "valid_matching_samples": 4,
+   "valid_other_samples": 6,
+   "judge_score_sd": 1.6,
+   "inflation_measurement_sd": 0.55,
+   "slope": 0.22
+  },
+  "recovered": {
+   "mean_r": 0.481,
+   "pct2_5": 0.226,
+   "pct97_5": 0.698,
+   "frac_r_below_0_35": 0.14,
+   "frac_ci_would_include_zero": 0.122
+  }
+ }
+}
