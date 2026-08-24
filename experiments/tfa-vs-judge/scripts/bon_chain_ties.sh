@@ -28,7 +28,7 @@ chain () {
 
 FULL="noref_a noref_b ref_a ref_b"
 GPU=${1:?usage: bon_chain_ties.sh GPU}
-nohup bash -c "$(declare -f chain); \
+nohup bash -c "cd /lfs/skampere1/0/srivatsavad/tfa-vs-judge; $(declare -f chain); \
   CUDA_VISIBLE_DEVICES=$GPU $PY bon_generate.py --domain ties >> logs/bon_ties_gen.log 2>&1; \
   $PY bon_oracle.py --domain ties --pool $POOL >> logs/bon_ties_gen.log 2>&1; \
   chain $GPU Qwen/Qwen2.5-14B-Instruct $FULL; chain $GPU Qwen/Qwen2.5-7B-Instruct $FULL; \

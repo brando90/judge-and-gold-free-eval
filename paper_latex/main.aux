@@ -1,0 +1,117 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\citation{cobbe2021gsm8k}
+\citation{hendrycks2021math}
+\citation{chen2021codex}
+\citation{yuan2021bartscore}
+\citation{zheng2023judging}
+\citation{gao2022scaling}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
+\newlabel{sec:intro}{{1}{1}{Introduction}{section.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces \textbf  {The compare-vs-verify divide, and why it is auditable.} Top: comparison metrics score a candidate by its resemblance to the reference text, so most of their signal is a property of the reference, not the solution. Middle: verification signals check the solution against a checkable endpoint, so their signal tracks the solution's actual quality. Bottom: a blind sixty-label audit reveals which mechanism an evaluator uses, and the verdict predicts whether it survives optimization pressure (Section~\ref {sec:pressure}).}}{2}{figure.caption.1}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{fig:concept}{{1}{2}{\textbf {The compare-vs-verify divide, and why it is auditable.} Top: comparison metrics score a candidate by its resemblance to the reference text, so most of their signal is a property of the reference, not the solution. Middle: verification signals check the solution against a checkable endpoint, so their signal tracks the solution's actual quality. Bottom: a blind sixty-label audit reveals which mechanism an evaluator uses, and the verdict predicts whether it survives optimization pressure (Section~\ref {sec:pressure})}{figure.caption.1}{}}
+\citation{hendrycks2021math}
+\citation{cobbe2021gsm8k}
+\citation{chen2021codex}
+\citation{austin2021mbpp}
+\citation{liu2023evalplus}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces \textbf  {The paper in one figure.} \textbf  {(A)} Against blind human soundness grades, all five reference-comparison metrics land within noise of zero, while verification-shaped signals carry real signal, topping out at the prefix-repair curve ($+0.79$, measured on labeling round two; other entries on round one, Section~\ref {sec:setup}). \textbf  {(B)} The mechanism: across 6{,}000 model--item pairs, teacher-forced accuracy is $80\%$ reference perplexity. It measures the reference, not the solution. \textbf  {(C)} Under best-of-64 selection pressure (25 configurations, two domains), blind and sabotaged judges (orange) are hacked, with high scoreboard inflation, high accuracy loss, or both, while referenced judges (blue) resist. The two labeled exceptions are the paper's two mechanisms: the 1.5B code judge that cannot \emph  {use} its reference (the capability gate), and the sabotaged frontier judge that deceives the metric without damaging selection.}}{3}{figure.caption.2}\protected@file@percent }
+\newlabel{fig:master}{{2}{3}{\textbf {The paper in one figure.} \textbf {(A)} Against blind human soundness grades, all five reference-comparison metrics land within noise of zero, while verification-shaped signals carry real signal, topping out at the prefix-repair curve ($+0.79$, measured on labeling round two; other entries on round one, Section~\ref {sec:setup}). \textbf {(B)} The mechanism: across 6{,}000 model--item pairs, teacher-forced accuracy is $80\%$ reference perplexity. It measures the reference, not the solution. \textbf {(C)} Under best-of-64 selection pressure (25 configurations, two domains), blind and sabotaged judges (orange) are hacked, with high scoreboard inflation, high accuracy loss, or both, while referenced judges (blue) resist. The two labeled exceptions are the paper's two mechanisms: the 1.5B code judge that cannot \emph {use} its reference (the capability gate), and the sabotaged frontier judge that deceives the metric without damaging selection}{figure.caption.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Setup}{3}{section.2}\protected@file@percent }
+\newlabel{sec:setup}{{2}{3}{Setup}{section.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{Models and data.}{3}{section*.3}\protected@file@percent }
+\citation{lightman2023verify}
+\citation{wang2022selfconsistency}
+\@writefile{toc}{\contentsline {paragraph}{The comparison class.}{4}{section*.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{The verification class.}{4}{section*.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Human grades.}{4}{section*.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Statistics and pre-registration.}{4}{section*.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}The comparison class cannot grade, and we know why}{4}{section.3}\protected@file@percent }
+\newlabel{sec:compare}{{3}{4}{The comparison class cannot grade, and we know why}{section.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}The class-level null}{4}{subsection.3.1}\protected@file@percent }
+\newlabel{sec:classnull}{{3.1}{4}{The class-level null}{subsection.3.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces \textbf  {The boundary map: where reference matching ranks models.} Cross-family Spearman correlation between mean \textsc  {TFA}{} and accuracy (17 models; bootstrap CIs), and the Qwen size-ladder correlation as the within-family column, per benchmark. Ranking degrades from olympiad to saturated benchmarks, with code sitting mid-scale, and within-family ladders survive everywhere the pooled comparison does not, because family style cancels inside a family and survives across families.}}{5}{table.caption.8}\protected@file@percent }
+\newlabel{tab:map}{{1}{5}{\textbf {The boundary map: where reference matching ranks models.} Cross-family Spearman correlation between mean \tfa {} and accuracy (17 models; bootstrap CIs), and the Qwen size-ladder correlation as the within-family column, per benchmark. Ranking degrades from olympiad to saturated benchmarks, with code sitting mid-scale, and within-family ladders survive everywhere the pooled comparison does not, because family style cancels inside a family and survives across families}{table.caption.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}The mechanism: comparison scores are reference properties}{5}{subsection.3.2}\protected@file@percent }
+\newlabel{sec:mechanism}{{3.2}{5}{The mechanism: comparison scores are reference properties}{subsection.3.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Ranking survives exactly where the mechanism says it should}{5}{subsection.3.3}\protected@file@percent }
+\newlabel{sec:ranking}{{3.3}{5}{Ranking survives exactly where the mechanism says it should}{subsection.3.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces \textbf  {The taxonomy makes correct advance predictions.} All four pre-registered predictions landed as called (the seven reweighting variants predate the registration protocol and are included for completeness). The two verification-class entries are described in Section~\ref {sec:verify}.}}{6}{table.caption.9}\protected@file@percent }
+\newlabel{tab:slate}{{2}{6}{\textbf {The taxonomy makes correct advance predictions.} All four pre-registered predictions landed as called (the seven reweighting variants predate the registration protocol and are included for completeness). The two verification-class entries are described in Section~\ref {sec:verify}}{table.caption.9}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Repairs fail as predicted: the class is empty, not under-tuned}{6}{subsection.3.4}\protected@file@percent }
+\newlabel{sec:slate}{{3.4}{6}{Repairs fail as predicted: the class is empty, not under-tuned}{subsection.3.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces \textbf  {The two registered sweeps move in opposite directions, as the taxonomy predicts.} Left: up-weighting late reference tokens (the intuitive repair) decays \textsc  {TFA}'s twelve-model ranking signal monotonically past $\gamma {=}1$, through the answer-only-reference null and beyond it. Right: the prefix-repair signal rises monotonically with truncation depth, from a pure difficulty probe ($k{=}0$) to $+0.79$ against human soundness at $k{=}0.75$.}}{7}{figure.caption.10}\protected@file@percent }
+\newlabel{fig:sweeps}{{3}{7}{\textbf {The two registered sweeps move in opposite directions, as the taxonomy predicts.} Left: up-weighting late reference tokens (the intuitive repair) decays \tfa 's twelve-model ranking signal monotonically past $\gamma {=}1$, through the answer-only-reference null and beyond it. Right: the prefix-repair signal rises monotonically with truncation depth, from a pure difficulty probe ($k{=}0$) to $+0.79$ against human soundness at $k{=}0.75$}{figure.caption.10}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}The verification class grades, in proportion to endpoint checkability}{7}{section.4}\protected@file@percent }
+\newlabel{sec:verify}{{4}{7}{The verification class grades, in proportion to endpoint checkability}{section.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Judge-free verification signals}{7}{subsection.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Judges are in the verification class only when anchored: a certification protocol}{7}{subsection.4.2}\protected@file@percent }
+\newlabel{sec:certify}{{4.2}{7}{Judges are in the verification class only when anchored: a certification protocol}{subsection.4.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{When a reference helps.}{8}{section*.11}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{When a reference hurts.}{8}{section*.12}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}The certificate predicts survival under optimization pressure}{8}{section.5}\protected@file@percent }
+\newlabel{sec:pressure}{{5}{8}{The certificate predicts survival under optimization pressure}{section.5}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces \textbf  {Best-of-64 selection pressure, 25 judge configurations.} Every configuration that failed static certification is hacked on at least one estimand (large excess gap, large regret, or both), and every configuration certified in-domain resists. The 1.5B-ref cell is the capability gate: the reference rescues the smallest judge on math and does nothing on code. GPT-5.2 was not run unreferenced on math (the -- cells), hence 12 math + 13 code = 25 configurations. Paired no-reference minus referenced contrasts and their bootstrap CIs are in Appendix~\ref {app:cis}.}}{9}{table.caption.13}\protected@file@percent }
+\newlabel{tab:bon}{{3}{9}{\textbf {Best-of-64 selection pressure, 25 judge configurations.} Every configuration that failed static certification is hacked on at least one estimand (large excess gap, large regret, or both), and every configuration certified in-domain resists. The 1.5B-ref cell is the capability gate: the reference rescues the smallest judge on math and does nothing on code. GPT-5.2 was not run unreferenced on math (the -- cells), hence 12 math + 13 code = 25 configurations. Paired no-reference minus referenced contrasts and their bootstrap CIs are in Appendix~\ref {app:cis}}{table.caption.13}{}}
+\@writefile{toc}{\contentsline {paragraph}{The certificate predicts, and it is domain-specific.}{9}{section*.14}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{The reference lever is capability-gated by verification hardness.}{9}{section*.16}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{A hacked judge fails in two modes, and capability trades one for the other.}{9}{section*.17}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces \textbf  {The capability gate.} Excess hack gap without (orange) and with (blue) a trusted reference, by judge scale. On math the reference collapses inflation at every scale, including 1.5B. On code, where using the reference means executing tests rather than comparing text, the lever works only at 3B and above, and the frontier judge needs it only for scoreboard honesty (its selection quality is identical either way).}}{10}{figure.caption.15}\protected@file@percent }
+\newlabel{fig:gate}{{4}{10}{\textbf {The capability gate.} Excess hack gap without (orange) and with (blue) a trusted reference, by judge scale. On math the reference collapses inflation at every scale, including 1.5B. On code, where using the reference means executing tests rather than comparing text, the lever works only at 3B and above, and the frontier judge needs it only for scoreboard honesty (its selection quality is identical either way)}{figure.caption.15}{}}
+\@writefile{toc}{\contentsline {paragraph}{Granularity beats scale once a reference is in hand.}{10}{section*.18}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6}Design rules}{10}{section.6}\protected@file@percent }
+\newlabel{sec:rules}{{6}{10}{Design rules}{section.6}{}}
+\citation{zheng2023judging}
+\citation{tan2024judgebench}
+\citation{wu2023style}
+\citation{dubois2024length}
+\citation{singhal2023long}
+\citation{engels2025scaling}
+\citation{gao2022scaling}
+\citation{skalse2022defining}
+\citation{coste2023ensembles}
+\citation{eisenstein2023helping}
+\citation{zhu2023judgelm}
+\citation{kim2024prometheus2}
+\citation{lightman2023verify}
+\citation{wang2022selfconsistency}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Limitations}{11}{section.7}\protected@file@percent }
+\newlabel{sec:limits}{{7}{11}{Limitations}{section.7}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {8}Related work}{11}{section.8}\protected@file@percent }
+\newlabel{sec:related}{{8}{11}{Related work}{section.8}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {9}Conclusion}{11}{section.9}\protected@file@percent }
+\newlabel{sec:conclusion}{{9}{11}{Conclusion}{section.9}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {A}Confidence intervals for the paired reference contrasts}{12}{appendix.A}\protected@file@percent }
+\newlabel{app:cis}{{A}{12}{Confidence intervals for the paired reference contrasts}{appendix.A}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Every math contrast and every code contrast at 3B+ excludes zero; the code 1.5B contrast is the capability-gate null.}}{12}{table.caption.19}\protected@file@percent }
+\newlabel{tab:cis}{{4}{12}{Every math contrast and every code contrast at 3B+ excludes zero; the code 1.5B contrast is the capability-gate null}{table.caption.19}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {B}The oracle audit behind design rule 6}{12}{appendix.B}\protected@file@percent }
+\newlabel{app:oracle}{{B}{12}{The oracle audit behind design rule 6}{appendix.B}{}}
+\bibcite{zheng2023judging}{1}
+\bibcite{tan2024judgebench}{2}
+\bibcite{wu2023style}{3}
+\bibcite{dubois2024length}{4}
+\bibcite{singhal2023long}{5}
+\bibcite{gao2022scaling}{6}
+\bibcite{skalse2022defining}{7}
+\bibcite{coste2023ensembles}{8}
+\bibcite{eisenstein2023helping}{9}
+\bibcite{engels2025scaling}{10}
+\bibcite{zhu2023judgelm}{11}
+\bibcite{kim2024prometheus2}{12}
+\bibcite{lightman2023verify}{13}
+\bibcite{wang2022selfconsistency}{14}
+\@writefile{toc}{\contentsline {section}{\numberline {C}The full metric-class table}{13}{appendix.C}\protected@file@percent }
+\newlabel{app:classtable}{{C}{13}{The full metric-class table}{appendix.C}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Prediction-fit and weighted-similarity metrics rank on hard benchmarks and die or invert on saturated ones; raw overlap does not rank at all (its hard-benchmark inversion is a verbosity confound: controlling output length moves $-0.49$ to $-0.07$). No comparison metric grades against human soundness; both verification signals do.}}{13}{table.caption.20}\protected@file@percent }
+\newlabel{tab:classfull}{{5}{13}{Prediction-fit and weighted-similarity metrics rank on hard benchmarks and die or invert on saturated ones; raw overlap does not rank at all (its hard-benchmark inversion is a verbosity confound: controlling output length moves $-0.49$ to $-0.07$). No comparison metric grades against human soundness; both verification signals do}{table.caption.20}{}}
+\bibcite{yuan2021bartscore}{15}
+\bibcite{hendrycks2021math}{16}
+\bibcite{cobbe2021gsm8k}{17}
+\bibcite{chen2021codex}{18}
+\bibcite{austin2021mbpp}{19}
+\bibcite{liu2023evalplus}{20}
+\gdef \@abspage@last{14}

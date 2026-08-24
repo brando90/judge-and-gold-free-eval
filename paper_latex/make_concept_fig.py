@@ -70,4 +70,5 @@ arrow(65, -2.4, 72, -2.4, color=ORANGE)
 ax.set_ylim(-5.5, 36)
 
 fig.savefig("figs/fig0_concept.png", dpi=300, bbox_inches="tight")
+fig.savefig("../papers/A-certificate/figures/fig_concept.pdf", bbox_inches="tight")
 print("wrote figs/fig0_concept.png")

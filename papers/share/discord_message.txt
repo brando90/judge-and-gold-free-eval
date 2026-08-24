@@ -1,0 +1,44 @@
+=== DETAILED VERSION (recommended): intro post, then one message per paper with its PDF attached ===
+
+--- Intro (no attachment) ---
+
+**Three papers about one question: when an AI grades another AI's answers, can you trust the grades?** 🧑‍⚖️
+
+AI judges now do real work — picking the best output from a batch, ranking models, filtering training data. All of that assumes the judge's scores mean something even when a model is actively trying to earn a good score. We spent these three papers testing that assumption, and the common safety habits — "it agrees with humans," "grade against the official solution," "give the judge the answer key" — each break in a specific, measurable way. One paper per message below, PDFs attached.
+
+--- Message 1 (attach A-certify-before-you-optimize.pdf) ---
+
+**📄 Paper A — How to tell if your AI judge can be fooled, before it happens**
+
+The standard way to decide whether to trust an AI judge is to check how often it agrees with human graders. We show that check can pass a judge that is about to fail, because agreement is measured on ordinary answers, while in real use the judge faces answers that were *selected or trained to please it*. Our audit closes that gap cheaply: collect a few dozen answers, have humans grade each one twice — once for "is the reasoning actually sound?" and once for "is it nicely presented?" — then ask which of those two the judge's scores really follow when you hold the other one fixed. A judge that tracks presentation instead of substance gets convicted. To validate the verdicts, we then genuinely attacked every judge (best-of-64 sampling, plus preference training against it) and checked who actually got gamed: the audit's frozen verdicts called the outcome in **10 of 11 preregistered setups**, and it caught both a judge we deliberately sabotaged and a popular open reward model — two evaluators the plain agreement check scores almost identically to honest ones. Total cost: about 4–8 hours of human labeling, reused across all thirteen judge configurations.
+
+--- Message 2 (attach B-grading-the-answer-key.pdf) ---
+
+**📄 Paper B — Grading by "how similar is it to the official solution?" doesn't work**
+
+Benchmarks usually ship a worked reference solution, so a tempting cheap grader is: score the model's solution by how closely it matches the official one. We tested that idea at scale — 17 models from 4 families, 8 math and code benchmarks plus an agentic setting — comparing every popular similarity measure (likelihood-based scores, sentence embeddings, retrieval embedders, entailment models) against blind human grades of the same solutions. None of them can tell a sound solution from a flawed one. The reason is the interesting part: most of what a similarity score measures is a property of the *reference itself* — how predictable and typical its wording is — not of the solution being graded. Swap the reference and the scores move; the student barely matters. You're grading the answer key, not the student. Meanwhile the boring check everyone already has for free — is the extracted final answer correct? — agreed with human graders at **0.92**, and even our best fancier verification signal was measurably worse than that free bit. The practical rules: always check the final answer first, use a reference only as something a verifier can check against, and never as a similarity target.
+
+--- Message 3 (attach D-when-the-answer-key-backfires.pdf) ---
+
+**📄 Paper D — Giving the judge an answer key can backfire**
+
+When a judge picks the best of many attempts, showing it a trusted reference answer is supposed to keep it honest — and on questions with exactly one right answer, it genuinely does. But many questions have several right answers ("name any prime with seven digits"), and there the reference flips from safeguard to trap: the judge quietly stops grading *is this correct?* and starts grading *does this match my key?*, so equally correct answers get punished for not matching. We proved the key itself is the cause with a swap test: re-grade the identical answers with the reference switched to a different, equally correct answer, and the exact same text **jumps by up to 9.5 points out of 10**, while answers that used to match crash by the same amount. Under selection pressure this means the reference inflates the scoreboard *more* than showing no reference at all — we locked the predictions in publicly before generating any data, and every one held. The fix turns out to be ordering, not wording: have the judge score each answer blind first, *then* reveal the reference to correct only demonstrated mistakes. That removes the inflation and costs nothing on single-answer questions. Simply instructing the judge to "accept any valid answer" does nothing unless the judge is already very strong.
+
+--- Optional closer ---
+
+All three are preregistered — every prediction, hit or miss, is on the record. Happy to go deeper on any of them! ⬇️
+
+
+=== COMPACT VERSION: single message under 2000 chars (attach all 3 PDFs) ===
+
+**Three papers about one question: when an AI grades another AI's answers, can you trust the grades?** 🧑‍⚖️
+
+We tested what happens when something actively tries to get a good grade out of an AI judge. The safety habits people rely on don't hold up:
+
+**📄 A — How to tell if your judge can be fooled, before it happens.** "It agrees with humans" isn't enough — a judge can agree on normal data and still get gamed under pressure. Our fix: have humans grade a small sample twice, once for correctness and once for polish, then check which one the judge actually tracks. This weekend-sized audit predicted which judges got exploited in 10 of 11 cases, including a sabotaged judge the standard check couldn't catch.
+
+**📄 B — Grading by similarity to the official solution doesn't work.** Every similarity metric we tested mostly measures the *reference* (how predictable it is), not the solution — you're grading the answer key, not the student. The boring free check ("is the final answer right?") beat everything fancier.
+
+**📄 D — Giving the judge an answer key can backfire.** Fine when there's one right answer. But when several answers are correct, the judge starts rewarding *matches-my-key* over *is-correct*: swap in a different correct reference and the same answer jumps from failing to near-perfect. Fix: let the judge score blind first, then show the reference. Asking it to "accept any valid answer" does nothing.
+
+PDFs attached ⬇️

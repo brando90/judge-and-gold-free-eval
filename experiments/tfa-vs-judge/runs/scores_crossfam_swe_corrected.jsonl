@@ -1,0 +1,8 @@
+{"model": "Qwen/Qwen2.5-Coder-1.5B-Instruct", "family": "Qwen-Coder", "patch_tfa_added": 0.8426664394852754, "humaneval_pass1": 0.7195121951219512, "cc_corrected": null}
+{"model": "Qwen/Qwen2.5-Coder-14B-Instruct", "family": "Qwen-Coder", "patch_tfa_added": 0.8759450731756928, "humaneval_pass1": 0.8963414634146342, "cc_corrected": null}
+{"model": "Qwen/Qwen2.5-Coder-32B-Instruct", "family": "Qwen-Coder", "patch_tfa_added": 0.8812501085766884, "humaneval_pass1": 0.9329268292682927, "cc_corrected": null}
+{"model": "Qwen/Qwen2.5-Coder-7B-Instruct", "family": "Qwen-Coder", "patch_tfa_added": 0.8626420418541169, "humaneval_pass1": 0.8658536585365854, "cc_corrected": null}
+{"model": "bigcode/starcoder2-15b-instruct-v0.1", "family": "StarCoder2", "patch_tfa_added": 0.8598333715806894, "humaneval_pass1": 0.6402439024390244, "cc_corrected": null}
+{"model": "codellama/CodeLlama-13b-Instruct-hf", "family": "CodeLlama", "patch_tfa_added": 0.8880176704513078, "humaneval_pass1": 0.2682926829268293, "cc_corrected": null}
+{"model": "codellama/CodeLlama-7b-Instruct-hf", "family": "CodeLlama", "patch_tfa_added": 0.8747074733544012, "humaneval_pass1": 0.3902439024390244, "cc_corrected": null}
+{"model": "deepseek-ai/deepseek-coder-1.3b-instruct", "family": "DeepSeek-Coder", "patch_tfa_added": 0.8452541689699032, "humaneval_pass1": 0.6646341463414634, "cc_corrected": null}

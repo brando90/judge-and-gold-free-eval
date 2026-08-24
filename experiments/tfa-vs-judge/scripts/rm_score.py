@@ -27,7 +27,7 @@ args = ap.parse_args()
 
 tok = AutoTokenizer.from_pretrained(args.model)
 model = AutoModelForSequenceClassification.from_pretrained(
-    args.model, torch_dtype=torch.bfloat16, device_map="cuda", num_labels=1)
+    args.model, torch_dtype=torch.bfloat16, num_labels=1).to("cuda")
 model.eval()
 
 

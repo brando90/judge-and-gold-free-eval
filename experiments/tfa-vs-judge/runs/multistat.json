@@ -139,7 +139,7 @@
   {
    "dataset": "MATH (full)",
    "family": "Qwen2.5",
-   "regime": "hard",
+   "regime": "saturated",
    "pearson": 0.8512362090589309,
    "spearman": 0.6,
    "kendall": 0.39999999999999997,
@@ -148,7 +148,7 @@
   {
    "dataset": "MATH (full)",
    "family": "Mistral",
-   "regime": "hard",
+   "regime": "saturated",
    "pearson": 0.9807505472645859,
    "spearman": 1.0,
    "kendall": 1.0,
@@ -157,7 +157,7 @@
   {
    "dataset": "MATH (full)",
    "family": "Phi",
-   "regime": "hard",
+   "regime": "saturated",
    "pearson": -0.5950141388249004,
    "spearman": -1.0,
    "kendall": -1.0,
@@ -166,7 +166,7 @@
   {
    "dataset": "MATH (full)",
    "family": "OLMo",
-   "regime": "hard",
+   "regime": "saturated",
    "pearson": 0.9400330437160713,
    "spearman": 1.0,
    "kendall": 1.0,

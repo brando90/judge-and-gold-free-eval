@@ -12,6 +12,7 @@ export POOL=runs/bon/bon_math__Qwen__Qwen2.5-7B-Instruct.jsonl
 mkdir -p logs
 
 chain () {  # $1 gpu, $2 model, $3 space-separated "cond_rep" list
+  cd /lfs/skampere1/0/srivatsavad/tfa-vs-judge || exit 1
   local gpu=$1 model=$2; shift 2
   for cr in "$@"; do
     local cond=${cr%_*} rep=${cr#*_}
