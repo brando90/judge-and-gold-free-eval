@@ -1,0 +1,123 @@
+{
+ "band_match": {
+  "Qwen__Qwen2.5-7B-Instruct|registered_kstrat_[0.05,0.95]": {
+   "n": 53,
+   "delta": 1.497,
+   "ci": [
+    1.177,
+    1.809
+   ]
+  },
+  "Qwen__Qwen2.5-7B-Instruct|replication_[0.2,0.8]": {
+   "n": 39,
+   "delta": 1.483,
+   "ci": [
+    1.128,
+    1.831
+   ]
+  },
+  "microsoft__phi-4|registered_kstrat_[0.05,0.95]": {
+   "n": 53,
+   "delta": 1.067,
+   "ci": [
+    0.787,
+    1.334
+   ]
+  },
+  "microsoft__phi-4|replication_[0.2,0.8]": {
+   "n": 39,
+   "delta": 1.194,
+   "ci": [
+    0.911,
+    1.494
+   ]
+  }
+ },
+ "margin_linkage": {
+  "Qwen__Qwen2.5-7B-Instruct": {
+   "n_items": 35,
+   "r": 0.064,
+   "r_ci": [
+    -0.306,
+    0.378
+   ],
+   "slope_inflation_per_margin_point": 0.06,
+   "intercept": 1.036,
+   "tercile_bins": [
+    {
+     "bin": "low margin",
+     "n": 12,
+     "mean_margin": 3.7,
+     "mean_inflation": 1.304,
+     "ci": [
+      0.604,
+      1.959
+     ]
+    },
+    {
+     "bin": "mid margin",
+     "n": 11,
+     "mean_margin": 5.31,
+     "mean_inflation": 1.433,
+     "ci": [
+      0.948,
+      1.977
+     ]
+    },
+    {
+     "bin": "high margin",
+     "n": 12,
+     "mean_margin": 6.19,
+     "mean_inflation": 1.292,
+     "ci": [
+      0.656,
+      1.926
+     ]
+    }
+   ]
+  },
+  "microsoft__phi-4": {
+   "n_items": 35,
+   "r": 0.291,
+   "r_ci": [
+    0.032,
+    0.542
+   ],
+   "slope_inflation_per_margin_point": 0.179,
+   "intercept": 0.138,
+   "tercile_bins": [
+    {
+     "bin": "low margin",
+     "n": 12,
+     "mean_margin": 2.5,
+     "mean_inflation": 0.614,
+     "ci": [
+      0.267,
+      1.083
+     ]
+    },
+    {
+     "bin": "mid margin",
+     "n": 11,
+     "mean_margin": 4.42,
+     "mean_inflation": 1.112,
+     "ci": [
+      0.566,
+      1.672
+     ]
+    },
+    {
+     "bin": "high margin",
+     "n": 12,
+     "mean_margin": 5.84,
+     "mean_inflation": 0.987,
+     "ci": [
+      0.349,
+      1.616
+     ]
+    }
+   ]
+  }
+ },
+ "note": "post hoc, not registered; band_match licenses comparing the k-stratified k>1 deltas with the replication's E1 by putting both on the same pass-rate band; margin_linkage tests whether the per-item anchoring margin predicts the per-item inflation it is claimed to cause"
+}
