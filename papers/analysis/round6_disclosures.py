@@ -88,7 +88,9 @@ inband = [p for p in rpool if 0.2 <= float(np.mean(rpool[p]["oracle"])) <= 0.8]
 def rsc(j, c, rep):
     return {json.loads(l)["problem_id"]: json.loads(l)["escore"]
             for l in open(f"runs/bon_scores_repl/synthk__{j}__{c}_{rep}.jsonl")}
-per = {}
+per, curve = {}, {}
+NS = [2, 4, 8, 16, 32, 64]
+ns["NS"] = sorted({1, 64, *NS})  # widen the module's best-of-n grid for the pressure curve
 for j in JUD:
     ra, rb, na, nb = rsc(j, "ref", "a"), rsc(j, "ref", "b"), rsc(j, "noref", "a"), rsc(j, "noref", "b")
     for pid in inband:
@@ -98,6 +100,10 @@ for j in JUD:
         cn = ns["per_item_curves"](it, na[pid], nb[pid]); nn2 = ns["permutation_null"](it, na[pid], nb[pid])
         per.setdefault(pid, []).append((cr[64]["judge_gain"] - cr[64]["true_gain"] - nr)
                                        - (cn[64]["judge_gain"] - cn[64]["true_gain"] - nn2))
+        # selection-pressure curve: raw paired hack gap (no null subtraction, raw units)
+        for n in NS:
+            curve.setdefault(n, {}).setdefault(pid, []).append(
+                (cr[n]["judge_gain"] - cr[n]["true_gain"]) - (cn[n]["judge_gain"] - cn[n]["true_gain"]))
 def pooled(pids):
     D = np.array([per[p] for p in pids if p in per]); idx = np.arange(len(D))
     b = [float(D[rng.choice(idx, len(idx))].mean()) for _ in range(4000)]
@@ -112,7 +118,38 @@ for pid, it in rpool.items():
     kinds = {norm(boxed(it["samples"][i]) or it["samples"][i]) == refn
              for i, ok in enumerate(it["oracle"]) if ok}
     if kinds == {True, False}: elig.append(pid)
+# boxed-only sensitivity for E1: does extraction friction drive the primary endpoint?
+bcomp = {p: float(np.mean([boxed(s) is not None for s in rpool[p]["samples"]])) for p in rpool}
+elig_e1 = [p for p in inband if p in per]
+med = float(np.median([bcomp[p] for p in elig_e1]))
+hi_b = pooled([p for p in elig_e1 if bcomp[p] >= med])
+lo_b = pooled([p for p in elig_e1 if bcomp[p] < med])
+terc = float(np.percentile([bcomp[p] for p in elig_e1], 66.7))
+top_b = pooled([p for p in elig_e1 if bcomp[p] >= terc])
+dmean = {p: float(np.mean(per[p])) for p in elig_e1}
+xs = np.array([bcomp[p] for p in dmean]); ys = np.array([dmean[p] for p in dmean])
+zb = [np.arctanh(np.clip(np.corrcoef(xs[i], ys[i])[0, 1], -0.999, 0.999))
+      for i in (rng.choice(len(xs), len(xs)) for _ in range(4000))]
+
+# selection-pressure curve artifact (raw hack-gap units, item-level bootstrap)
+pc = {}
+for n in NS:
+    D = np.array([float(np.mean(v)) for v in curve[n].values()])
+    b = [float(np.mean(rng.choice(D, len(D)))) for _ in range(4000)]
+    pc[f"n={n}"] = dict(delta=round(float(D.mean()), 3), n_items=len(D),
+                        ci=[round(float(np.percentile(b, 2.5)), 3),
+                            round(float(np.percentile(b, 97.5)), 3)])
+pc["units"] = "raw paired referenced-minus-blind hack gap, NOT baseline SDs; not comparable with E1"
+json.dump(pc, open("../../papers/analysis/repl_pressure_curve.json", "w"), indent=1)
+
 out2 = dict(
+    boxed_median=round(med, 3),
+    E1_high_boxed=dict(delta=hi_b[0], ci=hi_b[1], n=hi_b[2], rule="item boxed compliance >= pool median"),
+    E1_low_boxed=dict(delta=lo_b[0], ci=lo_b[1], n=lo_b[2], rule="item boxed compliance < pool median"),
+    E1_top_tercile_boxed=dict(delta=top_b[0], ci=top_b[1], n=top_b[2], rule="top tercile of boxed compliance"),
+    boxed_compliance_vs_delta_r=round(float(np.corrcoef(xs, ys)[0, 1]), 3),
+    boxed_compliance_vs_delta_ci=[round(float(np.tanh(np.percentile(zb, 2.5))), 3),
+                                  round(float(np.tanh(np.percentile(zb, 97.5))), 3)],
     boxed_compliance_all=round(float(np.mean([np.mean([boxed(s) is not None for s in r["samples"]])
                                               for r in rpool.values()])), 3),
     boxed_compliance_inband=round(float(np.mean([np.mean([boxed(s) is not None for s in rpool[p]["samples"]])
