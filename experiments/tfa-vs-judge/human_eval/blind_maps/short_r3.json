@@ -1,0 +1,502 @@
+{
+ "S001": {
+  "id": "MATH-R-test/number_theory/89.json-Qwen2.5-",
+  "order": 1,
+  "dataset": "MATH-500",
+  "model": "Qwen2.5-7B-Instruct",
+  "cell": "R",
+  "tfa": "0.763",
+  "judge": "10.0",
+  "machine_correct": "1"
+ },
+ "S002": {
+  "id": "MATH-R-test/counting_and_probability/159.json-Qwen2.5-",
+  "order": 2,
+  "dataset": "MATH-500",
+  "model": "Qwen2.5-7B-Instruct",
+  "cell": "R",
+  "tfa": "0.713",
+  "judge": "3.0",
+  "machine_correct": "0"
+ },
+ "S003": {
+  "id": "DEP-test/intermediate_algebra/860.json-s45",
+  "order": 3,
+  "dataset": "MATH-500",
+  "model": "Qwen2.5-7B-Instruct (sampled)",
+  "cell": "P",
+  "tfa": "0.0",
+  "judge": "0.0",
+  "machine_correct": "0"
+ },
+ "S004": {
+  "id": "PUT-A5-Qwen2.5-0.5B",
+  "order": 4,
+  "dataset": "Putnam-AXIOM",
+  "model": "Qwen2.5-0.5B-Instruct",
+  "cell": "Q",
+  "tfa": "0.7959927140255009",
+  "judge": "0.0",
+  "machine_correct": "0"
+ },
+ "S005": {
+  "id": "MATH-R-test/number_theory/45.json-phi-4",
+  "order": 5,
+  "dataset": "MATH-500",
+  "model": "phi-4",
+  "cell": "R",
+  "tfa": "0.643",
+  "judge": "10.0",
+  "machine_correct": "1"
+ },
+ "S006": {
+  "id": "MATH-R-test/algebra/2257.json-Qwen2.5-",
+  "order": 6,
+  "dataset": "MATH-500",
+  "model": "Qwen2.5-14B-Instruct",
+  "cell": "R",
+  "tfa": "0.804",
+  "judge": "10.0",
+  "machine_correct": "1"
+ },
+ "S007": {
+  "id": "MATH-R-test/algebra/661.json-phi-4",
+  "order": 7,
+  "dataset": "MATH-500",
+  "model": "phi-4",
+  "cell": "R",
+  "tfa": "0.679",
+  "judge": "2.0",
+  "machine_correct": "0"
+ },
+ "S008": {
+  "id": "MATH-R-test/intermediate_algebra/158.json-Qwen2.5-",
+  "order": 8,
+  "dataset": "MATH-500",
+  "model": "Qwen2.5-14B-Instruct",
+  "cell": "R",
+  "tfa": "0.958",
+  "judge": "2.0",
+  "machine_correct": "0"
+ },
+ "S009": {
+  "id": "MATH-R-test/intermediate_algebra/1849.json-phi-4",
+  "order": 9,
+  "dataset": "MATH-500",
+  "model": "phi-4",
+  "cell": "R",
+  "tfa": "0.746",
+  "judge": "2.0",
+  "machine_correct": "0"
+ },
+ "S010": {
+  "id": "PUT-1996_A2-Mistral-Smal",
+  "order": 10,
+  "dataset": "Putnam-AXIOM",
+  "model": "Mistral-Small-Instruct-2409",
+  "cell": "Q",
+  "tfa": "0.6920152091254753",
+  "judge": "0.0",
+  "machine_correct": "0"
+ },
+ "S011": {
+  "id": "MATH-R-test/counting_and_probability/894.json-Qwen2.5-",
+  "order": 11,
+  "dataset": "MATH-500",
+  "model": "Qwen2.5-14B-Instruct",
+  "cell": "R",
+  "tfa": "0.646",
+  "judge": "10.0",
+  "machine_correct": "1"
+ },
+ "S012": {
+  "id": "MATH-R-test/intermediate_algebra/1197.json-Qwen2.5-",
+  "order": 12,
+  "dataset": "MATH-500",
+  "model": "Qwen2.5-7B-Instruct",
+  "cell": "R",
+  "tfa": "0.876",
+  "judge": "2.0",
+  "machine_correct": "0"
+ },
+ "S013": {
+  "id": "MATH-R-test/geometry/65.json-Qwen2.5-",
+  "order": 13,
+  "dataset": "MATH-500",
+  "model": "Qwen2.5-7B-Instruct",
+  "cell": "R",
+  "tfa": "0.759",
+  "judge": "1.0",
+  "machine_correct": "0"
+ },
+ "S014": {
+  "id": "MATH-R-test/algebra/224.json-Qwen2.5-",
+  "order": 14,
+  "dataset": "MATH-500",
+  "model": "Qwen2.5-7B-Instruct",
+  "cell": "R",
+  "tfa": "0.702",
+  "judge": "10.0",
+  "machine_correct": "1"
+ },
+ "S015": {
+  "id": "MATH-R-test/algebra/2470.json-Qwen2.5-",
+  "order": 15,
+  "dataset": "MATH-500",
+  "model": "Qwen2.5-7B-Instruct",
+  "cell": "R",
+  "tfa": "0.791",
+  "judge": "10.0",
+  "machine_correct": "1"
+ },
+ "S016": {
+  "id": "DEP-test/prealgebra/1865.json-s59",
+  "order": 16,
+  "dataset": "MATH-500",
+  "model": "Qwen2.5-7B-Instruct (sampled)",
+  "cell": "P",
+  "tfa": "0.0",
+  "judge": "0.0",
+  "machine_correct": "0"
+ },
+ "S017": {
+  "id": "MATH-R-test/algebra/2046.json-Qwen2.5-",
+  "order": 17,
+  "dataset": "MATH-500",
+  "model": "Qwen2.5-7B-Instruct",
+  "cell": "R",
+  "tfa": "0.79",
+  "judge": "10.0",
+  "machine_correct": "1"
+ },
+ "S018": {
+  "id": "MATH-R-test/intermediate_algebra/1411.json-Qwen2.5-",
+  "order": 18,
+  "dataset": "MATH-500",
+  "model": "Qwen2.5-14B-Instruct",
+  "cell": "R",
+  "tfa": "0.867",
+  "judge": "5.0",
+  "machine_correct": "0"
+ },
+ "S019": {
+  "id": "MATH-R-test/geometry/434.json-Qwen2.5-",
+  "order": 19,
+  "dataset": "MATH-500",
+  "model": "Qwen2.5-7B-Instruct",
+  "cell": "R",
+  "tfa": "0.868",
+  "judge": "2.0",
+  "machine_correct": "0"
+ },
+ "S020": {
+  "id": "MATH-R-test/precalculus/323.json-Qwen2.5-",
+  "order": 20,
+  "dataset": "MATH-500",
+  "model": "Qwen2.5-7B-Instruct",
+  "cell": "R",
+  "tfa": "0.946",
+  "judge": "3.0",
+  "machine_correct": "0"
+ },
+ "S021": {
+  "id": "PUT-2021_A3-Mistral-Smal",
+  "order": 21,
+  "dataset": "Putnam-AXIOM",
+  "model": "Mistral-Small-Instruct-2409",
+  "cell": "Q",
+  "tfa": "0.7624633431085044",
+  "judge": "0.0",
+  "machine_correct": "1"
+ },
+ "S022": {
+  "id": "PUT-B6-Qwen2.5-3B-I",
+  "order": 22,
+  "dataset": "Putnam-AXIOM",
+  "model": "Qwen2.5-3B-Instruct",
+  "cell": "Q",
+  "tfa": "0.6376944190301921",
+  "judge": "0.0",
+  "machine_correct": "0"
+ },
+ "S023": {
+  "id": "PUT-2010_A2-Ministral-8B",
+  "order": 23,
+  "dataset": "Putnam-AXIOM",
+  "model": "Ministral-8B-Instruct-2410",
+  "cell": "Q",
+  "tfa": "0.717948717948718",
+  "judge": "0.0",
+  "machine_correct": "1"
+ },
+ "S024": {
+  "id": "PUT-1999_B3-Mistral-Smal",
+  "order": 24,
+  "dataset": "Putnam-AXIOM",
+  "model": "Mistral-Small-Instruct-2409",
+  "cell": "Q",
+  "tfa": "0.7830508474576271",
+  "judge": "0.0",
+  "machine_correct": "0"
+ },
+ "S025": {
+  "id": "DEP-test/prealgebra/378.json-s42",
+  "order": 25,
+  "dataset": "MATH-500",
+  "model": "Qwen2.5-7B-Instruct (sampled)",
+  "cell": "P",
+  "tfa": "0.0",
+  "judge": "0.0",
+  "machine_correct": "1"
+ },
+ "S026": {
+  "id": "MATH-R-test/number_theory/1201.json-Qwen2.5-",
+  "order": 26,
+  "dataset": "MATH-500",
+  "model": "Qwen2.5-14B-Instruct",
+  "cell": "R",
+  "tfa": "0.737",
+  "judge": "10.0",
+  "machine_correct": "1"
+ },
+ "S027": {
+  "id": "PUT-2005_B3-OLMo-2-1124-",
+  "order": 27,
+  "dataset": "Putnam-AXIOM",
+  "model": "OLMo-2-1124-7B-Instruct",
+  "cell": "Q",
+  "tfa": "0.5325",
+  "judge": "0.0",
+  "machine_correct": "0"
+ },
+ "S028": {
+  "id": "DEP-test/number_theory/1055.json-s37",
+  "order": 28,
+  "dataset": "MATH-500",
+  "model": "Qwen2.5-7B-Instruct (sampled)",
+  "cell": "P",
+  "tfa": "0.0",
+  "judge": "0.0",
+  "machine_correct": "1"
+ },
+ "S029": {
+  "id": "MATH-R-test/prealgebra/505.json-Qwen2.5-",
+  "order": 29,
+  "dataset": "MATH-500",
+  "model": "Qwen2.5-14B-Instruct",
+  "cell": "R",
+  "tfa": "0.841",
+  "judge": "10.0",
+  "machine_correct": "1"
+ },
+ "S030": {
+  "id": "MATH-R-test/prealgebra/1558.json-phi-4",
+  "order": 30,
+  "dataset": "MATH-500",
+  "model": "phi-4",
+  "cell": "R",
+  "tfa": "0.772",
+  "judge": "10.0",
+  "machine_correct": "1"
+ },
+ "S031": {
+  "id": "PUT-2010_B4-OLMo-2-0325-",
+  "order": 31,
+  "dataset": "Putnam-AXIOM",
+  "model": "OLMo-2-0325-32B-Instruct",
+  "cell": "Q",
+  "tfa": "0.6491228070175439",
+  "judge": "0.0",
+  "machine_correct": "1"
+ },
+ "S032": {
+  "id": "MATH-R-test/precalculus/190.json-Qwen2.5-",
+  "order": 32,
+  "dataset": "MATH-500",
+  "model": "Qwen2.5-7B-Instruct",
+  "cell": "R",
+  "tfa": "0.931",
+  "judge": "0.0",
+  "machine_correct": "0"
+ },
+ "S033": {
+  "id": "PUT-1991_A5-Ministral-8B",
+  "order": 33,
+  "dataset": "Putnam-AXIOM",
+  "model": "Ministral-8B-Instruct-2410",
+  "cell": "Q",
+  "tfa": "0.7991360691144709",
+  "judge": "0.0",
+  "machine_correct": "1"
+ },
+ "S034": {
+  "id": "MATH-R-test/intermediate_algebra/1981.json-phi-4",
+  "order": 34,
+  "dataset": "MATH-500",
+  "model": "phi-4",
+  "cell": "R",
+  "tfa": "0.778",
+  "judge": "10.0",
+  "machine_correct": "1"
+ },
+ "S035": {
+  "id": "DEP-test/precalculus/881.json-s11",
+  "order": 35,
+  "dataset": "MATH-500",
+  "model": "Qwen2.5-7B-Instruct (sampled)",
+  "cell": "P",
+  "tfa": "0.0",
+  "judge": "0.0",
+  "machine_correct": "1"
+ },
+ "S036": {
+  "id": "PUT-B1-Qwen2.5-3B-I",
+  "order": 36,
+  "dataset": "Putnam-AXIOM",
+  "model": "Qwen2.5-3B-Instruct",
+  "cell": "Q",
+  "tfa": "0.7964071856287425",
+  "judge": "0.0",
+  "machine_correct": "0"
+ },
+ "S037": {
+  "id": "MATH-R-test/precalculus/1289.json-Qwen2.5-",
+  "order": 37,
+  "dataset": "MATH-500",
+  "model": "Qwen2.5-7B-Instruct",
+  "cell": "R",
+  "tfa": "0.907",
+  "judge": "10.0",
+  "machine_correct": "1"
+ },
+ "S038": {
+  "id": "PUT-1986_A1-Phi-3-medium",
+  "order": 38,
+  "dataset": "Putnam-AXIOM",
+  "model": "Phi-3-medium-4k-instruct",
+  "cell": "Q",
+  "tfa": "0.6903225806451613",
+  "judge": "0.0",
+  "machine_correct": "1"
+ },
+ "S039": {
+  "id": "MATH-R-test/number_theory/483.json-Qwen2.5-",
+  "order": 39,
+  "dataset": "MATH-500",
+  "model": "Qwen2.5-7B-Instruct",
+  "cell": "R",
+  "tfa": "0.844",
+  "judge": "10.0",
+  "machine_correct": "1"
+ },
+ "S040": {
+  "id": "MATH-R-test/prealgebra/1356.json-phi-4",
+  "order": 40,
+  "dataset": "MATH-500",
+  "model": "phi-4",
+  "cell": "R",
+  "tfa": "0.797",
+  "judge": "10.0",
+  "machine_correct": "1"
+ },
+ "S041": {
+  "id": "MATH-R-test/number_theory/255.json-Qwen2.5-",
+  "order": 41,
+  "dataset": "MATH-500",
+  "model": "Qwen2.5-14B-Instruct",
+  "cell": "R",
+  "tfa": "0.787",
+  "judge": "10.0",
+  "machine_correct": "1"
+ },
+ "S042": {
+  "id": "MATH-R-test/algebra/1275.json-Qwen2.5-",
+  "order": 42,
+  "dataset": "MATH-500",
+  "model": "Qwen2.5-14B-Instruct",
+  "cell": "R",
+  "tfa": "0.777",
+  "judge": "10.0",
+  "machine_correct": "1"
+ },
+ "S043": {
+  "id": "PUT-B2-Qwen2.5-7B-I",
+  "order": 43,
+  "dataset": "Putnam-AXIOM",
+  "model": "Qwen2.5-7B-Instruct",
+  "cell": "Q",
+  "tfa": "0.6466876971608833",
+  "judge": "0.0",
+  "machine_correct": "0"
+ },
+ "S044": {
+  "id": "PUT-2022_A6-Qwen2.5-14B-",
+  "order": 44,
+  "dataset": "Putnam-AXIOM",
+  "model": "Qwen2.5-14B-Instruct",
+  "cell": "Q",
+  "tfa": "0.8047337278106509",
+  "judge": "0.0",
+  "machine_correct": "0"
+ },
+ "S045": {
+  "id": "PUT-2009_A3-Ministral-8B",
+  "order": 45,
+  "dataset": "Putnam-AXIOM",
+  "model": "Ministral-8B-Instruct-2410",
+  "cell": "Q",
+  "tfa": "0.7692307692307693",
+  "judge": "0.0",
+  "machine_correct": "1"
+ },
+ "S046": {
+  "id": "MATH-R-test/algebra/1072.json-phi-4",
+  "order": 46,
+  "dataset": "MATH-500",
+  "model": "phi-4",
+  "cell": "R",
+  "tfa": "0.835",
+  "judge": "10.0",
+  "machine_correct": "1"
+ },
+ "S047": {
+  "id": "MATH-R-test/number_theory/847.json-phi-4",
+  "order": 47,
+  "dataset": "MATH-500",
+  "model": "phi-4",
+  "cell": "R",
+  "tfa": "0.788",
+  "judge": "10.0",
+  "machine_correct": "1"
+ },
+ "S048": {
+  "id": "MATH-R-test/intermediate_algebra/558.json-Qwen2.5-",
+  "order": 48,
+  "dataset": "MATH-500",
+  "model": "Qwen2.5-14B-Instruct",
+  "cell": "R",
+  "tfa": "0.852",
+  "judge": "0.5",
+  "machine_correct": "0"
+ },
+ "S049": {
+  "id": "MATH-R-test/number_theory/234.json-Qwen2.5-",
+  "order": 49,
+  "dataset": "MATH-500",
+  "model": "Qwen2.5-7B-Instruct",
+  "cell": "R",
+  "tfa": "0.833",
+  "judge": "0.0",
+  "machine_correct": "0"
+ },
+ "S050": {
+  "id": "PUT-1988_B3-Qwen2.5-3B-I",
+  "order": 50,
+  "dataset": "Putnam-AXIOM",
+  "model": "Qwen2.5-3B-Instruct",
+  "cell": "Q",
+  "tfa": "0.6390041493775933",
+  "judge": "0.0",
+  "machine_correct": "0"
+ }
+}
