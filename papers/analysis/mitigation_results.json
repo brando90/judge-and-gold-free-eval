@@ -1,0 +1,494 @@
+{
+ "n_items": 75,
+ "per_k_counts": {
+  "k1": 15,
+  "k2": 15,
+  "k4": 15,
+  "k8": 15,
+  "k16": 15
+ },
+ "E1_margins": {
+  "Qwen__Qwen2.5-7B-Instruct|noref|k2": {
+   "n": 15,
+   "margin": 0.08,
+   "ci": [
+    -0.38,
+    0.48
+   ]
+  },
+  "Qwen__Qwen2.5-7B-Instruct|noref|k4": {
+   "n": 12,
+   "margin": 0.34,
+   "ci": [
+    0.04,
+    0.72
+   ]
+  },
+  "Qwen__Qwen2.5-7B-Instruct|noref|k8": {
+   "n": 10,
+   "margin": 0.95,
+   "ci": [
+    -0.43,
+    2.71
+   ]
+  },
+  "Qwen__Qwen2.5-7B-Instruct|ref|k2": {
+   "n": 15,
+   "margin": 5.02,
+   "ci": [
+    4.45,
+    5.51
+   ]
+  },
+  "Qwen__Qwen2.5-7B-Instruct|ref|k4": {
+   "n": 12,
+   "margin": 5.05,
+   "ci": [
+    4.31,
+    5.79
+   ]
+  },
+  "Qwen__Qwen2.5-7B-Instruct|ref|k8": {
+   "n": 10,
+   "margin": 5.54,
+   "ci": [
+    4.74,
+    6.26
+   ]
+  },
+  "Qwen__Qwen2.5-7B-Instruct|m1|k2": {
+   "n": 15,
+   "margin": 2.98,
+   "ci": [
+    2.35,
+    3.57
+   ]
+  },
+  "Qwen__Qwen2.5-7B-Instruct|m1|k4": {
+   "n": 12,
+   "margin": 1.79,
+   "ci": [
+    1.15,
+    2.49
+   ]
+  },
+  "Qwen__Qwen2.5-7B-Instruct|m1|k8": {
+   "n": 10,
+   "margin": 2.44,
+   "ci": [
+    0.93,
+    4.05
+   ]
+  },
+  "Qwen__Qwen2.5-7B-Instruct|m2|k2": {
+   "n": 15,
+   "margin": 6.62,
+   "ci": [
+    5.6,
+    7.56
+   ]
+  },
+  "Qwen__Qwen2.5-7B-Instruct|m2|k4": {
+   "n": 12,
+   "margin": 5.49,
+   "ci": [
+    3.83,
+    7.16
+   ]
+  },
+  "Qwen__Qwen2.5-7B-Instruct|m2|k8": {
+   "n": 10,
+   "margin": 6.73,
+   "ci": [
+    5.75,
+    7.65
+   ]
+  },
+  "microsoft__phi-4|noref|k2": {
+   "n": 15,
+   "margin": 0.11,
+   "ci": [
+    -0.06,
+    0.28
+   ]
+  },
+  "microsoft__phi-4|noref|k4": {
+   "n": 12,
+   "margin": -0.53,
+   "ci": [
+    -1.01,
+    -0.12
+   ]
+  },
+  "microsoft__phi-4|noref|k8": {
+   "n": 10,
+   "margin": 0.51,
+   "ci": [
+    -0.47,
+    1.69
+   ]
+  },
+  "microsoft__phi-4|ref|k2": {
+   "n": 15,
+   "margin": 3.73,
+   "ci": [
+    3.04,
+    4.39
+   ]
+  },
+  "microsoft__phi-4|ref|k4": {
+   "n": 12,
+   "margin": 4.14,
+   "ci": [
+    3.32,
+    4.9
+   ]
+  },
+  "microsoft__phi-4|ref|k8": {
+   "n": 10,
+   "margin": 4.97,
+   "ci": [
+    3.8,
+    5.94
+   ]
+  },
+  "microsoft__phi-4|m1|k2": {
+   "n": 15,
+   "margin": 1.79,
+   "ci": [
+    1.18,
+    2.36
+   ]
+  },
+  "microsoft__phi-4|m1|k4": {
+   "n": 12,
+   "margin": 1.34,
+   "ci": [
+    0.78,
+    1.95
+   ]
+  },
+  "microsoft__phi-4|m1|k8": {
+   "n": 10,
+   "margin": 2.42,
+   "ci": [
+    1.29,
+    3.6
+   ]
+  },
+  "microsoft__phi-4|m2|k2": {
+   "n": 15,
+   "margin": 0.14,
+   "ci": [
+    -0.07,
+    0.34
+   ]
+  },
+  "microsoft__phi-4|m2|k4": {
+   "n": 12,
+   "margin": -0.51,
+   "ci": [
+    -1.01,
+    -0.12
+   ]
+  },
+  "microsoft__phi-4|m2|k8": {
+   "n": 10,
+   "margin": 1.39,
+   "ci": [
+    -0.08,
+    3.32
+   ]
+  }
+ },
+ "E2_gap_deltas": {
+  "Qwen__Qwen2.5-7B-Instruct|ref|k1": {
+   "n": 15,
+   "delta": 0.051,
+   "ci": [
+    -0.3,
+    0.43
+   ]
+  },
+  "Qwen__Qwen2.5-7B-Instruct|ref|k2": {
+   "n": 15,
+   "delta": 0.956,
+   "ci": [
+    0.58,
+    1.34
+   ]
+  },
+  "Qwen__Qwen2.5-7B-Instruct|ref|k4": {
+   "n": 13,
+   "delta": 1.772,
+   "ci": [
+    0.96,
+    2.52
+   ]
+  },
+  "Qwen__Qwen2.5-7B-Instruct|ref|k8": {
+   "n": 14,
+   "delta": 1.901,
+   "ci": [
+    1.26,
+    2.48
+   ]
+  },
+  "Qwen__Qwen2.5-7B-Instruct|ref|k16": {
+   "n": 11,
+   "delta": 1.392,
+   "ci": [
+    0.71,
+    2.05
+   ]
+  },
+  "Qwen__Qwen2.5-7B-Instruct|ref|kgt1": {
+   "n": 53,
+   "delta": 1.496,
+   "ci": [
+    1.17,
+    1.82
+   ]
+  },
+  "Qwen__Qwen2.5-7B-Instruct|m1|k1": {
+   "n": 15,
+   "delta": 0.407,
+   "ci": [
+    -0.09,
+    0.84
+   ]
+  },
+  "Qwen__Qwen2.5-7B-Instruct|m1|k2": {
+   "n": 15,
+   "delta": -0.301,
+   "ci": [
+    -0.92,
+    0.25
+   ]
+  },
+  "Qwen__Qwen2.5-7B-Instruct|m1|k4": {
+   "n": 13,
+   "delta": 0.062,
+   "ci": [
+    -0.46,
+    0.58
+   ]
+  },
+  "Qwen__Qwen2.5-7B-Instruct|m1|k8": {
+   "n": 14,
+   "delta": 0.121,
+   "ci": [
+    -0.27,
+    0.51
+   ]
+  },
+  "Qwen__Qwen2.5-7B-Instruct|m1|k16": {
+   "n": 11,
+   "delta": -0.055,
+   "ci": [
+    -0.61,
+    0.56
+   ]
+  },
+  "Qwen__Qwen2.5-7B-Instruct|m1|kgt1": {
+   "n": 53,
+   "delta": -0.049,
+   "ci": [
+    -0.32,
+    0.21
+   ]
+  },
+  "Qwen__Qwen2.5-7B-Instruct|m2|k1": {
+   "n": 15,
+   "delta": -0.042,
+   "ci": [
+    -0.3,
+    0.16
+   ]
+  },
+  "Qwen__Qwen2.5-7B-Instruct|m2|k2": {
+   "n": 15,
+   "delta": 0.667,
+   "ci": [
+    0.32,
+    0.99
+   ]
+  },
+  "Qwen__Qwen2.5-7B-Instruct|m2|k4": {
+   "n": 13,
+   "delta": 1.149,
+   "ci": [
+    0.34,
+    2.3
+   ]
+  },
+  "Qwen__Qwen2.5-7B-Instruct|m2|k8": {
+   "n": 14,
+   "delta": 1.0,
+   "ci": [
+    0.58,
+    1.51
+   ]
+  },
+  "Qwen__Qwen2.5-7B-Instruct|m2|k16": {
+   "n": 11,
+   "delta": 2.769,
+   "ci": [
+    1.75,
+    3.89
+   ]
+  },
+  "Qwen__Qwen2.5-7B-Instruct|m2|kgt1": {
+   "n": 53,
+   "delta": 1.309,
+   "ci": [
+    0.91,
+    1.77
+   ]
+  },
+  "microsoft__phi-4|ref|k1": {
+   "n": 15,
+   "delta": -0.106,
+   "ci": [
+    -0.14,
+    -0.07
+   ]
+  },
+  "microsoft__phi-4|ref|k2": {
+   "n": 15,
+   "delta": 0.576,
+   "ci": [
+    0.29,
+    0.87
+   ]
+  },
+  "microsoft__phi-4|ref|k4": {
+   "n": 13,
+   "delta": 1.541,
+   "ci": [
+    0.89,
+    2.19
+   ]
+  },
+  "microsoft__phi-4|ref|k8": {
+   "n": 14,
+   "delta": 0.991,
+   "ci": [
+    0.4,
+    1.6
+   ]
+  },
+  "microsoft__phi-4|ref|k16": {
+   "n": 11,
+   "delta": 1.284,
+   "ci": [
+    0.89,
+    1.69
+   ]
+  },
+  "microsoft__phi-4|ref|kgt1": {
+   "n": 53,
+   "delta": 1.069,
+   "ci": [
+    0.81,
+    1.34
+   ]
+  },
+  "microsoft__phi-4|m1|k1": {
+   "n": 15,
+   "delta": 0.041,
+   "ci": [
+    -0.13,
+    0.27
+   ]
+  },
+  "microsoft__phi-4|m1|k2": {
+   "n": 15,
+   "delta": 0.017,
+   "ci": [
+    -0.12,
+    0.16
+   ]
+  },
+  "microsoft__phi-4|m1|k4": {
+   "n": 13,
+   "delta": 0.08,
+   "ci": [
+    -0.31,
+    0.49
+   ]
+  },
+  "microsoft__phi-4|m1|k8": {
+   "n": 14,
+   "delta": 0.177,
+   "ci": [
+    -0.2,
+    0.5
+   ]
+  },
+  "microsoft__phi-4|m1|k16": {
+   "n": 11,
+   "delta": 0.438,
+   "ci": [
+    0.13,
+    0.76
+   ]
+  },
+  "microsoft__phi-4|m1|kgt1": {
+   "n": 53,
+   "delta": 0.162,
+   "ci": [
+    0.0,
+    0.33
+   ]
+  },
+  "microsoft__phi-4|m2|k1": {
+   "n": 15,
+   "delta": 0.052,
+   "ci": [
+    -0.04,
+    0.21
+   ]
+  },
+  "microsoft__phi-4|m2|k2": {
+   "n": 15,
+   "delta": -0.074,
+   "ci": [
+    -0.11,
+    -0.04
+   ]
+  },
+  "microsoft__phi-4|m2|k4": {
+   "n": 13,
+   "delta": -0.105,
+   "ci": [
+    -0.16,
+    -0.06
+   ]
+  },
+  "microsoft__phi-4|m2|k8": {
+   "n": 14,
+   "delta": 0.026,
+   "ci": [
+    -0.09,
+    0.15
+   ]
+  },
+  "microsoft__phi-4|m2|k16": {
+   "n": 11,
+   "delta": -0.154,
+   "ci": [
+    -0.21,
+    -0.1
+   ]
+  },
+  "microsoft__phi-4|m2|kgt1": {
+   "n": 53,
+   "delta": -0.072,
+   "ci": [
+    -0.11,
+    -0.03
+   ]
+  }
+ }
+}
