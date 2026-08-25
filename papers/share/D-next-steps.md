@@ -58,7 +58,7 @@ approach on crowd-sourced sets.
 The requirement is always the pair: **real multiplicity + a validity oracle that isn't the
 reference.**
 
-**Found by Sri (2026-08-25):**
+**Found by Aryan (2026-08-25):**
 - **MACE** (arXiv 2602.07842, *Evaluating and Calibrating LLM Confidence on Questions with
   Multiple Correct Answers*): 12,000 factual questions, six domains, answer cardinality
   fixed by construction at 1/2/4/6 — a natural-language twin of our synthetic k-grid, with
