@@ -32,15 +32,18 @@ token(s) and certifies worked references safe at k=1; a falsification widens the
 
 | # | Experiment | Tests | New code needed | Cost |
 |---|---|---|---|---|
+| **P0** | **Run pipeline17** (judge-coverage extension, Registration 5 — **already registered externally**, committed pre-data in `e75e465`; running it needs no new OSF action) | The fix's judge-generality: re-judges the frozen k-stratified pool with gemma-2-9b-it, Mistral-7B-Instruct-v0.3, Qwen2.5-14B (backup Yi-1.5-9B), turning M1's evidence base from 2 judges into 5 across 4 families — the paper's most-cited limitation | None — `bash pipeline17.sh <GPU> <JUDGE>`, three invocations | Cheapest of all: judging only, frozen pool and samples reused |
 | E1 | **Worked-reference arm** on the existing 120-task / k-stratified pools: new condition `refsol` where the reference is a synthesized worked solution ("x must be odd and ≡2 mod 5; candidates are …; take 37") instead of the bare answer | Does a *longer* reference (more matching surface) anchor more or less than a bare answer at k>1? Closes the paper's stated "long reference untested" limitation | Per-family solution-text generator (~100 lines); one new `bon_judge.py` cond | Cheapest: reuses frozen pools + samples, judging only |
 | E2 | **Same-answer, different-method** on unique-answer math (MATH subset): worked gold reference (method A); candidates curated/generated to reach the same answer by method B; margin = method-matching vs non-matching *correct* candidates; plus best-of-64 inflation vs blind | **H-METHOD directly** — the discriminating control between answer-anchoring and method-anchoring | Method-diversity curation (generate n samples, cluster by approach — LLM-label the method, human-audit a subset) | Medium: needs candidate curation |
 | E3 | **Code rotation** (HumanEval → CodeContests): rotate the reference among genuinely different correct implementations; oracle = unit tests. Two sub-arms: (a) same-behavior different-implementation = pure method multiplicity; (b) CodeContests problems that accept multiple correct *outputs* (~25% of them) = answer multiplicity, the code analog of the k-step | H-METHOD in its purest form (implementations differ maximally, behavior identical), plus cross-domain replication of the k-step | Harness mostly exists (`--domain code/mbpp`, code oracle); CodeContests loader + accepted-solutions reference picker | Medium |
 | E4 | **MACE replication** (arXiv 2602.07842): natural-language factual k-grid, k∈{1,2,4,6} controlled by design, Wikidata-enumerated answer sets, 500 questions per cell across 6 domains | External validity of the k-step beyond arithmetic constraint families — the strongest realism upgrade available off-the-shelf | MACE task-file builder (same schema as `runs/bon_synthk_tasks.jsonl`); enumeration-completeness audit (reuse the checker-adjudication machinery) | Medium |
 | E5 | **ARC-DA** (arXiv 2102.03315): 2,985 direct-answer science questions, 8,436 valid answers (~2.8/question) | Realism extension to crowd-enumerated science QA | Needs the label-correction machinery up front (answer lists are known-incomplete; no exact oracle — evaluation there uses F1/ROUGE) | Higher: adjudication-heavy |
 
-Suggested order: **E1 → E2 → E4**, with E3 in parallel on the cluster (it shares no pools
+Suggested order: **P0 immediately** (free, registered, hardens the fix), then **E1 → E2 →
+E4** as the next registered block, with E3 in parallel on the cluster (it shares no pools
 with the others). E5 only if E4's enumeration audit comes back clean enough to trust the
-approach on crowd-sourced sets.
+approach on crowd-sourced sets. Once P0 lands, paper D's Table 7 and its N=2 caveats get
+updated and the paper is realistically submission-ready — that decision point is Sri's.
 
 ## Registered-style predictions to commit before running (draft)
 
@@ -90,6 +93,54 @@ domain (every proof of a theorem reaches the "same answer"), and a bridge to Ver
 **Surveyed and rejected earlier** (for the record): JudgeBench, LLMBar, RM-Bench — pairwise
 one-right-one-wrong, no multiplicity; MT-Bench / Arena / AlpacaEval / HelpSteer2 —
 preference labels, no validity oracle; MixEval — objective but single-answer.
+
+## How the queue links to related work
+
+- **P0** answers the judge-generality demand standard in the judge-bias literature (biases
+  are judge-specific), converting "consistent with capability but not isolated from it"
+  into an actual cross-family claim about the fix.
+- **E1/E2** engage the **solution-fixation** line most directly: that work showed judges
+  statically penalize valid solutions differing from a worked reference, but never isolated
+  the *same-answer-different-method* cell from the *different-answer* cell. E2 is exactly
+  that isolation, run dynamically. It also bears on the "judge writes its own reference
+  first" practice: if method-anchoring is real, self-generated references are
+  contraindicated even on unique-answer tasks.
+- **E4 (MACE)** creates a complementarity worth a related-work paragraph in both papers:
+  MACE shows *confidence calibration* breaks as the number of correct answers grows; we
+  would show *reference-guided judging* breaks along the same axis — answer-multiplicity
+  as a general failure dimension for LLM evaluation, a framing neither paper claims alone.
+- **E3** imports the pass@k/CodeBLEU tradition (multiplicity defeats match metrics —
+  companion B's territory) into the judging-under-selection setting.
+- The whole program sits inside the **overoptimization** framework (Gao et al.): our
+  contribution there is mapping which evaluator-side "safeguards" reduce exploitability
+  and which *increase* it.
+
+## Novelty ledger (honest)
+
+**Not novel, and the paper says so:** the static fixation bias (judges penalize
+non-matching valid answers), reference-guided degradation on open-ended tasks, the
+documented benefits of references on unique-answer grading, RewardBench-2's Ties
+construction, and the overoptimization setting itself.
+
+**Genuinely novel — four claims with no prior claimant found:**
+1. **The dynamic inversion**: first measurement of a reference making best-of-n inflation
+   *worse than blind*, externally preregistered, twice. Prior work measured static verdict
+   accuracy; the safeguard claim rests on the dynamic quantity, and the two can disagree.
+2. **The causal mechanism**: anchoring shown by *intervention* (rotate the reference,
+   identical text swings ±9.5 of 10), not inferred from error rates — nobody else has the
+   within-sample causal design.
+3. **The controlled boundary**: harm switching on at exactly k=2 with k fixed per item by
+   construction, the step universal across six judges — the literature had direction, not
+   a dose-response with a located threshold.
+4. **The fix**: blind-then-reveal, preregistered, removing the measured inflation for both
+   judges where prompting is a placebo — no prior work offers a protocol-level mitigation
+   validated under selection pressure. P0 is what hardens this, the paper's most
+   practically valuable claim.
+
+**Where the moat is thinnest:** realism (arithmetic families — E4 fixes), judge count on
+the fix (P0 fixes), and the risk of being misread as "fixation bias again" — which is why
+the intro leads with the dynamic/static distinction, and why E2, whichever way it lands,
+adds a second mechanism-level result nobody else has touched.
 
 ## Pipeline reuse map
 
