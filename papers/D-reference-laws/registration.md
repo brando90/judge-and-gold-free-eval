@@ -1010,3 +1010,38 @@ paper. The committed construction harness (build_simcorr_candidates.py, simcorr_
 simcorr_audit.py, runs/simcorr_tasks.jsonl) remains in the repo for a possible future
 hard-domain version (MATH-style tasks where the audit criterion is passable); any such revival
 is a new registration.
+
+---
+
+## CORRECTION (2026-08-27): Mistral-7B is NOT anchoring-resistant; its null is a score-resolution artifact
+
+The two entries above describe Mistral-7B-Instruct-v0.3 as "the first anchoring-resistant judge."
+**That interpretation is withdrawn.** A post-hoc diagnostic prompted by a collaborator's request to
+double-check the result (`p17_mistral_diagnostic.py`, artifact `p17_mistral_diagnostic.json`) shows:
+
+| judge | distinct score values | max dev. from integer | samples tied at max (ref) | anchoring margin | ref-minus-blind score shift |
+|---|---|---|---|---|---|
+| Mistral-7B-v0.3 | **11** | **0.000000** | **32.1** | +1.38 | +0.79 |
+| gemma-2-9b-it | 4524 | 0.4999 | 1.0 | +5.32 | -3.13 |
+| Qwen2.5-7B | 4456 | 0.4999 | 1.0 | +5.17 | -3.11 |
+| Qwen2.5-14B | 3966 | 0.4999 | 1.0 | +4.06 | -1.19 |
+| phi-4 | 4004 | 0.4997 | 1.0 | +4.20 | -2.13 |
+
+Mistral emits scores that are EXACTLY integers: it places essentially all probability mass on one
+score token, so the logprob-expected value collapses to that integer and only 11 distinct values
+exist pool-wide (52.6% of referenced scores are exactly 10). Best-of-64 selection under this judge
+therefore ties 32 of 64 samples at the maximum, against exactly 1 for every other judge, and the
+frozen estimator breaks ties uniformly at random — so selection is close to a lottery over half the
+pool and cannot express any scoring preference. Mistral DOES anchor, mildly and with the expected
+k-trend (+1.15 at k=2, +1.10 at k=4, +2.07 at k=8; overall margin +1.38, referenced scores shifted
++0.79 points), but that preference cannot propagate into measurable inflation at this resolution.
+
+**What changes.** The P-X1 verdict itself stands: Mistral's inflation delta is null, so the
+every-judge prediction fails as scored. What is withdrawn is the CAUSAL READING. The correct
+statement is that best-of-n inflation requires a judge whose scores can discriminate among
+candidates, and a judge that emits coarse integers is not thereby safe: its anchoring is intact,
+it is merely unable to act on it under this selection rule (and its selection quality suffers for
+the same reason — only 51.6% of its top-tied group is valid, against 65-77% for the other judges).
+A sharper decoding rule, a tie-break by any secondary signal, or a larger candidate pool could all
+surface the anchoring this pool's estimator cannot see. Paper v23 states this and drops the
+"immune judge" framing everywhere.

@@ -29,7 +29,7 @@
 
 \title{When the Answer Key Backfires:\\ \large Reference Anchoring Turns LLM Judges into Answer Matchers}
 \author{Anonymous Authors}
-\date{Draft v22, August 27, 2026}
+\date{Draft v23, August 27, 2026}
 
 \usepackage{placeins}
 \renewcommand{\topfraction}{0.9}
@@ -54,7 +54,7 @@ The harm switches on at the first step in multiplicity: on pools with exactly $k
 A registered composition experiment then falsified our own prediction about where the harm peaks: inflation is largest when \emph{no} valid answer matches the reference, because the judge then selects incorrect answers that resemble the key.
 One preregistered fix works: have the judge score blind first, and reveal the reference only afterwards.
 That removes the measured inflation when several answers are valid and costs nothing when the answer is unique; merely instructing the judge to accept any valid answer does not.
-A registered five-judge extension then shows both lever and fix are judge-dependent: the harm replicates strongly in two further model families, is absent entirely for one judge, and the fix's removal ranges from complete to partial.
+A registered five-judge extension then shows both lever and fix are judge-dependent: the harm replicates strongly in two further model families, the fix's removal ranges from complete to partial, and one judge shows no measurable harm only because its coarse integer scores tie half the candidate pool, so selection cannot act on the anchoring it still exhibits.
 A reference answer is a lever, not a safeguard: safe when the answer is effectively unique, inflationary under selection when it is not, and disarmed by ordering the judge's calls, not by instructions.
 \end{abstract}
 
@@ -130,7 +130,7 @@ It is anchoring, and it is causal: rotating the shown reference to a different v
 On pools built with exactly $k$ valid answers per item, the harm switches on at $k{=}2$ for every judge tested, six judges across three model families, while at $k{=}1$ the reference is at worst harmless; the identical protocol on unique-answer math collapses inflation four- to thirteen-fold, so the lever's sign is set by the task's answer structure~\cite{companionA}.
 \item \textbf{The fix} (Section~\ref{sec:struct}).
 Ordering works where instructions fail: preregistered, having the judge score blind first and see the reference only afterwards removes the measured inflation at $k{>}1$ for both judges originally tested and costs nothing at $k{=}1$, whereas telling the judge to accept any valid answer is a placebo below frontier capability.
-A registered coverage extension to three further judges then shows the fix's magnitude is judge-dependent, and finds one judge immune to the harm itself.
+A registered coverage extension to three further judges then shows the fix's magnitude is judge-dependent, and finds one judge whose coarse integer scoring ties half the pool, so selection cannot act on the anchoring it still shows.
 \end{itemize}
 
 Every prediction, its registration timestamp, and its outcome, deviations included, is consolidated in a ledger (Appendix~\ref{sec:ledger}); the prose quotes headline numbers and leaves confidence intervals and secondary statistics to the tables.
@@ -644,8 +644,11 @@ The single reference steps up at $k{=}2$ and stays elevated through $k{=}16$ for
 \paragraph{Judge coverage: both the harm and the fix are judge-dependent (Registration 5).}
 An externally registered extension (\texttt{osf.io}, Registration 5; pipeline and harness committed pre-data) re-judged the frozen pool with three further judges from two new families, predicting the harm (P-X1) and M1's removal of it (P-X2) would replicate for every judge.
 The outcome is split, and it reshapes the fix's claim (Table~\ref{tab:coverage}).
-\textbf{P-X1 is not confirmed}: gemma-2-9b shows the strongest inversion measured on this pool ($+1.43$) and Qwen-14B a strong one ($+0.98$), but Mistral-7B is \emph{null} ($+0.03$), the first judge tested that is essentially immune.
-A post-hoc diagnostic rules out harness breakage: Mistral's scores are well spread and track validity as well as gemma's; its anchoring margin is simply small ($+1.0$ points against $+3.7$ to $+5.0$ for every other judge), too small to convert into inflation.
+\textbf{P-X1 is not confirmed}: gemma-2-9b shows the strongest inversion measured on this pool ($+1.43$) and Qwen-14B a strong one ($+0.98$), but Mistral-7B is \emph{null} ($+0.03$).
+A post-hoc diagnostic locates the cause, and it is not anchoring resistance.
+Mistral emits scores that are exactly integers, placing essentially all probability mass on one score token, so only 11 distinct values exist pool-wide and $52.6\%$ of its referenced scores are exactly 10; best-of-64 selection under it ties $32$ of $64$ samples at the maximum, against exactly $1$ for every other judge, and the frozen estimator breaks ties at random.
+That judge still anchors, mildly and with the expected $k$-trend (margin $+1.38$ overall, referenced scores shifted $+0.79$ points), but at this score resolution selection is close to a lottery and cannot act on the preference.
+Best-of-$n$ inflation therefore requires a judge whose scores discriminate among candidates: a coarse-integer judge is not safe, only unable to express its anchoring under this selection rule, and its selection quality suffers accordingly ($51.6\%$ of its top-tied group is valid, against $65$--$77\%$ for the others).
 \textbf{P-X2 is confirmed} for all three judges, but the \emph{level} tells the fuller story: M1 leaves $+0.23$ of residual inflation for Qwen-14B and $+1.23$ for gemma-2-9b, against the full removal seen for Qwen-7B and phi-4.
 Across the nine judges now tested, the single-reference harm is strong for seven, absent for one, and the fix's effect ranges from complete removal to a modest reduction.
 Both the vulnerability and the mitigation are properties of the judge, not of the task structure alone; a practitioner should certify their particular judge, on their own tasks, before trusting either — the pre-deployment-audit thesis of companion A arriving from an unplanned direction.
@@ -664,7 +667,7 @@ Qwen2.5-14B & $+0.98$ {\scriptsize$[+0.64,+1.33]$} & $+0.23$ {\scriptsize$[+0.10
 \bottomrule
 \end{tabular}
 \caption{\textbf{Takeaway: the registered coverage extension splits its own predictions — the harm replicates strongly for two new judges and is absent for one (P-X1 not confirmed), while the fix's contrast holds for all three (P-X2 confirmed) but its magnitude ranges from near-full removal to a small dent.}
-Frozen estimators of the mitigation experiment applied unchanged to three judges that had produced no scores at registration time ($n{=}53$ items at $k{>}1$); the prediction ledger records the P-X1 failure.}
+Frozen estimators of the mitigation experiment applied unchanged to three judges that had produced no scores at registration time ($n{=}53$ items at $k{>}1$); the prediction ledger records the P-X1 failure. Mistral's null is a score-resolution artifact, not anchoring resistance: it emits exact integers (11 distinct values pool-wide), tying 32 of 64 samples at the maximum against 1 for every other judge, so selection cannot act on its real but mild anchoring (margin $+1.38$).}
 \label{tab:coverage}
 \end{table}
 
@@ -765,7 +768,7 @@ Blind, no reference & Safe: nothing to anchor on & Forgoes the reference's benef
 \addlinespace
 Enumerate the valid set, check membership & Safe: no judge scoring involved & Safe & No & 0 \\
 \addlinespace
-Single reference & \textbf{Harmful}: adds $+1.50$ and $+1.07$ of inflation over blind & Helps the stronger judge, costs the other nothing & Mostly: strong for seven of nine judges tested, absent for Mistral-7B & 1 \\
+Single reference & \textbf{Harmful}: adds $+1.50$ and $+1.07$ of inflation over blind & Helps the stronger judge, costs the other nothing & Mostly: strong for seven of nine judges tested; Mistral-7B's null is a score-resolution artifact, not immunity & 1 \\
 \addlinespace
 $+$ any-correct-answer instruction & Closes the margin only for phi-4; a placebo below that, under both phrasings & Not claimed & Yes, ordered with judge capability & 1 \\
 \addlinespace
@@ -899,7 +902,7 @@ The reference lever is not a safety default; it is a conditional instrument with
 Unique answer and a capable judge: it collapses gaming.
 Multiple valid answers: it becomes the attack surface, and the judge's trust in the answer key is exactly what gets exploited.
 The fix is structural rather than verbal: score blind first, then reveal the reference and let it correct only demonstrated errors.
-Under external preregistration with the number of valid answers fixed per item, that ordering removes the measured inflation at $k > 1$ for both judges originally tested and costs nothing when the answer is unique, at the price of leaving a third to three fifths of the anchoring premium in place; the registered coverage extension shows the removal ranges from complete to partial across judge families, and that one judge is immune to the harm itself, so both lever and fix should be certified per judge before deployment.
+Under external preregistration with the number of valid answers fixed per item, that ordering removes the measured inflation at $k > 1$ for both judges originally tested and costs nothing when the answer is unique, at the price of leaving a third to three fifths of the anchoring premium in place; the registered coverage extension shows the removal ranges from complete to partial across judge families, and that a judge whose scores are too coarse to discriminate shows no measurable harm while still anchoring, so both lever and fix should be certified per judge before deployment.
 Splitting the validity decision into a separate call removes the inflation entirely for one of the two judges and backfires for the other.
 Asking the judge to disregard a reference it has already been shown does not work below frontier capability, and showing several references redistributes anchoring rather than removing it.
 Enumerating the valid set and checking membership, or leaving the judge blind, remain safe; blind-then-reveal is the option that keeps the reference without its cost, at the price of a second judge call.
@@ -989,7 +992,7 @@ P-D1--P-D3 & Distance gradient among valid non-matching answers (\texttt{distanc
 \addlinespace[1pt]
 P-AW1, P-AW2 & Blind-validation filter (\texttt{anchor\_vs\_weakness.py}): rotation deltas (P-AW1) and rotation-arm margins (P-AW2) survive on samples the judge blindly scored $\geq 7/10$ & internal git, pre-analysis, 2026-08-26 & Both confirmed: filtered gainer deltas exclude zero at every size and both rubrics ($+8.18$/$+9.13$/$+4.74$/$+3.09$ on rubric $a$), margins exclude zero at all four sizes (1.5B on $n{=}2$ items, noted fragile); retention $20$--$95\%$ by size (Section~\ref{sec:mech}) \\
 \addlinespace[1pt]
-P-X1--P-X4 & Judge-coverage extension: the single-reference harm (P-X1) and M1's removal contrast (P-X2) replicate for EVERY new judge (gemma-2-9b, Mistral-7B, Qwen-14B); P-X3 directional; P-X4 exploratory & external (Registration 5), harness committed pre-data (\texttt{e75e465}) & P-X1 \emph{NOT CONFIRMED}: strong for gemma ($+1.43$) and Qwen-14B ($+0.98$), \emph{null} for Mistral-7B ($+0.03$), the first anchoring-resistant judge (healthy scores, margin only $+1.0$). P-X2 confirmed for all three ($-0.20$, $-0.07$, $-0.75$), but M1's level ranges from near-full removal (14B, $+0.23$ residual) to partial (gemma, $+1.23$). P-X3 holds for two, vacuous for Mistral (Table~\ref{tab:coverage}) \\
+P-X1--P-X4 & Judge-coverage extension: the single-reference harm (P-X1) and M1's removal contrast (P-X2) replicate for EVERY new judge (gemma-2-9b, Mistral-7B, Qwen-14B); P-X3 directional; P-X4 exploratory & external (Registration 5), harness committed pre-data (\texttt{e75e465}) & P-X1 \emph{NOT CONFIRMED}: strong for gemma ($+1.43$) and Qwen-14B ($+0.98$), \emph{null} for Mistral-7B ($+0.03$) --- but a post-hoc diagnostic withdraws the anchoring-resistance reading: Mistral emits exact integers (11 distinct values), tying 32 of 64 samples at the maximum, so selection cannot act on its real margin ($+1.38$). P-X2 confirmed for all three ($-0.20$, $-0.07$, $-0.75$), but M1's level ranges from near-full removal (14B, $+0.23$ residual) to partial (gemma, $+1.23$). P-X3 holds for two, vacuous for Mistral (Table~\ref{tab:coverage}) \\
 \end{longtable}
 \endgroup
 

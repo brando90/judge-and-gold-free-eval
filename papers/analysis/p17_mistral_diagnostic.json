@@ -1,0 +1,47 @@
+{
+ "mistralai__Mistral-7B-Instruct-v0.3": {
+  "distinct_score_values": 11,
+  "max_deviation_from_integer": 0.0,
+  "frac_exactly_10": 0.5260416666666666,
+  "mean_tied_at_max_ref": 32.1,
+  "valid_frac_in_top_tie": 0.516209263094326,
+  "mean_anchoring_margin": 1.3794963503636217,
+  "mean_ref_minus_blind_score_shift": 0.7927083333333333
+ },
+ "google__gemma-2-9b-it": {
+  "distinct_score_values": 4524,
+  "max_deviation_from_integer": 0.49990867538432937,
+  "frac_exactly_10": 0.0,
+  "mean_tied_at_max_ref": 1.0,
+  "valid_frac_in_top_tie": 0.65,
+  "mean_anchoring_margin": 5.318594060126088,
+  "mean_ref_minus_blind_score_shift": -3.132979508577206
+ },
+ "Qwen__Qwen2.5-7B-Instruct": {
+  "distinct_score_values": 4456,
+  "max_deviation_from_integer": 0.4998827663267731,
+  "frac_exactly_10": 0.019375,
+  "mean_tied_at_max_ref": 1.0,
+  "valid_frac_in_top_tie": 0.5333333333333333,
+  "mean_anchoring_margin": 5.169182832454105,
+  "mean_ref_minus_blind_score_shift": -3.1080785063249126
+ },
+ "Qwen__Qwen2.5-14B-Instruct": {
+  "distinct_score_values": 3966,
+  "max_deviation_from_integer": 0.49988685487204165,
+  "frac_exactly_10": 0.12333333333333334,
+  "mean_tied_at_max_ref": 1.0,
+  "valid_frac_in_top_tie": 0.7,
+  "mean_anchoring_margin": 4.057597547142971,
+  "mean_ref_minus_blind_score_shift": -1.187593049220163
+ },
+ "microsoft__phi-4": {
+  "distinct_score_values": 4004,
+  "max_deviation_from_integer": 0.49969924161610946,
+  "frac_exactly_10": 0.11791666666666667,
+  "mean_tied_at_max_ref": 1.0,
+  "valid_frac_in_top_tie": 0.6333333333333333,
+  "mean_anchoring_margin": 4.19668326849887,
+  "mean_ref_minus_blind_score_shift": -2.1272965228634346
+ }
+}

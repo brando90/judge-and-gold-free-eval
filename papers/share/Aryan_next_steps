@@ -1,0 +1,97 @@
+Reference Anchoring Turns LLM Judges into Answer Matchers
+
+When given one reference answer, the judge may use “does this candidate look/match the reference?” as a shortcut for correctness, rather than using the reference to understand the problem and then independently recognizing other valid solutions.
+
+Expansion
+Better models (cross-family robustness)
+Qwen: ~32B
+Llama: ~70B-class
+Mistral: strongest feasible ~20B–100B-class model
+DeepSeek: strong reasoning model / distill
+Model size families as well (within-family scaling) 
+7B→14B→32B→70B
+Qwen ladder: small → medium → 32B
+Llama ladder: 8B → larger model → 70B-class
+Atleast 2 maybe more 
+Reference anchoring survives across fundamentally different kinds of tasks and answer spaces
+Goal: Maybe this only happens on this small RewardBench-derived setup / on short constrained answers.
+RewardBench-2 Ties subset (102 problems) 
+MACE 
+ARC-DA (Create an ARC-DA Multi-Valid subset) 
+CLEAR (Create find-one-valid)
+CALVER 
+
+
+
+Current Experiments
+Blind versus reference under best-of-n
+Question: Does giving a judge a reference cause a real downstream failure when we use that judge to select the best answer?
+For each problem, generate a pool of candidates, e.g. 64 answers, and use the independent ground-truth checker to know which are actually correct.
+Have the same judge score all 64 candidates blind, and separately score all 64 with one valid reference answer shown.
+In each condition, choose the judge's highest-scoring answer and compare what happens: Does the reference increase score inflation, make the judge select reference-matching answers, or hurt true selection quality.
+Maybe multiple runs picking the various valid answers as the reference to ensure the effect is robust (a CI if you will). 
+Anchoring versus weakness
+Question: Does reference anchoring remain even when the judge has already proven it is capable of recognizing the alternative solution as correct?
+For every judge, show it two genuinely different valid answers without a reference and independently check that the judge correctly recognizes both as valid. Keep only those cases.
+Now show that same judge the same answers again, but designate one of them as the reference.
+Measure whether the judge now gives the reference-matching answer a higher score than the alternative answer it had already demonstrated it knew was correct.
+Reference rotation
+Question: If I change only which valid answer is shown as the reference, does the judge’s score of the exact same candidate change?
+Start with two genuinely different valid answers, A and B. Use an independent oracle so we know both are correct.
+Establish blind competence first. Make sure that this exact judge recognizes both A and B as correct when no reference is shown.
+Rotation 1: show A as the reference and score both A and B.
+Rotation 2: show B as the reference and score the exact same A and B.
+Measure whether preference flips: does A receive the premium when A is the reference, and B receive the premium when B is the reference?
+Repeat this across strong 32B–70B-class judges, multiple model families, and several benchmark/task types.
+When does anchoring become exploitable?
+Question: Does reference anchoring cause downstream failure specifically when the candidate pool contains an answer that matches the shown reference?
+For each multi-valid problem, choose one valid answer A as the reference and identify other equally valid answers B, C, ....
+Construct matched candidate pools where everything is kept as similar as possible except whether a reference-matching answer A is available: e.g. Pool 1 has no A; Pool 2 contains A.
+Have the same judge score each pool blind and with A shown as the reference, then perform the same best-of-n selection.
+Compare whether the referenced judge begins selecting A disproportionately once A becomes available, and whether this increases inflation or harms selection relative to the blind judge.
+Optionally extend from 0 vs. 1 matching opportunity to 0,1,2,4,… reference-matching candidates to see whether greater opportunity makes the failure easier to exploit.
+Show the missing link between reference anchoring and downstream optimization failure: the judge has a reference-induced preference, and best-of-n fails when the candidate pool gives the optimizer an opportunity to exploit that preference.
+Distance from the reference
+Question: Does the judge penalize a valid answer more as that answer becomes more different from the shown reference?
+For each problem, obtain several genuinely different valid answers, ideally representing different solution types/approaches.
+Choose one valid answer A as the reference.
+Score all the valid alternatives blind and then with A shown as the reference.
+Group the valid alternatives by how different they are from A—for example, same approach expressed differently versus a genuinely different solution strategy.
+Test whether the reference-induced score penalty grows as valid solutions become more different from the shown reference.
+Rotate which valid answer is the reference and repeat, so the “favored region” of the answer space should move with the reference.
+Goal: Show that the judge is not merely biased toward one answer; it behaves as though correctness is partly being replaced by proximity to the arbitrary reference.
+Can reference similarity overpower correctness?
+Question: Can showing a reference make the judge prefer an incorrect but reference-like candidate over a correct candidate that uses a different solution?
+Choose a specific question and set it as the reference
+Construct a valid-near candidate. Correct. Similar to the reference in structure or method. Not necessarily an exact duplicate.
+Construct a valid-far candidate B. Correct according to the same oracle. Uses a different algorithm, proof strategy, or structural solution. Match approximate length, polish, and explanatory quality to the other candidates.
+Construct an invalid-near candidate C. Start from the reference or a near-reference solution. Introduce one subtle but genuine error. Confirm failure with the oracle.
+Construct an invalid-far candidate D. Incorrect. Structurally unrelated to the reference. Similar in length and presentation.
+Verify all four candidates independently.
+A and B must pass.
+C and D must fail.
+Have an independent human or model audit the naturalness of the candidate construction without seeing judge scores.
+Do not select errors based on which ones happen to fool the target judge.
+Run the blind condition.
+Score all four candidates.
+Pairwise compare B versus C.
+Reverse their order.
+Include a tie option where appropriate.
+Run the referenced condition with A shown.
+Strong result: The reference can make similarity outweigh correctness.
+Strengthen the mitigation, not only the failure
+Blind then reveal 
+
+
+
+
+Further Experiments
+Show what happens when the judge is used for training
+
+
+
+Coherence/Methodology Flow
+When a task has multiple valid answers, does showing one reference cause an LLM judge to substitute reference similarity for correctness, and can optimization exploit that substitution?
+
+
+
