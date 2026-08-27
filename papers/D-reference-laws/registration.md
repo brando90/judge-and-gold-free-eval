@@ -757,3 +757,52 @@ hand-computed quantities (band-match multiplicity composition 43.6% vs 16.2% k>=
 vs 5.82; the boxed-compliance decomposition previously computed by boxed_diag.py, which wrote
 nothing; a worked example of the inflation estimator on item repl/crt-11). The artifact
 manifest the paper references now exists at papers/analysis/MANIFEST.md.
+
+---
+
+## Matched-pool exploitability experiment (P-E1, P-E2) — registered 2026-08-26, FALSIFIED
+
+**Registration.** `papers/analysis/exploit_dose.py`, committed at `36efc6b` before the analysis
+was run on any data. The script header pins the design (sub-pool size m=24, v=4 valid samples of
+which d are reference-matching, d in {0,1,2,4}, R=20 resamples, paired sub-pool indices reused
+across conditions and judges), the estimator (a mirror of the frozen `bon_analysis.py` excess
+gap at n=m with a within-oracle-stratum permutation null), the eligibility rule, and both
+predictions. No OSF post (external registration is on hold at the collaborator's request); the
+git timestamp is the internal registration.
+
+**Motivation.** Round 9 rejected an exact per-item linear pathway from anchoring margin to
+inflation and named pool composition, "whether a matching valid sample happens to exist among
+the 64," as unresolved structure the existing design could not separate. This experiment
+manipulates that composition directly, at zero marginal compute: every sample already carries
+blind and referenced scores, so best-of-n over a subset of scored samples is arithmetic.
+
+**Outcome: P-E1 is FALSIFIED, and in the opposite direction.** Paired referenced-minus-blind
+excess gap by dose (48 eligible items: 12 k-stratified k>1, 36 replication):
+
+| judge | d=0 | d=1 | d=2 | d=4 | d=4 minus d=0 |
+|---|---|---|---|---|---|
+| Qwen2.5-7B | +1.18 [+0.99,+1.37] | +1.11 [+0.95,+1.26] | +0.65 [+0.50,+0.78] | -0.23 [-0.43,-0.03] | **-1.41 [-1.66,-1.15]** |
+| phi-4 | +0.95 [+0.82,+1.08] | +0.58 [+0.45,+0.72] | +0.22 [+0.13,+0.31] | -0.44 [-0.56,-0.33] | **-1.39 [-1.56,-1.22]** |
+
+P-E1 predicted a positive step excluding zero; the step is negative and excludes zero for both
+judges. P-E1's second clause (paired delta's CI includes zero at d=0) is also falsified: d=0 is
+where inflation is LARGEST. P-E2 (referenced judge picks reference-matching valid answers more
+often than blind at every dose >= 1) is CONFIRMED: 0.93/0.98 vs 0.18/0.43 at d=1,2 (Qwen-7B) and
+0.96/0.99 vs 0.24/0.50 (phi-4).
+
+**Post-hoc mechanism (unregistered; `exploit_dose_diag.py`, `exploit_dose_attract.py`).** The
+sign reverses because the harm is not the opportunity to select a matching CORRECT answer. When
+no valid answer matches the shown reference (d=0), the referenced judge selects a VALID sample
+only 0.14 (Qwen-7B) / 0.21 (phi-4) of the time against 0.72 / 0.79 blind, and its true gain
+collapses to -0.03 / +0.05 against blind's +0.55 / +0.63. Of the invalid samples the referenced
+judge selects, 58% (Qwen-7B) and 72% (phi-4) contain the reference answer's text, against 43%
+and 35% for the blind judge on the same sub-pools. Reading: absent a correct look-alike,
+reference similarity pulls selection onto INCORRECT look-alikes. At d=4 every valid sample
+matches, both arms select validly, and the referenced arm's residual is its score-polarization
+term only, which nets slightly negative.
+
+**Status of the claim.** This is a registered-then-falsified prediction and is reported as such;
+the mechanism reading above is post hoc and carries no registration weight. It converges with
+the independently registered similarity-vs-correctness 2x2 (P-SC1/P-SC2), which tests the same
+"similarity beats correctness" hypothesis with constructed candidates rather than by
+subsampling; that experiment's construction is committed and its judging has not been run.
