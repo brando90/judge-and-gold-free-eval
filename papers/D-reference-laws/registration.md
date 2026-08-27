@@ -858,3 +858,20 @@ fragile). Sample retention: 310/1564 (1.5B, whose blind scores are compressed), 
 1391/1564 (7B), 1480/1564 (14B). Reading: the rotation flip is carried by samples the judge had
 already demonstrably recognized as correct with no reference in sight — anchoring re-scores
 answers the judge itself certified, so the effect is anchoring, not ignorance.
+
+---
+
+## Registration 5 (judge-coverage, pipeline17) — first judge landed 2026-08-26
+
+**gemma-2-9b-it** (Google family; scored by the frozen estimators via `p17_coverage_analysis.py`):
+P-X1 CONFIRMED — single-reference k>1 delta vs blind +1.43 [+1.15,+1.68] (n=53), the strongest
+inversion of any judge tested so far, with the k=1 delta null (-0.05 [-0.14,+0.04]), matching the
+boundary. P-X2 formally CONFIRMED — the M1-minus-single-reference contrast is -0.20 [-0.34,-0.05],
+excluding zero — **but the level readout matters more than the contrast**: M1's own k>1 delta vs
+blind is +1.23 [+0.94,+1.52]. For this judge, blind-then-reveal removes only ~14% of the harm
+rather than all of it (against -0.05/+0.16 for Qwen-7B/phi-4). M2 sits at +0.61 [+0.48,+0.76],
+between M1 and blind — the opposite ordering from phi-4. P-X3 holds directionally (trivially).
+Provisional reading, pending the other two judges: the mitigation's magnitude is judge-dependent,
+and the paper's "same outcome for both judges tested" phrasing will need revision once the
+extension completes. Harness caveat on record: gemma-2 uses the registered system-role folding
+path; blind and referenced conditions behave coherently under it.

@@ -1,0 +1,67 @@
+{
+ "google__gemma-2-9b-it": {
+  "ref_kgt1": {
+   "delta": 1.425,
+   "ci": [
+    1.147,
+    1.684
+   ],
+   "n": 53
+  },
+  "m1_kgt1": {
+   "delta": 1.227,
+   "ci": [
+    0.937,
+    1.521
+   ],
+   "n": 53
+  },
+  "m2_kgt1": {
+   "delta": 0.614,
+   "ci": [
+    0.476,
+    0.764
+   ],
+   "n": 53
+  },
+  "ref_k1": {
+   "delta": -0.049,
+   "ci": [
+    -0.141,
+    0.041
+   ],
+   "n": 15
+  },
+  "m1_k1": {
+   "delta": -0.176,
+   "ci": [
+    -0.245,
+    -0.118
+   ],
+   "n": 15
+  },
+  "m1_minus_ref_kgt1": {
+   "delta": -0.199,
+   "ci": [
+    -0.343,
+    -0.05
+   ],
+   "n": 53
+  },
+  "step": {
+   "delta": 1.475
+  },
+  "verdicts": {
+   "PX1": true,
+   "PX2": true,
+   "PX3_directional": true
+  }
+ },
+ "_summary": {
+  "judges_run": [
+   "google__gemma-2-9b-it"
+  ],
+  "PX1_all": true,
+  "PX2_all": true
+ }
+}
