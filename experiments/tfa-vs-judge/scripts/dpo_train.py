@@ -4,8 +4,9 @@
 import argparse, json, os
 
 ap = argparse.ArgumentParser()
-ap.add_argument("--cond", choices=["ref", "sabotage"], required=True)
+ap.add_argument("--cond", required=True, help="arm tag; pairs file defaults to {out}/pairs_{cond}.jsonl")
 ap.add_argument("--model", default="Qwen/Qwen2.5-7B-Instruct")
+ap.add_argument("--pairs", default=None, help="override pairs file path")
 ap.add_argument("--epochs", type=float, default=1.0)
 ap.add_argument("--beta", type=float, default=0.1)
 ap.add_argument("--lr", type=float, default=5e-6)
@@ -18,7 +19,7 @@ from peft import LoraConfig
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from trl import DPOConfig, DPOTrainer
 
-rows = [json.loads(l) for l in open(f"{args.out}/pairs_{args.cond}.jsonl")]
+rows = [json.loads(l) for l in open(args.pairs or f"{args.out}/pairs_{args.cond}.jsonl")]
 tok = AutoTokenizer.from_pretrained(args.model)
 
 
