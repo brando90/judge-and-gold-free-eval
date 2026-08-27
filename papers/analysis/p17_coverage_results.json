@@ -57,11 +57,70 @@
    "PX3_directional": true
   }
  },
+ "mistralai__Mistral-7B-Instruct-v0.3": {
+  "ref_kgt1": {
+   "delta": 0.024,
+   "ci": [
+    -0.036,
+    0.077
+   ],
+   "n": 53
+  },
+  "m1_kgt1": {
+   "delta": -0.032,
+   "ci": [
+    -0.069,
+    0.004
+   ],
+   "n": 53
+  },
+  "m2_kgt1": {
+   "delta": 0.093,
+   "ci": [
+    -0.01,
+    0.201
+   ],
+   "n": 53
+  },
+  "ref_k1": {
+   "delta": 0.075,
+   "ci": [
+    0.007,
+    0.149
+   ],
+   "n": 15
+  },
+  "m1_k1": {
+   "delta": -0.006,
+   "ci": [
+    -0.038,
+    0.026
+   ],
+   "n": 15
+  },
+  "m1_minus_ref_kgt1": {
+   "delta": -0.056,
+   "ci": [
+    -0.108,
+    0.001
+   ],
+   "n": 53
+  },
+  "step": {
+   "delta": -0.051
+  },
+  "verdicts": {
+   "PX1": false,
+   "PX2": false,
+   "PX3_directional": false
+  }
+ },
  "_summary": {
   "judges_run": [
-   "google__gemma-2-9b-it"
+   "google__gemma-2-9b-it",
+   "mistralai__Mistral-7B-Instruct-v0.3"
   ],
-  "PX1_all": true,
-  "PX2_all": true
+  "PX1_all": false,
+  "PX2_all": false
  }
 }

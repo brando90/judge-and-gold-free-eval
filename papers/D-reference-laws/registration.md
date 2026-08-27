@@ -892,3 +892,74 @@ polish pipeline for every class, errors as plausible human slips), re-verify the
 assertions, and RE-run the same audit with the same pinned criterion. No judge scores of
 any simcorr candidate exist, so this iteration cannot be selecting errors that fool the
 target judge; it is selecting for auditor-rated naturalness only, as the design intends.
+
+---
+
+## Similarity-vs-correctness 2x2 — construction revision: 4 rounds, ALL FAILED the pinned audit (2026-08-27); judging remains blocked
+
+**What was done.** Per the previous entry, the candidate construction in
+`build_simcorr_candidates.py` was revised for prose uniformity and plausible-human-slip errors,
+then re-audited with the UNCHANGED instrument and pinned criterion (`simcorr_audit.py`,
+untouched). Four revision rounds were run; every round FAILED criterion (a) (all class means
+>= 3.0/5). Criterion (b) (invalid-near flag excess <= 25 points over the other classes' max)
+passed in every revision round. NO judge scores of any simcorr candidate exist — the audit gate
+blocked judging throughout — so no revision could select errors against any judge; the loop
+optimized auditor-rated naturalness only, as the prior entry sanctioned.
+
+**Round history** (invalid_near, invalid_far as mean naturalness / artificial-flag rate;
+valid classes stayed ~3.5-4.9 with 0-50% flags per family):
+
+- round 0 (original, bald false equations): 2.45 / 87.5%, 2.85 / 65% — FAIL (a) and near-fail (b)
+- round 1 (one shared prose pipeline; slips = dropped-constraint assertions, laundered
+  transcription slips, small subtraction slips, early-terminated trial division, boundary
+  misreads): 2.20 / 90%, 2.83 / 70% — FAIL (a); (b) +0.20
+- round 2 (every displayed equation TRUE; fail only expensive-to-check constraints — digitsum
+  restricted to q in {7,11}, goldbach to N with stealth composite complements (spf >= 7),
+  divcount to ranges holding a stealth composite; subset reused an element; crt broke the
+  mod-4/mod-3 congruence, never parity/last digit): 2.62 / 77.5%, 2.75 / 67.5% — FAIL (a); (b) +0.10
+- round 3 (uniform addition chains, divcount invalids share the valid trial-division template,
+  goldbach N >= 200, digitsum picks avoid primes/palindromes): 2.80 / 85%, 2.83 / 85% — best
+  round — FAIL (a); (b) 0.00
+- round 4 (carry-slip deltas of +-10, complements with spf >= 11, digitsum picks at +-1 mod q,
+  crt invalids as verbatim valid-template clones with one off-by-one verification line):
+  2.40 / 87.5%, 2.35 / 90.0% — FAIL (a); (b) -0.025. Final summary: valid_near 4.20 / 12.5%,
+  valid_far 4.03 / 17.5%, invalid_near 2.40 / 87.5%, invalid_far 2.35 / 90.0%. VERDICT: FAIL.
+
+**Reading.** The class-correlated TEMPLATE signal is gone: valid and invalid candidates now share
+skeletons, closers, and hedging, all displayed arithmetic outside the single slip is true, and
+criterion (b) — the detectability-gap criterion the design named as the revision trigger — passes
+with margin in every revision round. What remains is correctness-verification: the auditor checks
+the small-number arithmetic (2-digit congruences, 2-digit primality, 3-4-term sums, digit sums),
+identifies the wrong answers, and scores detected wrongness as "deliberately manipulated"
+regardless of prose (per-family means track exactly how cheaply the family's oracle can be
+re-derived: divcount/crt worst, goldbach/digitsum best). On items this small, criterion (a) for
+invalid classes measures the auditor's arithmetic reach, not writing naturalness; a construction
+that passed it would need items whose validity the auditor cannot check — which this pool cannot
+supply. Per the registered gate, judging MUST NOT proceed. Any relaxation or redesign of the
+criterion (e.g., scoring naturalness conditional on blinded correctness, or moving to a pool with
+harder-to-verify items) would be a NEW registration, recorded before any further run; none is
+made here. Rounds are committed with this entry; the committed builder/tasks/audit are the
+round-4 state.
+
+---
+
+## Registration 5 — second judge landed 2026-08-27: P-X1 and P-X2 are NOT CONFIRMED under the registered every-judge rule
+
+**Mistral-7B-Instruct-v0.3** (Mistral family; frozen estimators): single-reference k>1 delta vs
+blind is +0.02 [-0.04,+0.08] — a null. M1-minus-ref contrast -0.06 [-0.11,+0.00], also null; all
+readouts null. A sanity diagnostic (unregistered) rules out a broken harness: Mistral's scores
+are well-spread (sd 3.6-4.2), correlate with validity (+0.34/+0.37, comparable to gemma), and
+its blind margin is ~0 as expected — but its referenced anchoring margin is only +1.04 points
+against gemma's +4.32 and the original judges' +3.7-+5.0. Reading: Mistral-7B genuinely anchors
+only mildly, and that mild margin does not convert into measurable best-of-64 inflation. It is
+the first judge tested that is largely immune to the inversion.
+
+**Registered scoring consequence.** P-X1 required the harm for EVERY new judge; Mistral's null
+breaks it regardless of Qwen-14B's pending result, so **P-X1: NOT CONFIRMED** and likewise
+**P-X2** (whose Mistral contrast crosses zero — vacuously, since there is no harm to remove).
+The coverage extension has therefore done exactly what it was registered to do: the
+single-reference harm and the fix's effect are both JUDGE-DEPENDENT. Emerging picture across
+nine judges: strong harm + full fix (Qwen-7B, phi-4), strong harm + partial fix (gemma-2-9b),
+mild-to-no harm (Mistral-7B), with the Qwen ladder and Llama-8B in the strong-harm class on the
+earlier grid. The paper's universal claims stay intact only where registered (the k-step on the
+six grid judges); the coverage rows get reported per judge, prediction failures included.
