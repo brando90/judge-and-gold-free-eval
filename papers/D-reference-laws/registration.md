@@ -806,3 +806,37 @@ the mechanism reading above is post hoc and carries no registration weight. It c
 the independently registered similarity-vs-correctness 2x2 (P-SC1/P-SC2), which tests the same
 "similarity beats correctness" hypothesis with constructed candidates rather than by
 subsampling; that experiment's construction is committed and its judging has not been run.
+
+---
+
+## Distance-from-reference gradient (P-D1..P-D3) — registered 2026-08-26, MIXED
+
+**Registration.** `papers/analysis/distance_gradient.py`, committed at `160e638` before being
+run. Answer-space distance (numeric gap / Jaccard / edit distance, pinned per answer shape) on
+the already-scored replication and k>1 k-stratified pools; primary population is oracle-valid
+NON-matching samples; registered estimator is the mean per-item OLS slope with item bootstrap.
+
+**Outcomes.** 160 items analyzed, 20 excluded. On the registered statistic, P-D1 and P-D2 are
+formally confirmed (referenced slope and paired ref-minus-blind slope negative, CIs excluding
+zero, both judges) — but the registered estimator is hereby disclosed as FRAGILE: the mean
+per-item slope is dominated by a small set of ill-conditioned items with tiny within-item
+distance spread (slopes reaching tens of points per unit distance on a 10-point scale), so the
+magnitude is not interpretable. Post-hoc robust re-analysis
+(`distance_gradient_robust.py`, unregistered): median and 10%-trimmed slopes and per-item
+Spearman correlations give a split verdict —
+
+| judge | robust gradient among non-matching valid | reading |
+|---|---|---|
+| Qwen2.5-7B | median slope -0.07 [-0.46,+0.34], Spearman ~0.00 | NO gradient: anchoring is a step at exact match |
+| phi-4 | median slope -0.33 [-0.65,-0.11], trimmed -0.65 [-1.05,-0.31], Spearman -0.12 [-0.19,-0.06]; blind ~0 | small but real graded proximity effect, absent blind |
+
+P-D3 (tercile monotonicity near>mid>far) is FALSIFIED for both judges (Qwen 3.41/2.93/3.53;
+phi-4 6.81/6.32/6.71). The dominant effect remains the exact-match step: including distance-0
+samples, the referenced slope is -3.38 [-3.95,-2.88] (Qwen) and -2.18 [-2.55,-1.78] (phi-4)
+against blind ~0 — i.e. most of the "distance" effect IS the match/non-match margin.
+
+**Reading.** For the weaker judge, correctness is replaced by exact proximity (a step); the
+stronger judge adds a mild graded similarity term. Consistent with the k-grid's step-not-dial
+finding and relevant to H-METHOD: for Qwen-7B-class judges, answer-space distance beyond
+non-match does not matter, which weakly supports answer-anchoring over similarity-anchoring;
+phi-4's gradient cautions against assuming that generalizes.
