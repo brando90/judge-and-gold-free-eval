@@ -56,6 +56,31 @@ updated and the paper is realistically submission-ready — that decision point 
 - **P-N4 (E3b/E4):** the k=1-to-k>1 step replicates on CodeContests multi-output problems
   and on MACE (both judges, step CI excluding zero).
 
+## Registered: similarity-vs-correctness 2x2 (construction committed 2026-08-26)
+
+*Status: candidates built, analysis producer frozen, both committed pre-data — the commit is
+the internal registration (no OSF post per current hold). **No judging has been run.***
+
+The adversarial corner E1/E2 circle but don't isolate: cross similarity-to-the-reference
+with correctness. For 40 items (8 per constraint family) of the frozen replication pool,
+`experiments/tfa-vs-judge/scripts/build_simcorr_candidates.py` deterministically templates
+four oracle-checked worked solutions per item — **valid-near** (correct, reference-style
+route), **valid-far** (correct per the oracle, different valid answer AND a visibly
+different route), **invalid-near** (reference-style route with exactly one substantive slip;
+fails the oracle), **invalid-far** (wrong and structurally unrelated) — length-matched
+within a 1.6x band, written to `runs/simcorr_tasks.jsonl`. Headline question: does showing
+the reference make the judge prefer wrong-but-reference-like (C) over right-but-different
+(B)? Readouts: per-candidate 0-10 scores blind vs referenced, and the pairwise B-vs-C
+preference with order reversal and a tie option.
+
+Frozen producer: `papers/analysis/simcorr_analysis.py` (expects
+`runs/bon_scores_simcorr/`). Predictions pinned in its header: **P-SC1** — the referenced
+condition raises P(score(C) > score(B)) vs blind (per-item paired difference, 95% bootstrap
+CI excluding zero); **P-SC2** — valid-far B takes a referenced-minus-blind score penalty
+relative to valid-near A (CI excluding zero). A null on P-SC1 is an informative bound, not
+a failure: it would mean anchoring does not override validity, confining paper D's harm to
+selection among valid answers.
+
 ## Benchmark catalog (why each fits or doesn't)
 
 The requirement is always the pair: **real multiplicity + a validity oracle that isn't the
