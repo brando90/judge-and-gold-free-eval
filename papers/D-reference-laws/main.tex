@@ -29,7 +29,7 @@
 
 \title{When the Answer Key Backfires:\\ \large Reference Anchoring Turns LLM Judges into Answer Matchers}
 \author{Anonymous Authors}
-\date{Draft v20, August 24, 2026}
+\date{Draft v21, August 26, 2026}
 
 \usepackage{placeins}
 \renewcommand{\topfraction}{0.9}
@@ -51,6 +51,7 @@ We test this where it can be settled exactly: short-answer tasks whose validity 
 In an externally preregistered replication, with population, estimators, and endpoints frozen before any data existed, adding the reference raised score inflation over a blind judge by $+1.19$ baseline standard deviations, confirming every registered prediction for both cross-family judges.
 The mechanism is anchoring, and it is causal: re-judged with the reference switched to a different valid answer, the identical text gains up to $+9.5$ points on the judge's ten-point scale.
 The harm switches on at the first step in multiplicity: on pools with exactly $k$ valid answers per item, every judge tested shifts toward inflation the moment $k$ exceeds one, while the identical protocol on unique-answer math shows the reference collapsing inflation instead.
+A registered composition experiment then falsified our own prediction about where the harm peaks: inflation is largest when \emph{no} valid answer matches the reference, because the judge then selects incorrect answers that resemble the key.
 One preregistered fix works: have the judge score blind first, and reveal the reference only afterwards.
 That removes the measured inflation when several answers are valid and costs nothing when the answer is unique; merely instructing the judge to accept any valid answer does not.
 A reference answer is a lever, not a safeguard: safe when the answer is effectively unique, inflationary under selection when it is not, and disarmed by ordering the judge's calls, not by instructions.
@@ -339,11 +340,66 @@ The margin translates into near-deterministic selection.
 On the 18 rotation-arm items where matching and non-matching valid answers coexist, referenced best-of-64 picks a reference-matching valid answer in $93$--$100\%$ of selected-valid cases, against $38$--$53\%$ blind, and exact McNemar tests exclude chance at three of four scales, the fourth directionally consistent (Table~\ref{tab:rot}).
 Whenever a matching answer is genuinely on offer, the referenced judge takes it, while blind selection tracks the base rates of the pool.
 
+Anchoring is not ignorance.
+A registered filter analysis (\texttt{anchor\_vs\_weakness.py}, predictions P-AW1 and P-AW2 committed pre-run; ledger) keeps only samples the judge itself blindly scored at least $7$ of $10$, so the judge has demonstrably recognized each retained answer as correct with no reference in sight, and re-asks whether rotation still moves them.
+It does, essentially unchanged: the filtered same-sample deltas remain positive with CIs excluding zero at every judge size (at 7B, $+4.74$ $[+3.67, +5.87]$ filtered against $+4.57$ unfiltered, with $89\%$ of samples retained), losers stay negative, and the filtered margins exclude zero at all four sizes (the 1.5B margin rests on two items and is noted as fragile).
+The judge re-scores answers it has already certified the moment the key disagrees, which closes the reading that the reference merely informs a judge too weak to know the alternative was valid.
+
 Anchoring is causal for scores, but it is not a per-item account of the inflation.
 If margin size were the whole pathway, the items with the largest margins should inflate most; across the 35 $k{>}1$ items of the $k$-stratified pool, the per-item correlation between margin and inflation is $+0.29$ for phi-4 and $+0.06$ for Qwen-7B, and neither tercile pattern is monotone (post hoc).
 Measurement attenuation cannot explain the null: the two rubric replicates identify the inflation measurement noise by split-half, and at that noise an exact linear pathway would show correlations of $0.82$ and $0.90$; the observed values fall below the 2.5th percentile of both simulated distributions, so an exact per-item pathway is rejected for both judges.
 What that leaves open is how anchoring aggregates into which items inflate, for instance whether a matching valid sample happens to exist among the 64; what it does not touch is the within-item causal effect established above.
 An earlier draft called this test uninformative; the split-half analysis supersedes that reading (Table~\ref{tab:ledger}).
+
+\FloatBarrier
+\subsection{Pool composition: the harm is largest when nothing matches the reference}
+\label{sec:dose}
+
+The linkage rejection above leaves open how anchoring aggregates into inflation, and names pool composition, whether a matching valid sample exists among the candidates, as the structure this design cannot separate.
+A registered follow-up experiment separates it directly, at zero marginal compute: every sample already carries blind and referenced scores, so best-of-$n$ selection over a \emph{subset} of scored samples is arithmetic, and the number of reference-matching candidates becomes a controlled knob.
+The design (frozen in \texttt{exploit\_dose.py}, committed with predictions P-E1 and P-E2 before the analysis ran; ledger, Table~\ref{tab:ledger}) builds matched sub-pools of 24 samples containing exactly 4 valid answers, of which $d \in \{0, 1, 2, 4\}$ match the shown reference, from the replication and $k$-stratified pools (48 eligible items).
+
+\begin{table}[tbp]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{2pt}
+\begin{tabular}{lccccc}
+\toprule
+& \multicolumn{4}{c}{Matching valid candidates available ($d$)} & \\
+\cmidrule(lr){2-5}
+Judge & $d{=}0$ & $d{=}1$ & $d{=}2$ & $d{=}4$ & $d{=}4$ minus $d{=}0$ \\
+\midrule
+Qwen-7B & $+1.18$ {\scriptsize$[+0.99,+1.37]$} & $+1.11$ {\scriptsize$[+0.95,+1.26]$} & $+0.65$ {\scriptsize$[+0.50,+0.78]$} & $-0.23$ {\scriptsize$[-0.43,-0.03]$} & $\mathbf{-1.41}$ {\scriptsize$[-1.66,-1.15]$} \\
+phi-4      & $+0.95$ {\scriptsize$[+0.82,+1.08]$} & $+0.58$ {\scriptsize$[+0.45,+0.72]$} & $+0.22$ {\scriptsize$[+0.13,+0.31]$} & $-0.44$ {\scriptsize$[-0.56,-0.33]$} & $\mathbf{-1.39}$ {\scriptsize$[-1.56,-1.22]$} \\
+\bottomrule
+\end{tabular}
+
+\medskip
+\begin{minipage}{0.97\textwidth}
+\footnotesize
+\emph{Notes.}
+Paired referenced-minus-blind excess gap on matched sub-pools ($m{=}24$ samples, exactly 4 valid of which $d$ reference-matching, 20 resamples per item-dose with sub-pool indices shared across conditions and judges), mirroring the frozen estimator at $n{=}m$ with a within-oracle-stratum permutation null; item-level bootstrap over 48 eligible items (12 $k$-stratified $k{>}1$, 36 replication).
+Registered predictions and design frozen pre-analysis in \texttt{exploit\_dose.py}; the internal git commit is the registration (no external post).
+P-E2, confirmed: among valid selections, the referenced judge picks a matching sample in $93$--$100\%$ of cases at $d \geq 1$, against $18$--$50\%$ blind.
+Post-hoc mechanism (unregistered, \texttt{exploit\_dose\_diag.py}, \texttt{exploit\_dose\_attract.py}): at $d{=}0$ the referenced judge selects a \emph{valid} sample only $0.14$ (Qwen-7B) and $0.21$ (phi-4) of the time against $0.72$ and $0.79$ blind, and its true gain collapses to $-0.03$ and $+0.05$ against blind's $+0.55$ and $+0.63$; of the invalid samples it selects, $58\%$ and $72\%$ contain the reference answer's text, against $43\%$ and $35\%$ for blind on the same sub-pools.
+\end{minipage}
+\caption{\textbf{Takeaway: the registered prediction was falsified in reverse. Inflation does not grow with the opportunity to select a reference-matching correct answer; it is largest when no valid answer matches the reference at all, because reference similarity then pulls selection onto incorrect look-alikes.}}
+\label{tab:dose}
+\end{table}
+
+The registered prediction P-E1 said inflation would grow with $d$, the opportunity to exploit a matching correct answer.
+It was falsified, and in the opposite direction: the paired referenced-minus-blind excess gap \emph{falls} monotonically with $d$, and the $d{=}4$-minus-$d{=}0$ step excludes zero the wrong way for both judges (Table~\ref{tab:dose}).
+The harm peaks exactly where the registered intuition said it should vanish, when no valid answer matches the shown reference.
+The post-hoc diagnostics locate the cause: absent a correct look-alike, the referenced judge's preference for reference-resembling text does not switch off, it switches \emph{targets}, selecting invalid samples that contain the reference answer, and true selection quality collapses.
+This resolves the open question of Section~\ref{sec:mech} in an unexpected way: pool composition is indeed the load-bearing structure, but the mechanism is a lure, not an opportunity, and the worst case for a referenced judge is a candidate pool whose correct answers all happen to differ from the key.
+The mechanism reading is post hoc and carries no registration weight; a constructed test of the same hypothesis with oracle-verified near/far valid/invalid candidates is registered and pending (ledger).
+
+\paragraph{Distance from the reference: a step for one judge, a mild gradient for the other.}
+A second registered analysis (\texttt{distance\_gradient.py}, committed pre-run; P-D1--P-D3) asks whether, among equally valid non-matching answers, the penalty grows with answer-space distance from the reference (numeric gap, set overlap, or edit distance, pinned per answer shape; 160 items).
+The registered mean-slope statistic is formally negative for both judges, but we disclose it as fragile, dominated by items with tiny within-item distance spread, and the robust re-analysis carries the readout: Qwen-7B shows \emph{no} gradient among non-matching valid answers (median slope $-0.07$ $[-0.46, +0.34]$, rank correlation indistinguishable from zero), while phi-4 shows a small real proximity effect absent blind (median slope $-0.33$ $[-0.65, -0.11]$, rank correlation $-0.12$ $[-0.19, -0.06]$).
+The registered tercile-monotonicity prediction P-D3 is falsified for both judges, and the dominant effect remains the exact-match step, $-3.38$ and $-2.18$ points per unit distance once matching samples are included, against blind slopes near zero.
+For the mid-size judge, anchoring is a step at exact match, not a graded similarity: how far a valid answer sits from the key does not matter, only whether it equals it.
+The stronger judge's mild gradient cautions against assuming that generalizes.
 
 \FloatBarrier
 \subsection{Controlled multiplicity: the harm switches on at \texorpdfstring{$k{=}2$}{k=2}}
@@ -778,10 +834,11 @@ The paired inference, the McNemar collapse tests, the boxed-extraction audit of 
 The registered P-M contrasts were also computed after the fact, though they are the statistics the predictions were registered on rather than new statistics.
 The roughly 50 descriptive grid cells quoted here are uncorrected for multiple comparisons, with the pre-registered decision rules confined to the specific P-S contrasts.
 
-\paragraph{The mechanism is causal for scores, not a per-item account of inflation.}
+\paragraph{The mechanism is causal for scores, and the aggregation into inflation is only partly resolved.}
 Rotation proves anchoring moves scores within items, but the per-item linkage test of Section~\ref{sec:mech} rejects an exact linear pathway from anchoring margin to inflation for both judges at this design's own measurement noise.
-How anchoring aggregates into per-item inflation is therefore unresolved: margin size alone does not decide which items inflate, and candidates for the missing structure, such as whether a matching valid sample happens to exist among the 64, are not separated by this design.
-An earlier draft called this test uninformative; that reading was wrong and is retracted in Section~\ref{sec:mech} and the ledger.
+The registered composition experiment of Section~\ref{sec:dose} now separates the structure that test could not: pool composition is load-bearing, with inflation largest when no valid answer matches the reference.
+Its lure reading, that the judge selects incorrect reference-look-alikes, rests on post-hoc diagnostics and awaits the registered constructed test; the internal registrations for the composition, distance, and blind-validation analyses are git commits rather than external posts, so they carry first-party timestamps only.
+An earlier draft called the linkage test uninformative; that reading was wrong and is retracted in Section~\ref{sec:mech} and the ledger.
 
 \section{Related work}
 
@@ -894,6 +951,12 @@ Band match and margin linkage & The $k$-stratified $k{>}1$ deltas recomputed und
 Round-8 follow-ups & Matched-population recompute ($n{=}83$), M1 under rising selection pressure, and an attenuation sweep treating the inflation measurement noise as unidentifiable & not registered & \emph{Post hoc}; the matched recompute and pressure sweep stand, the attenuation sweep is \emph{superseded}: its noise parameter is identifiable after all (next row) \\
 \addlinespace[1pt]
 Linkage power analysis & Split-half estimate of the inflation measurement noise from the rubric replicates, and the exact-pathway simulation recomputed at that noise; also the band-match composition figures, the boxed-compliance decomposition, and the worked example of Appendix~\ref{app:worked} & not registered & \emph{Post hoc}, demanded by the v18 review: an exact per-item linear pathway would show $r = 0.82$ and $0.90$ at this design's noise; the observed $+0.06$ and $+0.29$ fall below its 2.5th percentile, so the pathway is rejected and the earlier ``uninformative'' reading is retracted (Section~\ref{sec:mech}) \\
+\addlinespace[1pt]
+P-E1, P-E2 & Composition dose-response (\texttt{exploit\_dose.py}): inflation grows with the number of reference-matching valid candidates available (P-E1); the referenced judge selects matching candidates when available (P-E2) & internal git, pre-analysis, 2026-08-26; no external post (hold) & P-E1 \emph{FALSIFIED in reverse}: the paired delta falls from $+1.18$/$+0.95$ at $d{=}0$ to $-0.23$/$-0.44$ at $d{=}4$; the $d{=}4{-}d{=}0$ step is $-1.41$ and $-1.39$, excluding zero the wrong way. P-E2 confirmed ($93$--$100\%$ vs $18$--$50\%$). Post-hoc lure mechanism in Section~\ref{sec:dose}, Table~\ref{tab:dose} \\
+\addlinespace[1pt]
+P-D1--P-D3 & Distance gradient among valid non-matching answers (\texttt{distance\_gradient.py}): referenced slope negative (P-D1), paired slope negative (P-D2), tercile monotonicity (P-D3) & internal git, pre-analysis, 2026-08-26 & P-D1/P-D2 formally confirmed but the registered mean-slope estimator is disclosed as fragile (dominated by items with tiny distance spread); robust re-analysis (post hoc): no gradient for Qwen-7B, small real gradient for phi-4 ($-0.33$ $[-0.65,-0.11]$). P-D3 \emph{falsified} for both judges (Section~\ref{sec:dose}) \\
+\addlinespace[1pt]
+P-AW1, P-AW2 & Blind-validation filter (\texttt{anchor\_vs\_weakness.py}): rotation deltas (P-AW1) and rotation-arm margins (P-AW2) survive on samples the judge blindly scored $\geq 7/10$ & internal git, pre-analysis, 2026-08-26 & Both confirmed: filtered gainer deltas exclude zero at every size and both rubrics ($+8.18$/$+9.13$/$+4.74$/$+3.09$ on rubric $a$), margins exclude zero at all four sizes (1.5B on $n{=}2$ items, noted fragile); retention $20$--$95\%$ by size (Section~\ref{sec:mech}) \\
 \end{longtable}
 \endgroup
 

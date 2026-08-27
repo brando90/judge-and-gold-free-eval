@@ -17,6 +17,15 @@ Run producers from `experiments/tfa-vs-judge/`.
 | `ties_rot_controls.json` | `ties_rot_controls.py` | rotation addendum (P-T2r), pre-re-judging | rotation table (Table 3), anchoring figure |
 | `ties_p2_margin.json` | `ties_p2_margin.py` | git-committed (P-T2) | original-arm margins |
 
+## Registered analyses, internal-only registration (git commit precedes the run; no external post — registration hold)
+
+| Artifact | Producer | Registered | Feeds |
+|---|---|---|---|
+| `exploit_dose.json` | `exploit_dose.py` | commit `36efc6b`, 2026-08-26, pre-analysis | composition dose-response (paper Section on pool composition, Table on doses); P-E1 falsified in reverse, P-E2 confirmed |
+| `distance_gradient.json` | `distance_gradient.py` | commit `160e638`, 2026-08-26, pre-analysis | distance-gradient paragraph; P-D1/P-D2 formal, estimator disclosed fragile; P-D3 falsified |
+| `anchor_vs_weakness.json` | `anchor_vs_weakness.py` | pre-analysis commit, 2026-08-26 | blind-validation filter paragraph in the mechanism section; P-AW1/P-AW2 confirmed |
+| (pending) | `simcorr_analysis.py` | commit `f41e358`, pre-data | similarity-vs-correctness 2x2; judging not yet run |
+
 ## Post-hoc analyses (committed producers, written after review rounds)
 
 | Artifact | Producer | Feeds |
@@ -29,6 +38,9 @@ Run producers from `experiments/tfa-vs-judge/`.
 | `round8_followups.json` | `round8_followups.py` | matched-population recompute (n=83); M1 under rising selection pressure; attenuation sweep (its `linkage_sim` is **superseded** by `round9_provenance.json`'s `linkage_power`, which estimates the measurement noise the sweep treated as unidentifiable) |
 | `round9_provenance.json` | `round9_provenance.py` | linkage power analysis at data-implied noise (split-half); band-match multiplicity composition; boxed-compliance decomposition; worked example of the inflation estimator |
 | `checker_audit.json`, `checker_adjudication.json`, `ties_corrected_delta.json` | committed alongside score files (adjudication via GPT-5.2, reference not shown) | checker audits and label-corrected recompute in the exploratory section |
+| `exploit_dose_diag.json` | `exploit_dose_diag.py` | valid-pick/judge-gain/true-gain decomposition behind the lure reading (written after P-E1's falsification) |
+| (prints only) | `exploit_dose_attract.py` | fraction of selected invalid samples containing the reference answer text |
+| (prints only) | `distance_gradient_robust.py` | median/trimmed/Spearman robustness behind the distance verdict |
 
 ## Notes
 
