@@ -1,20 +1,20 @@
 {
  "summary": {
   "valid_near": {
-   "mean_naturalness": 4.25,
+   "mean_naturalness": 4.2,
    "artificial_flag_rate": 0.125
   },
   "valid_far": {
-   "mean_naturalness": 4.22,
-   "artificial_flag_rate": 0.125
+   "mean_naturalness": 4.03,
+   "artificial_flag_rate": 0.175
   },
   "invalid_near": {
-   "mean_naturalness": 2.45,
+   "mean_naturalness": 2.4,
    "artificial_flag_rate": 0.875
   },
   "invalid_far": {
-   "mean_naturalness": 2.85,
-   "artificial_flag_rate": 0.65
+   "mean_naturalness": 2.35,
+   "artificial_flag_rate": 0.9
   }
  },
  "verdict": "FAIL",
@@ -24,131 +24,131 @@
     "naturalness": 5,
     "artificial": false
    },
-   "invalid_far": {
-    "naturalness": 4,
-    "artificial": true
-   },
    "valid_far": {
+    "naturalness": 4,
+    "artificial": false
+   },
+   "invalid_near": {
     "naturalness": 2,
     "artificial": true
+   },
+   "invalid_far": {
+    "naturalness": 2,
+    "artificial": true
+   }
+  },
+  "simcorr/crt-4": {
+   "invalid_far": {
+    "naturalness": 2,
+    "artificial": true
+   },
+   "valid_near": {
+    "naturalness": 5,
+    "artificial": false
+   },
+   "valid_far": {
+    "naturalness": 4,
+    "artificial": false
    },
    "invalid_near": {
     "naturalness": 1,
     "artificial": true
    }
   },
-  "simcorr/crt-4": {
+  "simcorr/crt-7": {
    "invalid_near": {
-    "naturalness": 3,
+    "naturalness": 2,
     "artificial": true
-   },
-   "valid_near": {
-    "naturalness": 5,
-    "artificial": false
    },
    "invalid_far": {
     "naturalness": 2,
     "artificial": true
    },
    "valid_far": {
-    "naturalness": 3,
-    "artificial": true
-   }
-  },
-  "simcorr/crt-7": {
-   "valid_near": {
     "naturalness": 5,
     "artificial": false
    },
-   "valid_far": {
-    "naturalness": 3,
+   "valid_near": {
+    "naturalness": 5,
     "artificial": false
-   },
-   "invalid_near": {
-    "naturalness": 3,
-    "artificial": true
-   },
-   "invalid_far": {
-    "naturalness": 3,
-    "artificial": true
    }
   },
   "simcorr/crt-13": {
-   "invalid_near": {
-    "naturalness": 2,
-    "artificial": true
-   },
    "invalid_far": {
     "naturalness": 2,
     "artificial": true
    },
-   "valid_near": {
-    "naturalness": 5,
-    "artificial": false
+   "invalid_near": {
+    "naturalness": 2,
+    "artificial": true
    },
    "valid_far": {
-    "naturalness": 4,
+    "naturalness": 1,
+    "artificial": true
+   },
+   "valid_near": {
+    "naturalness": 5,
     "artificial": false
    }
   },
   "simcorr/crt-16": {
    "invalid_far": {
-    "naturalness": 4,
-    "artificial": false
+    "naturalness": 3,
+    "artificial": true
    },
    "invalid_near": {
-    "naturalness": 2,
+    "naturalness": 1,
     "artificial": true
    },
    "valid_far": {
-    "naturalness": 5,
-    "artificial": false
+    "naturalness": 2,
+    "artificial": true
    },
    "valid_near": {
-    "naturalness": 5,
+    "naturalness": 4,
     "artificial": false
    }
   },
   "simcorr/crt-18": {
+   "valid_far": {
+    "naturalness": 5,
+    "artificial": false
+   },
    "valid_near": {
     "naturalness": 5,
     "artificial": false
    },
    "invalid_far": {
-    "naturalness": 2,
+    "naturalness": 1,
     "artificial": true
    },
    "invalid_near": {
-    "naturalness": 2,
-    "artificial": true
-   },
-   "valid_far": {
-    "naturalness": 3,
+    "naturalness": 1,
     "artificial": true
    }
   },
   "simcorr/crt-19": {
-   "invalid_far": {
-    "naturalness": 4,
+   "valid_near": {
+    "naturalness": 5,
     "artificial": false
+   },
+   "valid_far": {
+    "naturalness": 3,
+    "artificial": true
+   },
+   "invalid_far": {
+    "naturalness": 3,
+    "artificial": true
    },
    "invalid_near": {
     "naturalness": 2,
     "artificial": true
-   },
-   "valid_near": {
-    "naturalness": 4,
-    "artificial": false
-   },
-   "valid_far": {
-    "naturalness": 5,
-    "artificial": false
    }
   },
   "simcorr/crt-23": {
    "invalid_far": {
-    "naturalness": 4,
-    "artificial": false
+    "naturalness": 1,
+    "artificial": true
    },
    "valid_far": {
     "naturalness": 2,
@@ -159,7 +159,7 @@
     "artificial": true
    },
    "valid_near": {
-    "naturalness": 4,
+    "naturalness": 5,
     "artificial": false
    }
   },
@@ -168,174 +168,192 @@
     "naturalness": 4,
     "artificial": false
    },
+   "invalid_far": {
+    "naturalness": 4,
+    "artificial": true
+   },
    "valid_far": {
     "naturalness": 5,
     "artificial": false
    },
    "invalid_near": {
-    "naturalness": 2,
-    "artificial": true
-   },
-   "invalid_far": {
-    "naturalness": 2,
+    "naturalness": 3,
     "artificial": true
    }
   },
   "simcorr/subset-29": {
    "invalid_far": {
-    "naturalness": 4,
-    "artificial": false
-   },
-   "valid_far": {
-    "naturalness": 5,
+    "naturalness": 3,
     "artificial": false
    },
    "valid_near": {
-    "naturalness": 4,
+    "naturalness": 3,
     "artificial": false
    },
    "invalid_near": {
     "naturalness": 3,
     "artificial": true
+   },
+   "valid_far": {
+    "naturalness": 4,
+    "artificial": false
    }
   },
   "simcorr/subset-31": {
-   "invalid_near": {
-    "naturalness": 4,
-    "artificial": false
-   },
-   "invalid_far": {
-    "naturalness": 4,
-    "artificial": false
-   },
-   "valid_near": {
-    "naturalness": 5,
-    "artificial": false
-   },
    "valid_far": {
     "naturalness": 5,
     "artificial": false
+   },
+   "invalid_far": {
+    "naturalness": 1,
+    "artificial": true
+   },
+   "invalid_near": {
+    "naturalness": 1,
+    "artificial": true
+   },
+   "valid_near": {
+    "naturalness": 2,
+    "artificial": true
    }
   },
   "simcorr/subset-32": {
    "valid_near": {
-    "naturalness": 4,
-    "artificial": false
-   },
-   "invalid_far": {
     "naturalness": 5,
     "artificial": false
    },
-   "invalid_near": {
-    "naturalness": 3,
+   "invalid_far": {
+    "naturalness": 1,
     "artificial": true
    },
    "valid_far": {
     "naturalness": 5,
     "artificial": false
+   },
+   "invalid_near": {
+    "naturalness": 1,
+    "artificial": true
    }
   },
   "simcorr/subset-36": {
+   "invalid_far": {
+    "naturalness": 3,
+    "artificial": true
+   },
    "valid_near": {
-    "naturalness": 5,
+    "naturalness": 4,
     "artificial": false
    },
-   "invalid_far": {
-    "naturalness": 5,
+   "valid_far": {
+    "naturalness": 4,
     "artificial": false
    },
    "invalid_near": {
-    "naturalness": 4,
+    "naturalness": 2,
     "artificial": true
-   },
-   "valid_far": {
-    "naturalness": 5,
-    "artificial": false
    }
   },
   "simcorr/subset-40": {
    "invalid_near": {
-    "naturalness": 3,
-    "artificial": true
-   },
-   "invalid_far": {
-    "naturalness": 5,
+    "naturalness": 4,
     "artificial": false
    },
-   "valid_far": {
-    "naturalness": 5,
+   "invalid_far": {
+    "naturalness": 4,
     "artificial": false
    },
    "valid_near": {
     "naturalness": 3,
     "artificial": true
+   },
+   "valid_far": {
+    "naturalness": 5,
+    "artificial": false
    }
   },
   "simcorr/subset-45": {
    "invalid_near": {
-    "naturalness": 4,
-    "artificial": false
+    "naturalness": 3,
+    "artificial": true
    },
    "valid_near": {
-    "naturalness": 5,
-    "artificial": false
-   },
-   "valid_far": {
-    "naturalness": 5,
-    "artificial": false
+    "naturalness": 2,
+    "artificial": true
    },
    "invalid_far": {
     "naturalness": 2,
     "artificial": true
+   },
+   "valid_far": {
+    "naturalness": 5,
+    "artificial": false
    }
   },
   "simcorr/subset-46": {
-   "valid_near": {
-    "naturalness": 4,
-    "artificial": false
-   },
    "invalid_far": {
-    "naturalness": 2,
-    "artificial": true
-   },
-   "invalid_near": {
-    "naturalness": 1,
+    "naturalness": 4,
     "artificial": true
    },
    "valid_far": {
     "naturalness": 4,
     "artificial": false
+   },
+   "valid_near": {
+    "naturalness": 5,
+    "artificial": false
+   },
+   "invalid_near": {
+    "naturalness": 5,
+    "artificial": true
    }
   },
   "simcorr/goldbach-49": {
-   "valid_far": {
-    "naturalness": 5,
-    "artificial": false
-   },
    "invalid_near": {
     "naturalness": 3,
     "artificial": true
    },
-   "valid_near": {
-    "naturalness": 1,
+   "invalid_far": {
+    "naturalness": 3,
     "artificial": true
    },
-   "invalid_far": {
+   "valid_far": {
+    "naturalness": 5,
+    "artificial": false
+   },
+   "valid_near": {
     "naturalness": 2,
     "artificial": true
    }
   },
-  "simcorr/goldbach-53": {
+  "simcorr/goldbach-50": {
+   "valid_far": {
+    "naturalness": 4,
+    "artificial": false
+   },
    "valid_near": {
     "naturalness": 4,
     "artificial": false
+   },
+   "invalid_far": {
+    "naturalness": 2,
+    "artificial": true
+   },
+   "invalid_near": {
+    "naturalness": 2,
+    "artificial": true
+   }
+  },
+  "simcorr/goldbach-51": {
+   "invalid_far": {
+    "naturalness": 2,
+    "artificial": true
    },
    "invalid_near": {
     "naturalness": 2,
     "artificial": true
    },
-   "invalid_far": {
-    "naturalness": 2,
+   "valid_near": {
+    "naturalness": 1,
     "artificial": true
    },
    "valid_far": {
@@ -343,97 +361,195 @@
     "artificial": false
    }
   },
-  "simcorr/goldbach-55": {
-   "valid_near": {
+  "simcorr/goldbach-57": {
+   "valid_far": {
     "naturalness": 4,
+    "artificial": false
+   },
+   "valid_near": {
+    "naturalness": 5,
+    "artificial": false
+   },
+   "invalid_near": {
+    "naturalness": 4,
+    "artificial": false
+   },
+   "invalid_far": {
+    "naturalness": 3,
+    "artificial": true
+   }
+  },
+  "simcorr/goldbach-58": {
+   "valid_near": {
+    "naturalness": 5,
     "artificial": false
    },
    "valid_far": {
     "naturalness": 5,
     "artificial": false
    },
-   "invalid_near": {
-    "naturalness": 1,
+   "invalid_far": {
+    "naturalness": 3,
     "artificial": true
    },
-   "invalid_far": {
-    "naturalness": 4,
-    "artificial": false
-   }
-  },
-  "simcorr/goldbach-62": {
-   "valid_near": {
+   "invalid_near": {
     "naturalness": 2,
     "artificial": true
-   },
-   "invalid_near": {
-    "naturalness": 1,
-    "artificial": true
-   },
-   "invalid_far": {
-    "naturalness": 4,
-    "artificial": false
-   },
-   "valid_far": {
-    "naturalness": 4,
-    "artificial": false
    }
   },
   "simcorr/goldbach-66": {
-   "invalid_far": {
-    "naturalness": 2,
-    "artificial": true
-   },
-   "invalid_near": {
-    "naturalness": 2,
-    "artificial": true
-   },
    "valid_far": {
-    "naturalness": 4,
+    "naturalness": 5,
     "artificial": false
-   },
-   "valid_near": {
-    "naturalness": 4,
-    "artificial": false
-   }
-  },
-  "simcorr/goldbach-67": {
-   "invalid_near": {
-    "naturalness": 4,
-    "artificial": true
    },
    "invalid_far": {
     "naturalness": 3,
     "artificial": true
    },
+   "valid_near": {
+    "naturalness": 5,
+    "artificial": false
+   },
+   "invalid_near": {
+    "naturalness": 5,
+    "artificial": true
+   }
+  },
+  "simcorr/goldbach-67": {
+   "invalid_far": {
+    "naturalness": 2,
+    "artificial": true
+   },
+   "valid_near": {
+    "naturalness": 4,
+    "artificial": false
+   },
+   "invalid_near": {
+    "naturalness": 2,
+    "artificial": true
+   },
+   "valid_far": {
+    "naturalness": 5,
+    "artificial": false
+   }
+  },
+  "simcorr/goldbach-69": {
    "valid_far": {
     "naturalness": 4,
     "artificial": false
    },
    "valid_near": {
+    "naturalness": 4,
+    "artificial": false
+   },
+   "invalid_near": {
+    "naturalness": 2,
+    "artificial": true
+   },
+   "invalid_far": {
     "naturalness": 2,
     "artificial": true
    }
   },
-  "simcorr/goldbach-69": {
-   "valid_near": {
-    "naturalness": 2,
-    "artificial": true
-   },
+  "simcorr/divcount-72": {
    "valid_far": {
     "naturalness": 4,
     "artificial": false
    },
+   "invalid_near": {
+    "naturalness": 2,
+    "artificial": true
+   },
    "invalid_far": {
+    "naturalness": 2,
+    "artificial": true
+   },
+   "valid_near": {
+    "naturalness": 4,
+    "artificial": false
+   }
+  },
+  "simcorr/divcount-79": {
+   "valid_near": {
+    "naturalness": 4,
+    "artificial": false
+   },
+   "valid_far": {
     "naturalness": 4,
     "artificial": false
    },
    "invalid_near": {
     "naturalness": 1,
     "artificial": true
+   },
+   "invalid_far": {
+    "naturalness": 1,
+    "artificial": true
    }
   },
-  "simcorr/goldbach-70": {
+  "simcorr/divcount-80": {
+   "invalid_far": {
+    "naturalness": 2,
+    "artificial": true
+   },
+   "valid_far": {
+    "naturalness": 5,
+    "artificial": false
+   },
+   "invalid_near": {
+    "naturalness": 1,
+    "artificial": true
+   },
+   "valid_near": {
+    "naturalness": 5,
+    "artificial": false
+   }
+  },
+  "simcorr/divcount-82": {
+   "invalid_far": {
+    "naturalness": 2,
+    "artificial": true
+   },
+   "valid_far": {
+    "naturalness": 5,
+    "artificial": false
+   },
+   "invalid_near": {
+    "naturalness": 2,
+    "artificial": true
+   },
+   "valid_near": {
+    "naturalness": 5,
+    "artificial": false
+   }
+  },
+  "simcorr/divcount-83": {
+   "invalid_near": {
+    "naturalness": 2,
+    "artificial": true
+   },
+   "valid_near": {
+    "naturalness": 4,
+    "artificial": false
+   },
+   "valid_far": {
+    "naturalness": 4,
+    "artificial": false
+   },
+   "invalid_far": {
+    "naturalness": 2,
+    "artificial": true
+   }
+  },
+  "simcorr/divcount-84": {
+   "invalid_near": {
+    "naturalness": 3,
+    "artificial": true
+   },
+   "valid_far": {
+    "naturalness": 5,
+    "artificial": false
+   },
    "invalid_far": {
     "naturalness": 2,
     "artificial": true
@@ -441,73 +557,11 @@
    "valid_near": {
     "naturalness": 5,
     "artificial": false
-   },
-   "invalid_near": {
-    "naturalness": 2,
-    "artificial": true
-   },
-   "valid_far": {
-    "naturalness": 5,
-    "artificial": false
-   }
-  },
-  "simcorr/divcount-73": {
-   "invalid_near": {
-    "naturalness": 4,
-    "artificial": true
-   },
-   "valid_near": {
-    "naturalness": 5,
-    "artificial": false
-   },
-   "invalid_far": {
-    "naturalness": 2,
-    "artificial": true
-   },
-   "valid_far": {
-    "naturalness": 4,
-    "artificial": false
-   }
-  },
-  "simcorr/divcount-78": {
-   "valid_far": {
-    "naturalness": 5,
-    "artificial": false
-   },
-   "invalid_far": {
-    "naturalness": 3,
-    "artificial": true
-   },
-   "invalid_near": {
-    "naturalness": 3,
-    "artificial": true
-   },
-   "valid_near": {
-    "naturalness": 5,
-    "artificial": false
-   }
-  },
-  "simcorr/divcount-81": {
-   "valid_far": {
-    "naturalness": 4,
-    "artificial": false
-   },
-   "invalid_near": {
-    "naturalness": 4,
-    "artificial": true
-   },
-   "valid_near": {
-    "naturalness": 4,
-    "artificial": false
-   },
-   "invalid_far": {
-    "naturalness": 3,
-    "artificial": true
    }
   },
   "simcorr/divcount-85": {
    "valid_far": {
-    "naturalness": 5,
+    "naturalness": 4,
     "artificial": false
    },
    "invalid_near": {
@@ -515,7 +569,7 @@
     "artificial": true
    },
    "invalid_far": {
-    "naturalness": 3,
+    "naturalness": 2,
     "artificial": true
    },
    "valid_near": {
@@ -523,26 +577,12 @@
     "artificial": false
    }
   },
-  "simcorr/divcount-89": {
-   "valid_far": {
-    "naturalness": 5,
-    "artificial": false
-   },
-   "invalid_near": {
-    "naturalness": 2,
-    "artificial": true
-   },
-   "valid_near": {
-    "naturalness": 5,
-    "artificial": false
-   },
+  "simcorr/divcount-87": {
    "invalid_far": {
     "naturalness": 2,
     "artificial": true
-   }
-  },
-  "simcorr/divcount-92": {
-   "valid_far": {
+   },
+   "valid_near": {
     "naturalness": 4,
     "artificial": false
    },
@@ -550,151 +590,93 @@
     "naturalness": 2,
     "artificial": true
    },
-   "invalid_far": {
-    "naturalness": 1,
-    "artificial": true
-   },
-   "valid_near": {
-    "naturalness": 4,
-    "artificial": false
-   }
-  },
-  "simcorr/divcount-93": {
-   "valid_far": {
-    "naturalness": 5,
-    "artificial": false
-   },
-   "valid_near": {
-    "naturalness": 5,
-    "artificial": false
-   },
-   "invalid_far": {
-    "naturalness": 2,
-    "artificial": true
-   },
-   "invalid_near": {
-    "naturalness": 2,
-    "artificial": true
-   }
-  },
-  "simcorr/divcount-94": {
-   "invalid_near": {
-    "naturalness": 2,
-    "artificial": true
-   },
-   "invalid_far": {
-    "naturalness": 1,
-    "artificial": true
-   },
-   "valid_near": {
-    "naturalness": 5,
-    "artificial": false
-   },
    "valid_far": {
     "naturalness": 4,
     "artificial": false
-   }
-  },
-  "simcorr/digitsum-96": {
-   "valid_near": {
-    "naturalness": 5,
-    "artificial": false
-   },
-   "invalid_near": {
-    "naturalness": 1,
-    "artificial": true
-   },
-   "valid_far": {
-    "naturalness": 5,
-    "artificial": false
-   },
-   "invalid_far": {
-    "naturalness": 1,
-    "artificial": true
    }
   },
   "simcorr/digitsum-99": {
-   "invalid_near": {
-    "naturalness": 4,
-    "artificial": false
-   },
-   "valid_near": {
-    "naturalness": 4,
-    "artificial": false
-   },
-   "valid_far": {
-    "naturalness": 4,
-    "artificial": false
-   },
-   "invalid_far": {
-    "naturalness": 4,
-    "artificial": false
-   }
-  },
-  "simcorr/digitsum-102": {
    "valid_near": {
     "naturalness": 5,
     "artificial": false
    },
-   "invalid_far": {
-    "naturalness": 4,
+   "invalid_near": {
+    "naturalness": 5,
     "artificial": false
    },
    "valid_far": {
-    "naturalness": 4,
+    "naturalness": 5,
     "artificial": false
    },
-   "invalid_near": {
-    "naturalness": 2,
-    "artificial": true
+   "invalid_far": {
+    "naturalness": 5,
+    "artificial": false
    }
   },
-  "simcorr/digitsum-103": {
-   "invalid_near": {
+  "simcorr/digitsum-101": {
+   "invalid_far": {
     "naturalness": 2,
     "artificial": true
    },
    "valid_far": {
-    "naturalness": 5,
-    "artificial": false
+    "naturalness": 2,
+    "artificial": true
    },
    "valid_near": {
-    "naturalness": 5,
+    "naturalness": 4,
+    "artificial": false
+   },
+   "invalid_near": {
+    "naturalness": 4,
+    "artificial": false
+   }
+  },
+  "simcorr/digitsum-104": {
+   "valid_far": {
+    "naturalness": 3,
+    "artificial": false
+   },
+   "invalid_near": {
+    "naturalness": 4,
+    "artificial": true
+   },
+   "valid_near": {
+    "naturalness": 4,
     "artificial": false
    },
    "invalid_far": {
-    "naturalness": 2,
+    "naturalness": 3,
     "artificial": true
    }
   },
   "simcorr/digitsum-105": {
-   "valid_far": {
-    "naturalness": 3,
-    "artificial": true
-   },
    "invalid_far": {
-    "naturalness": 3,
-    "artificial": true
-   },
-   "invalid_near": {
-    "naturalness": 4,
+    "naturalness": 5,
     "artificial": false
    },
    "valid_near": {
-    "naturalness": 4,
+    "naturalness": 5,
+    "artificial": false
+   },
+   "invalid_near": {
+    "naturalness": 5,
+    "artificial": false
+   },
+   "valid_far": {
+    "naturalness": 5,
     "artificial": false
    }
   },
-  "simcorr/digitsum-107": {
-   "valid_far": {
-    "naturalness": 4,
-    "artificial": false
+  "simcorr/digitsum-106": {
+   "invalid_near": {
+    "naturalness": 1,
+    "artificial": true
    },
-   "invalid_far": {
+   "valid_far": {
     "naturalness": 2,
     "artificial": true
    },
-   "invalid_near": {
+   "invalid_far": {
     "naturalness": 1,
     "artificial": true
    },
@@ -708,7 +690,21 @@
     "naturalness": 4,
     "artificial": false
    },
+   "invalid_far": {
+    "naturalness": 2,
+    "artificial": true
+   },
+   "valid_near": {
+    "naturalness": 5,
+    "artificial": false
+   },
    "invalid_near": {
+    "naturalness": 2,
+    "artificial": true
+   }
+  },
+  "simcorr/digitsum-113": {
+   "valid_far": {
     "naturalness": 2,
     "artificial": true
    },
@@ -717,25 +713,29 @@
     "artificial": true
    },
    "valid_near": {
-    "naturalness": 5,
-    "artificial": false
-   }
-  },
-  "simcorr/digitsum-112": {
-   "valid_near": {
     "naturalness": 4,
     "artificial": false
    },
    "invalid_near": {
+    "naturalness": 1,
+    "artificial": true
+   }
+  },
+  "simcorr/digitsum-114": {
+   "valid_near": {
     "naturalness": 4,
     "artificial": false
    },
    "invalid_far": {
-    "naturalness": 3,
-    "artificial": false
+    "naturalness": 2,
+    "artificial": true
+   },
+   "invalid_near": {
+    "naturalness": 2,
+    "artificial": true
    },
    "valid_far": {
-    "naturalness": 3,
+    "naturalness": 4,
     "artificial": false
    }
   }
