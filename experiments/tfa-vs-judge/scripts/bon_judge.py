@@ -15,7 +15,7 @@ ap.add_argument("--pool", required=True)
 ap.add_argument("--judge", required=True)
 ap.add_argument("--cond", choices=["noref", "ref", "sabotage", "refinst", "refinst2", "multiref"], required=True)
 ap.add_argument("--rep", choices=["a", "b"], required=True)
-ap.add_argument("--domain", choices=["math", "code", "ties", "synthk"], default="math")
+ap.add_argument("--domain", choices=["math", "code", "ties", "synthk", "simcorr"], default="math")
 ap.add_argument("--filter-band", action="store_true", help="only items with pool pass in [0.2,0.8]")
 ap.add_argument("--tasks", default=None, help="task file with problem text to join by problem_id")
 ap.add_argument("--out", default="runs/bon_scores")
@@ -58,7 +58,8 @@ for v in range(11):
 
 def build(r, s):
     cond_key = "ref" if args.cond in ("refinst", "refinst2", "multiref") else args.cond
-    sys = {"code": RUBRIC_CODE, "ties": RUBRIC_TIES, "synthk": RUBRIC_TIES}.get(args.domain, RUBRIC)[(cond_key, args.rep)]
+    sys = {"code": RUBRIC_CODE, "ties": RUBRIC_TIES, "synthk": RUBRIC_TIES,
+           "simcorr": RUBRIC_TIES}.get(args.domain, RUBRIC)[(cond_key, args.rep)]
     if args.cond == "refinst":
         sys += (" Note: the reference shown is one valid answer among possibly many; the "
                 "question may have several correct answers, and any correct answer deserves "
