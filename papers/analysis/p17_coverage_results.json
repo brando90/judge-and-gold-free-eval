@@ -59,68 +59,127 @@
  },
  "mistralai__Mistral-7B-Instruct-v0.3": {
   "ref_kgt1": {
-   "delta": 0.024,
+   "delta": 0.028,
    "ci": [
-    -0.036,
-    0.077
+    -0.03,
+    0.081
    ],
    "n": 53
   },
   "m1_kgt1": {
-   "delta": -0.032,
+   "delta": -0.043,
    "ci": [
-    -0.069,
-    0.004
+    -0.081,
+    -0.007
    ],
    "n": 53
   },
   "m2_kgt1": {
-   "delta": 0.093,
+   "delta": 0.089,
    "ci": [
-    -0.01,
-    0.201
+    -0.013,
+    0.194
    ],
    "n": 53
   },
   "ref_k1": {
-   "delta": 0.075,
+   "delta": 0.065,
    "ci": [
-    0.007,
-    0.149
+    -0.005,
+    0.134
    ],
    "n": 15
   },
   "m1_k1": {
-   "delta": -0.006,
+   "delta": 0.01,
    "ci": [
-    -0.038,
-    0.026
+    -0.039,
+    0.057
    ],
    "n": 15
   },
   "m1_minus_ref_kgt1": {
-   "delta": -0.056,
+   "delta": -0.071,
    "ci": [
-    -0.108,
-    0.001
+    -0.12,
+    -0.022
    ],
    "n": 53
   },
   "step": {
-   "delta": -0.051
+   "delta": -0.037
   },
   "verdicts": {
    "PX1": false,
-   "PX2": false,
+   "PX2": true,
    "PX3_directional": false
+  }
+ },
+ "Qwen__Qwen2.5-14B-Instruct": {
+  "ref_kgt1": {
+   "delta": 0.98,
+   "ci": [
+    0.64,
+    1.328
+   ],
+   "n": 53
+  },
+  "m1_kgt1": {
+   "delta": 0.231,
+   "ci": [
+    0.095,
+    0.368
+   ],
+   "n": 53
+  },
+  "m2_kgt1": {
+   "delta": 0.303,
+   "ci": [
+    0.177,
+    0.428
+   ],
+   "n": 53
+  },
+  "ref_k1": {
+   "delta": -0.301,
+   "ci": [
+    -0.735,
+    0.127
+   ],
+   "n": 15
+  },
+  "m1_k1": {
+   "delta": -0.124,
+   "ci": [
+    -0.433,
+    0.136
+   ],
+   "n": 15
+  },
+  "m1_minus_ref_kgt1": {
+   "delta": -0.749,
+   "ci": [
+    -1.046,
+    -0.461
+   ],
+   "n": 53
+  },
+  "step": {
+   "delta": 1.28
+  },
+  "verdicts": {
+   "PX1": true,
+   "PX2": true,
+   "PX3_directional": true
   }
  },
  "_summary": {
   "judges_run": [
    "google__gemma-2-9b-it",
-   "mistralai__Mistral-7B-Instruct-v0.3"
+   "mistralai__Mistral-7B-Instruct-v0.3",
+   "Qwen__Qwen2.5-14B-Instruct"
   ],
   "PX1_all": false,
-  "PX2_all": false
+  "PX2_all": true
  }
 }

@@ -963,3 +963,32 @@ nine judges: strong harm + full fix (Qwen-7B, phi-4), strong harm + partial fix 
 mild-to-no harm (Mistral-7B), with the Qwen ladder and Llama-8B in the strong-harm class on the
 earlier grid. The paper's universal claims stay intact only where registered (the k-step on the
 six grid judges); the coverage rows get reported per judge, prediction failures included.
+
+---
+
+## Registration 5 — COMPLETE (all three judges, definitive full-set scoring, 2026-08-27)
+
+Final verdicts from `p17_coverage_analysis.py` with all three judges present (this run is
+definitive; the per-judge numbers quoted in the two provisional entries above came from
+partial-set scorer runs whose shared bootstrap rng consumed draws in a different order, moving
+CIs by up to ~0.02 — the frozen estimators and point estimates are unchanged):
+
+| judge | ref k>1 vs blind | M1 k>1 vs blind | M1 minus ref (P-X2) | M2 k>1 | ref k=1 |
+|---|---|---|---|---|---|
+| gemma-2-9b-it | +1.43 [+1.15,+1.68] | +1.23 [+0.94,+1.52] | -0.20 [-0.34,-0.05] | +0.61 | -0.05 |
+| Mistral-7B-v0.3 | +0.03 [-0.03,+0.08] | -0.04 [-0.08,-0.01] | -0.07 [-0.12,-0.02] | +0.09 | +0.08 |
+| Qwen2.5-14B | +0.98 [+0.64,+1.33] | +0.23 [+0.10,+0.37] | -0.75 [-1.05,-0.46] | +0.30 | -0.30 |
+
+**P-X1: NOT CONFIRMED** (required every judge; Mistral-7B is null — the first
+anchoring-resistant judge, with a healthy score distribution and only a +1.0-point margin).
+**P-X2: CONFIRMED** (the M1-minus-single-reference contrast is negative with CI excluding zero
+for all three judges — including, at full-set precision, Mistral's small one).
+**P-X3**: holds for gemma and Qwen-14B; fails vacuously for Mistral. **P-X4**: M2 sits between
+M1 and blind for gemma, near-null for Mistral, +0.30 for 14B.
+
+**Consolidated reading across nine judges.** The harm: strong for Qwen-1.5B..14B, Llama-8B,
+phi-4, gemma-2-9b; absent for Mistral-7B. The fix: full removal (Qwen-7B, phi-4), near-full
+with a small residual (Qwen-14B, +0.23), partial (gemma-2-9b, +1.23 residual), moot (Mistral).
+Both the vulnerability and the mitigation are properties of the judge, not of the task setup —
+the extension did what it was registered to do, and the paper's fix claims are rewritten
+per-judge in v22, prediction failure included.
