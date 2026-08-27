@@ -840,3 +840,21 @@ stronger judge adds a mild graded similarity term. Consistent with the k-grid's 
 finding and relevant to H-METHOD: for Qwen-7B-class judges, answer-space distance beyond
 non-match does not matter, which weakly supports answer-anchoring over similarity-anchoring;
 phi-4's gradient cautions against assuming that generalizes.
+
+---
+
+## Anchoring versus weakness (P-AW1, P-AW2) — registered 2026-08-26, CONFIRMED
+
+**Registration.** `papers/analysis/anchor_vs_weakness.py`, committed before running. Filter: keep
+only samples the judge itself blindly scored >= 7.0/10 (mean of the two blind rubric replicates),
+then recompute the rotation same-sample deltas and rotation-arm margins on that subset.
+
+**Outcome: both predictions confirmed.** Filtered gainer deltas stay positive with CIs excluding
+zero at every judge size and both rubrics (rubric a: 1.5B +8.18 [+6.23,+9.68] n=9 items; 3B +9.13
+[+8.39,+9.65] n=31; 7B +4.74 [+3.67,+5.87] n=33; 14B +3.09 [+2.40,+3.81] n=37), essentially
+unchanged from the unfiltered values; losers stay negative; filtered margins exclude zero at all
+four sizes (P-AW2 required three of four; the 1.5B margin rests on n=2 items and is noted as
+fragile). Sample retention: 310/1564 (1.5B, whose blind scores are compressed), 1249/1564 (3B),
+1391/1564 (7B), 1480/1564 (14B). Reading: the rotation flip is carried by samples the judge had
+already demonstrably recognized as correct with no reference in sight — anchoring re-scores
+answers the judge itself certified, so the effect is anchoring, not ignorance.
