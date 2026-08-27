@@ -24,7 +24,8 @@ Run producers from `experiments/tfa-vs-judge/`.
 | `exploit_dose.json` | `exploit_dose.py` | commit `36efc6b`, 2026-08-26, pre-analysis | composition dose-response (paper Section on pool composition, Table on doses); P-E1 falsified in reverse, P-E2 confirmed |
 | `distance_gradient.json` | `distance_gradient.py` | commit `160e638`, 2026-08-26, pre-analysis | distance-gradient paragraph; P-D1/P-D2 formal, estimator disclosed fragile; P-D3 falsified |
 | `anchor_vs_weakness.json` | `anchor_vs_weakness.py` | pre-analysis commit, 2026-08-26 | blind-validation filter paragraph in the mechanism section; P-AW1/P-AW2 confirmed |
-| (pending) | `simcorr_analysis.py` | commit `f41e358`, pre-data | similarity-vs-correctness 2x2; judging not yet run |
+| (pending) | `simcorr_analysis.py` | commit `f41e358`, pre-data | similarity-vs-correctness 2x2; judging BLOCKED by the failed naturalness audit (see registration.md) |
+| `p17_coverage_results.json` | `p17_coverage_analysis.py` | external (Registration 5), harness pre-data | judge-coverage table (tab:coverage); P-X1 not confirmed, P-X2 confirmed |
 
 ## Post-hoc analyses (committed producers, written after review rounds)
 
