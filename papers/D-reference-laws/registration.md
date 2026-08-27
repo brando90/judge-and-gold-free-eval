@@ -875,3 +875,20 @@ Provisional reading, pending the other two judges: the mitigation's magnitude is
 and the paper's "same outcome for both judges tested" phrasing will need revision once the
 extension completes. Harness caveat on record: gemma-2 uses the registered system-role folding
 path; blind and referenced conditions behave coherently under it.
+
+---
+
+## Similarity-vs-correctness 2x2 — blind naturalness audit FAILED (2026-08-27); judging blocked
+
+The pinned audit criterion (simcorr_audit.py, committed before its first run) failed on
+criterion (a): invalid-near and invalid-far candidates average 2.45 and 2.85 naturalness
+against >= 3.0 required (valid classes: 4.25 / 4.22), with artificial-flag rates 87.5% / 65%
+against 12.5% for both valid classes. Per the registered design, judging MUST NOT proceed.
+Reading: the templated error constructions are detectably less natural than the valid
+templates — the audit is discriminating on exactly the axis that would confound the 2x2
+(a judge could down-score C for stiltedness rather than for not matching the reference).
+Next step: revise the construction for uniform prose across all four classes (same
+polish pipeline for every class, errors as plausible human slips), re-verify the oracle
+assertions, and RE-run the same audit with the same pinned criterion. No judge scores of
+any simcorr candidate exist, so this iteration cannot be selecting errors that fool the
+target judge; it is selecting for auditor-rated naturalness only, as the design intends.

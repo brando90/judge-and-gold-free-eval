@@ -1,0 +1,743 @@
+{
+ "summary": {
+  "valid_near": {
+   "mean_naturalness": 4.25,
+   "artificial_flag_rate": 0.125
+  },
+  "valid_far": {
+   "mean_naturalness": 4.22,
+   "artificial_flag_rate": 0.125
+  },
+  "invalid_near": {
+   "mean_naturalness": 2.45,
+   "artificial_flag_rate": 0.875
+  },
+  "invalid_far": {
+   "mean_naturalness": 2.85,
+   "artificial_flag_rate": 0.65
+  }
+ },
+ "verdict": "FAIL",
+ "per_item": {
+  "simcorr/crt-0": {
+   "valid_near": {
+    "naturalness": 5,
+    "artificial": false
+   },
+   "invalid_far": {
+    "naturalness": 4,
+    "artificial": true
+   },
+   "valid_far": {
+    "naturalness": 2,
+    "artificial": true
+   },
+   "invalid_near": {
+    "naturalness": 1,
+    "artificial": true
+   }
+  },
+  "simcorr/crt-4": {
+   "invalid_near": {
+    "naturalness": 3,
+    "artificial": true
+   },
+   "valid_near": {
+    "naturalness": 5,
+    "artificial": false
+   },
+   "invalid_far": {
+    "naturalness": 2,
+    "artificial": true
+   },
+   "valid_far": {
+    "naturalness": 3,
+    "artificial": true
+   }
+  },
+  "simcorr/crt-7": {
+   "valid_near": {
+    "naturalness": 5,
+    "artificial": false
+   },
+   "valid_far": {
+    "naturalness": 3,
+    "artificial": false
+   },
+   "invalid_near": {
+    "naturalness": 3,
+    "artificial": true
+   },
+   "invalid_far": {
+    "naturalness": 3,
+    "artificial": true
+   }
+  },
+  "simcorr/crt-13": {
+   "invalid_near": {
+    "naturalness": 2,
+    "artificial": true
+   },
+   "invalid_far": {
+    "naturalness": 2,
+    "artificial": true
+   },
+   "valid_near": {
+    "naturalness": 5,
+    "artificial": false
+   },
+   "valid_far": {
+    "naturalness": 4,
+    "artificial": false
+   }
+  },
+  "simcorr/crt-16": {
+   "invalid_far": {
+    "naturalness": 4,
+    "artificial": false
+   },
+   "invalid_near": {
+    "naturalness": 2,
+    "artificial": true
+   },
+   "valid_far": {
+    "naturalness": 5,
+    "artificial": false
+   },
+   "valid_near": {
+    "naturalness": 5,
+    "artificial": false
+   }
+  },
+  "simcorr/crt-18": {
+   "valid_near": {
+    "naturalness": 5,
+    "artificial": false
+   },
+   "invalid_far": {
+    "naturalness": 2,
+    "artificial": true
+   },
+   "invalid_near": {
+    "naturalness": 2,
+    "artificial": true
+   },
+   "valid_far": {
+    "naturalness": 3,
+    "artificial": true
+   }
+  },
+  "simcorr/crt-19": {
+   "invalid_far": {
+    "naturalness": 4,
+    "artificial": false
+   },
+   "invalid_near": {
+    "naturalness": 2,
+    "artificial": true
+   },
+   "valid_near": {
+    "naturalness": 4,
+    "artificial": false
+   },
+   "valid_far": {
+    "naturalness": 5,
+    "artificial": false
+   }
+  },
+  "simcorr/crt-23": {
+   "invalid_far": {
+    "naturalness": 4,
+    "artificial": false
+   },
+   "valid_far": {
+    "naturalness": 2,
+    "artificial": true
+   },
+   "invalid_near": {
+    "naturalness": 1,
+    "artificial": true
+   },
+   "valid_near": {
+    "naturalness": 4,
+    "artificial": false
+   }
+  },
+  "simcorr/subset-25": {
+   "valid_near": {
+    "naturalness": 4,
+    "artificial": false
+   },
+   "valid_far": {
+    "naturalness": 5,
+    "artificial": false
+   },
+   "invalid_near": {
+    "naturalness": 2,
+    "artificial": true
+   },
+   "invalid_far": {
+    "naturalness": 2,
+    "artificial": true
+   }
+  },
+  "simcorr/subset-29": {
+   "invalid_far": {
+    "naturalness": 4,
+    "artificial": false
+   },
+   "valid_far": {
+    "naturalness": 5,
+    "artificial": false
+   },
+   "valid_near": {
+    "naturalness": 4,
+    "artificial": false
+   },
+   "invalid_near": {
+    "naturalness": 3,
+    "artificial": true
+   }
+  },
+  "simcorr/subset-31": {
+   "invalid_near": {
+    "naturalness": 4,
+    "artificial": false
+   },
+   "invalid_far": {
+    "naturalness": 4,
+    "artificial": false
+   },
+   "valid_near": {
+    "naturalness": 5,
+    "artificial": false
+   },
+   "valid_far": {
+    "naturalness": 5,
+    "artificial": false
+   }
+  },
+  "simcorr/subset-32": {
+   "valid_near": {
+    "naturalness": 4,
+    "artificial": false
+   },
+   "invalid_far": {
+    "naturalness": 5,
+    "artificial": false
+   },
+   "invalid_near": {
+    "naturalness": 3,
+    "artificial": true
+   },
+   "valid_far": {
+    "naturalness": 5,
+    "artificial": false
+   }
+  },
+  "simcorr/subset-36": {
+   "valid_near": {
+    "naturalness": 5,
+    "artificial": false
+   },
+   "invalid_far": {
+    "naturalness": 5,
+    "artificial": false
+   },
+   "invalid_near": {
+    "naturalness": 4,
+    "artificial": true
+   },
+   "valid_far": {
+    "naturalness": 5,
+    "artificial": false
+   }
+  },
+  "simcorr/subset-40": {
+   "invalid_near": {
+    "naturalness": 3,
+    "artificial": true
+   },
+   "invalid_far": {
+    "naturalness": 5,
+    "artificial": false
+   },
+   "valid_far": {
+    "naturalness": 5,
+    "artificial": false
+   },
+   "valid_near": {
+    "naturalness": 3,
+    "artificial": true
+   }
+  },
+  "simcorr/subset-45": {
+   "invalid_near": {
+    "naturalness": 4,
+    "artificial": false
+   },
+   "valid_near": {
+    "naturalness": 5,
+    "artificial": false
+   },
+   "valid_far": {
+    "naturalness": 5,
+    "artificial": false
+   },
+   "invalid_far": {
+    "naturalness": 2,
+    "artificial": true
+   }
+  },
+  "simcorr/subset-46": {
+   "valid_near": {
+    "naturalness": 4,
+    "artificial": false
+   },
+   "invalid_far": {
+    "naturalness": 2,
+    "artificial": true
+   },
+   "invalid_near": {
+    "naturalness": 1,
+    "artificial": true
+   },
+   "valid_far": {
+    "naturalness": 4,
+    "artificial": false
+   }
+  },
+  "simcorr/goldbach-49": {
+   "valid_far": {
+    "naturalness": 5,
+    "artificial": false
+   },
+   "invalid_near": {
+    "naturalness": 3,
+    "artificial": true
+   },
+   "valid_near": {
+    "naturalness": 1,
+    "artificial": true
+   },
+   "invalid_far": {
+    "naturalness": 2,
+    "artificial": true
+   }
+  },
+  "simcorr/goldbach-53": {
+   "valid_near": {
+    "naturalness": 4,
+    "artificial": false
+   },
+   "invalid_near": {
+    "naturalness": 2,
+    "artificial": true
+   },
+   "invalid_far": {
+    "naturalness": 2,
+    "artificial": true
+   },
+   "valid_far": {
+    "naturalness": 4,
+    "artificial": false
+   }
+  },
+  "simcorr/goldbach-55": {
+   "valid_near": {
+    "naturalness": 4,
+    "artificial": false
+   },
+   "valid_far": {
+    "naturalness": 5,
+    "artificial": false
+   },
+   "invalid_near": {
+    "naturalness": 1,
+    "artificial": true
+   },
+   "invalid_far": {
+    "naturalness": 4,
+    "artificial": false
+   }
+  },
+  "simcorr/goldbach-62": {
+   "valid_near": {
+    "naturalness": 2,
+    "artificial": true
+   },
+   "invalid_near": {
+    "naturalness": 1,
+    "artificial": true
+   },
+   "invalid_far": {
+    "naturalness": 4,
+    "artificial": false
+   },
+   "valid_far": {
+    "naturalness": 4,
+    "artificial": false
+   }
+  },
+  "simcorr/goldbach-66": {
+   "invalid_far": {
+    "naturalness": 2,
+    "artificial": true
+   },
+   "invalid_near": {
+    "naturalness": 2,
+    "artificial": true
+   },
+   "valid_far": {
+    "naturalness": 4,
+    "artificial": false
+   },
+   "valid_near": {
+    "naturalness": 4,
+    "artificial": false
+   }
+  },
+  "simcorr/goldbach-67": {
+   "invalid_near": {
+    "naturalness": 4,
+    "artificial": true
+   },
+   "invalid_far": {
+    "naturalness": 3,
+    "artificial": true
+   },
+   "valid_far": {
+    "naturalness": 4,
+    "artificial": false
+   },
+   "valid_near": {
+    "naturalness": 2,
+    "artificial": true
+   }
+  },
+  "simcorr/goldbach-69": {
+   "valid_near": {
+    "naturalness": 2,
+    "artificial": true
+   },
+   "valid_far": {
+    "naturalness": 4,
+    "artificial": false
+   },
+   "invalid_far": {
+    "naturalness": 4,
+    "artificial": false
+   },
+   "invalid_near": {
+    "naturalness": 1,
+    "artificial": true
+   }
+  },
+  "simcorr/goldbach-70": {
+   "invalid_far": {
+    "naturalness": 2,
+    "artificial": true
+   },
+   "valid_near": {
+    "naturalness": 5,
+    "artificial": false
+   },
+   "invalid_near": {
+    "naturalness": 2,
+    "artificial": true
+   },
+   "valid_far": {
+    "naturalness": 5,
+    "artificial": false
+   }
+  },
+  "simcorr/divcount-73": {
+   "invalid_near": {
+    "naturalness": 4,
+    "artificial": true
+   },
+   "valid_near": {
+    "naturalness": 5,
+    "artificial": false
+   },
+   "invalid_far": {
+    "naturalness": 2,
+    "artificial": true
+   },
+   "valid_far": {
+    "naturalness": 4,
+    "artificial": false
+   }
+  },
+  "simcorr/divcount-78": {
+   "valid_far": {
+    "naturalness": 5,
+    "artificial": false
+   },
+   "invalid_far": {
+    "naturalness": 3,
+    "artificial": true
+   },
+   "invalid_near": {
+    "naturalness": 3,
+    "artificial": true
+   },
+   "valid_near": {
+    "naturalness": 5,
+    "artificial": false
+   }
+  },
+  "simcorr/divcount-81": {
+   "valid_far": {
+    "naturalness": 4,
+    "artificial": false
+   },
+   "invalid_near": {
+    "naturalness": 4,
+    "artificial": true
+   },
+   "valid_near": {
+    "naturalness": 4,
+    "artificial": false
+   },
+   "invalid_far": {
+    "naturalness": 3,
+    "artificial": true
+   }
+  },
+  "simcorr/divcount-85": {
+   "valid_far": {
+    "naturalness": 5,
+    "artificial": false
+   },
+   "invalid_near": {
+    "naturalness": 3,
+    "artificial": true
+   },
+   "invalid_far": {
+    "naturalness": 3,
+    "artificial": true
+   },
+   "valid_near": {
+    "naturalness": 5,
+    "artificial": false
+   }
+  },
+  "simcorr/divcount-89": {
+   "valid_far": {
+    "naturalness": 5,
+    "artificial": false
+   },
+   "invalid_near": {
+    "naturalness": 2,
+    "artificial": true
+   },
+   "valid_near": {
+    "naturalness": 5,
+    "artificial": false
+   },
+   "invalid_far": {
+    "naturalness": 2,
+    "artificial": true
+   }
+  },
+  "simcorr/divcount-92": {
+   "valid_far": {
+    "naturalness": 4,
+    "artificial": false
+   },
+   "invalid_near": {
+    "naturalness": 2,
+    "artificial": true
+   },
+   "invalid_far": {
+    "naturalness": 1,
+    "artificial": true
+   },
+   "valid_near": {
+    "naturalness": 4,
+    "artificial": false
+   }
+  },
+  "simcorr/divcount-93": {
+   "valid_far": {
+    "naturalness": 5,
+    "artificial": false
+   },
+   "valid_near": {
+    "naturalness": 5,
+    "artificial": false
+   },
+   "invalid_far": {
+    "naturalness": 2,
+    "artificial": true
+   },
+   "invalid_near": {
+    "naturalness": 2,
+    "artificial": true
+   }
+  },
+  "simcorr/divcount-94": {
+   "invalid_near": {
+    "naturalness": 2,
+    "artificial": true
+   },
+   "invalid_far": {
+    "naturalness": 1,
+    "artificial": true
+   },
+   "valid_near": {
+    "naturalness": 5,
+    "artificial": false
+   },
+   "valid_far": {
+    "naturalness": 4,
+    "artificial": false
+   }
+  },
+  "simcorr/digitsum-96": {
+   "valid_near": {
+    "naturalness": 5,
+    "artificial": false
+   },
+   "invalid_near": {
+    "naturalness": 1,
+    "artificial": true
+   },
+   "valid_far": {
+    "naturalness": 5,
+    "artificial": false
+   },
+   "invalid_far": {
+    "naturalness": 1,
+    "artificial": true
+   }
+  },
+  "simcorr/digitsum-99": {
+   "invalid_near": {
+    "naturalness": 4,
+    "artificial": false
+   },
+   "valid_near": {
+    "naturalness": 4,
+    "artificial": false
+   },
+   "valid_far": {
+    "naturalness": 4,
+    "artificial": false
+   },
+   "invalid_far": {
+    "naturalness": 4,
+    "artificial": false
+   }
+  },
+  "simcorr/digitsum-102": {
+   "valid_near": {
+    "naturalness": 5,
+    "artificial": false
+   },
+   "invalid_far": {
+    "naturalness": 4,
+    "artificial": false
+   },
+   "valid_far": {
+    "naturalness": 4,
+    "artificial": false
+   },
+   "invalid_near": {
+    "naturalness": 2,
+    "artificial": true
+   }
+  },
+  "simcorr/digitsum-103": {
+   "invalid_near": {
+    "naturalness": 2,
+    "artificial": true
+   },
+   "valid_far": {
+    "naturalness": 5,
+    "artificial": false
+   },
+   "valid_near": {
+    "naturalness": 5,
+    "artificial": false
+   },
+   "invalid_far": {
+    "naturalness": 2,
+    "artificial": true
+   }
+  },
+  "simcorr/digitsum-105": {
+   "valid_far": {
+    "naturalness": 3,
+    "artificial": true
+   },
+   "invalid_far": {
+    "naturalness": 3,
+    "artificial": true
+   },
+   "invalid_near": {
+    "naturalness": 4,
+    "artificial": false
+   },
+   "valid_near": {
+    "naturalness": 4,
+    "artificial": false
+   }
+  },
+  "simcorr/digitsum-107": {
+   "valid_far": {
+    "naturalness": 4,
+    "artificial": false
+   },
+   "invalid_far": {
+    "naturalness": 2,
+    "artificial": true
+   },
+   "invalid_near": {
+    "naturalness": 1,
+    "artificial": true
+   },
+   "valid_near": {
+    "naturalness": 4,
+    "artificial": false
+   }
+  },
+  "simcorr/digitsum-111": {
+   "valid_far": {
+    "naturalness": 4,
+    "artificial": false
+   },
+   "invalid_near": {
+    "naturalness": 2,
+    "artificial": true
+   },
+   "invalid_far": {
+    "naturalness": 1,
+    "artificial": true
+   },
+   "valid_near": {
+    "naturalness": 5,
+    "artificial": false
+   }
+  },
+  "simcorr/digitsum-112": {
+   "valid_near": {
+    "naturalness": 4,
+    "artificial": false
+   },
+   "invalid_near": {
+    "naturalness": 4,
+    "artificial": false
+   },
+   "invalid_far": {
+    "naturalness": 3,
+    "artificial": false
+   },
+   "valid_far": {
+    "naturalness": 3,
+    "artificial": false
+   }
+  }
+ }
+}
