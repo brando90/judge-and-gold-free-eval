@@ -992,3 +992,21 @@ with a small residual (Qwen-14B, +0.23), partial (gemma-2-9b, +1.23 residual), m
 Both the vulnerability and the mitigation are properties of the judge, not of the task setup —
 the extension did what it was registered to do, and the paper's fix claims are rewritten
 per-judge in v22, prediction failure included.
+
+---
+
+## Similarity-vs-correctness 2x2 — CLOSED WITHOUT JUDGING (collaborator decision, 2026-08-27)
+
+After the pinned naturalness audit failed in five rounds (round 0 plus four registered
+construction revisions) for the structural reason documented above — on small-number arithmetic
+any careful auditor re-derives the answer and flags detected errors as deliberate, so the
+criterion measures the auditor's arithmetic reach rather than prose naturalness — Sri decided to
+SKIP the constructed experiment rather than weaken the criterion. P-SC1 and P-SC2 are therefore
+never scored: not confirmed, not falsified — the experiment did not run, and no simcorr
+candidate was ever judged. The similarity-over-correctness claim rests on the observational
+evidence of the composition dose experiment (the lure finding: referenced judges select invalid
+reference-look-alikes when no valid match exists), which is post hoc and labeled as such in the
+paper. The committed construction harness (build_simcorr_candidates.py, simcorr_analysis.py,
+simcorr_audit.py, runs/simcorr_tasks.jsonl) remains in the repo for a possible future
+hard-domain version (MATH-style tasks where the audit criterion is passable); any such revival
+is a new registration.
