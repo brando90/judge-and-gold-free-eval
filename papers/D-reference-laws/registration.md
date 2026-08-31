@@ -1499,3 +1499,36 @@ the judge is currently shown, which is why the existing specification arm was un
 **Consequence: the exemplar arm is restricted to the 318 items whose canonical solution passes
 our own oracle.** Showing a reference our oracle scores invalid would be a different and
 confounded manipulation, not the exemplar condition.
+
+---
+
+## DPO rerun (GATE-R) — RESULT 2026-08-31: BOTH arms void. The mitigation-under-training question is UNRESOLVED.
+
+Registered pre-run (1 epoch, lr 5e-6, symmetric, everything else identical to run 1).
+
+| arm | own-judge score gain vs base | verdict |
+|---|---|---|
+| ref | +0.074 [-0.150, +0.302] | **FAIL — void** |
+| m1  | -0.014 [-0.251, +0.222] | **FAIL — void** |
+
+Neither arm moved the judge it trained against, so under the registered rule both are void and
+P-DP1r/P-DP2r/P-DP3r are unscorable. Supporting evidence that the settings were simply too
+gentle: train accuracy 0.375 (base) / 0.404 (ref) / 0.367 (m1), held-out 0.472 / 0.492 / 0.473,
+and mean generation length 1499 / 1488 / 1527 characters — essentially unchanged from base on
+every axis, against run 1's 1492 / 2476 / 3840.
+
+**What the two runs jointly establish, and what they do not.** They bracket the manipulation
+rather than resolving it. Run 1 (4 epochs, lr 2e-5) OVER-trained: both arms degenerated toward
+verbosity, the reference arm passed its gate, and on that single gated arm the
+scoreboard-versus-truth wedge was +4.13 [+3.50, +4.78] with true accuracy falling 0.412 -> 0.175.
+Run 2 (1 epoch, lr 5e-6) UNDER-trained: nothing moved at all. The reference arm's wedge therefore
+remains this paper's only gated observation of training pressure, and it stands; the question of
+whether blind-then-reveal PROTECTS a trained policy remains **open**, because no run has yet
+produced a protected arm that passed its own manipulation check.
+
+**Stopping rule, adopted now rather than after another attempt.** A third hyperparameter setting
+chosen after seeing two failures would be tuning toward a passing gate, which is the failure mode
+this paper criticises judges for. Any third run must therefore be registered in advance with a
+single pre-committed setting and a pre-committed stopping rule: if that arm also fails its gate,
+the mitigation-under-training question is reported as unresolved in the paper and not attempted
+again. Absent such a run, the paper states the question as open.
