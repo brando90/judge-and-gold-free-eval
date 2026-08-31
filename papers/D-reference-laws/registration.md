@@ -1486,3 +1486,16 @@ the judge must compare whole artifacts. That is a third regime, untested by anyt
 paper, and it is where most deployment-relevant judging (code review, query grading, patch
 assessment) actually sits. The paper's own text was never affected: its H-METHOD section is
 scoped to "two correct solutions taking different routes to one answer," which is accurate.
+
+**MBPP canonical-solution verification (2026-08-31), before building the exemplar arm.** The
+planned code experiment shows the judge a canonical solution as an exemplar reference. Verified
+rather than assumed: MBPP's canonical solutions were executed against OUR test field, which is
+the EvalPlus-augmented suite the pool's oracle labels use. **60 of 378 canonical solutions FAIL
+that suite** (41 AssertionError, 6 timeout, plus IndexError/RecursionError/ZeroDivisionError
+cases), because MBPP's reference code was written against the weaker original assertions. A
+parallel first pass flagged 61; a serial recheck at a 30s timeout confirmed 60, so one was a
+timeout artifact and the count is execution-stable. Only 7 fail the `example_test` specification
+the judge is currently shown, which is why the existing specification arm was unaffected.
+**Consequence: the exemplar arm is restricted to the 318 items whose canonical solution passes
+our own oracle.** Showing a reference our oracle scores invalid would be a different and
+confounded manipulation, not the exemplar condition.
