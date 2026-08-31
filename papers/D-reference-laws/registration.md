@@ -1372,3 +1372,43 @@ P-DP2r: the reference arm's scoreboard-versus-truth wedge exceeds the m1 arm's, 
 P-DP3r: the m1 arm's held-out accuracy change is no worse than the reference arm's.
 Only if BOTH arms pass GATE-R do P-DP2r and P-DP3r become scorable as statements about the
 mitigation; otherwise they are reported as void exactly as in run 1.
+
+---
+
+## MACE feasibility audit (2026-08-31) — the Math domain has an EXACT oracle, and the earlier objection is withdrawn
+
+Planning notes above argued that extending to MACE (arXiv 2602.07842) would trade this paper's
+exact programmatic oracle for Wikidata list-membership, importing the incompleteness that
+corrupted the RewardBench-Ties labels. **That objection is correct for MACE's five entity domains
+and wrong for its Math domain**, and the difference is decisive.
+
+**Dataset as released** (`fzzh/MACE`, six HF configs): 12,000 questions, exactly 3,000 each at
+k = 1, 2, 4, 6, matching the paper. (A first pass here mis-read the release as 2,000 award-only
+k=1 items; that was an error of loading only the default config plus a parsing bug, corrected the
+same session.)
+
+**Exactness audit of MACE-Math, computed rather than trusted.** Its 2,000 questions are of five
+computable kinds, each of the form "Name a {kind} number between {lo} and {hi}". We enumerated
+the true answer set for every question and compared it to the shipped list:
+
+| kind | audit against computed truth | k-distribution |
+|---|---|---|
+| prime | 400/400 exact | 100 each at k=1,2,4,6 |
+| square | 400/400 exact | 100 each |
+| cube | 400/400 exact | 100 each |
+| fibonacci | 400/400 exact | 100 each |
+| triangular | 400/400 exact | 100 each |
+
+**2000/2000 (100%) of MACE-Math questions have answer lists that are exactly correct and exactly
+complete.** No adjudication layer is needed, and validity can be decided for ANY candidate answer
+by direct computation, exactly as on our own constraint pools.
+
+**Consequence for the extension plan.** MACE-Math gives simultaneously what no substrate used so
+far provides at once: third-party questions with third-party ground truth (answering the
+monoculture objection that every constructive result to date rests on pools we designed), an
+exact oracle (no Wikidata incompleteness), controlled k by construction, and natural-language
+phrasing. It is therefore the right MACE subset to run first, and the entity domains become an
+optional realism extension that would need the adjudication machinery. The remaining feasibility
+risk is unchanged and still to be gated: realized answer diversity in the sampled pools, since
+this paper's own measurement shows realized distinct valid answers plateau near 4-5 regardless of
+nominal k.
