@@ -12,6 +12,8 @@ ap.add_argument("--policy", choices=["base", "ref", "m1"], required=True)
 ap.add_argument("--model", default="meta-llama/Llama-3.1-8B-Instruct")
 ap.add_argument("--n", type=int, default=8)
 ap.add_argument("--out", default="runs/dpo_mv")
+ap.add_argument("--gpu-util", type=float, default=0.45,
+                help="fraction of the card to claim; low default so eval survives a shared GPU")
 args = ap.parse_args()
 
 from vllm import LLM, SamplingParams
@@ -29,7 +31,7 @@ tok = AutoTokenizer.from_pretrained(args.model)
 lora = None
 if args.policy != "base":
     lora = LoRARequest(args.policy, 1, f"{args.out}/adapter_{args.policy}")
-llm = LLM(model=args.model, dtype="bfloat16", gpu_memory_utilization=0.9,
+llm = LLM(model=args.model, dtype="bfloat16", gpu_memory_utilization=args.gpu_util,
           max_model_len=4096, enable_lora=lora is not None, max_lora_rank=16)
 sp = SamplingParams(n=args.n, max_tokens=1024, temperature=1.0, top_p=0.95, seed=0)
 
