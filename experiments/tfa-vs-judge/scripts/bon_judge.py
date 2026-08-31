@@ -21,7 +21,7 @@ ap = argparse.ArgumentParser()
 ap.add_argument("--pool", required=True)
 ap.add_argument("--judge", required=True)
 ap.add_argument("--cond", choices=["noref", "ref", "sabotage", "refinst", "refinst2", "multiref",
-                                   "refsol", "refsol2"], required=True)
+                                   "refsol", "refsol2", "refexem"], required=True)
 ap.add_argument("--rep", choices=["a", "b"], required=True)
 ap.add_argument("--domain", choices=["math", "code", "ties", "synthk", "simcorr", "mace"], default="math")
 ap.add_argument("--filter-band", action="store_true", help="only items with pool pass in [0.2,0.8]")
@@ -83,7 +83,7 @@ for v in range(11):
             CAND.setdefault(ids[0], v)
 
 def build(r, s):
-    cond_key = ("ref" if args.cond in ("refinst", "refinst2", "multiref", "refsol", "refsol2")
+    cond_key = ("ref" if args.cond in ("refinst", "refinst2", "multiref", "refsol", "refsol2", "refexem")
                 else args.cond)
     sys = {"code": RUBRIC_CODE, "ties": RUBRIC_TIES, "synthk": RUBRIC_TIES,
            "simcorr": RUBRIC_TIES, "mace": RUBRIC_TIES}.get(args.domain, RUBRIC)[(cond_key, args.rep)]
@@ -107,6 +107,8 @@ def build(r, s):
         # worked derivation in place of the bare answer; both routes end in the SAME
         # ref_answer, so refsol -> refsol2 rotates the method only
         parts.append(f"Reference solution (trusted):\n{WREF[r['problem_id']]}")
+    if args.cond == "refexem":
+        parts.append(f"Reference solution (trusted):\n{r['canonical_solution']}")
     if args.cond == "ref":
         # code reference = the canonical assert set (example_test), NOT the full MBPP+/EvalPlus
         # oracle suite: that suite runs to ~46k tokens and stays held out, mirroring math's
