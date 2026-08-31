@@ -29,7 +29,7 @@
 
 \title{When the Answer Key Backfires:\\ \large Reference Anchoring Turns LLM Judges into Answer Matchers}
 \author{Anonymous Authors}
-\date{Draft v30, August 31, 2026}
+\date{Draft v31, August 31, 2026}
 
 \usepackage{placeins}
 \renewcommand{\topfraction}{0.9}
@@ -992,6 +992,12 @@ M2's outcome differed between the two judges tested, in a direction consistent w
 M1's harm removal is measured at best-of-64 and leaves a third to three fifths of the anchoring premium in the margins, so the protocol is untested against stronger optimization pressure, against long or uncertain references, and on free-form generation where validity is not programmatically checkable.
 Both structural protocols cost two judge calls per candidate instead of one.
 
+\paragraph{Whether the mitigation survives training is unresolved.}
+The training-pressure experiment establishes the harm under training on its one gated arm, where a policy trained against a reference-showing judge raised that judge's score $+1.76$ while its true accuracy fell $0.412 \to 0.175$.
+It does not establish that blind-then-reveal protects a trained policy, and we do not claim it does.
+Two runs bracket the manipulation without resolving it: at 4 epochs and lr $2\times10^{-5}$ both arms degenerated toward verbosity, which the blind-first judge penalises, so the protected arm failed its registered manipulation check ($-1.04$ $[-1.36,-0.72]$) and was voided; at 1 epoch and lr $5\times10^{-6}$ neither arm moved its own judge at all ($+0.07$ and $-0.01$), so both were voided.
+A stopping rule was adopted before any further attempt: one additional pre-registered setting, and if its protected arm also fails its gate the question is reported unresolved rather than tuned toward a pass, since selecting hyperparameters until a gate opens is the failure mode this paper criticises in judges.
+
 \paragraph{Post-hoc analyses carry no registration weight.}
 The paired inference, the McNemar collapse tests, the boxed-extraction audit of the Llama pool, the selection-pressure curve of Table~\ref{tab:pressure}, the band-match and linkage analyses, and the validity-multiplier audit behind M2's failure mechanism are post-hoc additions demanded by review (Table~\ref{tab:ledger}).
 The registered P-M contrasts were also computed after the fact, though they are the statistics the predictions were registered on rather than new statistics.
@@ -1137,6 +1143,8 @@ P-W1--P-W3 & Worked reference and method rotation: a worked reference's margin d
 P-F1--P-F3 & Frontier judge on the same 37 items: it anchors (P-F1); its blind margin is null (P-F2); its margin is smaller than the open judges' (P-F3) & internal git, pre-data, 2026-08-31 & P-F1 \emph{confirmed}: referenced margin $+7.49$ $[+6.62,+8.22]$; $82.5\%$ of correct non-matching answers scored $\leq 3$ against $19.6\%$ blind. P-F2 holds, blind $7.88$ vs $7.85$. P-F3 \emph{fails but is not interpretable}: sampled-integer scores here vs logprob-expected values for the open judges; no inflation computed, per the registered resolution note (Section~\ref{sec:frontier}) \\
 \addlinespace[1pt]
 P-MC1--P-MC3 & \textsc{MACE} extension: the $k$-step holds on third-party non-mathematical tasks (P-MC1); referenced margins positive and blind null (P-MC2); the exact-oracle Math control agrees in sign (P-MC3) & internal git, pre-generation, 2026-08-31 & All three \emph{confirmed}. Non-math step $+2.30$ $[+1.82,+2.84]$ and $+1.13$ $[+0.81,+1.43]$, with the full inversion in the levels (helps at $k{=}1$, $-0.97$/$-0.57$; harms at $k{>}1$, $+1.33$/$+0.55$). Margins $+6.44$/$+5.86$ against blind $-0.64$/$-0.80$. Math control steps $+0.75$/$+0.94$, same sign (Section~\ref{sec:mace}) \\
+\addlinespace[1pt]
+GATE-R, P-DP1r--P-DP3r & DPO rerun at 1 epoch, lr $5\times10^{-6}$, symmetric across arms, after the protected arm failed its gate in run 1 & internal git, pre-training, 2026-08-31; hyperparameter change disclosed as a deviation & \emph{Both arms void}: own-judge gains $+0.074$ $[-0.150,+0.302]$ and $-0.014$ $[-0.251,+0.222]$, with accuracies and generation lengths essentially unchanged from base, so the settings were too gentle. P-DP1r--P-DP3r unscorable. Runs 1 and 2 bracket the manipulation; the mitigation-under-training question is reported \emph{open}, with a pre-committed stopping rule against further tuning \\
 \end{longtable}
 \endgroup
 
