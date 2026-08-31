@@ -1297,3 +1297,17 @@ which the free CLI does not offer.
 judge. Its 11-value integer scores would tie massively under best-of-64, and by this paper's own
 score-resolution finding the resulting inflation estimate would measure the tie-break, not the
 judge. The margin, a mean over many samples, is well resolved and is the only readout taken.
+
+**Parser audit and correction (2026-08-31, same day as the run).** The frontier score parser
+originally took the FIRST integer 0..10 in the reply. An audit of all 660 raw replies found 659
+are a bare integer (mean reply length 2 characters) and exactly one shows arithmetic before its
+verdict (`3 + 13 + 44 = 60. Correct.\n\n**10**`), which the first-integer rule misparsed as 3
+instead of 10. The parser is corrected to take the LAST integer, the artifact regenerated, and
+the effect is confined to the blind matching mean: 7.83 -> 7.88. Every headline figure is
+unchanged — referenced margin +7.49, blind margin still null, 82.5% versus 19.6% failing rates
+identical — and the paper's blind row is updated to the corrected values. Also verified in the
+same audit: the frontier prompt is constructed from the same `RUBRIC_TIES[("ref","a")]` system
+text and the same Problem / Reference answer / Candidate solution / "Score:" body as
+`bon_judge.py`, so only the judge and the score function differ. One structural difference
+remains inherent to the CLI path and is noted here: the open judges receive system and user as
+separate chat-template turns, while the CLI receives them concatenated.

@@ -560,7 +560,7 @@
 {"problem_id": "kstrat/subset-k2-10", "idx": 6, "group": "match", "cond": "ref", "score": 10, "raw": "10"}
 {"problem_id": "kstrat/subset-k2-10", "idx": 43, "group": "match", "cond": "noref", "score": 0, "raw": "0"}
 {"problem_id": "kstrat/subset-k2-10", "idx": 43, "group": "match", "cond": "ref", "score": 10, "raw": "10"}
-{"problem_id": "kstrat/subset-k2-10", "idx": 62, "group": "match", "cond": "noref", "score": 3, "raw": "3 + 13 + 44 = 60. Correct.\n\n**10**"}
+{"problem_id": "kstrat/subset-k2-10", "idx": 62, "group": "match", "cond": "noref", "score": 10, "raw": "3 + 13 + 44 = 60. Correct.\n\n**10**"}
 {"problem_id": "kstrat/subset-k2-10", "idx": 62, "group": "match", "cond": "ref", "score": 10, "raw": "10"}
 {"problem_id": "kstrat/subset-k2-10", "idx": 38, "group": "match", "cond": "noref", "score": 10, "raw": "10"}
 {"problem_id": "kstrat/subset-k2-10", "idx": 38, "group": "match", "cond": "ref", "score": 10, "raw": "10"}

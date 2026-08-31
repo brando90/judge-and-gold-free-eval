@@ -123,8 +123,10 @@ def run_one(job):
     try:
         r = subprocess.run(["claude", "-p", "--model", args.model], input=p,
                            capture_output=True, text=True, timeout=args.timeout, env=_ENV)
-        m = re.search(r"\b(10|[0-9])\b", r.stdout)
-        job["score"] = int(m.group(1)) if m else None
+        # take the LAST integer 0..10: replies are almost always a bare number, but a
+        # reply that shows arithmetic before its verdict would otherwise be misparsed
+        nums = re.findall(r"\b(10|[0-9])\b", r.stdout)
+        job["score"] = int(nums[-1]) if nums else None
         job["raw"] = r.stdout.strip()[:200]
     except Exception as e:
         job["score"] = None

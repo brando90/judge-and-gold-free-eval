@@ -422,16 +422,16 @@ A registered check (\texttt{frontier\_judge.py}, predictions P-F1--P-F3 committe
 \toprule
 Condition & Matching valid answers & Non-matching valid answers & Margin \\
 \midrule
-Blind & $7.83$ & $7.85$ & $+0.31$ {\scriptsize$[-0.62, +1.30]$} \\
+Blind & $7.88$ & $7.85$ & $+0.35$ {\scriptsize$[-0.56, +1.27]$} \\
 Referenced & $9.83$ & $\mathbf{2.32}$ & $\mathbf{+7.49}$ {\scriptsize$[+6.62, +8.22]$} \\
 \bottomrule
 \end{tabular}
 \caption{\textbf{Takeaway: a frontier judge shown a reference marks $82.5\%$ of genuinely correct non-matching answers as failing ($\leq 3$ of 10), against $19.6\%$ for the same answers judged blind. Scale does not rescue the failure.}
-Mean scores on equally valid answers, 37 $k{>}1$ items, 660 calls, rubric $a$ text identical to the open judges'. The blind row is the control: with no reference shown, the two groups are indistinguishable ($7.83$ against $7.85$).}
+Mean scores on equally valid answers, 37 $k{>}1$ items, 660 calls, rubric $a$ text identical to the open judges'. The blind row is the control: with no reference shown, the two groups are indistinguishable ($7.88$ against $7.85$).}
 \label{tab:frontier}
 \end{table}
 
-P-F1 is confirmed, and the blind control is about as clean as this design can produce: with no reference, the judge scores matching and non-matching valid answers $7.83$ and $7.85$, a difference of $0.02$ (P-F2).
+P-F1 is confirmed, and the blind control is about as clean as this design can produce: with no reference, the judge scores matching and non-matching valid answers $7.88$ and $7.85$, a difference of $0.03$ (P-F2).
 Shown the reference, the same two groups separate to $9.83$ and $2.32$.
 The rate is the statement worth carrying: \textbf{$82.5\%$ of genuinely correct answers receive a failing score when they do not match the shown key, against $19.6\%$ when the judge is blind}.
 
@@ -1087,7 +1087,7 @@ GATE, P-DP1--P-DP3 & Multi-valid DPO training pressure: each arm must move its o
 \addlinespace[1pt]
 P-W1--P-W3 & Worked reference and method rotation: a worked reference's margin differs from a bare answer's (P-W1); rotating the reference's method with the answer held fixed does not move scores (P-W2); the machinery detects movement where it exists (P-W3) & internal git, pre-data, 2026-08-31 & P-W1 confirmed, direction \emph{opposite} to the recorded intuition: a worked reference anchors \emph{less} (margin $-1.44$, $-0.53$; inflation $-0.42$, $-0.30$) while still inflating. P-W2 \emph{falsified as stated} (3 of 4 cells exclude zero), substance holds: the shift is calibration, the method-matching \emph{differential} appears in 1 of 4 cells, effects 20--400$\times$ smaller than answer rotation. P-W3 confirmed (Section~\ref{sec:worked}) \\
 \addlinespace[1pt]
-P-F1--P-F3 & Frontier judge on the same 37 items: it anchors (P-F1); its blind margin is null (P-F2); its margin is smaller than the open judges' (P-F3) & internal git, pre-data, 2026-08-31 & P-F1 \emph{confirmed}: referenced margin $+7.49$ $[+6.62,+8.22]$; $82.5\%$ of correct non-matching answers scored $\leq 3$ against $19.6\%$ blind. P-F2 holds, blind $7.83$ vs $7.85$. P-F3 \emph{fails but is not interpretable}: sampled-integer scores here vs logprob-expected values for the open judges; no inflation computed, per the registered resolution note (Section~\ref{sec:frontier}) \\
+P-F1--P-F3 & Frontier judge on the same 37 items: it anchors (P-F1); its blind margin is null (P-F2); its margin is smaller than the open judges' (P-F3) & internal git, pre-data, 2026-08-31 & P-F1 \emph{confirmed}: referenced margin $+7.49$ $[+6.62,+8.22]$; $82.5\%$ of correct non-matching answers scored $\leq 3$ against $19.6\%$ blind. P-F2 holds, blind $7.88$ vs $7.85$. P-F3 \emph{fails but is not interpretable}: sampled-integer scores here vs logprob-expected values for the open judges; no inflation computed, per the registered resolution note (Section~\ref{sec:frontier}) \\
 \end{longtable}
 \endgroup
 
