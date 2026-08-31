@@ -1,0 +1,15 @@
+{
+ "judge": "mistralai__Ministral-8B-Instruct-2410",
+ "n_items": 60,
+ "distinct_values": 1547,
+ "entropy_bits": 9.91,
+ "max_deviation_from_integer": 0.49991,
+ "mean_ties_at_max": 1.0,
+ "anchoring_margin": 0.32,
+ "threshold": {
+  "distinct_min": 100,
+  "ties_max": 3.0
+ },
+ "P_MS1_pass": true,
+ "P_MS2_margin_exceeds_mistral7b": false
+}

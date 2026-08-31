@@ -1097,3 +1097,46 @@ three judges and essentially unchanged for the third; no conclusion depends on i
 retro-fitted into the frozen registered artifacts, which stand as scored; disclosed here and in
 the paper's limitations. (It also explains the diagnostic curiosity that nominal-k=1 items can
 show several "distinct valid answers": those are order variants, 10 subset and 2 digitsum items.)
+
+---
+
+## Ministral-8B screen (P-MS1, P-MS2) — RESULT 2026-08-31: P-MS1 confirmed, P-MS2 falsified, and the screen itself shown INSUFFICIENT
+
+Registered pre-run at commit `84994aa` (threshold: distinct >= 100 AND ties@max <= 3.0).
+
+**As registered.** P-MS1 **CONFIRMED**: Ministral-8B-Instruct-2410 produces 1547 distinct score
+values, entropy 9.91 bits, mean ties at maximum 1.0 — comfortably passing, and confirming that
+Mistral-7B's exact-integer quantization is a checkpoint property, not a family property.
+P-MS2 **FALSIFIED**: its anchoring margin is +0.32 [+0.22, +0.43], *lower* than Mistral-7B's
++1.38, not higher, and far below gemma-2-9b (+5.32), Qwen-7B (+5.17), phi-4 (+4.20).
+
+**The finding that matters, and it is against our own recommendation.** A post-hoc diagnostic
+(unregistered) shows Ministral-8B is not a functional judge at all on this pool:
+
+| judge | score sd | IQR | r(score, validity) | selection accuracy | lift over random (0.386) |
+|---|---|---|---|---|---|
+| Ministral-8B | **0.55** | 0.56 | **+0.030** | **0.217** | **-0.170** |
+| Mistral-7B | 4.12 | 6.00 | +0.334 | 0.516 | +0.130 |
+| Qwen2.5-7B | 2.59 | 3.00 | +0.227 | 0.533 | +0.147 |
+| phi-4 | 2.48 | 3.35 | +0.204 | 0.633 | +0.247 |
+| gemma-2-9b | 2.65 | 2.63 | +0.259 | 0.650 | +0.264 |
+
+Its 1547 distinct values are compressed into a range of sd 0.55 around a mean of 4.73, its scores
+are essentially uncorrelated with validity (+0.03), and its best-of-64 pick is valid only 21.7% of
+the time against a 38.6% random baseline — **worse than choosing at random**. Its near-zero
+anchoring margin is therefore not resistance; it is a judge that discriminates on nothing at all.
+
+**Consequence for the score-resolution screen proposed in v24.** The screen as registered
+(distinct values, ties at maximum) is NECESSARY but NOT SUFFICIENT: it passes a judge that is
+worse than random. It catches quantization (Mistral-7B) but not compression (Ministral-8B).
+A cheap oracle-free repair is to add a score-SPREAD criterion (sd or IQR), which separates
+Ministral (0.55 / 0.56) from every functional judge here (2.48-4.12 / 2.63-6.00) — but that
+repair is post hoc and would itself need registering before use. The deeper conclusion is the
+honest one: no label-free screen can certify that a judge's scores track truth, which is exactly
+what companion A's human-label audit exists to measure. The resolution screen is a cheap
+prerequisite, not a substitute for certification.
+
+**Deviation disclosed.** The registration stated that a judge passing the screen earns the full
+four-condition two-rubric grid. We are NOT spending that compute: the follow-up diagnostic shows
+Ministral cannot select above chance, so its inflation and mitigation deltas would measure noise.
+No further Ministral runs.
