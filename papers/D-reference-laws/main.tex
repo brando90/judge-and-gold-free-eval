@@ -29,7 +29,7 @@
 
 \title{When the Answer Key Backfires:\\ \large Reference Anchoring Turns LLM Judges into Answer Matchers}
 \author{Anonymous Authors}
-\date{Draft v28, August 31, 2026}
+\date{Draft v29, August 31, 2026}
 
 \usepackage{placeins}
 \renewcommand{\topfraction}{0.9}
@@ -980,6 +980,13 @@ Predictions committed before data, git-timestamped and ledgered in Table~\ref{ta
 The boundary statement: help when the answer is effectively unique and verification is within judge capability, harm under multiplicity, with the multiplicity half preregistered and replicated and the $k{=}1$ control run inside the same registered design (Sections~\ref{sec:synthk} and~\ref{sec:struct}).
 And a preregistered structural remedy: scoring blind before the reference is revealed (Section~\ref{sec:struct}).
 The anchoring result also bears on a recommended practice: having the judge generate its own reference before grading~\cite{dobefore2025} is contraindicated on multi-valid tasks, since the static any-author result shows self-generated references anchor just as external ones do.
+
+Concurrent work reaches a compatible conclusion from the opposite side of the lever.
+On \textsc{CLEAR}, a causal-reasoning benchmark whose find-one-valid queries admit several graph-valid answers and whose validity is decided symbolically, a \emph{reference-free} LLM judge selects at $30.5\%$ against $30.8\%$ for plurality voting, while a symbolic verifier that consults no reference reaches $42.1\%$; scaling that judge to 72B ties plurality~\cite{calver2026}.
+Their design firewalls reference fields out of the scorer, so what they measure is the weakness of a \emph{blind} judge on multi-valid selection, and what this paper measures, the referenced condition, is precisely what that firewall excludes; the two results are complementary rather than overlapping.
+The combination sharpens our own guidance in one respect.
+We recommend leaving the judge blind where a reference cannot be used safely, and their result is a reminder that blind judging avoids anchoring without thereby being adequate: on hard multi-valid tasks a blind judge can sit near plurality.
+Where the valid set is checkable, checking it beats judging it, which is the rule Table~\ref{tab:rule} already puts above every judge-based option, and their symbolic verifier is independent evidence for it.
 
 \textsc{RewardBench-2} supplies the multi-valid substrate.
 Its Ties subset was built precisely because equally valid answers expose evaluator brittleness~\cite{malik2025rewardbench2}; we convert those comparisons into generation tasks with enumerable valid sets and put them under selection pressure.

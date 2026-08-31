@@ -28,6 +28,12 @@ Anonymous.
 \newblock What does matching a reference actually measure?, 2026.
 \newblock Companion draft.
 
+\bibitem{calver2026}
+Anonymous.
+\newblock When many answers are valid, voting fails: Symbolic verification for
+  best-of-k causal reasoning in llms, 2026.
+\newblock arXiv:2608.03506.
+
 \bibitem{gao2022scaling}
 Leo Gao, John Schulman, and Jacob Hilton.
 \newblock Scaling laws for reward model overoptimization.
