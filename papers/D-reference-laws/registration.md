@@ -1153,3 +1153,53 @@ shrinking the measured margin. This is a different situation from the replicatio
 overall boxed-compliance rate is 0.616 and which the paper already bounds with the
 extraction-friction tercile analysis; the k-stratified pool is 98.9% boxed among valid samples,
 so the mitigation and judge-coverage numbers do not carry that caveat.
+
+---
+
+## Multi-valid DPO training-pressure experiment (GATE, P-DP1..P-DP3) — RESULT 2026-08-31
+
+Registered pre-training at commit `9f83926` (design and predictions in `dpo_mv_pairs.py`,
+frozen estimators in `dpo_mv_analysis.py`). Two LoRA-DPO arms on Llama-3.1-8B, identical
+hyperparameters, differing only in which judge protocol built the preference pairs: the plain
+single-reference Qwen-7B judge (**ref arm**) versus the same judge under blind-then-reveal
+(**m1 arm**). Evaluation: n=8 per item from base and both arms on the k>1 training items and on
+the 120 replication items as held-out; oracle accuracy plus frozen judge scores.
+
+**Manipulation-check gate (registered, gates everything).**
+
+| arm | own-judge score gain on train items | verdict |
+|---|---|---|
+| ref | **+1.76** [+1.47, +2.01] | **PASS** |
+| m1  | **-1.04** [-1.36, -0.72] | **FAIL — arm void** |
+
+The ref arm moved its own judge as required. The m1 arm did **not**: training against the
+blind-then-reveal protocol produced a policy that its own protocol scores *lower* than base.
+Per the registered rule the m1 arm is void, so **every contrast that uses m1 as comparator is
+uninterpretable as evidence about the mitigation**, including P-DP2's and P-DP3's registered
+forms. This is a null about the training setup, not about the fix.
+
+**What the surviving (gated) arm shows, and it is the paper's most consequential number.**
+On the ref arm alone against base, the wedge between scoreboard and truth is
+**+4.13** [+3.50, +4.78]: its own judge's score rose **+1.76 points** while its true accuracy
+*fell* from 0.412 to 0.175 (**-0.237**), and its held-out accuracy fell **-0.228**
+[-0.269, -0.189]. A model trained against a reference-showing judge on multi-valid tasks
+therefore became substantially worse at the task while its judge liked it substantially more.
+This is the selection-time inversion reproduced under training pressure, on the arm that
+passed its own gate.
+
+**P-DP1 (parroting): FALSIFIED.** We predicted the ref arm would emit the exact reference answer
+*more* often than the m1 arm. The paired difference is **-0.037** [-0.067, -0.013] — it emits it
+*less*, and its own match rate fell (-0.040) relative to base. So the degradation is not
+reference-copying. Consistent with companion A, whose analogous wedge prediction on unique-answer
+math also failed: a corrupted preference signal damages the policy rather than teaching it to
+imitate the key. What the ref arm learned is something its judge rewards that is neither
+correctness nor key-matching; the registration's disclosed candidate, verbosity, is consistent
+with the generations (1492 -> 2476 mean characters) but is not established here.
+
+**P-DP2 / P-DP3 as registered: not scorable.** Both are ref-versus-m1 contrasts and the m1 arm is
+void. Reported for completeness only: P-DP2 delta +2.66 [+2.07, +3.27], P-DP3 delta +0.18
+[+0.14, +0.22], both nominally in the predicted direction. We do **not** claim from this
+experiment that blind-then-reveal protects a trained policy; the m1 arm may simply have trained
+less effectively, and its lower accuracy loss (-0.049 held-out vs the ref arm's -0.228) is
+confounded with that failure. A rerun with hyperparameters tuned so the m1 arm passes its gate is
+the honest way to test the mitigation under training.
