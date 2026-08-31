@@ -29,7 +29,7 @@
 
 \title{When the Answer Key Backfires:\\ \large Reference Anchoring Turns LLM Judges into Answer Matchers}
 \author{Anonymous Authors}
-\date{Draft v24, August 31, 2026}
+\date{Draft v25, August 31, 2026}
 
 \usepackage{placeins}
 \renewcommand{\topfraction}{0.9}
@@ -658,6 +658,12 @@ We report the associated correlations (distinct values against lift, $+0.90$; ti
 The practical form: before deploying a judge for best-of-$n$, inspect the distribution of its scores, in distinct values, entropy, and mean ties at the maximum.
 A judge emitting a handful of integers cannot rank candidates however well it understands the rubric, and its apparent immunity to reference anchoring is an artifact of that muteness rather than a property worth seeking.
 This complements the certification audit of companion A~\cite{companionA}, which requires a few dozen human labels; the resolution screen requires none.
+
+One limit of the screen is worth stating plainly, because we found it by running the screen and failing it in the other direction.
+Applied to a fifth judge, Ministral-8B-Instruct, the resolution criteria pass comfortably (1547 distinct values, no ties at the maximum), yet that judge's scores are compressed into a standard deviation of $0.55$ around a mean of $4.73$, are essentially uncorrelated with validity ($+0.03$ against $+0.20$ to $+0.33$ for the four judges above), and select a valid answer only $21.7\%$ of the time against a $38.6\%$ random baseline, that is, \emph{worse than choosing at random}.
+Its near-zero anchoring margin ($+0.32$ $[+0.22, +0.43]$) is accordingly not resistance to anchoring but indifference to everything.
+Score resolution is therefore a necessary and free prerequisite, not a sufficient one: it catches quantization but not compression, and no label-free statistic can establish that a judge's scores track truth rather than merely varying.
+That last step is what the labeled certification of companion A measures, and the two checks should be run in that order.
 \textbf{P-X2 is confirmed} for all three judges, but the \emph{level} tells the fuller story: M1 leaves $+0.23$ of residual inflation for Qwen-14B and $+1.23$ for gemma-2-9b, against the full removal seen for Qwen-7B and phi-4.
 Across the nine judges now tested, the single-reference harm is strong for seven, absent for one, and the fix's effect ranges from complete removal to a modest reduction.
 Both the vulnerability and the mitigation are properties of the judge, not of the task structure alone; a practitioner should certify their particular judge, on their own tasks, before trusting either — the pre-deployment-audit thesis of companion A arriving from an unplanned direction.
