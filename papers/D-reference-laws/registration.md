@@ -1412,3 +1412,37 @@ optional realism extension that would need the adjudication machinery. The remai
 risk is unchanged and still to be gated: realized answer diversity in the sampled pools, since
 this paper's own measurement shows realized distinct valid answers plateau near 4-5 regardless of
 nominal k.
+
+**MACE entity-domain completeness audit (2026-08-31, zero GPU).** The Math domain audits exact by
+computation, but the five entity domains rest on Wikidata list-membership. We audited them before
+committing compute by asking an independent model to enumerate the FULL answer set for 12
+multi-valid questions per domain, without showing it the shipped list, and measuring how often it
+names an answer the list omits:
+
+| domain | items | shipped answers | model named | covered by list | absent from list | rate |
+|---|---|---|---|---|---|---|
+| River | 12 | 52 | 44 | 43 | 1 | **2.3%** |
+| Language | 12 | 56 | 37 | 34 | 3 | **8.1%** |
+| Region | 12 | 40 | 39 | 27 | 12 | 30.8% |
+| Office | 12 | 48 | 21 | 14 | 7 | 33.3% |
+| Award | 12 | 50 | 23 | 13 | 10 | 43.5% |
+
+**Verdict: River and Language pass; Region, Office and Award do not.** The usable pair gives what
+the Math domain cannot: a NON-mathematical, natural-language, third-party substrate with
+controlled k and answer lists that survive an independent completeness check. The three failing
+domains would need the adjudication machinery built for the Ties pool, and are excluded from the
+planned extension rather than patched.
+
+Two caveats recorded with the number. First, an "absent" answer can mean the shipped list is
+incomplete OR that the auditing model hallucinated, and the failing domains (people, offices,
+administrative divisions) are exactly where hallucination is most likely, so the true
+incompleteness rates are upper bounds. Second, the direction of any real incompleteness is the
+familiar conservative one: a genuinely correct answer missing from the list is scored invalid,
+and such answers fall on the NON-matching side, shrinking the measured margin rather than
+inflating it. The gate is therefore set conservatively on purpose: we exclude domains whose noise
+we cannot bound cheaply, not domains we know to be wrong.
+
+**Planned MACE substrate, following this audit:** Math (exact oracle, arithmetic) as the
+label-noise control, plus River and Language (audited, non-mathematical) as the domain-diversity
+arm. Running both allows any divergence between them to be attributed to substrate rather than
+to oracle quality.

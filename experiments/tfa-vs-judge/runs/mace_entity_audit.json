@@ -1,0 +1,1248 @@
+[
+ {
+  "domain": "River",
+  "question": "Name one country through which the Yangjaecheon or the Hoosic River flows.",
+  "shipped": [
+   "South Korea",
+   "United States"
+  ],
+  "model_answers": [
+   "South Korea",
+   "United States"
+  ],
+  "extra": [],
+  "covered": [
+   "South Korea",
+   "United States"
+  ]
+ },
+ {
+  "domain": "River",
+  "question": "Name one country through which the River Coln or the Nerl flows.",
+  "shipped": [
+   "United Kingdom",
+   "Russia"
+  ],
+  "model_answers": [
+   "United Kingdom",
+   "Russia"
+  ],
+  "extra": [],
+  "covered": [
+   "United Kingdom",
+   "Russia"
+  ]
+ },
+ {
+  "domain": "River",
+  "question": "Name one country through which the Diemel, Gomal River, or Logone River flows.",
+  "shipped": [
+   "Afghanistan",
+   "Germany",
+   "Pakistan",
+   "Central African Republic",
+   "Chad",
+   "Cameroon"
+  ],
+  "model_answers": [
+   "Germany",
+   "Cameroon",
+   "Chad",
+   "Pakistan",
+   "Afghanistan"
+  ],
+  "extra": [],
+  "covered": [
+   "Germany",
+   "Cameroon",
+   "Chad",
+   "Pakistan",
+   "Afghanistan"
+  ]
+ },
+ {
+  "domain": "River",
+  "question": "Name one country through which the Tiet\u00ea River, Dyle, or Debed flows.",
+  "shipped": [
+   "Brazil",
+   "Belgium",
+   "Armenia",
+   "Georgia"
+  ],
+  "model_answers": [
+   "Brazil",
+   "Belgium",
+   "Armenia"
+  ],
+  "extra": [],
+  "covered": [
+   "Brazil",
+   "Belgium",
+   "Armenia"
+  ]
+ },
+ {
+  "domain": "River",
+  "question": "Name one country through which the Tel River, Hv\u00edt\u00e1, or Kunar River flows.",
+  "shipped": [
+   "India",
+   "Afghanistan",
+   "Pakistan",
+   "Iceland"
+  ],
+  "model_answers": [
+   "Iceland",
+   "Afghanistan",
+   "Pakistan",
+   "India"
+  ],
+  "extra": [],
+  "covered": [
+   "Iceland",
+   "Afghanistan",
+   "Pakistan",
+   "India"
+  ]
+ },
+ {
+  "domain": "River",
+  "question": "Name one country through which the Katsina Ala River, Bodrog, or Pamir River flows.",
+  "shipped": [
+   "Nigeria",
+   "Afghanistan",
+   "Slovakia",
+   "Hungary",
+   "Tajikistan",
+   "Cameroon"
+  ],
+  "model_answers": [
+   "Nigeria",
+   "Cameroon",
+   "Hungary",
+   "Slovakia",
+   "Tajikistan",
+   "Afghanistan"
+  ],
+  "extra": [],
+  "covered": [
+   "Nigeria",
+   "Cameroon",
+   "Hungary",
+   "Slovakia",
+   "Tajikistan",
+   "Afghanistan"
+  ]
+ },
+ {
+  "domain": "River",
+  "question": "Name one country through which the Niobrara River or the Marshyangdi flows.",
+  "shipped": [
+   "Nepal",
+   "United States"
+  ],
+  "model_answers": [
+   "Nepal"
+  ],
+  "extra": [],
+  "covered": [
+   "Nepal"
+  ]
+ },
+ {
+  "domain": "River",
+  "question": "Name one country through which the Tundzha, Emory River, or Mayenne flows.",
+  "shipped": [
+   "Turkey",
+   "United States",
+   "France",
+   "Bulgaria"
+  ],
+  "model_answers": [
+   "Bulgaria",
+   "France"
+  ],
+  "extra": [],
+  "covered": [
+   "Bulgaria",
+   "France"
+  ]
+ },
+ {
+  "domain": "River",
+  "question": "Name one country through which the Me\u017ea, Prut, or Nepean River flows.",
+  "shipped": [
+   "Moldova",
+   "Slovenia",
+   "Austria",
+   "Romania",
+   "Australia",
+   "Ukraine"
+  ],
+  "model_answers": [
+   "Latvia",
+   "Romania",
+   "Ukraine",
+   "Moldova",
+   "Australia"
+  ],
+  "extra": [
+   "Latvia"
+  ],
+  "covered": [
+   "Romania",
+   "Ukraine",
+   "Moldova",
+   "Australia"
+  ]
+ },
+ {
+  "domain": "River",
+  "question": "Name one country through which the Semois, P\u010dinja, or Vaup\u00e9s River flows.",
+  "shipped": [
+   "Brazil",
+   "Colombia",
+   "France",
+   "Serbia",
+   "North Macedonia",
+   "Belgium"
+  ],
+  "model_answers": [
+   "France",
+   "Belgium",
+   "North Macedonia",
+   "Serbia",
+   "Colombia",
+   "Brazil"
+  ],
+  "extra": [],
+  "covered": [
+   "France",
+   "Belgium",
+   "North Macedonia",
+   "Serbia",
+   "Colombia",
+   "Brazil"
+  ]
+ },
+ {
+  "domain": "River",
+  "question": "Name one country through which the Pilcomayo River, Moonie River, or Ia Drang River flows.",
+  "shipped": [
+   "Cambodia",
+   "Argentina",
+   "Vietnam",
+   "Paraguay",
+   "Australia",
+   "Bolivia"
+  ],
+  "model_answers": [
+   "Bolivia",
+   "Paraguay",
+   "Argentina",
+   "Australia",
+   "Vietnam"
+  ],
+  "extra": [],
+  "covered": [
+   "Bolivia",
+   "Paraguay",
+   "Argentina",
+   "Australia",
+   "Vietnam"
+  ]
+ },
+ {
+  "domain": "River",
+  "question": "Name one country through which the Angereb River, River Coln, or Osage River flows.",
+  "shipped": [
+   "United Kingdom",
+   "United States",
+   "Ethiopia",
+   "Sudan"
+  ],
+  "model_answers": [
+   "Ethiopia",
+   "United Kingdom",
+   "United States"
+  ],
+  "extra": [],
+  "covered": [
+   "Ethiopia",
+   "United Kingdom",
+   "United States"
+  ]
+ },
+ {
+  "domain": "Language",
+  "question": "Name one country where Saban\u00eas, Gurene, or Mandjak were predominantly spoken by native speakers.",
+  "shipped": [
+   "Guinea-Bissau",
+   "Ghana",
+   "Burkina Faso",
+   "Senegal",
+   "Brazil",
+   "The Gambia"
+  ],
+  "model_answers": [
+   "Brazil",
+   "Ghana",
+   "Guinea-Bissau"
+  ],
+  "extra": [],
+  "covered": [
+   "Brazil",
+   "Ghana",
+   "Guinea-Bissau"
+  ]
+ },
+ {
+  "domain": "Language",
+  "question": "Name one country where Amonap or Manda were predominantly spoken by native speakers.",
+  "shipped": [
+   "Brazil",
+   "India"
+  ],
+  "model_answers": [
+   "Tanzania",
+   "India"
+  ],
+  "extra": [
+   "Tanzania"
+  ],
+  "covered": [
+   "India"
+  ]
+ },
+ {
+  "domain": "Language",
+  "question": "Name one country where Arhuaco, Monsang, or Gidar were predominantly spoken by native speakers.",
+  "shipped": [
+   "Cameroon",
+   "Colombia",
+   "India",
+   "Chad"
+  ],
+  "model_answers": [
+   "Colombia",
+   "India",
+   "Nigeria"
+  ],
+  "extra": [
+   "Nigeria"
+  ],
+  "covered": [
+   "Colombia",
+   "India"
+  ]
+ },
+ {
+  "domain": "Language",
+  "question": "Name one country where Punu, Luvale, or Fur were predominantly spoken by native speakers.",
+  "shipped": [
+   "Gabon",
+   "Angola",
+   "Zambia",
+   "Sudan",
+   "Chad",
+   "Republic of the Congo"
+  ],
+  "model_answers": [
+   "Gabon",
+   "Zambia",
+   "Sudan"
+  ],
+  "extra": [],
+  "covered": [
+   "Gabon",
+   "Zambia",
+   "Sudan"
+  ]
+ },
+ {
+  "domain": "Language",
+  "question": "Name one country where Pangkhu, Mats\u00e9s, or Tabwa were predominantly spoken by native speakers.",
+  "shipped": [
+   "Democratic Republic of the Congo",
+   "India",
+   "Bangladesh",
+   "Zambia",
+   "Brazil",
+   "Peru"
+  ],
+  "model_answers": [
+   "Peru",
+   "Brazil",
+   "Democratic Republic of the Congo",
+   "Myanmar"
+  ],
+  "extra": [
+   "Myanmar"
+  ],
+  "covered": [
+   "Peru",
+   "Brazil",
+   "Democratic Republic of the Congo"
+  ]
+ },
+ {
+  "domain": "Language",
+  "question": "Name one country where Sorani, Orang Seletar, or Eastern Oromo were predominantly spoken by native speakers.",
+  "shipped": [
+   "Iran",
+   "Malaysia",
+   "Ethiopia",
+   "Iraq"
+  ],
+  "model_answers": [
+   "Iraq",
+   "Iran",
+   "Malaysia",
+   "Ethiopia"
+  ],
+  "extra": [],
+  "covered": [
+   "Iraq",
+   "Iran",
+   "Malaysia",
+   "Ethiopia"
+  ]
+ },
+ {
+  "domain": "Language",
+  "question": "Name one country where Jukun Takum, Bukar Sadong, or Nonuya were predominantly spoken by native speakers.",
+  "shipped": [
+   "Nigeria",
+   "Colombia",
+   "Cameroon",
+   "Indonesia",
+   "Peru",
+   "Malaysia"
+  ],
+  "model_answers": [
+   "Nigeria",
+   "Malaysia",
+   "Colombia"
+  ],
+  "extra": [],
+  "covered": [
+   "Nigeria",
+   "Malaysia",
+   "Colombia"
+  ]
+ },
+ {
+  "domain": "Language",
+  "question": "Name one country where Western Sisaala or Esan were predominantly spoken by native speakers.",
+  "shipped": [
+   "Ghana",
+   "Nigeria"
+  ],
+  "model_answers": [
+   "Ghana",
+   "Nigeria"
+  ],
+  "extra": [],
+  "covered": [
+   "Ghana",
+   "Nigeria"
+  ]
+ },
+ {
+  "domain": "Language",
+  "question": "Name one country where Zyphe, Odual, or Anguthimri were predominantly spoken by native speakers.",
+  "shipped": [
+   "Myanmar",
+   "India",
+   "Nigeria",
+   "Australia"
+  ],
+  "model_answers": [
+   "Nigeria",
+   "Australia",
+   "Myanmar"
+  ],
+  "extra": [],
+  "covered": [
+   "Nigeria",
+   "Australia",
+   "Myanmar"
+  ]
+ },
+ {
+  "domain": "Language",
+  "question": "Name one country where Murui Huitoto, Ikwerre, or Norwegian were predominantly spoken by native speakers.",
+  "shipped": [
+   "Colombia",
+   "Nigeria",
+   "Peru",
+   "Norway"
+  ],
+  "model_answers": [
+   "Colombia",
+   "Nigeria",
+   "Norway"
+  ],
+  "extra": [],
+  "covered": [
+   "Colombia",
+   "Nigeria",
+   "Norway"
+  ]
+ },
+ {
+  "domain": "Language",
+  "question": "Name one country where Lozi, Ngaju, or Ngu\u1ed3n were predominantly spoken by native speakers.",
+  "shipped": [
+   "Namibia",
+   "Zambia",
+   "Vietnam",
+   "Indonesia",
+   "Botswana",
+   "Zimbabwe"
+  ],
+  "model_answers": [
+   "Zambia",
+   "Indonesia",
+   "Vietnam"
+  ],
+  "extra": [],
+  "covered": [
+   "Zambia",
+   "Indonesia",
+   "Vietnam"
+  ]
+ },
+ {
+  "domain": "Language",
+  "question": "Name one country where Lobi, Mvuba, or Palor were predominantly spoken by native speakers.",
+  "shipped": [
+   "Ghana",
+   "Democratic Republic of the Congo",
+   "Uganda",
+   "Ivory Coast",
+   "Burkina Faso",
+   "Senegal"
+  ],
+  "model_answers": [
+   "Ghana",
+   "Burkina Faso",
+   "Democratic Republic of the Congo",
+   "Senegal"
+  ],
+  "extra": [],
+  "covered": [
+   "Ghana",
+   "Burkina Faso",
+   "Democratic Republic of the Congo",
+   "Senegal"
+  ]
+ },
+ {
+  "domain": "Region",
+  "question": "Name one first-level administrative division of Liberia, whose area (in square kilometers) is between 5400 and 8600",
+  "shipped": [
+   "Grand Bassa",
+   "River Cess"
+  ],
+  "model_answers": [
+   "Grand Bassa",
+   "River Cess"
+  ],
+  "extra": [],
+  "covered": [
+   "Grand Bassa",
+   "River Cess"
+  ]
+ },
+ {
+  "domain": "Region",
+  "question": "Name one first-level administrative division of Ecuador, whose area (in square kilometers) is between 4900 and 8000",
+  "shipped": [
+   "Chimborazo",
+   "Cotopaxi",
+   "El Oro",
+   "Los R\u00edos"
+  ],
+  "model_answers": [
+   "El Oro",
+   "Chimborazo",
+   "Cotopaxi",
+   "Los R\u00edos"
+  ],
+  "extra": [],
+  "covered": [
+   "El Oro",
+   "Chimborazo",
+   "Cotopaxi",
+   "Los R\u00edos"
+  ]
+ },
+ {
+  "domain": "Region",
+  "question": "Name one first-level administrative division of South Africa, whose area (in square kilometers) is between 75000 and 140000",
+  "shipped": [
+   "Free",
+   "KwaZulu-Natal",
+   "Limpopo",
+   "Mpumalanga",
+   "North West",
+   "Western Cape"
+  ],
+  "model_answers": [
+   "Free State",
+   "KwaZulu-Natal",
+   "Limpopo",
+   "Mpumalanga",
+   "North West",
+   "Western Cape"
+  ],
+  "extra": [
+   "Free State"
+  ],
+  "covered": [
+   "KwaZulu-Natal",
+   "Limpopo",
+   "Mpumalanga",
+   "North West",
+   "Western Cape"
+  ]
+ },
+ {
+  "domain": "Region",
+  "question": "Name one first-level administrative division of Cuba, whose area (in square kilometers) is between 2300 and 4300",
+  "shipped": [
+   "Artemisa",
+   "Cienfuegos",
+   "Isla de la Juventud",
+   "Mayabeque"
+  ],
+  "model_answers": [
+   "Artemisa",
+   "Mayabeque",
+   "Cienfuegos"
+  ],
+  "extra": [],
+  "covered": [
+   "Artemisa",
+   "Mayabeque",
+   "Cienfuegos"
+  ]
+ },
+ {
+  "domain": "Region",
+  "question": "Name one first-level administrative division of Denmark, whose area (in square kilometers) is between 7100 and 8000",
+  "shipped": [
+   "North Denmark",
+   "Zealand"
+  ],
+  "model_answers": [
+   "Region Sj\u00e6lland",
+   "Region Nordjylland"
+  ],
+  "extra": [
+   "Region Sj\u00e6lland",
+   "Region Nordjylland"
+  ],
+  "covered": []
+ },
+ {
+  "domain": "Region",
+  "question": "Name one first-level administrative division of Costa Rica, whose area (in square kilometers) is between 2900 and 9000",
+  "shipped": [
+   "Cartago",
+   "San Jos\u00e9"
+  ],
+  "model_answers": [
+   "San Jos\u00e9",
+   "Cartago"
+  ],
+  "extra": [],
+  "covered": [
+   "San Jos\u00e9",
+   "Cartago"
+  ]
+ },
+ {
+  "domain": "Region",
+  "question": "Name one first-level administrative division of Pakistan, whose area (in square kilometers) is between 130000 and 220000",
+  "shipped": [
+   "Punjab",
+   "Sindh"
+  ],
+  "model_answers": [
+   "Punjab",
+   "Sindh"
+  ],
+  "extra": [],
+  "covered": [
+   "Punjab",
+   "Sindh"
+  ]
+ },
+ {
+  "domain": "Region",
+  "question": "Name one first-level administrative division of Bolivia, whose area (in square kilometers) is between 50000 and 150000",
+  "shipped": [
+   "Chuquisaca",
+   "Cochabamba",
+   "La Paz",
+   "Oruro",
+   "Pando",
+   "Potos\u00ed"
+  ],
+  "model_answers": [
+   "La Paz",
+   "Cochabamba",
+   "Potos\u00ed",
+   "Oruro",
+   "Pando",
+   "Chuquisaca"
+  ],
+  "extra": [],
+  "covered": [
+   "La Paz",
+   "Cochabamba",
+   "Potos\u00ed",
+   "Oruro",
+   "Pando",
+   "Chuquisaca"
+  ]
+ },
+ {
+  "domain": "Region",
+  "question": "Name one first-level administrative division of Tajikistan, whose area (in square kilometers) is between 23000 and 27000",
+  "shipped": [
+   "Khatlon",
+   "Sughd"
+  ],
+  "model_answers": [
+   "Sughd Province",
+   "Khatlon Province"
+  ],
+  "extra": [
+   "Sughd Province",
+   "Khatlon Province"
+  ],
+  "covered": []
+ },
+ {
+  "domain": "Region",
+  "question": "Name one first-level administrative division of Guyana, whose area (in square kilometers) is between 46000 and 59000",
+  "shipped": [
+   "Cuyuni-Mazaruni",
+   "Upper Takutu-Upper Essequibo"
+  ],
+  "model_answers": [
+   "Cuyuni-Mazaruni",
+   "Upper Takutu-Upper Essequibo"
+  ],
+  "extra": [],
+  "covered": [
+   "Cuyuni-Mazaruni",
+   "Upper Takutu-Upper Essequibo"
+  ]
+ },
+ {
+  "domain": "Region",
+  "question": "Name one first-level administrative division of Uzbekistan, whose area (in square kilometers) is between 41000 and 180000",
+  "shipped": [
+   "Karakalpakstan",
+   "Navoiy"
+  ],
+  "model_answers": [
+   "Karakalpakstan",
+   "Navoiy Region"
+  ],
+  "extra": [
+   "Navoiy Region"
+  ],
+  "covered": [
+   "Karakalpakstan"
+  ]
+ },
+ {
+  "domain": "Region",
+  "question": "Name one first-level administrative division of Uzbekistan, whose area (in square kilometers) is between 6900 and 30000",
+  "shipped": [
+   "Jizzakh",
+   "Namangan",
+   "Qashqadaryo",
+   "Samarqand",
+   "Surxondaryo",
+   "Tashkent"
+  ],
+  "model_answers": [
+   "Jizzakh Region",
+   "Namangan Region",
+   "Qashqadaryo Region",
+   "Samarqand Region",
+   "Surxondaryo Region",
+   "Tashkent Region"
+  ],
+  "extra": [
+   "Jizzakh Region",
+   "Namangan Region",
+   "Qashqadaryo Region",
+   "Samarqand Region",
+   "Surxondaryo Region",
+   "Tashkent Region"
+  ],
+  "covered": []
+ },
+ {
+  "domain": "Award",
+  "question": "Name one person who received Cundill History Prize between 2014 and 2019.",
+  "shipped": [
+   "Gary J. Bass",
+   "Julia Lovell",
+   "Susan Pedersen",
+   "Thomas W. Laqueur",
+   "Maya Jasanoff",
+   "Daniel Beer"
+  ],
+  "model_answers": [
+   "Anne Applebaum",
+   "Julia Lovell"
+  ],
+  "extra": [
+   "Anne Applebaum"
+  ],
+  "covered": [
+   "Julia Lovell"
+  ]
+ },
+ {
+  "domain": "Award",
+  "question": "Name one person who received J. C. Daniel Award between 2009 and 2012.",
+  "shipped": [
+   "J. Sasikumar",
+   "Jose Prakash",
+   "K. S. Sethumadhavan",
+   "Navodaya Appachan"
+  ],
+  "model_answers": [
+   "Sukumari"
+  ],
+  "extra": [
+   "Sukumari"
+  ],
+  "covered": []
+ },
+ {
+  "domain": "Award",
+  "question": "Name one person who received John Cahill Medal between 2013 and 2014.",
+  "shipped": [
+   "Robbie Gray",
+   "Chad Wingard"
+  ],
+  "model_answers": [
+   "Malcolm McIntosh"
+  ],
+  "extra": [
+   "Malcolm McIntosh"
+  ],
+  "covered": []
+ },
+ {
+  "domain": "Award",
+  "question": "Name one person who received Art Ross Trophy between 1960 and 1968.",
+  "shipped": [
+   "Stan Mikita",
+   "Bobby Hull",
+   "Gordie Howe",
+   "Bernie Geoffrion"
+  ],
+  "model_answers": [
+   "Bobby Hull",
+   "Stan Mikita",
+   "Gordie Howe",
+   "Bernie Geoffrion",
+   "Phil Esposito"
+  ],
+  "extra": [
+   "Phil Esposito"
+  ],
+  "covered": [
+   "Bobby Hull",
+   "Stan Mikita",
+   "Gordie Howe",
+   "Bernie Geoffrion"
+  ]
+ },
+ {
+  "domain": "Award",
+  "question": "Name one person who received Kniksen Award for goalkeeper of the year between 1996 and 2001.",
+  "shipped": [
+   "Frode Olsen",
+   "\u00c1rni Gautur Arason",
+   "Emile Baron",
+   "J\u00f8rn Jamtfall"
+  ],
+  "model_answers": [
+   "Thomas Myhre"
+  ],
+  "extra": [
+   "Thomas Myhre"
+  ],
+  "covered": []
+ },
+ {
+  "domain": "Award",
+  "question": "Name one person who received Archaeology Awards between 2012 and 2013.",
+  "shipped": [
+   "Phil Harding",
+   "Tony Wilmott"
+  ],
+  "model_answers": [
+   "Zahi Hawass"
+  ],
+  "extra": [
+   "Zahi Hawass"
+  ],
+  "covered": []
+ },
+ {
+  "domain": "Award",
+  "question": "Name one person who received Nevill Mott Medal and Prize between 2006 and 2009.",
+  "shipped": [
+   "Peter Weightman",
+   "Andre Geim",
+   "Gabriel Aeppli",
+   "Gillian Gehring"
+  ],
+  "model_answers": [
+   "Andre Geim"
+  ],
+  "extra": [],
+  "covered": [
+   "Andre Geim"
+  ]
+ },
+ {
+  "domain": "Award",
+  "question": "Name one person who received Baillie Gifford Prize between 2009 and 2012.",
+  "shipped": [
+   "Frank Dik\u00f6tter",
+   "Philip Hoare",
+   "Barbara Demick",
+   "Wade Davis"
+  ],
+  "model_answers": [
+   "Philip Hoare",
+   "Rebecca Skloot",
+   "Frank Dik\u00f6tter",
+   "Katherine Boo"
+  ],
+  "extra": [
+   "Rebecca Skloot",
+   "Katherine Boo"
+  ],
+  "covered": [
+   "Philip Hoare",
+   "Frank Dik\u00f6tter"
+  ]
+ },
+ {
+  "domain": "Award",
+  "question": "Name one person who received Axel Springer Award between 2016 and 2021.",
+  "shipped": [
+   "U\u011fur \u015eahin",
+   "Shoshana Zuboff",
+   "Tim Berners-Lee",
+   "Mark Zuckerberg",
+   "Jeff Bezos",
+   "Elon Musk"
+  ],
+  "model_answers": [
+   "Mark Zuckerberg",
+   "Elon Musk"
+  ],
+  "extra": [],
+  "covered": [
+   "Mark Zuckerberg",
+   "Elon Musk"
+  ]
+ },
+ {
+  "domain": "Award",
+  "question": "Name one person who received National Youth Poet Laureate between 2017 and 2020.",
+  "shipped": [
+   "Amanda Gorman",
+   "Patricia Frazier",
+   "Meera Dasgupta",
+   "Kara Jackson"
+  ],
+  "model_answers": [
+   "Amanda Gorman",
+   "Kara Jackson",
+   "Meera Dasgupta"
+  ],
+  "extra": [],
+  "covered": [
+   "Amanda Gorman",
+   "Kara Jackson",
+   "Meera Dasgupta"
+  ]
+ },
+ {
+  "domain": "Award",
+  "question": "Name one person who received Kniksen Award for striker of the year between 1990 and 1997.",
+  "shipped": [
+   "Tore Andr\u00e9 Dahlum",
+   "Harald Brattbakk",
+   "Mons Ivar Mjelde",
+   "G\u00f8ran S\u00f8rloth"
+  ],
+  "model_answers": [
+   "Jan \u00c5ge Fj\u00f8rtoft"
+  ],
+  "extra": [
+   "Jan \u00c5ge Fj\u00f8rtoft"
+  ],
+  "covered": []
+ },
+ {
+  "domain": "Award",
+  "question": "Name one person who received G.D. Birla Award for Scientific Research between 2010 and 2015.",
+  "shipped": [
+   "Subhasis Chaudhuri",
+   "Sanjeev Galande",
+   "Tapas Kumar Kundu",
+   "Nibir Mandal",
+   "Sanjay Mittal",
+   "Rajesh Gopakumar"
+  ],
+  "model_answers": [
+   "G. Mugesh"
+  ],
+  "extra": [
+   "G. Mugesh"
+  ],
+  "covered": []
+ },
+ {
+  "domain": "Office",
+  "question": "Name one person from who officially assumed the office of Premier of KwaZulu-Natal between 1997 and 1999.",
+  "shipped": [
+   "Ben Ngubane",
+   "Lionel Mtshali"
+  ],
+  "model_answers": [
+   "Frank Mdlalose",
+   "Lionel Mtshali"
+  ],
+  "extra": [
+   "Frank Mdlalose"
+  ],
+  "covered": [
+   "Lionel Mtshali"
+  ]
+ },
+ {
+  "domain": "Office",
+  "question": "Name one person from who officially assumed the office of Bishop of Guildford between 1956 and 1983.",
+  "shipped": [
+   "Ivor Watkins",
+   "George Reindorp",
+   "Michael Adie",
+   "David Brown"
+  ],
+  "model_answers": [
+   "Ian Ramsey",
+   "David Brown"
+  ],
+  "extra": [
+   "Ian Ramsey"
+  ],
+  "covered": [
+   "David Brown"
+  ]
+ },
+ {
+  "domain": "Office",
+  "question": "Name one person from who officially assumed the office of Chief Archivist of New Zealand between 2014 and 2023.",
+  "shipped": [
+   "Richard Foy",
+   "Anahera Morehu",
+   "Stephen Clarke",
+   "Marilyn Little"
+  ],
+  "model_answers": [
+   "Marilyn Little"
+  ],
+  "extra": [],
+  "covered": [
+   "Marilyn Little"
+  ]
+ },
+ {
+  "domain": "Office",
+  "question": "Name one person from who officially assumed the office of Physician to the President between 2002 and 2018.",
+  "shipped": [
+   "Jeffrey Kuhlman",
+   "Richard Tubb",
+   "Sean Conley",
+   "Ronny Jackson"
+  ],
+  "model_answers": [
+   "Jeffrey Kuhlman",
+   "Ronny Jackson"
+  ],
+  "extra": [],
+  "covered": [
+   "Jeffrey Kuhlman",
+   "Ronny Jackson"
+  ]
+ },
+ {
+  "domain": "Office",
+  "question": "Name one person from who officially assumed the office of Chancellor of the University of Oxford between 1869 and 1925.",
+  "shipped": [
+   "George Goschen, 1st Viscount Goschen",
+   "Robert Gascoyne-Cecil, 3rd Marquess of Salisbury",
+   "George Curzon, 1st Marquess Curzon of Kedleston",
+   "George Cave, 1st Viscount Cave"
+  ],
+  "model_answers": [
+   "Lord Salisbury"
+  ],
+  "extra": [
+   "Lord Salisbury"
+  ],
+  "covered": []
+ },
+ {
+  "domain": "Office",
+  "question": "Name one person from who officially assumed the office of Bishop to the Forces between 1948 and 1956.",
+  "shipped": [
+   "Cuthbert Bardsley",
+   "Stanley Betts"
+  ],
+  "model_answers": [
+   "Victor Pike"
+  ],
+  "extra": [
+   "Victor Pike"
+  ],
+  "covered": []
+ },
+ {
+  "domain": "Office",
+  "question": "Name one person from who officially assumed the office of Chancellor of the University of Oxford between 1907 and 1987.",
+  "shipped": [
+   "Harold Macmillan",
+   "George Cave, 1st Viscount Cave",
+   "Edward Grey, 1st Viscount Grey of Fallodon",
+   "George Curzon, 1st Marquess Curzon of Kedleston",
+   "Roy Jenkins",
+   "Edward Wood, 1st Earl of Halifax"
+  ],
+  "model_answers": [
+   "Harold Macmillan"
+  ],
+  "extra": [],
+  "covered": [
+   "Harold Macmillan"
+  ]
+ },
+ {
+  "domain": "Office",
+  "question": "Name one person from who officially assumed the office of Disney Professor of Archaeology between 1887 and 1974.",
+  "shipped": [
+   "Forrest Browne",
+   "Grahame Clark",
+   "Glyn Daniel",
+   "Ellis Minns",
+   "Dorothy Garrod",
+   "William Ridgeway"
+  ],
+  "model_answers": [
+   "Thomas Kendrick"
+  ],
+  "extra": [
+   "Thomas Kendrick"
+  ],
+  "covered": []
+ },
+ {
+  "domain": "Office",
+  "question": "Name one person from who officially assumed the office of President of Sri Lanka between 1978 and 2015.",
+  "shipped": [
+   "Junius Richard Jayewardene",
+   "Dingiri Banda Wijetunga",
+   "Maithripala Sirisena",
+   "Ranasinghe Premadasa",
+   "Chandrika Kumaratunga",
+   "Mahinda Rajapaksa"
+  ],
+  "model_answers": [
+   "J. R. Jayewardene",
+   "Ranasinghe Premadasa",
+   "Dingiri Banda Wijetunga",
+   "Chandrika Kumaratunga",
+   "Mahinda Rajapaksa"
+  ],
+  "extra": [
+   "J. R. Jayewardene"
+  ],
+  "covered": [
+   "Ranasinghe Premadasa",
+   "Dingiri Banda Wijetunga",
+   "Chandrika Kumaratunga",
+   "Mahinda Rajapaksa"
+  ]
+ },
+ {
+  "domain": "Office",
+  "question": "Name one person from who officially assumed the office of president of the International Olympic Committee between 1925 and 1972.",
+  "shipped": [
+   "Michael Morris",
+   "Henri de Baillet-Latour",
+   "Sigfrid Edstr\u00f6m",
+   "Avery Brundage"
+  ],
+  "model_answers": [
+   "Henri de Baillet-Latour",
+   "Sigfrid Edstr\u00f6m",
+   "Avery Brundage"
+  ],
+  "extra": [],
+  "covered": [
+   "Henri de Baillet-Latour",
+   "Sigfrid Edstr\u00f6m",
+   "Avery Brundage"
+  ]
+ },
+ {
+  "domain": "Office",
+  "question": "Name one person from who officially assumed the office of Roman Catholic Bishop of Charlottetown between 1913 and 1944.",
+  "shipped": [
+   "Louis James O'Leary",
+   "James Boyle",
+   "Henry Joseph O'Leary",
+   "Joseph Anthony O'Sullivan"
+  ],
+  "model_answers": [
+   "Henry Joseph O'Leary"
+  ],
+  "extra": [],
+  "covered": [
+   "Henry Joseph O'Leary"
+  ]
+ },
+ {
+  "domain": "Office",
+  "question": "Name one person from who officially assumed the office of prelate of Ciudad Real between 1905 and 1914.",
+  "shipped": [
+   "Francisco Javier de Irastorza Loinaz",
+   "Remigio Gand\u00e1segui y Gorroch\u00e1tegui"
+  ],
+  "model_answers": [
+   "Zacar\u00edas Mart\u00ednez N\u00fa\u00f1ez"
+  ],
+  "extra": [
+   "Zacar\u00edas Mart\u00ednez N\u00fa\u00f1ez"
+  ],
+  "covered": []
+ }
+]
