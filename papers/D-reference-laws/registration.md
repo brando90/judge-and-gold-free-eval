@@ -1140,3 +1140,16 @@ prerequisite, not a substitute for certification.
 four-condition two-rubric grid. We are NOT spending that compute: the follow-up diagnostic shows
 Ministral cannot select above chance, so its inflation and mitigation deltas would measure noise.
 No further Ministral runs.
+
+**Addendum to the robustness note (same session).** A second answer-classification pathway was
+checked on the same k-stratified pool: samples containing no `\boxed{}` fall back to whole-reply
+extraction and therefore cannot string-match the reference, so a valid sample whose true answer
+IS the reference would be misclassified as non-matching. Prevalence on the k>1 items that carry
+the mitigation and coverage results: 17 of 1483 oracle-valid samples (1.1%) lack a box, and of
+those only 7 (0.5% of all valid samples) actually carry the reference answer in their closing
+text. The effect is therefore negligible here, and its direction is the same conservative one as
+the order-variant issue: it moves genuinely-matching samples into the non-matching group,
+shrinking the measured margin. This is a different situation from the replication pool, whose
+overall boxed-compliance rate is 0.616 and which the paper already bounds with the
+extraction-friction tercile analysis; the k-stratified pool is 98.9% boxed among valid samples,
+so the mitigation and judge-coverage numbers do not carry that caveat.
