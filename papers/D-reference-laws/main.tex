@@ -29,7 +29,7 @@
 
 \title{When the Answer Key Backfires:\\ \large Reference Anchoring Turns LLM Judges into Answer Matchers}
 \author{Anonymous Authors}
-\date{Draft v23, August 27, 2026}
+\date{Draft v24, August 31, 2026}
 
 \usepackage{placeins}
 \renewcommand{\topfraction}{0.9}
@@ -649,6 +649,15 @@ A post-hoc diagnostic locates the cause, and it is not anchoring resistance.
 Mistral emits scores that are exactly integers, placing essentially all probability mass on one score token, so only 11 distinct values exist pool-wide and $52.6\%$ of its referenced scores are exactly 10; best-of-64 selection under it ties $32$ of $64$ samples at the maximum, against exactly $1$ for every other judge, and the frozen estimator breaks ties at random.
 That judge still anchors, mildly and with the expected $k$-trend (margin $+1.38$ overall, referenced scores shifted $+0.79$ points), but at this score resolution selection is close to a lottery and cannot act on the preference.
 Best-of-$n$ inflation therefore requires a judge whose scores discriminate among candidates: a coarse-integer judge is not safe, only unable to express its anchoring under this selection rule, and its selection quality suffers accordingly ($51.6\%$ of its top-tied group is valid, against $65$--$77\%$ for the others).
+
+\paragraph{A zero-cost screen: check the judge's score resolution before trusting it to select.}
+The Mistral case generalizes into a practical check that needs no labels and no oracle, only the judge's own scores on a pool it has already graded.
+Across the five judges scored on this pool, the number of distinct score values ranges from 11 (Mistral-7B) to roughly $2500$ for every other judge, and that resolution governs what selection can achieve: against a random-pick baseline of $0.386$ validity, Mistral's best-of-64 reaches $0.564$ (a lift of $+0.18$) while the others reach $0.750$--$0.850$ ($+0.36$ to $+0.46$).
+The mechanism is mechanical rather than statistical: 11 possible values tie 18 of 64 samples at the maximum, ties are broken at random, and random selection cannot beat the base rate.
+We report the associated correlations (distinct values against lift, $+0.90$; ties against lift, $-0.92$) as illustrative only, since they rest on five judges with a single leverage point; the recommendation follows from the mechanism alone.
+The practical form: before deploying a judge for best-of-$n$, inspect the distribution of its scores, in distinct values, entropy, and mean ties at the maximum.
+A judge emitting a handful of integers cannot rank candidates however well it understands the rubric, and its apparent immunity to reference anchoring is an artifact of that muteness rather than a property worth seeking.
+This complements the certification audit of companion A~\cite{companionA}, which requires a few dozen human labels; the resolution screen requires none.
 \textbf{P-X2 is confirmed} for all three judges, but the \emph{level} tells the fuller story: M1 leaves $+0.23$ of residual inflation for Qwen-14B and $+1.23$ for gemma-2-9b, against the full removal seen for Qwen-7B and phi-4.
 Across the nine judges now tested, the single-reference harm is strong for seven, absent for one, and the fix's effect ranges from complete removal to a modest reduction.
 Both the vulnerability and the mitigation are properties of the judge, not of the task structure alone; a practitioner should certify their particular judge, on their own tasks, before trusting either — the pre-deployment-audit thesis of companion A arriving from an unplanned direction.
