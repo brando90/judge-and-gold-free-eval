@@ -1340,3 +1340,35 @@ inherent to the CLI path is disclosed.
 
 One bug found across four experiments, in the newest and least-exercised code path, with no
 effect on any conclusion.
+
+---
+
+## DPO rerun (GATE-R, P-DP1r..P-DP3r) — REGISTERED 2026-08-31, before the rerun
+
+**Why a rerun, and what changed.** In the first run the protected (m1) arm failed its
+manipulation-check gate (-1.04), so its predictions were void and no claim could be made about
+whether blind-then-reveal protects a trained policy. Diagnosis, stated before rerunning: both
+arms trained at 4 epochs / lr 2e-5 and both degenerated toward verbosity (mean generation length
+1492 -> 2476 for ref, -> 3840 for m1), and the m1 arm's own judge scores blind-first, so a
+degenerate policy is penalised by it rather than rewarded. The reference arm's judge, which
+rewards key-resemblance, tolerated the same degeneration. **The hyperparameters are therefore
+changed for both arms symmetrically: 1 epoch, lr 5e-6** (paper A's registered DPO settings),
+holding every other element identical to the first run: same pools, same pair-construction rule,
+same 480 pairs per arm, same evaluation, same frozen estimators.
+
+**Disclosure.** Changing hyperparameters after observing a gate failure is a deviation and is
+recorded as one. It is legitimate only because the gate is a *precondition* on the manipulation,
+not an outcome measure: the gate asks whether training moved the judge it trained against, and an
+arm that fails it has not performed the manipulation the experiment is about. The first run's
+outcome stands on the record in full, including the reference arm's confirmed wedge, and the
+rerun's numbers will be reported as a separate, second experiment rather than replacing it.
+
+**Predictions (identical in substance to the first run, restated for the new settings).**
+GATE-R: each arm raises the score its OWN training judge assigns to its train-item generations
+  relative to base, CI excluding zero. An arm failing this is void again.
+P-DP1r: the reference arm's reference-match rate gain exceeds the m1 arm's.
+  (Prior evidence: FALSIFIED in run 1, -0.037. Restated unchanged so the rerun is a genuine test.)
+P-DP2r: the reference arm's scoreboard-versus-truth wedge exceeds the m1 arm's, CI excluding zero.
+P-DP3r: the m1 arm's held-out accuracy change is no worse than the reference arm's.
+Only if BOTH arms pass GATE-R do P-DP2r and P-DP3r become scorable as statements about the
+mitigation; otherwise they are reported as void exactly as in run 1.
