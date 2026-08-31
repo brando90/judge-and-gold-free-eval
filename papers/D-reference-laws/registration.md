@@ -1045,3 +1045,36 @@ the same reason — only 51.6% of its top-tied group is valid, against 65-77% fo
 A sharper decoding rule, a tie-break by any secondary signal, or a larger candidate pool could all
 surface the anchoring this pool's estimator cannot see. Paper v23 states this and drops the
 "immune judge" framing everywhere.
+
+---
+
+## Score-resolution screen (post hoc, unregistered, 2026-08-31)
+
+Follow-up to the Mistral correction, prompted by Sri asking whether the real story is that a
+judge's score diversity must be checked. Artifact `score_resolution_screen.json`, producer
+`score_resolution_screen.py`. Blind condition, k>1 items, random-pick baseline 0.386:
+
+| judge | distinct values | entropy (bits) | ties@max | selection accuracy | lift over random | anchoring margin |
+|---|---|---|---|---|---|---|
+| Mistral-7B-v0.3 | 11 | 2.27 | 17.8 | 0.564 | **+0.178** | +1.38 |
+| gemma-2-9b-it | 2751 | 11.18 | 1.0 | 0.750 | +0.364 | +5.32 |
+| Qwen2.5-7B | 2506 | 10.55 | 1.0 | 0.767 | +0.380 | +5.17 |
+| Qwen2.5-14B | 2491 | 10.85 | 1.0 | 0.750 | +0.364 | +4.06 |
+| phi-4 | 2511 | 10.82 | 1.0 | 0.850 | +0.464 | +4.20 |
+
+Mistral captures less than half the selection value the other judges do (+0.18 against +0.36 to
++0.46 over random picking), for the mechanical reason that 11 distinct score values tie 18 of 64
+samples at the maximum and the estimator breaks ties at random. So the judge is not "safe": it is
+both anchored (margin +1.38) and a materially worse selector.
+
+**Caveat stated in the producer and to be stated in the paper:** n = 5 judges, four clustered and
+Mistral the lone outlier, so corr(distinct, lift) = +0.90 and corr(ties, lift) = -0.92 are driven
+by a single leverage point and are ILLUSTRATIVE, not inferential. The claim rests on the
+mechanism, which needs no correlation: coarse scores tie, ties are broken at random, random
+selection cannot exceed the base rate. The practical recommendation follows from the mechanism
+alone and costs nothing: before trusting any judge for best-of-n, look at the distribution of its
+own scores on a pool it has already graded (distinct values, entropy, mean ties at the maximum).
+A judge that emits a handful of integers cannot rank candidates however good its rubric
+understanding is, and its apparent immunity to reference anchoring is an artifact of that muteness.
+This complements companion A's certification audit, which needs a few dozen human labels; this
+screen needs none.
