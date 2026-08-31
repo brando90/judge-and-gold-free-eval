@@ -6,7 +6,7 @@ import argparse, json, os
 from vllm import LLM, SamplingParams
 
 ap = argparse.ArgumentParser()
-ap.add_argument("--domain", choices=["math", "code", "mbpp", "ties", "synthk", "replpilot", "repl", "kstrat"], required=True)
+ap.add_argument("--domain", choices=["math", "code", "mbpp", "ties", "synthk", "replpilot", "repl", "kstrat", "mace"], required=True)
 ap.add_argument("--model", default="Qwen/Qwen2.5-7B-Instruct")
 ap.add_argument("--n", type=int, default=64)
 ap.add_argument("--out", default="runs/bon")
@@ -28,6 +28,12 @@ elif args.domain in ("replpilot", "repl", "kstrat"):
         return ("Answer the following question. Think step by step if needed. You MUST end "
                 "your response with the final answer inside \\boxed{...}, with nothing after "
                 "it. Example ending: The answer is \\boxed{42}\n\n" + r["problem"])
+elif args.domain == "mace":
+    tasks = [json.loads(l) for l in open("runs/mace_tasks.jsonl")]
+    def prompt_of(r):
+        return ("Answer the following question. Give exactly one answer. You MUST end your "
+                "response with the answer inside \\boxed{...}, with nothing after it. "
+                "Example ending: The answer is \\boxed{Paris}\n\n" + r["problem"])
 elif args.domain == "synthk":
     tasks = [json.loads(l) for l in open("runs/bon_synthk_tasks.jsonl")]
     def prompt_of(r):
@@ -78,7 +84,7 @@ with open(out, mode) as f:
             row = dict(problem_id=pid, model=args.model, samples=[c.text for c in o.outputs])
             if args.domain == "math":
                 row.update(answer=r["answer"], level=r["level"], subject=r["subject"])
-            elif args.domain in ("ties", "synthk", "replpilot", "repl", "kstrat"):
+            elif args.domain in ("ties", "synthk", "replpilot", "repl", "kstrat", "mace"):
                 row.update(valid_answers=r["valid_answers"], ref_answer=r["ref_answer"],
                            question=r["problem"], k=r.get("k"), multi_refs=r.get("multi_refs"))
             else:

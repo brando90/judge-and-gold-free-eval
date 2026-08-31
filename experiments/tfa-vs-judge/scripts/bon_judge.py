@@ -23,7 +23,7 @@ ap.add_argument("--judge", required=True)
 ap.add_argument("--cond", choices=["noref", "ref", "sabotage", "refinst", "refinst2", "multiref",
                                    "refsol", "refsol2"], required=True)
 ap.add_argument("--rep", choices=["a", "b"], required=True)
-ap.add_argument("--domain", choices=["math", "code", "ties", "synthk", "simcorr"], default="math")
+ap.add_argument("--domain", choices=["math", "code", "ties", "synthk", "simcorr", "mace"], default="math")
 ap.add_argument("--filter-band", action="store_true", help="only items with pool pass in [0.2,0.8]")
 ap.add_argument("--tasks", default=None, help="task file with problem text to join by problem_id")
 ap.add_argument("--out", default="runs/bon_scores")
@@ -86,7 +86,7 @@ def build(r, s):
     cond_key = ("ref" if args.cond in ("refinst", "refinst2", "multiref", "refsol", "refsol2")
                 else args.cond)
     sys = {"code": RUBRIC_CODE, "ties": RUBRIC_TIES, "synthk": RUBRIC_TIES,
-           "simcorr": RUBRIC_TIES}.get(args.domain, RUBRIC)[(cond_key, args.rep)]
+           "simcorr": RUBRIC_TIES, "mace": RUBRIC_TIES}.get(args.domain, RUBRIC)[(cond_key, args.rep)]
     if args.cond == "refinst":
         sys += (" Note: the reference shown is one valid answer among possibly many; the "
                 "question may have several correct answers, and any correct answer deserves "
@@ -114,7 +114,7 @@ def build(r, s):
         # ties reference = ONE valid answer (fixed at task build), the anchoring manipulation.
         if args.domain == "math":
             parts.append(f"Reference solution (trusted):\n{r['solution']}")
-        elif args.domain in ("ties", "synthk"):
+        elif args.domain in ("ties", "synthk", "mace"):
             parts.append(f"Reference answer (trusted):\n{r['ref_answer']}")
         else:
             parts.append(f"Trusted reference tests (the candidate must pass these):\n{r['example_test']}")
