@@ -21,6 +21,8 @@ ap.add_argument("--tasks", default=None, help="task file with problem text to jo
 ap.add_argument("--out", default="runs/bon_scores")
 ap.add_argument("--max-model-len", type=int, default=4096,
                 help="raise for code ref runs: test suite + candidate can exceed 4096")
+ap.add_argument("--gpu-util", type=float, default=0.9,
+                help="vLLM gpu_memory_utilization; default 0.9 preserves all prior behavior")
 args = ap.parse_args()
 os.makedirs(args.out, exist_ok=True)
 tag = args.judge.replace("/", "__")
