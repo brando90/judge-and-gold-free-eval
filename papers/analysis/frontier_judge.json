@@ -1,0 +1,37 @@
+{
+ "model": "sonnet",
+ "n_calls": 660,
+ "n_unparseable": 0,
+ "distinct_scores": [
+  0,
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10
+ ],
+ "ref_margin": {
+  "mean": 7.486,
+  "ci": [
+   6.619,
+   8.216
+  ],
+  "n_items": 37
+ },
+ "noref_margin": {
+  "mean": 0.314,
+  "ci": [
+   -0.62,
+   1.3
+  ],
+  "n_items": 37
+ },
+ "P_F1_anchors": true,
+ "P_F2_blind_null": true,
+ "P_F3_smaller_than_open": false
+}

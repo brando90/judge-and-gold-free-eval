@@ -1259,3 +1259,41 @@ the paper's warning remains scoped to answer multiplicity rather than extending 
 unique-answer tasks with differing solution methods. Caveat carried from the registration: the
 route classifier is a heuristic token-Jaccard match with a small mean similarity margin (0.032),
 so the differential readout is weakly identified; the overall-shift readout is classifier-free.
+
+---
+
+## Frontier-judge anchoring check (P-F1..P-F3) — RESULT 2026-08-31
+
+Registered pre-data (`frontier_judge.py`, committed before any frontier score existed). Frontier
+judge via the CLI session path, rubric-a prompt text taken verbatim from `bon_rubrics.RUBRIC_TIES`
+so the prompt matches the open judges exactly; 37 k>1 items where matching and non-matching
+oracle-valid samples coexist (the same population the open judges' margins use); 660 calls,
+0 unparseable.
+
+| condition | matching valid | non-matching valid | margin |
+|---|---|---|---|
+| blind | 7.83 | **7.85** | **+0.31** [-0.62, +1.30] |
+| referenced | 9.83 | **2.32** | **+7.49** [+6.62, +8.22] |
+
+**P-F1 CONFIRMED, emphatically.** The frontier judge anchors. **P-F2 holds** and the control is
+about as clean as this design can produce: blind, it scores matching and non-matching valid
+answers 7.83 and 7.85, a 0.02 difference. The rate statement is the one to quote: shown a
+reference, **82.5% of genuinely correct non-matching answers receive a failing score (<= 3/10)**,
+against **19.6%** for the same answers judged blind. Scale does not rescue the failure; the
+paper's finding is not confined to small open judges.
+
+**P-F3 FAILS, and its failure is NOT interpretable.** P-F3 predicted a margin smaller than the
+open judges' (+4.06 to +5.32), continuing the capability trend; the observed +7.49 is larger.
+But the two are measured with different score functions: the vLLM judges use the
+logprob-EXPECTED value over tokens 0..10, which is pulled toward the middle whenever the judge
+spreads mass across tokens, while the CLI path returns a SAMPLED INTEGER that can sit at the
+extremes. A hard-integer judge can therefore express a wider margin than a smoothed one for the
+same underlying preference. **We claim only that the frontier judge anchors, with a clean blind
+control, and explicitly do NOT claim it anchors more than the open judges.** Establishing the
+cross-scale magnitude comparison would require running the frontier judge through a logprob path,
+which the free CLI does not offer.
+
+**Also disclosed, per the pre-registered design note:** no inflation figure is computed for this
+judge. Its 11-value integer scores would tie massively under best-of-64, and by this paper's own
+score-resolution finding the resulting inflation estimate would measure the tie-break, not the
+judge. The margin, a mean over many samples, is well resolved and is the only readout taken.
