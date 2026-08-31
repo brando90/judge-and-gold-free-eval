@@ -29,7 +29,7 @@
 
 \title{When the Answer Key Backfires:\\ \large Reference Anchoring Turns LLM Judges into Answer Matchers}
 \author{Anonymous Authors}
-\date{Draft v26, August 31, 2026}
+\date{Draft v27, August 31, 2026}
 
 \usepackage{placeins}
 \renewcommand{\topfraction}{0.9}
@@ -55,6 +55,8 @@ A registered composition experiment then falsified our own prediction about wher
 One preregistered fix works: have the judge score blind first, and reveal the reference only afterwards.
 That removes the measured inflation when several answers are valid and costs nothing when the answer is unique; merely instructing the judge to accept any valid answer does not.
 A registered five-judge extension then shows both lever and fix are judge-dependent: the harm replicates strongly in two further model families, the fix's removal ranges from complete to partial, and one judge shows no measurable harm only because its coarse integer scores tie half the candidate pool, so selection cannot act on the anchoring it still exhibits.
+The failure survives training, not just selection: a policy trained against a reference-showing judge on multi-valid tasks raised that judge's score by $+1.76$ points while its true accuracy fell from $0.412$ to $0.175$, a scoreboard-versus-truth wedge of $+4.13$.
+The judge anchors on the answer rather than the route, since rotating the reference's derivation with the answer held fixed moves scores twenty to four hundred times less than rotating the answer does, and showing a worked solution instead of a bare answer reduces the harm without removing it.
 A reference answer is a lever, not a safeguard: safe when the answer is effectively unique, inflationary under selection when it is not, and disarmed by ordering the judge's calls, not by instructions.
 \end{abstract}
 
@@ -403,6 +405,35 @@ The registered mean-slope statistic is formally negative for both judges, but we
 The registered tercile-monotonicity prediction P-D3 is falsified for both judges, and the dominant effect remains the exact-match step, $-3.38$ and $-2.18$ points per unit distance once matching samples are included, against blind slopes near zero.
 For the mid-size judge, anchoring is a step at exact match, not a graded similarity: how far a valid answer sits from the key does not matter, only whether it equals it.
 The stronger judge's mild gradient cautions against assuming that generalizes.
+
+\FloatBarrier
+\subsection{What the judge anchors on: the answer, not the route}
+\label{sec:worked}
+
+Every result above shows the judge a bare answer string as its reference.
+Deployed reference-guided judging shows a worked solution, and the two need not behave alike, so a registered follow-up (\texttt{build\_worked\_refs.py}, predictions P-W1--P-W3 committed pre-data) re-judges the frozen pool with a short derivation in the reference slot instead of the answer alone.
+A second condition shows a different derivation reaching the \emph{same} answer, which turns the paper's rotation design into a test of method anchoring: on the $k{=}1$ items every valid sample carries the same final answer by construction, so rotating between the two routes varies method with answer held fixed.
+
+\paragraph{A worked reference anchors less than a bare answer, and still inflates (P-W1).}
+Replacing the bare answer with a derivation reduces the $k{>}1$ anchoring margin from $+5.17$ to $+3.73$ for Qwen-7B ($-1.44$ $[-1.99,-0.92]$) and from $+4.20$ to $+3.67$ for phi-4 ($-0.53$ $[-0.90,-0.11]$), and reduces inflation over blind from $+1.50$ to $+1.08$ and from $+1.07$ to $+0.77$ (differences $-0.42$ $[-0.69,-0.16]$ and $-0.30$ $[-0.48,-0.12]$).
+The registration predicted a difference without predicting its sign, and recorded the opposite intuition as plausible, that a longer reference offers more surface to match.
+The measured direction is the other one: a reference that explains the problem anchors less than one that only names the target.
+The reduction is nonetheless partial, since inflation stays firmly positive, so a worked reference is a milder form of the lever rather than a safe one.
+
+\paragraph{Method anchoring is one to two orders of magnitude smaller than answer anchoring (P-W2).}
+With the answer held constant, rotating the reference's derivation route moves the identical sample's score by $-0.32$ and $-0.40$ points for Qwen-7B under the two rubrics and by $-0.02$ points for phi-4.
+Three of the four cells exclude zero, so P-W2, which predicted an interval containing zero, is falsified as stated.
+The decomposition matters more than that verdict.
+An overall shift means the second derivation makes the judge marginally stingier about everything, which is calibration rather than anchoring; anchoring on method must appear as a \emph{differential}, with samples whose own route matches the shown one faring better than the rest.
+That differential appears in exactly one of the four judge-by-rubric cells ($-0.44$, Qwen rubric $a$) and is absent in the other three.
+Set against the $\pm 9.5$ points that answer rotation moves the identical text (Section~\ref{sec:mech}), method effects are twenty to four hundred times smaller.
+The same machinery on the same items recovers the standing referenced-minus-blind difference at $-4.02$ and $-3.03$ (P-W3), so the near-nulls are not an insensitive instrument.
+The route classifier is a heuristic token overlap with a small margin, which weakly identifies the differential readout; the overall-shift readout does not use it.
+
+\paragraph{What this settles.}
+The judge anchors on the answer, not on how the answer was reached.
+That bounds the paper's warning where it should be bounded: reference-guided judging is endangered by answer multiplicity, and is not, on this evidence, endangered by two correct solutions taking different routes to one answer.
+It also gives the practitioner a cheap partial improvement that is not the full fix, namely to show a worked reference rather than a bare key when a reference must be shown at all.
 
 \FloatBarrier
 \subsection{Controlled multiplicity: the harm switches on at \texorpdfstring{$k{=}2$}{k=2}}
@@ -1016,6 +1047,10 @@ P-D1--P-D3 & Distance gradient among valid non-matching answers (\texttt{distanc
 P-AW1, P-AW2 & Blind-validation filter (\texttt{anchor\_vs\_weakness.py}): rotation deltas (P-AW1) and rotation-arm margins (P-AW2) survive on samples the judge blindly scored $\geq 7/10$ & internal git, pre-analysis, 2026-08-26 & Both confirmed: filtered gainer deltas exclude zero at every size and both rubrics ($+8.18$/$+9.13$/$+4.74$/$+3.09$ on rubric $a$), margins exclude zero at all four sizes (1.5B on $n{=}2$ items, noted fragile); retention $20$--$95\%$ by size (Section~\ref{sec:mech}) \\
 \addlinespace[1pt]
 P-X1--P-X4 & Judge-coverage extension: the single-reference harm (P-X1) and M1's removal contrast (P-X2) replicate for EVERY new judge (gemma-2-9b, Mistral-7B, Qwen-14B); P-X3 directional; P-X4 exploratory & external (Registration 5), harness committed pre-data (\texttt{e75e465}) & P-X1 \emph{NOT CONFIRMED}: strong for gemma ($+1.43$) and Qwen-14B ($+0.98$), \emph{null} for Mistral-7B ($+0.03$) --- but a post-hoc diagnostic withdraws the anchoring-resistance reading: Mistral emits exact integers (11 distinct values), tying 32 of 64 samples at the maximum, so selection cannot act on its real margin ($+1.38$). P-X2 confirmed for all three ($-0.20$, $-0.07$, $-0.75$), but M1's level ranges from near-full removal (14B, $+0.23$ residual) to partial (gemma, $+1.23$). P-X3 holds for two, vacuous for Mistral (Table~\ref{tab:coverage}) \\
+\addlinespace[1pt]
+GATE, P-DP1--P-DP3 & Multi-valid DPO training pressure: each arm must move its own judge (GATE); the reference-trained arm parrots the key more than the protected arm (P-DP1); its scoreboard-versus-truth wedge is larger (P-DP2); the protected arm's held-out accuracy holds up (P-DP3) & internal git, pre-training, 2026-08-31 & GATE: reference arm PASSES ($+1.76$ $[+1.47,+2.01]$); protected arm \emph{FAILS} ($-1.04$ $[-1.36,-0.72]$) and is \emph{void}, so P-DP2 and P-DP3 as registered are not scorable. On the gated arm alone the wedge versus base is $+4.13$ $[+3.50,+4.78]$: its judge's score rises $+1.76$ while true accuracy falls $0.412 \to 0.175$ and held-out falls $-0.228$. P-DP1 \emph{falsified}: it emits the key \emph{less} ($-0.037$ $[-0.067,-0.013]$), so the damage is not key-copying \\
+\addlinespace[1pt]
+P-W1--P-W3 & Worked reference and method rotation: a worked reference's margin differs from a bare answer's (P-W1); rotating the reference's method with the answer held fixed does not move scores (P-W2); the machinery detects movement where it exists (P-W3) & internal git, pre-data, 2026-08-31 & P-W1 confirmed, direction \emph{opposite} to the recorded intuition: a worked reference anchors \emph{less} (margin $-1.44$, $-0.53$; inflation $-0.42$, $-0.30$) while still inflating. P-W2 \emph{falsified as stated} (3 of 4 cells exclude zero), substance holds: the shift is calibration, the method-matching \emph{differential} appears in 1 of 4 cells, effects 20--400$\times$ smaller than answer rotation. P-W3 confirmed (Section~\ref{sec:worked}) \\
 \end{longtable}
 \endgroup
 
