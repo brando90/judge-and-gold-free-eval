@@ -70,16 +70,16 @@
 \@writefile{toc}{\contentsline {paragraph}{Judge coverage: both the harm and the fix are judge-dependent (Registration 5).}{15}{section*.28}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{A zero-cost screen: check the judge's score resolution before trusting it to select.}{15}{section*.29}\protected@file@percent }
 \citation{companionA}
-\citation{companionA}
-\citation{companionA}
 \@writefile{lot}{\contentsline {table}{\numberline {10}{\ignorespaces \textbf  {Takeaway: the registered coverage extension splits its own predictions — the harm replicates strongly for two new judges and is absent for one (P-X1 not confirmed), while the fix's contrast holds for all three (P-X2 confirmed) but its magnitude ranges from near-full removal to a small dent.} Frozen estimators of the mitigation experiment applied unchanged to three judges that had produced no scores at registration time ($n{=}53$ items at $k{>}1$); the prediction ledger records the P-X1 failure. Mistral's null is a score-resolution artifact, not anchoring resistance: it emits exact integers (11 distinct values pool-wide), tying 32 of 64 samples at the maximum against 1 for every other judge, so selection cannot act on its real but mild anchoring (margin $+1.38$).}}{16}{table.caption.30}\protected@file@percent }
 \newlabel{tab:coverage}{{10}{16}{\textbf {Takeaway: the registered coverage extension splits its own predictions — the harm replicates strongly for two new judges and is absent for one (P-X1 not confirmed), while the fix's contrast holds for all three (P-X2 confirmed) but its magnitude ranges from near-full removal to a small dent.} Frozen estimators of the mitigation experiment applied unchanged to three judges that had produced no scores at registration time ($n{=}53$ items at $k{>}1$); the prediction ledger records the P-X1 failure. Mistral's null is a score-resolution artifact, not anchoring resistance: it emits exact integers (11 distinct values pool-wide), tying 32 of 64 samples at the maximum against 1 for every other judge, so selection cannot act on its real but mild anchoring (margin $+1.38$)}{table.caption.30}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.6}The exploratory study that motivated the replication}{16}{subsection.3.6}\protected@file@percent }
-\newlabel{sec:ties}{{3.6}{16}{The exploratory study that motivated the replication}{subsection.3.6}{}}
+\citation{companionA}
+\citation{companionA}
+\citation{companionA}
 \citation{companionA}
 \@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces \textbf  {Takeaway: the same trusted reference that collapses gaming on unique-answer tasks increases it when several answers are valid. This is the inversion.} Inflation (scoreboard excess over true quality under best-of-$n$ selection, in baseline standard deviations over a permutation null) at $n{=}64$, for blind (orange) and referenced (blue) judges at four Qwen2.5 judge scales; arrows show the effect of adding the reference. Left: unique-answer math (companion A~\cite  {companionA}), where the reference collapses inflation $4$--$13\times $ at every scale. Right: \textsc  {RewardBench-2} Ties generation tasks with multiple valid answers ($n{=}51$ items), where the reference \emph  {raises} it at every scale. Small hollow markers show the registered in-band subset ($n{=}7$ items), which agrees in direction at every scale.}}{17}{figure.caption.31}\protected@file@percent }
 \newlabel{fig:inversion}{{3}{17}{\textbf {Takeaway: the same trusted reference that collapses gaming on unique-answer tasks increases it when several answers are valid. This is the inversion.} Inflation (scoreboard excess over true quality under best-of-$n$ selection, in baseline standard deviations over a permutation null) at $n{=}64$, for blind (orange) and referenced (blue) judges at four Qwen2.5 judge scales; arrows show the effect of adding the reference. Left: unique-answer math (companion A~\cite {companionA}), where the reference collapses inflation $4$--$13\times $ at every scale. Right: \textsc {RewardBench-2} Ties generation tasks with multiple valid answers ($n{=}51$ items), where the reference \emph {raises} it at every scale. Small hollow markers show the registered in-band subset ($n{=}7$ items), which agrees in direction at every scale}{figure.caption.31}{}}
-\citation{companionA}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.6}The exploratory study that motivated the replication}{17}{subsection.3.6}\protected@file@percent }
+\newlabel{sec:ties}{{3.6}{17}{The exploratory study that motivated the replication}{subsection.3.6}{}}
 \citation{companionA}
 \@writefile{lot}{\contentsline {table}{\numberline {11}{\ignorespaces \textbf  {Takeaway: on multi-valid tasks, adding the reference never helps, directionally hurts on every row, and the pooled inflation delta excludes zero, while the identical math protocol shows the reference collapsing inflation $4$--$13\times $.} Exploratory Ties study, best-of-64 selection at four Qwen2.5 judge scales, in three panels: the post-hoc full pool ($n{=}51$ items), the registered in-band subset ($n{=}7$), and the unique-answer math contrast. Higher is worse in every column.}}{18}{table.caption.32}\protected@file@percent }
 \newlabel{tab:fullset}{{11}{18}{\textbf {Takeaway: on multi-valid tasks, adding the reference never helps, directionally hurts on every row, and the pooled inflation delta excludes zero, while the identical math protocol shows the reference collapsing inflation $4$--$13\times $.} Exploratory Ties study, best-of-64 selection at four Qwen2.5 judge scales, in three panels: the post-hoc full pool ($n{=}51$ items), the registered in-band subset ($n{=}7$), and the unique-answer math contrast. Higher is worse in every column}{table.caption.32}{}}
@@ -87,9 +87,10 @@
 \newlabel{sec:boundary}{{3.7}{18}{The boundary: reconciling with unique-answer domains}{subsection.3.7}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {12}{\ignorespaces \textbf  {Takeaway: score blind first and reveal the reference only to correct demonstrated errors (M1). Of the protocols tested, it is the only one that keeps a reference in the loop, removes the measured inflation when several answers are valid, costs nothing when the answer is unique, and behaves the same for both judges tested. The price is one extra judge call per candidate.} What to do about a reference answer, by task structure.}}{19}{table.caption.33}\protected@file@percent }
 \newlabel{tab:rule}{{12}{19}{\textbf {Takeaway: score blind first and reveal the reference only to correct demonstrated errors (M1). Of the protocols tested, it is the only one that keeps a reference in the loop, removes the measured inflation when several answers are valid, costs nothing when the answer is unique, and behaves the same for both judges tested. The price is one extra judge call per candidate.} What to do about a reference answer, by task structure}{table.caption.33}{}}
+\citation{companionA}
 \@writefile{toc}{\contentsline {section}{\numberline {4}Limitations}{20}{section.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{The exploratory pool is small and single-sourced.}{20}{section*.34}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{The checker undercounts validity, conservatively.}{20}{section*.35}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{The checker undercounts validity, conservatively.}{21}{section*.35}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{The registered and actual populations differ on the exploratory pool.}{21}{section*.36}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{What the replication does not cover.}{21}{section*.37}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{The judge ladder is within-family.}{21}{section*.38}\protected@file@percent }
@@ -103,24 +104,24 @@
 \citation{judgingref2026}
 \citation{companionA}
 \citation{dobefore2025}
+\@writefile{toc}{\contentsline {paragraph}{Post-hoc analyses carry no registration weight.}{22}{section*.41}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{The mechanism is causal for scores, and the aggregation into inflation is only partly resolved.}{22}{section*.42}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}Related work}{22}{section.5}\protected@file@percent }
 \citation{malik2025rewardbench2}
 \citation{gao2022scaling}
 \citation{companionA}
 \citation{companionB}
-\@writefile{toc}{\contentsline {paragraph}{Post-hoc analyses carry no registration weight.}{22}{section*.41}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{The mechanism is causal for scores, and the aggregation into inflation is only partly resolved.}{22}{section*.42}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {5}Related work}{22}{section.5}\protected@file@percent }
 \bibstyle{plain}
 \bibdata{references}
 \bibcite{refguided2024}{1}
 \bibcite{dobefore2025}{2}
 \bibcite{companionA}{3}
 \bibcite{generous2026}{4}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Conclusion}{23}{section.6}\protected@file@percent }
 \bibcite{companionB}{5}
 \bibcite{gao2022scaling}{6}
 \bibcite{judgingref2026}{7}
 \bibcite{fixation2025}{8}
-\@writefile{toc}{\contentsline {section}{\numberline {6}Conclusion}{23}{section.6}\protected@file@percent }
 \bibcite{malik2025rewardbench2}{9}
 \bibcite{zheng2023judging}{10}
 \gdef \LT@i {\LT@entry 

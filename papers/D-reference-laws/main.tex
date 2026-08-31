@@ -29,7 +29,7 @@
 
 \title{When the Answer Key Backfires:\\ \large Reference Anchoring Turns LLM Judges into Answer Matchers}
 \author{Anonymous Authors}
-\date{Draft v25, August 31, 2026}
+\date{Draft v26, August 31, 2026}
 
 \usepackage{placeins}
 \renewcommand{\topfraction}{0.9}
@@ -659,11 +659,19 @@ The practical form: before deploying a judge for best-of-$n$, inspect the distri
 A judge emitting a handful of integers cannot rank candidates however well it understands the rubric, and its apparent immunity to reference anchoring is an artifact of that muteness rather than a property worth seeking.
 This complements the certification audit of companion A~\cite{companionA}, which requires a few dozen human labels; the resolution screen requires none.
 
-One limit of the screen is worth stating plainly, because we found it by running the screen and failing it in the other direction.
-Applied to a fifth judge, Ministral-8B-Instruct, the resolution criteria pass comfortably (1547 distinct values, no ties at the maximum), yet that judge's scores are compressed into a standard deviation of $0.55$ around a mean of $4.73$, are essentially uncorrelated with validity ($+0.03$ against $+0.20$ to $+0.33$ for the four judges above), and select a valid answer only $21.7\%$ of the time against a $38.6\%$ random baseline, that is, \emph{worse than choosing at random}.
+The screen is a rejection filter, and its scope is worth stating precisely, because we found both its power and its limit by running it.
+It has two criteria, and each catches a distinct degenerate mode.
+\emph{Granularity} catches quantization: Mistral-7B emits exactly-integer scores, 11 distinct values pool-wide, and ties 17.8 of 64 candidates at the maximum.
+\emph{Spread} catches compression, a mode the first criterion misses entirely: applied to a fifth judge, Ministral-8B-Instruct, granularity passes comfortably (1547 distinct values, no ties) yet its scores occupy a standard deviation of $0.55$ around a mean of $4.73$, are essentially uncorrelated with validity ($+0.03$ against $+0.20$ to $+0.33$ for the four judges above), and select a valid answer only $21.7\%$ of the time against a $38.6\%$ random baseline, that is, \emph{worse than choosing at random}.
 Its near-zero anchoring margin ($+0.32$ $[+0.22, +0.43]$) is accordingly not resistance to anchoring but indifference to everything.
-Score resolution is therefore a necessary and free prerequisite, not a sufficient one: it catches quantization but not compression, and no label-free statistic can establish that a judge's scores track truth rather than merely varying.
-That last step is what the labeled certification of companion A measures, and the two checks should be run in that order.
+Together the two criteria are a genuine and free negative test: \textbf{a judge with coarse or compressed scores is broken, and can be rejected before any labeling effort at all}.
+
+What the screen cannot do is certify, and the reason is visible in our own results rather than merely arguable.
+Passing the screen establishes that a judge has opinions, not what its opinions are about: a judge scoring by response length would produce wide, finely graded, entirely uninformative scores.
+More pointedly, the failure this paper is about passes the screen cleanly.
+gemma-2-9b clears both criteria (2751 distinct values, no ties, spread $2.65$) and is simultaneously the most anchored judge we measure, with a margin of $+5.32$ and the largest inflation in Table~\ref{tab:coverage}; Mistral-7B has the \emph{widest} spread of any judge here ($4.12$) and among the lowest anchoring.
+Across our five judges, spread does not track anchoring at all, and if anything runs against it.
+The practical rule is therefore an ordering, not a substitution: run the free screen first and reject what it rejects, then certify what survives against labels, since only ground truth distinguishes a judge that grades correctness from one that grades proximity to the key~\cite{companionA}.
 \textbf{P-X2 is confirmed} for all three judges, but the \emph{level} tells the fuller story: M1 leaves $+0.23$ of residual inflation for Qwen-14B and $+1.23$ for gemma-2-9b, against the full removal seen for Qwen-7B and phi-4.
 Across the nine judges now tested, the single-reference harm is strong for seven, absent for one, and the fix's effect ranges from complete removal to a modest reduction.
 Both the vulnerability and the mitigation are properties of the judge, not of the task structure alone; a practitioner should certify their particular judge, on their own tasks, before trusting either — the pre-deployment-audit thesis of companion A arriving from an unplanned direction.
