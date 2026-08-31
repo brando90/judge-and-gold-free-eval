@@ -4,6 +4,13 @@
 #  - two replicates = two rubric paraphrases (A/B), same construct, different wording;
 #    selection uses A, reporting uses B (winner's-curse cancellation)
 #  - conditions: noref / ref (gold solution in context) / sabotage (presentation-first control)
+#  - refsol / refsol2: worked-reference arm (E1 + H-METHOD, registered in
+#    scripts/build_worked_refs.py and papers/analysis/worked_ref_analysis.py). The reference
+#    block carries a short worked DERIVATION ending in the item's ref_answer instead of the
+#    bare answer string: refsol shows method A (sol_a), refsol2 shows method B (sol_b) — same
+#    answer, different route, so refsol2-vs-refsol is a pure method rotation. Both reuse the
+#    existing ref rubric (cond_key "ref") exactly like refinst/multiref. Requires
+#    --worked-refs runs/kstrat_worked_refs.jsonl.
 # Output: runs/bon_scores/{domain}__{judge}__{cond}_{rep}.jsonl  rows: problem_id, escore(list)
 import argparse, json, math, os, re
 
@@ -13,7 +20,8 @@ from transformers import AutoTokenizer
 ap = argparse.ArgumentParser()
 ap.add_argument("--pool", required=True)
 ap.add_argument("--judge", required=True)
-ap.add_argument("--cond", choices=["noref", "ref", "sabotage", "refinst", "refinst2", "multiref"], required=True)
+ap.add_argument("--cond", choices=["noref", "ref", "sabotage", "refinst", "refinst2", "multiref",
+                                   "refsol", "refsol2"], required=True)
 ap.add_argument("--rep", choices=["a", "b"], required=True)
 ap.add_argument("--domain", choices=["math", "code", "ties", "synthk", "simcorr"], default="math")
 ap.add_argument("--filter-band", action="store_true", help="only items with pool pass in [0.2,0.8]")
@@ -23,6 +31,9 @@ ap.add_argument("--max-model-len", type=int, default=4096,
                 help="raise for code ref runs: test suite + candidate can exceed 4096")
 ap.add_argument("--gpu-util", type=float, default=0.9,
                 help="vLLM gpu_memory_utilization; default 0.9 preserves all prior behavior")
+ap.add_argument("--worked-refs", default=None,
+                help="jsonl of worked reference derivations (problem_id, sol_a, sol_b) from "
+                     "build_worked_refs.py; required by --cond refsol/refsol2, unused otherwise")
 args = ap.parse_args()
 os.makedirs(args.out, exist_ok=True)
 tag = args.judge.replace("/", "__")
@@ -50,6 +61,19 @@ if args.filter_band:
 print(f"[judge] {len(pool)} items x {len(pool[0]['samples'])} samples, {args.cond}_{args.rep}",
       flush=True)
 
+WREF = {}
+if args.cond in ("refsol", "refsol2"):
+    if not args.worked_refs:
+        raise SystemExit("--worked-refs is required for --cond refsol/refsol2")
+    key = "sol_a" if args.cond == "refsol" else "sol_b"
+    for l in open(args.worked_refs):
+        w = json.loads(l)
+        WREF[w["problem_id"]] = w[key]
+    miss = [r["problem_id"] for r in pool if r["problem_id"] not in WREF]
+    if miss:
+        raise SystemExit(f"{len(miss)} pool rows lack a worked reference, e.g. {miss[:3]}")
+    print(f"[judge] worked refs: {len(WREF)} items, showing {key}", flush=True)
+
 tok = AutoTokenizer.from_pretrained(args.judge)
 CAND = {}
 for v in range(11):
@@ -59,7 +83,8 @@ for v in range(11):
             CAND.setdefault(ids[0], v)
 
 def build(r, s):
-    cond_key = "ref" if args.cond in ("refinst", "refinst2", "multiref") else args.cond
+    cond_key = ("ref" if args.cond in ("refinst", "refinst2", "multiref", "refsol", "refsol2")
+                else args.cond)
     sys = {"code": RUBRIC_CODE, "ties": RUBRIC_TIES, "synthk": RUBRIC_TIES,
            "simcorr": RUBRIC_TIES}.get(args.domain, RUBRIC)[(cond_key, args.rep)]
     if args.cond == "refinst":
@@ -78,6 +103,10 @@ def build(r, s):
                      + "\n".join(r["multi_refs"]))
     if args.cond in ("refinst", "refinst2"):
         parts.append(f"Reference answer (trusted):\n{r['ref_answer']}")
+    if args.cond in ("refsol", "refsol2"):
+        # worked derivation in place of the bare answer; both routes end in the SAME
+        # ref_answer, so refsol -> refsol2 rotates the method only
+        parts.append(f"Reference solution (trusted):\n{WREF[r['problem_id']]}")
     if args.cond == "ref":
         # code reference = the canonical assert set (example_test), NOT the full MBPP+/EvalPlus
         # oracle suite: that suite runs to ~46k tokens and stays held out, mirroring math's
