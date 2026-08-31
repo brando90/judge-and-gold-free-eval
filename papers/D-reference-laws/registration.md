@@ -1446,3 +1446,43 @@ we cannot bound cheaply, not domains we know to be wrong.
 label-noise control, plus River and Language (audited, non-mathematical) as the domain-diversity
 arm. Running both allows any divergence between them to be attributed to substrate rather than
 to oracle quality.
+
+---
+
+## HYPOTHESIS recorded pre-data (2026-08-31): the harm attaches to EXEMPLARS, not to references
+
+Raised by the collaborator while discussing code and SQL substrates. Recorded here, untested, so
+that a later test has a timestamped prediction rather than a post-hoc story.
+
+**The observation that prompts it.** Companion A reports that a reference *helps* on code above a
+capability gate. Paper D reports that a reference *harms* when many answers are valid. Code has
+many valid implementations, so by D's rule it should be a harm case. Checking our own harness
+resolves the tension: A's code condition shows the judge the **test assertions**
+(`example_test`), not a canonical solution. That is a SPECIFICATION, not an exemplar. A
+specification cannot be anchored on, because there is nothing to match; consulting it *is*
+verification. An exemplar invites matching.
+
+**The hypothesis.** The paper currently states the boundary in terms of the task's answer
+structure: a reference helps when the answer is effectively unique. The deeper statement may be
+that **anchoring is caused by being shown one valid exemplar**, and answer multiplicity governs
+only how much that costs. On this reading, unique-answer tasks are safe not because uniqueness is
+protective in itself, but because with a single valid answer the exemplar IS the specification, so
+matching and verifying coincide. Every result in this paper is consistent with both statements,
+because every reference we have shown has been an exemplar.
+
+**The discriminating experiment (not run, not registered as a prediction yet).** On the SAME code
+tasks, three conditions: (1) canonical solution as reference (exemplar), (2) test assertions as
+reference (specification, already run in companion A), (3) blind. If (1) anchors and (2) does not,
+the harm is a property of the reference's TYPE rather than of the task's answer structure, and the
+paper's rule should be restated accordingly. If (1) also fails to anchor, the exemplar hypothesis
+is wrong and answer-structure remains the right framing. Code is additionally the untested regime
+noted below.
+
+**Regime note, also recorded for the record.** A conversational recommendation earlier in this
+session claimed SQL and code test "method multiplicity, which we showed barely matters." That was
+wrong and is retracted here. H-METHOD held a *separable boxed answer* fixed and varied the
+derivation; in code and SQL the artifact IS the answer and no separable answer token exists, so
+the judge must compare whole artifacts. That is a third regime, untested by anything in this
+paper, and it is where most deployment-relevant judging (code review, query grading, patch
+assessment) actually sits. The paper's own text was never affected: its H-METHOD section is
+scoped to "two correct solutions taking different routes to one answer," which is accurate.
