@@ -1532,3 +1532,47 @@ this paper criticises judges for. Any third run must therefore be registered in 
 single pre-committed setting and a pre-committed stopping rule: if that arm also fails its gate,
 the mitigation-under-training question is reported as unresolved in the paper and not attempted
 again. Absent such a run, the paper states the question as open.
+
+---
+
+## MACE extension (P-MC1..P-MC3) — RESULT 2026-08-31: all three confirmed. The central claim holds on third-party, non-mathematical tasks.
+
+Registered pre-generation (`build_mace_tasks.py`); scored by `mace_analysis.py`, written before
+any MACE score existed, with the frozen `bon_analysis` estimator. Pool: 300 items, overall pass
+rate 0.497. Non-math = River + Language (the two entity domains that passed the pre-run
+completeness audit); Math = the exact-oracle control.
+
+**P-MC1 (the k-step on non-mathematical tasks): CONFIRMED for both judges**, and the levels show
+the complete inversion rather than only the step:
+
+| judge | domain | k=1 delta | k>1 delta | step |
+|---|---|---|---|---|
+| Qwen2.5-7B | non-math | **-0.973** [-1.295,-0.670] | **+1.330** [+0.791,+1.794] | **+2.303** [+1.817,+2.841] |
+| phi-4 | non-math | **-0.574** [-0.845,-0.326] | **+0.552** [+0.238,+0.876] | **+1.126** [+0.805,+1.433] |
+
+At k=1 the reference HELPS (negative delta, CI excluding zero for both judges); at k>1 it HARMS
+(positive, CI excluding zero). This is the paper's boundary reproduced end to end on
+natural-language factual questions written by someone else, with answer cardinality fixed by
+their construction rather than ours.
+
+Per domain, the step holds separately: River +1.667 [+0.924,+2.479] and +1.084 [+0.543,+1.638];
+Language +2.780 [+2.179,+3.467] and +1.145 [+0.805,+1.538].
+
+**P-MC2 (margins): CONFIRMED.** Referenced anchoring margins at k>1 are +6.44 [+5.93,+6.97]
+(Qwen-7B) and +5.86 [+5.40,+6.28] (phi-4) — the LARGEST margins measured on any pool in this
+paper — against blind margins of -0.64 [-1.38,+0.14] and -0.80 [-1.44,-0.15]. Note phi-4's blind
+margin excludes zero on the NEGATIVE side, a mild blind preference against reference-matching
+answers, which makes the referenced margin's reversal starker rather than weaker.
+
+**P-MC3 (substrate control): CONFIRMED.** The MACE-Math step is +0.748 [+0.420,+1.045] and
++0.937 [+0.715,+1.160], the same sign as the non-math step. Since Math carries an exact oracle
+verified 2000/2000 against computed truth while the entity domains carry list-membership, the
+agreement means the entity oracle's residual noise is not driving the result. The non-math effect
+is if anything LARGER than the math effect for Qwen-7B (+2.30 against +0.75).
+
+**What this settles.** Before this run every constructive result in the paper rested on task
+pools of our own construction, and the sharpest available objection was that we built the
+conditions that produce the effect. That objection is now answered: the inversion, the k=1
+benefit, the k>1 harm, and the anchoring margin all reproduce on a third-party benchmark, in
+natural language, in two non-mathematical domains, with an internal exact-oracle control showing
+the entity labels are not responsible.
