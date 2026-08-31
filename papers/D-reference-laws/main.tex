@@ -29,7 +29,7 @@
 
 \title{When the Answer Key Backfires:\\ \large Reference Anchoring Turns LLM Judges into Answer Matchers}
 \author{Anonymous Authors}
-\date{Draft v27, August 31, 2026}
+\date{Draft v28, August 31, 2026}
 
 \usepackage{placeins}
 \renewcommand{\topfraction}{0.9}
@@ -55,7 +55,8 @@ A registered composition experiment then falsified our own prediction about wher
 One preregistered fix works: have the judge score blind first, and reveal the reference only afterwards.
 That removes the measured inflation when several answers are valid and costs nothing when the answer is unique; merely instructing the judge to accept any valid answer does not.
 A registered five-judge extension then shows both lever and fix are judge-dependent: the harm replicates strongly in two further model families, the fix's removal ranges from complete to partial, and one judge shows no measurable harm only because its coarse integer scores tie half the candidate pool, so selection cannot act on the anchoring it still exhibits.
-The failure survives training, not just selection: a policy trained against a reference-showing judge on multi-valid tasks raised that judge's score by $+1.76$ points while its true accuracy fell from $0.412$ to $0.175$, a scoreboard-versus-truth wedge of $+4.13$.
+The failure is not confined to small judges: a frontier-class judge shown a reference marks $82.5\%$ of genuinely correct non-matching answers as failing, against $19.6\%$ for the same answers judged blind.
+It also survives training, not just selection: a policy trained against a reference-showing judge on multi-valid tasks raised that judge's score by $+1.76$ points while its true accuracy fell from $0.412$ to $0.175$, a scoreboard-versus-truth wedge of $+4.13$.
 The judge anchors on the answer rather than the route, since rotating the reference's derivation with the answer held fixed moves scores twenty to four hundred times less than rotating the answer does, and showing a worked solution instead of a bare answer reduces the harm without removing it.
 A reference answer is a lever, not a safeguard: safe when the answer is effectively unique, inflationary under selection when it is not, and disarmed by ordering the judge's calls, not by instructions.
 \end{abstract}
@@ -405,6 +406,40 @@ The registered mean-slope statistic is formally negative for both judges, but we
 The registered tercile-monotonicity prediction P-D3 is falsified for both judges, and the dominant effect remains the exact-match step, $-3.38$ and $-2.18$ points per unit distance once matching samples are included, against blind slopes near zero.
 For the mid-size judge, anchoring is a step at exact match, not a graded similarity: how far a valid answer sits from the key does not matter, only whether it equals it.
 The stronger judge's mild gradient cautions against assuming that generalizes.
+
+\FloatBarrier
+\subsection{The failure is not confined to small judges}
+\label{sec:frontier}
+
+Every judge measured above is an open model of at most 14B parameters, and anchoring decreases with scale on the within-family ladder without reaching zero, so whether the trend expires at frontier scale was answered only by extrapolation.
+A registered check (\texttt{frontier\_judge.py}, predictions P-F1--P-F3 committed pre-data) puts a frontier-class judge on the same 37 items, with the rubric text taken verbatim from the open judges' prompt so only the judge changes.
+
+\begin{table}[tbp]
+\centering
+\small
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{lccc}
+\toprule
+Condition & Matching valid answers & Non-matching valid answers & Margin \\
+\midrule
+Blind & $7.83$ & $7.85$ & $+0.31$ {\scriptsize$[-0.62, +1.30]$} \\
+Referenced & $9.83$ & $\mathbf{2.32}$ & $\mathbf{+7.49}$ {\scriptsize$[+6.62, +8.22]$} \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{Takeaway: a frontier judge shown a reference marks $82.5\%$ of genuinely correct non-matching answers as failing ($\leq 3$ of 10), against $19.6\%$ for the same answers judged blind. Scale does not rescue the failure.}
+Mean scores on equally valid answers, 37 $k{>}1$ items, 660 calls, rubric $a$ text identical to the open judges'. The blind row is the control: with no reference shown, the two groups are indistinguishable ($7.83$ against $7.85$).}
+\label{tab:frontier}
+\end{table}
+
+P-F1 is confirmed, and the blind control is about as clean as this design can produce: with no reference, the judge scores matching and non-matching valid answers $7.83$ and $7.85$, a difference of $0.02$ (P-F2).
+Shown the reference, the same two groups separate to $9.83$ and $2.32$.
+The rate is the statement worth carrying: \textbf{$82.5\%$ of genuinely correct answers receive a failing score when they do not match the shown key, against $19.6\%$ when the judge is blind}.
+
+Two limits on this result are ours to state rather than a reader's to discover.
+P-F3 predicted a \emph{smaller} margin than the open judges', continuing the capability trend; the observed margin is larger, but that comparison is not interpretable, because the open judges score by the logprob-expected value over the tokens 0--10, which is pulled toward the middle whenever probability mass is spread, while this path returns a sampled integer that can sit at the extremes.
+A hard-integer judge can express a wider margin than a smoothed one for the same underlying preference, so we claim that the frontier judge anchors, and explicitly not that it anchors more.
+For the same reason, and as the registration fixed in advance, no inflation figure is computed here: an eleven-value judge ties heavily under best-of-64, and by this paper's own resolution finding (Section~\ref{sec:struct}) the resulting estimate would measure the tie-break rather than the judge.
+The margin, a mean over many samples, is unaffected by that limit.
 
 \FloatBarrier
 \subsection{What the judge anchors on: the answer, not the route}
@@ -1051,6 +1086,8 @@ P-X1--P-X4 & Judge-coverage extension: the single-reference harm (P-X1) and M1's
 GATE, P-DP1--P-DP3 & Multi-valid DPO training pressure: each arm must move its own judge (GATE); the reference-trained arm parrots the key more than the protected arm (P-DP1); its scoreboard-versus-truth wedge is larger (P-DP2); the protected arm's held-out accuracy holds up (P-DP3) & internal git, pre-training, 2026-08-31 & GATE: reference arm PASSES ($+1.76$ $[+1.47,+2.01]$); protected arm \emph{FAILS} ($-1.04$ $[-1.36,-0.72]$) and is \emph{void}, so P-DP2 and P-DP3 as registered are not scorable. On the gated arm alone the wedge versus base is $+4.13$ $[+3.50,+4.78]$: its judge's score rises $+1.76$ while true accuracy falls $0.412 \to 0.175$ and held-out falls $-0.228$. P-DP1 \emph{falsified}: it emits the key \emph{less} ($-0.037$ $[-0.067,-0.013]$), so the damage is not key-copying \\
 \addlinespace[1pt]
 P-W1--P-W3 & Worked reference and method rotation: a worked reference's margin differs from a bare answer's (P-W1); rotating the reference's method with the answer held fixed does not move scores (P-W2); the machinery detects movement where it exists (P-W3) & internal git, pre-data, 2026-08-31 & P-W1 confirmed, direction \emph{opposite} to the recorded intuition: a worked reference anchors \emph{less} (margin $-1.44$, $-0.53$; inflation $-0.42$, $-0.30$) while still inflating. P-W2 \emph{falsified as stated} (3 of 4 cells exclude zero), substance holds: the shift is calibration, the method-matching \emph{differential} appears in 1 of 4 cells, effects 20--400$\times$ smaller than answer rotation. P-W3 confirmed (Section~\ref{sec:worked}) \\
+\addlinespace[1pt]
+P-F1--P-F3 & Frontier judge on the same 37 items: it anchors (P-F1); its blind margin is null (P-F2); its margin is smaller than the open judges' (P-F3) & internal git, pre-data, 2026-08-31 & P-F1 \emph{confirmed}: referenced margin $+7.49$ $[+6.62,+8.22]$; $82.5\%$ of correct non-matching answers scored $\leq 3$ against $19.6\%$ blind. P-F2 holds, blind $7.83$ vs $7.85$. P-F3 \emph{fails but is not interpretable}: sampled-integer scores here vs logprob-expected values for the open judges; no inflation computed, per the registered resolution note (Section~\ref{sec:frontier}) \\
 \end{longtable}
 \endgroup
 
