@@ -29,7 +29,7 @@
 
 \title{When the Answer Key Backfires:\\ \large Reference Anchoring Turns LLM Judges into Answer Matchers}
 \author{Anonymous Authors}
-\date{Draft v29, August 31, 2026}
+\date{Draft v30, August 31, 2026}
 
 \usepackage{placeins}
 \renewcommand{\topfraction}{0.9}
@@ -54,6 +54,7 @@ The harm switches on at the first step in multiplicity: on pools with exactly $k
 A registered composition experiment then falsified our own prediction about where the harm peaks: inflation is largest when \emph{no} valid answer matches the reference, because the judge then selects incorrect answers that resemble the key.
 One preregistered fix works: have the judge score blind first, and reveal the reference only afterwards.
 That removes the measured inflation when several answers are valid and costs nothing when the answer is unique; merely instructing the judge to accept any valid answer does not.
+The inversion also reproduces on a third-party benchmark of natural-language factual questions, where the reference helps at $k{=}1$ and harms at $k{>}1$ with a step of $+2.30$ and $+1.13$ for the two judges.
 A registered five-judge extension then shows both lever and fix are judge-dependent: the harm replicates strongly in two further model families, the fix's removal ranges from complete to partial, and one judge shows no measurable harm only because its coarse integer scores tie half the candidate pool, so selection cannot act on the anchoring it still exhibits.
 The failure is not confined to small judges: a frontier-class judge shown a reference marks $82.5\%$ of genuinely correct non-matching answers as failing, against $19.6\%$ for the same answers judged blind.
 It also survives training, not just selection: a policy trained against a reference-showing judge on multi-valid tasks raised that judge's score by $+1.76$ points while its true accuracy fell from $0.412$ to $0.175$, a scoreboard-versus-truth wedge of $+4.13$.
@@ -406,6 +407,45 @@ The registered mean-slope statistic is formally negative for both judges, but we
 The registered tercile-monotonicity prediction P-D3 is falsified for both judges, and the dominant effect remains the exact-match step, $-3.38$ and $-2.18$ points per unit distance once matching samples are included, against blind slopes near zero.
 For the mid-size judge, anchoring is a step at exact match, not a graded similarity: how far a valid answer sits from the key does not matter, only whether it equals it.
 The stronger judge's mild gradient cautions against assuming that generalizes.
+
+\FloatBarrier
+\subsection{The inversion on third-party, non-mathematical tasks}
+\label{sec:mace}
+
+Every constructive result above rests on task pools we constructed: the replication pool, the $k$-stratified pool, and the synthetic grid are ours, and the one third-party substrate, \textsc{RewardBench-2} Ties, was shown in Appendix~\ref{app:audits} to carry substantially unreliable invalid-labels.
+The sharpest available objection is therefore that we built the conditions that produce the effect.
+A registered extension answers it on \textsc{MACE}~\cite{mace2026}, a benchmark of natural-language factual questions whose answer cardinality is fixed by its authors' construction at $k \in \{1,2,4,6\}$.
+
+Two audits, both run before the pool was built, decide what enters.
+\textsc{MACE}'s Math domain admits an exact oracle, and all 2000 of its questions were verified by direct computation to carry answer sets that are exactly correct and exactly complete; it enters as a label-noise control.
+Its five entity domains rest on knowledge-base membership, so an independent enumeration audit measured how often a model names a valid answer the shipped list omits: River $2.3\%$ and Language $8.1\%$ pass, while Region, Office and Award ($30.8$--$43.5\%$) are excluded rather than patched.
+The extension therefore runs the two audited non-mathematical domains as the substrate of interest, with Math alongside as a control, so that any divergence is attributable to substrate rather than to oracle quality.
+
+\begin{table}[tbp]
+\centering
+\small
+\setlength{\tabcolsep}{5pt}
+\begin{tabular}{llccc}
+\toprule
+Judge & Domain & $k{=}1$ delta & $k{>}1$ delta & Step \\
+\midrule
+Qwen2.5-7B & non-math & $\mathbf{-0.97}$ {\scriptsize$[-1.30,-0.67]$} & $\mathbf{+1.33}$ {\scriptsize$[+0.79,+1.79]$} & $\mathbf{+2.30}$ {\scriptsize$[+1.82,+2.84]$} \\
+ & math (control) & $+0.09$ {\scriptsize$[-0.26,+0.43]$} & $+0.84$ {\scriptsize$[+0.52,+1.16]$} & $+0.75$ {\scriptsize$[+0.42,+1.05]$} \\
+\addlinespace
+phi-4 & non-math & $\mathbf{-0.57}$ {\scriptsize$[-0.85,-0.33]$} & $\mathbf{+0.55}$ {\scriptsize$[+0.24,+0.88]$} & $\mathbf{+1.13}$ {\scriptsize$[+0.81,+1.43]$} \\
+ & math (control) & $-0.40$ {\scriptsize$[-0.87,+0.09]$} & $+0.54$ {\scriptsize$[+0.32,+0.77]$} & $+0.94$ {\scriptsize$[+0.72,+1.16]$} \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{Takeaway: on a third-party benchmark of natural-language factual questions, the reference HELPS when the answer is unique and HARMS when it is not, reproducing the paper's boundary end to end on tasks we did not construct.}
+Per-item paired referenced-minus-blind inflation deltas, in baseline standard deviations, item-level bootstrap. Non-math is River plus Language, the two entity domains that passed a pre-run completeness audit; math is \textsc{MACE}'s exactly-verified arithmetic domain, included as a label-noise control. The step is the $k{>}1$ delta minus the $k{=}1$ delta.}
+\label{tab:mace}
+\end{table}
+
+All three registered predictions are confirmed (Table~\ref{tab:mace}).
+The step is positive with a CI excluding zero for both judges on the non-mathematical domains (P-MC1), and the levels show the complete inversion rather than only the step: at $k{=}1$ the reference \emph{helps}, at $k{>}1$ it \emph{harms}.
+The step holds in each domain separately, at $+1.67$ and $+1.08$ on River and $+2.78$ and $+1.15$ on Language.
+Anchoring margins at $k{>}1$ are $+6.44$ $[+5.93, +6.97]$ and $+5.86$ $[+5.40, +6.28]$, the largest measured anywhere in this paper, against blind margins of $-0.64$ and $-0.80$ (P-MC2); phi-4's blind margin excludes zero on the negative side, a mild blind preference \emph{against} reference-matching answers, which sharpens rather than softens the reversal.
+The Math control's step has the same sign as the non-mathematical one (P-MC3), so the entity domains' residual label noise is not what produces the effect, and the non-mathematical effect is if anything the larger of the two for Qwen-7B.
 
 \FloatBarrier
 \subsection{The failure is not confined to small judges}
@@ -1095,6 +1135,8 @@ GATE, P-DP1--P-DP3 & Multi-valid DPO training pressure: each arm must move its o
 P-W1--P-W3 & Worked reference and method rotation: a worked reference's margin differs from a bare answer's (P-W1); rotating the reference's method with the answer held fixed does not move scores (P-W2); the machinery detects movement where it exists (P-W3) & internal git, pre-data, 2026-08-31 & P-W1 confirmed, direction \emph{opposite} to the recorded intuition: a worked reference anchors \emph{less} (margin $-1.44$, $-0.53$; inflation $-0.42$, $-0.30$) while still inflating. P-W2 \emph{falsified as stated} (3 of 4 cells exclude zero), substance holds: the shift is calibration, the method-matching \emph{differential} appears in 1 of 4 cells, effects 20--400$\times$ smaller than answer rotation. P-W3 confirmed (Section~\ref{sec:worked}) \\
 \addlinespace[1pt]
 P-F1--P-F3 & Frontier judge on the same 37 items: it anchors (P-F1); its blind margin is null (P-F2); its margin is smaller than the open judges' (P-F3) & internal git, pre-data, 2026-08-31 & P-F1 \emph{confirmed}: referenced margin $+7.49$ $[+6.62,+8.22]$; $82.5\%$ of correct non-matching answers scored $\leq 3$ against $19.6\%$ blind. P-F2 holds, blind $7.88$ vs $7.85$. P-F3 \emph{fails but is not interpretable}: sampled-integer scores here vs logprob-expected values for the open judges; no inflation computed, per the registered resolution note (Section~\ref{sec:frontier}) \\
+\addlinespace[1pt]
+P-MC1--P-MC3 & \textsc{MACE} extension: the $k$-step holds on third-party non-mathematical tasks (P-MC1); referenced margins positive and blind null (P-MC2); the exact-oracle Math control agrees in sign (P-MC3) & internal git, pre-generation, 2026-08-31 & All three \emph{confirmed}. Non-math step $+2.30$ $[+1.82,+2.84]$ and $+1.13$ $[+0.81,+1.43]$, with the full inversion in the levels (helps at $k{=}1$, $-0.97$/$-0.57$; harms at $k{>}1$, $+1.33$/$+0.55$). Margins $+6.44$/$+5.86$ against blind $-0.64$/$-0.80$. Math control steps $+0.75$/$+0.94$, same sign (Section~\ref{sec:mace}) \\
 \end{longtable}
 \endgroup
 

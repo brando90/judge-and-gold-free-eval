@@ -18,6 +18,12 @@ Anonymous.
   llm judges get gamed, 2026.
 \newblock Companion draft.
 
+\bibitem{mace2026}
+Anonymous.
+\newblock Evaluating and calibrating llm confidence on questions with multiple
+  correct answers, 2026.
+\newblock arXiv:2602.07842.
+
 \bibitem{generous2026}
 Anonymous.
 \newblock Llm judges can be too generous when there is no reference answer.
