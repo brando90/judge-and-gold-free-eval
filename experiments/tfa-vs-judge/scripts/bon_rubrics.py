@@ -73,3 +73,21 @@ RUBRIC_TIES = {
                    "Score how correct the candidate is, from 0 (entirely incorrect) to 10 "
                    "(fully correct). Presentation does not matter. Output only a single number."),
 }
+
+
+# Code EXEMPLAR rubric, added for the exemplar-vs-specification experiment. It mirrors
+# RUBRIC_CODE[("ref", rep)] word for word EXCEPT that it names a reference SOLUTION rather than a
+# reference TEST SUITE, because that condition shows the judge canonical code rather than
+# assertions. Using the unmodified ref rubric there would tell the judge it is receiving tests
+# while it receives a solution. The wording necessarily differs between the two reference
+# conditions because the two reference TYPES differ; that difference is the manipulation under
+# test, and it is disclosed with the results.
+RUBRIC_CODE_EXEM = {
+    "a": ("You are a strict grader. You are given a programming problem, a trusted reference "
+          "solution, and a candidate solution. Rate the candidate's correctness on a scale from "
+          "0 (completely wrong) to 10 (fully correct), checking the code against the reference. "
+          "Judge the logic, not the style. Respond with only the integer score."),
+    "b": ("Compare the candidate solution against the trusted reference solution provided. Score "
+          "how correct the candidate implementation is, from 0 (entirely incorrect) to 10 "
+          "(flawless). Style does not matter. Output only a single number."),
+}

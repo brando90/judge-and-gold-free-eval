@@ -43,7 +43,7 @@ if os.path.exists(out):
 
 import sys, os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from bon_rubrics import RUBRIC, RUBRIC_CODE, RUBRIC_TIES
+from bon_rubrics import RUBRIC_CODE_EXEM, RUBRIC, RUBRIC_CODE, RUBRIC_TIES
 
 pool = [json.loads(l) for l in open(args.pool)]
 if args.tasks:
@@ -85,7 +85,10 @@ for v in range(11):
 def build(r, s):
     cond_key = ("ref" if args.cond in ("refinst", "refinst2", "multiref", "refsol", "refsol2", "refexem")
                 else args.cond)
-    sys = {"code": RUBRIC_CODE, "ties": RUBRIC_TIES, "synthk": RUBRIC_TIES,
+    if args.cond == "refexem":
+        sys = RUBRIC_CODE_EXEM[args.rep]
+    else:
+        sys = {"code": RUBRIC_CODE, "ties": RUBRIC_TIES, "synthk": RUBRIC_TIES,
            "simcorr": RUBRIC_TIES, "mace": RUBRIC_TIES}.get(args.domain, RUBRIC)[(cond_key, args.rep)]
     if args.cond == "refinst":
         sys += (" Note: the reference shown is one valid answer among possibly many; the "
