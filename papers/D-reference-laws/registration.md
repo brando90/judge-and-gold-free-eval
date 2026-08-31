@@ -1311,3 +1311,32 @@ text and the same Problem / Reference answer / Candidate solution / "Score:" bod
 `bon_judge.py`, so only the judge and the score function differ. One structural difference
 remains inherent to the CLI path and is noted here: the open judges receive system and user as
 separate chat-template turns, while the CLI receives them concatenated.
+
+---
+
+## Independent verification pass (2026-08-31), at the collaborator's request
+
+Every result from this session was recomputed from raw files by scripts that deliberately do not
+import or reuse the original producers. Outcomes:
+
+**DPO training pressure — all figures reproduce exactly.** Independent recompute: accuracy
+train 0.4125 (base) / 0.1750 (ref arm) / 0.3312 (m1 arm); held-out 0.4573 / 0.2292 / 0.4083;
+GATE ref +1.758, GATE m1 -1.044; wedge = judge gain 1.758 minus 10 x accuracy gain (-0.2375)
+= +4.133; match rates 0.0708 / 0.0312 / 0.0688 giving P-DP1's -0.0375. All match the reported
+values to three decimals.
+
+**E1 / H-METHOD — all figures reproduce, and the mechanism checks pass.** The check that mattered
+most was whether the new conditions were real rather than silently identical: `ref` vs `refsol`
+differ on 75/75 items (mean |score difference| 0.807), `refsol` vs `refsol2` on 75/75 (0.357), so
+the worked references were genuinely loaded and the two derivation routes genuinely differ. The
+worked-reference file passes its own invariants independently: 0/75 items have identical
+derivations, 75/75 have both derivations boxing the item's own reference answer. Margins
+reproduce (ref +5.169, refsol +3.734) as does the H-METHOD paired delta (-0.323 [-0.571,-0.090]).
+
+**Frontier judge — one real bug found, fixed, immaterial.** See the parser audit above: 1 of 660
+replies misparsed, blind matching mean 7.83 -> 7.88, no headline figure affected. Prompt
+construction verified equivalent to `bon_judge.py`; the system/user concatenation difference
+inherent to the CLI path is disclosed.
+
+One bug found across four experiments, in the newest and least-exercised code path, with no
+effect on any conclusion.
