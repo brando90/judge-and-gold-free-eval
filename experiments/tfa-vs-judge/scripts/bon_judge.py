@@ -97,7 +97,7 @@ def build(r, s):
         return tok.apply_chat_template([{"role": "user", "content": sys + "\n\n" + "\n\n".join(parts)}],
                                        tokenize=False, add_generation_prompt=True)
 
-llm = LLM(model=args.judge, dtype="bfloat16", gpu_memory_utilization=0.9,
+llm = LLM(model=args.judge, dtype="bfloat16", gpu_memory_utilization=args.gpu_util,
           max_model_len=args.max_model_len)
 sp = SamplingParams(max_tokens=4, temperature=0.0, logprobs=20)
 
