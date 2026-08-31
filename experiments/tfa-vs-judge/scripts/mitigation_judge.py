@@ -17,6 +17,8 @@ ap.add_argument("--cond", choices=["m1", "m2"], required=True)
 ap.add_argument("--rep", choices=["a", "b"], required=True)
 ap.add_argument("--out", default="runs/bon_scores_kstrat")
 ap.add_argument("--max-model-len", type=int, default=4096)
+ap.add_argument("--gpu-util", type=float, default=0.9,
+                help="vLLM gpu_memory_utilization; default 0.9 preserves prior behavior")
 args = ap.parse_args()
 os.makedirs(args.out, exist_ok=True)
 tag = args.judge.replace("/", "__")
@@ -78,7 +80,7 @@ def m2_prompt(r, s):
                 f"Problem:\n{r['question']}\n\nReference (one valid answer):\n{r['ref_answer']}\n\n"
                 f"Candidate solution:\n{s}\n\nIs the candidate's final answer valid?")
 
-llm = LLM(model=args.judge, dtype="bfloat16", gpu_memory_utilization=0.9,
+llm = LLM(model=args.judge, dtype="bfloat16", gpu_memory_utilization=args.gpu_util,
           max_model_len=args.max_model_len)
 sp = SamplingParams(max_tokens=4, temperature=0.0, logprobs=20)
 
