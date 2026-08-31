@@ -1078,3 +1078,22 @@ A judge that emits a handful of integers cannot rank candidates however good its
 understanding is, and its apparent immunity to reference anchoring is an artifact of that muteness.
 This complements companion A's certification audit, which needs a few dozen human labels; this
 screen needs none.
+
+---
+
+## Robustness note (post hoc, 2026-08-31): order-variant set answers in the `subset` family
+
+Found while planning a MACE extension. The `subset` family's answers are sets ("37,43"), and
+the generator sometimes writes the same set in a different order ("43,37"). The loose
+normalization used for reference-matching is order-SENSITIVE, so such a sample is classified
+"valid but non-matching" when it is in fact the same answer as the reference. Scope and effect:
+6 of 60 k>1 items in the k-stratified pool contain at least one order-variant of the reference.
+Recomputing the k>1 anchoring margin with an order-invariant canonicalization (sort numeric
+set elements) moves it from +5.17 to +5.05 (Qwen-7B), +4.20 to +4.47 (phi-4), and +5.32 to
++5.62 (gemma-2-9b) — small, and larger for two of three judges, consistent with the expected
+direction: order-variants were inflating the non-matching group's mean and thereby SHRINKING
+the measured margin. The published numbers are therefore conservative on this axis for two of
+three judges and essentially unchanged for the third; no conclusion depends on it. Not
+retro-fitted into the frozen registered artifacts, which stand as scored; disclosed here and in
+the paper's limitations. (It also explains the diagnostic curiosity that nominal-k=1 items can
+show several "distinct valid answers": those are order variants, 10 subset and 2 digitsum items.)
