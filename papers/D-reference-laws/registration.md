@@ -1203,3 +1203,59 @@ experiment that blind-then-reveal protects a trained policy; the m1 arm may simp
 less effectively, and its lower accuracy loss (-0.049 held-out vs the ref arm's -0.228) is
 confounded with that failure. A rerun with hyperparameters tuned so the m1 arm passes its gate is
 the honest way to test the mitigation under training.
+
+---
+
+## Worked-reference arm (E1) and method rotation (H-METHOD) — RESULT 2026-08-31
+
+Registered pre-data at commit `1328c87` (design, estimators, P-W1..P-W3). Both re-judge the
+frozen k-stratified pool; nothing generated or trained. Judges Qwen2.5-7B and phi-4, rubrics a
+and b, conditions `refsol` (worked derivation, route A) and `refsol2` (worked derivation, route
+B, same final answer).
+
+**E1 — a worked reference anchors LESS than a bare answer (P-W1 confirmed).** Every result in
+the paper until now showed the judge a bare answer string; practitioners show worked solutions.
+Replacing the bare answer with a short derivation that reaches the same answer:
+
+| judge | margin, bare ref | margin, worked ref | difference | inflation, bare | inflation, worked | difference |
+|---|---|---|---|---|---|---|
+| Qwen2.5-7B | +5.17 | +3.73 | **-1.44** [-1.99,-0.92] | +1.50 | +1.08 | **-0.42** [-0.69,-0.16] |
+| phi-4 | +4.20 | +3.67 | **-0.53** [-0.90,-0.11] | +1.07 | +0.77 | **-0.30** [-0.48,-0.12] |
+
+P-W1 predicted a difference without predicting direction; the direction is that a longer,
+more informative reference anchors *less*, contradicting the "more surface to match" intuition
+recorded as plausible at registration. The reduction is real but partial: inflation stays firmly
+positive (+1.08, +0.77), so a worked reference is a milder form of the same lever, not a safe one.
+
+**H-METHOD — method anchoring exists but is one to two orders of magnitude smaller than answer
+anchoring (P-W2 falsified as stated; its substance supported).** On the 15 k=1 items every valid
+sample carries the same final answer, so rotating the reference between derivation routes varies
+method alone. Paired same-sample deltas (refsol2 minus refsol):
+
+| judge | rubric | overall shift | route-A samples | route-B samples | differential |
+|---|---|---|---|---|---|
+| Qwen-7B | a | -0.32 [-0.56,-0.08] | -0.62 | -0.18 | **-0.44** |
+| Qwen-7B | b | -0.40 [-0.69,-0.15] | -0.40 | -0.37 | -0.03 |
+| phi-4 | a | -0.02 [-0.04,+0.00] | -0.01 | -0.03 | +0.02 |
+| phi-4 | b | -0.02 [-0.04,-0.01] | -0.02 | -0.02 | -0.00 |
+
+P-W2 predicted the paired delta's CI would contain zero. It does not (three of four cells exclude
+zero), so **P-W2 is falsified as literally stated**. But the decomposition matters more than the
+verdict: an *overall* shift means the second derivation makes the judge marginally stingier about
+everything, which is calibration, not anchoring. True method anchoring must appear as a
+*differential* — samples whose own route matches the shown one faring better. That differential
+appears in exactly **one of four** judge-by-rubric cells (Qwen rubric a, -0.44) and is absent in
+the other three. Against the paper's answer-rotation result of up to **±9.5 points**, method
+effects are 20x to 400x smaller.
+
+P-W3 (positive control) holds: the same machinery on the same items detects the standing
+reference-minus-blind difference at -4.02 (Qwen) and -3.03 (phi-4), so the near-nulls above are
+not an insensitive instrument.
+
+**Reading.** The judge anchors overwhelmingly on the *answer*, not the derivation route. This was
+the collaborator's hypothesis; it survives in substance while its strict form fails. Practical
+consequence: worked-solution references are safer than bare answers but still inflationary, and
+the paper's warning remains scoped to answer multiplicity rather than extending to
+unique-answer tasks with differing solution methods. Caveat carried from the registration: the
+route classifier is a heuristic token-Jaccard match with a small mean similarity margin (0.032),
+so the differential readout is weakly identified; the overall-shift readout is classifier-free.
