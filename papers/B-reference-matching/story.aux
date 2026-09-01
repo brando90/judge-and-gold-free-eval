@@ -1,0 +1,131 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\citation{gulati2025putnam}
+\citation{cobbe2021gsm8k}
+\citation{hendrycks2021math}
+\citation{chen2021codex}
+\citation{yuan2021bartscore}
+\citation{zheng2023judging}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
+\newlabel{sec:intro}{{1}{1}{Introduction}{section.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces \textbf  {Takeaway: one explanation, three predictions, three confirmations, and a constructive remainder that is already free.} The explanation is that a matching score is dominated by how predictable the reference text is, so it measures the answer key rather than the student. Correlations are against blind human soundness on the anchor set unless a ranking is named; intervals, subset sizes, and per-row caveats are in the tables of the sections named. Six directional predictions were registered in advance and four landed as called; the two misses, a sign flip and a falsification, are reported inline where they bite (Sections~\ref {sec:repairs} and~\ref {sec:verify}).}}{2}{table.caption.1}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{tab:predictions}{{1}{2}{\textbf {Takeaway: one explanation, three predictions, three confirmations, and a constructive remainder that is already free.} The explanation is that a matching score is dominated by how predictable the reference text is, so it measures the answer key rather than the student. Correlations are against blind human soundness on the anchor set unless a ranking is named; intervals, subset sizes, and per-row caveats are in the tables of the sections named. Six directional predictions were registered in advance and four landed as called; the two misses, a sign flip and a falsification, are reported inline where they bite (Sections~\ref {sec:repairs} and~\ref {sec:verify})}{table.caption.1}{}}
+\@writefile{toc}{\contentsline {paragraph}{One alternative explanation.}{2}{section*.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces \textbf  {Takeaway: every matching metric straddles zero or sits weakly negative against blind human soundness, while the verification signals carry real signal, and the top of the field is the bit everyone already has for free at $+0.92$.} Pearson correlation with blind human soundness on the 60-item anchor set, with bootstrap 95\% CIs: matching metrics in orange, verification signals in blue, LLM judges (expensive comparison points) as hollow markers. Unigram-F1's CI excludes zero on the negative side, uncorrected for the five-metric battery, so that single exclusion is suggestive rather than confirmatory. Dotted lines mark the inter-rater agreement and the implied single-rater ceiling; both reliability estimates have wide intervals, so ceiling comparisons are indicative only.}}{3}{figure.caption.2}\protected@file@percent }
+\newlabel{fig:class}{{1}{3}{\textbf {Takeaway: every matching metric straddles zero or sits weakly negative against blind human soundness, while the verification signals carry real signal, and the top of the field is the bit everyone already has for free at $+0.92$.} Pearson correlation with blind human soundness on the 60-item anchor set, with bootstrap 95\% CIs: matching metrics in orange, verification signals in blue, LLM judges (expensive comparison points) as hollow markers. Unigram-F1's CI excludes zero on the negative side, uncorrected for the five-metric battery, so that single exclusion is suggestive rather than confirmatory. Dotted lines mark the inter-rater agreement and the implied single-rater ceiling; both reliability estimates have wide intervals, so ceiling comparisons are indicative only}{figure.caption.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{Three predictions.}{3}{section*.4}\protected@file@percent }
+\citation{hendrycks2021math}
+\citation{gulati2025putnam}
+\citation{cobbe2021gsm8k}
+\citation{chen2021codex}
+\citation{austin2021mbpp}
+\citation{liu2023evalplus}
+\citation{lightman2023verify}
+\citation{wang2022selfconsistency}
+\citation{wang2024mathshepherd}
+\citation{luo2024omegaprm}
+\citation{companionA}
+\@writefile{toc}{\contentsline {paragraph}{Registration.}{4}{section*.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2}Setup}{4}{section.2}\protected@file@percent }
+\newlabel{sec:setup}{{2}{4}{Setup}{section.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{Models and data.}{4}{section*.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Matching metrics.}{4}{section*.8}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces \textbf  {Takeaway: the boundary map. Mean \textsc  {TFA}{} ranks models on hard benchmarks with information-dense references, degrades through code, and inverts in sign on saturated grade-school data, exactly where the reference stops being worth predicting.} Cross-family Spearman correlation between mean \textsc  {TFA}{} and accuracy per benchmark (11--17 models by row; \textsc  {Omni-MATH} uses a seven-model sweep and \textsc  {SWE-bench} eight coder models; bootstrap 95\% CIs); the within-family column is the Qwen size ladder specifically. Within-family Spearmans sit on ladders of three to five models, so the statistic takes only a few discrete values: read signs and consistency, not magnitudes. The saturated-benchmark intervals are wide and straddle zero, so the sign inversion is a point-estimate trend; the robust statement is the ladder count of Section~\ref {sec:p3}, twelve of twelve hard-side ladders positive and five of twelve saturated ladders inverting. The \textsc  {SWE-bench} within-family entry is a four-model ladder and a preliminary observation.}}{5}{table.caption.6}\protected@file@percent }
+\newlabel{tab:map}{{2}{5}{\textbf {Takeaway: the boundary map. Mean \tfa {} ranks models on hard benchmarks with information-dense references, degrades through code, and inverts in sign on saturated grade-school data, exactly where the reference stops being worth predicting.} Cross-family Spearman correlation between mean \tfa {} and accuracy per benchmark (11--17 models by row; \textsc {Omni-MATH} uses a seven-model sweep and \textsc {SWE-bench} eight coder models; bootstrap 95\% CIs); the within-family column is the Qwen size ladder specifically. Within-family Spearmans sit on ladders of three to five models, so the statistic takes only a few discrete values: read signs and consistency, not magnitudes. The saturated-benchmark intervals are wide and straddle zero, so the sign inversion is a point-estimate trend; the robust statement is the ladder count of Section~\ref {sec:p3}, twelve of twelve hard-side ladders positive and five of twelve saturated ladders inverting. The \textsc {SWE-bench} within-family entry is a four-model ladder and a preliminary observation}{table.caption.6}{}}
+\@writefile{toc}{\contentsline {paragraph}{Verification signals.}{5}{section*.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Ground truth.}{5}{section*.10}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces \textbf  {Takeaway: no cheap signal grades beyond the free correctness bit. Every matching metric, primary or stress-test, lands in $[-0.33, +0.14]$ against blind human soundness, and the one escape reads only final answers.} Each row is one signal on the 60-item anchor set: Pearson (with bootstrap 95\% CI) and Spearman against blind human soundness, the within-correct correlation (the margin a grader must win), the model-ranking Spearman on hard versus saturated benchmarks, and the share of per-solution variance owned by the item (the reference). Gold-token logprob uses the $n{=}42$ subset with logprob available; within-correct entries use $n{=}48$ ($n{=}32$ for logprob); the free bit is constant within the correct-only subset, so its within-correct entry is undefined by construction. Unigram-F1's hard-benchmark inversion ($-0.49$) is a verbosity confound, moving to $-0.07$ when output length is controlled. The judge row reports the Fisher interval because range restriction degenerates its bootstrap; the three post-hoc rows were added in response to review and carry no registration weight. The five-metric battery carries no multiplicity correction.}}{6}{table.caption.14}\protected@file@percent }
+\newlabel{tab:class}{{3}{6}{\textbf {Takeaway: no cheap signal grades beyond the free correctness bit. Every matching metric, primary or stress-test, lands in $[-0.33, +0.14]$ against blind human soundness, and the one escape reads only final answers.} Each row is one signal on the 60-item anchor set: Pearson (with bootstrap 95\% CI) and Spearman against blind human soundness, the within-correct correlation (the margin a grader must win), the model-ranking Spearman on hard versus saturated benchmarks, and the share of per-solution variance owned by the item (the reference). Gold-token logprob uses the $n{=}42$ subset with logprob available; within-correct entries use $n{=}48$ ($n{=}32$ for logprob); the free bit is constant within the correct-only subset, so its within-correct entry is undefined by construction. Unigram-F1's hard-benchmark inversion ($-0.49$) is a verbosity confound, moving to $-0.07$ when output length is controlled. The judge row reports the Fisher interval because range restriction degenerates its bootstrap; the three post-hoc rows were added in response to review and carry no registration weight. The five-metric battery carries no multiplicity correction}{table.caption.14}{}}
+\@writefile{toc}{\contentsline {paragraph}{Statistics.}{6}{section*.11}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}The null: no matching metric can grade an individual solution}{6}{section.3}\protected@file@percent }
+\newlabel{sec:p1}{{3}{6}{The null: no matching metric can grade an individual solution}{section.3}{}}
+\@writefile{toc}{\contentsline {paragraph}{The prediction.}{6}{section*.12}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{The test.}{6}{section*.13}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{The result.}{7}{section*.15}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}The explanation: the score's variance belongs to the reference}{7}{section.4}\protected@file@percent }
+\newlabel{sec:p2}{{4}{7}{The explanation: the score's variance belongs to the reference}{section.4}{}}
+\@writefile{toc}{\contentsline {paragraph}{The prediction.}{7}{section*.16}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{The test.}{7}{section*.17}\protected@file@percent }
+\citation{huang2024compression}
+\citation{schaeffer2025pretraining}
+\citation{koh2025rbridge}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces \textbf  {Takeaway: between $83\%$ and $92\%$ of per-solution \textsc  {TFA}{} variance beyond model level is an item effect that replicates across four model families, moves only within a narrow range when any single model is deleted, and is therefore a property of the reference text.} Sum-of-squares shares from a fixed-effects decomposition of the model-centered score grid, with the item effect estimated as the unweighted cross-family mean of the model-centered scores; item-level bootstrap 95\% CIs (widths $0.03$--$0.04$) and the range of the share under deletion of any single model. The family-style column is the family-specific share where reported; it runs roughly two-and-a-half-fold larger on saturated benchmarks than on olympiad ones, which is the channel behind the saturated-side inversions of Section~\ref {sec:p3}. The same structure appears in code ($78\%$ item, $8\%$ family, $14\%$ residual) and, attenuated, in every similarity metric ($69\%$ TF-IDF, $\sim $$70\%$ embeddings, $45$--$55\%$ unigram-F1; Table~\ref {tab:class}).}}{8}{table.caption.18}\protected@file@percent }
+\newlabel{tab:decomp}{{4}{8}{\textbf {Takeaway: between $83\%$ and $92\%$ of per-solution \tfa {} variance beyond model level is an item effect that replicates across four model families, moves only within a narrow range when any single model is deleted, and is therefore a property of the reference text.} Sum-of-squares shares from a fixed-effects decomposition of the model-centered score grid, with the item effect estimated as the unweighted cross-family mean of the model-centered scores; item-level bootstrap 95\% CIs (widths $0.03$--$0.04$) and the range of the share under deletion of any single model. The family-style column is the family-specific share where reported; it runs roughly two-and-a-half-fold larger on saturated benchmarks than on olympiad ones, which is the channel behind the saturated-side inversions of Section~\ref {sec:p3}. The same structure appears in code ($78\%$ item, $8\%$ family, $14\%$ residual) and, attenuated, in every similarity metric ($69\%$ TF-IDF, $\sim $$70\%$ embeddings, $45$--$55\%$ unigram-F1; Table~\ref {tab:class})}{table.caption.18}{}}
+\@writefile{toc}{\contentsline {paragraph}{The result: the decomposition.}{8}{section*.19}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{The result: the interventions.}{8}{section*.21}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces \textbf  {Takeaway: to first order, teacher-forced accuracy is reference perplexity. At $r = -0.895$ pooled over 6{,}000 model--item pairs, reference compressibility explains $80\%$ of pooled \textsc  {TFA}{} variance, so the metric meters the reference rather than grading the solution.} Per-solution \textsc  {TFA}{} against the reference's bits-per-character under the same model on \textsc  {MATH-500}, with the least-squares fit. This pooled view is a corollary of the cross-family decomposition (Table~\ref {tab:decomp}), which is the primary evidence; taken alone it would be partially tautological, since both statistics summarize the same model's prediction fit to the same text.}}{9}{figure.caption.20}\protected@file@percent }
+\newlabel{fig:mechanism}{{2}{9}{\textbf {Takeaway: to first order, teacher-forced accuracy is reference perplexity. At $r = -0.895$ pooled over 6{,}000 model--item pairs, reference compressibility explains $80\%$ of pooled \tfa {} variance, so the metric meters the reference rather than grading the solution.} Per-solution \tfa {} against the reference's bits-per-character under the same model on \textsc {MATH-500}, with the least-squares fit. This pooled view is a corollary of the cross-family decomposition (Table~\ref {tab:decomp}), which is the primary evidence; taken alone it would be partially tautological, since both statistics summarize the same model's prediction fit to the same text}{figure.caption.20}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}No repair recovers a grade, and one registered call missed}{9}{subsection.4.1}\protected@file@percent }
+\newlabel{sec:repairs}{{4.1}{9}{No repair recovers a grade, and one registered call missed}{subsection.4.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}The boundary: ranking survives exactly where the reference is worth predicting}{10}{section.5}\protected@file@percent }
+\newlabel{sec:p3}{{5}{10}{The boundary: ranking survives exactly where the reference is worth predicting}{section.5}{}}
+\@writefile{toc}{\contentsline {paragraph}{The prediction.}{10}{section*.22}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{The test.}{10}{section*.23}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{The result.}{10}{section*.24}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces \textbf  {Takeaway: repairing a matching metric destroys it while deepening a verification signal strengthens it, but the strengthened signal only converges toward the free bit from below.} Left: up-weighting late reference tokens decays \textsc  {TFA}'s twelve-model ranking signal past $\gamma {=}1$, through the answer-only-reference null and beyond it to $-0.37$ at last-four tokens (the decay is a trend, not strictly monotone: $\gamma {=}1$ ticks up to $+0.15$ and last-16 sits above $\gamma {=}8$); the registered call was a null, so the sign flip is a recorded miss. Right: the completion-curve signal rises with truncation depth in Pearson, from a pure difficulty probe at $k{=}0$ to $+0.78$ against human soundness at $k{=}0.75$; the dashed line marks the free bit ($+0.92$), which the curve never reaches, and the Spearman profile is non-monotone.}}{11}{figure.caption.25}\protected@file@percent }
+\newlabel{fig:sweeps}{{3}{11}{\textbf {Takeaway: repairing a matching metric destroys it while deepening a verification signal strengthens it, but the strengthened signal only converges toward the free bit from below.} Left: up-weighting late reference tokens decays \tfa 's twelve-model ranking signal past $\gamma {=}1$, through the answer-only-reference null and beyond it to $-0.37$ at last-four tokens (the decay is a trend, not strictly monotone: $\gamma {=}1$ ticks up to $+0.15$ and last-16 sits above $\gamma {=}8$); the registered call was a null, so the sign flip is a recorded miss. Right: the completion-curve signal rises with truncation depth in Pearson, from a pure difficulty probe at $k{=}0$ to $+0.78$ against human soundness at $k{=}0.75$; the dashed line marks the free bit ($+0.92$), which the curve never reaches, and the Spearman profile is non-monotone}{figure.caption.25}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}What does carry signal, and the registered record}{11}{section.6}\protected@file@percent }
+\newlabel{sec:verify}{{6}{11}{What does carry signal, and the registered record}{section.6}{}}
+\@writefile{toc}{\contentsline {paragraph}{The free bit tops the field.}{11}{section*.26}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{The completion curve loses to the free bit on paired items.}{11}{section*.27}\protected@file@percent }
+\citation{companionA}
+\@writefile{toc}{\contentsline {paragraph}{A falsified register, and what the falsification teaches.}{12}{section*.28}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{The rest of the class, and the bounds on the nulls.}{12}{section*.29}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces \textbf  {Takeaway: four of six registered predictions landed as called, with one sign flip and one falsification on record.} Each row is one pre-registered directional prediction, committed to the repository before its data were generated. The class-level divide, verification signals carrying signal where matching carries none, was called in advance, but the register did not anticipate that the free bit would top the class. The four stronger matching baselines of Section~\ref {sec:p1} were added post hoc in response to review and appear in no row of this ledger.}}{13}{table.caption.30}\protected@file@percent }
+\newlabel{tab:ledger}{{5}{13}{\textbf {Takeaway: four of six registered predictions landed as called, with one sign flip and one falsification on record.} Each row is one pre-registered directional prediction, committed to the repository before its data were generated. The class-level divide, verification signals carrying signal where matching carries none, was called in advance, but the register did not anticipate that the free bit would top the class. The four stronger matching baselines of Section~\ref {sec:p1} were added post hoc in response to review and appear in no row of this ledger}{table.caption.30}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Three rules for practice}{13}{section.7}\protected@file@percent }
+\newlabel{sec:rules}{{7}{13}{Three rules for practice}{section.7}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {8}Limitations}{13}{section.8}\protected@file@percent }
+\newlabel{sec:limits}{{8}{13}{Limitations}{section.8}{}}
+\@writefile{toc}{\contentsline {paragraph}{The human anchor is one small, measured instrument.}{13}{section*.31}\protected@file@percent }
+\citation{companionA}
+\citation{gulati2025putnam}
+\citation{huang2024compression}
+\citation{schaeffer2025pretraining}
+\citation{koh2025rbridge}
+\citation{zheng2023judging}
+\citation{tan2024judgebench}
+\citation{yuan2021bartscore}
+\citation{wu2023style}
+\citation{dubois2024length}
+\citation{singhal2023long}
+\@writefile{toc}{\contentsline {paragraph}{The beyond-correctness margin is unresolved.}{14}{section*.32}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{The decomposition is one procedure, and the interventions test one construction.}{14}{section*.33}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Coverage and registration weight are uneven.}{14}{section*.34}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {9}Related work}{14}{section.9}\protected@file@percent }
+\newlabel{sec:related}{{9}{14}{Related work}{section.9}{}}
+\@writefile{toc}{\contentsline {paragraph}{Teacher-forced accuracy.}{14}{section*.35}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Model-level likelihood and ability.}{14}{section*.36}\protected@file@percent }
+\citation{lightman2023verify}
+\citation{wang2022selfconsistency}
+\citation{wang2024mathshepherd}
+\citation{luo2024omegaprm}
+\bibstyle{plain}
+\bibdata{references}
+\bibcite{austin2021mbpp}{1}
+\bibcite{companionA}{2}
+\bibcite{chen2021codex}{3}
+\@writefile{toc}{\contentsline {paragraph}{Judges, reference metrics, and biases.}{15}{section*.37}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Completion-based verification.}{15}{section*.38}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {10}Conclusion}{15}{section.10}\protected@file@percent }
+\bibcite{cobbe2021gsm8k}{4}
+\bibcite{dubois2024length}{5}
+\bibcite{gulati2025putnam}{6}
+\bibcite{hendrycks2021math}{7}
+\bibcite{huang2024compression}{8}
+\bibcite{koh2025rbridge}{9}
+\bibcite{lightman2023verify}{10}
+\bibcite{liu2023evalplus}{11}
+\bibcite{luo2024omegaprm}{12}
+\bibcite{schaeffer2025pretraining}{13}
+\bibcite{singhal2023long}{14}
+\bibcite{tan2024judgebench}{15}
+\bibcite{wang2024mathshepherd}{16}
+\bibcite{wang2022selfconsistency}{17}
+\bibcite{wu2023style}{18}
+\bibcite{yuan2021bartscore}{19}
+\bibcite{zheng2023judging}{20}
+\gdef \@abspage@last{16}
