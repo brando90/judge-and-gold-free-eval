@@ -32,8 +32,7 @@
 \setcounter{topnumber}{3}
 \setcounter{totalnumber}{5}
 
-\title{The Reference Is Not an Answer Key:\\
-\large Reference Anchoring Turns LLM Judges into Answer Matchers}
+\title{The Reference Is Not an Answer Key}
 \author{Anonymous Authors}
 \date{Companion draft, September 1, 2026}
 
@@ -376,9 +375,26 @@ Anchoring predicts that none of the three works.
 Every judge measured so far is an open model of at most 14B parameters, and anchoring falls with scale without reaching zero, so whether the trend expires at the frontier had been answered only by extrapolation.
 A registered check puts a frontier-class judge on the same 37 multi-valid items, with the rubric text taken verbatim from the open judges' prompt so that only the judge changes: 660 calls, none unparseable.
 
-Scale does not rescue the failure.
-The blind control is about as clean as this design can produce: with no reference the judge scores matching and non-matching valid answers $7.88$ and $7.85$, a margin of $+0.35$ $[-0.56, +1.27]$.
-Shown the reference the same two groups separate to $9.83$ and $2.32$, a margin of $+7.49$ $[+6.62, +8.22]$.
+Scale does not rescue the failure (Table~\ref{tab:frontier2}).
+
+\begin{table}[tbp]
+\centering
+\small
+\setlength{\tabcolsep}{7pt}
+\begin{tabular}{lccc}
+\toprule
+Condition & Matching valid & Non-matching valid & Margin \\
+\midrule
+Blind & $7.88$ & $7.85$ & $+0.35$ {\scriptsize$[-0.56, +1.27]$} \\
+Referenced & $9.83$ & $\mathbf{2.32}$ & $\mathbf{+7.49}$ {\scriptsize$[+6.62, +8.22]$} \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{A frontier judge cannot tell equally valid answers apart until it is shown a reference, and then it fails $82.5\%$ of the correct answers that do not match it.} Mean scores on oracle-valid answers, 37 multi-valid items, 660 calls; the blind row is the control.}
+\label{tab:frontier2}
+\end{table}
+
+The blind control is about as clean as this design can produce: with no reference the judge scores matching and non-matching valid answers $7.88$ and $7.85$.
+Shown the reference the same two groups separate to $9.83$ and $2.32$.
 The rate is the statement worth carrying: \textbf{$82.5\%$ of genuinely correct answers receive a failing score ($\leq 3$ of 10) when they do not match the shown key, against $19.6\%$ when the judge is blind.}
 
 Two limits on this result are ours to state rather than a reader's to discover.
@@ -455,7 +471,7 @@ The boundary also retro-justifies the method-rotation null of Section~\ref{sec:l
 \section{What does not rescue the reference}
 \label{sec:norescue}
 
-The obvious repairs mostly fail, and the negative results below are the practically relevant part of that finding.
+Everything verbal fails, the one ordering-based remedy works, and even that remedy's strength depends on the judge; the negative results below are the practically relevant part of the finding.
 
 \paragraph{Telling the judge to accept any valid answer is a placebo below frontier capability.}
 On the synthetic grid at $k{=}16$, adding a sentence saying the reference is one valid answer among many and any correct answer deserves full credit closes phi-4's anchoring margin essentially to zero ($+1.91 \to +0.03$) and helps Qwen-14B substantially ($+3.34 \to +1.21$), while leaving the smaller judges unmoved, or worse on one rubric at 1.5B ($+3.58 \to +4.54$).
@@ -494,10 +510,26 @@ This generalises into a label-free check on the judge's score distribution: gran
 The screen is a rejection filter and nothing more: passing it establishes that a judge has opinions, not what its opinions are about, and the failure this paper is about passes cleanly, since gemma-2-9b clears both criteria (2751 distinct values, no ties, spread $2.65$) while being the most anchored judge we measure.
 Run the free screen first and reject what it rejects, then certify what survives against labels, since only ground truth distinguishes a judge that grades correctness from one that grades proximity to the key~\cite{companionA}.
 
-The options therefore order themselves.
-If the valid set is enumerable, check membership directly and use no judge at all, at zero judge calls.
-If it is not, score blind and then reveal, at two judge calls per candidate, and certify both the harm and the fix on the deployment's own judge and tasks first.
-Leaving the judge blind remains safe from anchoring, though a concurrent result is a useful reminder that blind is not thereby adequate on hard multi-valid tasks~\cite{calver2026}.
+The options therefore order themselves (Table~\ref{tab:decide}), and one instruction travels with the table: certify both the harm and the fix on the deployment's own judge and tasks before trusting either, since both are judge-dependent.
+
+\begin{table}[tbp]
+\centering
+\small
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{p{4.6cm}p{6.2cm}c}
+\toprule
+Option & When several answers are valid & Judge calls \\
+\midrule
+Enumerate the valid set, check membership & Safe; no judge involved & 0 \\
+Blind judging & Safe from anchoring, though not thereby adequate on hard multi-valid tasks~\cite{calver2026} & 1 \\
+Single reference (any wording) & Harmful; instructions are a placebo below frontier capability & 1 \\
+Worked reference & Milder, still harmful & 1 \\
+\textbf{Score blind, then reveal} & \textbf{Removes the measured inflation for the judges it works on; strength is judge-dependent} & 2 \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{What to do about a reference answer when several answers can be valid, in decreasing order of safety.} Verify where verification is possible; where a judge must be used with a reference, order its calls rather than instructing it.}
+\label{tab:decide}
+\end{table}
 
 \section{Limitations and open questions}
 \label{sec:limits}
