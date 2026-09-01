@@ -1617,3 +1617,24 @@ This CONFIRMS companion A's certification of references on code rather than cont
 and it bounds paper D's warning to tasks with separable answers: precisely the boundary a
 practitioner needs. It also retro-justifies the H-METHOD result: method-space variation never
 mattered because the judge was never matching on structure, only on the answer token.
+
+**Robustness of the code result (2026-09-01, at the collaborator's request).** Two checks, both
+post hoc:
+
+(1) *Is the null trivial because valid solutions are near-clones of the canonical reference?*
+No — the opposite. Across 14,342 oracle-valid samples there are ZERO exact text matches with the
+canonical solution; mean token-Jaccard similarity is 0.227 (median 0.217), and 99.8% of valid
+samples sit below 0.5 similarity. The judge saw genuinely different implementations of the same
+behavior and did not punish the difference. There was maximal room for anchoring, and it did not
+appear.
+
+(2) *Does the math pools' worst case — the dose-0 lure, where nothing matches the key and the
+judge is drawn to wrong look-alikes — appear on code?* No; it INVERTS. Code is effectively
+all-dose-0 (no sample ever string-matches a whole canonical solution), which on the constraint
+pools was where the referenced judge's valid-pick rate collapsed to 0.14-0.21 against 0.72-0.79
+blind. On code the exemplar-shown judge picks valid samples MORE often than blind (0.759 vs
+0.586 at 7B; 0.828 vs 0.655 at 14B), and among invalid samples the similarity-to-canonical
+correlation with score is ~0 (+0.04/+0.08 vs -0.09/-0.08 blind) — no lure. The cheap
+string-equality shortcut that powers both the matching bonus and the lure simply has no
+purchase when the reference is a whole artifact; what remains of the reference's influence is
+informational, and it improves selection.
