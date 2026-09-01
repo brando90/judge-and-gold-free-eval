@@ -1,0 +1,127 @@
+\begin{thebibliography}{10}
+
+\bibitem{refguided2024}
+Anonymous.
+\newblock Reference-guided verdict: Llms-as-judges in automatic evaluation of
+  free-form text.
+\newblock {\em arXiv preprint arXiv:2408.09235}, 2024.
+
+\bibitem{dobefore2025}
+Anonymous.
+\newblock Do before you judge: Self-reference as a pathway to better llm
+  evaluation.
+\newblock {\em arXiv preprint arXiv:2509.19880}, 2025.
+
+\bibitem{smalljudges2025}
+Anonymous.
+\newblock Thinking small models are efficient llm judges.
+\newblock {\em arXiv preprint arXiv:2509.13332}, 2025.
+
+\bibitem{companionC}
+Anonymous.
+\newblock Auditing evaluation pipelines with cheap models: An unsupervised
+  miner for verdict errors, 2026.
+\newblock Companion draft.
+
+\bibitem{generous2026}
+Anonymous.
+\newblock Llm judges can be too generous when there is no reference answer.
+\newblock {\em arXiv preprint arXiv:2607.12885}, 2026.
+
+\bibitem{selfplay2026}
+Anonymous.
+\newblock More convincing, not more correct: Self-play reward hacking of
+  reference-free llm judges.
+\newblock {\em arXiv preprint arXiv:2607.05904}, 2026.
+
+\bibitem{companionD}
+Anonymous.
+\newblock The reference lever inverts: Judge anchoring under answer
+  multiplicity, 2026.
+\newblock Companion draft.
+
+\bibitem{companionB}
+Anonymous.
+\newblock What does matching a reference actually measure?, 2026.
+\newblock Companion draft.
+
+\bibitem{judgechanges2026}
+Anonymous.
+\newblock When the judge changes, so does the measurement: Auditing
+  llm-as-judge reliability.
+\newblock {\em arXiv preprint arXiv:2607.08535}, 2026.
+
+\bibitem{beigi2026ara}
+Mohammad Beigi et~al.
+\newblock Adversarial reward auditing for active detection and mitigation of
+  reward hacking.
+\newblock {\em arXiv preprint arXiv:2602.01750}, 2026.
+
+\bibitem{campbellfiske1959}
+Donald~T. Campbell and Donald~W. Fiske.
+\newblock Convergent and discriminant validation by the multitrait-multimethod
+  matrix.
+\newblock {\em Psychological Bulletin}, 56(2):81--105, 1959.
+
+\bibitem{coste2023ensembles}
+Thomas Coste et~al.
+\newblock Reward model ensembles help mitigate overoptimization.
+\newblock {\em arXiv preprint arXiv:2310.02743}, 2023.
+
+\bibitem{dubois2024length}
+Yann Dubois et~al.
+\newblock Length-controlled alpacaeval: A simple way to debias automatic
+  evaluators.
+\newblock {\em arXiv preprint arXiv:2404.04475}, 2024.
+
+\bibitem{eisenstein2023helping}
+Jacob Eisenstein et~al.
+\newblock Helping or herding? reward model ensembles mitigate but do not
+  eliminate reward hacking.
+\newblock {\em arXiv preprint arXiv:2312.09244}, 2023.
+
+\bibitem{gao2022scaling}
+Leo Gao, John Schulman, and Jacob Hilton.
+\newblock Scaling laws for reward model overoptimization.
+\newblock {\em arXiv preprint arXiv:2210.10760}, 2022.
+
+\bibitem{kim2025lens}
+Sunghwan Kim, Dongjin Kang, Taeyoon Kwon, Hyungjoo Chae, Dongha Lee, and
+  Jinyoung Yeo.
+\newblock Rethinking reward model evaluation through the lens of reward
+  overoptimization.
+\newblock In {\em Proceedings of ACL}, 2025.
+\newblock arXiv:2505.12763.
+
+\bibitem{rmbench2024}
+Yantao Liu, Zijun Yao, Rui Min, Yixin Cao, Lei Hou, and Juanzi Li.
+\newblock Rm-bench: Benchmarking reward models of language models with subtlety
+  and style.
+\newblock {\em arXiv preprint arXiv:2410.16184}, 2024.
+
+\bibitem{singhal2023long}
+Prasann Singhal et~al.
+\newblock A long way to go: Investigating length correlations in rlhf.
+\newblock {\em arXiv preprint arXiv:2310.03716}, 2023.
+
+\bibitem{skalse2022defining}
+Joar Skalse et~al.
+\newblock Defining and characterizing reward hacking.
+\newblock {\em arXiv preprint arXiv:2209.13085}, 2022.
+
+\bibitem{wen2024rethinking}
+Xueru Wen et~al.
+\newblock Rethinking reward model evaluation: Are we barking up the wrong tree?
+\newblock {\em arXiv preprint arXiv:2410.05584}, 2024.
+
+\bibitem{wu2023style}
+Minghao Wu and Alham~Fikri Aji.
+\newblock Style over substance: Evaluation biases for large language models.
+\newblock {\em arXiv preprint arXiv:2307.03025}, 2023.
+
+\bibitem{zheng2023judging}
+Lianmin Zheng et~al.
+\newblock Judging llm-as-a-judge with mt-bench and chatbot arena.
+\newblock {\em arXiv preprint arXiv:2306.05685}, 2023.
+
+\end{thebibliography}
