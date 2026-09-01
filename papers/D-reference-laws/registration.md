@@ -1638,3 +1638,31 @@ correlation with score is ~0 (+0.04/+0.08 vs -0.09/-0.08 blind) — no lure. The
 string-equality shortcut that powers both the matching bonus and the lure simply has no
 purchase when the reference is a whole artifact; what remains of the reference's influence is
 informational, and it improves selection.
+
+---
+
+## DPO third and FINAL attempt (GATE-F, P-DPF1..P-DPF3) — REGISTERED 2026-09-01, before the run
+
+**Standing under the stopping rule.** The rule adopted after run 2 permits exactly one further
+attempt, with a single pre-committed setting, and binds the outcome: if the protected (m1) arm
+fails its manipulation-check gate again, the mitigation-under-training question is reported
+UNRESOLVED in the paper and not attempted again. This entry is that single registration. No
+further hyperparameter choices are permitted after this commit, whatever the outcome.
+
+**The one setting: 2 epochs, lr 1e-5, beta 0.1, symmetric across arms.** Chosen as the geometric
+midpoint of the two failed brackets (run 1: 4 epochs / 2e-5, over-trained into degeneration;
+run 2: 1 epoch / 5e-6, moved nothing), fixed here before any training. Everything else identical
+to runs 1 and 2: same Llama-3.1-8B policy, same 480 preference pairs per arm (ref-judge vs
+m1-judge rankings, already built), same eval protocol (n=8 per item, train + 120 held-out),
+same frozen estimators (`dpo_mv_analysis.py` machinery, applied to a new output directory).
+
+**Predictions.**
+GATE-F: each arm raises its OWN training judge's score on train-item generations vs base, CI
+  excluding zero. An arm failing this is void. If the m1 arm is void, the question is closed as
+  unresolved per the stopping rule.
+P-DPF1: conditional on both arms passing, the ref arm's scoreboard-versus-truth wedge exceeds
+  the m1 arm's, CI excluding zero (the run-1 gated observation predicts this direction).
+P-DPF2: conditional on both arms passing, the m1 arm's held-out true-accuracy change is no worse
+  than the ref arm's (directional).
+P-DPF3 (parroting, restated a third time unchanged despite two prior falsifications, so the test
+  stays genuine): the ref arm's reference-match rate gain exceeds the m1 arm's.
