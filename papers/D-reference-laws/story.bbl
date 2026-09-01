@@ -1,0 +1,73 @@
+\begin{thebibliography}{10}
+
+\bibitem{refguided2024}
+Anonymous.
+\newblock Reference-guided verdict: Llms-as-judges in automatic evaluation of
+  free-form text.
+\newblock {\em arXiv preprint arXiv:2408.09235}, 2024.
+
+\bibitem{dobefore2025}
+Anonymous.
+\newblock Do before you judge: Self-reference as a pathway to better llm
+  evaluation.
+\newblock {\em arXiv preprint arXiv:2509.19880}, 2025.
+
+\bibitem{companionA}
+Anonymous.
+\newblock Certify before you optimize: A cheap blind audit that predicts which
+  llm judges get gamed, 2026.
+\newblock Companion draft.
+
+\bibitem{mace2026}
+Anonymous.
+\newblock Evaluating and calibrating llm confidence on questions with multiple
+  correct answers, 2026.
+\newblock arXiv:2602.07842.
+
+\bibitem{generous2026}
+Anonymous.
+\newblock Llm judges can be too generous when there is no reference answer.
+\newblock {\em arXiv preprint arXiv:2607.12885}, 2026.
+
+\bibitem{companionB}
+Anonymous.
+\newblock What does matching a reference actually measure?, 2026.
+\newblock Companion draft.
+
+\bibitem{calver2026}
+Anonymous.
+\newblock When many answers are valid, voting fails: Symbolic verification for
+  best-of-k causal reasoning in llms, 2026.
+\newblock arXiv:2608.03506.
+
+\bibitem{gao2022scaling}
+Leo Gao, John Schulman, and Jacob Hilton.
+\newblock Scaling laws for reward model overoptimization.
+\newblock {\em arXiv preprint arXiv:2210.10760}, 2022.
+
+\bibitem{judgingref2026}
+Dongryeol Lee, Yerin Hwang, Taegwan Kang, Minwoo Lee, Younhyung Chae, and
+  Kyomin Jung.
+\newblock Judging against the reference: Uncovering knowledge-driven failures
+  in {LLM}-judges on {QA} evaluation.
+\newblock {\em arXiv preprint arXiv:2601.07506}, 2026.
+
+\bibitem{fixation2025}
+Weiyuan Li, Xintao Wang, Siyu Yuan, Rui Xu, Jiangjie Chen, Qingqing Dong,
+  Yanghua Xiao, and Deqing Yang.
+\newblock Curse of knowledge: When complex evaluation context benefits yet
+  biases {LLM} judges.
+\newblock In {\em Findings of EMNLP}, 2025.
+\newblock arXiv:2509.03419.
+
+\bibitem{malik2025rewardbench2}
+Saumya Malik, Valentina Pyatkin, et~al.
+\newblock Rewardbench 2: Advancing reward model evaluation.
+\newblock {\em arXiv preprint arXiv:2506.01937}, 2025.
+
+\bibitem{zheng2023judging}
+Lianmin Zheng et~al.
+\newblock Judging llm-as-a-judge with mt-bench and chatbot arena.
+\newblock {\em arXiv preprint arXiv:2306.05685}, 2023.
+
+\end{thebibliography}
