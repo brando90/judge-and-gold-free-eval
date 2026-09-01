@@ -1576,3 +1576,44 @@ conditions that produce the effect. That objection is now answered: the inversio
 benefit, the k>1 harm, and the anchoring margin all reproduce on a third-party benchmark, in
 natural language, in two non-mathematical domains, with an internal exact-oracle control showing
 the entity labels are not responsible.
+
+---
+
+## Code exemplar-vs-specification experiment (P-EX1..P-EX3) — RESULT 2026-09-01: P-EX1 FALSIFIED. Where the artifact IS the answer, the exemplar does not inflate.
+
+Registered pre-data (`build_code_exemplar.py`); 317 MBPP items whose canonical solution passes
+our EvalPlus-augmented oracle, three conditions on identical samples and judges (blind and
+specification from companion A's frozen runs; exemplar new, under a truthfully-worded rubric).
+Note on n: the companion-A blind/specification score files were produced with the registered
+pass-rate band filter, so paired contrasts run on the 58 in-band items all conditions share.
+
+**P-EX1 (exemplar inflates where specification does not): FALSIFIED.** Paired inflation deltas
+versus blind on the same items:
+
+| judge | specification vs blind | exemplar vs blind | exemplar minus specification |
+|---|---|---|---|
+| Qwen2.5-7B | -0.535 [-0.811,-0.244] | -0.342 [-0.737,+0.041] | +0.193 [-0.112,+0.475] |
+| Qwen2.5-14B | -0.658 [-0.965,-0.373] | -0.567 [-0.827,-0.287] | +0.091 [-0.102,+0.277] |
+
+The exemplar does NOT inflate: its delta is negative (14B, CI excluding zero) or null (7B), and
+the exemplar-minus-specification contrast crosses zero for both judges. On code, showing the
+judge one valid solution behaves like showing it the test suite: both REDUCE inflation relative
+to blind, the exemplar slightly less effectively.
+
+**P-EX2 (similarity anchoring): CONFIRMED, small.** On the same 58 items, the correlation
+between a valid sample's token similarity to the canonical solution and its judge score is
++0.164 [+0.072,+0.256] (7B) and +0.084 [-0.005,+0.168] (14B) under the exemplar, against
+-0.061 and -0.070 blind. A real but mild tilt toward reference-resembling code — present, and
+far too weak to convert into inflation. **P-EX3** (smaller than the math-pool anchoring) holds
+by an order of magnitude.
+
+**Reading, and the scope boundary it draws.** The exemplar hypothesis survives in its
+conditional form and the paper's warning gains a sharp edge: anchoring requires a separable
+ANSWER TOKEN to match on. On short-answer tasks the boxed answer gives the judge a cheap
+equality check, and the harm is large (margins +4 to +6.4, inflation +1.1 to +1.5). On code,
+where the artifact IS the answer and no such token exists, the judge cannot do the cheap match;
+only a weak similarity tilt remains, and the reference — exemplar or specification — helps.
+This CONFIRMS companion A's certification of references on code rather than contradicting it,
+and it bounds paper D's warning to tasks with separable answers: precisely the boundary a
+practitioner needs. It also retro-justifies the H-METHOD result: method-space variation never
+mattered because the judge was never matching on structure, only on the answer token.
