@@ -1706,3 +1706,27 @@ P-DPB2 (directional): the blind arm's train-item true-accuracy change is no wors
   ref arm's.
 Disclosed exploratory readout (no registration weight): wedge per point of own-judge score
 gain, as a matched-reward normalization; exact reward matching cannot be guaranteed ex ante.
+
+---
+
+## DPO run 3 OUTCOME (GATE-F + blind arm) — recorded 2026-09-07, after the run
+
+GATE-F verdicts at the single pre-committed setting (2 epochs, lr 1e-5, beta 0.1):
+- ref arm: own-judge gain +0.343 [+0.101, +0.572] — PASS.
+- m1 arm: own-judge gain -0.992 [-1.235, -0.742] — FAIL, third and final failure.
+- blind arm (addendum): own-judge gain -2.432 [-2.779, -2.120] — FAIL.
+
+**The stopping rule is hereby engaged: the mitigation-under-training question is closed as
+UNRESOLVED, permanently.** No further training attempts. The blind arm's gate failure also
+voids P-DPB1/P-DPB2, so the attribution of training degradation specifically to reference
+conditioning (vs generic overoptimization) likewise remains open; at this setting the two
+non-reference arms LOST their own judges' scores while losing accuracy (train acc changes:
+ref -0.081 [-0.125,-0.038], m1 -0.090, blind -0.200), i.e. training damage without reward
+gain, which no gate can rescue.
+
+What run 3 does add, registered and gated: the ref arm again moved its judge while true
+accuracy fell (points-scale wedge +1.16 [+0.68, +1.58]; held-out acc -0.110
+[-0.149,-0.074]), a second gated replication of the wedge's direction at a milder setting
+than run 1. Conditional predictions P-DPF1/P-DPF3 are void (m1 gate); P-DPF2's direction
+readout is void for the same reason and reported only in the results JSON
+(papers/analysis/dpo_mv3_results.json, producer dpo_mv3_analysis.py).
