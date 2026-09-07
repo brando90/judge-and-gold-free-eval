@@ -62,7 +62,7 @@ On the multi-valid short-answer tasks we study a reference is therefore a lever 
 \midrule
 \textbf{P1} & Swapping the reference between equally valid answers moves the score of identical text &
 Re-judge frozen samples with the reference rotated to a different valid answer &
-\textbf{Up to $+9.5$ of 10 points}, with mirror-image losses and a flat placebo (Section~\ref{sec:p1}) \\
+\textbf{Up to $+9.5$ of 10 points}, with mirror-image losses and a flat placebo; replicated under registration on an exact-oracle pool, $12$ of $12$ cells (Section~\ref{sec:p1}) \\
 \addlinespace[3pt]
 \textbf{P2} & The harm switches on at $k{=}2$ and inverts to help at $k{=}1$ &
 Pools built with exactly $k$ valid answers per item; the same protocol on unique-answer math; a third-party benchmark &
@@ -225,7 +225,7 @@ If the judge anchors, the score must follow the shown reference.
 We take the frozen 64-sample pools of the exploratory study and re-judge them with the reference reassigned to a different member of each item's valid set.
 Nothing about any candidate changes; the only variable that moves is which valid answer the judge is shown.
 The strongest readout is paired at the level of individual samples: the identical text, scored twice.
-The rotation study thereby inherits the exploratory pool and its incomplete checker, a bias that runs against the effect; a fresh rotation replication on an exact-oracle pool is the confirmatory run this draft still owes (Section~\ref{sec:limits}).
+The rotation study thereby inherits the exploratory pool and its incomplete checker, a bias that runs against the effect; the registered replication at the end of this section repairs exactly that.
 
 \begin{table}[tbp]
 \centering
@@ -269,6 +269,12 @@ At the two smallest scales the flip saturates the ten-point scale, so the $+9.5$
 
 The margin translates into near-deterministic selection.
 On the 18 items where matching and non-matching valid answers coexist, referenced best-of-64 picks a reference-matching valid answer in $93$--$100\%$ of selected-valid cases against $38$--$53\%$ blind, and exact McNemar tests exclude chance at three of four scales with the fourth directionally consistent.
+
+\paragraph{Registered replication on exact oracles.}
+Because the rotation above inherits the exploratory pool, we registered a fresh same-sample rotation on the externally registered replication pool, with exact programmatic oracles, stored full valid sets, the cross-family judges, and predictions frozen before any rotated judging; the rotation is pool-aware like the original, assigning each item the valid alternative most frequent among its pool's valid samples, disclosed as such, and the samples and oracle labels are byte-identical to the frozen pool.
+All twelve registered cells confirm.
+The identical sample text gains $+4.97$ and $+6.34$ points of ten under the two rubrics for Qwen-7B, and $+4.09$ and $+3.25$ for phi-4, when the rotated reference matches it ($n{=}120$ items); samples matching the displaced reference lose a mirror-image amount ($-5.04$, $-6.58$, $-3.92$, $-3.18$; $n{=}93$); valid samples matching neither reference sit near flat ($+0.13$, $+0.10$, $+0.30$, $+0.24$; $n{=}113$), and every gainer-minus-placebo contrast excludes zero ($+3.1$ to $+6.2$).
+The causal signature of Table~\ref{tab:rot} reproduces end to end on a pool whose validity is exact, at three to ten times the item count, which retires the incomplete-checker caveat from this paper's central result.
 
 \subsection{Pool composition, and a registered prediction that failed}
 \label{sec:dose}
@@ -577,7 +583,7 @@ Reference-guided judging is therefore endangered by answer multiplicity and is n
 
 \paragraph{The mechanism is established less firmly than the phenomenon, and three experiments would close most of the gap.}
 Rotation establishes reference dependence causally, but the finer mechanistic claim, a cheap equality check on a separable answer token, rests on the exact-match step of Section~\ref{sec:dose} and on the post-hoc reading of the code falsification, and our designs do not separate lexical from semantic matching: whether `13', `thirteen', and an equivalent expression anchor alike is untested, as is whether the effect vanishes when the reference's final answer is masked, when only the bare answer is shown without a derivation, or when the candidate's answer field is masked while its reasoning remains.
-Three additions would carry the most weight: a masking-and-identity suite of exactly those variants; a fresh exact-oracle replication of the same-sample rotation experiment, since rotation currently inherits the exploratory pool and its incomplete checker; and the preregistered held-out separability continuum of Section~\ref{sec:code}, which would convert the boundary from a post-hoc reading into a predictive one.
+Two additions would carry the most weight: a masking-and-identity suite of exactly those variants, and the preregistered held-out separability continuum of Section~\ref{sec:code}, which would convert the boundary from a post-hoc reading into a predictive one; the third such gap, a fresh exact-oracle rotation replication, is now closed by the registered replication of Section~\ref{sec:p1}.
 
 \paragraph{Per-item aggregation is only partly resolved, and registration weight is uneven.}
 Rotation establishes that anchoring moves scores within an item and the composition experiment identifies pool composition as the structure between that and the scoreboard, but the exact mapping from anchoring to which items inflate is not established: the linkage test rejects an exact linear pathway at this design's own measurement noise, and the lure reading that replaces it rests on post-hoc diagnostics.
