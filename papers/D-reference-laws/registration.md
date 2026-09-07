@@ -1666,3 +1666,43 @@ P-DPF2: conditional on both arms passing, the m1 arm's held-out true-accuracy ch
   than the ref arm's (directional).
 P-DPF3 (parroting, restated a third time unchanged despite two prior falsifications, so the test
   stays genuine): the ref arm's reference-match rate gain exceeds the m1 arm's.
+
+---
+
+## Blind-judge attribution arm for DPO run 3 (GATE-B, P-DPB1..P-DPB2) — REGISTERED 2026-09-07, before the run
+
+**Why.** External review (2026-09-07) identified the training experiment's attribution gap:
+with no successful matched control, the ref arm's wedge shows that training against a
+reference-showing judge is exploitable, not that the degradation is caused specifically by
+reference conditioning rather than by generic overoptimization against an imperfect judge.
+This addendum adds the missing control arm to the already-registered GATE-F run (commit
+d33614e): a BLIND-judge DPO arm, identical in everything except that its preference pairs
+come from the Qwen-7B judge's blind (noref rubric-a) scores of the same frozen k>1 pool.
+
+**Standing under the stopping rule.** This adds an ARM, not a setting: the single
+pre-committed GATE-F setting (2 epochs, lr 1e-5, beta 0.1) is unchanged and applies
+symmetrically to all three arms. The stopping rule binds the protected (m1) arm's question
+exactly as registered in d33614e; the blind arm's gate failing voids only the blind-arm
+predictions, never reopens hyperparameters.
+
+**Mechanics (pinned).** Pairs: dpo_mv_pairs.py --arm blind (same pairing rule: up to 8
+pairs/item, min escore gap 2.0, seed 0, k>1 items only), from
+runs/bon_scores_kstrat/synthk__Qwen__Qwen2.5-7B-Instruct__noref_a.jsonl. The ref and m1
+arms REUSE the already-built pairs (runs/dpo_mv/pairs_ref.jsonl, pairs_m1.jsonl) copied
+into runs/dpo_mv3. Training, eval (n=8, train + 120 held-out), oracle, and judging exactly
+as pipeline18, output under runs/dpo_mv3. Estimators: papers/analysis/dpo_mv3_analysis.py,
+an exact mirror of the frozen dpo_mv_analysis.py extended to the third arm, committed with
+this addendum BEFORE any training.
+
+**Predictions.**
+GATE-B: the blind arm raises the BLIND judge's rubric-b score on its train-item generations
+  vs base, 95% item-bootstrap CI excluding zero. Failing voids P-DPB1/P-DPB2.
+P-DPB1 (attribution): conditional on ref + blind gates, the ref arm's wedge
+  (single-reference judge-score gain minus 10x oracle-accuracy gain, train) exceeds the
+  blind arm's, CI excluding zero. This is the review's demanded comparison: if it fails,
+  the ref-arm degradation is NOT attributable to reference conditioning specifically, and
+  the paper must say so.
+P-DPB2 (directional): the blind arm's train-item true-accuracy change is no worse than the
+  ref arm's.
+Disclosed exploratory readout (no registration weight): wedge per point of own-judge score
+gain, as a matched-reward normalization; exact reward matching cannot be guaranteed ex ante.

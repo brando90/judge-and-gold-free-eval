@@ -40,7 +40,7 @@ import os
 import random
 
 ap = argparse.ArgumentParser()
-ap.add_argument("--arm", choices=["ref", "m1"], required=True)
+ap.add_argument("--arm", choices=["ref", "m1", "blind"], required=True)
 ap.add_argument("--pairs-per-item", type=int, default=8)
 ap.add_argument("--min-gap", type=float, default=2.0)
 ap.add_argument("--out", default="runs/dpo_mv")
@@ -49,8 +49,11 @@ os.makedirs(args.out, exist_ok=True)
 rng = random.Random(0)
 
 JUDGE = "Qwen__Qwen2.5-7B-Instruct"
-scores_f = (f"runs/bon_scores_kstrat/synthk__{JUDGE}__ref_a.jsonl" if args.arm == "ref"
-            else f"runs/bon_scores_kstrat/kstrat__{JUDGE}__m1_a.jsonl")
+scores_f = {
+    "ref": f"runs/bon_scores_kstrat/synthk__{JUDGE}__ref_a.jsonl",
+    "m1": f"runs/bon_scores_kstrat/kstrat__{JUDGE}__m1_a.jsonl",
+    "blind": f"runs/bon_scores_kstrat/synthk__{JUDGE}__noref_a.jsonl",
+}[args.arm]
 sc = {json.loads(l)["problem_id"]: json.loads(l)["escore"] for l in open(scores_f)}
 tasks = {json.loads(l)["problem_id"]: json.loads(l) for l in open("runs/kstrat_tasks.jsonl")}
 pool = {json.loads(l)["problem_id"]: json.loads(l)

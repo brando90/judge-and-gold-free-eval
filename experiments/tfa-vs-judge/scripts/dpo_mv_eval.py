@@ -8,7 +8,7 @@ import json
 import os
 
 ap = argparse.ArgumentParser()
-ap.add_argument("--policy", choices=["base", "ref", "m1"], required=True)
+ap.add_argument("--policy", choices=["base", "ref", "m1", "blind"], required=True)
 ap.add_argument("--model", default="meta-llama/Llama-3.1-8B-Instruct")
 ap.add_argument("--n", type=int, default=8)
 ap.add_argument("--out", default="runs/dpo_mv")
