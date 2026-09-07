@@ -47,7 +47,8 @@ Three predictions follow, and we test each on tasks whose validity a program dec
 First, swapping the reference between two equally valid answers should move the score of identical, unchanged candidate text, and it does, by up to $9.5$ points of ten.
 Second, the harm should switch on the moment a second valid answer exists and be absent when the answer is unique: every judge tested shifts toward inflation at $k{=}2$, while the identical protocol on unique-answer mathematics shows the reference collapsing the harm instead.
 Third, the harm should survive what would neutralise mere ignorance, and it does: a frontier-class judge shown a reference marks $82.5\%$ of genuinely correct non-matching answers as failing against $19.6\%$ for the same answers judged blind, the effect persists on answers the judge itself certified while blind, and a policy trained against a reference-showing judge raised that judge's score while its true accuracy fell by more than half.
-These experiments establish reference dependence causally; the anchoring account is our interpretation of it, and one registered scope prediction derived from it failed: we predicted a canonical solution shown on program synthesis would inflate like a key, and it did not, reducing inflation relative to blind instead.
+A registered masking suite then pins the mechanism down: the anchoring survives the reference being rewritten as English words, collapses when equality requires one computation step, and vanishes when the reference's final answer is hidden with its derivation intact, so what the judge performs is a semantic equality check against a readable answer token.
+One registered scope prediction failed: we predicted a canonical solution shown on program synthesis would inflate like a key, and it did not, reducing inflation relative to blind instead.
 That falsification suggests a revised boundary hypothesis, that anchoring requires a cheaply extractable answer token to match against; a preregistered continuum over answer structures, scalar to pair to JSON to program with content held fixed, then finds the predicted attenuation, with the artifact-level harm falling to zero for the stronger judge and to a small residue for the weaker one, so the boundary is real and its sharpness is judge-dependent.
 On the multi-valid short-answer tasks we study a reference is therefore a lever rather than a safeguard, and the strongest mitigation we test is an ordering rather than an instruction: score blind first, and reveal the reference only afterwards.
 \end{abstract}
@@ -67,6 +68,10 @@ Re-judge frozen samples with the reference rotated to a different valid answer &
 \textbf{P2} & The harm switches on at $k{=}2$ and inverts to help at $k{=}1$ &
 Pools built with exactly $k$ valid answers per item; the same protocol on unique-answer math; a third-party benchmark &
 \textbf{Step positive for all six judges}; math inflation collapses $4$--$13\times$; the inversion reproduces on \textsc{MACE} (Section~\ref{sec:p2}) \\
+\addlinespace[3pt]
+\emph{Mech.} & Anchoring is a semantic equality check on a readable answer token &
+Reference rewritten as words, as an equivalent expression, and as a worked derivation with the answer hidden &
+\textbf{6 of 6 cells confirmed}: words preserve the margin, computation collapses it, masking kills it (Section~\ref{sec:maskident}) \\
 \addlinespace[3pt]
 \textbf{P3} & The harm survives what should neutralise it &
 Frontier judge; only answers the judge itself certified blind; training a policy against the judge &
@@ -300,7 +305,17 @@ What the model identifies as load-bearing is neither bonus but the compression t
 The operational conclusion sharpens accordingly: the worst case for a referenced judge is any pool whose correct answers all differ from the key, with or without reference-resembling text in it.
 
 A separate registered analysis sharpens the effect's shape: among equally valid non-matching answers the penalty does not grow with distance from the reference, the registered tercile-monotonicity prediction being falsified for both judges, and what dominates is the exact-match step, $-3.38$ and $-2.18$ points per unit distance once matching samples are included, against blind slopes near zero.
-How far a valid answer sits from the key does not matter, only whether it equals it; whether ``equals'' means lexical string identity or semantic answer identity is not separated by this design (Section~\ref{sec:limits}).
+How far a valid answer sits from the key does not matter, only whether it equals it; what ``equals'' means to the judge is the next subsection's question.
+
+\subsection{What kind of equality check: the masking-and-identity suite}
+\label{sec:maskident}
+
+The exact-match step invites the question of what ``match'' means to the judge, and a registered suite of reference variants answers it, re-judging the frozen replication and $k$-stratified pools with only the reference string changed, predictions committed before any variant judging (all six registered cells confirmed, both judges, rubric b replicating throughout).
+First, the check is \emph{semantic}, not lexical: writing the reference as English words, ``thirty-one'' for 31, leaves phi-4's anchoring margin statistically unchanged ($+3.68$ against $+3.79$ bare, difference $-0.11$ $[-0.28, +0.05]$) and leaves Qwen-7B two thirds of its margin ($+2.88$ against $+4.62$), so a candidate's numeral anchors to a reference that shares not one character with it.
+Second, the check is \emph{cheap or it does not happen}: writing the reference as the equivalent expression $30{+}1$ collapses the margin to $+0.29$ and $+0.89$, reductions of $-4.33$ and $-2.90$ with CIs excluding zero, so a single computation step between the token and the comparison removes most of the anchor.
+Third, the token is \emph{necessary}: showing the worked reference with every occurrence of its final answer hidden, derivation intact, sends the margin to zero on scalar families ($+2.97 \to +0.05$ and $+3.51 \to -0.49$; the drop exceeds the registered half-margin bar in all four judge-rubric cells).
+The mechanism this triangulates is a semantic equality check against a readable answer token: survive the token's re-lexicalisation, die when equality must be computed, die when the token is hidden.
+It also retro-explains the continuum's judge-dependent residue in Section~\ref{sec:sepcont}, since a two-line program's output is exactly the marginal case of a token that is recoverable at some cost.
 
 \section{Prediction 2: the boundary at two valid answers}
 \label{sec:p2}
@@ -596,9 +611,9 @@ The decomposition matters more than the verdict: an overall shift is calibration
 Set against the $\pm 9.5$ points that answer rotation moves the identical text, method effects are twenty to four hundred times smaller, and the same machinery on the same items recovers the standing referenced-minus-blind difference, so the near-nulls are not an insensitive instrument.
 Reference-guided judging is therefore endangered by answer multiplicity and is not, on this evidence, endangered by two correct solutions taking different routes to one answer.
 
-\paragraph{The mechanism is established less firmly than the phenomenon, and three experiments would close most of the gap.}
-Rotation establishes reference dependence causally, but the finer mechanistic claim, a cheap equality check on a separable answer token, rests on the exact-match step of Section~\ref{sec:dose} and on the post-hoc reading of the code falsification, and our designs do not separate lexical from semantic matching: whether `13', `thirteen', and an equivalent expression anchor alike is untested, as is whether the effect vanishes when the reference's final answer is masked, when only the bare answer is shown without a derivation, or when the candidate's answer field is masked while its reasoning remains.
-The masking-and-identity suite of exactly those variants is the remaining direct test; the other two gaps this list once carried are now closed, the fresh exact-oracle rotation replication by Section~\ref{sec:p1} and the held-out separability continuum by Section~\ref{sec:sepcont}.
+\paragraph{The mechanism now has direct evidence, and what remains untested is narrower.}
+Rotation establishes reference dependence causally, and the masking-and-identity suite of Section~\ref{sec:maskident} characterises the operation directly, a semantic equality check requiring a readable answer token; the fresh exact-oracle rotation replication (Section~\ref{sec:p1}) and the held-out separability continuum (Section~\ref{sec:sepcont}) close the other two gaps an earlier draft of this list carried.
+Still untested on the mechanism side: masking the \emph{candidate's} answer field while leaving its reasoning, which requires editing candidate text rather than the reference and so leaves the frozen-pool paradigm; and the refined recoverability reading of Section~\ref{sec:sepcont}, which predicts anchoring should track the cost of extracting a comparable token from the artifact and has made no held-out prediction yet.
 
 \paragraph{Per-item aggregation is only partly resolved, and registration weight is uneven.}
 Rotation establishes that anchoring moves scores within an item and the composition experiment identifies pool composition as the structure between that and the scoreboard, but the exact mapping from anchoring to which items inflate is not established: the linkage test rejects an exact linear pathway at this design's own measurement noise, and the lure reading that replaces it rests on post-hoc diagnostics.
