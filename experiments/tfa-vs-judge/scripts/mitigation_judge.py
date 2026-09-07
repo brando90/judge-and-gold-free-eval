@@ -13,7 +13,10 @@ from transformers import AutoTokenizer
 ap = argparse.ArgumentParser()
 ap.add_argument("--pool", required=True)
 ap.add_argument("--judge", required=True)
-ap.add_argument("--cond", choices=["m1", "m2"], required=True)
+ap.add_argument("--cond", choices=["m1", "m2", "m1noscore", "m1prev", "m1indep"], required=True)
+ap.add_argument("--other-scores", default=None,
+                help="m1indep only: jsonl of the OTHER judge's blind escores "
+                     "(problem_id, escore list) shown in place of the judge's own")
 ap.add_argument("--rep", choices=["a", "b"], required=True)
 ap.add_argument("--out", default="runs/bon_scores_kstrat")
 ap.add_argument("--max-model-len", type=int, default=4096)
@@ -71,6 +74,30 @@ def m1_prompt(r, s, blind_score):
                 f"{r['ref_answer']}\n\nCandidate solution:\n{s}\n\n"
                 f"Your blind score for this candidate was {blind_score:.1f} out of 10.\n\nScore:")
 
+# --- M1 mechanism variants (P-M1V1..P-M1V3, registered in
+# papers/analysis/m1_variants_analysis.py, committed before these conds ever ran) ---
+def m1noscore_prompt(r, s):
+    # identical to m1 minus the score line: reference-only second pass
+    sysmsg = RUBRIC_TIES[("ref", args.rep)] + (
+        " You have already assessed this candidate without seeing any reference. "
+        "A correct answer that differs from the reference must keep the score you gave it; "
+        "revise only if the reference reveals the candidate is actually wrong.")
+    return chat(sysmsg,
+                f"Problem:\n{r['question']}\n\nReference answer (one valid answer, trusted):\n"
+                f"{r['ref_answer']}\n\nCandidate solution:\n{s}\n\nScore:")
+
+def m1neutral_prompt(r, s, blind_score):
+    # m1prev and m1indep share this neutral phrasing; only the score's SOURCE differs
+    sysmsg = RUBRIC_TIES[("ref", args.rep)] + (
+        " This candidate was already assessed blind, with no reference in view. "
+        "A correct answer that differs from the reference must keep its blind score; "
+        "revise only if the reference reveals the candidate is actually wrong.")
+    return chat(sysmsg,
+                f"Problem:\n{r['question']}\n\nReference answer (one valid answer, trusted):\n"
+                f"{r['ref_answer']}\n\nCandidate solution:\n{s}\n\n"
+                f"A previous blind assessment scored this candidate {blind_score:.1f} out of 10."
+                f"\n\nScore:")
+
 def m2_prompt(r, s):
     sysmsg = ("You check answer validity. The question may have several valid answers. "
               "Answer with exactly one word: Yes if the candidate's final answer is a valid "
@@ -79,6 +106,13 @@ def m2_prompt(r, s):
     return chat(sysmsg,
                 f"Problem:\n{r['question']}\n\nReference (one valid answer):\n{r['ref_answer']}\n\n"
                 f"Candidate solution:\n{s}\n\nIs the candidate's final answer valid?")
+
+other = None
+if args.cond == "m1indep":
+    if not args.other_scores:
+        raise SystemExit("--other-scores required for m1indep")
+    other = {json.loads(l)["problem_id"]: json.loads(l)["escore"]
+             for l in open(args.other_scores)}
 
 llm = LLM(model=args.judge, dtype="bfloat16", gpu_memory_utilization=args.gpu_util,
           max_model_len=args.max_model_len)
@@ -123,12 +157,17 @@ with open(out, "w") as f:
             bs = blind[r["problem_id"]]
             if args.cond == "m1":
                 prompts2 += [m1_prompt(r, s, bs[j]) for j, s in enumerate(r["samples"])]
+            elif args.cond == "m1noscore":
+                prompts2 += [m1noscore_prompt(r, s) for s in r["samples"]]
+            elif args.cond in ("m1prev", "m1indep"):
+                src = bs if args.cond == "m1prev" else other[r["problem_id"]]
+                prompts2 += [m1neutral_prompt(r, s, src[j]) for j, s in enumerate(r["samples"])]
             else:
                 prompts2 += [m2_prompt(r, s) for s in r["samples"]]
         out2 = llm.generate(prompts2, sp)
         for r, (a, b) in zip(chunk, spans):
             bs = blind[r["problem_id"]]
-            if args.cond == "m1":
+            if args.cond != "m2":
                 esc = [escore_of(o) for o in out2[a:b]]
             else:
                 esc = [bs[j] * yes_prob(o) for j, o in enumerate(out2[a:b])]
