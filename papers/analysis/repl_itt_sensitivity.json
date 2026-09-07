@@ -1,0 +1,74 @@
+{
+ "itt_all": {
+  "n_items": 120,
+  "pooled": 1.142,
+  "ci": [
+   0.972,
+   1.305
+  ],
+  "per_judge": {
+   "Qwen__Qwen2.5-7B-Instruct": {
+    "delta": 1.271,
+    "ci": [
+     1.062,
+     1.491
+    ]
+   },
+   "microsoft__phi-4": {
+    "delta": 1.012,
+    "ci": [
+     0.863,
+     1.168
+    ]
+   }
+  }
+ },
+ "inband": {
+  "n_items": 105,
+  "pooled": 1.193,
+  "ci": [
+   1.03,
+   1.355
+  ],
+  "per_judge": {
+   "Qwen__Qwen2.5-7B-Instruct": {
+    "delta": 1.291,
+    "ci": [
+     1.065,
+     1.52
+    ]
+   },
+   "microsoft__phi-4": {
+    "delta": 1.095,
+    "ci": [
+     0.948,
+     1.24
+    ]
+   }
+  }
+ },
+ "outband": {
+  "n_items": 15,
+  "pooled": 0.779,
+  "ci": [
+   0.193,
+   1.317
+  ],
+  "per_judge": {
+   "Qwen__Qwen2.5-7B-Instruct": {
+    "delta": 1.129,
+    "ci": [
+     0.384,
+     1.814
+    ]
+   },
+   "microsoft__phi-4": {
+    "delta": 0.429,
+    "ci": [
+     -0.089,
+     0.907
+    ]
+   }
+  }
+ }
+}

@@ -199,6 +199,7 @@ All three registered predictions are confirmed (Table~\ref{tab:repl}).
 The reference adds $+1.19$ baseline standard deviations of inflation over blind judging, each judge's delta individually excluding zero, about two and a half times the exploratory estimate it was registered to test.
 Selection collapses onto the key: on the 93 items where matching and non-matching valid answers coexist, the referenced judge selects a reference-matching valid answer where the blind judge did not on 56 and 76 items, against 2 and 0 the other way.
 Only $0.616$ of samples comply with the boxed-answer format, so we asked post hoc whether extraction friction manufactures the endpoint; it does not, though it inflates it, and $+0.90$ on the cleanest tercile is the conservative reading we carry throughout.
+Nor does the registered pass-rate band: an intention-to-treat recomputation over every built item (post hoc, identical estimator, no filter) gives $+1.14$ $[+0.97, +1.31]$ over all 120 items, and the fifteen excluded out-of-band items alone give $+0.78$ $[+0.19, +1.32]$, so the filtered population is a convenience, not a load-bearing choice.
 
 The harm also grows with optimization pressure: recomputed post hoc at each budget in raw hack-gap units, the paired gap already excludes zero at best-of-2 ($+0.076$) and grows nearly twelvefold by $n{=}64$ ($+0.895$).
 
@@ -559,7 +560,7 @@ Worked reference & Milder, still harmful & 1 \\
 Every pool carrying a positive result is constraint-style or short-factual, chosen so that the number of valid answers is decided by a program; that is what makes the claims exact and what bounds them, since we do not test free-form generation, long references, or tasks where validity is contested.
 Section~\ref{sec:code} bounds the harm further, to tasks with a separable answer token, on the evidence of one code substrate and two judges, so where exactly between a boxed integer and a program the effect disappears is untested.
 Item counts per stratum are small, four to six per cell on the synthetic grid, so cross-stratum patterns carry more weight than any single cell, and the grid cells quoted here are uncorrected for multiple comparisons.
-Several analyses also run on filtered subsets, the frozen pass-rate band and, post hoc, the cleanest-compliance tercile; the remedy is a larger clean pool with constrained answer formatting, intention-to-treat estimates over every built item with the filtered analysis as sensitivity, and grid strata grown severalfold, none of which this draft has.
+Several analyses also run on filtered subsets, the frozen pass-rate band and, post hoc, the cleanest-compliance tercile; the intention-to-treat recomputation of Section~\ref{sec:phenomenon} shows the band does not carry the primary endpoint, but a larger clean pool with constrained answer formatting and grid strata grown severalfold remain the right remedy, and this draft does not have them.
 The exploratory Ties pool, which carries the mechanism experiments, uses an enumerated-set checker whose valid sets are known to be substantially incomplete; that bias runs against the effect, and no other pool inherits the checker.
 
 \paragraph{Whether the mitigation survives training is unresolved.}
