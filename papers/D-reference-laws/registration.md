@@ -1730,3 +1730,23 @@ accuracy fell (points-scale wedge +1.16 [+0.68, +1.58]; held-out acc -0.110
 than run 1. Conditional predictions P-DPF1/P-DPF3 are void (m1 gate); P-DPF2's direction
 readout is void for the same reason and reported only in the results JSON
 (papers/analysis/dpo_mv3_results.json, producer dpo_mv3_analysis.py).
+
+---
+
+## M1 variants OUTCOME (P-M1V1..P-M1V3) — recorded 2026-09-07, after the runs
+
+P-M1V1 (score input necessary): CONFIRMED both judges. m1noscore-minus-m1 inflation
+contrast +1.409 [+1.107,+1.754] (Qwen-7B) and +0.243 [+0.119,+0.360] (phi-4); m1noscore's
+level (+1.42) sits at single-reference height for Qwen. The ordering + keep-correct
+instruction without the number protects nobody.
+P-M1V2 (framing inert): SPLIT — confirmed for phi-4 (-0.031 [-0.140,+0.079]), FALSIFIED
+for Qwen-7B (+0.512 [+0.276,+0.733]): labelling the score as the judge's own adds real
+protection for the weaker judge.
+P-M1V3 (own vs other's score): CONFIRMED both judges (indep-minus-prev -0.149
+[-0.401,+0.062] and +0.003 [-0.095,+0.091]). Deference is to a displayed number, not to
+the judge's own state.
+Reading (post hoc): blind-then-reveal supplies an explicit numeric anchor carrying the
+blind pass's uncorrupted signal; the judge defers to it instead of the reference token.
+Producer: papers/analysis/m1_variants_analysis.py -> m1_variants_results.json (n=58 k>1
+kstrat items, non-degenerate oracle; population per this registration's own filter, not
+the OSF mitigation population, hence M1 levels +0.01/+0.12 vs the registered -0.05/+0.16).
