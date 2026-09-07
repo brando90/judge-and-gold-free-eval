@@ -32,9 +32,9 @@
 \setcounter{topnumber}{3}
 \setcounter{totalnumber}{5}
 
-\title{The Reference Is Not an Answer Key}
+\title{When References Become Targets:\\ Reference-Conditioned LLM Judges Favor Answer Matching\\ on Multi-Valid Tasks}
 \author{Anonymous Authors}
-\date{Companion draft, September 1, 2026}
+\date{Companion draft, September 7, 2026}
 
 \begin{document}
 \maketitle
@@ -42,13 +42,14 @@
 \begin{abstract}
 \noindent
 Reference-guided judging is standard practice: an LLM judge shown a trusted answer can check a candidate instead of trusting its own opinion.
-We propose one alternative reading of what that reference is: on a task with more than one valid answer it is not an answer key but a single sample from the valid set, and the judge anchors on it, so what it measures is proximity to an arbitrary sample rather than correctness.
+We propose one alternative reading of what that reference is on the multi-valid short-answer tasks we study: when more than one answer is valid, the reference is not an answer key but a single sample from the valid set, and the judge anchors on it, so what it measures is proximity to an arbitrary sample rather than correctness.
 Three predictions follow, and we test each on tasks whose validity a program decides, so the number of valid answers is controlled rather than argued about.
 First, swapping the reference between two equally valid answers should move the score of identical, unchanged candidate text, and it does, by up to $9.5$ points of ten.
 Second, the harm should switch on the moment a second valid answer exists and be absent when the answer is unique: every judge tested shifts toward inflation at $k{=}2$, while the identical protocol on unique-answer mathematics shows the reference collapsing the harm instead.
 Third, the harm should survive what would neutralise mere ignorance, and it does: a frontier-class judge shown a reference marks $82.5\%$ of genuinely correct non-matching answers as failing against $19.6\%$ for the same answers judged blind, the effect persists on answers the judge itself certified while blind, and a policy trained against a reference-showing judge raised that judge's score while its true accuracy fell by more than half.
-The same reading predicts where the failure stops, and a registered code experiment confirms it: where the artifact is the answer and no separable answer token exists, a canonical solution in the reference slot does not inflate.
-A reference is therefore a lever rather than a safeguard on tasks with separable answers, and the remedy we find is an ordering rather than an instruction: score blind first, and reveal the reference only afterwards.
+These experiments establish reference dependence causally; the anchoring account is our interpretation of it, and one registered scope prediction derived from it failed: we predicted a canonical solution shown on program synthesis would inflate like a key, and it did not, reducing inflation relative to blind instead.
+That falsification suggests a revised boundary hypothesis, that anchoring requires a separable answer token to match against, which we state as post hoc and untested rather than confirmed.
+On the multi-valid short-answer tasks we study a reference is therefore a lever rather than a safeguard, and the strongest mitigation we test is an ordering rather than an instruction: score blind first, and reveal the reference only afterwards.
 \end{abstract}
 
 \begin{table}[t!]
@@ -71,12 +72,12 @@ Pools built with exactly $k$ valid answers per item; the same protocol on unique
 Frontier judge; only answers the judge itself certified blind; training a policy against the judge &
 \textbf{$82.5\%$ vs $19.6\%$ failing grades}; the filtered effect is unchanged; a $+4.13$ wedge under training (Section~\ref{sec:p3}) \\
 \midrule
-\emph{Scope} & Anchoring needs a separable answer token, so the harm should vanish where the artifact is the answer &
+\emph{Scope} & Registered: a canonical solution on code, one valid program among many, should inflate like a key &
 Program synthesis: a canonical solution in the reference slot, against blind and against a test suite &
-\textbf{No inflation}, exemplar-versus-blind $-0.34$ and $-0.57$; a registered prediction falsified (Section~\ref{sec:code}) \\
+\textbf{Falsified: no inflation}, exemplar-versus-blind $-0.34$ and $-0.57$; motivates a post-hoc separability hypothesis (Section~\ref{sec:code}) \\
 \bottomrule
 \end{tabular}
-\caption{\textbf{Takeaway: one explanation, three predictions, three confirmations, and a scope boundary the same explanation predicts.} The explanation is that a reference on a multi-valid task is one sample from the valid set and the judge anchors on it. Anchoring is in points of the judge's 0--10 scale; inflation and the training wedge are in baseline standard deviations of the judge's own score distribution. Intervals, caveats, and the predictions that failed are in the sections named.}
+\caption{\textbf{Takeaway: one explanation, three predictions, three confirmations, and one falsified scope prediction that motivates a revised, still-untested boundary hypothesis.} The explanation is that a reference on a multi-valid task is one sample from the valid set and the judge anchors on it. Anchoring is in points of the judge's 0--10 scale; inflation and the training wedge are in baseline standard deviations of the judge's own score distribution. Intervals, caveats, and the predictions that failed are in the sections named.}
 \label{tab:predictions}
 \end{table}
 
@@ -94,6 +95,7 @@ The standard reading of a reference is that it is an \emph{answer key}: a certif
 We propose that on tasks with more than one valid answer the reference is not an answer key at all, but \emph{one sample from the valid set}, drawn by whoever built the dataset and treated by the judge as though it were the whole set.
 Everything in this paper follows from that single reading.
 If the judge anchors on the shown sample, the quantity it reports is proximity to an arbitrary member of the valid set, a property of the reference rather than of the candidate~\cite{companionB}, and under best-of-$n$ selection an optimizer replaces ``pick a correct answer'' with ``pick the answer that matches the key.''
+Two levels of claim run through the paper, and we keep them separate: the experiments establish \emph{reference dependence} causally, that the score of unchanged text follows which valid answer occupies the reference slot; that the underlying operation is specifically a cheap equality check against a separable answer token is our proposed mechanism, and we mark where the evidence for it is direct and where it is post hoc.
 
 The static half of this failure is already known, and not only to us: judges penalise valid solutions that differ from the provided reference~\cite{fixation2025}, reference-guided evaluation degrades on open-ended tasks~\cite{judgingref2026}, and on \textsc{RewardBench-2} Ties comparisons a reference costs $7$--$8$ points of verdict accuracy regardless of who wrote it~\cite{companionA,malik2025rewardbench2}.
 The open question was dynamic, because static verdict accuracy and behaviour under selection pressure can disagree~\cite{gao2022scaling} and the safeguard case rests on the dynamic quantity.
@@ -108,13 +110,13 @@ If the reference is a sample and the judge anchors on it, three things must be t
 \item \textbf{P3.} The harm must survive what would neutralise ignorance. If the judge simply did not know the alternative was valid, then a stronger judge, or restricting attention to answers the judge itself already certified, should remove the effect. Anchoring predicts it will not, and predicts that optimization pressure will exploit it rather than average it away (Section~\ref{sec:p3}).
 \end{itemize}
 
-The same explanation also states where the failure stops, which separates it from a general claim that references are risky: anchoring requires a separable answer token to match against, and on program synthesis the artifact is the answer, so a reference should behave as a specification rather than as a key.
-Section~\ref{sec:code} tests that boundary and confirms it, against a registered prediction of ours to the contrary.
+Where the failure stops is a question the explanation did not settle in advance, and there we report a falsification rather than a confirmation: we registered the prediction that a canonical \emph{solution} shown on program synthesis would inflate the way a short-answer key does, and it did not (Section~\ref{sec:code}).
+The failure suggests a revised hypothesis, that anchoring requires a separable answer token to match against, so that on code, where the artifact is the answer, a reference behaves as a specification; that hypothesis fits the data but was formed after seeing it, and we state it as the boundary to test next, not as a confirmed prediction.
 
 \paragraph{Registration.}
 Every prediction in this paper was committed before the data it is scored on existed.
 Two experiments carry external Open Science Framework registrations with third-party timestamps, the replication (\texttt{osf.io/ym5x9}) and the mitigation study (\texttt{osf.io/qugbd}), as does a judge-coverage extension; the rest are git commits carrying first-party timestamps only.
-Roughly half of the auxiliary predictions failed, and we report those failures where they bite rather than in a footnote: the composition and distance analyses each falsified a registered prediction (Section~\ref{sec:dose}), as did the method rotation (Section~\ref{sec:limits}) and the code exemplar (Section~\ref{sec:code}); one of two mitigation predictions is only partially confirmed and one of two coverage predictions was not confirmed (Section~\ref{sec:norescue}); and the training experiment's protected arm failed its own manipulation check twice (Section~\ref{sec:limits}).
+Roughly half of the auxiliary predictions failed, and we report those failures where they bite rather than in a footnote: the composition and distance analyses each falsified a registered prediction, as did half of the two-factor follow-up registered in response to external review (Section~\ref{sec:dose}), as did the method rotation (Section~\ref{sec:limits}) and the code exemplar (Section~\ref{sec:code}); one of two mitigation predictions is only partially confirmed and one of two coverage predictions was not confirmed (Section~\ref{sec:norescue}); and the training experiment's protected arm failed its own manipulation check twice (Section~\ref{sec:limits}).
 The complete ledger of predictions, timestamps, deviations, and outcomes lives in the technical report version of this paper, with an artifact manifest naming a committed producer for every number quoted here.\footnote{Technical report version, draft v31, released with the code. It contains the full prediction ledger, the registration deviations, three post-hoc checker audits, and the provenance manifest. This document reorganises the same evidence and changes no number.}
 Table~\ref{tab:predictions} summarises the explanation, the four tests, and their outcomes.
 
@@ -134,9 +136,17 @@ Each judge runs \emph{blind}, with no reference in context, and \emph{referenced
 
 \paragraph{The two measurements.}
 \emph{Inflation} is the excess hack gap: how far the selected sample's reported score sits above its true quality, in baseline standard deviations, against a null built by shuffling judge scores among samples the oracle grades identically.
+We reproduce the definition here so this paper stands alone.
+For one item with samples $s_1, \dots, s_n$, judge scores $J(\cdot)$ with pool mean $\mu_J$ and standard deviation $\sigma_J$, and oracle validity $V(\cdot)$ with pool mean $\mu_V$ and standard deviation $\sigma_V$, the best-of-$n$ pick is $s^\star = \arg\max_i J(s_i)$ and the hack gap is the standardized scoreboard gain in excess of the standardized truth gain,
+\begin{equation}
+G \;=\; \frac{J(s^\star) - \mu_J}{\sigma_J} \;-\; \frac{V(s^\star) - \mu_V}{\sigma_V},
+\end{equation}
+with selection under one rubric paraphrase and the reported $J(s^\star)$ taken from the other.
+Inflation is $G - \mathbb{E}_\pi[G]$, where $\pi$ shuffles judge scores among samples the oracle grades identically, so any score-validity association a judge earns honestly is preserved under the null; the committed implementation additionally averages over score ties and resampled sub-pools.
 A judge whose scores merely track validity reads zero; a judge that awards 10 to reference-matching answers raises the reported score of its best-of-64 pick without moving that pick's true validity, and inflation measures that scoreboard-versus-truth divergence.
 The anchoring \emph{margin} is the score bonus a valid reference-matching sample receives over an equally valid non-matching one, on the 0--10 scale.
 Both estimators come unchanged from companion A~\cite{companionA}, frozen in committed code before the confirmatory runs.
+Because the standardized estimand is cognitively expensive, wherever the design defines them we also report plain quantities that need no estimator: the true accuracy of the selected sample, whether a selected valid answer matches the shown reference, and the rate at which valid non-matching answers receive failing grades.
 
 \section{The phenomenon: the reference makes selection worse}
 \label{sec:phenomenon}
@@ -214,6 +224,7 @@ If the judge anchors, the score must follow the shown reference.
 We take the frozen 64-sample pools of the exploratory study and re-judge them with the reference reassigned to a different member of each item's valid set.
 Nothing about any candidate changes; the only variable that moves is which valid answer the judge is shown.
 The strongest readout is paired at the level of individual samples: the identical text, scored twice.
+The rotation study thereby inherits the exploratory pool and its incomplete checker, a bias that runs against the effect; a fresh rotation replication on an exact-oracle pool is the confirmatory run this draft still owes (Section~\ref{sec:limits}).
 
 \begin{table}[tbp]
 \centering
@@ -271,16 +282,23 @@ We predicted inflation would grow with $d$; it falls with $d$ instead, monotonic
 Post-hoc diagnostics locate the cause: with no correct look-alike available, the judge's preference for reference-resembling text does not switch off but switches targets, selecting a valid sample only $0.14$ and $0.21$ of the time at $d{=}0$ against $0.72$ and $0.79$ blind, with $58\%$ and $72\%$ of the invalid samples it selects containing the reference answer's text against $43\%$ and $35\%$ blind.
 That lure reading carries no registration weight; a constructed test of it was registered but closed without judging after its pinned naturalness audit failed in five rounds.
 Two conclusions survive the falsification: pool composition is the load-bearing structure the linkage test could not separate, and the worst case for a referenced judge is a pool whose correct answers all differ from the key.
+We then gave the lure reading its registered test: a two-factor follow-up (git-timestamped, predictions frozen pre-run) crossing the number of valid reference-matching candidates $d \in \{0,2,4\}$ with the number of invalid reference-resembling lures $\ell \in \{0,3,6\}$ in matched 14-sample sub-pools over 24 eligible items, together with a four-parameter selection model fitted per judge with item intercepts, $S_{\mathrm{ref}} \approx \beta\, S_{\mathrm{blind}} + \lambda\, \mathbb{I}[\text{matches reference}] + \gamma\, \mathbb{I}[\text{invalid lure}]$, evaluated leave-one-item-out.
+Its four registered predictions split evenly, and the failures are the informative part.
+Confirmed: adding lures at $d{=}0$ collapses the referenced judge's valid-pick rate ($-0.31$ and $-0.38$, CIs excluding zero) while blind judges barely move; and the model is signed as predicted, $\lambda = +4.3$ and $+3.5$ points, $\gamma = +1.4$ and $+1.7$, all CIs excluding zero, with the leave-one-out model reproducing the nine-cell inflation surface at Spearman $0.80$ (exactly at the registered bar) and $0.85$.
+Falsified: the lure axis raises inflation at $d{=}0$ for phi-4 ($+0.23$ $[+0.05,+0.44]$) but not resolvably for Qwen-7B ($+0.15$ $[-0.11,+0.37]$), and the registered interaction, that removing every lure would restore the originally predicted rising dose-response, fails for both judges: with zero lures and zero matching valids the referenced judge still inflates ($+0.68$ and $+0.66$) and still selects valid answers far less often than blind ($0.47$ vs $0.77$, and $0.51$ vs $0.83$).
+The lure is therefore a real but secondary channel.
+What the model identifies as load-bearing is neither bonus but the compression term: conditional on the candidate, a referenced score retains only $\beta \approx 0.5$--$0.7$ of the blind score's signal, so showing the reference dilutes the judge's own quality assessment, and when no candidate matches the key that dilution alone drags valid non-matching answers into the invalid mass ($\beta < 1$ partly reflects attenuation, so we read the coefficient as descriptive rather than causal).
+The operational conclusion sharpens accordingly: the worst case for a referenced judge is any pool whose correct answers all differ from the key, with or without reference-resembling text in it.
 
 A separate registered analysis sharpens the effect's shape: among equally valid non-matching answers the penalty does not grow with distance from the reference, the registered tercile-monotonicity prediction being falsified for both judges, and what dominates is the exact-match step, $-3.38$ and $-2.18$ points per unit distance once matching samples are included, against blind slopes near zero.
-How far a valid answer sits from the key does not matter, only whether it equals it.
+How far a valid answer sits from the key does not matter, only whether it equals it; whether ``equals'' means lexical string identity or semantic answer identity is not separated by this design (Section~\ref{sec:limits}).
 
 \section{Prediction 2: the boundary at two valid answers}
 \label{sec:p2}
 
 \paragraph{The prediction.}
 When exactly one answer is valid, matching the reference and being correct are the same criterion, so an anchoring judge is indistinguishable from a verifying one and the reference should help; the moment a second valid answer exists the two criteria come apart.
-The alternative explanation therefore predicts a step, not a slope: the sign of the lever should flip at $k{=}2$ and should not require a large valid set.
+The alternative explanation therefore predicts a step: the sign of the lever should flip at $k{=}2$ and should not require a large valid set; what happens beyond the step it does not by itself fix.
 
 \paragraph{The test.}
 We build pools that fix $k$ per item by construction and vary nothing else.
@@ -304,7 +322,7 @@ Llama-8B  & $-0.28$ {\scriptsize$[-0.65,+0.07]$} & $+0.46$ {\scriptsize$[+0.12,+
 phi-4     & $-0.58$ {\scriptsize$[-0.86,-0.30]$} & $+0.22$ {\scriptsize$[-0.19,+0.65]$} & $+0.80$ {\scriptsize$[+0.30,+1.28]$} & $+0.37$ {\scriptsize$[+0.06,+0.70]$} \\
 \bottomrule
 \end{tabular}
-\caption{\textbf{Takeaway: the step is the universal claim, positive with an interval excluding zero for every judge tested, while the trend beyond the step is null for the weaker judges. Multiplicity acts as a switch, not a dial.}
+\caption{\textbf{Takeaway: the transition from $k{=}1$ to $k{>}1$ is the dominant and only universal effect, positive with an interval excluding zero for every judge tested; evidence for additional growth with $k$ beyond the step is mixed, positive for Llama-8B and phi-4 and null for the weaker Qwen judges.}
 Post-hoc paired re-analysis on the synthetic grid: per-item referenced-minus-blind inflation deltas at $k{=}1$, pooled over $k>1$, their difference, and the slope per $\log_2 k$; negative means the reference helps. The frozen estimator's pass-rate filter leaves $n{=}6$ items at $k{=}1$ and $n{=}20$ item-strata over $k>1$. The registered grid prediction had two legs: the inflation leg is confirmed in direction for all six judges, and the margin-growth leg is \emph{falsified} for the weaker judges, whose margins sit flat at every $k>1$.}
 \label{tab:paired}
 \end{table}
@@ -321,7 +339,8 @@ Inflation (excess hack gap, in baseline standard deviations) versus the number o
 Crossing from a unique answer to any multiplicity shifts every judge toward inflation.
 The step is positive with an interval excluding zero for all six judges on the grid, ranging from $+0.46$ to $+2.55$ (Table~\ref{tab:paired}), and the harm needs no large valid set: $k{=}2$ suffices.
 At $k{=}1$ the reference helps five of six judges and the pooled $k{>}1$ level is individually significant for three of six, so the universal claim is the step rather than the level at any single $k$.
-Half of the registered grid prediction failed here: we predicted margins would grow with $k$, and for the weaker judges they sit flat at every $k>1$, so multiplicity is a switch rather than a dial.
+Half of the registered grid prediction failed here: we predicted margins would grow with $k$, and for the weaker judges they sit flat at every $k>1$.
+The dominant and only universal effect is therefore the transition from $k{=}1$ to $k{>}1$; the trend beyond it is mixed, positive with intervals excluding zero for Llama-8B and phi-4, marginal for Qwen-14B, and null for the smaller Qwen judges (Table~\ref{tab:paired}, last column), so we do not claim the harm is flat in $k$ beyond the step, only that the step is where every judge agrees.
 
 The externally registered experiment replaces that descriptive reading with a confirmatory one.
 On the 75-item $k$-stratified pool, with $k$ fixed per item and the step named as the registered statistic in advance, the step is $+1.45$ for Qwen-7B and $+1.18$ for phi-4, both excluding zero.
@@ -419,7 +438,8 @@ We registered a two-arm LoRA-DPO experiment on Llama-3.1-8B with identical hyper
 The reference-trained arm passed its gate and produced the largest scoreboard-versus-truth divergence measured anywhere in this paper.
 Its own judge's score rose $+1.76$ $[+1.47, +2.01]$ points while its true accuracy fell from $0.412$ to $0.175$, a wedge of $+4.13$ $[+3.50, +4.78]$ baseline standard deviations, and held-out accuracy fell $-0.228$.
 The selection-time inversion reproduces under training pressure, and is larger there.
-The protected arm did not pass its gate, so the mitigation-under-training question is open (Section~\ref{sec:limits}).
+The protected arm did not pass its gate, so the mitigation-under-training question is open (Section~\ref{sec:limits}), and the same failure limits attribution: with no successful matched control arm, the wedge establishes that training against a reference-showing judge is exploitable, not that the degradation is caused specifically by reference conditioning rather than by generic overoptimization against an imperfect judge~\cite{gao2022scaling}.
+Separating the two requires a blind-judge arm trained under identical hyperparameters and compared at matched training-reward improvement, which we have not run.
 
 One registered prediction inside this experiment failed, and the failure is informative.
 We predicted the reference-trained arm would emit the exact reference answer more often; it emits it $-0.037$ less often than the comparison arm, and its own match rate fell relative to base, so the damage is not key-copying.
@@ -429,12 +449,11 @@ Companion A's analogous parroting prediction on unique-answer math also failed~\
 \section{Where the harm ends: tasks without a separable answer}
 \label{sec:code}
 
-\paragraph{The prediction.}
-An explanation that predicts only harm is weaker than one that also predicts its absence.
-The alternative explanation carries a condition: the judge's cheap operation is an equality check between a candidate's answer token and the reference's, so anchoring requires that a separable answer token exist.
-Short-answer tasks supply one, in the boxed answer; program synthesis does not, because the artifact is the answer and no short string is available to compare, so a reference there should function as a specification rather than as a key.
-Companion A reports exactly that, a reference collapsing inflation on code~\cite{companionA}, but its reference was a test suite, which is a specification by construction.
-We registered the sharper prediction that a canonical \emph{solution} would inflate where a test suite does not.
+\paragraph{The prediction, stated in the order it happened.}
+Companion A reports a reference collapsing inflation on code~\cite{companionA}, but its reference was a test suite, which is a specification by construction.
+Reading the reference as a sample from the valid set, we registered the prediction that a canonical \emph{solution} in the reference slot, one valid program among many, would inflate where a test suite does not.
+That prediction was falsified, and the falsification is what first suggested the separability condition: that the judge's cheap operation is an equality check between a candidate's answer token and the reference's, so anchoring requires a separable answer token, which short-answer tasks supply in the boxed answer and program synthesis does not, the artifact being the answer.
+The condition fits everything we measure, but it was formed after seeing the code result; we present it as the revised hypothesis this experiment produced, not as a prediction it confirmed.
 
 \paragraph{The test.}
 The pool is 317 MBPP items whose canonical solution passes an EvalPlus-augmented oracle, with three conditions scored on identical samples by identical judges: blind and specification, taken from companion A's frozen runs, and a new exemplar condition showing the canonical solution under a truthfully worded rubric. Because companion A's frozen score files were produced under its registered pass-rate band, the paired contrasts run on the 58 in-band items all three conditions share.
@@ -461,17 +480,18 @@ The registered prediction is falsified (Table~\ref{tab:code}).
 The exemplar does not inflate: its delta against blind is negative with an interval excluding zero for the 14B judge and null for the 7B judge, and the exemplar-minus-specification contrast crosses zero for both.
 On code, showing the judge one valid solution behaves like showing it the test suite; both reduce inflation relative to blind, the exemplar slightly less effectively.
 
-The weak form of the mechanism nonetheless survives, which makes the boundary a mechanistic one rather than a bare non-result.
+The weak form of the mechanism nonetheless survives, which is consistent with the revised reading without confirming it.
 A second registered prediction, that some similarity tilt would remain, is confirmed and small: among valid samples the correlation between token similarity to the canonical solution and the judge's score is $+0.164$ $[+0.072, +0.256]$ at 7B and $+0.084$ $[-0.005, +0.168]$ at 14B under the exemplar, against $-0.061$ and $-0.070$ blind, roughly an order of magnitude too weak to convert into inflation and far below the $+4$ to $+6.4$ point margins measured on short-answer tasks.
 
-\paragraph{What this bounds.}
-The harm is a property of tasks with separable answers, not of reference-guided judging in general: where the answer is a short token the judge can compare, a reference on a multi-valid task is an attack surface, and where the artifact is the answer the same reference is a specification and helps, confirming companion A's certification of references on code rather than contradicting it.
-The boundary also retro-justifies the method-rotation null of Section~\ref{sec:limits}: solution \emph{route} never mattered because the judge was never matching on structure, only on the answer token.
+\paragraph{What this bounds, and what it does not yet.}
+On this evidence the harm is a property of tasks with separable answers rather than of reference-guided judging in general: where the answer is a short token the judge can compare, a reference on a multi-valid task is an attack surface, while on the one code substrate and two judges tested here the same reference behaves as a specification and helps, consistent with companion A's certification of references on code.
+Because the separability reading is post hoc, the decisive experiment is still owed: a preregistered held-out test on a continuum of answer separability, from scalar answer through tuple, set, structured object, and query to full program, predicting in advance that inflation attenuates as the answer stops being a separable token; where exactly between a boxed integer and a program the effect disappears is untested.
+The reading is also consistent with the method-rotation null of Section~\ref{sec:limits}, since solution \emph{route} never mattered as an answer token would, but that too is a post-hoc consistency rather than a prediction.
 
 \section{What does not rescue the reference}
 \label{sec:norescue}
 
-Everything verbal fails, the one ordering-based remedy works, and even that remedy's strength depends on the judge; the negative results below are the practically relevant part of the finding.
+Everything verbal fails, the one ordering-based remedy removes the measured inflation for most judges tested, and even that remedy's strength depends on the judge; the negative results below are the practically relevant part of the finding.
 
 \paragraph{Telling the judge to accept any valid answer is a placebo below frontier capability.}
 On the synthetic grid at $k{=}16$, adding a sentence saying the reference is one valid answer among many and any correct answer deserves full credit closes phi-4's anchoring margin essentially to zero ($+1.91 \to +0.03$) and helps Qwen-14B substantially ($+3.34 \to +1.21$), while leaving the smaller judges unmoved, or worse on one rubric at 1.5B ($+3.58 \to +4.54$).
@@ -485,17 +505,18 @@ Deployed reference-guided judging shows a derivation rather than a bare answer s
 It anchors less: the multi-valid margin falls from $+5.17$ to $+3.73$ for Qwen-7B and from $+4.20$ to $+3.67$ for phi-4, and inflation over blind falls from $+1.50$ to $+1.08$ and from $+1.07$ to $+0.77$.
 The registration predicted a difference without predicting its sign and recorded the opposite intuition as plausible, that a longer reference offers more surface to match; the measured direction is the other one, and inflation stays firmly positive, so a worked reference is a cheap partial improvement and not the fix.
 
-\paragraph{The fix that works is an ordering, and its strength depends on the judge.}
-The one remedy that removes the measured inflation changes the protocol rather than the prompt.
+\paragraph{The strongest mitigation tested is an ordering, and its strength depends on the judge.}
+The one remedy that removes the measured inflation changes the protocol rather than the prompt; we call it the strongest static mitigation tested rather than the fix, for the qualifications below.
 Under \emph{M1, blind-then-reveal}, registered externally (\texttt{osf.io/qugbd}) before any data existed, one call scores the candidate with no reference and a second call shows the reference together with that blind score, instructing that a correct answer differing from the reference keeps its score.
 At $k>1$, M1's inflation against blind is $-0.05$ and $+0.16$ for the two judges, against $+1.50$ and $+1.07$ under a single reference, and both registered reduction contrasts exclude zero; at $k{=}1$ it costs nothing.
 
-Three qualifications travel with that recommendation.
+Four qualifications travel with that recommendation.
 First, what M1 removes is the measured inflation, not the anchoring channel: margins roughly halve rather than vanish, and while that residual does not convert into inflation anywhere in the range we can measure, stronger optimizers remain untested.
 Second, costing nothing at $k{=}1$ is not the same as preserving the benefit there, since M1's $k{=}1$ deltas are indistinguishable from blind and neither reproduces the one $k{=}1$ benefit this experiment measures.
 Third, a registered coverage extension to three judges from two new families split its own predictions.
 Its every-judge harm prediction is \textbf{not confirmed}: gemma-2-9b shows the strongest inversion on this pool ($+1.43$) and Qwen-14B a strong one ($+0.98$), but Mistral-7B is null ($+0.03$).
 Its fix contrast is confirmed for all three, but M1's level ranges from full removal (Qwen-7B, phi-4) through $+0.23$ of residual inflation (Qwen-14B) to $+1.23$ (gemma-2-9b).
+Fourth, \emph{why} the ordering works is itself untested: the second call sees both the reference and the judge's own blind score, so the protection may be commitment to a previously emitted score rather than the ordering as such; separating the two requires second-pass variants, a reference-only second pass, reference plus prior score, reference plus prior rationale without the score, and an independent second judge, none of which we have run.
 
 \paragraph{The soft validity gate helps one judge and backfires on the other.}
 A second registered protocol, \emph{M2}, scores blind and multiplies that score by a separate call's probability that the candidate is valid, with the reference shown to that call as one valid example.
@@ -510,7 +531,7 @@ This generalises into a label-free check on the judge's score distribution: gran
 The screen is a rejection filter and nothing more: passing it establishes that a judge has opinions, not what its opinions are about, and the failure this paper is about passes cleanly, since gemma-2-9b clears both criteria (2751 distinct values, no ties, spread $2.65$) while being the most anchored judge we measure.
 Run the free screen first and reject what it rejects, then certify what survives against labels, since only ground truth distinguishes a judge that grades correctness from one that grades proximity to the key~\cite{companionA}.
 
-The options therefore order themselves (Table~\ref{tab:decide}), and one instruction travels with the table: certify both the harm and the fix on the deployment's own judge and tasks before trusting either, since both are judge-dependent.
+The options therefore order themselves (Table~\ref{tab:decide}), and one instruction travels with the table: certify both the harm and the mitigation on the deployment's own judge and tasks before trusting either, since both are judge-dependent.
 
 \begin{table}[tbp]
 \centering
@@ -538,18 +559,24 @@ Worked reference & Milder, still harmful & 1 \\
 Every pool carrying a positive result is constraint-style or short-factual, chosen so that the number of valid answers is decided by a program; that is what makes the claims exact and what bounds them, since we do not test free-form generation, long references, or tasks where validity is contested.
 Section~\ref{sec:code} bounds the harm further, to tasks with a separable answer token, on the evidence of one code substrate and two judges, so where exactly between a boxed integer and a program the effect disappears is untested.
 Item counts per stratum are small, four to six per cell on the synthetic grid, so cross-stratum patterns carry more weight than any single cell, and the grid cells quoted here are uncorrected for multiple comparisons.
+Several analyses also run on filtered subsets, the frozen pass-rate band and, post hoc, the cleanest-compliance tercile; the remedy is a larger clean pool with constrained answer formatting, intention-to-treat estimates over every built item with the filtered analysis as sensitivity, and grid strata grown severalfold, none of which this draft has.
 The exploratory Ties pool, which carries the mechanism experiments, uses an enumerated-set checker whose valid sets are known to be substantially incomplete; that bias runs against the effect, and no other pool inherits the checker.
 
-\paragraph{Whether the fix survives training is unresolved.}
+\paragraph{Whether the mitigation survives training is unresolved.}
 The training experiment establishes the harm under training on its one gated arm and does not establish that blind-then-reveal protects a trained policy.
 Two runs bracket the manipulation without resolving it: at 4 epochs and learning rate $2\times10^{-5}$ both arms degenerated toward verbosity, which the blind-first judge penalises, so the protected arm failed its registered gate ($-1.04$) and was voided; at 1 epoch and $5\times10^{-6}$ neither arm moved its own judge ($+0.07$ and $-0.01$), so both were voided.
 A stopping rule was adopted before any further attempt: one additional preregistered setting, and if its protected arm also fails, the question is reported unresolved rather than tuned toward a pass, since selecting hyperparameters until a gate opens is the failure mode this paper criticises in judges.
+The decisive design is three-arm, blind-judge, reference-judge, and blind-then-reveal DPO under identical hyperparameters, compared at matched training-reward improvement; only that comparison can attribute the accuracy degradation specifically to reference conditioning rather than to overoptimization in general.
 
 \paragraph{Method anchoring is bounded, and small.}
 Holding the answer fixed and rotating the reference's \emph{derivation} moves the identical sample's score by $-0.32$ and $-0.40$ points for Qwen-7B under the two rubrics and $-0.02$ for phi-4; three of four cells exclude zero, so the registered prediction of an interval containing zero is falsified as stated.
 The decomposition matters more than the verdict: an overall shift is calibration, whereas anchoring on method must appear as a differential favouring samples whose own route matches the shown one, and that differential appears in exactly one of four judge-by-rubric cells.
 Set against the $\pm 9.5$ points that answer rotation moves the identical text, method effects are twenty to four hundred times smaller, and the same machinery on the same items recovers the standing referenced-minus-blind difference, so the near-nulls are not an insensitive instrument.
 Reference-guided judging is therefore endangered by answer multiplicity and is not, on this evidence, endangered by two correct solutions taking different routes to one answer.
+
+\paragraph{The mechanism is established less firmly than the phenomenon, and three experiments would close most of the gap.}
+Rotation establishes reference dependence causally, but the finer mechanistic claim, a cheap equality check on a separable answer token, rests on the exact-match step of Section~\ref{sec:dose} and on the post-hoc reading of the code falsification, and our designs do not separate lexical from semantic matching: whether `13', `thirteen', and an equivalent expression anchor alike is untested, as is whether the effect vanishes when the reference's final answer is masked, when only the bare answer is shown without a derivation, or when the candidate's answer field is masked while its reasoning remains.
+Three additions would carry the most weight: a masking-and-identity suite of exactly those variants; a fresh exact-oracle replication of the same-sample rotation experiment, since rotation currently inherits the exploratory pool and its incomplete checker; and the preregistered held-out separability continuum of Section~\ref{sec:code}, which would convert the boundary from a post-hoc reading into a predictive one.
 
 \paragraph{Per-item aggregation is only partly resolved, and registration weight is uneven.}
 Rotation establishes that anchoring moves scores within an item and the composition experiment identifies pool composition as the structure between that and the scoreboard, but the exact mapping from anchoring to which items inflate is not established: the linkage test rejects an exact linear pathway at this design's own measurement noise, and the lure reading that replaces it rests on post-hoc diagnostics.
@@ -561,7 +588,7 @@ Reference-guided judging is standard practice with documented benefits on unique
 Our results bound this literature rather than contradicting it, locating its validity in the unique-answer regime.
 
 The static half of the failure is prior art and we claim none of it as new: independent work identifies a solution fixation bias, judges penalising valid solutions that differ from the provided reference~\cite{fixation2025}; reference-guided evaluation is reported to degrade on open-ended tasks~\cite{judgingref2026}; and our companion audit found a $7$--$8$ point verdict-accuracy cost on \textsc{RewardBench-2} Ties for references of any authorship~\cite{companionA}.
-This paper adds the dynamic result, the inversion under best-of-$n$ selection pressure confirmed by an externally preregistered replication; the causal mechanism, anchoring demonstrated by reference rotation rather than inferred from static error rates; the boundary, preregistered, replicated, and reproduced on a third-party benchmark with $k$ fixed per item; the persistence and scope results, the harm surviving frontier scale, prior certification, and training pressure while disappearing where no separable answer token exists; and a preregistered structural remedy that reorders the judge's calls rather than instructing it.
+This paper adds the dynamic result, the inversion under best-of-$n$ selection pressure confirmed by an externally preregistered replication; the causal result, reference dependence demonstrated by rotation of the reference under fixed candidate text rather than inferred from static error rates; the multiplicity boundary, preregistered, replicated, and reproduced on a third-party benchmark with $k$ fixed per item; the persistence results, the harm surviving frontier scale, prior certification, and training pressure; a scope falsification on code that motivates a separability hypothesis for where the harm stops; and a preregistered structural mitigation that reorders the judge's calls rather than instructing it.
 The anchoring result also bears on a recommended practice: having the judge generate its own reference before grading~\cite{dobefore2025} is contraindicated on multi-valid tasks, since the static any-author result shows self-generated references anchor as external ones do.
 
 Concurrent work reaches a compatible conclusion from the opposite side of the lever.
@@ -574,13 +601,13 @@ Companion A establishes the unique-answer collapse, the capability gate, and the
 
 \section{Conclusion}
 
-The reference in an LLM judge's prompt is not an answer key.
-On a task with several valid answers it is one sample from the valid set, and the judge treats it as the set.
-Reading it that way predicts what we measure and the answer-key reading does not: the identical candidate text moves by up to $+9.5$ points of ten when the reference is rotated to a different valid answer; the harm switches on at the first step in multiplicity for every judge tested and inverts to help when the answer is unique; it survives frontier scale, restriction to answers the judge itself certified while blind, and training pressure, under which a policy raised its judge's score $+1.76$ points while its true accuracy fell from $0.412$ to $0.175$; and it stops where the same reading says it should, on program synthesis, where no short token supports a cheap equality check and a canonical solution in the reference slot reduces inflation rather than adding it.
+On the multi-valid short-answer tasks we study, the reference in an LLM judge's prompt is not an answer key: it is one sample from the valid set, and the judge treats it as the set.
+Reading it that way predicts what we measure and the answer-key reading does not: the identical candidate text moves by up to $+9.5$ points of ten when the reference is rotated to a different valid answer; the harm switches on at the first step in multiplicity for every judge tested and inverts to help when the answer is unique; and it survives frontier scale, restriction to answers the judge itself certified while blind, and training pressure, under which a policy raised its judge's score $+1.76$ points while its true accuracy fell from $0.412$ to $0.175$.
+Where the harm stops we know less exactly: our registered prediction that a canonical solution would inflate on program synthesis was falsified, and the revised reading, that anchoring requires a separable answer token, fits that falsification but has not yet predicted anything held out.
 
-A reference is therefore a lever with a sign rather than a safety default: it collapses gaming given a unique answer, a capable judge, or an artifact with no separable answer token, and becomes the attack surface given several valid answers and a short answer to match on.
-The fix is structural rather than verbal, namely to score blind first and then reveal the reference so that it corrects only demonstrated errors.
-Under external preregistration with $k$ fixed per item, that ordering removes the measured inflation when several answers are valid and costs nothing when the answer is unique, at the price of a second judge call and of leaving part of the anchoring premium in place; its magnitude varies by judge, as does the harm, so both should be certified on the deployment's own tasks.
+A reference is therefore a lever with a sign rather than a safety default: on the multi-valid short-answer tasks we study it is the attack surface, given a unique answer it collapses gaming, and on the one code substrate we test it helps.
+The strongest mitigation we test is structural rather than verbal, namely to score blind first and then reveal the reference so that it corrects only demonstrated errors.
+Under external preregistration with $k$ fixed per item, that ordering removes the measured inflation when several answers are valid and costs nothing when the answer is unique, at the price of a second judge call and of leaving part of the anchoring premium in place; its magnitude varies by judge, as does the harm, its protection under training is unestablished, and why it works is untested, so both the harm and the mitigation should be certified on the deployment's own tasks.
 And where the valid set can be enumerated, enumerate it: checking membership beats asking a judge to compare.
 
 \enlargethispage{4\baselineskip}
