@@ -436,6 +436,7 @@ The informing reading makes a sharper prediction than the scale one, and it can 
 A registered filter keeps only samples the judge itself scored at least $7$ of $10$ \emph{while blind}, so it has demonstrably recognised each retained answer as correct with no reference in sight, and then asks whether rotating the reference still moves them.
 It does, essentially unchanged: the filtered same-sample deltas remain positive with intervals excluding zero at every judge size, at 7B $+4.74$ $[+3.67, +5.87]$ against $+4.57$ unfiltered with $89\%$ of samples retained, losers stay negative, and the filtered margins exclude zero at all four sizes, though the 1.5B margin rests on two items and we note it as fragile.
 The judge re-scores answers it has already certified, the moment the key disagrees, which closes the reading that the reference merely informs a judge too weak to know the alternative was valid.
+The same filter applied post hoc to the exact-oracle rotation replication of Section~\ref{sec:p1} leaves the effect untouched at far larger scale: blind-certified gainers move $+4.99$ $[+4.69, +5.32]$ against $+4.97$ unfiltered for Qwen-7B with $91\%$ of samples retained, and $+4.08$ against $+4.09$ for phi-4 with $98\%$ retained ($n{=}119$--$120$ items).
 
 \subsection{Optimization}
 \label{sec:dpo}
