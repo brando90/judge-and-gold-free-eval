@@ -16,6 +16,8 @@ POOL=runs/bon/bon_sep__meta-llama__Llama-3.1-8B-Instruct.jsonl
 nohup setsid env HOME=$BASE XDG_CACHE_HOME=$BASE/.cache HF_HOME=$BASE/.cache/huggingface HF_HUB_OFFLINE=1 TMPDIR=$BASE/tmp PYTHONPATH=$BASE/tfa-vs-judge bash -c "
   cd $BASE/tfa-vs-judge
   until grep -q PIPELINE21_DONE logs/pipeline21.log 2>/dev/null; do sleep 180; done
+  # wait for the previous pipeline's vLLM engine to actually release the card
+  until [ \$(nvidia-smi --query-gpu=memory.used --format=csv,noheader,nounits -i $GPU) -lt 20000 ]; do sleep 60; done
   FAILED=''
   $PY build_sep_tasks.py >> logs/pipeline23.log 2>&1 || FAILED='build'
   [ -z \"\$FAILED\" ] && { CUDA_VISIBLE_DEVICES=$GPU $PY sep_generate.py >> logs/pipeline23.log 2>&1 || FAILED='generate'; }

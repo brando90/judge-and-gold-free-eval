@@ -20,6 +20,8 @@ PHI_BLIND=runs/bon_scores_kstrat/synthk__microsoft__phi-4__noref_a.jsonl
 nohup setsid env HOME=$BASE XDG_CACHE_HOME=$BASE/.cache HF_HOME=$BASE/.cache/huggingface HF_HUB_OFFLINE=1 TMPDIR=$BASE/tmp PYTHONPATH=$BASE/tfa-vs-judge bash -c "
   cd $BASE/tfa-vs-judge
   until grep -q PIPELINE22_DONE logs/pipeline22.log 2>/dev/null; do sleep 180; done
+  # wait for the previous pipeline's vLLM engine to actually release the card
+  until [ \$(nvidia-smi --query-gpu=memory.used --format=csv,noheader,nounits -i $GPU) -lt 20000 ]; do sleep 60; done
   FAILED=''
   for rep in a b; do for cond in m1noscore m1prev; do
     [ -n \"\$FAILED\" ] && break 2
