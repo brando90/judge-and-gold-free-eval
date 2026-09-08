@@ -75,6 +75,8 @@ labs = {r["id"]: r for r in json.load(open("human_eval/labels/phase1/author_1_Sr
         if r.get("soundness") not in (None, "")}
 out = {"anchor_n": len(labs), "rule": "frozen CI rule (panel_specs.verdict)", "configs": {}}
 for cfg in PANEL:
+    if cfg["kind"] == "twin":  # post-hoc manipulation-check twins are not panel cells
+        continue
     path = f"runs/panel_cert/{cfg['id']}.jsonl"
     if not os.path.exists(path):
         print(f"[missing] {path}")

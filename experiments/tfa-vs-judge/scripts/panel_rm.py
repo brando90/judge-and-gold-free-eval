@@ -31,8 +31,12 @@ cfg = BY_ID[args.config]
 assert cfg["kind"] == "rm", f"{args.config} is not a reward model cell"
 
 tok = AutoTokenizer.from_pretrained(cfg["judge"], trust_remote_code=True)
+if tok.pad_token is None:  # e.g. Tulu-3 RM ships no pad token; batched scoring needs one
+    tok.pad_token = tok.eos_token or tok.unk_token
 model = AutoModelForSequenceClassification.from_pretrained(
     cfg["judge"], torch_dtype=torch.bfloat16, num_labels=1, trust_remote_code=True).to("cuda")
+if model.config.pad_token_id is None:
+    model.config.pad_token_id = tok.pad_token_id
 model.eval()
 
 

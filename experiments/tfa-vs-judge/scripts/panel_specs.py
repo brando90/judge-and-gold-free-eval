@@ -87,6 +87,22 @@ PANEL = [
     # --- F. trained reward models (no prompt at all; protocol bit codes them blind) ---
     dict(id="p17_rm_skywork_v2", judge="Skywork/Skywork-Reward-V2-Llama-3.1-8B", protocol="blind", kind="rm", corrupt=None),
     dict(id="p18_rm_tulu3", judge="allenai/Llama-3.1-Tulu-3-8B-RM", protocol="blind", kind="rm", corrupt=None),
+    # --- G. registered substitution (added after the audit phase, under the registration's
+    # substitution rule and disclosed with the results): Qwen3-8B failed to produce a score for
+    # 66 of 242 anchor traces in the committed harness (its first generated token is not a score
+    # token, even with thinking disabled), so the rule's named replacement for a failed instruct
+    # judge enters the panel in the same blind protocol. The failed cell is reported too, not
+    # dropped. Nothing else in this file has changed since the registration commit.
+    dict(id="p03s_coder7b_blind", judge="Qwen/Qwen2.5-Coder-7B-Instruct", protocol="blind",
+         kind="strong_blind", corrupt=None),
+    # --- H. manipulation-check twins (post hoc, NOT part of the registered panel and never
+    # scored for a registered prediction). Two corrupt cells use Qwen2.5-14B, whose honest
+    # counterpart in the published paper was scored under a different rubric, so these two cells
+    # supply exact same-prompt-minus-the-corrupting-sentence twins for panel_manipulation.py.
+    dict(id="t11_qwen14b_blind_honest", judge="Qwen/Qwen2.5-14B-Instruct", protocol="blind",
+         kind="twin", corrupt=None),
+    dict(id="t15_qwen14b_ref_honest", judge="Qwen/Qwen2.5-14B-Instruct", protocol="ref",
+         kind="twin", corrupt=None),
 ]
 BY_ID = {c["id"]: c for c in PANEL}
 

@@ -18,7 +18,7 @@ ap.add_argument("--config", required=True)
 ap.add_argument("--traces", default="human_eval/traces_to_label.jsonl")
 ap.add_argument("--out", default="runs/panel_cert")
 ap.add_argument("--max-model-len", type=int, default=8192)
-ap.add_argument("--gpu-util", type=float, default=0.90)
+ap.add_argument("--gpu-util", type=float, default=0.45)
 args = ap.parse_args()
 cfg = BY_ID[args.config]
 if cfg["kind"] == "rm":
@@ -83,4 +83,32 @@ with open(outf, "w") as f:
             m = re.search(r"\d+", txt)
             score = float(min(int(m.group()), 10)) if m else None
         f.write(json.dumps(dict(task_id=r["id"], score=score)) + "\n")
+
+def _hard_exit():
+    """vLLM 0.25.1 on this cluster hangs in engine teardown after generate(). The output file is
+    written and flushed by this point, so SIGKILL the engine subprocesses (which would otherwise
+    keep the GPU allocated and starve the next cell in the lane) and leave immediately."""
+    import os as _os, signal as _sig, subprocess as _sp, time as _t
+    def _kids(pid):
+        try:
+            return [int(x) for x in _sp.run(["pgrep", "-P", str(pid)], capture_output=True,
+                                            text=True).stdout.split()]
+        except Exception:
+            return []
+    seen, stack = [], _kids(_os.getpid())
+    while stack:
+        pid = stack.pop()
+        if pid in seen:
+            continue
+        seen.append(pid)
+        stack += _kids(pid)
+    for pid in seen:
+        try:
+            _os.kill(pid, _sig.SIGKILL)
+        except Exception:
+            pass
+    _t.sleep(2)
+    _os._exit(0)
+
 print("[panel audit done]", outf, flush=True)
+_hard_exit()

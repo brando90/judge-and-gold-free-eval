@@ -1,0 +1,519 @@
+{
+ "anchor_n": 60,
+ "rule": "frozen CI rule (panel_specs.verdict)",
+ "configs": {
+  "p01_phi4_blind": {
+   "judge": "microsoft/phi-4",
+   "protocol": "blind",
+   "kind": "strong_blind",
+   "corrupt": null,
+   "n": 60,
+   "distinct_scores": 60,
+   "target_loading": 0.505,
+   "target_ci": [
+    0.202,
+    0.736
+   ],
+   "nuisance_loading": -0.076,
+   "nuisance_ci": [
+    -0.299,
+    0.164
+   ],
+   "verdict": "abstain",
+   "baselines": {
+    "raw_pearson": 0.508,
+    "spearman": 0.275,
+    "kendall": 0.206,
+    "pairwise_acc": 0.628,
+    "auc_vs_correct": 0.825,
+    "ref_bit": 0
+   }
+  },
+  "p02_llama8b_blind": {
+   "judge": "meta-llama/Llama-3.1-8B-Instruct",
+   "protocol": "blind",
+   "kind": "strong_blind",
+   "corrupt": null,
+   "n": 60,
+   "distinct_scores": 60,
+   "target_loading": 0.514,
+   "target_ci": [
+    0.296,
+    0.712
+   ],
+   "nuisance_loading": 0.036,
+   "nuisance_ci": [
+    -0.162,
+    0.202
+   ],
+   "verdict": "abstain",
+   "baselines": {
+    "raw_pearson": 0.542,
+    "spearman": 0.318,
+    "kendall": 0.234,
+    "pairwise_acc": 0.645,
+    "auc_vs_correct": 0.852,
+    "ref_bit": 0
+   }
+  },
+  "p03_qwen3_8b_blind": {
+   "judge": "Qwen/Qwen3-8B",
+   "protocol": "blind",
+   "kind": "strong_blind",
+   "corrupt": null,
+   "n": 49,
+   "distinct_scores": 49,
+   "target_loading": -0.034,
+   "target_ci": [
+    -0.168,
+    0.314
+   ],
+   "nuisance_loading": -0.051,
+   "nuisance_ci": [
+    -0.264,
+    0.188
+   ],
+   "verdict": "insufficient",
+   "baselines": {
+    "raw_pearson": -0.044,
+    "spearman": 0.11,
+    "kendall": 0.095,
+    "pairwise_acc": 0.561,
+    "auc_vs_correct": 0.75,
+    "ref_bit": 0
+   }
+  },
+  "p04_coder14b_blind": {
+   "judge": "Qwen/Qwen2.5-Coder-14B-Instruct",
+   "protocol": "blind",
+   "kind": "strong_blind",
+   "corrupt": null,
+   "n": 60,
+   "distinct_scores": 60,
+   "target_loading": 0.173,
+   "target_ci": [
+    -0.056,
+    0.449
+   ],
+   "nuisance_loading": 0.05,
+   "nuisance_ci": [
+    -0.27,
+    0.362
+   ],
+   "verdict": "insufficient",
+   "baselines": {
+    "raw_pearson": 0.198,
+    "spearman": 0.154,
+    "kendall": 0.121,
+    "pairwise_acc": 0.575,
+    "auc_vs_correct": 0.734,
+    "ref_bit": 0
+   }
+  },
+  "p05_qwen05b_ref": {
+   "judge": "Qwen/Qwen2.5-0.5B-Instruct",
+   "protocol": "ref",
+   "kind": "weak_ref",
+   "corrupt": null,
+   "n": 60,
+   "distinct_scores": 60,
+   "target_loading": -0.018,
+   "target_ci": [
+    -0.259,
+    0.295
+   ],
+   "nuisance_loading": 0.436,
+   "nuisance_ci": [
+    0.111,
+    0.618
+   ],
+   "verdict": "unsafe",
+   "baselines": {
+    "raw_pearson": 0.13,
+    "spearman": 0.23,
+    "kendall": 0.174,
+    "pairwise_acc": 0.608,
+    "auc_vs_correct": 0.656,
+    "ref_bit": 1
+   }
+  },
+  "p06_qwen05b_blind": {
+   "judge": "Qwen/Qwen2.5-0.5B-Instruct",
+   "protocol": "blind",
+   "kind": "weak_ref",
+   "corrupt": null,
+   "n": 60,
+   "distinct_scores": 60,
+   "target_loading": -0.071,
+   "target_ci": [
+    -0.311,
+    0.207
+   ],
+   "nuisance_loading": 0.398,
+   "nuisance_ci": [
+    0.088,
+    0.619
+   ],
+   "verdict": "unsafe",
+   "baselines": {
+    "raw_pearson": 0.067,
+    "spearman": 0.187,
+    "kendall": 0.134,
+    "pairwise_acc": 0.583,
+    "auc_vs_correct": 0.651,
+    "ref_bit": 0
+   }
+  },
+  "p07_phi4_ref": {
+   "judge": "microsoft/phi-4",
+   "protocol": "ref",
+   "kind": "honest_alt",
+   "corrupt": null,
+   "n": 60,
+   "distinct_scores": 60,
+   "target_loading": 0.868,
+   "target_ci": [
+    0.741,
+    0.956
+   ],
+   "nuisance_loading": -0.182,
+   "nuisance_ci": [
+    -0.389,
+    0.047
+   ],
+   "verdict": "qualified",
+   "baselines": {
+    "raw_pearson": 0.869,
+    "spearman": 0.48,
+    "kendall": 0.366,
+    "pairwise_acc": 0.726,
+    "auc_vs_correct": 1.0,
+    "ref_bit": 1
+   }
+  },
+  "p08_llama8b_ref": {
+   "judge": "meta-llama/Llama-3.1-8B-Instruct",
+   "protocol": "ref",
+   "kind": "honest_alt",
+   "corrupt": null,
+   "n": 60,
+   "distinct_scores": 60,
+   "target_loading": 0.789,
+   "target_ci": [
+    0.62,
+    0.901
+   ],
+   "nuisance_loading": -0.068,
+   "nuisance_ci": [
+    -0.264,
+    0.14
+   ],
+   "verdict": "qualified",
+   "baselines": {
+    "raw_pearson": 0.799,
+    "spearman": 0.435,
+    "kendall": 0.331,
+    "pairwise_acc": 0.705,
+    "auc_vs_correct": 0.991,
+    "ref_bit": 1
+   }
+  },
+  "p09_coder7b_ref": {
+   "judge": "Qwen/Qwen2.5-Coder-7B-Instruct",
+   "protocol": "ref",
+   "kind": "honest_alt",
+   "corrupt": null,
+   "n": 60,
+   "distinct_scores": 60,
+   "target_loading": 0.855,
+   "target_ci": [
+    0.685,
+    0.96
+   ],
+   "nuisance_loading": -0.155,
+   "nuisance_ci": [
+    -0.307,
+    0.066
+   ],
+   "verdict": "qualified",
+   "baselines": {
+    "raw_pearson": 0.857,
+    "spearman": 0.502,
+    "kendall": 0.394,
+    "pairwise_acc": 0.744,
+    "auc_vs_correct": 1.0,
+    "ref_bit": 1
+   }
+  },
+  "p10_phi4_blind_L2": {
+   "judge": "microsoft/phi-4",
+   "protocol": "blind",
+   "kind": "corrupt_blind",
+   "corrupt": "L2",
+   "n": 60,
+   "distinct_scores": 60,
+   "target_loading": 0.503,
+   "target_ci": [
+    0.213,
+    0.735
+   ],
+   "nuisance_loading": -0.069,
+   "nuisance_ci": [
+    -0.294,
+    0.179
+   ],
+   "verdict": "abstain",
+   "baselines": {
+    "raw_pearson": 0.508,
+    "spearman": 0.274,
+    "kendall": 0.204,
+    "pairwise_acc": 0.626,
+    "auc_vs_correct": 0.832,
+    "ref_bit": 0
+   }
+  },
+  "p11_qwen14b_blind_L4": {
+   "judge": "Qwen/Qwen2.5-14B-Instruct",
+   "protocol": "blind",
+   "kind": "corrupt_blind",
+   "corrupt": "L4",
+   "n": 60,
+   "distinct_scores": 60,
+   "target_loading": 0.5,
+   "target_ci": [
+    0.199,
+    0.731
+   ],
+   "nuisance_loading": -0.087,
+   "nuisance_ci": [
+    -0.383,
+    0.181
+   ],
+   "verdict": "abstain",
+   "baselines": {
+    "raw_pearson": 0.501,
+    "spearman": 0.164,
+    "kendall": 0.115,
+    "pairwise_acc": 0.571,
+    "auc_vs_correct": 0.786,
+    "ref_bit": 0
+   }
+  },
+  "p12_phi4_blind_LEN": {
+   "judge": "microsoft/phi-4",
+   "protocol": "blind",
+   "kind": "corrupt_blind",
+   "corrupt": "LEN",
+   "n": 60,
+   "distinct_scores": 60,
+   "target_loading": 0.502,
+   "target_ci": [
+    0.189,
+    0.737
+   ],
+   "nuisance_loading": -0.039,
+   "nuisance_ci": [
+    -0.269,
+    0.218
+   ],
+   "verdict": "abstain",
+   "baselines": {
+    "raw_pearson": 0.514,
+    "spearman": 0.259,
+    "kendall": 0.194,
+    "pairwise_acc": 0.62,
+    "auc_vs_correct": 0.785,
+    "ref_bit": 0
+   }
+  },
+  "p13_phi4_ref_L3": {
+   "judge": "microsoft/phi-4",
+   "protocol": "ref",
+   "kind": "corrupt_ref",
+   "corrupt": "L3",
+   "n": 60,
+   "distinct_scores": 60,
+   "target_loading": 0.846,
+   "target_ci": [
+    0.693,
+    0.952
+   ],
+   "nuisance_loading": -0.21,
+   "nuisance_ci": [
+    -0.413,
+    0.054
+   ],
+   "verdict": "qualified",
+   "baselines": {
+    "raw_pearson": 0.843,
+    "spearman": 0.493,
+    "kendall": 0.384,
+    "pairwise_acc": 0.738,
+    "auc_vs_correct": 1.0,
+    "ref_bit": 1
+   }
+  },
+  "p14_llama8b_ref_L2": {
+   "judge": "meta-llama/Llama-3.1-8B-Instruct",
+   "protocol": "ref",
+   "kind": "corrupt_ref",
+   "corrupt": "L2",
+   "n": 60,
+   "distinct_scores": 60,
+   "target_loading": 0.773,
+   "target_ci": [
+    0.598,
+    0.898
+   ],
+   "nuisance_loading": 0.007,
+   "nuisance_ci": [
+    -0.2,
+    0.251
+   ],
+   "verdict": "qualified",
+   "baselines": {
+    "raw_pearson": 0.79,
+    "spearman": 0.442,
+    "kendall": 0.336,
+    "pairwise_acc": 0.708,
+    "auc_vs_correct": 0.986,
+    "ref_bit": 1
+   }
+  },
+  "p15_qwen14b_ref_LEN": {
+   "judge": "Qwen/Qwen2.5-14B-Instruct",
+   "protocol": "ref",
+   "kind": "corrupt_ref",
+   "corrupt": "LEN",
+   "n": 60,
+   "distinct_scores": 60,
+   "target_loading": 0.683,
+   "target_ci": [
+    0.487,
+    0.837
+   ],
+   "nuisance_loading": 0.011,
+   "nuisance_ci": [
+    -0.304,
+    0.374
+   ],
+   "verdict": "qualified",
+   "baselines": {
+    "raw_pearson": 0.704,
+    "spearman": 0.491,
+    "kendall": 0.384,
+    "pairwise_acc": 0.738,
+    "auc_vs_correct": 0.983,
+    "ref_bit": 1
+   }
+  },
+  "p16_phi4_ref_L5": {
+   "judge": "microsoft/phi-4",
+   "protocol": "ref",
+   "kind": "corrupt_ref",
+   "corrupt": "L5",
+   "n": 60,
+   "distinct_scores": 60,
+   "target_loading": 0.866,
+   "target_ci": [
+    0.722,
+    0.957
+   ],
+   "nuisance_loading": -0.184,
+   "nuisance_ci": [
+    -0.377,
+    0.079
+   ],
+   "verdict": "qualified",
+   "baselines": {
+    "raw_pearson": 0.867,
+    "spearman": 0.515,
+    "kendall": 0.397,
+    "pairwise_acc": 0.745,
+    "auc_vs_correct": 1.0,
+    "ref_bit": 1
+   }
+  },
+  "p17_rm_skywork_v2": {
+   "judge": "Skywork/Skywork-Reward-V2-Llama-3.1-8B",
+   "protocol": "blind",
+   "kind": "rm",
+   "corrupt": null,
+   "n": 60,
+   "distinct_scores": 52,
+   "target_loading": 0.098,
+   "target_ci": [
+    -0.198,
+    0.363
+   ],
+   "nuisance_loading": 0.302,
+   "nuisance_ci": [
+    0.077,
+    0.484
+   ],
+   "verdict": "unsafe",
+   "baselines": {
+    "raw_pearson": 0.198,
+    "spearman": 0.11,
+    "kendall": 0.077,
+    "pairwise_acc": 0.548,
+    "auc_vs_correct": 0.711,
+    "ref_bit": 0
+   }
+  },
+  "p18_rm_tulu3": {
+   "judge": "allenai/Llama-3.1-Tulu-3-8B-RM",
+   "protocol": "blind",
+   "kind": "rm",
+   "corrupt": null,
+   "n": 60,
+   "distinct_scores": 41,
+   "target_loading": 0.222,
+   "target_ci": [
+    -0.075,
+    0.487
+   ],
+   "nuisance_loading": 0.416,
+   "nuisance_ci": [
+    0.172,
+    0.591
+   ],
+   "verdict": "unsafe",
+   "baselines": {
+    "raw_pearson": 0.339,
+    "spearman": 0.292,
+    "kendall": 0.229,
+    "pairwise_acc": 0.641,
+    "auc_vs_correct": 0.687,
+    "ref_bit": 0
+   }
+  },
+  "p03s_coder7b_blind": {
+   "judge": "Qwen/Qwen2.5-Coder-7B-Instruct",
+   "protocol": "blind",
+   "kind": "strong_blind",
+   "corrupt": null,
+   "n": 60,
+   "distinct_scores": 60,
+   "target_loading": 0.298,
+   "target_ci": [
+    0.006,
+    0.567
+   ],
+   "nuisance_loading": 0.23,
+   "nuisance_ci": [
+    -0.261,
+    0.565
+   ],
+   "verdict": "insufficient",
+   "baselines": {
+    "raw_pearson": 0.371,
+    "spearman": 0.222,
+    "kendall": 0.159,
+    "pairwise_acc": 0.598,
+    "auc_vs_correct": 0.826,
+    "ref_bit": 0
+   }
+  }
+ }
+}
