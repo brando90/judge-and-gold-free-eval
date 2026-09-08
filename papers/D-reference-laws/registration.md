@@ -1750,3 +1750,108 @@ blind pass's uncorrupted signal; the judge defers to it instead of the reference
 Producer: papers/analysis/m1_variants_analysis.py -> m1_variants_results.json (n=58 k>1
 kstrat items, non-degenerate oracle; population per this registration's own filter, not
 the OSF mitigation population, hence M1 levels +0.01/+0.12 vs the registered -0.05/+0.16).
+
+---
+
+## Ledger entries for the 2026-09-07 experiments registered in producer headers (recorded 2026-09-07, after an external review noted their absence here)
+
+The four experiments below were registered by git commit of their producer script headers on
+2026-09-07 and scored the same day; their predictions and outcomes appeared in the paper but
+had no entry in this ledger. Recorded now, with the registration and outcome commit hashes.
+Generation and judging for each ran on the cluster through the pipeline scripts named, which
+gate on the previous pipeline's DONE marker; the registration commit precedes each launch.
+
+### 2-D composition factorial (P-2D1..P-2D4) — registered `bab23e1` 2026-09-07 12:26, outcome `2bf7dd1` 12:31
+
+Producer `papers/analysis/exploit_lure2d.py` -> `exploit_lure2d.json`. Zero new judging: matched
+14-sample sub-pools drawn from already-scored samples, d in {0,2,4} reference-matching valids
+crossed with l in {0,3,6} invalid reference-resembling lures, 24 eligible items, plus a
+four-parameter selection model S_ref ~ beta*S_blind + lambda*[matches] + gamma*[lure] with item
+intercepts, leave-one-item-out.
+
+- **P-2D1 (lure axis raises inflation at d=0): SPLIT.** phi-4 +0.23 [+0.05, +0.44] confirmed;
+  Qwen-7B +0.15 [-0.11, +0.37] not resolvable.
+- **P-2D2 (removing lures restores a rising dose-response): FALSIFIED both judges.** At d=0, l=0
+  the referenced judge still inflates (+0.68, +0.66) and still selects valid answers far less
+  often than blind (0.47 vs 0.77; 0.51 vs 0.83).
+- **P-2D3 (lures collapse the referenced valid-pick rate at d=0): CONFIRMED.** -0.31 and -0.38,
+  CIs excluding zero; blind judges barely move.
+- **P-2D4 (model signed as predicted, LOIO Spearman >= 0.8): CONFIRMED.** lambda +4.3 / +3.5,
+  gamma +1.4 / +1.7, all excluding zero; Spearman 0.80 (exactly at the bar) and 0.85.
+- Reading (post hoc): the lure is a real but secondary channel; the load-bearing term is
+  compression, beta ~ 0.5-0.7 (rubric b Qwen 0.44), read as descriptive not causal.
+
+### Exact-oracle rotation replication (P-RR1..P-RR3) — registered `bdfd4c3` 12:34, outcome `f8edc85` 12:47
+
+Producer `papers/analysis/replrot_analysis.py` -> `replrot_results.json`; pool built by
+`build_replrot_pool.py` (pool-aware assignment, disclosed, as in the original rotation); judged
+by `pipeline21.sh`. Same-sample rotation on the osf.io/ym5x9 replication pool, Qwen-7B and
+phi-4, rubrics a and b.
+
+- **All 12 registered cells CONFIRMED.** Gainers +4.97/+6.34 (Qwen a/b), +4.09/+3.25 (phi-4),
+  n=120; losers -5.04/-6.58/-3.92/-3.18, n=93; placebo +0.13/+0.10/+0.30/+0.24, n=113;
+  gainer-minus-placebo +3.1 to +6.2, every CI excluding zero. Retires the incomplete-checker
+  caveat on the paper's central causal result.
+
+### Masking-and-identity suite (P-MS1..P-MS3, masking) — registered `00e24c7` 12:37, outcome `5ca84ac` 13:37
+
+Producer `papers/analysis/maskident_analysis.py` -> `maskident_results.json`; variants built by
+`build_refvariant_pools.py`; judged by `pipeline22.sh`. **ID collision disclosed:** the producer
+header labels these P-MS1..P-MS3, which this ledger already uses for the Ministral-8B screen
+(P-MS1 confirmed, P-MS2 falsified, 2026-08-31). The masking predictions are distinct and are
+referred to as "masking P-MS1..3" here.
+
+- **Masking P-MS1 (semantic, not lexical; refword margin > 0 both judges): CONFIRMED.**
+  Qwen-7B +2.88 [+2.47, +3.28] vs bare +4.62; phi-4 +3.68 [+3.27, +4.06] vs bare +3.79
+  (difference -0.11 [-0.28, +0.05]).
+- **Masking P-MS2 (cheapness; refexpr margin below bare, CI excluding zero, both judges):
+  CONFIRMED.** Qwen-7B +0.29, difference -4.33 [-4.68, -4.01]; phi-4 +0.89, difference
+  -2.90 [-3.30, -2.57].
+- **Masking P-MS3 (token necessity; masked worked ref drops > half the margin, scalar
+  families k>1): CONFIRMED.** Qwen-7B +2.97 -> +0.05 (drop -2.92 [-3.61, -2.32], 98%);
+  phi-4 +3.51 -> -0.49 (drop -4.01 [-4.71, -3.35]). n=21 items. Rubric b replicates all six
+  cells. List families exploratory only (masking leaks elements; disclosed).
+
+### Intention-to-treat sensitivity — POST HOC, commit `7d05516`, not registered
+
+Producer `papers/analysis/repl_itt_sensitivity.py` -> `repl_itt_sensitivity.json`, written in
+response to external review. E1 over all 120 replication items, no pass-rate band:
++1.14 [+0.97, +1.31]; in-band n=105 +1.19 [+1.03, +1.36] (as registered); out-of-band n=15 alone
++0.78 [+0.19, +1.32]. The band is not load-bearing.
+
+### Answer-separability continuum (P-SC1..P-SC4, continuum) — registered `3ce86e5` 12:41, outcome `0e28207` 13:04, ORACLE CORRECTION 2026-09-07 (evening)
+
+Producer `papers/analysis/sep_continuum_analysis.py` -> `sep_continuum_results.json`; tasks by
+`build_sep_tasks.py`, generation `sep_generate.py`, oracle `sep_oracle.py`, judged by
+`pipeline23.sh`/`pipeline24.sh`. 25 single-congruence instances asked at four answer-structure
+strata (scalar, pair, JSON, program), 64 Llama-3.1-8B samples each, Qwen-7B and phi-4, rubrics a
+and b. **ID collision disclosed:** the producer labels these P-SC1..P-SC4, which this ledger
+already uses for the closed similarity-vs-correctness 2x2; referred to as "continuum P-SC" here.
+
+**Registered outcome (0e28207), scored on the registered oracle.** Attenuation confirmed both
+judges: inflation delta scalar/pair/json/program +1.69/+1.33/+0.75/+0.27 (Qwen-7B) and
++1.32/+0.99/+1.04/-0.06 (phi-4), n=25 per stratum. Continuum P-SC1 (margin survives structure)
+confirmed both; P-SC2 (json-minus-program margin cliff) confirmed both; P-SC3 (cliff not
+gradient) confirmed phi-4, falsified Qwen-7B; P-SC4 (inflation follows: program cell null)
+confirmed phi-4 (-0.06 [-0.22, +0.11]), falsified Qwen-7B (+0.27 [+0.13, +0.40]). Pair and JSON
+margin legs starved by match scarcity (7 and 1 usable items); disclosed as a design failure.
+
+**DEVIATION: post-registration oracle correction, applied and disclosed 2026-09-07.** An
+external review of the pending push found that the registered `sep_oracle.py` executed the
+LAST fenced code block in a reply and required it to contain `def f`; 387 of 1600 program
+samples (all 25 items) end with a usage block such as `print(f())` after the block that defines
+`f`, and were scored invalid without execution. Corrected rule: execute the last fenced block
+that defines `f` (fallback to the last block). Re-scoring the frozen pool flips 330 samples
+invalid -> valid and 0 valid -> invalid; program pass rate 0.613 -> 0.819; other strata
+unchanged. The registered pool labels are preserved as a backup outside the repo; the
+committed pool and `sep_continuum_results.json` are the corrected versions, regenerated by the
+unchanged frozen producer.
+
+Corrected program cells: inflation delta **+0.13 [+0.01, +0.24]** (Qwen-7B) and
+**-0.37 [-0.49, -0.27]** (phi-4); anchoring margin +0.64 [+0.24, +1.14] and +0.88 [+0.57, +1.20]
+(n=19, against +0.55/+0.80 on n=16 registered). Non-program cells move by <= 0.04. **No
+registered verdict changes** (P-SC3/P-SC4 still falsified for Qwen-7B, confirmed for phi-4).
+Direction of the correction: the mislabeled samples were correct programs; scoring them
+correctly moves phi-4's program cell from null to negative (the reference HELPS on programs, as
+on MBPP) and halves Qwen-7B's residue. Precedent: the frontier parser correction of 2026-08-31.
+Paper updated in the abstract, Section 7.1 (with the disclosure paragraph), and the conclusion.

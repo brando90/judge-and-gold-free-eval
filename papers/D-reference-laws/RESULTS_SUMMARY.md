@@ -229,9 +229,9 @@ The exemplar does not inflate; it reduces inflation relative to blind, much as a
 | Scalar | +1.69 | +1.32 |
 | Pair | +1.33 | +0.99 |
 | JSON | +0.75 | +1.04 |
-| Program | **+0.27** [+0.13, +0.40] | **−0.06** |
+| Program | **+0.13** [+0.01, +0.24] | **−0.37** [−0.49, −0.27] |
 
-Attenuation confirmed and large for both judges (n=25 per stratum, every non-program cell excluding zero). Cliff held for phi-4 (null at program) and failed for Qwen-7B (small positive residue). Two disclosures: pair and JSON anchoring margins were starved by design (7 and 1 usable items), so the margin-based predictions are not evaluable as registered; program outputs cluster (median two distinct returned lists per item). Post-hoc reading: two-line list comprehensions are mentally executable, so their output is a cheaply recoverable token in a way an MBPP-scale function's is not; the load-bearing variable may be recoverability cost, untested.
+Attenuation confirmed and large for both judges (n=25 per stratum, every non-program cell excluding zero). Cliff held for phi-4 (program delta below zero, the reference helping as on MBPP) and failed for Qwen-7B (small positive residue). **Post-registration oracle correction (2026-09-07):** the registered program oracle read the last fenced block and scored 387/1600 samples invalid because a `print(f())` usage block followed the function; re-scoring with the last block defining `f` flips 330 to valid, none the other way (pass rate 0.613 → 0.819). Registered-label values were +0.27 [+0.13, +0.40] and −0.06 [−0.22, +0.11]; no verdict changes; program-stratum margins are essentially unchanged (+0.64/+0.88 on 19 items vs +0.55/+0.80 on 16). Two disclosures: pair and JSON anchoring margins were starved by design (7 and 1 usable items), so the margin-based predictions are not evaluable as registered; program outputs cluster (median two distinct returned lists per item). Post-hoc reading: two-line list comprehensions are mentally executable, so their output is a cheaply recoverable token in a way an MBPP-scale function's is not; the load-bearing variable may be recoverability cost, untested.
 
 ---
 

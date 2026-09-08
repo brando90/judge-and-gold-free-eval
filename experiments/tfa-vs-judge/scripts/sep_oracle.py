@@ -57,8 +57,14 @@ def last_json_obj(text):
 
 
 def last_code_block(text):
+    # CORRECTION (post-registration, disclosed): take the LAST fenced block that DEFINES f.
+    # The registered rule took the last fenced block of any kind, which scored 387/1600
+    # program samples invalid because a trailing usage block (e.g. print(f())) followed the
+    # block defining f. 330 of those execute correctly under this rule; none of the
+    # previously-valid samples change.
     blocks = re.findall(r"```(?:python)?\s*\n(.*?)```", text, re.S)
-    return blocks[-1] if blocks else None
+    defs = [b for b in blocks if "def f" in b]
+    return defs[-1] if defs else (blocks[-1] if blocks else None)
 
 
 def run_program(code, p):

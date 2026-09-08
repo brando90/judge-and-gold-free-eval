@@ -234,7 +234,7 @@ Note how MACE controls k: a k=4 River question is built by listing several river
 
 **Oracle.** Scalar, pair, json: parse and check each integer against the congruence and range, plus distinctness. Program: execute f(), check the returned list.
 
-**Registered form.** A *cliff* at the program boundary (pairs and JSON are still short canonicalizable strings, so anchoring should survive them and die only at the artifact), staked against the gradient a reviewer proposed. Outcome: attenuation confirmed for both judges; the cliff held for phi-4 and failed for Qwen-7B.
+**Registered form.** A *cliff* at the program boundary (pairs and JSON are still short canonicalizable strings, so anchoring should survive them and die only at the artifact), staked against the gradient a reviewer proposed. Outcome: attenuation confirmed for both judges; the cliff held for phi-4 and failed for Qwen-7B (program delta +0.13 [+0.01, +0.24] for Qwen-7B, −0.37 [−0.49, −0.27] for phi-4, after a disclosed post-registration oracle correction: the registered oracle took the last fenced block and mislabeled 387 samples that ended with a `print(f())` usage block; see `registration.md`).
 
 ---
 
