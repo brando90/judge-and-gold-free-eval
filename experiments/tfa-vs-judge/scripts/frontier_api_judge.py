@@ -54,7 +54,7 @@ ap.add_argument("--pool", required=True)
 ap.add_argument("--tasks", default=None, help="task file to fill missing problem/ref fields")
 ap.add_argument("--out", required=True, help="score directory, e.g. runs/bon_scores_repl")
 ap.add_argument("--prefix", default="synthk", help="file prefix the producer expects")
-ap.add_argument("--cond", choices=["noref", "ref", "m1"], required=True)
+ap.add_argument("--cond", choices=["noref", "ref", "m1", "refinst", "refinst2"], required=True)
 ap.add_argument("--rep", choices=["a", "b"], required=True)
 ap.add_argument("--mode", choices=["sync", "batch-submit", "batch-collect"], default="sync")
 ap.add_argument("--blind-scores", default=None, help="m1: this judge's noref_{rep} score file")
@@ -125,8 +125,18 @@ def build(r, i):
     if args.cond == "noref":
         sysmsg = RUBRIC_TIES[("noref", args.rep)]
         user = f"Problem:\n{q}\n\nCandidate solution:\n{s}\n\nScore:"
-    elif args.cond == "ref":
-        sysmsg = RUBRIC_TIES[("ref", args.rep)]
+    elif args.cond in ("ref", "refinst", "refinst2"):
+        # refinst/refinst2 text copied verbatim from bon_judge.py, appended to the same base rubric
+        sysmsg = RUBRIC_TIES[("ref", args.rep)] + {
+            "refinst": (" Note: the reference shown is one valid answer among possibly many; the "
+                        "question may have several correct answers, and any correct answer "
+                        "deserves full credit even if it differs from the reference."),
+            "refinst2": (" Important: do not compare the candidate's answer to the reference. "
+                         "Use the reference only to understand the problem. Verify the "
+                         "candidate's answer on its own merits; a correct answer that differs "
+                         "from the reference must receive the same score as one that matches "
+                         "it."),
+        }.get(args.cond, "")
         user = f"Problem:\n{q}\n\nReference answer (trusted):\n{r['ref_answer']}\n\nCandidate solution:\n{s}\n\nScore:"
     else:  # m1, verbatim from mitigation_judge.py
         b = BLIND[r["problem_id"]][i]
@@ -263,27 +273,39 @@ if args.mode == "sync":
         for l in open(outf):
             w = json.loads(l)
             done[w["problem_id"]] = w["escore"]
-    todo = [r for r in pool if r["problem_id"] not in done]
-    print(f"[frontier {tag}] {args.cond}_{args.rep}: {len(done)} items done, {len(todo)} to judge",
-          flush=True)
+    # Resume at SAMPLE granularity: an item already present keeps its scored samples and only
+    # its nulls are (re)judged, so an interrupted or partially failed run is filled rather than
+    # skipped or redone. Items absent from the file are judged in full.
+    todo = [r for r in pool
+            if r["problem_id"] not in done
+            or any(done[r["problem_id"]][i] is None and wanted(r, i)
+                   for i in range(len(r["samples"])))]
+    n_gap = sum(1 for r in pool if r["problem_id"] in done
+                for i in range(len(r["samples"]))
+                if done[r["problem_id"]][i] is None and wanted(r, i))
+    print(f"[frontier {tag}] {args.cond}_{args.rep}: {len(done)} items on disk, {len(todo)} to touch"
+          f" ({n_gap} missing samples to fill)", flush=True)
     n_calls = 0
     for r in todo:
+        prev = done.get(r["problem_id"]) or [None] * len(r["samples"])
         jobs = {}
         with ThreadPoolExecutor(max_workers=args.workers) as ex:
             for i in range(len(r["samples"])):
-                if not wanted(r, i):
+                if not wanted(r, i) or prev[i] is not None:
                     continue
                 sysmsg, user = build(r, i)
                 if sysmsg is None:
                     continue
                 jobs[ex.submit(call_one, sysmsg, user)] = i
-            esc = [None] * len(r["samples"])
+            esc = list(prev)
             for fut in as_completed(jobs):
                 esc[jobs[fut]] = fut.result()
                 n_calls += 1
         done[r["problem_id"]] = esc
         write_rows([dict(problem_id=p, escore=e) for p, e in done.items()])
-        print(f"  {r['problem_id']}: {sum(e is not None for e in esc)} scored", flush=True)
+        if len(jobs):
+            print(f"  {r['problem_id']}: filled {len(jobs)}, now {sum(e is not None for e in esc)} scored",
+                  flush=True)
     write_meta(mode="sync", **RESOLVED)
     print(f"[frontier {tag}] wrote {outf} ({n_calls} calls this run); resolved model {RESOLVED.get('model_resolved')}")
 

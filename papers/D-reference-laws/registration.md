@@ -1936,3 +1936,51 @@ standard / ~$34 batch on gpt-5.4; Phase 1 ~69k calls, ~29M tokens, ~$60 / ~$30 o
 - Temperature is omitted on both providers (GPT-5.x rejects non-default values; Sonnet 5
   deprecates the parameter); the first-token logprobs the OpenAI score is read from do not
   depend on it.
+
+---
+
+## REGISTERED 2026-09-07 (evening), before any refinst/refinst2 frontier score exists: does the instruction mitigation work on an actual frontier judge?
+
+**Why.** P-S2/P-S2b (synthetic grid) found the "accept any valid answer" instruction is a placebo
+below frontier capability and a near-complete fix for phi-4, the strongest OPEN judge tested
+(14B). "Below frontier capability" has always meant "below phi-4" in this paper; no actual
+frontier-class judge (Sonnet 5, GPT-4.1, GPT-5.4) has been shown the instruction. Separately, the
+frontier margin check found the base anchoring does not shrink with scale up to Sonnet 5, which
+argues against capability being the bottleneck for the instruction fix either. Raised in review;
+registered before running rather than extrapolated either way.
+
+**Design.** k-stratified pool, k>1 items, rubric a (matching the original P-S2/P-S2b scope; no
+rubric-b replicate here for the same reason it wasn't in the original). Conditions `refinst` and
+`refinst2`, text verbatim from `bon_judge.py`, now supported by `frontier_api_judge.py`
+(committed with this entry). Judges: gpt-4.1-2025-04-14 (full samples, both margin and inflation
+readouts) and claude-sonnet-5 (valid-only, margin readout only, consistent with the rest of
+Phase 1). gpt-5.4 deferred pending resolution of a provider-side batch failure discovered the
+same evening (see the addendum below); added under the same predictions if it becomes usable.
+
+**Predictions**, weak/directional as in the original (the LEVEL is the informative readout,
+reported regardless of verdict): **P-FI1** refinst's k>1 margin is smaller than the bare
+reference's, paired per-item difference, CI excluding zero, per judge. **P-FI2** refinst2
+reproduces the same direction, per judge. A null on either — margin unchanged or worse under
+instruction — is reported as prominently as a confirmation, since it would mean the capability
+gate does not close even at frontier scale.
+
+**Producer:** `papers/analysis/frontier_instruction_analysis.py`, estimators copied from
+`mitigation_analysis.py`, committed with this entry, before any refinst/refinst2 score exists.
+
+### Addendum (same evening): gpt-5.4 batch endpoint failure, judge deferred
+
+Investigating why all eight gpt-5.4 Phase 2 batches showed zero completions: a diagnostic batch
+that requested logprobs without `reasoning_effort` set resolved server-side to a phantom model
+id `gpt-5.4-2026-03-05-batch`, which 404s ("does not exist or you do not have access to it").
+The production batches (which DO set `reasoning_effort=none`, as pinned in the original
+registration) do not hit that specific error, but two of the eight k-stratified rubric-b batches
+independently show failure counts climbing toward their totals (4752/4800 on one) while
+`completed` stays at 0 and the batch-level `errors` field stays null throughout, so the specific
+per-request cause is not yet visible (OpenAI only populates the error file once a batch reaches
+a terminal state). The other six gpt-5.4 batches remain stuck at 0 progress after over an hour,
+while every gpt-4.1 and Claude batch submitted at the same time completed normally. Read
+together, this looks like a provider-side batch-routing fault specific to this model on this
+account today, not a bug in the harness or the registered protocol. gpt-5.4 is deferred from
+Phase 2 and from this instruction extension; if the batch endpoint recovers it is added under the
+same predictions, otherwise the paper reports gpt-4.1 and Sonnet 5 as the two frontier judges and
+states gpt-5.4 was attempted and blocked, with the diagnostic evidence above.
