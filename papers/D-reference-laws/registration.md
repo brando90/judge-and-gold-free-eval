@@ -1849,7 +1849,7 @@ unchanged frozen producer.
 
 Corrected program cells: inflation delta **+0.13 [+0.01, +0.24]** (Qwen-7B) and
 **-0.37 [-0.49, -0.27]** (phi-4); anchoring margin +0.64 [+0.24, +1.14] and +0.88 [+0.57, +1.20]
-(n=19, against +0.55/+0.80 on n=16 registered). Non-program cells move by <= 0.04. **No
+(n=19, against +0.55/+0.80 on n=16 registered). Non-program cells move by at most 0.09 (now +1.66/+1.35/+0.71 and +1.35/+0.98/+0.94), because the producer's single seeded RNG is consumed in pool order and the relabeled program items shift the later draws; every interval still excludes zero. **No
 registered verdict changes** (P-SC3/P-SC4 still falsified for Qwen-7B, confirmed for phi-4).
 Direction of the correction: the mislabeled samples were correct programs; scoring them
 correctly moves phi-4's program cell from null to negative (the reference HELPS on programs, as
