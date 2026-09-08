@@ -60,6 +60,7 @@ ap.add_argument("--mode", choices=["sync", "batch-submit", "batch-collect"], def
 ap.add_argument("--blind-scores", default=None, help="m1: this judge's noref_{rep} score file")
 ap.add_argument("--valid-only", action="store_true")
 ap.add_argument("--limit-items", type=int, default=0, help="pilot: judge only the first N items")
+ap.add_argument("--k-min", type=int, default=0, help="judge only items with k >= this (k from --tasks)")
 ap.add_argument("--workers", type=int, default=8)
 ap.add_argument("--tag", default=None,
                 help="judge tag for the output filename; defaults to provider__model. Use when the "
@@ -101,6 +102,8 @@ if args.tasks:
     for r in pool:
         r.update({k: v for k, v in tmap.get(r["problem_id"], {}).items() if k not in r})
 pool = [r for r in pool if "oracle" in r]
+if args.k_min:
+    pool = [r for r in pool if int(r.get("k", 0)) >= args.k_min]
 if args.limit_items:
     pool = pool[:args.limit_items]
 missing = sum(1 for r in pool if not (r.get("problem") or r.get("question")))
