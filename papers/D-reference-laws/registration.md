@@ -1855,3 +1855,61 @@ Direction of the correction: the mislabeled samples were correct programs; scori
 correctly moves phi-4's program cell from null to negative (the reference HELPS on programs, as
 on MBPP) and halves Qwen-7B's residue. Precedent: the frontier parser correction of 2026-08-31.
 Paper updated in the abstract, Section 7.1 (with the disclosure paragraph), and the conclusion.
+
+---
+
+## REGISTERED 2026-09-07 (evening), before any frontier API score exists: frontier-judge extension, Phase 2 (inflation, logprob path) and Phase 1 (margins, sampled-integer path)
+
+**Why.** The paper's only frontier-scale evidence is one anchoring-margin check (37 items, Claude
+Sonnet via the CLI, sampled integers, no inflation). Every inflation result, the k-step, and the
+mitigation are open-weights only. A reviewer would be right to ask whether the headline holds for
+a production judge. This registration pins the protocol that the earlier P-F3 failure showed must
+be pinned in advance: the score function.
+
+**Harness.** `experiments/tfa-vs-judge/scripts/frontier_api_judge.py`, committed with this entry.
+Prompts are byte-identical to `bon_judge.py` / `mitigation_judge.py` (system and user as separate
+roles). Two score functions, pinned:
+- **openai (Phase 2):** logprob-expected value over score tokens 0..10 at the first generated
+  position, renormalized over score-token mass, from `top_logprobs=5` (the GPT-5.x API maximum;
+  vLLM used 20), `reasoning_effort="none"` (GPT-5.x returns no logprobs otherwise; verified
+  2026-09-07: gpt-5.5 refuses logprobs entirely, gpt-5.4/5.2 return them only at none),
+  temperature 0, `max_completion_tokens` 4, fallback to parsed text when score-token mass < 0.25,
+  as in `bon_judge.py`. Judge: **`gpt-5.4-2026-03-05`** (tag `openai__gpt-5.4-2026-03-05`).
+  Optional second family under the same predictions: `gpt-4.1-2025-04-14` (full logprobs).
+- **anthropic (Phase 1):** sampled integer (no logprobs on the Messages API), temperature 0,
+  last integer 0..10. Judge: **`claude-sonnet-5`** via the API (the CLI's `sonnet` alias resolves
+  to the same model, verified 2026-09-07). **No inflation is computed from this path.**
+Runs use each provider's batch API where possible; identical requests either way.
+
+**Phase 2 design (inflation).** Replication pool (120 items, 64 samples, blind and single
+reference, rubrics a and b; analysis population the registered [0.2, 0.8] band) and the
+k-stratified pool (75 items; blind, single reference, and M1 blind-then-reveal with this judge's
+own blind score in the second call; rubrics a and b). Producer: `papers/analysis/frontier_phase2_analysis.py`,
+a documented successor of `repl_analysis.py` and `mitigation_analysis.py` with estimator code copied
+verbatim, committed with this entry. Output `frontier_phase2_results.json`.
+
+**Phase 2 predictions (per judge).** P-FR1: replication E1 delta > 0, CI excluding zero.
+P-FR2: selection collapse, exact McNemar p < 0.05 in the referenced direction. P-FR3: replication
+anchoring margin > 0, CI excluding zero. P-FK1: k-stratified step (k>1 minus k=1 single-reference
+delta) > 0, CI excluding zero. P-FK2: M1-minus-single-reference contrast at k>1 < 0, CI excluding
+zero. P-FK3 (directional): M1's k>1 level is smaller in magnitude than the single reference's;
+the residual is reported as a level, judge-dependent per the coverage extension. **No cross-scale
+magnitude claim** (5 vs 20 logprob entries; different calibration): only signs and CIs. A null on
+P-FR1 or P-FK1 bounds the paper's claim below frontier scale and is reported as prominently as a
+confirmation.
+
+**Phase 1 design (margins, Claude Sonnet 5).** Oracle-valid samples only (`--valid-only`; nulls
+elsewhere), rubrics a and b: (i) exact-oracle rotation replication pool (`bon_replrot`), blind,
+original reference, rotated reference; (ii) masking suite on the replication pool (`bon_replword`,
+`bon_replexpr`) plus bare reference and blind; (iii) MACE k>1 items, blind and reference; (iv) the
+blind-certified filter is a re-analysis of (i) and needs no calls. Producer to be committed before
+Phase 1 judging (`frontier_phase1_margins.py`); predictions: P-FM1 rotation gainers > 0 and losers
+< 0 with placebo flat; P-FM2 words margin > 0, expression margin below bare (CI excluding zero),
+both judges' pattern; P-FM3 MACE k>1 referenced margin > 0 with blind CI containing zero; P-FM4
+the rotation effect survives on samples the judge blindly scored >= 7.
+
+**Pilot.** One replication item, sync mode, before any batch is submitted, to verify parsing and
+the escore distribution. Pilot scores are deleted before the registered run and never analyzed.
+
+**Cost, estimated 2026-09-07 at list prices:** Phase 2 ~60k calls, ~27M input tokens, ~$68
+standard / ~$34 batch on gpt-5.4; Phase 1 ~69k calls, ~29M tokens, ~$60 / ~$30 on Sonnet 5.
