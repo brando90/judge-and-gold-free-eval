@@ -146,6 +146,11 @@ def wanted(r, i):
     return (not args.valid_only) or bool(r["oracle"][i])
 
 
+def anth_cid(pid, i):
+    # Anthropic custom_id must match ^[a-zA-Z0-9_-]{1,64}$; problem ids contain '/' and ':'
+    return re.sub(r"[^A-Za-z0-9_-]", "_", f"{pid}__{i}")[:64]
+
+
 # ---------------------------------------------------------------- request bodies
 def openai_body(sysmsg, user):
     body = dict(model=args.model, messages=[{"role": "system", "content": sysmsg},
@@ -298,7 +303,7 @@ elif args.mode == "batch-submit":
                 reqs.append(dict(custom_id=cid, method="POST", url="/v1/chat/completions",
                                  body=openai_body(sysmsg, user)))
             else:
-                reqs.append(dict(custom_id=cid.replace("/", "_")[:64],
+                reqs.append(dict(custom_id=anth_cid(r["problem_id"], i),
                                  params=anthropic_body(sysmsg, user)))
     print(f"[frontier {tag}] submitting {len(reqs)} requests", flush=True)
     if args.provider == "openai":
@@ -359,7 +364,7 @@ else:  # batch-collect
         cid_map = {}
         for r in pool:
             for i in range(len(r["samples"])):
-                cid_map[f"{r['problem_id']}|{i}".replace("/", "_")[:64]] = (r["problem_id"], i)
+                cid_map[anth_cid(r["problem_id"], i)] = (r["problem_id"], i)
         raw = get(b["results_url"], AN_H, raw=True)
         n_err = 0
         for line in raw.decode().splitlines():
