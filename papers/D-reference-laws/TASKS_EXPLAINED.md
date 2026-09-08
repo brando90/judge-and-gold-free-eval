@@ -338,7 +338,7 @@ Everywhere else in the paper, the reference the judge sees is a bare answer stri
 
 The **refword** construction converts each integer to English words (with hyphenated tens and "hundred"/"thousand"), element-wise for lists. The **refexpr** construction writes each integer n as "(n−1)+1". Both are semantically exact: "thirty-one" and "30+1" are 31.
 
-**Registered predictions.**
+**Registered predictions.** (The producer's header labels these P-MS1 to P-MS3. Those IDs collide with the Ministral-8B screen's P-MS1/P-MS2 already in `registration.md`, and the masking suite has no ledger entry of its own yet; its registration is the git commit of `build_refvariant_pools.py` and `maskident_analysis.py`.)
 - **P-MS1 (semantic, not lexical):** the refword margin is positive with CI excluding zero for both judges. If the judge were pattern-matching characters, spelling the reference out in words would kill the margin.
 - **P-MS2 (cheapness gradient):** the refexpr margin is smaller than the bare-reference margin (paired difference, CI excluding zero) for both judges, while remaining positive. If equality that must be computed anchors less than equality that can be read, the check is cheap rather than effortful.
 - **P-MS3 (token necessity):** on scalar families at k>1, the masked worked-reference margin drops relative to the unmasked worked reference (paired difference excluding zero) for both judges, and the drop removes more than half of the unmasked margin.

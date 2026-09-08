@@ -143,9 +143,9 @@ Each judge runs \emph{blind}, with no reference in context, and \emph{referenced
 \paragraph{The two measurements.}
 \emph{Inflation} is the excess hack gap: how far the selected sample's reported score sits above its true quality, in baseline standard deviations, against a null built by shuffling judge scores among samples the oracle grades identically.
 We reproduce the definition here so this paper stands alone.
-For one item with samples $s_1, \dots, s_n$, judge scores $J(\cdot)$ with pool mean $\mu_J$ and standard deviation $\sigma_J$, and oracle validity $V(\cdot)$ with pool mean $\mu_V$ and standard deviation $\sigma_V$, the best-of-$n$ pick is $s^\star = \arg\max_i J(s_i)$ and the hack gap is the standardized scoreboard gain in excess of the standardized truth gain,
+For one item with samples $s_1, \dots, s_n$, judge scores $J(\cdot)$ with pool mean $\mu_J$ and standard deviation $\sigma_J$, and oracle validity $V(\cdot)$ with pool mean $\mu_V$, the best-of-$n$ pick is $s^\star = \arg\max_i J(s_i)$ and the hack gap is the standardized scoreboard gain in excess of the raw truth gain,
 \begin{equation}
-G \;=\; \frac{J(s^\star) - \mu_J}{\sigma_J} \;-\; \frac{V(s^\star) - \mu_V}{\sigma_V},
+G \;=\; \frac{J(s^\star) - \mu_J}{\sigma_J} \;-\; \bigl(V(s^\star) - \mu_V\bigr),
 \end{equation}
 with selection under one rubric paraphrase and the reported $J(s^\star)$ taken from the other.
 Inflation is $G - \mathbb{E}_\pi[G]$, where $\pi$ shuffles judge scores among samples the oracle grades identically, so any score-validity association a judge earns honestly is preserved under the null; the committed implementation additionally averages over score ties and resampled sub-pools.
