@@ -12,9 +12,11 @@
 #   openai    : logprob-EXPECTED value over the score tokens 0..10 at the first generated position,
 #               the open judges' estimator (bon_judge.py), from top_logprobs=5 (the API maximum on
 #               GPT-5.x), renormalized over the score-token mass; reasoning_effort="none" because
-#               GPT-5.x refuses logprobs with any reasoning; temperature 0; max_completion_tokens 4.
+#               GPT-5.x refuses logprobs with any reasoning; default temperature (GPT-5.x rejects
+#               any other value; the first-token logprobs do not depend on it); max_completion_tokens 4.
 #               Fallback identical to bon_judge: if score-token mass < 0.25, parse the text.
-#   anthropic : SAMPLED INTEGER (the Messages API exposes no logprobs), temperature 0, max_tokens 4,
+#   anthropic : SAMPLED INTEGER (the Messages API exposes no logprobs; `temperature` is deprecated on
+#               Sonnet 5 and omitted), max_tokens 4,
 #               last integer 0..10 in the reply. Margin readouts only; NO inflation is computed from
 #               this path (the score-resolution finding: an 11-value judge ties under best-of-64).
 # Prompts are byte-for-byte the open judges' prompts: system = bon_rubrics.RUBRIC_TIES[(cond_key, rep)]
@@ -59,6 +61,11 @@ ap.add_argument("--blind-scores", default=None, help="m1: this judge's noref_{re
 ap.add_argument("--valid-only", action="store_true")
 ap.add_argument("--limit-items", type=int, default=0, help="pilot: judge only the first N items")
 ap.add_argument("--workers", type=int, default=8)
+ap.add_argument("--tag", default=None,
+                help="judge tag for the output filename; defaults to provider__model. Use when the "
+                     "request must go through an alias (this key may not request logprobs from the "
+                     "dated gpt-5.4 id, but the alias resolves to the same snapshot) while the file "
+                     "keeps the pinned dated id; the resolved model is recorded in the .meta.json sidecar")
 ap.add_argument("--reasoning-effort", default="none",
                 help="openai gpt-5.x only; 'none' is the only value that returns logprobs")
 args = ap.parse_args()
@@ -70,10 +77,19 @@ if args.provider == "openai" and not OPENAI_KEY:
 if args.provider == "anthropic" and not ANTHROPIC_KEY:
     raise SystemExit("ANTHROPIC_API_KEY not set")
 
-tag = f"{args.provider}__{args.model.replace('/', '__')}"
+tag = args.tag or f"{args.provider}__{args.model.replace('/', '__')}"
+RESOLVED = {}  # first resolved model id seen in responses, written to the sidecar
 os.makedirs(args.out, exist_ok=True)
 outf = f"{args.out}/{args.prefix}__{tag}__{args.cond}_{args.rep}.jsonl"
 batchf = outf + ".batch.json"
+metaf = outf + ".meta.json"
+
+
+def write_meta(**kw):
+    m = dict(provider=args.provider, model_requested=args.model, tag=tag, cond=args.cond, rep=args.rep,
+             reasoning_effort=(args.reasoning_effort if args.provider == "openai" and args.model.startswith("gpt-5") else None),
+             top_logprobs=(5 if args.provider == "openai" else None), valid_only=args.valid_only, **kw)
+    json.dump(m, open(metaf, "w"), indent=1)
 
 # ---------------------------------------------------------------- pool
 pool = [json.loads(l) for l in open(args.pool)]
@@ -131,14 +147,19 @@ def wanted(r, i):
 def openai_body(sysmsg, user):
     body = dict(model=args.model, messages=[{"role": "system", "content": sysmsg},
                                             {"role": "user", "content": user}],
-                max_completion_tokens=4, temperature=0, logprobs=True, top_logprobs=5)
+                max_completion_tokens=4, logprobs=True, top_logprobs=5)
     if args.model.startswith("gpt-5"):
+        # GPT-5.x accepts only the default temperature; the first-token logprobs, which the
+        # score is read from, do not depend on it. gpt-4.1 accepts temperature 0.
         body["reasoning_effort"] = args.reasoning_effort
+    else:
+        body["temperature"] = 0
     return body
 
 
 def anthropic_body(sysmsg, user):
-    return dict(model=args.model, max_tokens=4, temperature=0, system=sysmsg,
+    # `temperature` is deprecated on Claude Sonnet 5 (API rejects it); default sampling is used.
+    return dict(model=args.model, max_tokens=4, system=sysmsg,
                 messages=[{"role": "user", "content": user}])
 
 
@@ -213,8 +234,10 @@ AN_H = {"x-api-key": ANTHROPIC_KEY or "", "anthropic-version": "2023-06-01",
 def call_one(sysmsg, user):
     if args.provider == "openai":
         d = post("https://api.openai.com/v1/chat/completions", openai_body(sysmsg, user), OA_H)
+        RESOLVED.setdefault("model_resolved", d.get("model"))
         return escore_openai(d["choices"][0])
     d = post("https://api.anthropic.com/v1/messages", anthropic_body(sysmsg, user), AN_H)
+    RESOLVED.setdefault("model_resolved", d.get("model"))
     text = "".join(b.get("text", "") for b in d.get("content", []))
     return escore_anthropic(text)
 
@@ -253,7 +276,8 @@ if args.mode == "sync":
         done[r["problem_id"]] = esc
         write_rows([dict(problem_id=p, escore=e) for p, e in done.items()])
         print(f"  {r['problem_id']}: {sum(e is not None for e in esc)} scored", flush=True)
-    print(f"[frontier {tag}] wrote {outf} ({n_calls} calls this run)")
+    write_meta(mode="sync", **RESOLVED)
+    print(f"[frontier {tag}] wrote {outf} ({n_calls} calls this run); resolved model {RESOLVED.get('model_resolved')}")
 
 elif args.mode == "batch-submit":
     if os.path.exists(batchf):
@@ -319,6 +343,7 @@ else:  # batch-collect
             if resp.get("status_code") != 200:
                 n_err += 1
                 continue
+            RESOLVED.setdefault("model_resolved", resp["body"].get("model"))
             esc[pid][int(i)] = escore_openai(resp["body"]["choices"][0])
         if b.get("error_file_id"):
             print("  error file present:", b["error_file_id"])
@@ -341,9 +366,11 @@ else:  # batch-collect
             if res["type"] != "succeeded":
                 n_err += 1
                 continue
+            RESOLVED.setdefault("model_resolved", res["message"].get("model"))
             text = "".join(blk.get("text", "") for blk in res["message"]["content"])
             esc[pid][i] = escore_anthropic(text)
         print(f"  parsed; {n_err} failed requests")
     write_rows([dict(problem_id=p, escore=e) for p, e in esc.items()])
+    write_meta(mode="batch", batch_id=meta["batch_id"], **RESOLVED)
     n_scored = sum(e is not None for v in esc.values() for e in v)
     print(f"[frontier {tag}] wrote {outf}: {len(esc)} items, {n_scored} scored samples")

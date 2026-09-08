@@ -1913,3 +1913,26 @@ the escore distribution. Pilot scores are deleted before the registered run and 
 
 **Cost, estimated 2026-09-07 at list prices:** Phase 2 ~60k calls, ~27M input tokens, ~$68
 standard / ~$34 batch on gpt-5.4; Phase 1 ~69k calls, ~29M tokens, ~$60 / ~$30 on Sonnet 5.
+
+### Addendum (2026-09-07, after the one-item pilot, before any batch): alias pinning, second judge, resolution rule
+
+- **Alias.** This key cannot request logprobs from the dated id `gpt-5.4-2026-03-05` (HTTP 403,
+  "not allowed to request logprobs from this model") but can from the alias `gpt-5.4`, whose
+  responses resolve to `gpt-5.4-2026-03-05` (recorded per run in the `.meta.json` sidecar the
+  harness now writes). Requests go through the alias; the score files keep the pinned dated tag.
+- **Pilot (1 replication item, 64 samples, rubric a; scores deleted, not analyzed as evidence):**
+  gpt-4.1-2025-04-14 gave 58 distinct values with 4 samples tied at the maximum; gpt-5.4 gave 26
+  distinct values with **20 of 64 tied at the maximum**; Sonnet 5 (integer path) gave 2 values.
+  On that item Sonnet's referenced margin was +5.0 (blind 0.0), gpt-4.1's +1.7 (blind +1.0),
+  gpt-5.4's +0.9 (blind +0.8).
+- **Consequence, pinned now.** gpt-5.4 at reasoning effort none is a near-deterministic scorer
+  and may tie heavily under best-of-64, the failure mode the score-resolution screen exists for.
+  Phase 2 therefore runs BOTH `gpt-5.4` (alias -> 2026-03-05) and `gpt-4.1-2025-04-14`, and the
+  registered screen (commit 84994aa: pool-wide distinct values >= 100 AND mean ties-at-maximum
+  <= 3.0, computed on the blind rubric-a scores over all items) gates the inflation readout per
+  judge: a judge failing the screen is reported on margins and selection collapse only, with its
+  inflation cells shown but marked non-interpretable, exactly as Mistral-7B was. Predictions
+  P-FR1..P-FK3 apply to each judge that passes; the paper reports both judges regardless.
+- Temperature is omitted on both providers (GPT-5.x rejects non-default values; Sonnet 5
+  deprecates the parameter); the first-token logprobs the OpenAI score is read from do not
+  depend on it.
