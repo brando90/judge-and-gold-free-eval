@@ -1984,3 +1984,22 @@ account today, not a bug in the harness or the registered protocol. gpt-5.4 is d
 Phase 2 and from this instruction extension; if the batch endpoint recovers it is added under the
 same predictions, otherwise the paper reports gpt-4.1 and Sonnet 5 as the two frontier judges and
 states gpt-5.4 was attempted and blocked, with the diagnostic evidence above.
+
+### Outcome (same evening): gpt-5.4 dropped from Phase 2 and the instruction extension; two frontier judges reported
+
+All eight gpt-5.4 batches were checked directly one hour after submission: one had completed
+with 4800/4800 requests failed and no output file (the collector's attempt to fetch it 404'd,
+caught harmlessly by the orchestration script); three others showed failure counts climbing
+toward their totals (4752, 4799, and one earlier at 3625 of 4800/7680); the remaining four sat
+at exactly 0 progress and 0 failures for over an hour, while every gpt-4.1 and Claude Sonnet 5
+batch submitted in the same window completed normally. This is consistent across both pools
+(4800-request k-stratified batches and 7680-request replication batches), so it is read as a
+provider-side fault specific to the gpt-5.4-2026-03-05 batch endpoint on this account today, not
+the harness or the registered protocol. The seven non-terminal batches were cancelled.
+
+**Decision:** gpt-5.4 is dropped from Phase 2 (inflation) and from the instruction-mitigation
+extension. The paper reports **gpt-4.1-2025-04-14 and claude-sonnet-5 as the two frontier
+judges**, states that gpt-5.4 was attempted and blocked by a provider batch-routing fault, and
+gives the diagnostic evidence above rather than any gpt-5.4 numbers. No cost was incurred for
+gpt-5.4 beyond the small diagnostic batches, since a failed or fully-erroring OpenAI batch
+request is not billed.
