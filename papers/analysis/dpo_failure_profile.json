@@ -1,0 +1,56 @@
+{
+ "base_train": {
+  "n_items": 60,
+  "mean_len": 1492.0,
+  "boxed_rate": 0.581,
+  "mean_4gram_repeat": 0.08,
+  "accuracy": 0.412,
+  "unboxed_but_valid": 3,
+  "unboxed_and_invalid": 198
+ },
+ "ref_train": {
+  "n_items": 60,
+  "mean_len": 2476.0,
+  "boxed_rate": 0.156,
+  "mean_4gram_repeat": 0.062,
+  "accuracy": 0.175,
+  "unboxed_but_valid": 15,
+  "unboxed_and_invalid": 390
+ },
+ "m1_train": {
+  "n_items": 60,
+  "mean_len": 3840.0,
+  "boxed_rate": 0.365,
+  "mean_4gram_repeat": 0.032,
+  "accuracy": 0.331,
+  "unboxed_but_valid": 0,
+  "unboxed_and_invalid": 305
+ },
+ "base_heldout": {
+  "n_items": 120,
+  "mean_len": 1376.0,
+  "boxed_rate": 0.613,
+  "mean_4gram_repeat": 0.08,
+  "accuracy": 0.457,
+  "unboxed_but_valid": 13,
+  "unboxed_and_invalid": 359
+ },
+ "ref_heldout": {
+  "n_items": 120,
+  "mean_len": 2187.0,
+  "boxed_rate": 0.174,
+  "mean_4gram_repeat": 0.064,
+  "accuracy": 0.229,
+  "unboxed_but_valid": 57,
+  "unboxed_and_invalid": 736
+ },
+ "m1_heldout": {
+  "n_items": 120,
+  "mean_len": 3458.0,
+  "boxed_rate": 0.455,
+  "mean_4gram_repeat": 0.041,
+  "accuracy": 0.408,
+  "unboxed_but_valid": 4,
+  "unboxed_and_invalid": 519
+ }
+}
