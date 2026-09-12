@@ -2116,3 +2116,25 @@ frontier judges tested, for both phrasings, consistent with (not contradicting) 
 capability-gate story. gpt-5.4 was attempted and is confirmed dead (provider-side batch routing
 fault, documented above). No frontier inflation number exists for Sonnet 5 (integer/tool-call
 score, no logprobs); its margin readouts are unaffected by that limitation.
+
+---
+
+## REGISTERED 2026-09-12: synthetic-grid k-step extension for gpt-4.1 (P-FG1), before any score exists
+
+**Why.** gpt-4.1's k-stratified-pool step (P-FK1) did not confirm. Two readings are open: a
+genuinely smaller effect at this capability level, or noise from gpt-4.1's score-resolution
+screen failure (ties@max 15.03 against a <=3.0 bar) inflating that pool's variance. This gives
+the step a second, cleaner shot on the exact pool and paired-step estimator that produced the
+paper's cleanest, most universal open-judge result (`synthk_paired.py`: step positive and CI-
+excluding-zero for all six open judges, +0.55 to +2.55 SD), rather than accepting one
+inconclusive pool as final.
+
+**Design.** Frozen synthetic-grid pool, Qwen2.5-7B generator (`runs/bon/bon_synthk__Qwen__Qwen2.5-7B-Instruct.jsonl`,
+60 items, k in {1,2,4,8,16}, 64 samples each, oracle-labeled, no new generation). gpt-4.1 judges
+blind and referenced, both rubrics. Producer `papers/analysis/frontier_synthk_analysis.py`,
+estimator mirrored verbatim from `synthk_paired.py`, committed with this entry.
+
+**Prediction.** P-FG1: the paired step (mean per-item ref-minus-blind gap delta at k>1 minus the
+same delta at k=1) is positive, 95% item-bootstrap CI excluding zero, matching all six open
+judges. A null here, on the cleanest available design, would be the strongest evidence yet that
+the k=2 boundary does not extend to gpt-4.1, rather than a k-stratified-pool artifact.
