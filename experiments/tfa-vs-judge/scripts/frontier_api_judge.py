@@ -175,9 +175,30 @@ def openai_body(sysmsg, user):
     return body
 
 
+ANTH_SCORE_TOOL = dict(
+    name="give_score",
+    description="Report the correctness score.",
+    input_schema=dict(type="object", properties=dict(score=dict(type="integer", minimum=0, maximum=10)),
+                       required=["score"]))
+
+
 def anthropic_body(sysmsg, user):
-    # `temperature` is deprecated on Claude Sonnet 5 (API rejects it); default sampling is used.
-    return dict(model=args.model, max_tokens=4, system=sysmsg,
+    # INCIDENT (2026-09-12), see registration.md: free-text parsing on Sonnet 5 was unsafe on
+    # two counts, discovered in this order. (1) Sonnet 5 defaults to extended thinking; with it
+    # on, max_tokens=4 was consumed entirely by thinking tokens before any text was emitted
+    # (~5-90% of samples per file, file-dependent), silently falling back to escore=5.0. Fixed by
+    # thinking:{"type":"disabled"}. (2) Even with thinking disabled and max_tokens raised to 60,
+    # the model often verifies step by step in the visible text instead of emitting the bare
+    # integer the rubric asks for, and free-text last-integer parsing then grabs an INCIDENTAL
+    # digit from that arithmetic (e.g. "67 mod 4 = 3" parsed as a score of 3) rather than any
+    # judged score - wrong data, not missing data, and not detectable after the fact. `temperature`
+    # is deprecated on Sonnet 5 (API rejects it); default sampling is used regardless.
+    # FIX: force a tool call with a validated integer field. 20/20 clean on a pilot; the model's
+    # reasoning happens in the tool-call turn but the reported score is a real, typed value, not
+    # a text-parsed guess.
+    return dict(model=args.model, max_tokens=64, system=sysmsg,
+                thinking={"type": "disabled"},
+                tools=[ANTH_SCORE_TOOL], tool_choice={"type": "tool", "name": "give_score"},
                 messages=[{"role": "user", "content": user}])
 
 
@@ -209,10 +230,20 @@ def escore_openai(choice):
     return float(min(int(m.group()), 10)) if m else 5.0
 
 
-def escore_anthropic(text):
-    """Sampled integer: last integer 0..10 in the reply (frontier_judge.py's corrected parser)."""
-    ints = [int(x) for x in re.findall(r"\b(10|[0-9])\b", text or "")]
-    return float(ints[-1]) if ints else 5.0
+N_UNPARSEABLE = [0]
+
+
+def escore_anthropic(content_blocks):
+    """Forced tool-call score (see anthropic_body): a real, schema-validated integer, not text
+    parsing. A missing tool_use block is a genuine API-level failure, not a parsing ambiguity,
+    and is counted rather than silently defaulted."""
+    for b in content_blocks or []:
+        if b.get("type") == "tool_use" and b.get("name") == "give_score":
+            v = (b.get("input") or {}).get("score")
+            if isinstance(v, (int, float)) and 0 <= v <= 10:
+                return float(v)
+    N_UNPARSEABLE[0] += 1
+    return 5.0
 
 
 # ---------------------------------------------------------------- HTTP
@@ -256,8 +287,7 @@ def call_one(sysmsg, user):
         return escore_openai(d["choices"][0])
     d = post("https://api.anthropic.com/v1/messages", anthropic_body(sysmsg, user), AN_H)
     RESOLVED.setdefault("model_resolved", d.get("model"))
-    text = "".join(b.get("text", "") for b in d.get("content", []))
-    return escore_anthropic(text)
+    return escore_anthropic(d.get("content"))
 
 
 # ---------------------------------------------------------------- modes
@@ -306,8 +336,9 @@ if args.mode == "sync":
         if len(jobs):
             print(f"  {r['problem_id']}: filled {len(jobs)}, now {sum(e is not None for e in esc)} scored",
                   flush=True)
-    write_meta(mode="sync", **RESOLVED)
-    print(f"[frontier {tag}] wrote {outf} ({n_calls} calls this run); resolved model {RESOLVED.get('model_resolved')}")
+    write_meta(mode="sync", n_unparseable=N_UNPARSEABLE[0], **RESOLVED)
+    print(f"[frontier {tag}] wrote {outf} ({n_calls} calls this run); resolved model "
+          f"{RESOLVED.get('model_resolved')}; UNPARSEABLE (fell back to 5.0): {N_UNPARSEABLE[0]}")
 
 elif args.mode == "batch-submit":
     if os.path.exists(batchf):
@@ -397,10 +428,10 @@ else:  # batch-collect
                 n_err += 1
                 continue
             RESOLVED.setdefault("model_resolved", res["message"].get("model"))
-            text = "".join(blk.get("text", "") for blk in res["message"]["content"])
-            esc[pid][i] = escore_anthropic(text)
+            esc[pid][i] = escore_anthropic(res["message"]["content"])
         print(f"  parsed; {n_err} failed requests")
     write_rows([dict(problem_id=p, escore=e) for p, e in esc.items()])
-    write_meta(mode="batch", batch_id=meta["batch_id"], **RESOLVED)
+    write_meta(mode="batch", batch_id=meta["batch_id"], n_unparseable=N_UNPARSEABLE[0], **RESOLVED)
     n_scored = sum(e is not None for v in esc.values() for e in v)
-    print(f"[frontier {tag}] wrote {outf}: {len(esc)} items, {n_scored} scored samples")
+    print(f"[frontier {tag}] wrote {outf}: {len(esc)} items, {n_scored} scored samples; "
+          f"UNPARSEABLE (fell back to 5.0): {N_UNPARSEABLE[0]}")

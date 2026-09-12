@@ -2003,3 +2003,46 @@ judges**, states that gpt-5.4 was attempted and blocked by a provider batch-rout
 gives the diagnostic evidence above rather than any gpt-5.4 numbers. No cost was incurred for
 gpt-5.4 beyond the small diagnostic batches, since a failed or fully-erroring OpenAI batch
 request is not billed.
+
+---
+
+## DATA INTEGRITY INCIDENT (2026-09-12): Sonnet 5 Phase 1 data was corrupted; harness fixed; full redo
+
+**What was wrong.** `frontier_api_judge.py`'s Anthropic path called the Messages API with
+`max_tokens=4` and parsed the last integer 0-10 out of the free-text reply, mirroring the open
+judges' convention. This was unsafe in two independent ways, found in this order while building
+a repeated-sampling extension:
+
+1. **Thinking silently ate the token budget.** Claude Sonnet 5 defaults to extended thinking.
+   With no text budget left after thinking, the API returned an empty text content list and
+   `stop_reason: "max_tokens"`; the harness's fallback silently recorded `escore=5.0`. Auditing
+   every already-collected Sonnet score file found this had happened on **24,499 of 72,920**
+   scored samples (33.6% overall; per-file rates from 5% to **89.9%**). A constant mid-scale
+   fallback dilutes a margin toward zero rather than randomizing it, so every Sonnet number
+   reported before this fix — rotation, masking, MACE, the blind-certified filter, the
+   k-stratified baseline, and both instruction-mitigation conditions — understated its true
+   effect, in some files severely, and none of it is trustworthy as reported.
+2. **Fixing (1) alone was not sufficient.** Setting `thinking:{"type":"disabled"}` stopped the
+   silent-empty-reply failure, but a fresh pilot at `max_tokens=60` still showed the model often
+   verifying step by step in the visible text instead of emitting the bare integer the rubric
+   asks for ("67 mod 4 = 3, ..."), and free-text last-integer parsing then captured an
+   **incidental digit from that arithmetic as if it were the judged score** (e.g. reading "3"
+   out of "67 mod 4 = 3"). This is silently WRONG data, not missing data, and is not
+   distinguishable from a genuine score after the fact.
+
+**Fix, verified.** Score is now read from a forced tool call (`tool_choice:
+{"type":"tool","name":"give_score"}`, integer field, schema-validated 0-10) rather than parsed
+from text, with thinking still disabled. Piloted 20/20 clean on real replication-pool samples
+(zero unparseable, plausible distinct scores, e.g. valid non-matching answers scoring 7 rather
+than 0 or 10), confirmed again through the actual harness code path (0 unparseable across 192
+calls). `frontier_api_judge.py` now also counts and reports every unparseable response instead
+of silently defaulting, on both providers.
+
+**Consequence: full redo.** Every Sonnet 5 file collected before this fix is deleted and
+resubmitted from scratch (contamination is not separable at the sample level after the fact):
+Phase 1 margins (replication blind/ref, exact-oracle rotation, masking words/expression, MACE
+k>1), the k-stratified blind/ref baseline, and both instruction-mitigation conditions. GPT-4.1
+and the dropped gpt-5.4 are unaffected — the incident is specific to the Anthropic free-text
+parsing path. All Phase 1 numbers reported in this conversation before 2026-09-12 (the +4.25
+rotation gainer, the +3.73 masking margin, the MACE +3.92, the refinst results, etc.) are
+**retracted** pending the redo; do not cite them.
