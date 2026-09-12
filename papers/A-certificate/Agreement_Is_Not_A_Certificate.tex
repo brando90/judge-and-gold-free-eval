@@ -44,10 +44,10 @@
 \noindent
 LLM judges now rank models, filter data, and pick the best of $n$ samples, and the standard way to decide whether to trust one is raw agreement with human labels.
 That check fails in the worst way: a judge can agree with humans on unoptimized data and still be gamed the moment something optimizes against it, because an agreement rate cannot reveal which property the judge actually scores --- substance or style --- and that property, not the rate, determines survival under optimization.
-We introduce a pre-deployment audit that measures it with the same labels: a few dozen blind human labels, graded separately for soundness and for style and read through two partial correlations, yield a verdict of pass, fail, or convict.
+We introduce a pre-deployment audit that measures it with the same labels: a few dozen blind human labels, graded separately for soundness and for style, yield a two-dimensional measurement --- how much of the target construct the judge reads, and how much of a nuisance construct --- and a frozen rule turns that measurement into a verdict of qualified, insufficient, or nuisance-loaded.
 The audit convicts a deliberately sabotaged frontier judge and a top open reward model that raw agreement rates as interchangeable with honest judges, and the sabotaged judge shows why the distinction matters: under best-of-$n$ pressure it corrupts its own scoreboard while selecting almost as well as its honest twin, exactly the failure an accuracy check cannot see.
 We validate the verdicts by running the optimization the audit is meant to predict: frozen before any pressure was applied, they called the best-of-$n$ outcome for ten of eleven registered configurations, and the single miss --- a pass that cleared its threshold by $0.01$ --- is reported in full.
-Under externally registered DPO training, the certified judge's arm gained real accuracy on its training items while the convicted judge's arm degraded held-out accuracy, though the registered scoreboard-wedge prediction was falsified in direction: the corrupted signal damaged the policy rather than teaching it to game.
+Under externally registered DPO training the audit identified which of two preference signals was harmful to optimize against: the qualified judge's arm gained accuracy on its training items and lost none held out, while the nuisance-loaded judge's arm degraded held-out accuracy; the registered scoreboard-wedge prediction was falsified in direction, the corrupted signal damaging the policy rather than teaching it to game.
 The audit costs four to eight annotator-hours, one label set serves every judge configuration here, and its key verdicts reproduce on labels from a hypothesis-blind annotator outside the author list, turning evaluator trust from a post-hoc discovery into a measurement made before deployment.
 \end{abstract}
 
@@ -107,11 +107,12 @@ Under optimization the scoreboard climbs while true quality does not: the pipeli
 Nothing in the agreement rate warned them, and nothing in it could have.
 
 The reason is structural, not statistical.
-On unoptimized data, soundness and writing quality travel together --- they correlate at $+0.82$ in our sample of model solutions --- so a judge that scores substance and a judge that scores style post nearly the same agreement rate.
+On unoptimized data, soundness and writing quality travel together --- they correlate at $+0.32$ $[+0.10, +0.55]$ in our labeled sample of model solutions, and the ceiling effects of a near-solved benchmark compress the rest --- so a judge that scores substance and a judge that scores style post nearly the same agreement rate.
+That is not a conjecture about the confound's size: it is what we measure, and a sabotaged frontier judge and an honest mid-size judge land within $0.02$ of each other on raw correlation (Table~\ref{tab:h2h}) while reading opposite properties.
 An optimizer breaks exactly that correlation: it manufactures whichever property the judge rewards, and only one of the two is correctness.
 What determines a judge's fate under pressure is therefore \emph{which property it reads}, a quantity no agreement rate can express but one that is measurable from the same labels: grade the traces separately for soundness and for style, and compute the judge's partial correlation with each axis holding the other fixed.
 A substance-reading judge shows a high soundness partial and a near-zero style partial; a style-loaded judge shows the reverse.
-This is classical construct validation~\cite{campbellfiske1959} pointed at a judge, and this paper's contribution is one sentence long: \textbf{a few dozen blind human labels, read through two partial correlations, yield a frozen pass/fail/convict verdict that predicted which judges got gamed under real optimization pressure --- before any optimization ran.}
+This is classical construct validation~\cite{campbellfiske1959} pointed at a judge, and this paper's contribution is one sentence long: \textbf{static construct validity --- what a judge reads, measured from a few dozen blind human labels --- predicts downstream optimization failure where marginal agreement cannot, and a frozen rule built on it called which judges got gamed before any optimization ran.}
 
 Our contributions:
 \begin{itemize}
@@ -131,7 +132,7 @@ The complete ledger of predictions, timestamps, deviations, and outcomes lives i
 \centering
 \includegraphics[width=\textwidth]{figures/fig_concept.pdf}
 \caption{\textbf{Takeaway: evaluator failure has one dominant mechanism, so a small instrument aimed at it can predict gaming before any optimization runs.}
-Top and middle: the two evaluator mechanisms; comparison-shaped evaluators reward resemblance to a reference and load on properties like style, while verification-shaped evaluators check the solution against something trusted~\cite{companionB}.
+Top and middle: \emph{motivating background, established in companion work and not a result of this paper} --- the two evaluator mechanisms; comparison-shaped evaluators reward resemblance to a reference and load on properties like style, while verification-shaped evaluators check the solution against something trusted~\cite{companionB}. Every claim this paper makes stands on the bottom panel alone.
 Bottom: the audit pipeline; a blind labeled set read through partial correlations classifies the mechanism, and the verdict predicts behavior under optimization pressure.}
 \label{fig:concept}
 \end{figure}
@@ -163,11 +164,37 @@ Blind, the 14B is the only ladder judge to clear the pass rule, and it does so b
 With the gold solution in context, every honestly prompted ladder judge passes.
 A reference changes \emph{what} a judge measures, not merely how accurately it measures --- with the boundary that on tasks admitting several valid answers the same lever inverts and amplifies gaming, statically ($7$--$8$ points of verdict accuracy, whoever wrote the reference) and dynamically at all four ladder sizes~\cite{companionD}.
 
-\paragraph{What raw agreement can and cannot do.}
-Raw agreement is not useless: referenced judges score higher than blind ones, and a threshold placed between the clusters would have called the ladder outcomes.
+\paragraph{The failure is not specific to Pearson correlation.}
+A reader may reasonably suspect we have picked a weak baseline, so we scored every configuration under five conventional marginal measures of judge--human agreement: Pearson and Spearman correlation with human soundness, Kendall's $\tau$, pairwise ordering accuracy against human soundness, and the area under the ROC curve for machine correctness (Table~\ref{tab:marginal}).
+None of them separates the two style-loaded evaluators from the honest blind ladder.
+The reward model sits \emph{inside} the honest blind ladder's range on all five; the sabotaged frontier judge sits inside on two and clears the top of the range by at most $0.06$ on the others, which is not a margin any deployment decision could rest on.
+The nuisance loading is the only measure tested that puts both style-loaded evaluators outside the range of every configuration that is not style-loaded ($+0.59$ and $+0.54$ against a non-convicted maximum of $+0.24$).
+This is the sharper form of the paper's claim: it is not Pearson correlation that fails, it is marginal agreement as a family, because every member of that family answers ``how often is this judge right here'' and none answers ``what is it reading.''
+
+\begin{table}[t!]
+\centering
+\small
+\begin{tabular}{lccccc}
+\toprule
+& Pearson & Spearman & Kendall $\tau$ & pairwise acc. & AUC (correct) \\
+\midrule
+honest blind ladder (range) & $[0.18, 0.37]$ & $[0.08, 0.28]$ & $[0.07, 0.26]$ & $[0.51, 0.62]$ & $[0.54, 0.79]$ \\
+sabotaged frontier & $0.35$ & $0.34$ & $0.28$ & $0.66$ & $0.74$ \\
+reward model & $0.18$ & $0.18$ & $0.13$ & $0.58$ & $0.58$ \\
+\midrule
+\multicolumn{6}{l}{\emph{separates both style-loaded evaluators?}\quad no \quad no \quad no \quad no \quad no} \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{Takeaway: marginal agreement fails as a family, not just as a Pearson correlation.}
+Five conventional agreement measures on the same 60 labeled traces. The reward model falls inside the honest blind ladder's range on every one; the sabotaged frontier judge falls inside on two and exceeds the range by at most $0.06$ on the rest. The nuisance (style) loading separates both: $+0.59$ and $+0.54$ against a maximum of $+0.24$ over all configurations the audit does not flag. Post hoc; producer \texttt{cert\_review\_sensitivity.py}.}
+\label{tab:marginal}
+\end{table}
+
+\paragraph{What marginal agreement can and cannot do.}
+It is not useless: referenced judges score higher than blind ones, and a threshold placed between the clusters would have called the ladder outcomes.
 But it conflates weak-honest with capable-corrupt, the distinction that determines the failure mode under pressure, and it offers no principled threshold --- the separating value is knowable only after the outcomes.
-The audit shares that threshold problem for its weak-judge boundary (the blind-14B false pass is that problem realized), but its convictions do not: a significantly positive style partial is a sign condition, fixed ex ante, and it alone identifies both style-loaded configurations.
-The audit's advantage is diagnosis and sign-anchored conviction, not a magically sharper threshold for weak judges.
+The audit shares that threshold problem for its weak-judge boundary (the blind-14B false pass is that problem realized), but its nuisance verdicts do not: a significantly positive style partial is a sign condition, fixed ex ante, and it alone identifies both style-loaded configurations.
+The audit's advantage is diagnosis and a sign-anchored unsafe verdict, not a magically sharper threshold for weak judges.
 
 \section{The audit}
 \label{sec:audit}
@@ -178,12 +205,13 @@ The instrument is deliberately simple enough to run tomorrow.
 Separated axes are the load-bearing choice: a single quality number makes loading on the wrong axis unmeasurable in principle.
 (3) Score the traces with the judge under audit.
 (4) Compute the soundness partial and the style partial.
-(5) Apply the frozen rule: \emph{convict} if the style partial exceeds $0.30$; \emph{pass} if the soundness partial exceeds $0.40$ and the style partial is below $0.20$; \emph{fail} otherwise.
+(5) Read the two numbers as the measurement they are --- a target loading and a nuisance loading --- and only then apply the frozen rule that turns them into a decision: \emph{nuisance-loaded} (unsafe to optimize against) if the style partial exceeds $0.30$; \emph{qualified} if the soundness partial exceeds $0.40$ and the style partial is below $0.20$; \emph{insufficient target validity} otherwise.
+We keep the shorthand \emph{convict} for the unsafe verdict in prose, because it is the memorable word for what the instrument does, but nothing in the method depends on the vocabulary: the object is the pair of loadings, and the rule is a deployment policy laid over it.
 Labeling sixty traces on two axes at two to four minutes per trace-axis (120 trace-axis gradings) is four to eight annotator-hours, amortized across every judge scored on the same traces.
 The axes here are an instantiation chosen for the threat model, not a fixed pair: style is the dominant documented nuisance axis~\cite{wu2023style,rmbench2024}; length, format, and position are probed separately (Section~\ref{sec:robust}).
 
 Two auxiliary pieces complete the instrument.
-A deliberately decorrelated subsample --- built where cheap signals disagree, decorrelating the axes from $+0.82$ to $+0.31$ --- supplies power for one check that the random set cannot: whether the judge separates sound from lucky reasoning among right answers (the honest frontier reads $+0.81$ there but $-0.14$ on the random set, where range restriction destroys the question)~\cite{companionB}.
+A deliberately selected subsample --- built where cheap signals disagree, which spreads the soundness axis (mean $6.7$, sd $3.4$) that the random set leaves near ceiling (mean $8.3$, sd $2.8$) --- supplies power for one check that the random set cannot: whether the judge separates sound from lucky reasoning among right answers (the honest frontier reads $+0.81$ there but $-0.14$ on the random set, where range restriction destroys the question)~\cite{companionB}.
 Because that subsample is selected by conditioning on the judges' own signals, it induces Berkson-style effects and its numbers never enter the headline partials; the uniformly random anchor set, which cannot be tuned toward any outcome, carries every verdict.
 And before spending any labels, a free pre-screen gates everything: a judge whose pairwise verdict flips when the candidate order is swapped ($71$--$95\%$ flip rate at 0.5B scale, falling to $2$--$37\%$ at 14B~\cite{companionB}) cannot pass any validity audit, at zero cost.
 
@@ -313,8 +341,9 @@ Score gains are instrument-specific in the registered direction: the certified a
 \end{table}
 
 \paragraph{The result.}
-The divergence that matters operationally --- certified-safe versus convicted-harmful under actual DPO training --- is demonstrated (Table~\ref{tab:dpo}).
-Training against the certified judge raises true accuracy on the training items by $+13.2$ points, with the judge and true gains agreeing in sign, while training against the convicted judge degrades true accuracy, significantly on held-out items ($-3.0$ points) and directionally on train.
+The audit correctly identified which of the two signals was harmful to optimize against in this experiment (Table~\ref{tab:dpo}).
+Training against the qualified judge raises true accuracy on the training items by $+13.2$ points, with the judge and true gains agreeing in sign, and costs nothing held out; training against the nuisance-loaded judge degrades true accuracy, significantly on held-out items ($-3.0$ points) and directionally on train.
+That is the claim the experiment supports, and it is deliberately weaker than ``the audit certified this judge as safe to optimize against'': the qualified arm's held-out gain is exactly zero, so what one run of DPO establishes is a ranking of two signals, not a safety guarantee for one of them.
 
 The registered legs come out mixed, and each is scored honestly, because two of them failed where the aggregate claim would most like them to have held.
 The certified arm's held-out true gain is exactly $0.000$, so the registered held-out leg of the first prediction fails: the LoRA gains did not generalize off the training items at this scale, and the $+13.2$-point train gain is the exploratory finding that motivates the divergence claim, not a registered confirmation.
@@ -342,6 +371,20 @@ Style is the noisier axis, and label noise attenuates rather than inflates a par
 Verdict stability under label subsampling: fraction of 500 resamples per point reproducing the full-sample verdict under the fixed rules.}
 \label{fig:stability}
 \end{figure}
+
+\paragraph{The convictions do not depend on the estimator, or on one rater grading both axes.}
+Two post-hoc sensitivity analyses answer the two ways a partial correlation at $n \approx 60$ can mislead.
+First the estimator: recomputing every configuration's loadings as rank (Spearman) partials, and again as standardized Huber-robust regression coefficients, leaves both nuisance verdicts intact (rank style partials $+0.56$ $[+0.34,+0.73]$ and $+0.53$ $[+0.31,+0.71]$; Huber style coefficients $+0.54$ and $+0.56$ against a maximum of $+0.17$ over every other configuration) and changes two verdicts, both at the pass boundary --- and one of the two it withdraws is the blind 14B, this record's false pass, which the rank estimator declines to certify.
+Second the rater: because one annotator graded both axes, an error correlated across axes (``this looks wrong, so the writing feels muddled'') would manufacture exactly the structure the method reads.
+Recomputing the partials on the 30-item overlap with the target axis from one rater and the nuisance axis from the other --- so no single person's halo can enter both --- the sabotage conviction is undiminished ($+0.61$ $[+0.28, +0.83]$ with author soundness and blind-rater style), the reward model reproduces in sign ($+0.41$ $[-0.01, +0.71]$), and the honest frontier stays clean ($-0.36$ $[-0.61, -0.20]$).
+The cross-rater axis correlation is near zero ($-0.02$ and $+0.20$ across the two pairings, against $+0.28$ within the author's own labels), which is the direct measurement of the halo effect the design worried about: it is small.
+A fully split-rater instrument, in which one hypothesis-blind pool grades soundness with the reference in view and a second grades style with no reference and no correctness question, is built and awaiting annotators; it is the version of this check we would run prospectively.
+
+\paragraph{What the label budget buys, in simulation.}
+The label count and the rule interact, and a simulation calibrated to this instrument shows how.
+Drawing target and nuisance labels with the measured cross-rater reliabilities ($0.83$ and $0.48$) and the anchor set's axis correlation, and drawing judges spanning the loading plane, the frozen point rule certifies a nuisance-loaded judge in $0.9\%$ of 60-label draws but a genuinely style-loaded-and-weak judge is caught in $93\%$; the cost sits on the other side, where a judge whose true target loading is $0.41$ --- the boundary case --- is certified in $46\%$ of draws at $n{=}60$ and still only $50\%$ at $n{=}240$, because the rule is asking a question the point estimate cannot answer.
+The CI rule converts that coin flip into an abstention: it certifies the boundary judge in $2.9\%$ of draws and abstains in $43\%$, while losing almost nothing on clearly strong judges ($78\%$ certified at $n{=}60$, identical to the point rule).
+The simulation says what the empirical record said: convictions are cheap, clear passes are cheap, and boundary passes are not purchasable at any label count this method can afford --- they must be abstained on.
 
 \paragraph{How few labels suffice depends on the verdict.}
 Convictions and strong passes stabilize with the fewest labels; boundary verdicts are the expensive ones.
@@ -372,6 +415,11 @@ The audit labels come from seventeen models' solutions while the primary pressur
 \paragraph{The false pass is a boundary property the instrument cannot remove.}
 Verdicts for judges near the pass line sit within interval overlap at these label counts, and the blind-14B false pass is that limitation realized rather than an anomaly: the subsampling analysis shows boundary verdicts are exactly the unstable ones.
 The revised interval rule buys safety by abstaining there, at a measured cost of two correct certifications, and its record is retrospective until the Putnam replication scores it prospectively.
+
+\paragraph{A correction to an earlier statement of the confound.}
+Earlier drafts of this work described soundness and style as correlating at $+0.82$ in our labels.
+That figure came from a twenty-item near-ceiling block graded early in the project, not from the sixty-item anchor set that carries every partial correlation reported here, where the two axes correlate at $+0.32$ $[+0.10, +0.55]$.
+We state the corrected number and note what it does and does not change: the argument that marginal agreement cannot separate substance-reading from style-reading judges rests on the measured collision between the sabotaged frontier judge and the honest blind 14B (Table~\ref{tab:h2h}) and on the five-metric comparison of Table~\ref{tab:marginal}, neither of which depends on the size of the axis correlation; what a smaller correlation does change is the a priori case that the confound must be large, so we no longer make it.
 
 \paragraph{The labels are noisy on precisely the convicting axis.}
 Style reliability is $0.48$ cross-rater, the noisier of the two axes, which attenuates exactly the partials that carry convictions; the ceiling arithmetic is itself sensitive to the correlation measure (the soundness cross-rater Pearson of $0.83$ drops to a Spearman of $0.46$ at $n{=}30$), so the ceilings are indicative anchors, not walls, and the honest frontier's $+0.90$ soundness partial should be read as saturating what one rater's labels can measure.

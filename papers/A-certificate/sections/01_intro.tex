@@ -29,7 +29,7 @@ A judge sits on one side or the other depending on protocol and scale, and the a
 
 Four design choices distinguish the audit from raw-agreement validation.
 Humans grade on two separated axes rather than one quality number, because a single number makes loading on the wrong axis unmeasurable in principle; the axes here (soundness, style) are an instantiation chosen for the threat model, not a fixed pair (length, format, and position are probed separately in Section~\ref{sec:rules}).
-A deliberately decorrelated subsample --- built so the two axes vary independently --- supplies power that random data cannot, since soundness and style correlate at $+0.82$ in the wild.
+A deliberately selected subsample --- built where cheap signals disagree, which spreads a soundness axis the random set leaves near ceiling --- supplies power that random data cannot.
 The verdict is read from partial correlations, not an agreement rate.
 And a sabotaged judge serves as a positive control: evidence the instrument can convict, not merely bless.
 
