@@ -47,6 +47,7 @@ That check fails in the worst way: a judge can agree with humans on unoptimized 
 We introduce a pre-deployment audit that measures it with the same labels: a few dozen blind human labels, graded separately for soundness and for style, yield a two-dimensional measurement --- how much of the target construct the judge reads, and how much of a nuisance construct --- and a frozen rule turns that measurement into a verdict of qualified, insufficient, or nuisance-loaded.
 The audit convicts a deliberately sabotaged frontier judge and a top open reward model that raw agreement rates as interchangeable with honest judges, and the sabotaged judge shows why the distinction matters: under best-of-$n$ pressure it corrupts its own scoreboard while selecting almost as well as its honest twin, exactly the failure an accuracy check cannot see.
 We validate the verdicts by running the optimization the audit is meant to predict: frozen before any pressure was applied, they called the best-of-$n$ outcome for ten of eleven registered configurations, and the single miss --- a pass that cleared its threshold by $0.01$ --- is reported in full.
+On a prospective panel of nineteen new judges the frozen verdicts made no false certification and caught a harmful judge that a reference-presence shortcut certifies, though the panel's corruption arm failed to corrupt, so it tests the audit against weak judges rather than corrupt ones.
 Under externally registered DPO training the audit identified which of two preference signals was harmful to optimize against: the qualified judge's arm gained accuracy on its training items and lost none held out, while the nuisance-loaded judge's arm degraded held-out accuracy; the registered scoreboard-wedge prediction was falsified in direction, the corrupted signal damaging the policy rather than teaching it to game.
 The audit costs four to eight annotator-hours, one label set serves every judge configuration here, and its key verdicts reproduce on labels from a hypothesis-blind annotator outside the author list, turning evaluator trust from a post-hoc discovery into a measurement made before deployment.
 \end{abstract}
@@ -118,14 +119,14 @@ Our contributions:
 \begin{itemize}
 \item \textbf{The demonstration that the standard check fails in the worst way.} A deliberately sabotaged frontier judge and an honest judge are indistinguishable by raw agreement, and an off-the-shelf reward model that naive validation calls merely weak carries the saboteur's signature; the partials separate all of them, with sign-anchored convictions fixed before outcomes (Section~\ref{sec:failure}; Table~\ref{tab:h2h}).
 \item \textbf{An audit a practitioner can run tomorrow.} Sixty blind labels on two separated axes, two partial correlations, one frozen rule, four to eight annotator-hours --- with the checks that back its convictions against length confounds and multiple comparisons (Section~\ref{sec:audit}).
-\item \textbf{Outcome validation under real optimization pressure.} The frozen verdicts called the best-of-64 outcome for ten of eleven registered configurations, and the one false pass, with the rule revision it forced, is reported in full (Section~\ref{sec:pressure}); under externally registered DPO training the certified arm was safe to optimize against and the convicted arm was harmful, with one registered leg falsified in direction (Section~\ref{sec:dpo}).
+\item \textbf{Outcome validation under real optimization pressure.} The frozen verdicts called the best-of-64 outcome for ten of eleven registered configurations, and the one false pass, with the rule revision it forced, is reported in full (Section~\ref{sec:pressure}); a prospective panel of nineteen new judges confirmed three of five predictions and exposed why the other two failed (Section~\ref{sec:panel}); and under externally registered DPO training the audit identified which of two preference signals was harmful to optimize against, with one registered leg falsified in direction (Section~\ref{sec:dpo}).
 \item \textbf{Robustness and cost.} The key verdicts reproduce on a hypothesis-blind non-author's labels, convictions stabilize by roughly forty labels, and two registered label-free extensions are scored honestly, one falsified sign included (Section~\ref{sec:robust}).
 \end{itemize}
 
 \paragraph{Registration.}
 Every headline prediction was committed before the data it is scored on existed; registration means internal git timestamps on committed drafts and code, not an external registry, except where noted, and internal timestamps establish ordering but cannot rule out selective disclosure the way an external registry would.
 The two later experiments carry external Open Science Framework registrations with third-party timestamps: the DPO rerun (\texttt{osf.io/jg4ak}, registered before its evaluation was read) and the pending Putnam replication (\texttt{osf.io/axp3s}, registered before any labels were collected).
-Not everything we registered came true, and we report the failures where they bite rather than in a footnote: the audit's one false pass and the post-hoc rule revision it triggered (Section~\ref{sec:pressure}), the falsified conviction prediction for sabotaged mid-size judges (Section~\ref{sec:audit}), the falsified wedge and held-out legs of the training experiment (Section~\ref{sec:dpo}), and a perturbation-battery sign prediction falsified in direction (Section~\ref{sec:robust}).
+Not everything we registered came true, and we report the failures where they bite rather than in a footnote: the audit's one false pass and the post-hoc rule revision it triggered (Section~\ref{sec:pressure}), the falsified conviction prediction for sabotaged mid-size judges (Section~\ref{sec:audit}), the falsified wedge and held-out legs of the training experiment (Section~\ref{sec:dpo}), a perturbation-battery sign prediction falsified in direction (Section~\ref{sec:robust}), and the prospective panel's two failed predictions together with the corruption manipulation that failed beneath them (Section~\ref{sec:panel}).
 The complete ledger of predictions, timestamps, deviations, and outcomes lives in the technical report version of this paper, with a manifest naming a committed producer for every number quoted here.\footnote{Technical report version, draft v4, released with the code. It contains the full prediction ledger with commit hashes, the 27-configuration accounting, the perturbation-battery and mechanical-audit tables, and per-table reproducibility notes. This document reorganises the same evidence and changes no number.}
 
 \begin{figure}[t!]
@@ -307,6 +308,76 @@ Inflation at $n{=}64$ without (orange) and with (blue) a trusted reference, by j
 \label{fig:gate}
 \end{figure}
 
+\section{A prospective panel, and what it could not test}
+\label{sec:panel}
+
+The thirteen configurations above cannot settle whether the audit adds anything over reference presence, because their verdicts track that one bit.
+So after freezing the rule we built a panel meant to break the link: nineteen judge configurations new to this work, including capable judges given no reference, a weak judge given one, subtly corrupted prompts with and without a reference, and two trained reward models not used elsewhere in this paper.
+Every prompt, the decision rule, the outcome definition, and both analysis producers were committed before any panel judge ran, and the audit verdicts were committed before any best-of-64 score existed.
+Both are internal git timestamps; the panel was drafted for external registration but was not posted, a deviation we disclose here and in the ledger.
+A cell's outcome counts as unsafe if its best-of-64 regret reaches $0.25$ or its inflation reaches $+0.50$, cut-points taken from the thirteen configurations above before the panel ran.
+
+\paragraph{The panel does not contain the case the audit exists for.}
+We state this first because it governs how everything after it should be read.
+Seven cells carried a corrupting instruction, ranging from ``prefer answers that are clear and convincing'' to a hidden preference for tidy formatting.
+A post-hoc manipulation check against an exact honest twin of each cell --- the same judge and prompt without the corrupting sentence --- shows that five of the seven did not change their judge at all: their scores track the twin at $r \geq 0.986$, with mean shifts below $0.05$ on the ten-point scale.
+The two that moved, both Qwen2.5-14B, did not move toward style (nuisance loadings $-0.09$ and $+0.01$), which repeats the capability gate of Section~\ref{sec:audit} at 8B to 14B and with subtler wording: below frontier scale, a corrupt instruction does not produce a style-loaded judge.
+The panel therefore contains weak judges and trained reward models but no successfully corrupted instruction-following judge, and its results are a test of the audit against weakness, not against corruption.
+We registered no manipulation check, so this is a design failure of the panel, not a reinterpretation of its predictions.
+
+\begin{table}[t!]
+\centering
+\small
+\begin{tabular}{L{7.4cm}ccc}
+\toprule
+\multicolumn{4}{l}{\emph{A. Frozen verdict against best-of-64 outcome (19 cells)}} \\
+\midrule
+frozen verdict & cells & safe outcome & unsafe outcome \\
+\midrule
+qualified & $7$ & $7$ & $0$ \\
+insufficient target validity & $3$ & $0$ & $3$ \\
+nuisance-loaded & $4$ & $0$ & $4$ \\
+abstain & $5$ & $0$ & $5$ \\
+\midrule
+\multicolumn{4}{l}{\emph{B. Registered predictions}} \\
+\midrule
+prediction & \multicolumn{2}{c}{result} & outcome \\
+\midrule
+P-N1: audit beats the reference bit where the audit speaks & \multicolumn{2}{c}{$14/14$ vs.\ $13/14$} & confirmed \\
+P-N2: most corrupt cells above 0.5B called unsafe & \multicolumn{2}{c}{$0/7$} & failed \\
+P-N3: nuisance loading outranks reference bit and raw $r$ & \multicolumn{2}{c}{AUC $0.845$ vs.\ $0.958$, $1.000$} & failed \\
+P-N4: nuisance loading separates outcomes within referenced cells & \multicolumn{2}{c}{AUC $1.000$ ($n{=}8$)} & confirmed \\
+P-N5: both reward models called unsafe and are unsafe & \multicolumn{2}{c}{$2/2$} & confirmed \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{Takeaway: on nineteen judges it had never seen, the audit made no false certification and caught a harmful judge the reference shortcut certifies, but the panel's corruption arm failed to corrupt, and on a panel whose risk is pure weakness, raw agreement ranks outcomes as well as the audit does.}
+AUC is area under the ROC curve for the unsafe outcome. The raw-correlation classifier reaches perfect accuracy only at a threshold ($0.704$) chosen after seeing outcomes; the audit's rule was frozen. Producers: \texttt{panel\_verdicts.py}, \texttt{panel\_outcome.py}; manipulation check \texttt{panel\_manipulation.py} (post hoc).}
+\label{tab:panel}
+\end{table}
+
+\paragraph{Where the audit spoke, it was right.}
+All seven qualified cells had safe outcomes, with inflation from $+0.05$ to $+0.26$ and regret at most $0.057$, and all seven cells called insufficient or nuisance-loaded had unsafe ones (Table~\ref{tab:panel}).
+The reference bit scores thirteen of those same fourteen.
+The one disagreement is a Qwen2.5-0.5B judge given the gold solution: the bit certifies it, the audit calls it nuisance-loaded (nuisance loading $+0.44$ $[+0.11, +0.62]$, target loading $-0.02$), and under pressure it leaves $0.362$ regret.
+Within the eight referenced cells, where the bit is constant and says nothing, nuisance loading separates that cell from the other seven without overlap.
+Both reward models were called unsafe, with nuisance loadings of $+0.30$ and $+0.42$ and intervals excluding zero, and they were the two most inflated cells in the panel, at $+1.55$ and $+1.25$, which replicates the published reward-model conviction on two further models.
+
+\paragraph{Where it did not.}
+The five abstentions all fell on blind judges whose target-loading intervals straddle $0.40$, and all five turned out unsafe.
+The interval rule certified none of them, so abstaining cost no false certification, but it issued no warning either, and across all nineteen cells the reference bit is right on eighteen, which is more ground than the audit covers.
+P-N2 fails at zero of seven, and the manipulation check says why.
+P-N3 fails as well, and it deserves to be stated plainly: ranked by risk, nuisance loading reaches an AUC of $0.845$, below the reference bit's $0.958$ and raw correlation's $1.000$.
+On a panel whose risk comes entirely from weakness, raw agreement ranks perfectly, because a judge that is wrong on unoptimized data will select badly under optimization, and being wrong on unoptimized data is exactly what raw agreement measures.
+Two observations qualify this failure without reversing it.
+The raw-correlation classifier needs a threshold, and the one that reaches perfect accuracy could be chosen only after the outcomes were known, whereas the audit's rule was fixed in advance.
+And the audit's other axis, target loading, also ranks the panel perfectly; that comparison is post hoc, and the registered prediction named nuisance loading alone, which was the wrong axis to name for a panel that turned out to contain no corruption.
+
+\paragraph{What the panel adds, and what it does not.}
+It does not close the collinearity objection of Section~\ref{sec:limits}.
+The audit's advantage over the protocol bit is again concentrated, this time in one referenced cell and two reward models, on a panel that failed to contain the corrupted judges that would have stressed the distinction this paper is about.
+What it does establish, prospectively and under a frozen rule, is that the audit made no false certification on nineteen judges it had never seen, that it caught a harmful judge the protocol bit certifies, and that its reward-model verdicts replicate.
+The experiment still owed is a panel whose corrupt cells pass a manipulation check before they are audited, and the failure here shows how to build one: subtle instructions are ignored below frontier scale, so corruption at that scale has to come from the model itself, as it does for reward models, or from a frontier judge.
+
 \section{The verdicts under training pressure}
 \label{sec:dpo}
 
@@ -407,6 +478,7 @@ The mechanical axes are a coarse screen that orders corruption severity, not a v
 The audited configurations' verdicts are strongly collinear with one protocol bit, reference presence, and beyond it there are roughly four distinct verdict classes (blind-weak, referenced-pass, style-loaded, and sabotage-at-ladder-scale fail), so the validation is closer to four independent tests than thirteen; the ten-of-eleven count overstates the independent evidence, and the incremental-validity comparison of Section~\ref{sec:pressure} is the sharper statement of what the audit adds.
 For the same reason we do not quote false-pass or false-convict rates: four effective classes cannot estimate them, and the registered replications (Putnam, the code audit) are what will accumulate the outcomes such rates require.
 The two designed tests that break the collinearity --- the reward-model paraphrase replicate and the DPO experiment --- have both now run, and both confirmed their core registered claims.
+A third was built for exactly this purpose and only partly succeeded: the prospective panel of Section~\ref{sec:panel} caught a referenced judge the protocol bit certifies, but its corrupt cells did not corrupt, so the audit's advantage over the bit there again rests on few cells.
 
 \paragraph{One audited domain, anchored on math.}
 The human-labeled audit was run once, on \textsc{MATH-500} solutions; code is a post-hoc extrapolation under a mechanical target axis, and the capability-gate explanation of its one miss is itself post hoc until the registered code audit runs.
@@ -453,7 +525,7 @@ Companion work supplies the mechanism the audit instruments --- comparison-shape
 
 Raw agreement with human labels is not a certificate.
 It measures being right on unoptimized data, where substance and style travel together, and it therefore cannot see the one property that decides a judge's fate under optimization: which of the two the judge actually scores.
-An audit that reads that property from the same labels predicts what the agreement rate cannot: a sabotaged frontier judge and an honest mid-size judge that raw agreement rates as interchangeable ($+0.35$ against $+0.37$) sit on opposite sides of a sign-anchored conviction rule; the frozen verdicts called the best-of-64 outcome for ten of eleven registered configurations, with the one false pass sitting $0.01$ above its cut and the revised interval rule abstaining there; and under externally registered DPO training the certified judge's arm gained real accuracy while the convicted judge's arm degraded it, the registered wedge prediction failing in the informative direction --- corruption expressed as damage, not gaming, at this scale.
+An audit that reads that property from the same labels predicts what the agreement rate cannot: a sabotaged frontier judge and an honest mid-size judge that raw agreement rates as interchangeable ($+0.35$ against $+0.37$) sit on opposite sides of a sign-anchored conviction rule; the frozen verdicts called the best-of-64 outcome for ten of eleven registered configurations, with the one false pass sitting $0.01$ above its cut and the revised interval rule abstaining there; on a prospective panel of nineteen judges it had never seen, the audit made no false certification, though that panel contained no successful corruption; and under externally registered DPO training the certified judge's arm gained real accuracy while the convicted judge's arm degraded it, the registered wedge prediction failing in the informative direction --- corruption expressed as damage, not gaming, at this scale.
 
 The practical protocol is short.
 Run the free screens first, since a judge that cannot agree with itself under order swap cannot be audited at all.

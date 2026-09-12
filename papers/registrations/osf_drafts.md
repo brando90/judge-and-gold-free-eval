@@ -259,3 +259,32 @@ committed in this commit and applied without modification; the best-of-n estimat
 already-committed `scripts/bon_analysis.py`. Reward-model cells use a single scoring function
 for both replicates, as the published reward-model row does; that deviation from the two-
 paraphrase design is disclosed with their numbers.
+
+**Deviations and outcome (appended after the run; the Registration 6 text above is unchanged).**
+
+1. *Not posted externally.* The status line above says an external registration would be posted
+   before the audit phase. It was not. The panel carries internal git timestamps only: the
+   registration, prompts, rule, outcome definition and both producers in commit `db00ff2`, before
+   any panel score existed; the audit verdicts in commit `9fb93ca`, before any best-of-n score existed.
+2. *Substitution kept alongside, not in place of.* Qwen3-8B produced no score on 66 of 242 anchor
+   traces (its first generated token is not a score token even with thinking disabled). The rule
+   says a failed judge "is replaced"; we instead kept the original cell and added the substitute,
+   Qwen2.5-Coder-7B-Instruct, in the same blind protocol, and scored all 19. Sensitivity: scoring
+   either 18-cell version instead (dropping the original, or dropping the substitute) changes no
+   prediction's outcome. P-N1 stays confirmed (13/13 vs 12/13), P-N3 stays failed (nuisance AUROC
+   0.857 or 0.831 against the reference bit's 0.955), and P-N2, P-N4, P-N5 are unchanged.
+3. *Two non-panel cells added after the audit phase.* Exact honest twins for the two Qwen2.5-14B
+   corrupt cells (same prompt without the corrupting sentence), scored only for a post-hoc
+   manipulation check and excluded from all registered scoring.
+4. *Harness fixes during the run* changed no prompt, score function, estimator, or analysis: hard
+   exit that kills the vLLM engine subprocesses after output is written, device-memory request 0.45
+   instead of 0.90, model downloads through the Python API, and a pad token for reward-model
+   tokenizers that lack one.
+
+**Outcome.** P-N1 confirmed (14/14 against the reference bit's 13/14 on non-abstained cells).
+P-N2 failed (0 of 7). P-N3 failed (nuisance-loading AUROC 0.845 against 0.958 for the reference bit
+and 1.000 for raw Pearson). P-N4 confirmed (AUROC 1.000 within the 8 referenced cells). P-N5
+confirmed (2 of 2). Post-hoc manipulation check, not part of this registration: 5 of 7 corrupt cells
+did not move their judge (r >= 0.986 with an exact honest twin), so P-N2 tested an intervention that
+largely did not occur. Producers: `panel_verdicts.py`, `panel_outcome.py` (frozen);
+`panel_manipulation.py` (post hoc).
