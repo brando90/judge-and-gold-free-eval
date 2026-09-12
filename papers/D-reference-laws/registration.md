@@ -2046,3 +2046,73 @@ and the dropped gpt-5.4 are unaffected — the incident is specific to the Anthr
 parsing path. All Phase 1 numbers reported in this conversation before 2026-09-12 (the +4.25
 rotation gainer, the +3.73 masking margin, the MACE +3.92, the refinst results, etc.) are
 **retracted** pending the redo; do not cite them.
+
+---
+
+## Frontier extension OUTCOME (2026-09-12): corrected Sonnet 5 results, gpt-4.1 Phase 2 and instruction results
+
+Scored against the registrations above (frontier-judge extension, Phase 1/2; instruction
+extension), after the data-integrity fix and full Sonnet 5 redo recorded in the incident report
+immediately above this entry. gpt-4.1 numbers are from the original (unaffected) collection.
+
+### Phase 1 margins, corrected Sonnet 5 (rubric a; retained sample 3194/3494 for the filter)
+
+- **P-FM1 (rotation): CONFIRMED.** Gainers +3.04 [+2.49,+3.60] n=120, losers −2.66 [−3.34,−1.96]
+  n=93, placebo +0.04 [−0.38,+0.43]. Rubric b replicates (+2.54, −2.51, +0.28).
+- **P-FM4 (blind-certified filter): CONFIRMED.** Filtered gainers +2.79 [+2.27,+3.31] (92%
+  retained), essentially the unfiltered effect.
+- **P-FM2 (masking): CONFIRMED, with a residue not seen on the open judges.** Bare +3.06
+  [+2.54,+3.62], words +3.13 [+2.61,+3.67] (semantic, not lexical). Expression margin +0.47
+  [+0.03,+0.94] — a large reduction from bare (−2.58 [−3.18,−2.02]) but, unlike the open judges
+  and unlike the (retracted) corrupted run, this CI now excludes zero: a small residual
+  equality-sensitivity survives one computation step for Sonnet 5. Rubric b replicates
+  (expr +0.31, CI includes zero, so the residue is not fully robust across rubrics).
+- **P-FM3 (MACE): CONFIRMED on the first leg, FAILS the second, as before.** Referenced
+  non-math margin +5.29 [+4.57,+5.97] — the largest measured anywhere in the paper's frontier
+  work. Blind margin −1.37 [−2.03,−0.69], negative not null, sharpening the reversal rather than
+  weakening it (same failure mode as phi-4's original MACE run).
+
+### Instruction mitigation, corrected (both judges, k-stratified pool, rubric a)
+
+| Judge | ref margin | refinst | refinst2 | P-FI1 | P-FI2 |
+|---|---|---|---|---|---|
+| claude-sonnet-5 | +3.00 [+2.06,+4.06] | +2.08 [+1.14,+3.13] (Δ −0.93 [−1.23,−0.64]) | +2.60 [+1.59,+3.71] (Δ −0.40 [−0.76,−0.06]) | CONFIRMED | **CONFIRMED** |
+| gpt-4.1-2025-04-14 | +0.99 [+0.54,+1.54] | +0.46 [+0.13,+0.93] (Δ −0.53 [−0.80,−0.31]) | +0.59 [+0.21,+1.09] (Δ −0.40 [−0.59,−0.24]) | CONFIRMED | CONFIRMED |
+
+**Correction of a claim made mid-session on the corrupted data: RETRACTED.** Before the redo,
+Sonnet's refinst2 contrast was reported as −0.207 [−0.486,+0.058] (CI crossing zero, FAILED), and
+the finding was described as "the two frontier judges disagree on which instruction phrasing
+helps." With corrected data, Sonnet's refinst2 contrast is −0.396 [−0.758,−0.062], CI excluding
+zero, CONFIRMED. **Both instructions reduce the margin for both judges tested; there is no
+judge-dependent split on which phrasing works.** Both remain partial fixes: every post-instruction
+margin above is still individually positive with a CI excluding zero, so neither instruction
+eliminates anchoring for either judge, matching the paper's existing capability-gate pattern
+(phi-4 gets a near-complete fix; these two frontier judges get roughly a 30-50% reduction).
+
+### gpt-4.1 Phase 2, recorded here for completeness (data unaffected by the incident)
+
+- **P-FR1 (replication E1): CONFIRMED but small, and flagged.** +0.12 [+0.02,+0.23]. gpt-4.1
+  FAILS the paper's own registered score-resolution screen (distinct values 4419, comfortably
+  above the >=100 bar; mean ties-at-maximum 15.03, far above the <=3.0 bar), so this and every
+  other selection-based number below carries the same disclosed caveat Mistral-7B's did: real
+  direction, magnitude not fully interpretable due to tie-break noise. Margins (below) are
+  unaffected by this, since they do not depend on selection.
+- **P-FR2 (selection collapse): CONFIRMED.** 32 referenced-only vs 1 blind-only.
+- **P-FR3 (anchoring margin): CONFIRMED, tie-immune.** +1.19 [+0.92,+1.50].
+- **P-FK1 (k-step): NOT CONFIRMED.** +0.25 [−0.05,+0.58], CI includes zero. The k=2 boundary,
+  positive and significant for all six open judges, does not clearly reproduce on gpt-4.1. Cannot
+  yet attribute this to a genuinely smaller frontier effect versus tie-break noise inflating the
+  variance; reported as a failure either way, per the paper's own discipline.
+- **P-FK2 (M1 fix): CONFIRMED.** M1-minus-ref contrast −0.12 [−0.24,−0.02].
+
+### Reading, for the paper
+
+Two frontier judges (Claude Sonnet 5, GPT-4.1) now reproduce the paper's core mechanism
+(rotation, masking, blind-certified persistence) and the boundary reversal on a third-party
+benchmark (MACE). The k=2 step, the paper's cleanest six-judge open-weight result, does not
+clearly reproduce on gpt-4.1 (confounded by a score-resolution failure specific to that judge's
+API-imposed top-5-logprob cap). The instruction mitigation is a genuine partial fix on both
+frontier judges tested, for both phrasings, consistent with (not contradicting) the existing
+capability-gate story. gpt-5.4 was attempted and is confirmed dead (provider-side batch routing
+fault, documented above). No frontier inflation number exists for Sonnet 5 (integer/tool-call
+score, no logprobs); its margin readouts are unaffected by that limitation.
