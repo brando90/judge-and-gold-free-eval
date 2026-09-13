@@ -298,5 +298,16 @@
     "math500"
    ]
   }
+ },
+ "blind_accepted_gainers_exact_q7": {
+  "change": [
+   5.2659,
+   [
+    4.9928,
+    5.566
+   ],
+   119
+  ],
+  "share_kept": 0.9625
  }
 }

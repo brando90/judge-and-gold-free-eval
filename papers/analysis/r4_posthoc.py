@@ -79,5 +79,51 @@ for j in ("Qwen__Qwen2.5-7B-Instruct", "microsoft__phi-4", "Qwen__Qwen2.5-14B-In
     reg = {p: {c: round(v - max(d.values()), 4) for c, v in d.items()} for p, d in pools.items()}
     worst = {c: round(min(r[c] for r in reg.values()), 4) for c in ("blind", "ref", "reveal")} if reg else None
     res["regret"][j] = dict(accuracy=pools, regret=reg, worst_case=worst, pools_available=sorted(pools))
+# ---------------------------------------------------------------- blind-accepted rotation filter under the exact estimator (Qwen2.5-7B)
+import re
+
+
+def _norm(a):
+    return re.sub(r"[\s\.\,\!\'\"\$]+", "", a.strip().casefold()) or None
+
+
+def _boxed(t):
+    i = t.rfind("\\boxed{")
+    if i < 0:
+        return None
+    j, d = i + 7, 1
+    while j < len(t) and d:
+        d += {"{": 1, "}": -1}.get(t[j], 0)
+        j += 1
+    return t[i + 7:j - 1]
+
+
+def _rows(f):
+    return {r["problem_id"]: r["escore"] for r in (json.loads(l) for l in open(f))} if os.path.exists(f) else None
+
+
+S4 = "runs/r4/scores"
+bl, o4, r4s = (_rows(f"{S4}/repl__Qwen__Qwen2.5-7B-Instruct__noref_a.jsonl"), _rows(f"{S4}/repl__Qwen__Qwen2.5-7B-Instruct__ref_a.jsonl"),
+               _rows(f"{S4}/replrot__Qwen__Qwen2.5-7B-Instruct__ref_a.jsonl"))
+if bl and o4 and r4s:
+    rp = [json.loads(l) for l in open("runs/bon/bon_replrot__meta-llama__Llama-3.1-8B-Instruct.jsonl")]
+    G, n_keep, n_all = [], 0, 0
+    for it in rp:
+        pid = it["problem_id"]
+        if pid not in o4 or pid not in r4s or pid not in bl:
+            continue
+        rotn = _norm(it["ref_answer"])
+        g = []
+        for i, (smp, ok) in enumerate(zip(it["samples"], it["oracle"])):
+            if not ok or _norm(_boxed(smp) or smp) != rotn or o4[pid][i] is None or r4s[pid][i] is None or bl[pid][i] is None:
+                continue
+            n_all += 1
+            if bl[pid][i] >= 7:
+                n_keep += 1
+                g.append(r4s[pid][i] - o4[pid][i])
+        if g:
+            G.append(float(np.mean(g)))
+    res["blind_accepted_gainers_exact_q7"] = dict(change=boot(G), share_kept=round(n_keep / n_all, 4) if n_all else None)
+
 json.dump(res, open(OUT, "w"), indent=1)
 print(json.dumps(res, indent=1))
