@@ -160,9 +160,9 @@ Answers that are programs rather than values anchor less, but programs also have
 \centering
 \includegraphics[width=\textwidth]{figures/fig3_cost.pdf}
 \caption{\textbf{The reference damages grading of correct answers that differ from it everywhere; its overall cost depends on the pool.}
-\textbf{(a)}~Per-task AUROC of Qwen2.5-7B's score (exact scorer) for separating correct from wrong answers, blind (orange) and with the reference (blue), for correct answers that differ from the reference (non-matching) and for all correct answers; \textsc{MACE} is split by the number of correct answers.\pre{}\ph{}
+\textbf{(a)}~Per-task AUROC of Qwen2.5-7B's score (exact scorer) for separating correct from wrong answers, blind (orange) and with the reference (blue), for correct answers that differ from the reference (non-matching) and for all correct answers; \textsc{MACE} is split by the number of correct answers.\textsuperscript{\textsc{pre/ph}}
 \textbf{(b)}~Within \textsc{MACE}, each task's blind AUROC, estimated on half of its samples, against the reference's change in overall AUROC on the other half (133 tasks).\ph{}
-\textbf{(c)}~Change in the accuracy of the best-of-64 pick when the reference is shown, 95\% intervals.\reana{}\ph}
+\textbf{(c)}~Change in the accuracy of the best-of-64 pick when the reference is shown, 95\% intervals.\textsuperscript{\textsc{re/ph}}}
 \label{fig:cost}
 \end{figure}
 
@@ -203,7 +203,7 @@ Extended thinking helps without removing the problem.
 With the same weights, prompt, and sampling, turning on thinking removes the rotation effect on arithmetic tasks for Qwen3-8B ($-0.69$ to $+0.01$) and Qwen3-14B ($-1.98$ to $-0.12$), but with thinking on Qwen3-8B gives a score of 10 to 99.8\% of correct arithmetic answers when shown a reference and to 96.2\% blind, so the effect has little room to appear (\cref{fig:reasoning}a; \cref{app:rotation}).\pre{}
 On factual \textsc{MACE} questions thinking roughly halves the added margin, from $+6.16$ to $+3.62$ for Qwen3-8B and from $+7.07$ to $+3.13$ for Qwen3-14B (\cref{fig:reasoning}b).\pre{}
 Thinking does not make the reference safe for selection: shown the reference, Qwen3-8B with thinking still loses 5.8 points of best-of-16 accuracy at $k{=}1$ and 3.7 at $k{>}1$, and our prediction that it would not was falsified (\cref{tab:r2b-k}).\pre{}
-For Sonnet~5, \pending{thinking result on the rotation subsample (R3-B)} and \pending{factual result (R5-A)}.
+Sonnet~5 behaves the same way on arithmetic: on 60 rotation tasks, asking it to reason before scoring shrinks its loss from $-2.85$ to $-0.20$ without extended thinking and to $-0.32$ with it, and its false rejections from 26.7\% to 0.4\%.\pre{} \pending{On factual questions (R5-A), ...}
 A short explanation is not enough either: under the verbatim MT-Bench template, whose explanations average 259 tokens, Qwen2.5-7B's score still falls by 3.59 points when the reference moves off a correct answer.\pre
 
 \paragraph{Prompts help only some judges.}
@@ -246,6 +246,7 @@ Correct answers often differ from the reference & Constructed pools: overall AUR
 \end{tabular}
 \end{table}
 
+\FloatBarrier
 \section{Related work}
 \label{sec:related}
 

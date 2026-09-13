@@ -53,15 +53,36 @@
  },
  "visible": {
   "rot": {
-   "gainer": null,
-   "loser": null,
-   "placebo": null
+   "gainer": [
+    0.283,
+    [
+     0.117,
+     0.45
+    ],
+    60
+   ],
+   "loser": [
+    -0.2,
+    [
+     -0.367,
+     -0.05
+    ],
+    60
+   ],
+   "placebo": [
+    -0.15,
+    [
+     -0.35,
+     0.05
+    ],
+    60
+   ]
   },
   "false_reject": [
-   0.0,
+   0.004,
    [
     0.0,
-    0.0
+    0.013
    ],
    60
   ],
@@ -74,43 +95,92 @@
     "thinking_tokens_mean": 0
    },
    "refrot": {
-    "rows": 2,
+    "rows": 180,
     "unparseable": 0,
     "errors": 178,
-    "output_tokens_mean": 433,
+    "output_tokens_mean": 182,
     "thinking_tokens_mean": 0
    }
   }
  },
  "think": {
   "rot": {
-   "gainer": null,
-   "loser": null,
-   "placebo": null
+   "gainer": [
+    0.183,
+    [
+     0.05,
+     0.317
+    ],
+    60
+   ],
+   "loser": [
+    -0.317,
+    [
+     -0.667,
+     -0.067
+    ],
+    60
+   ],
+   "placebo": [
+    -0.017,
+    [
+     -0.233,
+     0.217
+    ],
+    60
+   ]
   },
-  "false_reject": null,
+  "false_reject": [
+   0.004,
+   [
+    0.0,
+    0.013
+   ],
+   60
+  ],
   "meta": {
    "ref": {
-    "rows": 0,
+    "rows": 180,
     "unparseable": 0,
     "errors": 180,
-    "output_tokens_mean": null,
-    "thinking_tokens_mean": null
+    "output_tokens_mean": 239,
+    "thinking_tokens_mean": 121
    },
    "refrot": {
-    "rows": 0,
+    "rows": 180,
     "unparseable": 0,
     "errors": 180,
-    "output_tokens_mean": null,
-    "thinking_tokens_mean": null
+    "output_tokens_mean": 228,
+    "thinking_tokens_mean": 123
    }
   }
  },
  "P_R3B1": true,
- "think_minus_fast_loser": null,
- "visible_minus_fast_loser": null,
- "think_minus_fast_false_reject": null,
- "P_R3B2": null,
- "P_R3B3": null,
- "P_R3B4": null
+ "think_minus_fast_loser": [
+  2.533,
+  [
+   1.583,
+   3.567
+  ],
+  60
+ ],
+ "visible_minus_fast_loser": [
+  2.65,
+  [
+   1.717,
+   3.617
+  ],
+  60
+ ],
+ "think_minus_fast_false_reject": [
+  -0.263,
+  [
+   -0.329,
+   -0.2
+  ],
+  60
+ ],
+ "P_R3B2": true,
+ "P_R3B3": true,
+ "P_R3B4": true
 }

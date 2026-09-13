@@ -202,16 +202,21 @@ save(fig, "fig2_selection")
 tog = load("r3_toggle_results.json")
 t14 = (load("r4_toggle14b_results.json") or {}).get("Qwen3-14B", {})
 r2r = load("r2_realism_results.json")
-fig, (a1, a2) = plt.subplots(1, 2, figsize=(5.5, 2.75), gridspec_kw={"width_ratios": [1.3, 1.0]})
+fig, (a1, a2) = plt.subplots(1, 2, figsize=(5.5, 3.1), gridspec_kw={"width_ratios": [1.3, 1.0]})
 q7l = r4res["rotation"]["escore"]["loser"] if r4res.get("rotation") else [rot[f"{Q}__a"]["losers"]["mean"], rot[f"{Q}__a"]["losers"]["ci"]]
 rows = [("hdr", "expected score"),
         ("Qwen2.5-7B", q7l[0], q7l[1], MARK["Qwen2.5-7B"], True),
         ("phi-4", rot[f"{P}__a"]["losers"]["mean"], rot[f"{P}__a"]["losers"]["ci"], MARK["phi-4"], True),
         ("hdr", "sampled integer"),
-        ("Sonnet 5", fr["rotation__a"]["losers"]["mean"], fr["rotation__a"]["losers"]["ci"], MARK["Sonnet 5"], True),
+        ("Sonnet 5, API", fr["rotation__a"]["losers"]["mean"], fr["rotation__a"]["losers"]["ci"], MARK["Sonnet 5"], True),
         ("Qwen2.5-7B, MT-Bench", r2r["mtbench"]["rot"]["loser"][0], r2r["mtbench"]["rot"]["loser"][1], MARK["Qwen2.5-7B"], True),
         ("Qwen3-8B, thinking off", tog["off"]["rot"]["loser"][0], tog["off"]["rot"]["loser"][1], MARK["Qwen3-8B"], True),
         ("Qwen3-8B, thinking on", tog["on"]["rot"]["loser"][0], tog["on"]["rot"]["loser"][1], MARK["Qwen3-8B"], False)]
+r3s = load("r3_sonnet_results.json") or {}
+for arm, lab, filled in (("fast", "Sonnet 5, CLI, score only", True), ("visible", "Sonnet 5, CLI, reasoning", True), ("think", "Sonnet 5, CLI, thinking on", False)):
+    v = (r3s.get(arm) or {}).get("rot") if isinstance(r3s.get(arm), dict) else None
+    if v and v.get("loser"):
+        rows.append((lab, v["loser"][0], v["loser"][1], MARK["Sonnet 5"], filled))
 for arm, lab, filled in (("off", "Qwen3-14B, thinking off", True), ("on", "Qwen3-14B, thinking on", False)):
     v = (t14.get(arm) or {}).get("rot")
     if v:
@@ -439,11 +444,11 @@ if r4res.get("grading") and r5.get("mace_grading_by_k"):
     a2.set_xlabel("change in best-of-64 accuracy from showing the reference (points)")
     a2.legend(handles=[Line2D([], [], marker="o", ls="", color=INK, label="Qwen2.5-7B, exact scorer"),
                        Line2D([], [], marker="s", ls="", color=MUTED, label="phi-4, original scorer")],
-              loc="lower right", frameon=False, handlelength=1.0, fontsize=6.4)
+              loc="upper left", frameon=False, handlelength=1.0, fontsize=6.4)
     style(a2, "x")
     label(a2, "c", x=-0.2)
-    fig.legend(handles=[Patch(color=ORANGE, label="blind"), Patch(color=BLUE, label="reference shown")], loc="upper left",
-               bbox_to_anchor=(0.08, 0.555), ncol=2, frameon=False, handlelength=1.0, fontsize=6.4)
+    a1.legend(handles=[Patch(color=ORANGE, label="blind"), Patch(color=BLUE, label="reference shown")], loc="lower right",
+              frameon=False, handlelength=1.0, fontsize=6.2, borderaxespad=0.2)
     save(fig, "fig3_cost")
 
 # ============================================================== Appendix figure

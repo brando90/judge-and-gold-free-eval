@@ -32,3 +32,22 @@ The six runs were launched in the order FAST-ref, FAST-refrot, VISIBLE-ref, VISI
 
 - **FAST** (`r3_sonnet_results.json`): gainer +3.567 [+2.567, +4.550]; loser −2.850 [−3.850, −1.917]; placebo −0.067 [−1.184, +1.101]; false-rejection rate 0.267 [0.204, 0.333]; 52–58 output tokens, no thinking tokens. **P-R3B1 CONFIRMED.**
 - **P-R3B2, P-R3B3, P-R3B4 NOT SCORED** (VISIBLE and THINK incomplete). The harness is resumable if the limit is lifted.
+
+## Outcome, remaining arms (recorded 2026-09-13 after the subscription limit cleared; `r3_sonnet_results.json`)
+
+The resumable harness re-ran only the calls that had failed. Every re-run call returned a score:
+- VISIBLE refrot: 178 calls;
+- THINK ref and refrot: 180 calls each.
+
+Each file keeps the earlier error rows as a record; the frozen producer skips them. Mean output tokens: VISIBLE 188 and 182; THINK 239 and 228, of which 121 and 123 were thinking tokens.
+
+| Arm | Gainer | Loser | Placebo | False rejections |
+|---|---|---|---|---|
+| VISIBLE | +0.283 [+0.117, +0.450] | −0.200 [−0.367, −0.050] | −0.150 [−0.350, +0.050] | 0.004 [0.000, 0.013] |
+| THINK | +0.183 [+0.050, +0.317] | −0.317 [−0.667, −0.067] | −0.017 [−0.233, +0.217] | 0.004 [0.000, 0.013] |
+
+- THINK minus FAST loser change: +2.533 [+1.583, +3.567]. **P-R3B2 CONFIRMED.**
+- THINK minus FAST false-rejection rate: −0.263 [−0.329, −0.200]. **P-R3B3 CONFIRMED.**
+- VISIBLE minus FAST loser change: +2.650 [+1.717, +3.617]. **P-R3B4 CONFIRMED.**
+
+Reading: on arithmetic rotation tasks, asking Sonnet 5 to reason before scoring removes most of the anchoring, with or without extended thinking. The remaining losses are small but exclude zero.
