@@ -15,8 +15,9 @@ ap = argparse.ArgumentParser()
 ap.add_argument("--scores", required=True)
 ap.add_argument("--pool", default="runs/r20/mace_gen/pool.jsonl")
 ap.add_argument("--out", required=True)
+ap.add_argument("--threshold", type=int, default=7, help="R21: scores at or above count as correct; default 7 reproduces R20-C")
 args = ap.parse_args()
-THRESH, NB = 7, 2000
+THRESH, NB = args.threshold, 2000
 
 pool = [json.loads(l) for l in open(args.pool)]
 S = {}
