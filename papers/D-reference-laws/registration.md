@@ -2894,3 +2894,37 @@ at the same time, with zero new model generation.
   lure-of-sol3 vs a genuine tie) is reported descriptively, no bar registered.
 
 Producer: extends `papers/analysis/mathconstraint_pilot_analysis.py`.
+
+---
+
+## P-MC4c outcome (falsified, root cause finally isolated) and REGISTER P-MC4d
+
+**P-MC4c: FALSIFIED, but genuinely diagnostic this time.** Any-valid-pick-rate rose under
+ref for both judges (Qwen $0.625\to1.000$, phi-4 $0.375\to1.000$), the opposite of
+predicted. Unlike the prior two attempts, sol3 WAS picked a real fraction of the time
+blind (Qwen $37.5\%$, phi-4 $25\%$), confirming the canonical-pattern confound is
+actually fixed this time. But under ref, BOTH judges picked index 0 (sol2) in all 16 of
+16 rows without exception, and sol2 is literally the reference's own text.
+
+**Root cause, now correctly isolated, and it retroactively corrects the P-MC4b
+diagnosis:** in every attempt so far, the reference's own literal text has ALSO been one
+of the candidates scored. A candidate that is byte-identical to the shown reference
+scoring near-ceiling is not evidence of anchoring in the sense this paper studies -- it
+is the judge correctly noticing two strings are the same string. The P-MC4b writeup
+attributed sol1's dominance to it being "the canonical pattern"; re-examining it, sol1
+was ALSO always the literal reference in that design, so the same trivial self-match
+explanation applies there too, and the canonical-pattern account, while plausibly
+contributing, was not isolated from this simpler and more direct cause. Corrected here
+rather than left standing.
+
+**REGISTER P-MC4d, before any of its judging exists.** Candidates scored are sol3
+(valid, does not match the reference) and lure-of-sol2 (invalid, resembles the reference
+specifically, already built and oracle-verified for P-MC4c). The reference shown to the
+judge is sol2's text, but sol2 itself is never a scored candidate -- this is the first
+attempt in which neither candidate is byte-identical to what the judge is told is
+correct. Prediction: relative to blind, showing the reference increases the judge's
+preference for lure-of-sol2 (invalid, resembles the reference) over sol3 (valid, does
+not), for both judges, paired per item. This is the paper's lure mechanism
+(Section~\ref{sec:dose}) tested inside a genuine blind-vs-referenced selection
+comparison, rather than as a static margin (P-MC6) or with the reference itself sitting
+in the candidate pool (P-MC4, P-MC4b, P-MC4c).
