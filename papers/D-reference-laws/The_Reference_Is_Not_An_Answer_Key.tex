@@ -49,7 +49,7 @@ Second, the harm should switch on the moment a second valid answer exists and be
 Third, the harm should survive what would neutralise mere ignorance, and it does: a frontier-class judge shown a reference marks $82.5\%$ of genuinely correct non-matching answers as failing against $19.6\%$ for the same answers judged blind, the effect persists on answers the judge itself certified while blind, and a policy trained against a reference-showing judge raised that judge's score while its true accuracy fell by more than half.
 A registered masking suite then strongly supports a cheap semantic-comparison mechanism: the anchoring survives the reference being rewritten as English words, collapses when equality requires one computation step, and vanishes when the reference's final answer is hidden with its derivation intact, a pattern consistent with the judge performing a semantic equality check against a readable answer token.
 One registered scope prediction failed: we predicted a canonical solution shown on program synthesis would inflate like a key, and it did not, reducing inflation relative to blind instead.
-That falsification suggests a revised boundary hypothesis, that anchoring requires a cheaply extractable answer token to match against; a preregistered continuum over answer structures, scalar to pair to JSON to program with content held fixed, then finds the predicted attenuation, with the artifact-level harm falling below zero for the stronger judge and to a small residue for the weaker one, so the boundary is real and its sharpness is judge-dependent.
+That falsification suggests a revised boundary hypothesis, that anchoring requires a cheaply extractable answer token to match against; a preregistered continuum over answer structures, scalar to pair to JSON to program with content held fixed, then finds the predicted attenuation, with the artifact-level harm falling below zero for the stronger judge and to a small residue for the weaker one, supporting strong attenuation as answers become less cheaply comparable, with the artifact-level transition itself judge-dependent.
 On the multi-valid short-answer tasks we study a reference is therefore a lever rather than a safeguard, and the strongest mitigation we test is structural rather than verbal: score blind first, and reveal the reference only afterwards; a registered decomposition shows its active ingredient is the displayed blind score itself, a numeric anchor the judge defers to instead of the reference token.
 \end{abstract}
 
@@ -69,7 +69,7 @@ Re-judge frozen samples with the reference rotated to a different valid answer &
 Pools built with exactly $k$ valid answers per item; the same protocol on unique-answer math; a third-party benchmark &
 \textbf{Step positive for all six judges}; math inflation collapses $4$--$13\times$; the inversion reproduces on \textsc{MACE} (Section~\ref{sec:p2}) \\
 \addlinespace[3pt]
-\emph{Mech.} & Anchoring is a semantic equality check on a readable answer token &
+\emph{Mech.} & Behavioral signature of a cheap semantic equality check on a readable answer token &
 Reference rewritten as words, as an equivalent expression, and as a worked derivation with the answer hidden &
 \textbf{6 of 6 cells confirmed}: words preserve the margin, computation collapses it, masking kills it (Section~\ref{sec:maskident}) \\
 \addlinespace[3pt]
@@ -543,7 +543,7 @@ A post-hoc reading reconciles the residue with the MBPP null: these programs are
 \section{What does not rescue the reference}
 \label{sec:norescue}
 
-Everything verbal fails, the one structural remedy removes the measured inflation for most judges tested, and even that remedy's strength depends on the judge; the negative results below are the practically relevant part of the finding.
+No verbal mitigation is reliably sufficient; the strongest mitigation changes the protocol rather than the prompt, and even that remedy's strength depends on the judge; the negative results below are the practically relevant part of the finding.
 
 \paragraph{Telling the judge to accept any valid answer is a placebo below frontier capability.}
 On the synthetic grid at $k{=}16$, adding a sentence saying the reference is one valid answer among many and any correct answer deserves full credit closes phi-4's anchoring margin essentially to zero ($+1.91 \to +0.03$) and helps Qwen-14B substantially ($+3.34 \to +1.21$), while leaving the smaller judges unmoved, or worse on one rubric at 1.5B ($+3.58 \to +4.54$).

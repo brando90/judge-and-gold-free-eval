@@ -2368,3 +2368,29 @@ had already been corrected away from. All three applied, no science changed:
 
 No new experiments requested; the reviewer explicitly advised freezing the science at this point
 and would vote to accept and argue for it in discussion. Recompiled clean, 23 pages, 0 warnings.
+
+---
+
+## Third round of claim-calibration edits (2026-09-12), same AC (8/10, strong accept side)
+
+Third pass from the same reviewer, score held at 8/10 (called it "bordering on 9"), three more
+wording-only fixes, no new experiments requested:
+
+1. **Abstract, "so the boundary is real and its sharpness is judge-dependent."** Overstates a
+   split result (phi-4 clean cliff, Qwen-7B a positive residue; pair/JSON margins underpowered
+   by design; the program stratum's low effective multiplicity; the post-registration oracle
+   correction). Replaced with "supporting strong attenuation as answers become less cheaply
+   comparable, with the artifact-level transition itself judge-dependent," matching the
+   conclusion's already-careful language.
+2. **Table 1 mechanism row, "Anchoring is a semantic equality check on a readable answer
+   token."** Same over-assertion the abstract and conclusion were already corrected away from;
+   the table is often read before the caveats. Changed to "Behavioral signature of a cheap
+   semantic equality check on a readable answer token."
+3. **Section 8 opening, "Everything verbal fails."** False as stated: instructions partially
+   reduce anchoring for phi-4, Qwen-14B, Sonnet 5, and GPT-4.1; what fails is reliability and
+   completeness, not any effect at all. Changed to "No verbal mitigation is reliably sufficient;
+   the strongest mitigation changes the protocol rather than the prompt."
+
+Reviewer's own summary: "additional experimentation has negative expected value relative to
+polishing the exposition" at this point; final score 8/10, strong accept side, would not assign
+a confident 9 absent a broader-scope result. Recompiled clean, 23 pages, 0 warnings.
