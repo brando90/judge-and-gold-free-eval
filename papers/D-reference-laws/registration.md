@@ -2505,3 +2505,69 @@ decision. Unlike P-BG1, this result is not simply weaker-than-hoped -- it change
 intended contribution (a graded curve was the goal; a sharper cliff-with-a-confound is what
 was found), so any future write-up should present it as a partial falsification with an
 open confound, not as a strengthened version of the separability continuum.
+
+---
+
+## REGISTER Math-Constraint pilot (P-MC1..P-MC3), before any candidate generation
+
+Motivation: a broadening pass (2026-09-12) asked whether this paper's causal/mechanistic
+results generalise past its own 5 synthetic arithmetic families. Math-Constraint
+(huggingface.co/datasets/MathConstraint/MathConstraint-Easy, CC-BY-4.0, solver-verified,
+25 combinatorial-CSP problem types) is a genuinely different domain with its own
+independent oracle. A feasibility check (2026-09-12, informal, no registration weight,
+reported to the user in-session) found Llama-3.1-8B-Instruct and Qwen2.5-32B-Instruct
+(the latter with a one-shot worked example) both score 0/8 valid on every instance past
+the most trivial size across two problem types (`all_interval`, `magic_sequence`); a
+single Claude-model ("fable") agent solved both a magic-sequence (n=5) and an
+all-interval (n=8) instance correctly on its first attempt where both open models failed
+64 combined tries. This registers the resulting pilot BEFORE any generation from that
+model exists.
+
+**Disclosed deviations from established convention (both required, both novel to this
+pilot):** (1) candidate generator is a Claude-family reasoning model ("fable"), not
+Llama-3.1-8B-Instruct, because the latter cannot solve this domain at all past trivial
+size; (2) the "diverse valid candidates" pool for `all_interval` is NOT purely
+model-generated -- it is supplemented by a deterministic symmetry transform (reflection,
+$v \mapsto (n-1)-v$, applied to whichever valid solution is obtained, itself always valid
+by construction and independently hand-verified) to guarantee at least two distinct valid
+answers per item regardless of the generator's own diversity.
+
+**Pool:** 13 items, `runs/mc_pilot_instances.jsonl`: 8 `all_interval` (unhinted, n in
+{3,4,5,6,9,11,12,13}), 5 `magic_sequence` (n in {4,5,7,9,11}, hinted where the dataset's
+own instance is hinted).
+
+**Generation:** one Fable-model call per item, asked to produce up to 4 genuinely
+distinct valid solutions in a single response (not 4 independent temperature samples),
+with a one-shot worked example per problem type and an explicit self-verification
+instruction. For `all_interval` items, the reflection of the FIRST returned valid
+solution is added deterministically as an additional guaranteed-valid, guaranteed-distinct
+sample.
+
+**Oracle:** hand-written exact checkers (`check_all_interval`, `check_magic_sequence`),
+already used and disclosed in this session's feasibility checks; `all_interval` also
+respects any partial assignment; `magic_sequence` likewise.
+
+**Judges:** Qwen2.5-7B-Instruct and phi-4, the paper's standard cross-family pair, on the
+cluster, no new judge infrastructure.
+
+**REGISTERED PREDICTIONS (committed before any Fable call has been made):**
+- **P-MC1** (solve rate): Fable returns at least one oracle-valid solution for at least
+  10 of the 13 items ($\geq 77\%$). Exploratory/descriptive, no CI; reported as
+  confirmed/falsified on the raw count.
+- **P-MC2** (rotation, `all_interval` only, the flagship test replicated in a new
+  domain): on items with two distinct known-valid answers (Fable's own first valid
+  solution and its deterministic reflection), fix the candidate as one of the pair and
+  swap which of the two is shown as the reference; the referenced score is higher when
+  the candidate matches the shown reference than when it does not, for both judges,
+  paired per item, 95% CI excluding zero. This is the highest-confidence prediction here
+  since it does not depend on Fable's own diversity at all.
+- **P-MC3** (margin, exploratory, both problem types pooled): on items where at least
+  2 valid samples exist with at least one matching and one non-matching the reference
+  (Fable's own diversity, or Fable-plus-reflection for `all_interval`), the anchoring
+  margin (mean referenced score of matching-valid minus non-matching-valid samples) is
+  positive for both judges. No CI bar registered given the likely small n; reported as
+  confirmed/falsified on point-estimate sign only, disclosed as under-powered in advance.
+- Everything else (per-item solve counts, inflation/selection at any $n$, any
+  `magic_sequence`-specific multiplicity finding) is exploratory.
+
+Producer to be written and run after generation: `papers/analysis/mathconstraint_pilot_analysis.py`.
