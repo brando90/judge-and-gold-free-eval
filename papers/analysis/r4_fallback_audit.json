@@ -1,0 +1,1436 @@
+{
+ "runs/bon_scores_codeexem/code__Qwen__Qwen2.5-14B-Instruct__refexem_a.jsonl": {
+  "n": 20288,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_codeexem/code__Qwen__Qwen2.5-14B-Instruct__refexem_b.jsonl": {
+  "n": 20288,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_codeexem/code__Qwen__Qwen2.5-7B-Instruct__refexem_a.jsonl": {
+  "n": 20288,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_codeexem/code__Qwen__Qwen2.5-7B-Instruct__refexem_b.jsonl": {
+  "n": 20288,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/kstrat__Qwen__Qwen2.5-14B-Instruct__m1_a.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/kstrat__Qwen__Qwen2.5-14B-Instruct__m1_b.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/kstrat__Qwen__Qwen2.5-14B-Instruct__m2_a.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0117
+ },
+ "runs/bon_scores_kstrat/kstrat__Qwen__Qwen2.5-14B-Instruct__m2_b.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0117
+ },
+ "runs/bon_scores_kstrat/kstrat__Qwen__Qwen2.5-7B-Instruct__m1_a.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/kstrat__Qwen__Qwen2.5-7B-Instruct__m1_b.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/kstrat__Qwen__Qwen2.5-7B-Instruct__m1indep_a.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/kstrat__Qwen__Qwen2.5-7B-Instruct__m1indep_b.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/kstrat__Qwen__Qwen2.5-7B-Instruct__m1noscore_a.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/kstrat__Qwen__Qwen2.5-7B-Instruct__m1noscore_b.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/kstrat__Qwen__Qwen2.5-7B-Instruct__m1prev_a.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/kstrat__Qwen__Qwen2.5-7B-Instruct__m1prev_b.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/kstrat__Qwen__Qwen2.5-7B-Instruct__m2_a.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0273
+ },
+ "runs/bon_scores_kstrat/kstrat__Qwen__Qwen2.5-7B-Instruct__m2_b.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0273
+ },
+ "runs/bon_scores_kstrat/kstrat__google__gemma-2-9b-it__m1_a.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/kstrat__google__gemma-2-9b-it__m1_b.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/kstrat__google__gemma-2-9b-it__m1indep_a.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/kstrat__google__gemma-2-9b-it__m1indep_b.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/kstrat__google__gemma-2-9b-it__m1noscore_a.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/kstrat__google__gemma-2-9b-it__m1noscore_b.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/kstrat__google__gemma-2-9b-it__m1prev_a.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/kstrat__google__gemma-2-9b-it__m1prev_b.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/kstrat__google__gemma-2-9b-it__m2_a.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/kstrat__google__gemma-2-9b-it__m2_b.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/kstrat__microsoft__phi-4__m1_a.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/kstrat__microsoft__phi-4__m1_b.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/kstrat__microsoft__phi-4__m1indep_a.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/kstrat__microsoft__phi-4__m1indep_b.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/kstrat__microsoft__phi-4__m1noscore_a.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/kstrat__microsoft__phi-4__m1noscore_b.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/kstrat__microsoft__phi-4__m1prev_a.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/kstrat__microsoft__phi-4__m1prev_b.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/kstrat__microsoft__phi-4__m2_a.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/kstrat__microsoft__phi-4__m2_b.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/kstrat__mistralai__Mistral-7B-Instruct-v0.3__m1_a.jsonl": {
+  "n": 4800,
+  "fallback_5": 954,
+  "share_5": 0.1988,
+  "share_integer": 1.0
+ },
+ "runs/bon_scores_kstrat/kstrat__mistralai__Mistral-7B-Instruct-v0.3__m1_b.jsonl": {
+  "n": 4800,
+  "fallback_5": 469,
+  "share_5": 0.0977,
+  "share_integer": 1.0
+ },
+ "runs/bon_scores_kstrat/kstrat__mistralai__Mistral-7B-Instruct-v0.3__m2_a.jsonl": {
+  "n": 4800,
+  "fallback_5": 2,
+  "share_5": 0.0004,
+  "share_integer": 0.185
+ },
+ "runs/bon_scores_kstrat/kstrat__mistralai__Mistral-7B-Instruct-v0.3__m2_b.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.1508
+ },
+ "runs/bon_scores_kstrat/kstrat__openai__gpt-4.1-2025-04-14__m1_a.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.2156
+ },
+ "runs/bon_scores_kstrat/kstrat__openai__gpt-4.1-2025-04-14__m1_b.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.2006
+ },
+ "runs/bon_scores_kstrat/synthk__Qwen__Qwen2.5-14B-Instruct__noref_a.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/synthk__Qwen__Qwen2.5-14B-Instruct__noref_b.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/synthk__Qwen__Qwen2.5-14B-Instruct__ref_a.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/synthk__Qwen__Qwen2.5-14B-Instruct__ref_b.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/synthk__Qwen__Qwen2.5-7B-Instruct__noref_a.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/synthk__Qwen__Qwen2.5-7B-Instruct__noref_b.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0002
+ },
+ "runs/bon_scores_kstrat/synthk__Qwen__Qwen2.5-7B-Instruct__ref_a.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/synthk__Qwen__Qwen2.5-7B-Instruct__ref_b.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/synthk__Qwen__Qwen2.5-7B-Instruct__refsol2_a.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/synthk__Qwen__Qwen2.5-7B-Instruct__refsol2_b.jsonl": {
+  "n": 4800,
+  "fallback_5": 1,
+  "share_5": 0.0002,
+  "share_integer": 0.0004
+ },
+ "runs/bon_scores_kstrat/synthk__Qwen__Qwen2.5-7B-Instruct__refsol_a.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/synthk__Qwen__Qwen2.5-7B-Instruct__refsol_b.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/synthk__anthropic__claude-sonnet-5__noref_a.jsonl": {
+  "n": 1926,
+  "fallback_5": 3,
+  "share_5": 0.0016,
+  "share_integer": 1.0
+ },
+ "runs/bon_scores_kstrat/synthk__anthropic__claude-sonnet-5__ref_a.jsonl": {
+  "n": 1926,
+  "fallback_5": 1,
+  "share_5": 0.0005,
+  "share_integer": 1.0
+ },
+ "runs/bon_scores_kstrat/synthk__anthropic__claude-sonnet-5__refinst2_a.jsonl": {
+  "n": 1926,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 1.0
+ },
+ "runs/bon_scores_kstrat/synthk__anthropic__claude-sonnet-5__refinst_a.jsonl": {
+  "n": 1926,
+  "fallback_5": 1,
+  "share_5": 0.0005,
+  "share_integer": 1.0
+ },
+ "runs/bon_scores_kstrat/synthk__google__gemma-2-9b-it__noref_a.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/synthk__google__gemma-2-9b-it__noref_b.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/synthk__google__gemma-2-9b-it__ref_a.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/synthk__google__gemma-2-9b-it__ref_b.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/synthk__microsoft__phi-4__noref_a.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/synthk__microsoft__phi-4__noref_b.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/synthk__microsoft__phi-4__ref_a.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/synthk__microsoft__phi-4__ref_b.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/synthk__microsoft__phi-4__refsol2_a.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/synthk__microsoft__phi-4__refsol2_b.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/synthk__microsoft__phi-4__refsol_a.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/synthk__microsoft__phi-4__refsol_b.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_kstrat/synthk__mistralai__Ministral-8B-Instruct-2410__ref_a.jsonl": {
+  "n": 4800,
+  "fallback_5": 429,
+  "share_5": 0.0894,
+  "share_integer": 0.0915
+ },
+ "runs/bon_scores_kstrat/synthk__mistralai__Mistral-7B-Instruct-v0.3__noref_a.jsonl": {
+  "n": 4800,
+  "fallback_5": 1550,
+  "share_5": 0.3229,
+  "share_integer": 1.0
+ },
+ "runs/bon_scores_kstrat/synthk__mistralai__Mistral-7B-Instruct-v0.3__noref_b.jsonl": {
+  "n": 4800,
+  "fallback_5": 488,
+  "share_5": 0.1017,
+  "share_integer": 1.0
+ },
+ "runs/bon_scores_kstrat/synthk__mistralai__Mistral-7B-Instruct-v0.3__ref_a.jsonl": {
+  "n": 4800,
+  "fallback_5": 223,
+  "share_5": 0.0465,
+  "share_integer": 1.0
+ },
+ "runs/bon_scores_kstrat/synthk__mistralai__Mistral-7B-Instruct-v0.3__ref_b.jsonl": {
+  "n": 4800,
+  "fallback_5": 497,
+  "share_5": 0.1035,
+  "share_integer": 1.0
+ },
+ "runs/bon_scores_kstrat/synthk__openai__gpt-4.1-2025-04-14__noref_a.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0073
+ },
+ "runs/bon_scores_kstrat/synthk__openai__gpt-4.1-2025-04-14__noref_b.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0042
+ },
+ "runs/bon_scores_kstrat/synthk__openai__gpt-4.1-2025-04-14__ref_a.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0175
+ },
+ "runs/bon_scores_kstrat/synthk__openai__gpt-4.1-2025-04-14__ref_b.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0458
+ },
+ "runs/bon_scores_kstrat/synthk__openai__gpt-4.1-2025-04-14__refinst2_a.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.025
+ },
+ "runs/bon_scores_kstrat/synthk__openai__gpt-4.1-2025-04-14__refinst_a.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.084
+ },
+ "runs/bon_scores_mace/mace__Qwen__Qwen2.5-7B-Instruct__noref_a.jsonl": {
+  "n": 19200,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_mace/mace__Qwen__Qwen2.5-7B-Instruct__noref_b.jsonl": {
+  "n": 19200,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_mace/mace__Qwen__Qwen2.5-7B-Instruct__ref_a.jsonl": {
+  "n": 19200,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_mace/mace__Qwen__Qwen2.5-7B-Instruct__ref_b.jsonl": {
+  "n": 19200,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_mace/mace__anthropic__claude-sonnet-5__noref_a.jsonl": {
+  "n": 7569,
+  "fallback_5": 25,
+  "share_5": 0.0033,
+  "share_integer": 1.0
+ },
+ "runs/bon_scores_mace/mace__anthropic__claude-sonnet-5__noref_b.jsonl": {
+  "n": 7569,
+  "fallback_5": 18,
+  "share_5": 0.0024,
+  "share_integer": 1.0
+ },
+ "runs/bon_scores_mace/mace__anthropic__claude-sonnet-5__ref_a.jsonl": {
+  "n": 7569,
+  "fallback_5": 69,
+  "share_5": 0.0091,
+  "share_integer": 1.0
+ },
+ "runs/bon_scores_mace/mace__anthropic__claude-sonnet-5__ref_b.jsonl": {
+  "n": 7569,
+  "fallback_5": 111,
+  "share_5": 0.0147,
+  "share_integer": 1.0
+ },
+ "runs/bon_scores_mace/mace__microsoft__phi-4__noref_a.jsonl": {
+  "n": 19200,
+  "fallback_5": 1,
+  "share_5": 0.0001,
+  "share_integer": 0.0001
+ },
+ "runs/bon_scores_mace/mace__microsoft__phi-4__noref_b.jsonl": {
+  "n": 19200,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_mace/mace__microsoft__phi-4__ref_a.jsonl": {
+  "n": 19200,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_mace/mace__microsoft__phi-4__ref_b.jsonl": {
+  "n": 19200,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_refexpr/synthk__Qwen__Qwen2.5-7B-Instruct__ref_a.jsonl": {
+  "n": 7680,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_refexpr/synthk__Qwen__Qwen2.5-7B-Instruct__ref_b.jsonl": {
+  "n": 7680,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_refexpr/synthk__anthropic__claude-sonnet-5__ref_a.jsonl": {
+  "n": 3494,
+  "fallback_5": 1,
+  "share_5": 0.0003,
+  "share_integer": 1.0
+ },
+ "runs/bon_scores_refexpr/synthk__anthropic__claude-sonnet-5__ref_b.jsonl": {
+  "n": 3494,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 1.0
+ },
+ "runs/bon_scores_refexpr/synthk__microsoft__phi-4__ref_a.jsonl": {
+  "n": 7680,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_refexpr/synthk__microsoft__phi-4__ref_b.jsonl": {
+  "n": 7680,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_refsolmask/synthk__Qwen__Qwen2.5-7B-Instruct__refsol_a.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_refsolmask/synthk__Qwen__Qwen2.5-7B-Instruct__refsol_b.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_refsolmask/synthk__microsoft__phi-4__refsol_a.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_refsolmask/synthk__microsoft__phi-4__refsol_b.jsonl": {
+  "n": 4800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_refword/synthk__Qwen__Qwen2.5-7B-Instruct__ref_a.jsonl": {
+  "n": 7680,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_refword/synthk__Qwen__Qwen2.5-7B-Instruct__ref_b.jsonl": {
+  "n": 7680,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_refword/synthk__anthropic__claude-sonnet-5__ref_a.jsonl": {
+  "n": 3494,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 1.0
+ },
+ "runs/bon_scores_refword/synthk__anthropic__claude-sonnet-5__ref_b.jsonl": {
+  "n": 3494,
+  "fallback_5": 4,
+  "share_5": 0.0011,
+  "share_integer": 1.0
+ },
+ "runs/bon_scores_refword/synthk__microsoft__phi-4__ref_a.jsonl": {
+  "n": 7680,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_refword/synthk__microsoft__phi-4__ref_b.jsonl": {
+  "n": 7680,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_repl/synthk__Qwen__Qwen2.5-7B-Instruct__cipher1_a.jsonl": {
+  "n": 7680,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_repl/synthk__Qwen__Qwen2.5-7B-Instruct__cipher1_b.jsonl": {
+  "n": 7680,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_repl/synthk__Qwen__Qwen2.5-7B-Instruct__cipher2_a.jsonl": {
+  "n": 7680,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_repl/synthk__Qwen__Qwen2.5-7B-Instruct__cipher2_b.jsonl": {
+  "n": 7680,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_repl/synthk__Qwen__Qwen2.5-7B-Instruct__cipher3_a.jsonl": {
+  "n": 7680,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_repl/synthk__Qwen__Qwen2.5-7B-Instruct__cipher3_b.jsonl": {
+  "n": 7680,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_repl/synthk__Qwen__Qwen2.5-7B-Instruct__noref_a.jsonl": {
+  "n": 7680,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_repl/synthk__Qwen__Qwen2.5-7B-Instruct__noref_b.jsonl": {
+  "n": 7680,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_repl/synthk__Qwen__Qwen2.5-7B-Instruct__ref_a.jsonl": {
+  "n": 7680,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_repl/synthk__Qwen__Qwen2.5-7B-Instruct__ref_b.jsonl": {
+  "n": 7680,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_repl/synthk__anthropic__claude-sonnet-5__noref_a.jsonl": {
+  "n": 3494,
+  "fallback_5": 8,
+  "share_5": 0.0023,
+  "share_integer": 1.0
+ },
+ "runs/bon_scores_repl/synthk__anthropic__claude-sonnet-5__noref_b.jsonl": {
+  "n": 3494,
+  "fallback_5": 6,
+  "share_5": 0.0017,
+  "share_integer": 1.0
+ },
+ "runs/bon_scores_repl/synthk__anthropic__claude-sonnet-5__ref_a.jsonl": {
+  "n": 3494,
+  "fallback_5": 4,
+  "share_5": 0.0011,
+  "share_integer": 1.0
+ },
+ "runs/bon_scores_repl/synthk__anthropic__claude-sonnet-5__ref_b.jsonl": {
+  "n": 3494,
+  "fallback_5": 5,
+  "share_5": 0.0014,
+  "share_integer": 1.0
+ },
+ "runs/bon_scores_repl/synthk__microsoft__phi-4__cipher1_a.jsonl": {
+  "n": 7680,
+  "fallback_5": 6221,
+  "share_5": 0.81,
+  "share_integer": 0.8102
+ },
+ "runs/bon_scores_repl/synthk__microsoft__phi-4__cipher1_b.jsonl": {
+  "n": 7680,
+  "fallback_5": 6663,
+  "share_5": 0.8676,
+  "share_integer": 0.8676
+ },
+ "runs/bon_scores_repl/synthk__microsoft__phi-4__cipher2_a.jsonl": {
+  "n": 7680,
+  "fallback_5": 7371,
+  "share_5": 0.9598,
+  "share_integer": 0.9599
+ },
+ "runs/bon_scores_repl/synthk__microsoft__phi-4__cipher2_b.jsonl": {
+  "n": 7680,
+  "fallback_5": 6953,
+  "share_5": 0.9053,
+  "share_integer": 0.9053
+ },
+ "runs/bon_scores_repl/synthk__microsoft__phi-4__cipher3_a.jsonl": {
+  "n": 7680,
+  "fallback_5": 7498,
+  "share_5": 0.9763,
+  "share_integer": 0.9763
+ },
+ "runs/bon_scores_repl/synthk__microsoft__phi-4__cipher3_b.jsonl": {
+  "n": 7680,
+  "fallback_5": 7349,
+  "share_5": 0.9569,
+  "share_integer": 0.9569
+ },
+ "runs/bon_scores_repl/synthk__microsoft__phi-4__noref_a.jsonl": {
+  "n": 7680,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_repl/synthk__microsoft__phi-4__noref_b.jsonl": {
+  "n": 7680,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_repl/synthk__microsoft__phi-4__ref_a.jsonl": {
+  "n": 7680,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_repl/synthk__microsoft__phi-4__ref_b.jsonl": {
+  "n": 7680,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_repl/synthk__openai__gpt-4.1-2025-04-14__noref_a.jsonl": {
+  "n": 7680,
+  "fallback_5": 1,
+  "share_5": 0.0001,
+  "share_integer": 0.0398
+ },
+ "runs/bon_scores_repl/synthk__openai__gpt-4.1-2025-04-14__noref_b.jsonl": {
+  "n": 7680,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0299
+ },
+ "runs/bon_scores_repl/synthk__openai__gpt-4.1-2025-04-14__ref_a.jsonl": {
+  "n": 7680,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0249
+ },
+ "runs/bon_scores_repl/synthk__openai__gpt-4.1-2025-04-14__ref_b.jsonl": {
+  "n": 7680,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0251
+ },
+ "runs/bon_scores_replrot/synthk__Qwen__Qwen2.5-7B-Instruct__ref_a.jsonl": {
+  "n": 7680,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_replrot/synthk__Qwen__Qwen2.5-7B-Instruct__ref_b.jsonl": {
+  "n": 7680,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_replrot/synthk__anthropic__claude-sonnet-5__ref_a.jsonl": {
+  "n": 3494,
+  "fallback_5": 1,
+  "share_5": 0.0003,
+  "share_integer": 1.0
+ },
+ "runs/bon_scores_replrot/synthk__anthropic__claude-sonnet-5__ref_b.jsonl": {
+  "n": 3494,
+  "fallback_5": 1,
+  "share_5": 0.0003,
+  "share_integer": 1.0
+ },
+ "runs/bon_scores_replrot/synthk__microsoft__phi-4__ref_a.jsonl": {
+  "n": 7680,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_replrot/synthk__microsoft__phi-4__ref_b.jsonl": {
+  "n": 7680,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_sep/synthk__Qwen__Qwen2.5-7B-Instruct__noref_a.jsonl": {
+  "n": 6400,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_sep/synthk__Qwen__Qwen2.5-7B-Instruct__noref_b.jsonl": {
+  "n": 6400,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_sep/synthk__Qwen__Qwen2.5-7B-Instruct__ref_a.jsonl": {
+  "n": 6400,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_sep/synthk__Qwen__Qwen2.5-7B-Instruct__ref_b.jsonl": {
+  "n": 6400,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_sep/synthk__microsoft__phi-4__noref_a.jsonl": {
+  "n": 6400,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_sep/synthk__microsoft__phi-4__noref_b.jsonl": {
+  "n": 6400,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_sep/synthk__microsoft__phi-4__ref_a.jsonl": {
+  "n": 6400,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_sep/synthk__microsoft__phi-4__ref_b.jsonl": {
+  "n": 6400,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__Qwen__Qwen2.5-1.5B-Instruct__multiref_a.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__Qwen__Qwen2.5-1.5B-Instruct__multiref_b.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__Qwen__Qwen2.5-1.5B-Instruct__noref_a.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__Qwen__Qwen2.5-1.5B-Instruct__noref_b.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__Qwen__Qwen2.5-1.5B-Instruct__ref_a.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__Qwen__Qwen2.5-1.5B-Instruct__ref_b.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__Qwen__Qwen2.5-1.5B-Instruct__refinst2_a.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__Qwen__Qwen2.5-1.5B-Instruct__refinst_a.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__Qwen__Qwen2.5-1.5B-Instruct__refinst_b.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__Qwen__Qwen2.5-14B-Instruct__multiref_a.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__Qwen__Qwen2.5-14B-Instruct__multiref_b.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__Qwen__Qwen2.5-14B-Instruct__noref_a.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__Qwen__Qwen2.5-14B-Instruct__noref_b.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__Qwen__Qwen2.5-14B-Instruct__ref_a.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__Qwen__Qwen2.5-14B-Instruct__ref_b.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__Qwen__Qwen2.5-14B-Instruct__refinst2_a.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__Qwen__Qwen2.5-14B-Instruct__refinst_a.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__Qwen__Qwen2.5-14B-Instruct__refinst_b.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__Qwen__Qwen2.5-3B-Instruct__multiref_a.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__Qwen__Qwen2.5-3B-Instruct__multiref_b.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__Qwen__Qwen2.5-3B-Instruct__noref_a.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__Qwen__Qwen2.5-3B-Instruct__noref_b.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__Qwen__Qwen2.5-3B-Instruct__ref_a.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__Qwen__Qwen2.5-3B-Instruct__ref_b.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__Qwen__Qwen2.5-3B-Instruct__refinst2_a.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__Qwen__Qwen2.5-3B-Instruct__refinst_a.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__Qwen__Qwen2.5-3B-Instruct__refinst_b.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__Qwen__Qwen2.5-7B-Instruct__multiref_a.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__Qwen__Qwen2.5-7B-Instruct__multiref_b.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__Qwen__Qwen2.5-7B-Instruct__noref_a.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__Qwen__Qwen2.5-7B-Instruct__noref_b.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__Qwen__Qwen2.5-7B-Instruct__ref_a.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__Qwen__Qwen2.5-7B-Instruct__ref_b.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__Qwen__Qwen2.5-7B-Instruct__refinst2_a.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__Qwen__Qwen2.5-7B-Instruct__refinst_a.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__Qwen__Qwen2.5-7B-Instruct__refinst_b.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__meta-llama__Llama-3.1-8B-Instruct__multiref_a.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__meta-llama__Llama-3.1-8B-Instruct__multiref_b.jsonl": {
+  "n": 3840,
+  "fallback_5": 307,
+  "share_5": 0.0799,
+  "share_integer": 0.0799
+ },
+ "runs/bon_scores_synthk/synthk__meta-llama__Llama-3.1-8B-Instruct__noref_a.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__meta-llama__Llama-3.1-8B-Instruct__noref_b.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__meta-llama__Llama-3.1-8B-Instruct__ref_a.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__meta-llama__Llama-3.1-8B-Instruct__ref_b.jsonl": {
+  "n": 3840,
+  "fallback_5": 237,
+  "share_5": 0.0617,
+  "share_integer": 0.0617
+ },
+ "runs/bon_scores_synthk/synthk__meta-llama__Llama-3.1-8B-Instruct__refinst2_a.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__meta-llama__Llama-3.1-8B-Instruct__refinst_a.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__meta-llama__Llama-3.1-8B-Instruct__refinst_b.jsonl": {
+  "n": 3840,
+  "fallback_5": 138,
+  "share_5": 0.0359,
+  "share_integer": 0.0359
+ },
+ "runs/bon_scores_synthk/synthk__microsoft__phi-4__multiref_a.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__microsoft__phi-4__multiref_b.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__microsoft__phi-4__noref_a.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__microsoft__phi-4__noref_b.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__microsoft__phi-4__ref_a.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__microsoft__phi-4__ref_b.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__microsoft__phi-4__refinst2_a.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__microsoft__phi-4__refinst_a.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__microsoft__phi-4__refinst_b.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk/synthk__openai__gpt-4.1-2025-04-14__noref_a.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0628
+ },
+ "runs/bon_scores_synthk/synthk__openai__gpt-4.1-2025-04-14__noref_b.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0523
+ },
+ "runs/bon_scores_synthk/synthk__openai__gpt-4.1-2025-04-14__ref_a.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.1625
+ },
+ "runs/bon_scores_synthk/synthk__openai__gpt-4.1-2025-04-14__ref_b.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.2557
+ },
+ "runs/bon_scores_synthk_llamagen/synthk__Qwen__Qwen2.5-7B-Instruct__multiref_a.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk_llamagen/synthk__Qwen__Qwen2.5-7B-Instruct__multiref_b.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk_llamagen/synthk__Qwen__Qwen2.5-7B-Instruct__noref_a.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk_llamagen/synthk__Qwen__Qwen2.5-7B-Instruct__noref_b.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk_llamagen/synthk__Qwen__Qwen2.5-7B-Instruct__ref_a.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk_llamagen/synthk__Qwen__Qwen2.5-7B-Instruct__ref_b.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk_llamagen/synthk__Qwen__Qwen2.5-7B-Instruct__refinst_a.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/bon_scores_synthk_llamagen/synthk__Qwen__Qwen2.5-7B-Instruct__refinst_b.jsonl": {
+  "n": 3840,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/r2/frozen_math/math__Qwen__Qwen2.5-1.5B-Instruct__noref_a.jsonl": {
+  "n": 6720,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/r2/frozen_math/math__Qwen__Qwen2.5-1.5B-Instruct__noref_b.jsonl": {
+  "n": 6720,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/r2/frozen_math/math__Qwen__Qwen2.5-1.5B-Instruct__ref_a.jsonl": {
+  "n": 6720,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/r2/frozen_math/math__Qwen__Qwen2.5-1.5B-Instruct__ref_b.jsonl": {
+  "n": 6720,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/r2/frozen_math/math__Qwen__Qwen2.5-14B-Instruct__noref_a.jsonl": {
+  "n": 6720,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/r2/frozen_math/math__Qwen__Qwen2.5-14B-Instruct__noref_b.jsonl": {
+  "n": 6720,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/r2/frozen_math/math__Qwen__Qwen2.5-14B-Instruct__ref_a.jsonl": {
+  "n": 6720,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/r2/frozen_math/math__Qwen__Qwen2.5-14B-Instruct__ref_b.jsonl": {
+  "n": 6720,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/r2/frozen_math/math__Qwen__Qwen2.5-3B-Instruct__noref_a.jsonl": {
+  "n": 6720,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/r2/frozen_math/math__Qwen__Qwen2.5-3B-Instruct__noref_b.jsonl": {
+  "n": 6720,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/r2/frozen_math/math__Qwen__Qwen2.5-3B-Instruct__ref_a.jsonl": {
+  "n": 6720,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0007
+ },
+ "runs/r2/frozen_math/math__Qwen__Qwen2.5-3B-Instruct__ref_b.jsonl": {
+  "n": 6720,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/r2/frozen_math/math__Qwen__Qwen2.5-7B-Instruct__noref_a.jsonl": {
+  "n": 6720,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/r2/frozen_math/math__Qwen__Qwen2.5-7B-Instruct__noref_b.jsonl": {
+  "n": 6720,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/r2/frozen_math/math__Qwen__Qwen2.5-7B-Instruct__ref_a.jsonl": {
+  "n": 6720,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/r2/frozen_math/math__Qwen__Qwen2.5-7B-Instruct__ref_b.jsonl": {
+  "n": 6720,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/r3/scores/mace__Qwen__Qwen2.5-7B-Instruct__m1_a.jsonl": {
+  "n": 12800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/r3/scores/mace__Qwen__Qwen2.5-7B-Instruct__m2_a.jsonl": {
+  "n": 12800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.1753
+ },
+ "runs/r3/scores/mace__microsoft__phi-4__m1_a.jsonl": {
+  "n": 12800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ },
+ "runs/r3/scores/mace__microsoft__phi-4__m2_a.jsonl": {
+  "n": 12800,
+  "fallback_5": 0,
+  "share_5": 0.0,
+  "share_integer": 0.0
+ }
+}
