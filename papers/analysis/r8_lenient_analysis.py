@@ -69,18 +69,20 @@ for name in ("repl", "kpool"):
     if os.path.exists(f):
         for r in jl(f):
             LAB[name][r["problem_id"]]["model"] = r["model"]
+            LAB[name][r["problem_id"]]["model_match"] = r["model_match"]
 
 
 def labeling(L, how):
+    """(labels, keep mask, matches-reference) for one task under one labeling."""
     n = len(L["strict"])
     if how == "strict":
-        return L["strict"], [1] * n
+        return L["strict"], [1] * n, L["match"]
     if how == "lenient":
-        return L["lenient"], [1] * n
+        return L["lenient"], [1] * n, L["match"]
     if how == "model":
-        return (L["model"], [1] * n) if "model" in L else (None, None)
+        return (L["model"], [1] * n, L["model_match"]) if "model" in L else (None, None, None)
     if how == "boxed_only":
-        return L["strict"], L["boxed"]
+        return L["strict"], L["boxed"], L["match"]
     raise ValueError(how)
 
 
@@ -90,7 +92,7 @@ def metrics(pool, pids, b, r, how):
         if pid not in b or pid not in r:
             continue
         L = LAB[pool][pid]
-        lab, keep = labeling(L, how)
+        lab, keep, mt = labeling(L, how)
         if lab is None:
             return None
         ix = [i for i in range(len(lab)) if keep[i]]
@@ -107,7 +109,7 @@ def metrics(pool, pids, b, r, how):
         x0, x1 = auroc(sb, o), auroc(sr, o)
         if x0 is not None and x1 is not None:
             gall.append((x0, x1))
-        nm = [j for j, i in enumerate(ix) if not (lab[i] and L["match"][i])]
+        nm = [j for j, i in enumerate(ix) if not (lab[i] and mt[i])]
         lab_nm = [o[j] for j in nm]
         x0, x1 = auroc([sb[j] for j in nm], lab_nm), auroc([sr[j] for j in nm], lab_nm)
         if x0 is not None and x1 is not None:
@@ -176,7 +178,7 @@ for jn, jt in KJ.items():
         for pid, L in LAB["kpool"].items():
             if int(L["k"]) == 1 or not all(pid in x for x in (b, r, m1)):
                 continue
-            lab, keep = labeling(L, how)
+            lab, keep, _ = labeling(L, how)
             if lab is None:
                 break
             ix = [i for i in range(len(lab)) if keep[i]]
