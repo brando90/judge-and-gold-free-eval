@@ -2946,3 +2946,21 @@ is reported as directionally consistent, underpowered evidence, not a confirmati
 not another falsification -- a genuinely different outcome class from the first three
 attempts, now that the actual design flaw (reference double-counted as a candidate) is
 removed.
+
+---
+
+## REGISTER P-MC4e (scale-up of P-MC4d with sol4), before any new judging
+
+P-MC4d showed the right direction in both judges but did not clear the CI-excluding-zero
+bar at $n{=}8$. This registers a cheap scale-up before looking at any new data: add a
+second within-item comparison per instance using sol4 (the fourth Fable solution,
+unused until now), paired against the same lure-of-sol2 used in P-MC4d, with the same
+reference (sol2, still never a scored candidate). This doubles the paired observations
+from 8 to 16 per judge at zero new generation cost (sol4 and the lure were already
+collected/built).
+
+**REGISTERED PREDICTION (committed before any P-MC4e judging exists):** pooling P-MC4d's
+original 8 comparisons (sol3 vs lure-of-sol2) with 8 new ones (sol4 vs lure-of-sol2),
+the combined valid-pick-rate is lower under ref than blind, for both judges, paired per
+item, 95% CI excluding zero. This is the same P-MC4d prediction, re-tested with double
+the data rather than a new design.
