@@ -2138,3 +2138,32 @@ estimator mirrored verbatim from `synthk_paired.py`, committed with this entry.
 same delta at k=1) is positive, 95% item-bootstrap CI excluding zero, matching all six open
 judges. A null here, on the cleanest available design, would be the strongest evidence yet that
 the k=2 boundary does not extend to gpt-4.1, rather than a k-stratified-pool artifact.
+
+---
+
+## REGISTERED 2026-09-12: M1-variant decomposition on gemma-2-9b (P-GV1..P-GV3), before any gemma variant score exists
+
+**Why.** External review asked what mechanism explains gemma-2-9b's large M1 residual (+1.23,
+against near-full removal for Qwen-7B and phi-4) given the M1-variants decomposition (m1noscore,
+m1prev, m1indep) found the active ingredient is the displayed blind score, not the ordering, on
+those two judges. Gemma was never included in that decomposition. This runs the identical three
+variants on gemma, reusing its frozen blind/ref/M1/M2 scores from Registration 5 and the frozen
+k-stratified samples; no new generation.
+
+**Design.** `mitigation_judge.py --judge google/gemma-2-9b-it --cond {m1noscore,m1prev,m1indep}
+--rep {a,b}`, k-stratified pool, on skampere1 (GPUs free at submission: 2, 3, 4). m1indep shows
+Qwen2.5-7B-Instruct's existing frozen blind scores (`runs/bon_scores_kstrat/synthk__Qwen__Qwen2.5-7B-Instruct__noref_{a,b}.jsonl`)
+in place of gemma's own. Estimator: `papers/analysis/m1_variants_analysis.py`, unmodified, run
+with gemma added to its judge list.
+
+**Predictions**, mirroring the confirmed Qwen-7B/phi-4 pattern exactly (P-M1V1..V3 restated for
+a third judge): **P-GV1** m1noscore's inflation exceeds m1's (removing the blind score restores
+inflation). **P-GV2** framing (m1prev, neutral wording) direction unconstrained a priori, given
+the registered result already split by judge (confirmed phi-4, falsified Qwen-7B); reported
+either way. **P-GV3** m1indep (other judge's score) is statistically indistinguishable from m1
+(any blind number works, not specifically gemma's own). If gemma's large M1 residual (+1.23) is
+explained by a WEAKER dependence on the displayed number than Qwen-7B/phi-4 show, m1noscore's
+inflation would be closer to m1's than to the raw single-reference level; if gemma depends on the
+number just as much but a different mechanism drives the residual, m1noscore should restore
+inflation to single-reference height as it does for the other two judges. Both outcomes are
+informative and neither is presupposed.
