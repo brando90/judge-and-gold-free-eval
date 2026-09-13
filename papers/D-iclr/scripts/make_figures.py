@@ -91,11 +91,15 @@ fig, (a1, a2) = plt.subplots(1, 2, figsize=(5.5, 2.3), gridspec_kw={"width_ratio
 s5 = acc["repl_sonnet5_scores"]
 rows = [("correct, matches\nthe reference", s5["noref"]["match"][0], s5["ref"]["match"][0]),
         ("correct, differs\nfrom the reference", s5["noref"]["nonmatch"][0], s5["ref"]["nonmatch"][0])]
+CIS = {rows[0][0]: (s5["noref"]["match"][1], s5["ref"]["match"][1]), rows[1][0]: (s5["noref"]["nonmatch"][1], s5["ref"]["nonmatch"][1])}
 for y, (lab, b, r) in enumerate(rows[::-1]):
     a1.barh(y + 0.19, b, height=0.34, color=ORANGE, zorder=3)
     a1.barh(y - 0.19, r, height=0.34, color=BLUE, zorder=3)
-    a1.text(b + 0.2, y + 0.19, f"{b:.1f}", va="center", fontsize=7, color=MUTED)
-    a1.text(r + 0.2, y - 0.19, f"{r:.1f}", va="center", fontsize=7, color=MUTED)
+    ci_b, ci_r = CIS[lab]
+    a1.errorbar(b, y + 0.19, xerr=[[b - ci_b[0]], [ci_b[1] - b]], fmt="none", ecolor=INK, elinewidth=0.8, capsize=1.6, zorder=4)
+    a1.errorbar(r, y - 0.19, xerr=[[r - ci_r[0]], [ci_r[1] - r]], fmt="none", ecolor=INK, elinewidth=0.8, capsize=1.6, zorder=4)
+    a1.text(max(b, ci_b[1]) + 0.25, y + 0.19, f"{b:.1f}", va="center", fontsize=7, color=MUTED)
+    a1.text(max(r, ci_r[1]) + 0.25, y - 0.19, f"{r:.1f}", va="center", fontsize=7, color=MUTED)
 a1.set_yticks([0, 1], [l for l, _, _ in rows[::-1]])
 a1.set_xlim(0, 12.5)
 a1.set_ylim(-0.55, 1.95)
@@ -127,8 +131,8 @@ w = 0.3
 GAP = 1.3
 for i, (name, r) in enumerate(cols):
     i = i * GAP
-    for dx, k, kw in ((-w, "gainers", dict(color=BLUE)), (0, "placebo", dict(color=GREY)),
-                      (w, "losers", dict(facecolor="white", edgecolor=BLUE, hatch="/////", lw=0.8))):
+    for dx, k, kw in ((-w, "gainers", dict(color="#3a3a3a")), (0, "placebo", dict(color="#bdbdbd")),
+                      (w, "losers", dict(facecolor="white", edgecolor="#3a3a3a", hatch="/////", lw=0.8))):
         m, ci = r[k]["mean"], r[k]["ci"]
         a2.bar(i + dx, m, width=w - 0.04, zorder=3, **kw)
         a2.errorbar(i + dx, m, yerr=yerr(m, ci), fmt="none", ecolor=INK, elinewidth=0.8, capsize=1.8, zorder=4)
@@ -144,10 +148,9 @@ a2.set_title("Swap the reference", loc="left")
 style(a2)
 label(a2, "b", x=-0.28)
 fig.tight_layout(w_pad=2.2)
-fig.legend(handles=[Patch(color=BLUE, label="reference moved onto the answer"), Patch(color=GREY, label="matches neither"),
-                    Patch(facecolor="white", edgecolor=BLUE, hatch="/////", label="reference moved off the answer")],
-           loc="upper center", ncol=3, frameon=False, handlelength=1.1, fontsize=6.8, bbox_to_anchor=(0.62, 0.02),
-           columnspacing=0.8)
+a2.legend(handles=[Patch(color="#3a3a3a", label="reference moved onto the answer"), Patch(color="#bdbdbd", label="matches neither"),
+                   Patch(facecolor="white", edgecolor="#3a3a3a", hatch="/////", label="reference moved off the answer")],
+          loc="upper center", ncol=1, frameon=False, handlelength=1.1, fontsize=6.4, bbox_to_anchor=(0.5, -0.2))
 save(fig, "fig1_teaser")
 
 # ============================================================== Figure 2
@@ -165,7 +168,7 @@ for name, key in KJ:
     a1.plot(xs, ys, marker=MARK[name], ms=4.5 if main else 3.5, lw=1.5 if main else 0.8, color=BLUE,
             alpha=1.0 if main else 0.35, zorder=3 if main else 1, label=name)
 a1.axhline(0, color=ORANGE, lw=0.9, zorder=1)
-a1.text(1.05, 4, "blind", fontsize=7, color=ORANGE, va="bottom")
+a1.text(1.05, 9, "blind", fontsize=7, color=ORANGE, va="bottom")
 a1.set_xscale("log", base=2)
 a1.set_xticks(xs, [str(x) for x in xs])
 a1.minorticks_off()
@@ -173,7 +176,7 @@ a1.set_ylim(-100, 45)
 a1.set_xlabel("valid answers per question, $k$")
 a1.set_ylabel("change in accuracy of\nthe pick (points)")
 a1.set_title("Showing the reference, by $k$", loc="left")
-a1.legend(loc="lower left", frameon=False, fontsize=6.5, handlelength=1.6, ncol=2, columnspacing=0.8, labelspacing=0.2)
+a1.legend(loc="upper center", bbox_to_anchor=(0.5, -0.32), frameon=False, fontsize=6.3, handlelength=1.6, ncol=3, columnspacing=0.8, labelspacing=0.2)
 style(a1)
 label(a1, "a")
 
@@ -241,9 +244,10 @@ for pos, r in enumerate(rows):
     ticks.append((y, lab, False))
 a1.axvline(0, color=MUTED, lw=0.8, zorder=2)
 a1.set_yticks([t[0] for t in ticks], [t[1] for t in ticks], fontsize=6.8)
-for tl, t in zip(a1.get_yticklabels(), ticks):
+for tl, tk, t in zip(a1.get_yticklabels(), a1.yaxis.get_major_ticks(), ticks):
     if t[2]:
         tl.set_fontstyle("italic"); tl.set_color(MUTED)
+        tk.tick1line.set_visible(False)
 a1.set_xlim(-8.3, 1.4)
 a1.set_xticks([-6, -4, -2, 0])
 a1.set_ylim(-0.6, n - 0.4)
@@ -269,7 +273,7 @@ for i, (lab, off, on) in enumerate(groups):
 a2.axhline(0, color=MUTED, lw=0.8, zorder=2)
 a2.set_xticks(range(len(groups)), [g[0] for g in groups], fontsize=6.4)
 a2.set_ylim(-0.6, 10.2)
-a2.set_ylabel("added margin (points)")
+a2.set_ylabel("margin, reference $-$ blind (points)")
 a2.set_title("Thinking off vs. on", loc="left")
 a2.legend(handles=[Patch(color=INK, label="thinking off"), Patch(facecolor="white", edgecolor=INK, label="thinking on")],
           loc="upper left", frameon=False, handlelength=1.0, fontsize=6.6, borderaxespad=0.2)
@@ -390,7 +394,7 @@ r5 = load("r5_posthoc_results.json") or {}
 pts = load("r5_splithalf_points.json") or {}
 mace3 = load("r3_mace_accuracy_results.json")
 if r4res.get("grading") and r5.get("mace_grading_by_k"):
-    fig = plt.figure(figsize=(5.5, 4.5))
+    fig = plt.figure(figsize=(5.5, 4.9))
     gs = fig.add_gridspec(2, 2, height_ratios=[1.0, 1.05], width_ratios=[1.25, 1.0], hspace=0.62, wspace=0.42)
     a1, a3, a2 = fig.add_subplot(gs[0, 0]), fig.add_subplot(gs[0, 1]), fig.add_subplot(gs[1, :])
     G = r4res["grading"]["repl"]
@@ -425,14 +429,19 @@ if r4res.get("grading") and r5.get("mace_grading_by_k"):
         a3.text(0.02, 0.04, f"Qwen2.5-7B \u03c1 = {sgn(rq, 2)}\nphi-4 \u03c1 = {sgn(rp, 2)}", transform=a3.transAxes, fontsize=6.4, color=INK, va="bottom")
         a3.set_xlabel("blind AUROC (half of samples)")
         a3.set_ylabel("change in AUROC with\nthe reference (other half)")
-        a3.set_title("Within MACE", loc="left", fontsize=8)
+        a3.set_title("Within MACE, Qwen2.5-7B tasks", loc="left", fontsize=8)
         style(a3)
         label(a3, "b", x=-0.5)
 
     pr = [("Replication", r4res["repl_accuracy"]["ref_minus_blind"], acc["repl"][P]["acc_ref_minus_blind"])]
     kq = r4res["kpool"][Q]["escore"]
+    r7f = load("r7_posthoc_results.json") or {}
+    lr = r7f.get("lures_removed", {})
     pr += [("k-pool, k = 1", kq["k1"]["ref_minus_blind"], acc["kpool"][P]["k1"]["ref_minus_blind"]),
            ("k-pool, k > 1", kq["kgt1"]["ref_minus_blind"], acc["kpool"][P]["kgt1"]["ref_minus_blind"])]
+    if lr:
+        pr += [("k-pool, k = 1, look-alikes removed", lr["Qwen2.5-7B"]["k1"]["lures_removed"], lr["phi-4"]["k1"]["lures_removed"]),
+               ("k-pool, k > 1, look-alikes removed", lr["Qwen2.5-7B"]["kgt1"]["lures_removed"], lr["phi-4"]["kgt1"]["lures_removed"])]
     mq = ph4.get("mace_exact_q7", {})
     pr += [("MACE, k = 1", mq["k1"]["ref_minus_blind"], mace3[P]["k1"]["ref_minus_blind"]),
            ("MACE, k > 1", mq["kgt1"]["ref_minus_blind"], mace3[P]["kgt1"]["ref_minus_blind"])]

@@ -596,3 +596,70 @@ try:
     print("wrote main_numbers.tex")
 except (KeyError, TypeError, FileNotFoundError) as e:
     print("[skip main_numbers]", e)
+
+
+# ---------------------------------------------------------------- round 7: false rejections by judge and task type; robustness numbers
+def pp1(v):
+    return "---" if v is None else f"${_z(100 * v[0], 1):+.1f}$ {{\\scriptsize$[{_z(100 * v[1][0], 1):+.1f},{_z(100 * v[1][1], 1):+.1f}]$}}"
+
+
+try:
+    r7, r7b = J("r7_posthoc_results.json"), J("r7b_posthoc_results.json")
+    acc_ = J("accuracy_readouts.json")
+    tog3, t14_, r5s_ = J("r3_toggle_results.json"), J("r4_toggle14b_results.json"), J("r5_sonnet_mace_results.json")
+    fr7 = r7["false_reject_change"]
+    s5 = acc_["repl_sonnet5_false_reject"]
+    s5_arith = f"${_z(100 * (s5['ref_nonmatch'][0] - s5['blind_nonmatch'][0]), 1):+.1f}$"
+    body = ["\\begin{tabular}{lcccc}", "\\toprule",
+            " & \\multicolumn{2}{c}{Arithmetic} & \\multicolumn{2}{c}{Factual (\\textsc{MACE})} \\\\", "\\cmidrule(lr){2-3}\\cmidrule(lr){4-5}",
+            "Judge & No thinking & Thinking & No thinking & Thinking \\\\", "\\midrule",
+            f"Qwen2.5-7B & {pp1(r4['repl_false_reject']['le3']['diff'])} & --- & {pp1(fr7['Qwen2.5-7B|factual|score'])} & --- \\\\",
+            f"phi-4 & {pp1(acc_['repl'][P]['false_reject_diff_nonmatch'])} & --- & {pp1(fr7['phi-4|factual|score'])} & --- \\\\",
+            f"Qwen3-8B & {pp1(fr7['Qwen3-8B|arithmetic|thinking off'])} & {pp1(fr7['Qwen3-8B|arithmetic|thinking on'])} & {pp1(tog3['off']['macesub']['false_reject_diff'])} & {pp1(tog3['on']['macesub']['false_reject_diff'])} \\\\",
+            f"Qwen3-14B & {pp1(fr7['Qwen3-14B|arithmetic|thinking off'])} & {pp1(fr7['Qwen3-14B|arithmetic|thinking on'])} & {pp1(t14_['Qwen3-14B']['off']['macesub']['false_reject_diff'])} & {pp1(t14_['Qwen3-14B']['on']['macesub']['false_reject_diff'])} \\\\",
+            f"Sonnet~5 & {s5_arith} & --- & {pp1(r5s_['fast']['false_reject_diff'])} & {pp1(r5s_['think']['false_reject_diff'])} \\\\"]
+    write("false_reject.tex", done(body))
+
+    body = ["\\begin{tabular}{L{8.4cm}L{4.8cm}}", "\\toprule", "Quantity & Value (95\\% CI) \\\\", "\\midrule"]
+    sec = lambda t: body.append(f"\\multicolumn{{2}}{{l}}{{\\emph{{{t}}}}} \\\\")
+    sec("Wrong candidates whose text contains the reference's answer (look-alikes)")
+    for pool, lab in (("replication", "Replication pool"), ("kpool", "$k$-pool")):
+        x = r7b["lure_character"][pool]
+        body.append(f"{lab}: share of wrong candidates; share of those with no \\texttt{{\\textbackslash boxed\\{{\\}}}} answer & {100 * x['lure_share_of_wrong']:.1f}\\%; {100 * x['lure_no_box'] / x['lure']:.1f}\\% \\\\")
+    body.append(f"\\textsc{{MACE}} River and Language: share of wrong candidates & {100 * r7b['mace_lures']['lure_share_of_wrong']:.1f}\\% \\\\")
+    sec("$k$-pool accuracy change with look-alikes removed (points): $k{=}1$; $k{>}1$; step")
+    for jn, v in r7["lures_removed"].items():
+        st = v["step_lures_removed"]
+        body.append(f"{jn} & {pp1(v['k1']['lures_removed'])}; {pp1(v['kgt1']['lures_removed'])}; step ${_z(100 * st[0], 1):+.1f}$ {{\\scriptsize$[{_z(100 * st[1][0], 1):+.1f},{_z(100 * st[1][1], 1):+.1f}]$}} \\\\")
+    sec("Replication pool with look-alikes removed: AUROC change (non-matching, all); accuracy change (points)")
+    for jn, v in r7b["replication_lures_removed"].items():
+        body.append(f"{jn} & {fc(*v['G_nm_change'][:2])}, {fc(*v['G_all_change'][:2])}; {pp1(v['accuracy_change'])} \\\\")
+    body.append(f"\\textsc{{MACE}}, Qwen2.5-7B, non-matching AUROC change with look-alikes removed & {fc(*r7b['mace_lures']['G_nm_change_lures_removed_qwen'][:2])} \\\\")
+    sec("GPT-4.1 on the $k$-pool: accuracy change (points) and mean candidates tied at the maximum, blind / reference")
+    g4 = r7["gpt41_kpool_accuracy"]
+    for k_, lab in (("k1", "$k{=}1$"), ("kgt1", "$k{>}1$")):
+        body.append(f"GPT-4.1, {lab} & {pp1(g4[k_]['ref_minus_blind'])}; ties {g4[k_]['mean_tied_at_max_blind']} / {g4[k_]['mean_tied_at_max_ref']} \\\\")
+    cov_ = r7["frontier_coverage"]["sonnet_repl"]
+    body.append(f"Sonnet~5 score files, replication pool: correct answers scored; wrong answers scored & {cov_['correct_scored']} of {cov_['correct_total']}; {cov_['wrong_scored']} of {cov_['wrong_total']} \\\\")
+    sec("Sonnet~5 (API) mean score of correct answers, replication pool, blind $\\to$ reference")
+    ss = acc_["repl_sonnet5_scores"]
+    for key, lab in (("match", "Matching the reference"), ("nonmatch", "Differing from the reference")):
+        b_, r_ = ss["noref"][key], ss["ref"][key]
+        body.append(f"{lab} & {b_[0]:.2f} {c(*b_[1])} $\\to$ {r_[0]:.2f} {c(*r_[1])} \\\\")
+    write("round7_numbers.tex", done(body))
+
+    rules = [("reference", "Reference"), ("mean", "Mean"), ("min", "Min"), ("max", "Max"), ("blind_then_ref_tiebreak", "Blind, reference breaks ties"), ("blind_then_reveal", "Blind, then reveal")]
+    cols = [("kpool_kgt1", "Qwen2.5-7B", "$k$-pool, 7B"), ("kpool_kgt1", "phi-4", "$k$-pool, phi-4"), ("kpool_kgt1", "Qwen2.5-14B", "$k$-pool, 14B"),
+            ("kpool_kgt1", "gemma-2-9b", "$k$-pool, gemma"), ("mace_all", "Qwen2.5-7B", "\\textsc{MACE}, 7B"), ("mace_all", "phi-4", "\\textsc{MACE}, phi-4"),
+            ("math", "Qwen2.5-7B", "MATH, 7B"), ("math", "Qwen2.5-14B", "MATH, 14B")]
+    body = ["\\begin{tabular}{l" + "c" * len(cols) + "}", "\\toprule", "Rule & " + " & ".join(cl for _, _, cl in cols) + " \\\\", "\\midrule"]
+    for key, lab in rules:
+        cells = []
+        for pool, jn, _ in cols:
+            v = (r7b["math_rules"].get(jn, {}) if pool == "math" else r7["score_rules"].get(pool, {}).get(jn, {})).get(key)
+            cells.append("---" if v is None else f"${_z(100 * v[0], 1):+.1f}$")
+        body.append(f"{lab} & " + " & ".join(cells) + " \\\\")
+    write("score_rules.tex", done(body))
+    print("wrote round-7 tables")
+except (KeyError, TypeError, FileNotFoundError) as e:
+    print("[skip round-7 tables]", repr(e))

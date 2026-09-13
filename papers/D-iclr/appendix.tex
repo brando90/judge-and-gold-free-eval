@@ -21,7 +21,7 @@ Pool & Contents & Generator & Judges \\
 \midrule
 Replication\osf{} & 120 tasks from five constraint families with exact checkers & Llama-3.1-8B-Instruct & Qwen2.5-7B, phi-4, Sonnet~5, GPT-4.1 \\
 $k$-pool\osf{} & 75 tasks with exactly $k \in \{1,2,4,8,16\}$ valid answers, 15 per $k$; all 465 stored answers checked & Llama-3.1-8B-Instruct & Qwen2.5-7B, phi-4, Qwen2.5-14B, gemma-2-9b, Mistral-7B \\
-Synthetic grid\pre{} & 60 tasks from two families whose valid sets enumerate exactly, 12 per $k$ & Qwen2.5-7B; Llama-3.1-8B & six open judges \\
+Synthetic grid\pre{} & 60 tasks from two families whose valid sets enumerate exactly, 12 per $k$ & Qwen2.5-7B; Llama-3.1-8B & Qwen2.5 1.5B, 3B, 7B, and 14B, Llama-3.1-8B, and phi-4 \\
 Exploratory Ties & 51 generation tasks built from \textsc{RewardBench-2} Ties items & Qwen2.5-7B & Qwen2.5 1.5B--14B \\
 \textsc{MACE}\pre{} & 300 questions with 1, 2, 4, or 6 correct answers (River, Language, and Math domains) & Llama-3.1-8B-Instruct & Qwen2.5-7B, phi-4, Sonnet~5 \\
 MBPP\pre{} & 317 problems whose canonical solution passes the EvalPlus tests~\citep{liu2023evalplus} & Qwen2.5-7B & Qwen2.5-7B, 14B \\
@@ -70,7 +70,7 @@ Blind-then-reveal first scores the candidate with the blind rubric. The second c
 \section{Preregistration ledger}
 \label{app:ledger}
 
-Every confirmatory prediction was written down before its data existed. Three experiments were registered on OSF with third-party timestamps\osf{} (links withheld for review; anonymized copies are in the supplementary material). The rest were committed to the project repository with a timestamp that predates the data\pre. Analyses marked post hoc\ph{} carry no registration weight. \Cref{tab:ledger} lists every experiment and its outcome as scored. Verdicts follow one rule. \emph{Confirmed} means the 95\% interval excludes zero in the predicted direction, or a registered point prediction holds. \emph{Not confirmed} means the interval includes zero. \emph{Falsified} means the interval excludes zero in the opposite direction, or a point prediction fails. We adopted this rule on 13 September 2026, after most outcomes were known, and re-derived every earlier verdict under it; several predictions that the registration documents mark as falsified are therefore reported here as not confirmed. Counting each registered prediction once, the ledger records 86 confirmed, 10 not confirmed, and 15 falsified. Sixteen predictions registered for several judges or training arms got different verdicts across them (\emph{split}; the table lists each verdict), 18 could not be evaluated, 2 were not scored, and 3 from an August 2026 command-line check are excluded (\cref{app:frontier}).
+Every confirmatory prediction was written down before its data existed. Three experiments were registered on OSF with third-party timestamps\osf{} (links withheld for review; anonymized copies are in the supplementary material). The rest were committed to the project repository with a timestamp that predates the data\pre. Analyses marked post hoc\ph{} carry no registration weight. \Cref{tab:ledger} lists every experiment and its outcome as scored. Verdicts follow one rule. \emph{Confirmed} means the 95\% interval excludes zero in the predicted direction, or a registered point prediction holds. \emph{Not confirmed} means the interval includes zero. \emph{Falsified} means the interval excludes zero in the opposite direction, or a point prediction fails. We adopted this rule on 13 September 2026, after most outcomes were known, and re-derived every earlier verdict under it; several predictions that the registration documents mark as falsified are therefore reported here as not confirmed. The re-derivation moved predictions in both directions. Seven moved from falsified to not confirmed (P-R2B1 to P-R2B3, P-R3D1, P-R3D2, P-2D2, and the Qwen2.5-7B cell of P-RC1). Ten moved against us: P-M2 and P-S5 to falsified, P-FM3 from confirmed to falsified, P-S2, P-MC2, and P-EX2 to split, and P-FR1, P-FK2, P-SC1, and P-SC2 from confirmed to not evaluable. Counting each registered prediction once, the ledger records 86 confirmed, 10 not confirmed, and 15 falsified. Sixteen predictions registered for several judges or training arms got different verdicts across them (\emph{split}; the table lists each verdict), 18 could not be evaluated, 2 were not scored, and 3 from an August 2026 command-line check are excluded (\cref{app:frontier}).
 
 {\small
 \setlength{\tabcolsep}{4pt}
@@ -137,7 +137,7 @@ The rotation assigns each task the valid alternative that appears most often amo
 
 \begin{table}[htbp]
 \centering
-\caption{Change in score of identical text when the reference is rotated (replication pool, 0--10 scale, 95\% CI). ``Onto'': samples that match the new reference. ``Off'': samples that matched only the old one. ``Neither'': valid samples matching neither. The last row keeps only samples Sonnet~5 scored at least 7 blind (3,194 of 3,494). For the open judges the same filter gives $+4.99$ \ci{+4.69}{+5.32} (Qwen2.5-7B, 91\% kept) and $+4.08$ (phi-4, 98\% kept).\pre}
+\caption{Change in score of identical text when the reference is rotated (replication pool, 0--10 scale, 95\% CI; original scorer, registered runs; exact-scorer values for Qwen2.5-7B are in \cref{tab:r4-rotation}). ``Onto'': samples that match the new reference. ``Off'': samples that matched only the old one. ``Neither'': valid samples matching neither. The last row keeps only samples Sonnet~5 scored at least 7 blind (3,194 of 3,494). For the open judges the same filter gives $+4.99$ \ci{+4.69}{+5.32} (Qwen2.5-7B, 91\% kept) and $+4.08$ (phi-4, 98\% kept).\pre}
 \label{tab:rotation}
 \footnotesize
 \setlength{\tabcolsep}{3pt}
@@ -217,7 +217,7 @@ The thinking judge gives a score of 10 to 96.2\% of valid rotation samples blind
 
 \begin{table}[htbp]
 \centering
-\caption{Replication pool: selection accuracy on the 105 tasks in the pass-rate band, and false-rejection rate (correct answers that differ from the reference scored 3 or below) on the 93 tasks with both kinds of valid answer. Original scorer. Sonnet~5's selection accuracy is not reported because its integer scores tie under best-of-64.\ph}
+\caption{Replication pool: selection accuracy on the 105 tasks in the pass-rate band, and false-rejection rate (correct answers that differ from the reference scored 3 or below) on the 93 tasks with both kinds of valid answer. Original scorer. Sonnet~5's selection accuracy cannot be computed: to save cost, only its scores for correct answers were collected.\ph}
 \label{tab:acc-repl}
 \footnotesize
 \begin{adjustbox}{max width=\linewidth}\input{tables/acc_repl.tex}\end{adjustbox}
@@ -242,6 +242,17 @@ The thinking judge gives a score of 10 to 96.2\% of valid rotation samples blind
 \setlength{\tabcolsep}{4pt}
 \begin{adjustbox}{max width=\linewidth}\input{tables/grid.tex}\end{adjustbox}
 
+\end{table}
+
+\paragraph{Look-alike wrong answers and the answer format.}
+The constructed pools judge an answer by its \texttt{\textbackslash boxed\{\}} content. On the $k$-pool a reply without a box is compared as a whole and so is always wrong; on the replication pool the checker parses the reply's last 100 characters, which often fails for prose answers. Wrong candidates whose text contains the reference's answer (look-alikes) are therefore common, and most of them state that answer without the required box (\cref{tab:round7}). Removing them leaves the grading results almost unchanged but removes the $k{=}1$ selection loss and shrinks the replication-pool loss; on the $k$-pool at $k{>}1$, a loss of 15 to 21 points remains for Qwen2.5-7B, gemma-2-9b, and phi-4, and its step from $k{=}1$ excludes zero.\ph
+
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption{Robustness numbers: look-alike wrong answers, results with them removed, GPT-4.1 selection, Sonnet~5 score coverage, and the Sonnet~5 scores behind \cref{fig:teaser}a (95\% CI).\ph}
+\label{tab:round7}
+\begin{adjustbox}{max width=\linewidth}\input{tables/round7_numbers.tex}\end{adjustbox}
 \end{table}
 
 \paragraph{Robustness of the replication endpoint.}
@@ -341,10 +352,10 @@ Anchoring margins at $k{>}1$ on the audited domains are $+6.44$ for Qwen2.5-7B a
 \label{app:frontier}
 
 \paragraph{An excluded command-line check.}
-An earlier check called \texttt{claude -p --model sonnet} from the project directory in August 2026 on 37 $k$-pool tasks. We exclude it from the ledger counts and do not use it in the main text. It ran with the command-line interface's default agent context, which very likely included a git status listing recent commit messages that name the anchoring hypothesis, and extended thinking engaged on 178 of 330 blind calls but 27 of 330 referenced calls (\texttt{cli\_transcript\_audit.json}). For the record, its mean per-task margin was $+0.35$ \ci{-0.56}{+1.27} blind and $+7.49$ \ci{+6.58}{+8.27} with the reference, and it scored 19.6\% of correct non-matching answers at 3 or below blind and 82.5\% with the reference, pooled over samples. The command-line replication of \cref{app:reasoning} removes this context.
+An earlier check called \texttt{claude -p --model sonnet} from the project directory in August 2026 on 37 $k$-pool tasks. We exclude it from the ledger counts and do not use it in the main text. It ran with the command-line interface's default agent context, which very likely included a git status listing recent commit messages that name the anchoring hypothesis, and extended thinking engaged on 178 of 330 blind calls but 27 of 330 referenced calls. For the record, its mean per-task margin was $+0.35$ \ci{-0.56}{+1.27} blind and $+7.49$ \ci{+6.58}{+8.27} with the reference, and it scored 19.6\% of correct non-matching answers at 3 or below blind and 82.5\% with the reference, pooled over samples. The command-line replication of \cref{app:reasoning} removes this context.
 
 \paragraph{API judges.}
-Sonnet~5 reproduces the rotation (\cref{tab:rotation}), the blind-accepted filter, the masking pattern (bare reference $+3.06$, words $+3.14$, expression $+0.47$), and the \textsc{MACE} reversal. GPT-4.1 picks matching answers far more often with the reference (32 referenced-only against 1 blind-only picks) and has a margin of $+1.19$. It failed our pre-specified score-resolution screen: an average of 15.03 candidates per pool tie at its maximum score, against a bar of 3.0. Its $k$ step is $+0.27$ \ci{-0.02}{+0.61} on the $k$-pool and $-0.08$ \ci{-0.49}{+0.20} on the synthetic grid, where ties are heavier (47.0 per pool), so we report it as unresolved.
+Sonnet~5 reproduces the rotation (\cref{tab:rotation}), the blind-accepted filter, the masking pattern (bare reference $+3.06$, words $+3.14$, expression $+0.47$), and the \textsc{MACE} result that its blind margin is negative. GPT-4.1 picks matching answers far more often with the reference (32 referenced-only against 1 blind-only picks) and has a margin of $+1.19$. It failed our pre-specified score-resolution screen: an average of 15.03 candidates per pool tie at its maximum score, against a bar of 3.0. Its $k$ step is $+0.27$ \ci{-0.02}{+0.61} on the $k$-pool and $-0.08$ \ci{-0.49}{+0.20} on the synthetic grid, where ties are heavier (47.0 per pool), so we report it as unresolved.
 
 \begin{table}[htbp]
 \centering
@@ -361,7 +372,7 @@ Sonnet~5 reproduces the rotation (\cref{tab:rotation}), the blind-accepted filte
 \label{app:composition}
 
 \paragraph{The margin alone does not predict which tasks inflate.}
-Across the 35 multi-answer tasks of the $k$-pool with usable margins, the correlation between a task's anchoring margin and its inflation is $+0.29$ for phi-4 and $+0.06$ for Qwen2.5-7B, well below the $0.82$ and $0.90$ that measurement noise would allow under a linear link.
+Across the 35 multi-answer tasks of the $k$-pool with usable margins, the correlation between a task's anchoring margin and its inflation is $+0.29$ for phi-4 and $+0.06$ for Qwen2.5-7B, well below the noise ceilings on that correlation, $0.82$ and $0.90$.
 
 \paragraph{A failed prediction about composition.}
 In matched sub-pools of 24 samples with exactly 4 valid answers, of which $d \in \{0,1,2,4\}$ match the reference (48 tasks), we predicted that inflation would grow with $d$. It falls (\cref{tab:dose}). With no correct answer to anchor on, the referenced judge picks a valid sample 14\% and 21\% of the time at $d{=}0$, against 72\% and 79\% blind, and 58\% and 72\% of the invalid samples it picks contain the reference's answer text, against 43\% and 35\% blind.
@@ -381,7 +392,7 @@ $S_{\text{ref}} \approx \beta S_{\text{blind}} + \lambda\,\mathbb{I}[\text{match
 gives match bonuses $\lambda = +4.3$ and $+3.5$ points and lure bonuses $\gamma = +1.4$ and $+1.7$, and reproduces the nine-cell inflation surface out of sample at Spearman $0.80$ and $0.85$. With no lures and no matching valid answers the referenced judge still inflates ($+0.68$ and $+0.66$), which the model attributes to $\beta \approx 0.5$ to $0.7$: a referenced score keeps only part of the blind score's information. Because $\beta<1$ partly reflects measurement attenuation, we read it descriptively.
 
 \paragraph{Distance.}
-The registered slope test regresses each task's rubric-$b$ scores of non-matching correct answers on their normalized distance from the reference. Its mean slope is negative for both judges ($-37.4$ \ci{-79.3}{-5.9} and $-28.2$ \ci{-70.5}{-2.4} points per unit distance) and more negative than blind (paired $-48.0$ and $-37.5$), which confirmed the registered predictions. A few tasks with large slopes dominate these means: blind slopes are also positive on average ($+10.6$ and $+9.2$), and the registered tercile prediction failed, with the near, middle, and far thirds scoring 3.41, 2.93, and 3.53 for Qwen2.5-7B and 6.81, 6.32, and 6.71 for phi-4. Including matching samples, the slope is $-3.38$ and $-2.18$, driven by the step at exact equality.
+The registered slope test regresses each task's rubric-$b$ scores of non-matching correct answers on their normalized distance from the reference. Distance is normalized to $[0,1]$ within each task, so tasks whose correct answers span a narrow range of distances get very steep slopes. Its mean slope is negative for both judges ($-37.4$ \ci{-79.3}{-5.9} and $-28.2$ \ci{-70.5}{-2.4} points per unit distance) and more negative than blind (paired $-48.0$ and $-37.5$), which confirmed the registered predictions. A few tasks with large slopes dominate these means: blind slopes are also positive on average ($+10.6$ and $+9.2$), and the registered tercile prediction failed, with the near, middle, and far thirds scoring 3.41, 2.93, and 3.53 for Qwen2.5-7B and 6.81, 6.32, and 6.71 for phi-4. Including matching samples, the slope is $-3.38$ and $-2.18$, driven by the step at exact equality.
 
 %==========================================================================================
 \FloatBarrier
@@ -411,7 +422,7 @@ We kept the answer an integer and re-encoded the reference with one, two, or thr
 \end{table}
 
 \paragraph{Solution route.}
-Holding the reference answer fixed and rotating its derivation to a different method moves the identical sample's score by $-0.32$ and $-0.40$ points for Qwen2.5-7B and $-0.02$ for phi-4. Three of four cells exclude zero, so the prediction of no effect is falsified as stated, but the effects are 20 to 400 times smaller than answer rotation, and a preference for samples whose own route matches the shown one appears in one of four cells.
+Holding the reference answer fixed and rotating its derivation to a different method moves the identical sample's score by $-0.32$ and $-0.40$ points for Qwen2.5-7B and $-0.02$ for phi-4. The registered no-change prediction fails for Qwen2.5-7B, whose interval excludes zero, and holds for phi-4, whose interval reaches zero; the effects are 20 to 400 times smaller than answer rotation, and a preference for samples whose own route matches the shown one appears in one of four cells.
 
 %==========================================================================================
 \FloatBarrier
@@ -536,6 +547,25 @@ A later pre-specified experiment ran blind-then-reveal on the 105 MATH-500 probl
 
 \end{table}
 
+\paragraph{Zero-cost score combinations.}
+Simple combinations of the blind and referenced scores compete with blind-then-reveal (\cref{tab:score-rules}). Taking the maximum loses nothing to blind judging on the $k$-pool at $k{>}1$ and keeps the reference's benefit on \textsc{MACE}, but on MATH-500 it trails the reference for Qwen2.5-7B; the mean does best on MATH-500 and worse on the $k$-pool. No rule is best everywhere.\ph
+
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption{Best-of-64 accuracy change against blind judging (points) for score combinations and blind-then-reveal: $k$-pool at $k{>}1$, \textsc{MACE} overall, MATH-500. Original scorer.\ph}
+\label{tab:score-rules}
+\begin{adjustbox}{max width=\linewidth}\input{tables/score_rules.tex}\end{adjustbox}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption{Worst-case selection loss by protocol: accuracy of each protocol minus the best of the three in each pool (points; 0 marks the best), and the worst case over the pools each judge was run on, which differ by judge. Original scorer.\ph}
+\label{tab:regret}
+\begin{adjustbox}{max width=\linewidth}\input{tables/regret.tex}\end{adjustbox}
+\end{table}
+
 \paragraph{Blind-then-reveal across judges.}
 \Cref{tab:coverage} gives the preregistered coverage extension in inflation units, and \cref{tab:acc-kpool} gives all five $k$-pool judges in accuracy units.
 
@@ -608,7 +638,7 @@ This pre-specified experiment reran the Qwen3-8B protocol of \cref{app:rotation}
 With thinking on, valid rotation samples receive 10 in 99.8\% of referenced replies and 96.2\% of blind ones; with thinking off, in 79.2\% and 76.9\%. The thinking judge's arithmetic scores therefore sit at the top of the scale whether or not the reference agrees, which is what verification looks like on these tasks and leaves no room for a reference to move them. On \textsc{MACE} its valid answers average 7.96 with the reference and 8.18 blind, away from the ceiling, and the anchoring returns. These diagnostics are post hoc.
 
 \paragraph{Sonnet~5 with and without thinking.}
-A pre-specified three-arm design tested the same contrast on a frontier judge through the Claude command-line tool, with the default system prompt replaced, no tools, and an empty working directory, on 60 replication-pool tasks with one sample each that gains, loses, or keeps neither reference under rotation. The score-only arm, with thinking off, anchors: $+3.57$ \ci{+2.57}{+4.55} for text the reference moves onto, $-2.85$ \ci{-3.85}{-1.92} for text it moves off, and $-0.07$ \ci{-1.18}{+1.10} for text matching neither, with 26.7\% \ci{20.4}{33.3} of correct non-matching answers scored 3 or below. Asking it to reason before a final ``Score: N'' line removes most of this, with thinking off ($+0.28$, $-0.20$ \ci{-0.37}{-0.05}, 0.4\% false rejections) or on ($+0.18$, $-0.32$ \ci{-0.67}{-0.07}, 0.4\%). All four registered predictions were confirmed; the reasoning and thinking arms were completed after an interruption by the subscription's usage limit, re-running only the calls that had failed.\pre{}
+A pre-specified three-arm design tested the same contrast on a frontier judge through the Claude command-line tool, with the default system prompt replaced, no tools, and an empty working directory, on 60 replication-pool tasks with one sample each that gains, loses, or keeps neither reference under rotation. The score-only arm, with thinking off, anchors: $+3.57$ \ci{+2.57}{+4.55} for text the reference moves onto, $-2.85$ \ci{-3.85}{-1.92} for text it moves off, and $-0.07$ \ci{-1.18}{+1.10} for text matching neither, with 26.7\% \ci{20.4}{33.3} of correct non-matching answers scored 3 or below. Asking it to reason before a final ``Score: N'' line removes most of this, with thinking off ($+0.28$, $-0.20$ \ci{-0.37}{-0.05}, 0.4\% false rejections) or on ($+0.18$, $-0.32$ \ci{-0.67}{-0.07}, 0.4\%). All four registered predictions were confirmed; the reasoning and thinking arms were completed in a second session that re-ran only the calls that had failed.\pre{}
 A second pre-specified experiment asked the same question on 40 factual \textsc{MACE} tasks, with one matching-correct, one non-matching-correct, and one wrong sample each, blind and referenced. The added margin is $+3.98$ \ci{+2.70}{+5.30} with a score only and $+3.03$ \ci{+1.70}{+4.65} with thinking on (paired difference $-0.95$ \ci{-2.45}{+0.63}), and the share of non-matching correct answers scored 3 or below rises by 17.5 and 12.5 points. Blind, Sonnet~5 ranks both correct answers above the wrong one 94.4\% and 96.9\% of the time, so it anchors on these questions although it can verify them; all three registered predictions were confirmed.\pre
 
 \paragraph{End to end on \textsc{MACE}.}
