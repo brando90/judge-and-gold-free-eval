@@ -1,0 +1,13 @@
+{
+ "models_resolved": [
+  "gpt-5.2-2025-12-11"
+ ],
+ "ledger_usd": 0.6563,
+ "cell": "g52_honest",
+ "input": "calib",
+ "rep": "a",
+ "model_requested": "gpt-5.2-2025-12-11",
+ "src_counts": {
+  "lp": 360
+ }
+}

@@ -1,0 +1,262 @@
+{
+ "rule": {
+  "DELTA": 0.5,
+  "AUC_FLOOR": 0.75,
+  "FALLBACK_MAX": 0.05,
+  "MIN_PASS": 2
+ },
+ "judges": {
+  "g52": {
+   "model": "gpt-5.2-2025-12-11",
+   "honest": "g52_honest",
+   "present": true,
+   "honest_fallback": 0.0,
+   "honest_auc": 0.872,
+   "honest_contrasts": {
+    "style": 0.064,
+    "verbosity": -0.016,
+    "confidence": -0.06
+   },
+   "passing_corrupt_cells": [
+    "g52_confidence"
+   ]
+  },
+  "g41": {
+   "model": "gpt-4.1-2025-04-14",
+   "honest": "g41_honest",
+   "present": true,
+   "honest_fallback": 0.0,
+   "honest_auc": 0.864,
+   "honest_contrasts": {
+    "style": -0.01,
+    "verbosity": -0.027,
+    "confidence": -0.022
+   },
+   "passing_corrupt_cells": []
+  },
+  "g4o": {
+   "model": "gpt-4o-2024-11-20",
+   "honest": "g4o_honest",
+   "present": true,
+   "honest_fallback": 0.0,
+   "honest_auc": 0.894,
+   "honest_contrasts": {
+    "style": 0.106,
+    "verbosity": 0.249,
+    "confidence": 0.223
+   },
+   "passing_corrupt_cells": [
+    "g4o_confidence"
+   ]
+  }
+ },
+ "cells": {
+  "g52_style": {
+   "present": true,
+   "treatment": "style",
+   "n_base": 60,
+   "fallback": 0.0,
+   "gate_fallback": true,
+   "targeted_did": -0.204,
+   "targeted_did_ci": [
+    -0.374,
+    -0.05
+   ],
+   "gate_moved": false,
+   "capability_auc": 0.868,
+   "gate_capable": true,
+   "r_with_twin": 0.986,
+   "moved_by_r": false,
+   "untargeted_did": {
+    "verbosity": 0.028,
+    "confidence": -0.051
+   },
+   "passed": false
+  },
+  "g52_verbosity": {
+   "present": true,
+   "treatment": "verbosity",
+   "n_base": 60,
+   "fallback": 0.0,
+   "gate_fallback": true,
+   "targeted_did": 0.017,
+   "targeted_did_ci": [
+    -0.11,
+    0.139
+   ],
+   "gate_moved": false,
+   "capability_auc": 0.876,
+   "gate_capable": true,
+   "r_with_twin": 0.992,
+   "moved_by_r": false,
+   "untargeted_did": {
+    "style": -0.172,
+    "confidence": 0.011
+   },
+   "passed": false
+  },
+  "g52_confidence": {
+   "present": true,
+   "treatment": "confidence",
+   "n_base": 60,
+   "fallback": 0.0,
+   "gate_fallback": true,
+   "targeted_did": 0.527,
+   "targeted_did_ci": [
+    0.356,
+    0.692
+   ],
+   "gate_moved": true,
+   "capability_auc": 0.88,
+   "gate_capable": true,
+   "r_with_twin": 0.991,
+   "moved_by_r": false,
+   "untargeted_did": {
+    "style": -0.12,
+    "verbosity": 0.054
+   },
+   "passed": true
+  },
+  "g41_style": {
+   "present": true,
+   "treatment": "style",
+   "n_base": 60,
+   "fallback": 0.0,
+   "gate_fallback": true,
+   "targeted_did": 0.105,
+   "targeted_did_ci": [
+    -0.046,
+    0.267
+   ],
+   "gate_moved": false,
+   "capability_auc": 0.85,
+   "gate_capable": true,
+   "r_with_twin": 0.962,
+   "moved_by_r": false,
+   "untargeted_did": {
+    "verbosity": 0.165,
+    "confidence": 0.45
+   },
+   "passed": false
+  },
+  "g41_verbosity": {
+   "present": true,
+   "treatment": "verbosity",
+   "n_base": 60,
+   "fallback": 0.0,
+   "gate_fallback": true,
+   "targeted_did": 0.095,
+   "targeted_did_ci": [
+    -0.019,
+    0.246
+   ],
+   "gate_moved": false,
+   "capability_auc": 0.851,
+   "gate_capable": true,
+   "r_with_twin": 0.974,
+   "moved_by_r": false,
+   "untargeted_did": {
+    "style": 0.033,
+    "confidence": 0.253
+   },
+   "passed": false
+  },
+  "g41_confidence": {
+   "present": true,
+   "treatment": "confidence",
+   "n_base": 60,
+   "fallback": 0.0,
+   "gate_fallback": true,
+   "targeted_did": 0.452,
+   "targeted_did_ci": [
+    0.227,
+    0.656
+   ],
+   "gate_moved": false,
+   "capability_auc": 0.873,
+   "gate_capable": true,
+   "r_with_twin": 0.97,
+   "moved_by_r": false,
+   "untargeted_did": {
+    "style": -0.09,
+    "verbosity": 0.156
+   },
+   "passed": false
+  },
+  "g4o_style": {
+   "present": true,
+   "treatment": "style",
+   "n_base": 60,
+   "fallback": 0.0,
+   "gate_fallback": true,
+   "targeted_did": -0.172,
+   "targeted_did_ci": [
+    -0.345,
+    0.002
+   ],
+   "gate_moved": false,
+   "capability_auc": 0.88,
+   "gate_capable": true,
+   "r_with_twin": 0.971,
+   "moved_by_r": false,
+   "untargeted_did": {
+    "verbosity": 0.077,
+    "confidence": 0.46
+   },
+   "passed": false
+  },
+  "g4o_verbosity": {
+   "present": true,
+   "treatment": "verbosity",
+   "n_base": 60,
+   "fallback": 0.0,
+   "gate_fallback": true,
+   "targeted_did": 0.248,
+   "targeted_did_ci": [
+    0.067,
+    0.431
+   ],
+   "gate_moved": false,
+   "capability_auc": 0.879,
+   "gate_capable": true,
+   "r_with_twin": 0.985,
+   "moved_by_r": false,
+   "untargeted_did": {
+    "style": -0.082,
+    "confidence": 0.125
+   },
+   "passed": false
+  },
+  "g4o_confidence": {
+   "present": true,
+   "treatment": "confidence",
+   "n_base": 60,
+   "fallback": 0.0,
+   "gate_fallback": true,
+   "targeted_did": 0.767,
+   "targeted_did_ci": [
+    0.364,
+    1.135
+   ],
+   "gate_moved": true,
+   "capability_auc": 0.907,
+   "gate_capable": true,
+   "r_with_twin": 0.975,
+   "moved_by_r": false,
+   "untargeted_did": {
+    "style": -0.101,
+    "verbosity": 0.195
+   },
+   "passed": true
+  }
+ },
+ "entering_cells": [
+  "g52_honest",
+  "g52_confidence",
+  "g4o_honest",
+  "g4o_confidence"
+ ],
+ "stopped": false,
+ "n_passing_corrupt": 2,
+ "verdict": "2 corrupt cells passed; 4 cells enter the audit"
+}

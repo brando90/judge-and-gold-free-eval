@@ -1,0 +1,13 @@
+{
+ "models_resolved": [
+  "gpt-4o-2024-11-20"
+ ],
+ "ledger_usd": 6.5299,
+ "cell": "g4o_honest",
+ "input": "calib",
+ "rep": "a",
+ "model_requested": "gpt-4o-2024-11-20",
+ "src_counts": {
+  "lp": 360
+ }
+}

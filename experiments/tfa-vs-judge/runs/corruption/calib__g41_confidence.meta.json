@@ -1,0 +1,13 @@
+{
+ "models_resolved": [
+  "gpt-4.1-2025-04-14"
+ ],
+ "ledger_usd": 5.6179,
+ "cell": "g41_confidence",
+ "input": "calib",
+ "rep": "a",
+ "model_requested": "gpt-4.1-2025-04-14",
+ "src_counts": {
+  "lp": 360
+ }
+}

@@ -1,0 +1,13 @@
+{
+ "models_resolved": [
+  "gpt-4.1-2025-04-14"
+ ],
+ "ledger_usd": 4.8731,
+ "cell": "g41_verbosity",
+ "input": "calib",
+ "rep": "a",
+ "model_requested": "gpt-4.1-2025-04-14",
+ "src_counts": {
+  "lp": 360
+ }
+}

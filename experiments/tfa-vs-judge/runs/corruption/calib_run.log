@@ -1,0 +1,14 @@
+calibration start 2026-09-13T00:32:29Z, cells: g52_honest g52_style g52_verbosity g52_confidence g41_honest g41_style g41_verbosity g41_confidence g4o_honest g4o_style g4o_verbosity g4o_confidence
+[sync done] runs/corruption/calib__g52_honest.jsonl src {'lp': 360} ledger $0.66
+[sync done] runs/corruption/calib__g52_style.jsonl src {'lp': 360} ledger $1.33
+[sync done] runs/corruption/calib__g52_verbosity.jsonl src {'lp': 360} ledger $1.99
+[sync done] runs/corruption/calib__g52_confidence.jsonl src {'lp': 360} ledger $2.66
+[sync done] runs/corruption/calib__g41_honest.jsonl src {'lp': 360} ledger $3.39
+[sync done] runs/corruption/calib__g41_style.jsonl src {'lp': 360} ledger $4.14
+[sync done] runs/corruption/calib__g41_verbosity.jsonl src {'lp': 360} ledger $4.87
+[sync done] runs/corruption/calib__g41_confidence.jsonl src {'lp': 360} ledger $5.62
+[sync done] runs/corruption/calib__g4o_honest.jsonl src {'lp': 360} ledger $6.53
+[sync done] runs/corruption/calib__g4o_style.jsonl src {'lp': 360} ledger $7.47
+[sync done] runs/corruption/calib__g4o_verbosity.jsonl src {'lp': 360} ledger $8.39
+[sync done] runs/corruption/calib__g4o_confidence.jsonl src {'lp': 360} ledger $9.32
+CALIB_ALL_DONE 2026-09-13T00:35:46Z ledger 9.32
