@@ -2191,3 +2191,69 @@ so far gives GPT-4.1 a tie-resistant inflation readout; the only route that woul
 sampling on a provider whose scores are not capped, or Claude Sonnet 5's fixed tool-call integer
 averaged over multiple draws) is not yet run and is noted as the right next step rather than
 attempted under time pressure here.
+
+---
+
+## PRODUCER BUG (2026-09-12, found under user-requested audit): shared and unseeded RNG in the four frontier producers, fixed; canonical numbers refreshed, no verdicts changed
+
+Auditing the frontier extension end to end (requested explicitly, in response to the Sonnet
+incident above) found two independent, previously undisclosed reproducibility bugs in
+`frontier_phase2_analysis.py`, `frontier_instruction_analysis.py`, and
+`frontier_synthk_analysis.py` (`frontier_phase1_margins.py`, margin-only, was unaffected):
+
+1. **A single global `numpy` `rng` consumed across judges in list order.** Confirmed by running
+   `frontier_instruction_analysis.py` on gpt-4.1 alone versus paired with Sonnet 5: point
+   estimates were identical but bootstrap CI bounds shifted by ~0.01-0.04 depending on which
+   other judge was analyzed first in the same process. Fixed: each producer now derives a
+   judge-specific seed (`sha256` of the judge tag) and reseeds its own `rng` at the top of every
+   per-judge loop, making output exactly invariant to which judges are requested or in what order.
+2. **A second, more consequential source, inherited from the frozen `bon_analysis.py` itself.**
+   `per_item_curves`' tie-break (`select_idx` then `random.choice(ties)`) uses Python's global
+   `random` module, never seeded anywhere in `bon_analysis.py`. Verified directly: the identical
+   single-judge invocation, run twice in a row with no other judge involved, gave different
+   `gap_ref_minus_blind` values. This is not a new bug and is not particular to the frontier
+   extension: every original registered producer in this paper (`repl_analysis.py`,
+   `mitigation_analysis.py`, `synthk_analysis.py`, etc.) execs the same unmodified
+   `bon_analysis.py` and inherits the same unseeded tie-break, which is the mechanism behind this
+   codebase's own long-standing disclosure that "regenerated bootstrap bounds can move by up to
+   about 0.02 relative to frozen registered runs." `bon_analysis.py` is the frozen, registered
+   estimator and is not modified here. Fixed for the three NEW producers only: each now also
+   seeds Python's `random` module per judge before calling into the exec'd namespace, so THIS
+   file's output is fully reproducible without touching the frozen original.
+
+**Verification.** After both fixes: the same command run twice gives byte-identical output;
+gpt-4.1's numbers are byte-identical whether analyzed alone or alongside Sonnet 5, in either
+argument order. Margin-only readouts (Phase 1, and the margin fields of Phase 2/instruction)
+were never affected by either bug, since they never call `per_item_curves`/`permutation_null`.
+
+**Impact on published numbers, checked term by term.** No P-FR/P-FK/P-FI/P-FG verdict changes.
+Digits move by amounts consistent with the pre-existing ~0.02-0.06 tolerance this codebase
+already accepts elsewhere, with two exceptions worth stating plainly:
+- The synthetic-grid k>1 delta (a descriptive quantity, not itself a registered bar) moved from
+  a null CI ($-0.18$ to $+0.03$) to one excluding zero on the negative side ($-0.221$ to
+  $-0.010$, mean $-0.112$) under the fixed, fully reproducible run. This does not change the
+  registered step verdict (P-FG1 remains not confirmed, CI $[-0.485,+0.197]$) and, if anything,
+  reinforces this pool's already-disclosed unreliability: a quantity that flips between "null"
+  and "significant" purely as a function of an RNG bug is not a quantity to trust the sign of,
+  on a pool that independently fails the score-resolution screen by 47 mean ties at the maximum.
+- Claude Sonnet 5's refinst2 confirmation (P-FI2) is closer to its boundary than earlier digits
+  suggested: contrast $-0.396$ $[-0.753,-0.027]$, the upper bound only $0.027$ below zero. The
+  verdict is unchanged (confirmed) but is flagged here as the most marginal of the four
+  instruction confirmations, not a clean one.
+
+**Refreshed canonical numbers** (fixed producers, fully reproducible, replacing the pre-fix
+digits quoted earlier in this ledger and in the paper):
+
+| Quantity | Pre-fix (reported earlier) | Post-fix (canonical) |
+|---|---|---|
+| Sonnet rotation gainers/losers/placebo (a) | +4.25 / -4.05 / +0.04 *(superseded further above by the post-redo values already in this ledger: +3.04/-2.66/+0.04)* | +3.035 [+2.53,+3.56] / -2.657 [-3.36,-2.00] / +0.040 [-0.42,+0.46] |
+| Sonnet masking bare/words/expr (a) | +3.06 / +3.13 / +0.47 | +3.057 [+2.52,+3.60] / +3.135 [+2.61,+3.65] / +0.473 [+0.02,+0.88] |
+| Sonnet MACE ref/blind nonmath | +5.29 / -1.37 | +5.291 [+4.57,+6.02] / -1.372 [-2.05,-0.67] |
+| Sonnet refinst/refinst2 contrast | -0.93 / -0.40 | -0.925 [-1.22,-0.65] / **-0.396 [-0.75,-0.03]** |
+| gpt-4.1 repl delta/margin | +0.12 / +1.19 | +0.120 [+0.02,+0.23] / +1.190 [+0.92,+1.50] |
+| gpt-4.1 k-step | +0.25 [-0.05,+0.58] | +0.273 [-0.02,+0.61] |
+| gpt-4.1 M1-minus-ref | -0.12 [-0.24,-0.02] | -0.156 [-0.27,-0.05] |
+| gpt-4.1 synthk k=1 / k>1 / step | +0.09 / -0.07 / -0.16 | -0.029 [-0.28,+0.36] / **-0.112 [-0.22,-0.01]** / -0.082 [-0.49,+0.20] |
+
+Every verdict in the table above (P-FR1/2/3, P-FK1/2, P-FI1/2, P-FG1) is unchanged. The paper is
+updated to the post-fix canonical digits.

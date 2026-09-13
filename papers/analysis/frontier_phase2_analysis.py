@@ -44,7 +44,15 @@ sys.path.insert(0, "scripts")
 src = open("scripts/bon_analysis.py").read().split("if __name__")[0]
 ns = {}
 exec(compile(src, "bon_analysis", "exec"), ns)
-rng = np.random.default_rng(0)
+import hashlib
+def _rng_for(tag):
+    # Per-judge, order-independent seed: analyzing multiple judges in one run must not
+    # perturb any single judge's bootstrap draws (found 2026-09-12: a shared global rng
+    # consumed across judges in list order shifted CI bounds by ~0.01-0.04 depending on
+    # which other judges were passed; point estimates were unaffected, but this makes
+    # every number exactly reproducible regardless of invocation order).
+    return np.random.default_rng(int(hashlib.sha256(tag.encode()).hexdigest(), 16) % (2**32))
+rng = None  # reseeded per judge at the top of each per-judge loop below
 
 JUDGES = sys.argv[1:] or ["openai__gpt-5.4-2026-03-05"]
 REPL_POOL = "runs/bon/bon_repl__meta-llama__Llama-3.1-8B-Instruct.jsonl"
@@ -93,6 +101,16 @@ out = {"judges": JUDGES}
 pool = {r["problem_id"]: r for r in (json.loads(l) for l in open(REPL_POOL)) if "oracle" in r}
 deltas_by_judge = {}
 for jtag in JUDGES:
+    rng = _rng_for(jtag)
+    ns["rng"] = rng  # bon_analysis.permutation_null/per_item_curves close over ns's OWN rng,
+    # a separate object from this file's; reseed both or gap/inflation numbers stay judge-order-dependent
+    import random as _random
+    _random.seed(int.from_bytes(jtag.encode(), "little") % (2**32))  # per_item_curves' tie-break
+    # (select_idx -> random.choice) uses Python's global random module, NOT numpy rng at all;
+    # unseeded, this makes every gap/inflation number irreproducible run-to-run (verified:
+    # even the identical single-judge invocation varied by ~0.002-0.02, matching this codebase's
+    # own documented ~0.02 Monte Carlo tolerance elsewhere). Seeding it here is new hygiene for
+    # THIS file only; bon_analysis.py itself, the frozen registered estimator, is untouched.
     sc = {(c, r): load_scores(f"runs/bon_scores_repl/synthk__{jtag}__{c}_{r}.jsonl")
           for c in ("ref", "noref") for r in ("a", "b")}
     if any(v is None for v in sc.values()):
@@ -186,6 +204,16 @@ def kscores(jtag, cond, rep):
 
 
 for jtag in JUDGES:
+    rng = _rng_for(jtag)
+    ns["rng"] = rng  # bon_analysis.permutation_null/per_item_curves close over ns's OWN rng,
+    # a separate object from this file's; reseed both or gap/inflation numbers stay judge-order-dependent
+    import random as _random
+    _random.seed(int.from_bytes(jtag.encode(), "little") % (2**32))  # per_item_curves' tie-break
+    # (select_idx -> random.choice) uses Python's global random module, NOT numpy rng at all;
+    # unseeded, this makes every gap/inflation number irreproducible run-to-run (verified:
+    # even the identical single-judge invocation varied by ~0.002-0.02, matching this codebase's
+    # own documented ~0.02 Monte Carlo tolerance elsewhere). Seeding it here is new hygiene for
+    # THIS file only; bon_analysis.py itself, the frozen registered estimator, is untouched.
     conds = ["noref", "ref", "m1"]
     sc = {(c, r): kscores(jtag, c, r) for c in conds for r in ("a", "b")}
     if any(sc[(c, r)] is None for c in ("noref", "ref") for r in ("a", "b")):

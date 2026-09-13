@@ -32,7 +32,15 @@ sys.path.insert(0, "scripts")
 src = open("scripts/bon_analysis.py").read().split("if __name__")[0]
 ns = {}
 exec(compile(src, "bon_analysis", "exec"), ns)
-rng = np.random.default_rng(0)
+import hashlib
+def _rng_for(tag):
+    # Per-judge, order-independent seed: analyzing multiple judges in one run must not
+    # perturb any single judge's bootstrap draws (found 2026-09-12: a shared global rng
+    # consumed across judges in list order shifted CI bounds by ~0.01-0.04 depending on
+    # which other judges were passed; point estimates were unaffected, but this makes
+    # every number exactly reproducible regardless of invocation order).
+    return np.random.default_rng(int(hashlib.sha256(tag.encode()).hexdigest(), 16) % (2**32))
+rng = None  # reseeded per judge at the top of the per-judge loop below
 
 JUDGES = sys.argv[1:] or ["openai__gpt-4.1-2025-04-14"]
 POOL = "runs/bon/bon_synthk__Qwen__Qwen2.5-7B-Instruct.jsonl"
@@ -68,6 +76,16 @@ def bci(vals, B=4000):
 pool = [json.loads(l) for l in open(POOL) if "oracle" in json.loads(l)]
 out = {"judges": JUDGES, "pool": POOL}
 for jtag in JUDGES:
+    rng = _rng_for(jtag)
+    ns["rng"] = rng  # bon_analysis.permutation_null/per_item_curves close over ns's OWN rng,
+    # a separate object from this file's; reseed both or gap/inflation numbers stay judge-order-dependent
+    import random as _random
+    _random.seed(int.from_bytes(jtag.encode(), "little") % (2**32))  # per_item_curves' tie-break
+    # (select_idx -> random.choice) uses Python's global random module, NOT numpy rng at all;
+    # unseeded, this makes every gap/inflation number irreproducible run-to-run (verified:
+    # even the identical single-judge invocation varied by ~0.002-0.02, matching this codebase's
+    # own documented ~0.02 Monte Carlo tolerance elsewhere). Seeding it here is new hygiene for
+    # THIS file only; bon_analysis.py itself, the frozen registered estimator, is untouched.
     ra, rb = load(f"runs/bon_scores_synthk/synthk__{jtag}__ref_a.jsonl"), load(f"runs/bon_scores_synthk/synthk__{jtag}__ref_b.jsonl")
     na, nb = load(f"runs/bon_scores_synthk/synthk__{jtag}__noref_a.jsonl"), load(f"runs/bon_scores_synthk/synthk__{jtag}__noref_b.jsonl")
     if any(x is None for x in (ra, rb, na, nb)):

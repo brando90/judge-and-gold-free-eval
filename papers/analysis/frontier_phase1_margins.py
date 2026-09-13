@@ -31,9 +31,18 @@ import sys
 
 import numpy as np
 
-rng = np.random.default_rng(0)
+import hashlib
+def _rng_for(tag):
+    # Per-judge, order-independent seed: analyzing multiple judges in one run must not
+    # perturb any single judge's bootstrap draws (found 2026-09-12: a shared global rng
+    # consumed across judges in list order shifted CI bounds by ~0.01-0.04 depending on
+    # which other judges were passed; point estimates were unaffected, but this makes
+    # every number exactly reproducible regardless of invocation order).
+    return np.random.default_rng(int(hashlib.sha256(tag.encode()).hexdigest(), 16) % (2**32))
+rng = None  # set below, once JUDGE is known
 NBOOT = 1000
 JUDGE = sys.argv[1] if len(sys.argv) > 1 else "anthropic__claude-sonnet-5"
+rng = _rng_for(JUDGE)
 BAR = 7.0
 
 
