@@ -150,13 +150,14 @@ for j in JUDGES:
         P_RC3=bool(res["margin"][f"{j}|cipher3"]["mean"] <
                    0.5 * res["margin"][f"{j}|bare"]["mean"]))
 
-    # exploratory inflation dose (n=64 excess gap vs blind), point estimates only
-    nb_a, nb_b = load("bare", j, "noref", "a"), load("bare", j, "noref", "b")
+    # exploratory inflation dose (n=64 excess gap vs blind), point estimates only.
+    # noref is level-invariant (no reference shown, so encoding it is a no-op): the same
+    # candidate pool underlies every level, so the bare noref scores are reused throughout
+    # rather than expecting a separate (nonexistent) noref judging run per cipher level.
+    na, nb = load("bare", j, "noref", "a"), load("bare", j, "noref", "b")
     infl = {}
     for lvl in LEVELS:
         ca, cb = load(lvl, j, COND[lvl], "a"), load(lvl, j, COND[lvl], "b")
-        na = nb_a if lvl == "bare" else load(lvl, j, "noref", "a")
-        nb = nb_b if lvl == "bare" else load(lvl, j, "noref", "b")
         if na is None or nb is None:
             infl[lvl] = None
             continue
