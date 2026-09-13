@@ -1,0 +1,42 @@
+\begin{tabular}{L{8.2cm}L{5.0cm}}
+\toprule
+Quantity & Value (95\% CI) \\
+\midrule
+\multicolumn{2}{l}{\emph{Rotation, Qwen2.5-7B, exact scorer, correct answers scored at least $t$ blind}} \\
+Moved onto, $t=7$ & $+5.27$ {\scriptsize$[+4.99,+5.57]$} (96\% kept) \\
+Moved onto, $t=9$ & $+5.32$ {\scriptsize$[+5.03,+5.60]$} (81\% kept) \\
+Moved off, $t=7$ & $-5.40$ {\scriptsize$[-5.73,-5.07]$} (96\% kept) \\
+Moved off, $t=9$ & $-5.47$ {\scriptsize$[-5.83,-5.07]$} (73\% kept) \\
+\multicolumn{2}{l}{\emph{False rejections of correct non-matching answers, replication pool, Qwen2.5-7B, exact scorer}} \\
+Scored 3 or below: blind 0.4\%, reference 28.1\% & change $+27.7$ {\scriptsize$[+22.8,+33.2]$} \\
+Scored 5 or below (post hoc): blind 1.9\%, reference 68.9\% & change $+67.0$ {\scriptsize$[+61.4,+73.3]$} \\
+\multicolumn{2}{l}{\emph{\textsc{MACE}, Qwen2.5-7B exact scorer; phi-4 original scorer}} \\
+Selection accuracy change, Qwen2.5-7B, $k{=}1$ (34 tasks) & $+29.4$ {\scriptsize$[+14.7,+44.1]$} \\
+Selection accuracy change, Qwen2.5-7B, $k{>}1$ (99 tasks) & $+2.0$ {\scriptsize$[-5.1,+10.1]$} \\
+Selection accuracy change, Qwen2.5-7B, all (133 tasks) & $+9.0$ {\scriptsize$[+2.3,+15.8]$} \\
+Overall AUROC change, Qwen2.5-7B, $k{=}1$ & $+0.29$ {\scriptsize$[+0.19,+0.42]$} \\
+Overall AUROC change, Qwen2.5-7B, $k{>}1$ & $+0.00$ {\scriptsize$[-0.05,+0.05]$} \\
+Overall AUROC change, phi-4, $k{=}1$ & $+0.23$ {\scriptsize$[+0.14,+0.34]$} \\
+Overall AUROC change, phi-4, $k{>}1$ & $+0.02$ {\scriptsize$[-0.02,+0.06]$} \\
+\multicolumn{2}{l}{\emph{Split-half Spearman $\rho$ between blind AUROC and the reference's change in AUROC (split 0; mean over 20 splits)}} \\
+Qwen2.5-7B, replication (118 tasks) & $+0.10$ {\scriptsize$[-0.07,+0.27]$}; mean $+0.06$ \\
+Qwen2.5-7B, $k$-pool (72 tasks) & $+0.05$ {\scriptsize$[-0.19,+0.28]$}; mean $+0.02$ \\
+Qwen2.5-7B, \textsc{MACE} (133 tasks) & $-0.54$ {\scriptsize$[-0.67,-0.38]$}; mean $-0.53$ \\
+Qwen2.5-7B, \textsc{MACE}, $k{>}1$ (99 tasks) & $-0.50$ {\scriptsize$[-0.66,-0.31]$}; mean $-0.50$ \\
+Qwen2.5-7B, all three pools (323 tasks) & $-0.20$ {\scriptsize$[-0.32,-0.09]$}; mean $-0.25$ \\
+phi-4, replication (118 tasks) & $+0.14$ {\scriptsize$[-0.02,+0.30]$}; mean $+0.19$ \\
+phi-4, $k$-pool (72 tasks) & $-0.03$ {\scriptsize$[-0.27,+0.24]$}; mean $+0.07$ \\
+phi-4, \textsc{MACE} (133 tasks) & $-0.38$ {\scriptsize$[-0.54,-0.20]$}; mean $-0.43$ \\
+phi-4, \textsc{MACE}, $k{>}1$ (99 tasks) & $-0.35$ {\scriptsize$[-0.54,-0.16]$}; mean $-0.34$ \\
+phi-4, all three pools (323 tasks) & $-0.13$ {\scriptsize$[-0.24,-0.01]$}; mean $-0.12$ \\
+\multicolumn{2}{l}{\emph{$k$-pool selection accuracy change (points): $k{=}1$, $k{>}1$, and the step between them}} \\
+Qwen2.5-7B & $-21.4$, $-35.9$; step $-14.5$ {\scriptsize$[-39.6,+12.7]$} \\
+Qwen2.5-14B & $+3.6$, $-23.1$; step $-26.7$ {\scriptsize$[-55.8,+3.0]$} \\
+gemma-2-9b & $+0.0$, $-15.4$; step $-15.4$ {\scriptsize$[-28.2,-5.1]$} \\
+Mistral-7B & $-10.4$, $-8.5$; step $+1.9$ {\scriptsize$[-4.9,+9.0]$} \\
+phi-4 (original scorer) & $+0.0$, $-20.5$; step $-20.5$ {\scriptsize$[-35.9,-7.6]$} \\
+\multicolumn{2}{l}{\emph{Power to separate blind AUROC on the replication pool from \textsc{MACE} (Qwen2.5-7B; share of 400 draws)}} \\
+16 candidates per task: 10, 20, 40 tasks & 0.14, 0.42, 0.76 \\
+64 candidates per task: 10, 20, 40 tasks & 0.21, 0.56, 0.93 \\
+\bottomrule
+\end{tabular}

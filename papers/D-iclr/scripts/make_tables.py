@@ -535,3 +535,44 @@ try:
 except (KeyError, TypeError) as e:
     print("[skip posthoc tables]", e)
 print("wrote round-4 tables")
+
+
+# ---------------------------------------------------------------- round 5: numbers quoted in the main text
+try:
+    r5p, r4p = J("r5_posthoc_results.json"), J("r4_posthoc_results.json")
+    body = ["\\begin{tabular}{L{8.2cm}L{5.0cm}}", "\\toprule", "Quantity & Value (95\\% CI) \\\\", "\\midrule"]
+    sec = lambda t: body.append(f"\\multicolumn{{2}}{{l}}{{\\emph{{{t}}}}} \\\\")
+    sec("Rotation, Qwen2.5-7B, exact scorer, correct answers scored at least $t$ blind")
+    for key, lab in (("gainer_ge7", "Moved onto, $t=7$"), ("gainer_ge9", "Moved onto, $t=9$"), ("loser_ge7", "Moved off, $t=7$"), ("loser_ge9", "Moved off, $t=9$")):
+        v = r5p["blind_accepted"][key]
+        body.append(f"{lab} & {fc(*v['change'][:2])} ({100 * v['share_kept']:.0f}\\% kept) \\\\")
+    sec("False rejections of correct non-matching answers, replication pool, Qwen2.5-7B, exact scorer")
+    fr = r4["repl_false_reject"]
+    for key, lab in (("le3", "Scored 3 or below"), ("posthoc_le5", "Scored 5 or below (post hoc)")):
+        x = fr[key]
+        body.append(f"{lab}: blind {100 * x['blind'][0]:.1f}\\%, reference {100 * x['ref'][0]:.1f}\\% & change {p4(x['diff'])} \\\\")
+    sec("\\textsc{MACE}, Qwen2.5-7B exact scorer; phi-4 original scorer")
+    mq = r4p["mace_exact_q7"]
+    for k_, lab in (("k1", "$k{=}1$"), ("kgt1", "$k{>}1$"), ("all", "all")):
+        body.append(f"Selection accuracy change, Qwen2.5-7B, {lab} ({mq[k_]['n']} tasks) & {p4(mq[k_]['ref_minus_blind'])} \\\\")
+    for jn in ("Qwen2.5-7B", "phi-4"):
+        for k_, lab in (("k1", "$k{=}1$"), ("kgt1", "$k{>}1$")):
+            g = r5p["mace_grading_by_k"][jn][k_]["G_all"]["ref_minus_blind"]
+            body.append(f"Overall AUROC change, {jn}, {lab} & {fc(*g[:2])} \\\\")
+    sec("Split-half Spearman $\\rho$ between blind AUROC and the reference's change in AUROC (split 0; mean over 20 splits)")
+    for jn in ("Qwen2.5-7B", "phi-4"):
+        for pool, lab in (("repl", "replication"), ("kpool", "$k$-pool"), ("mace", "\\textsc{MACE}"), ("mace_kgt1", "\\textsc{MACE}, $k{>}1$"), ("pooled", "all three pools")):
+            x = r5p["split_half"][jn][pool]
+            body.append(f"{jn}, {lab} ({x['n_tasks']} tasks) & ${_z(x['rho_split0'], 2):+.2f}$ {c(*x['rho_split0_ci'])}; mean ${_z(x['rho_mean_20'], 2):+.2f}$ \\\\")
+    sec("$k$-pool selection accuracy change (points): $k{=}1$, $k{>}1$, and the step between them")
+    for jn, v in r5p["kpool_step"].items():
+        st = v["step"]
+        body.append(f"{jn} & ${_z(100 * v['k1'][0], 1):+.1f}$, ${_z(100 * v['kgt1'][0], 1):+.1f}$; step ${_z(100 * st[0], 1):+.1f}$ {{\\scriptsize$[{_z(100 * st[1][0], 1):+.1f},{_z(100 * st[1][1], 1):+.1f}]$}} \\\\")
+    sec("Power to separate blind AUROC on the replication pool from \\textsc{MACE} (Qwen2.5-7B; share of 400 draws)")
+    pw = r5p["power_rep_vs_mace"]
+    for m_ in (16, 64):
+        body.append(f"{m_} candidates per task: 10, 20, 40 tasks & {pw[f'm{m_}_n10']:.2f}, {pw[f'm{m_}_n20']:.2f}, {pw[f'm{m_}_n40']:.2f} \\\\")
+    write("main_numbers.tex", done(body))
+    print("wrote main_numbers.tex")
+except (KeyError, TypeError, FileNotFoundError) as e:
+    print("[skip main_numbers]", e)

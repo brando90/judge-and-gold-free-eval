@@ -11,6 +11,8 @@ In own-built tasks, the reference is one member of the stored valid set, chosen 
 
 \begin{table}[h]
 \centering
+\caption{Pools. Generators write 64 samples per task at temperature 1.0. The 37-task subset of \cref{app:frontier} is the $k$-pool tasks with both matching and non-matching valid samples; the 21-task subset of \cref{fig:mechanism} is the $k$-pool tasks with a single-number answer.}
+\label{tab:pools}
 \small
 \setlength{\tabcolsep}{4pt}
 \begin{tabular}{L{2.6cm}L{5.2cm}L{2.5cm}L{2.4cm}}
@@ -27,8 +29,7 @@ MATH-500 & 105 problems with pass rate in $[0.2, 0.8]$, unique answers; the refe
 Answer formats\pre & 25 new constraint tasks, each requested in four formats & Llama-3.1-8B-Instruct & Qwen2.5-7B, phi-4 \\
 \bottomrule
 \end{tabular}
-\caption{Pools. Generators write 64 samples per task at temperature 1.0. The 37-task subset of \cref{app:frontier} is the $k$-pool tasks with both matching and non-matching valid samples; the 21-task subset of \cref{fig:mechanism} is the $k$-pool tasks with a single-number answer.}
-\label{tab:pools}
+
 \end{table}
 
 \paragraph{Scoring.}
@@ -135,17 +136,20 @@ The rotation assigns each task the valid alternative that appears most often amo
 
 \begin{table}[h]
 \centering
+\caption{Change in score of identical text when the reference is rotated (replication pool, 0--10 scale, 95\% CI). ``Onto'': samples that match the new reference. ``Off'': samples that matched only the old one. ``Neither'': valid samples matching neither. The last row keeps only samples Sonnet~5 scored at least 7 blind (3,194 of 3,494). For the open judges the same filter gives $+4.99$ \ci{+4.69}{+5.32} (Qwen2.5-7B, 91\% kept) and $+4.08$ (phi-4, 98\% kept).\pre}
+\label{tab:rotation}
 \footnotesize
 \setlength{\tabcolsep}{3pt}
 \begin{adjustbox}{max width=\linewidth}\input{tables/rotation_exact.tex}\end{adjustbox}
-\caption{Change in score of identical text when the reference is rotated (replication pool, 0--10 scale, 95\% CI). ``Onto'': samples that match the new reference. ``Off'': samples that matched only the old one. ``Neither'': valid samples matching neither. The last row keeps only samples Sonnet~5 scored at least 7 blind (3,194 of 3,494). For the open judges the same filter gives $+4.99$ \ci{+4.69}{+5.32} (Qwen2.5-7B, 91\% kept) and $+4.08$ (phi-4, 98\% kept).\pre}
-\label{tab:rotation}
+
 \end{table}
 
 Before the replication, we ran the same test on the exploratory Ties pool at four Qwen2.5 judge sizes (\cref{tab:ladder}). The effect is largest for small judges, where it saturates the scale, and smaller but present at 14B. On the same split, blind margins are small, and samples matching neither reference move between $-0.44$ and $+0.82$. Restricting to samples the 7B judge scored at least 7 blind gives $+4.74$ \ci{+3.67}{+5.87} against $+4.57$ unfiltered.
 
 \begin{table}[h]
 \centering
+\caption{Rotation on the exploratory Ties pool, Qwen2.5 judges (0--10 scale).\pre}
+\label{tab:ladder}
 \footnotesize
 \setlength{\tabcolsep}{4pt}
 \begin{tabular}{llcccc}
@@ -162,8 +166,7 @@ Blind margin, same split ($n{=}18$) & $a$ & $+0.16$ & $+1.36$ & $+0.31$ & $+0.69
  & $b$ & $+0.61$ & $+1.91$ & $+0.14$ & $+0.04$ \\
 \bottomrule
 \end{tabular}
-\caption{Rotation on the exploratory Ties pool, Qwen2.5 judges (0--10 scale).\pre}
-\label{tab:ladder}
+
 \end{table}
 
 \paragraph{Judges that explain or think before scoring.}
@@ -171,25 +174,27 @@ A later pre-specified experiment re-ran the rotation on a subsample of the repli
 
 \begin{table}[h]
 \centering
+\caption{Judges that write before scoring: change in score of identical text under rotation (points, 95\% CI).\pre}
+\label{tab:r2b}
 \footnotesize
 \setlength{\tabcolsep}{3pt}
 \begin{adjustbox}{max width=\linewidth}\input{tables/r2b.tex}\end{adjustbox}
-\caption{Judges that write before scoring: change in score of identical text under rotation (points, 95\% CI).\pre}
-\label{tab:r2b}
+
 \end{table}
 
 \begin{table}[h]
 \centering
-\footnotesize
-\begin{adjustbox}{max width=\linewidth}\input{tables/r2b_k.tex}\end{adjustbox}
 \caption{Judges that write before scoring on the 16-sample $k$-subsample: referenced-minus-blind anchoring margin at $k{>}1$ (points) and change in best-of-16 selection accuracy (points, 95\% CI).\pre}
 \label{tab:r2b-k}
+\footnotesize
+\begin{adjustbox}{max width=\linewidth}\input{tables/r2b_k.tex}\end{adjustbox}
+
 \end{table}
 The thinking judge gives a score of 10 to 96.2\% of valid rotation samples blind and to 99.8\% with either reference, while invalid $k$-subsample answers average 3.67 blind and 3.15 with the reference; it writes 569 to 1,092 tokens on average, and 82.7\% of its referenced rotation replies mention the reference in their final text. Under the MT-Bench template, by contrast, the mean score of valid rotation samples falls from 6.68 blind to 4.97 with the reference. These diagnostics are post hoc.
 
 %==========================================================================================
 \FloatBarrier
-\section{Selection: accuracy by pool and by $k$}
+\section{Selection accuracy and inflation by pool and by $k$}
 \label{app:grid}
 
 \begin{figure}[h]
@@ -201,37 +206,41 @@ The thinking judge gives a score of 10 to 96.2\% of valid rotation samples blind
 
 \begin{table}[h]
 \centering
+\caption{$k$-pool: change in selection accuracy relative to blind judging, in percentage points (95\% CI). After the pass-rate filter, 14 tasks remain at $k{=}1$ and 39 in total at $k{>}1$ (7 at $k{=}16$). Interval bounds of exactly zero arise because per-task accuracy changes take few distinct values.\ph}
+\label{tab:acc-kpool}
 \footnotesize
 \setlength{\tabcolsep}{3pt}
 \begin{adjustbox}{max width=\linewidth}\input{tables/acc_kpool.tex}\end{adjustbox}
-\caption{$k$-pool: change in selection accuracy relative to blind judging, in percentage points (95\% CI). After the pass-rate filter, 14 tasks remain at $k{=}1$ and 39 in total at $k{>}1$ (7 at $k{=}16$).\ph}
-\label{tab:acc-kpool}
+
 \end{table}
 
 \begin{table}[h]
 \centering
-\footnotesize
-\begin{adjustbox}{max width=\linewidth}\input{tables/acc_repl.tex}\end{adjustbox}
 \caption{Replication pool: selection accuracy on the 105 tasks in the pass-rate band, and false-rejection rate (correct answers that differ from the reference scored 3 or below) on the 93 tasks with both kinds of valid answer. Original scorer. Sonnet~5's selection accuracy is not reported because its integer scores tie under best-of-64.\ph}
 \label{tab:acc-repl}
+\footnotesize
+\begin{adjustbox}{max width=\linewidth}\input{tables/acc_repl.tex}\end{adjustbox}
+
 \end{table}
 
 \begin{table}[h]
 \centering
+\caption{$k$-pool: added inflation over blind judging by $k$ (\sd, 95\% CI), 11 to 15 tasks per stratum.\osf}
+\label{tab:kpool}
 \footnotesize
 \setlength{\tabcolsep}{3pt}
 \begin{adjustbox}{max width=\linewidth}\input{tables/kpool.tex}\end{adjustbox}
-\caption{$k$-pool: added inflation over blind judging by $k$ (\sd, 95\% CI), 11 to 15 tasks per stratum.\osf}
-\label{tab:kpool}
+
 \end{table}
 
 \begin{table}[h]
 \centering
+\caption{Synthetic grid, Qwen-generated pool: added inflation (\sd, 95\% CI). After filtering, 6 tasks remain at $k{=}1$ and 20 task-strata over $k{>}1$. The step is positive for all six judges; the level pooled over $k{>}1$ is individually significant for three. Post-hoc paired re-analysis of a pre-specified grid.}
+\label{tab:grid}
 \footnotesize
 \setlength{\tabcolsep}{4pt}
 \begin{adjustbox}{max width=\linewidth}\input{tables/grid.tex}\end{adjustbox}
-\caption{Synthetic grid, Qwen-generated pool: added inflation (\sd, 95\% CI). After filtering, 6 tasks remain at $k{=}1$ and 20 task-strata over $k{>}1$. The step is positive for all six judges; the level pooled over $k{>}1$ is individually significant for three. Post-hoc paired re-analysis of a pre-specified grid.}
-\label{tab:grid}
+
 \end{table}
 
 \paragraph{Robustness of the replication endpoint.}
@@ -239,18 +248,20 @@ Only 61.6\% of samples put their answer in the requested \texttt{\textbackslash 
 
 \begin{table}[h]
 \centering
-\footnotesize
-\begin{adjustbox}{max width=\linewidth}\input{tables/repl_robust.tex}\end{adjustbox}
 \caption{Added inflation on the replication pool under different populations (\sd, 95\% CI). All rows except the first are post hoc.}
 \label{tab:repl-robust}
+\footnotesize
+\begin{adjustbox}{max width=\linewidth}\input{tables/repl_robust.tex}\end{adjustbox}
+
 \end{table}
 
 \begin{table}[h]
 \centering
-\footnotesize
-\begin{adjustbox}{max width=\linewidth}\input{tables/repl_pressure.tex}\end{adjustbox}
 \caption{Referenced-minus-blind raw gap $G$ by best-of-$n$ budget, pooled over both judges, 105 tasks.\ph}
 \label{tab:repl-pressure}
+\footnotesize
+\begin{adjustbox}{max width=\linewidth}\input{tables/repl_pressure.tex}\end{adjustbox}
+
 \end{table}
 
 %==========================================================================================
@@ -262,10 +273,11 @@ We sampled 200 questions (seed 0) from each of four datasets that ship one refer
 
 \begin{table}[h]
 \centering
-\footnotesize
-\begin{adjustbox}{max width=\linewidth}\input{tables/prevalence.tex}\end{adjustbox}
 \caption{Share of sampled questions with more than one valid answer (95\% Wilson interval) and inter-pass agreement on the multiple-versus-other label. Both MATH-500 passes labeled every item unique, so $\kappa$ is undefined.\ph}
 \label{tab:prevalence}
+\footnotesize
+\begin{adjustbox}{max width=\linewidth}\input{tables/prevalence.tex}\end{adjustbox}
+
 \end{table}
 
 Curated math sets are almost entirely single-answer. The multi-answer math items are mostly underspecified problems rather than requests for an example: a vector problem asks for ``the value of $x$'' when $-x^2+2x+3=0$ has roots $-1$ (the reference) and $3$; a ticket problem admits several whole-dollar prices; an interest problem is consistent with both simple and compound interest. In NQ-open, 30.0\% of questions admit several correct answers, and 18.5\% after excluding questions whose answer changed over time. The audit also flagged 13 malformed DeepScaleR items and several references that appear to be wrong, which are separate problems from multiplicity.
@@ -288,10 +300,11 @@ In accuracy units, the reference raises MATH-500 selection accuracy at every jud
 
 \begin{table}[h]
 \centering
-\footnotesize
-\begin{adjustbox}{max width=\linewidth}\input{tables/acc_math.tex}\end{adjustbox}
 \caption{MATH-500 selection accuracy, 105 problems (95\% CI on the change).\ph}
 \label{tab:acc-math}
+\footnotesize
+\begin{adjustbox}{max width=\linewidth}\input{tables/acc_math.tex}\end{adjustbox}
+
 \end{table}
 
 %==========================================================================================
@@ -303,18 +316,20 @@ In accuracy units, the reference raises MATH-500 selection accuracy at every jud
 
 \begin{table}[h]
 \centering
-\footnotesize
-\begin{adjustbox}{max width=\linewidth}\input{tables/mace.tex}\end{adjustbox}
 \caption{\textsc{MACE}: added inflation (\sd, 95\% CI). The step holds in each audited domain, and the math control has the same sign.\pre}
 \label{tab:mace}
+\footnotesize
+\begin{adjustbox}{max width=\linewidth}\input{tables/mace.tex}\end{adjustbox}
+
 \end{table}
 
 \begin{table}[h]
 \centering
-\footnotesize
-\begin{adjustbox}{max width=\linewidth}\input{tables/mace_by_k.tex}\end{adjustbox}
 \caption{\textsc{MACE}: best-of-64 selection accuracy (\%) by the number of correct answers, original scorer, and the change from showing the reference (points, 95\% CI).\ph}
 \label{tab:mace-by-k}
+\footnotesize
+\begin{adjustbox}{max width=\linewidth}\input{tables/mace_by_k.tex}\end{adjustbox}
+
 \end{table}
 
 Anchoring margins at $k{>}1$ on the audited domains are $+6.44$ for Qwen2.5-7B and $+5.86$ for phi-4, against blind margins of $-0.64$ and $-0.80$. Sonnet~5 has a referenced margin of $+5.29$ there, against a blind margin of $-1.37$.
@@ -332,10 +347,11 @@ Sonnet~5 reproduces the rotation (\cref{tab:rotation}), the blind-accepted filte
 
 \begin{table}[h]
 \centering
-\footnotesize
-\begin{adjustbox}{max width=\linewidth}\input{tables/frontier_api.tex}\end{adjustbox}
 \caption{API judges (inflation in \sd, margins in points, 95\% CI). GPT-4.1's inflation and step rows are unreliable because of ties. Sonnet~5's inflation and step were not run: its tool-call scores are integers and tie under best-of-64.\pre}
 \label{tab:frontier-api}
+\footnotesize
+\begin{adjustbox}{max width=\linewidth}\input{tables/frontier_api.tex}\end{adjustbox}
+
 \end{table}
 
 %==========================================================================================
@@ -351,10 +367,11 @@ In matched sub-pools of 24 samples with exactly 4 valid answers, of which $d \in
 
 \begin{table}[h]
 \centering
-\footnotesize
-\begin{adjustbox}{max width=\linewidth}\input{tables/dose.tex}\end{adjustbox}
 \caption{Added inflation by the number $d$ of valid samples matching the reference (\sd, 95\% CI).\pre}
 \label{tab:dose}
+\footnotesize
+\begin{adjustbox}{max width=\linewidth}\input{tables/dose.tex}\end{adjustbox}
+
 \end{table}
 
 \paragraph{Lures and a selection model.}
@@ -363,7 +380,7 @@ $S_{\text{ref}} \approx \beta S_{\text{blind}} + \lambda\,\mathbb{I}[\text{match
 gives match bonuses $\lambda = +4.3$ and $+3.5$ points and lure bonuses $\gamma = +1.4$ and $+1.7$, and reproduces the nine-cell inflation surface out of sample at Spearman $0.80$ and $0.85$. With no lures and no matching valid answers the referenced judge still inflates ($+0.68$ and $+0.66$), which the model attributes to $\beta \approx 0.5$ to $0.7$: a referenced score keeps only part of the blind score's information. Because $\beta<1$ partly reflects measurement attenuation, we read it descriptively.
 
 \paragraph{Distance.}
-Among valid answers that do not match the reference, the penalty does not grow with numeric distance from it, for either judge. Including matching samples, the slope is $-3.38$ and $-2.18$ points per unit distance, driven by the step at exact equality; blind slopes are near zero.
+The registered slope test regresses each task's rubric-$b$ scores of non-matching correct answers on their normalized distance from the reference. Its mean slope is negative for both judges ($-37.4$ \ci{-79.3}{-5.9} and $-28.2$ \ci{-70.5}{-2.4} points per unit distance) and more negative than blind (paired $-48.0$ and $-37.5$), which confirmed the registered predictions. A few tasks with large slopes dominate these means: blind slopes are also positive on average ($+10.6$ and $+9.2$), and the registered tercile prediction failed, with the near, middle, and far thirds scoring 3.41, 2.93, and 3.53 for Qwen2.5-7B and 6.81, 6.32, and 6.71 for phi-4. Including matching samples, the slope is $-3.38$ and $-2.18$, driven by the step at exact equality.
 
 %==========================================================================================
 \FloatBarrier
@@ -372,22 +389,24 @@ Among valid answers that do not match the reference, the penalty does not grow w
 
 \begin{table}[h]
 \centering
+\caption{Masking suite: anchoring margin by how the reference is written (0--10 scale, 95\% CI). Numeral, words, and expression use 93 replication-pool tasks; the worked-solution columns use 21 $k$-pool tasks with a single-number answer.\pre}
+\label{tab:masking}
 \footnotesize
 \setlength{\tabcolsep}{3pt}
 \begin{adjustbox}{max width=\linewidth}\input{tables/masking.tex}\end{adjustbox}
-\caption{Masking suite: anchoring margin by how the reference is written (0--10 scale, 95\% CI). Numeral, words, and expression use 93 replication-pool tasks; the worked-solution columns use 21 $k$-pool tasks with a single-number answer.\pre}
-\label{tab:masking}
+
 \end{table}
 
 \paragraph{Decode cost.}
-We kept the answer an integer and re-encoded the reference with one, two, or three reversible steps (a digit shift; then base64; then string reversal), stating the decoding rule each time. We had predicted a graded decline. For Qwen2.5-7B the margin instead collapsed at the first step and stayed at zero (\cref{tab:cipher}). Every encoded prompt announced that the reference had been encoded, and that framing may explain the collapse by itself: ``30+1'', a comparable single step without such framing, shrank the margin only partly. The phi-4 cells are not evaluable. A later audit found that 81.0\% to 97.6\% of phi-4's encoded-reference replies contained no score, so the scorer substituted 5.0, and its near-zero margins measure that substitution rather than the judge. All of Qwen2.5-7B's replies contained scores.
+We kept the answer an integer and re-encoded the reference with one, two, or three reversible steps (a digit shift; then base64; then string reversal), stating the decoding rule each time. We had predicted a graded decline. For Qwen2.5-7B the margin instead collapsed at the first step and stayed at zero (\cref{tab:cipher}). Every encoded prompt announced that the reference had been encoded, and that framing may explain the collapse by itself: ``30+1'', a comparable single step without such framing, cut the margin by 94\% and 77\% but did not remove it. The phi-4 cells are not evaluable. A later audit found that 81.0\% to 97.6\% of phi-4's encoded-reference replies contained no score, so the scorer substituted 5.0, and its near-zero margins measure that substitution rather than the judge. All of Qwen2.5-7B's replies contained scores.
 
 \begin{table}[h]
 \centering
-\footnotesize
-\begin{adjustbox}{max width=\linewidth}\input{tables/cipher.tex}\end{adjustbox}
 \caption{Anchoring margin with the reference encoded by one to three stated decoding steps (0--10 scale, 95\% CI, 93 tasks). The phi-4 decoding cells are not evaluable: most of its replies contained no score and were set to 5.0 by the scorer.\pre}
 \label{tab:cipher}
+\footnotesize
+\begin{adjustbox}{max width=\linewidth}\input{tables/cipher.tex}\end{adjustbox}
+
 \end{table}
 
 \paragraph{Solution route.}
@@ -403,6 +422,8 @@ Three conditions score identical samples with identical judges: blind, the test 
 
 \begin{table}[h]
 \centering
+\caption{MBPP: paired inflation differences (\sd, 95\% CI), 58 tasks. Negative values mean the reference lowers inflation.\pre}
+\label{tab:code}
 \footnotesize
 \begin{tabular}{lccc}
 \toprule
@@ -412,8 +433,7 @@ Qwen2.5-7B  & $-0.535$ \ci{-0.811}{-0.244} & $-0.342$ \ci{-0.737}{+0.041} & $+0.
 Qwen2.5-14B & $-0.658$ \ci{-0.965}{-0.373} & $-0.567$ \ci{-0.827}{-0.287} & $+0.091$ \ci{-0.102}{+0.277} \\
 \bottomrule
 \end{tabular}
-\caption{MBPP: paired inflation differences (\sd, 95\% CI), 58 tasks. Negative values mean the reference lowers inflation.\pre}
-\label{tab:code}
+
 \end{table}
 
 Among valid samples, the correlation between token similarity to the canonical solution and the judge's score is $+0.164$ \ci{+0.072}{+0.256} for the 7B judge and $+0.084$ \ci{-0.005}{+0.168} for the 14B judge with the solution shown, against $-0.061$ and $-0.070$ blind.
@@ -423,12 +443,20 @@ Each of 25 new tasks was requested in four formats with the content fixed. Three
 
 \begin{table}[h]
 \centering
+\caption{Answer-format continuum: added inflation (\sd, 95\% CI) and anchoring margins with the number of usable tasks; margins on fewer than five tasks are omitted.\pre}
+\label{tab:continuum}
 \footnotesize
 \setlength{\tabcolsep}{3pt}
 \begin{adjustbox}{max width=\linewidth}\input{tables/continuum.tex}\end{adjustbox}
-\caption{Answer-format continuum: added inflation (\sd, 95\% CI) and anchoring margins with the number of usable tasks; margins on fewer than five tasks are omitted.\pre}
-\label{tab:continuum}
+
 \end{table}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.55\textwidth]{figures/figA_continuum.pdf}
+\caption{\textbf{Answer format.} Added best-of-64 inflation when the same content is requested as an integer, a pair, a JSON object, or a Python program whose output is checked (25 tasks). Both judges' program values use the corrected checker labels; program outputs have few distinct correct answers.\pre}
+\label{fig:continuum}
+\end{figure}
 
 %==========================================================================================
 \FloatBarrier
@@ -439,22 +467,24 @@ Arms trained Llama-3.1-8B-Instruct with LoRA-DPO~\citep{rafailov2023dpo,hu2022lo
 
 \begin{table}[h]
 \centering
+\caption{Training runs. Only the reference arm passed its manipulation check. Run 2 (1 epoch, lr $5{\times}10^{-6}$) moved neither judge and is omitted.\pre}
+\label{tab:dpo}
 \footnotesize
 \setlength{\tabcolsep}{3pt}
 \begin{adjustbox}{max width=\linewidth}\input{tables/dpo.tex}\end{adjustbox}
-\caption{Training runs. Only the reference arm passed its manipulation check. Run 2 (1 epoch, lr $5{\times}10^{-6}$) moved neither judge and is omitted.\pre}
-\label{tab:dpo}
+
 \end{table}
 
 The reference arm did not copy the reference more often; its exact-reference rate fell. It wrote longer answers and mostly stopped using the boxed format, and almost all of its unboxed answers were also wrong (390 of 405 on training tasks), so this is a joint failure of format and correctness, not an extraction artifact (\cref{tab:dpo-profile}). Held-out accuracy fell in every arm, including the controls. In run 1 both arms drifted toward verbosity, which the blind-first judge penalizes; in run 2 neither arm moved; before run 3 we adopted a stopping rule allowing one more setting, and in run 3 the reveal and blind arms lost score and accuracy together. We stopped there, so whether blind-then-reveal protects a trained policy, and whether the reference specifically causes the damage, remain open.
 
 \begin{table}[h]
 \centering
+\caption{Generation profile of the run-1 policies.\ph}
+\label{tab:dpo-profile}
 \scriptsize
 \setlength{\tabcolsep}{3pt}
 \begin{adjustbox}{max width=\linewidth}\input{tables/dpo_profile.tex}\end{adjustbox}
-\caption{Generation profile of the run-1 policies.\ph}
-\label{tab:dpo-profile}
+
 \end{table}
 
 %==========================================================================================
@@ -471,11 +501,12 @@ The reference arm did not copy the reference more often; its exact-reference rat
 
 \begin{table}[h]
 \centering
+\caption{\textbf{No protocol is best everywhere.} Best-of-64 accuracy of each protocol minus the best of the three in each pool (points; 0 marks the best), and the worst case over pools. $k$-pool at $k{>}1$, MATH-500 with the reference solution, \textsc{MACE} overall; the original scorer, because blind-then-reveal was not rescored.\ph}
+\label{tab:regret}
 \footnotesize
 \setlength{\tabcolsep}{5pt}
 \begin{adjustbox}{max width=\linewidth}\input{tables/regret.tex}\end{adjustbox}
-\caption{\textbf{No protocol is best everywhere.} Best-of-64 accuracy of each protocol minus the best of the three in each pool (points; 0 marks the best), and the worst case over pools. $k$-pool at $k{>}1$, MATH-500 with the reference solution, \textsc{MACE} overall; the original scorer, because blind-then-reveal was not rescored.\ph}
-\label{tab:regret}
+
 \end{table}
 
 \paragraph{Instructions and several references.}
@@ -489,10 +520,11 @@ A later pre-specified experiment ran blind-then-reveal on the 105 MATH-500 probl
 
 \begin{table}[h]
 \centering
-\footnotesize
-\begin{adjustbox}{max width=\linewidth}\input{tables/r2a.tex}\end{adjustbox}
 \caption{MATH-500 selection accuracy under three protocols, best of 64, rubric-$a$ selection.\pre}
 \label{tab:r2a}
+\footnotesize
+\begin{adjustbox}{max width=\linewidth}\input{tables/r2a.tex}\end{adjustbox}
+
 \end{table}
 
 \paragraph{Blind-then-reveal across judges.}
@@ -500,11 +532,12 @@ A later pre-specified experiment ran blind-then-reveal on the 105 MATH-500 probl
 
 \begin{table}[h]
 \centering
+\caption{Judge-coverage extension on the $k$-pool (\sd, 95\% CI).\osf}
+\label{tab:coverage}
 \scriptsize
 \setlength{\tabcolsep}{3pt}
 \begin{adjustbox}{max width=\linewidth}\input{tables/coverage.tex}\end{adjustbox}
-\caption{Judge-coverage extension on the $k$-pool (\sd, 95\% CI).\osf}
-\label{tab:coverage}
+
 \end{table}
 
 \paragraph{Variants of the reveal call.}
@@ -512,20 +545,22 @@ A later pre-specified experiment ran blind-then-reveal on the 105 MATH-500 probl
 
 \begin{table}[h]
 \centering
+\caption{Reveal-call variants: added inflation over blind (\sd, 95\% CI), 58 tasks.\pre}
+\label{tab:m1variants}
 \footnotesize
 \setlength{\tabcolsep}{3pt}
 \begin{adjustbox}{max width=\linewidth}\input{tables/m1variants.tex}\end{adjustbox}
-\caption{Reveal-call variants: added inflation over blind (\sd, 95\% CI), 58 tasks.\pre}
-\label{tab:m1variants}
+
 \end{table}
 
 \begin{table}[h]
 \centering
+\caption{Reveal-call variants: change in selection accuracy relative to blind, in points (95\% CI), 39 $k$-pool tasks at $k{>}1$.\ph}
+\label{tab:acc-variants}
 \footnotesize
 \setlength{\tabcolsep}{3pt}
 \begin{adjustbox}{max width=\linewidth}\input{tables/acc_variants.tex}\end{adjustbox}
-\caption{Reveal-call variants: change in selection accuracy relative to blind, in points (95\% CI), 39 $k$-pool tasks at $k{>}1$.\ph}
-\label{tab:acc-variants}
+
 \end{table}
 
 \paragraph{The validity gate backfires for one judge.}
@@ -536,10 +571,11 @@ Mistral-7B's null harm in inflation units is a resolution artifact. Its tokenize
 
 \begin{table}[h]
 \centering
-\footnotesize
-\begin{adjustbox}{max width=\linewidth}\input{tables/resolution.tex}\end{adjustbox}
 \caption{Score-resolution screen on the $k$-pool; tie counts and selection accuracy use blind scores.\pre}
 \label{tab:resolution}
+\footnotesize
+\begin{adjustbox}{max width=\linewidth}\input{tables/resolution.tex}\end{adjustbox}
+
 \end{table}
 
 %==========================================================================================
@@ -552,11 +588,12 @@ This pre-specified experiment reran the Qwen3-8B protocol of \cref{app:rotation}
 
 \begin{table}[h]
 \centering
+\caption{Qwen3-8B with thinking off and on, same weights and prompt. Rotation rows: change in score of identical valid text (points). Margin rows: referenced-minus-blind anchoring margin (points). False rejections: share of non-matching valid answers scored 3 or below, referenced minus blind (points). 95\% CI; mean generated tokens.\pre}
+\label{tab:toggle}
 \footnotesize
 \setlength{\tabcolsep}{3pt}
 \begin{adjustbox}{max width=\linewidth}\input{tables/toggle.tex}\end{adjustbox}
-\caption{Qwen3-8B with thinking off and on, same weights and prompt. Rotation rows: change in score of identical valid text (points). Margin rows: referenced-minus-blind anchoring margin (points). False rejections: share of non-matching valid answers scored 3 or below, referenced minus blind (points). 95\% CI; mean generated tokens.\pre}
-\label{tab:toggle}
+
 \end{table}
 
 With thinking on, valid rotation samples receive 10 in 99.8\% of referenced replies and 96.2\% of blind ones; with thinking off, in 79.2\% and 76.9\%. The thinking judge's arithmetic scores therefore sit at the top of the scale whether or not the reference agrees, which is what verification looks like on these tasks and leaves no room for a reference to move them. On \textsc{MACE} its valid answers average 7.96 with the reference and 8.18 blind, away from the ceiling, and the anchoring returns. These diagnostics are post hoc.
@@ -569,11 +606,12 @@ The last pre-specified experiment measured selection accuracy on the benchmark's
 
 \begin{table}[h]
 \centering
+\caption{\textsc{MACE} River and Language: best-of-64 selection accuracy (\%) by protocol, and differences in points (95\% CI).\pre}
+\label{tab:mace-accuracy}
 \footnotesize
 \setlength{\tabcolsep}{3pt}
 \begin{adjustbox}{max width=\linewidth}\input{tables/mace_accuracy.tex}\end{adjustbox}
-\caption{\textsc{MACE} River and Language: best-of-64 selection accuracy (\%) by protocol, and differences in points (95\% CI).\pre}
-\label{tab:mace-accuracy}
+
 \end{table}
 
 %==========================================================================================
@@ -586,20 +624,22 @@ A pre-specified experiment rescored Qwen2.5-7B on the replication pool (blind an
 
 \begin{table}[h]
 \centering
+\caption{Rotation on the replication pool for Qwen2.5-7B, rubric~$a$, under three ways of reading the score (points, 95\% CI; 120, 93, and 113 tasks).\pre}
+\label{tab:r4-rotation}
 \footnotesize
 \setlength{\tabcolsep}{3pt}
 \begin{adjustbox}{max width=\linewidth}\input{tables/r4_rotation.tex}\end{adjustbox}
-\caption{Rotation on the replication pool for Qwen2.5-7B, rubric~$a$, under three ways of reading the score (points, 95\% CI; 120, 93, and 113 tasks).\pre}
-\label{tab:r4-rotation}
+
 \end{table}
 
 \begin{table}[h]
 \centering
+\caption{$k$-pool: change in best-of-64 selection accuracy from showing the reference, exact estimator (points, 95\% CI). Mistral-7B's scores are parsed integers, with replies that contain no score excluded.\pre}
+\label{tab:r4-kpool}
 \footnotesize
 \setlength{\tabcolsep}{3pt}
 \begin{adjustbox}{max width=\linewidth}\input{tables/r4_kpool.tex}\end{adjustbox}
-\caption{$k$-pool: change in best-of-64 selection accuracy from showing the reference, exact estimator (points, 95\% CI). Mistral-7B's scores are parsed integers, with replies that contain no score excluded.\pre}
-\label{tab:r4-kpool}
+
 \end{table}
 
 \paragraph{A bare-answer reference on MATH-500.}
@@ -607,11 +647,12 @@ The MATH-500 contrast of the main text originally showed the judge a full refere
 
 \begin{table}[h]
 \centering
+\caption{MATH-500, 105 problems: best-of-64 selection accuracy (\%) blind, with the reference solution, and with its final answer alone, and the differences (points, 95\% CI). Exact estimator.\pre}
+\label{tab:r4-math}
 \footnotesize
 \setlength{\tabcolsep}{3pt}
 \begin{adjustbox}{max width=\linewidth}\input{tables/r4_math.tex}\end{adjustbox}
-\caption{MATH-500, 105 problems: best-of-64 selection accuracy (\%) blind, with the reference solution, and with its final answer alone, and the differences (points, 95\% CI). Exact estimator.\pre}
-\label{tab:r4-math}
+
 \end{table}
 
 \paragraph{Grading and blind verification.}
@@ -619,11 +660,23 @@ For each task we compute the AUROC of the judge's score for separating correct f
 
 \begin{table}[h]
 \centering
+\caption{Grading AUROC for Qwen2.5-7B (per-task mean, 95\% CI; exact estimator). Replication pool 120 tasks (93 with matching correct answers); \textsc{MACE} 133 tasks.\pre}
+\label{tab:r4-grading}
 \footnotesize
 \setlength{\tabcolsep}{3pt}
 \begin{adjustbox}{max width=\linewidth}\input{tables/r4_grading.tex}\end{adjustbox}
-\caption{Grading AUROC for Qwen2.5-7B (per-task mean, 95\% CI; exact estimator). Replication pool 120 tasks (93 with matching correct answers); \textsc{MACE} 133 tasks.\pre}
-\label{tab:r4-grading}
+
+\end{table}
+
+\paragraph{Numbers quoted in the main text.}
+\Cref{tab:main-numbers} collects the exact-scorer and post hoc numbers quoted in the main text that appear in no other table.\ph
+
+\begin{table}[h]
+\centering
+\footnotesize
+\caption{Numbers quoted in the main text that are not in other tables. Exact scorer for Qwen2.5-7B unless stated; phi-4 uses the original scorer, which is exact for its tokenizer.\ph}
+\label{tab:main-numbers}
+\begin{adjustbox}{max width=\linewidth}\input{tables/main_numbers.tex}\end{adjustbox}
 \end{table}
 
 \paragraph{A second thinking toggle.}
@@ -631,11 +684,12 @@ Qwen3-14B was run with the protocol of \cref{app:reasoning}, thinking off and on
 
 \begin{table}[h]
 \centering
+\caption{Thinking off and on for Qwen3-14B and Qwen3-8B, same weights and prompt within each model (points, 95\% CI; verification as blind AUROC).\pre}
+\label{tab:r4-toggle}
 \footnotesize
 \setlength{\tabcolsep}{3pt}
 \begin{adjustbox}{max width=\linewidth}\input{tables/r4_toggle.tex}\end{adjustbox}
-\caption{Thinking off and on for Qwen3-14B and Qwen3-8B, same weights and prompt within each model (points, 95\% CI; verification as blind AUROC).\pre}
-\label{tab:r4-toggle}
+
 \end{table}
 
 %==========================================================================================
