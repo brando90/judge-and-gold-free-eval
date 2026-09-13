@@ -2430,3 +2430,28 @@ sentence descriptive framing unchanged. This result is banked, ready to fold int
 revision (rebuttal, camera-ready, or a follow-up paper) as a genuinely held-out
 cross-judge prediction rather than a same-data refit, should that framing decision change
 later.
+
+---
+
+## Ledger completeness note (2026-09-12): standalone registration entries for the two staged experiments above
+
+A light-QA cross-review of the push containing both staged experiments above flagged that
+neither followed this ledger's own convention of a dedicated prospective entry (every prior
+REGISTER commit added one). The underlying prereg timing is not in question either way --
+each experiment's registration commit predates its data by its own git timestamp, which is
+the actual evidentiary record -- but this entry restores the standalone pointer for anyone
+scanning the ledger rather than cross-referencing git log.
+
+- **P-BG1** (beta-ordering held-out check on gemma): registered by commit `9221d93`
+  (2026-09-12), header in `papers/analysis/beta_prediction_gemma.py`. Outcome committed
+  `c3262f2`, ~13 minutes later: CONFIRMED, both rubrics (gemma beta_a 0.338, beta_b 0.310,
+  below Qwen-7B 0.510/0.436 and phi-4 0.690/0.682). Full detail in the entry above ("Staged
+  beta-ordering held-out check on gemma").
+- **P-RC1..P-RC4** (recoverability-cost dose-response): registered by commit `2e24623`
+  (2026-09-12), header in `papers/analysis/recoverability_analysis.py`, alongside
+  `scripts/build_recoverability_pool.py` and the `bon_judge.py` cipher1/2/3 conditions.
+  Judging was in progress on the cluster at the time of this note; outcome to follow in a
+  separate entry once scored.
+
+Both experiments remain staged per the standing 2026-09-12 decision: not folded into the
+submitted manuscript, banked for a future revision or appendix.
