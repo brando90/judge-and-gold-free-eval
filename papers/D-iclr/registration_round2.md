@@ -50,3 +50,11 @@ Unparseable replies are counted and excluded, never defaulted.
 - Exploratory: effect sizes relative to the single-token judges; unparseable rates; thinking length.
 
 Whatever the outcomes, all are reported in the paper's ledger.
+
+---
+
+## Amendment 1 (2026-09-12, 23:40 local), after the first R2-A output and before any other R2 readout
+
+**What happened.** The first M1-math file (Qwen2.5-7B, rubric a) was pulled and the frozen producer run locally. It reported M1 accuracy 0.952 against blind 0.400 and reference 0.571, and the call-1 blind scores correlated −0.51 with the "frozen" blind file. A check of score–oracle correlations showed that the LOCAL copies of `runs/bon_scores/math__Qwen__Qwen2.5-*-Instruct__{noref,ref}_*.jsonl` are misaligned with the Qwen-generated MATH pool (mean per-problem correlation with the oracle −0.24 to 0.00) and instead align with the Llama-generated MATH pool (+0.27 to +0.43). The CLUSTER copies of the same filenames align with the Qwen-generated pool (blind +0.25 to +0.34, reference +0.73 to +0.85). The local files are therefore stale copies of a different pool; the cluster files are the frozen ones the registration names.
+
+**Deviation (path only).** `r2_math_m1_analysis.py` now reads the frozen blind and reference files from `runs/r2/frozen_math/`, which holds byte-exact copies of the cluster files. The design, readout, and predictions are unchanged. The first local readout above is void. The M1 scores themselves are unaffected (they were produced on the cluster from the correct pool). Consequence for P-R2A1: its inputs are pre-existing files, and a post-hoc accuracy readout on the misaligned local copies was seen before this amendment; P-R2A1 is therefore reported without registration weight. P-R2A2 involves the new M1 data and keeps its registered status, with this amendment disclosed.

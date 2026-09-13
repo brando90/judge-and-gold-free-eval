@@ -37,8 +37,9 @@ pool = [json.loads(l) for l in open(POOL)]
 pool = [r for r in pool if 0.2 <= np.mean(r["oracle"]) <= 0.8]
 res = {"n_items": len(pool)}
 for j in JUDGES:
-    blind = load(f"runs/bon_scores/math__{j}__noref_a.jsonl")
-    ref = load(f"runs/bon_scores/math__{j}__ref_a.jsonl")
+    # Amendment 1: frozen files read from byte-exact cluster copies (local runs/bon_scores copies were misaligned)
+    blind = load(f"runs/r2/frozen_math/math__{j}__noref_a.jsonl")
+    ref = load(f"runs/r2/frozen_math/math__{j}__ref_a.jsonl")
     m1 = load(f"runs/r2/scores/math__{j}__m1_a.jsonl")
     call1 = load(f"runs/r2/scores/math__{j}__m1_a.jsonl", "blind")
     if m1 is None:
