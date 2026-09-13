@@ -2341,3 +2341,30 @@ level rather than promoting it further pre-acceptance. No new experiments reques
 this pass.
 
 Recompiled clean, 23 pages, 0 warnings.
+
+---
+
+## Conclusion consistency edits (2026-09-12), same AC's follow-up read (8/10, very high confidence, "submission-ready")
+
+The same reviewer re-read the paper after the prior round's four edits and raised the score to
+8/10 with very high confidence, calling it submission-ready pending three remaining wording
+fixes, all in the Conclusion, where it had drifted back to the unqualified language the abstract
+had already been corrected away from. All three applied, no science changed:
+
+1. **"the harm switches on at the first step in multiplicity for every judge tested."** Same
+   inconsistency as the abstract's earlier "every judge tested," just missed in the Conclusion.
+   Changed to "across the open-model judges tested and reproduces on a third-party benchmark,"
+   the reviewer's own suggested compact form, which does not require repeating the GPT-4.1
+   caveat here since the abstract and Section 6.1 already carry it.
+2. **"The operation behind these facts is characterised directly by the registered masking
+   suite: a semantic equality check..."** More assertive than the abstract's already-softened
+   "strongly supports a cheap semantic-comparison mechanism." Reworded to match.
+3. **"Where the harm stops we now know from a held-out test."** Reviewer: this overstates what
+   the continuum shows, given Qwen-7B's statistically positive residue at the program level, the
+   program stratum's low effective multiplicity, and the post-registration oracle correction it
+   required. Changed to "The held-out continuum begins to locate where the harm attenuates,"
+   which the reviewer noted also makes the open recoverability-cost question read as genuinely
+   open rather than settled.
+
+No new experiments requested; the reviewer explicitly advised freezing the science at this point
+and would vote to accept and argue for it in discussion. Recompiled clean, 23 pages, 0 warnings.
