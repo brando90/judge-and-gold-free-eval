@@ -2,21 +2,21 @@
 \toprule
 Judge & Cell & Value (95\% CI), source \\
 \midrule
-Qwen2.5-7B & arithmetic, score only & $+27.7$ {\scriptsize$[+22.8,+33.2]$}; replication, exact scorer, 93 (93 tasks) \\
+Qwen2.5-7B & arithmetic, score only & $+27.7$ {\scriptsize$[+22.8,+33.2]$}; replication, exact scorer (93 tasks) \\
 Qwen2.5-7B & factual, score only & $+63.8$ {\scriptsize$[+56.6,+70.2]$}; \textsc{MACE} $k{>}1$, exact scorer (91 tasks) \\
-phi-4 & arithmetic, score only & $+5.8$ {\scriptsize$[+2.9,+8.6]$}; replication, 93 (93 tasks) \\
+phi-4 & arithmetic, score only & $+5.8$ {\scriptsize$[+2.9,+8.6]$}; replication (93 tasks) \\
 phi-4 & factual, score only & $+54.4$ {\scriptsize$[+46.9,+61.4]$}; \textsc{MACE} $k{>}1$ (91 tasks) \\
 Qwen3-8B & arithmetic, score only & $+1.5$ {\scriptsize$[+0.5,+2.6]$}; rotation subsample (120 tasks) \\
 Qwen3-8B & arithmetic, reasons first & $+0.0$ {\scriptsize$[+0.0,+0.0]$}; rotation subsample (120 tasks) \\
-Qwen3-8B & factual, score only & $+44.3$ {\scriptsize$[+36.9,+52.3]$}; R3-C, 81 (81 tasks) \\
-Qwen3-8B & factual, reasons first & $+21.6$ {\scriptsize$[+13.3,+29.9]$}; R3-C, 81 (81 tasks) \\
+Qwen3-8B & factual, score only & $+44.3$ {\scriptsize$[+36.9,+52.3]$}; MACE subsample, thinking toggle (81 tasks) \\
+Qwen3-8B & factual, reasons first & $+21.6$ {\scriptsize$[+13.3,+29.9]$}; MACE subsample, thinking toggle (81 tasks) \\
 Qwen3-14B & arithmetic, score only & $+6.1$ {\scriptsize$[+3.8,+8.5]$}; rotation subsample (120 tasks) \\
 Qwen3-14B & arithmetic, reasons first & $+0.3$ {\scriptsize$[+0.0,+0.7]$}; rotation subsample (120 tasks) \\
-Qwen3-14B & factual, score only & $+41.6$ {\scriptsize$[+33.2,+49.6]$}; R4-C, 81 (81 tasks) \\
-Qwen3-14B & factual, reasons first & $+17.8$ {\scriptsize$[+10.4,+26.2]$}; R4-C, 81 (81 tasks) \\
-Sonnet~5, API & arithmetic, score only & $+9.2$ {\scriptsize$[+5.1,+14.6]$}; R8-A replication subsamples, any-format labels, API (40 tasks) \\
-Sonnet~5, API & factual, score only & $+35.6$ {\scriptsize$[+24.8,+48.0]$}; R8-A MACE subsamples, API (40 tasks) \\
-Sonnet~5, CLI & factual, score only & $+17.5$ {\scriptsize$[+5.0,+30.0]$}; R5-A, one answer per group, CLI (40 tasks) \\
-Sonnet~5, CLI & factual, reasons first & $+12.5$ {\scriptsize$[+2.5,+25.0]$}; R5-A, one answer per group, CLI (40 tasks) \\
+Qwen3-14B & factual, score only & $+41.6$ {\scriptsize$[+33.2,+49.6]$}; MACE subsample, thinking toggle (81 tasks) \\
+Qwen3-14B & factual, reasons first & $+17.8$ {\scriptsize$[+10.4,+26.2]$}; MACE subsample, thinking toggle (81 tasks) \\
+Sonnet~5, API & arithmetic, score only & $+9.2$ {\scriptsize$[+5.1,+14.6]$}; replication subsamples with wrong answers, any-format labels, API (40 tasks) \\
+Sonnet~5, API & factual, score only & $+35.6$ {\scriptsize$[+24.8,+48.0]$}; MACE subsamples with wrong answers, API (40 tasks) \\
+Sonnet~5, CLI & factual, score only & $+17.5$ {\scriptsize$[+5.0,+30.0]$}; MACE, one answer of each kind, CLI (40 tasks) \\
+Sonnet~5, CLI & factual, reasons first & $+12.5$ {\scriptsize$[+2.5,+25.0]$}; MACE, one answer of each kind, CLI (40 tasks) \\
 \bottomrule
 \end{tabular}

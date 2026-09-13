@@ -592,6 +592,21 @@ try:
     pw = r5p["power_rep_vs_mace"]
     for m_ in (16, 64):
         body.append(f"{m_} candidates per task: 10, 20, 40 tasks & {pw[f'm{m_}_n10']:.2f}, {pw[f'm{m_}_n20']:.2f}, {pw[f'm{m_}_n40']:.2f} \\\\")
+    r12 = J("r12_checks.json")
+    sec("Best-of-64 accuracy change by whether a correct candidate matches the reference (any-format labels, points; exact scorer for Qwen2.5)")
+    for key, lab in (("kpool|Qwen2.5-7B", "$k$-pool, $k{>}1$, Qwen2.5-7B"), ("kpool|phi-4", "$k$-pool, $k{>}1$, phi-4"),
+                     ("kpool|Qwen2.5-14B", "$k$-pool, $k{>}1$, Qwen2.5-14B"), ("kpool|gemma-2-9b", "$k$-pool, $k{>}1$, gemma-2-9b"),
+                     ("repl|Qwen2.5-7B", "Replication, Qwen2.5-7B"), ("repl|phi-4", "Replication, phi-4")):
+        x = r12["selection_by_match_presence"][key]
+        w_, wo = x["matching_correct_present"], x["no_matching_correct"]
+        body.append(f"{lab}: with a matching correct candidate ({w_[2]} tasks); without one ({wo[2]} tasks) & {p4(w_)}; {p4(wo)} \\\\")
+    s9 = J("r9_sonnet_item_level.json")
+    sec("Sonnet~5 (API), correct answers that differ from the reference and were scored 7 or above blind")
+    for pool, lab in (("mace", "\\textsc{MACE}, $k{>}1$"), ("repl", "Replication"), ("kpool", "$k$-pool, $k{>}1$")):
+        a_, b_ = s9[pool], r12["sonnet_blind_ten"][pool]
+        sh = a_["share_scored_le3_with_reference"]
+        body.append(f"{lab}: tasks with such answers; answers; share scored 3 or below with the reference & {a_['tasks']}; {a_['answers']}; {100 * sh[0]:.1f}\\% {c(100 * sh[1][0], 100 * sh[1][1], 1)} \\\\")
+        body.append(f"{lab}: answers scored 10 blind; share of them scored 3 or below with the reference & {b_['scored_10_blind']}; {100 * b_['share_of_10s_scored_le3_with_reference']:.1f}\\% \\\\")
     write("main_numbers.tex", done(body))
     print("wrote main_numbers.tex")
 except (KeyError, TypeError, FileNotFoundError) as e:
@@ -769,18 +784,18 @@ try:
     PRE, PH = "\\pre", "\\ph"
     cell = lambda v, t: "---" if v is None else pp1(v) + t
     NA, NR = "n/a", "not run"
-    T1 = [("Qwen2.5-7B", (r4["repl_false_reject"]["le3"]["diff"], PRE, "replication, exact scorer, 93"), (None, NA),
+    T1 = [("Qwen2.5-7B", (r4["repl_false_reject"]["le3"]["diff"], PRE, "replication, exact scorer"), (None, NA),
            (fr7["Qwen2.5-7B|factual|score"], PH, "\\textsc{MACE} $k{>}1$, exact scorer"), (None, NA)),
-          ("phi-4", (acc_["repl"][P]["false_reject_diff_nonmatch"], PH, "replication, 93"), (None, NA),
+          ("phi-4", (acc_["repl"][P]["false_reject_diff_nonmatch"], PH, "replication"), (None, NA),
            (fr7["phi-4|factual|score"], PH, "\\textsc{MACE} $k{>}1$"), (None, NA)),
           ("Qwen3-8B", (fr7["Qwen3-8B|arithmetic|thinking off"], PH, "rotation subsample"), (fr7["Qwen3-8B|arithmetic|thinking on"], PH, "rotation subsample"),
-           (tog3["off"]["macesub"]["false_reject_diff"], PRE, "R3-C, 81"), (tog3["on"]["macesub"]["false_reject_diff"], PRE, "R3-C, 81")),
+           (tog3["off"]["macesub"]["false_reject_diff"], PRE, "MACE subsample, thinking toggle"), (tog3["on"]["macesub"]["false_reject_diff"], PRE, "MACE subsample, thinking toggle")),
           ("Qwen3-14B", (fr7["Qwen3-14B|arithmetic|thinking off"], PH, "rotation subsample"), (fr7["Qwen3-14B|arithmetic|thinking on"], PH, "rotation subsample"),
-           (t14_["Qwen3-14B"]["off"]["macesub"]["false_reject_diff"], PRE, "R4-C, 81"), (t14_["Qwen3-14B"]["on"]["macesub"]["false_reject_diff"], PRE, "R4-C, 81")),
-          ("Sonnet~5, API", (s8fr, PRE, "R8-A replication subsamples, any-format labels, API"), (None, NR),
-           (s8mace, PRE, "R8-A MACE subsamples, API"), (None, NR)),
+           (t14_["Qwen3-14B"]["off"]["macesub"]["false_reject_diff"], PRE, "MACE subsample, thinking toggle"), (t14_["Qwen3-14B"]["on"]["macesub"]["false_reject_diff"], PRE, "MACE subsample, thinking toggle")),
+          ("Sonnet~5, API", (s8fr, PRE, "replication subsamples with wrong answers, any-format labels, API"), (None, NR),
+           (s8mace, PRE, "MACE subsamples with wrong answers, API"), (None, NR)),
           ("Sonnet~5, CLI", (None, NR), (None, NR),
-           (r5s_["fast"]["false_reject_diff"], PRE, "R5-A, one answer per group, CLI"), (r5s_["think"]["false_reject_diff"], PRE, "R5-A, one answer per group, CLI"))]
+           (r5s_["fast"]["false_reject_diff"], PRE, "MACE, one answer of each kind, CLI"), (r5s_["think"]["false_reject_diff"], PRE, "MACE, one answer of each kind, CLI"))]
     body = ["\\begin{tabular}{lcccc}", "\\toprule",
             " & \\multicolumn{2}{c}{Arithmetic (constructed)} & \\multicolumn{2}{c}{Factual (\\textsc{MACE})} \\\\", "\\cmidrule(lr){2-3}\\cmidrule(lr){4-5}",
             "Judge & Score only & Reasons first & Score only & Reasons first \\\\", "\\midrule"]

@@ -55,5 +55,19 @@ Mistral-7B & $-0.06$ {\scriptsize$[-0.10,-0.01]$}; $-0.07$ {\scriptsize$[-0.10,-
 \multicolumn{2}{l}{\emph{Power to separate blind AUROC on the replication pool from \textsc{MACE} (Qwen2.5-7B; share of 400 draws)}} \\
 16 candidates per task: 10, 20, 40 tasks & 0.14, 0.42, 0.76 \\
 64 candidates per task: 10, 20, 40 tasks & 0.21, 0.56, 0.93 \\
+\multicolumn{2}{l}{\emph{Best-of-64 accuracy change by whether a correct candidate matches the reference (any-format labels, points; exact scorer for Qwen2.5)}} \\
+$k$-pool, $k{>}1$, Qwen2.5-7B: with a matching correct candidate (22 tasks); without one (11 tasks) & $-13.6$ {\scriptsize$[-31.8,+4.5]$}; $-63.6$ {\scriptsize$[-90.9,-36.4]$} \\
+$k$-pool, $k{>}1$, phi-4: with a matching correct candidate (22 tasks); without one (11 tasks) & $+0.0$ {\scriptsize$[-13.6,+13.6]$}; $-45.5$ {\scriptsize$[-72.7,-18.2]$} \\
+$k$-pool, $k{>}1$, Qwen2.5-14B: with a matching correct candidate (22 tasks); without one (11 tasks) & $+4.5$ {\scriptsize$[+0.0,+13.6]$}; $-18.2$ {\scriptsize$[-45.7,+18.2]$} \\
+$k$-pool, $k{>}1$, gemma-2-9b: with a matching correct candidate (22 tasks); without one (11 tasks) & $+0.0$ {\scriptsize$[+0.0,+0.0]$}; $-9.1$ {\scriptsize$[-27.3,+0.0]$} \\
+Replication, Qwen2.5-7B: with a matching correct candidate (81 tasks); without one (16 tasks) & $-4.9$ {\scriptsize$[-13.6,+3.7]$}; $-31.2$ {\scriptsize$[-56.2,-6.2]$} \\
+Replication, phi-4: with a matching correct candidate (81 tasks); without one (16 tasks) & $-1.2$ {\scriptsize$[-4.9,+2.5]$}; $-12.5$ {\scriptsize$[-31.2,+0.0]$} \\
+\multicolumn{2}{l}{\emph{Sonnet~5 (API), correct answers that differ from the reference and were scored 7 or above blind}} \\
+\textsc{MACE}, $k{>}1$: tasks with such answers; answers; share scored 3 or below with the reference & 38; 214; 34.9\% {\scriptsize$[+23.2,+46.7]$} \\
+\textsc{MACE}, $k{>}1$: answers scored 10 blind; share of them scored 3 or below with the reference & 81; 18.5\% \\
+Replication: tasks with such answers; answers; share scored 3 or below with the reference & 40; 248; 9.2\% {\scriptsize$[+5.5,+13.8]$} \\
+Replication: answers scored 10 blind; share of them scored 3 or below with the reference & 150; 8.7\% \\
+$k$-pool, $k{>}1$: tasks with such answers; answers; share scored 3 or below with the reference & 22; 137; 21.8\% {\scriptsize$[+10.8,+34.2]$} \\
+$k$-pool, $k{>}1$: answers scored 10 blind; share of them scored 3 or below with the reference & 87; 14.9\% \\
 \bottomrule
 \end{tabular}
