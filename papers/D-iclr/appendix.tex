@@ -66,6 +66,16 @@ Important: do not compare the candidate's answer to the reference. Use the refer
 Blind-then-reveal first scores the candidate with the blind rubric. The second call appends to the referenced rubric: ``You have already assessed this candidate without seeing any reference. A correct answer that differs from the reference must keep the score you gave it; revise only if the reference reveals the candidate is actually wrong.'' Its user message shows the reference as ``Reference answer (one valid answer, trusted)'' and ends with ``Your blind score for this candidate was $x$ out of 10.'' In the neutral-wording variant this line reads ``A previous blind assessment scored this candidate $x$ out of 10.'' On MATH-500 the second call shows the trusted reference solution and says that a correct solution that differs from the reference ``in method or presentation'' keeps its score.
 
 %==========================================================================================
+\paragraph{The Figure 1 example.}
+The example is task \texttt{repl/digitsum-116} of the replication pool (``Give one 2-digit number that is divisible by 5 and whose digits sum to 8''; correct answers 35 and 80; reference 35, rotated reference 80), sample 16 from Llama-3.1-8B-Instruct, scored by Qwen2.5-7B with the exact scorer. We chose it to be illustrative: among correct, boxed samples that match the rotated reference but not the original, that Qwen2.5-7B scored at least 9 blind and with the rotated reference and at most 3 with the original, two replies were shorter than 420 characters, and this is the shorter. Its swap (6.4 points) is larger than the pool average (\cref{fig:concept}c). The full reply:
+\begin{quote}\small
+To find a 2-digit number that is divisible by 5, the ones digit must be either 0 or 5.\\[2pt]
+Let's consider the case where the ones digit is 0. In this case, the tens digit must be 8 for the digits to sum to 8. The number would be 80.\\[2pt]
+Now, let's check if 80 is divisible by 5. Since $80 \div 5 = 16$, 80 is indeed divisible by 5.\\[2pt]
+The number 80 meets the given conditions, so we can stop here.\\[2pt]
+The answer is \texttt{\textbackslash boxed\{80\}}.
+\end{quote}
+
 \FloatBarrier
 \section{Preregistration ledger}
 \label{app:ledger}
@@ -444,7 +454,7 @@ The Sonnet~5 scores behind \cref{fig:concept}a covered correct answers only. A p
 Across the 35 multi-answer tasks of the $k$-pool with usable margins, the correlation between a task's anchoring margin and its inflation is $+0.29$ for phi-4 and $+0.06$ for Qwen2.5-7B, well below the noise ceilings on that correlation, $0.82$ and $0.90$.
 
 \paragraph{A failed prediction about composition.}
-In matched sub-pools of 24 samples with exactly 4 valid answers, of which $d \in \{0,1,2,4\}$ match the reference (48 tasks), we predicted that inflation would grow with $d$. It falls (\cref{tab:dose}). With no correct answer to anchor on, the referenced judge picks a valid sample 14\% and 21\% of the time at $d{=}0$, against 72\% and 79\% blind, and 58\% and 72\% of the invalid samples it picks contain the reference's answer text, against 43\% and 35\% blind.
+In matched sub-pools of 24 samples with exactly 4 valid answers, of which $d \in \{0,1,2,4\}$ match the reference (48 tasks), we predicted that inflation would grow with $d$. It falls (\cref{tab:dose}). With no correct answer to anchor on, the referenced judge picks a valid sample 14\% and 21\% of the time at $d{=}0$, against 72\% and 79\% blind, and 58\% and 72\% of the invalid samples it picks contain the reference's answer text, against 43\% and 35\% blind. These sub-pools use the registered labels, which count many correct answers written in prose as wrong (\cref{app:grid}); some of the invalid samples that contain the reference's answer text are correct answers of that kind, so the valid-pick rates here and the lure bonus below are partly label artifacts.
 
 \begin{table}[htbp]
 \centering
@@ -497,6 +507,8 @@ Holding the reference answer fixed and rotating its derivation to a different me
 \FloatBarrier
 \section{Code and the answer-format continuum}
 \label{app:code}
+
+We registered the prediction that MBPP's canonical program, shown as the reference, would add inflation the way a stated answer does, while a test suite would not. It was falsified: the canonical program did not add inflation ($-0.34$ \ci{-0.74}{+0.04} and $-0.57$~\sd{} for the 7B and 14B judges), and neither did the test suite (\cref{tab:code}). Asking the same constraint questions in four answer formats, the added inflation fell from integer to pair, JSON, and program ($+1.66 \to +0.13$ for Qwen2.5-7B, $+1.35 \to -0.37$ for phi-4), although the anchoring margin on programs stayed positive ($+0.64$ and $+0.88$). Program outputs have few distinct correct values per task, so this decline cannot be separated from a smaller effective $k$.
 
 \paragraph{MBPP.}
 Three conditions score identical samples with identical judges: blind, the test suite as reference, and the canonical solution as reference. Contrasts use the 58 tasks inside the pass-rate band shared by all three.

@@ -16,30 +16,31 @@
 ]
 % ---------------- (a) the task
 \node[panel] at (0, 2.6) {a\;\;The task};
-\node[box, text width=3.55cm, anchor=north west] (q) at (0, 2.3) {%
+\node[box, text width=3.3cm, anchor=north west] (q) at (0, 2.3) {%
   \textbf{Question.} Give one 2-digit number that is divisible by 5 and whose digits sum to 8.\\[3pt]
   \textbf{Correct answers.} 35 and 80.\\[3pt]
   \textbf{Candidate} (abridged):\\
-  \emph{``\ldots\ the ones digit must be 0 or 5. If it is 0, the tens digit must be 8 \ldots\ The answer is 80.''}};
+  \emph{``\ldots\ the ones digit must be either 0 or 5. \ldots\ In this case, the tens digit must be 8 for the digits to sum to 8. \ldots\ The answer is 80.''}};
 
 % ---------------- (b) one candidate, three scores
-\node[panel] at (4.35, 2.6) {b\;\;Same text, three prompts};
-\node[blindbox] (c0) at (5.45, 1.95) {no reference};
-\node[refbox] (c1) at (5.45, 1.15) {reference: \textbf{35}};
-\node[refbox] (c2) at (5.45, 0.35) {reference: \textbf{80}};
-\node[judge] (j0) at (7.2, 1.95) {judge};
-\node[judge] (j1) at (7.2, 1.15) {judge};
-\node[judge] (j2) at (7.2, 0.35) {judge};
+\node[panel] at (4.0, 2.6) {b\;\;Same text, three prompts};
+\node[blindbox] (c0) at (5.1, 1.95) {no reference};
+\node[refbox] (c1) at (5.1, 1.15) {reference: \textbf{35}};
+\node[refbox] (c2) at (5.1, 0.35) {reference: \textbf{80}};
+\node[judge] (j0) at (6.85, 1.95) {judge};
+\node[judge] (j1) at (6.85, 1.15) {judge};
+\node[judge] (j2) at (6.85, 0.35) {judge};
 \foreach \i in {0,1,2} {\draw[->, black!60] (c\i) -- (j\i);}
-\node[score, text=blindorange] (s0) at (8.2, 1.95) {10.0};
-\node[score, text=refblue] (s1) at (8.2, 1.15) {\textbf{2.9}};
-\node[score, text=refblue] (s2) at (8.2, 0.35) {\textbf{9.3}};
+\node[score, text=blindorange] (s0) at (7.85, 1.95) {10.0};
+\node[score, text=refblue] (s1) at (7.85, 1.15) {\textbf{2.9}};
+\node[score, text=refblue] (s2) at (7.85, 0.35) {\textbf{9.3}};
 \foreach \i in {0,1,2} {\draw[->, black!60] (j\i) -- (s\i);}
-\node[box, text width=4.05cm, anchor=north west, fill=white] (pred) at (4.35, -0.2) {%
+\node[box, text width=4.05cm, anchor=north west, fill=white] (pred) at (4.0, -0.2) {%
   An \textbf{answer key} would give this correct answer the same score under either reference.
-  The judge (Qwen2.5-7B) gives it \textbf{2.9} with reference 35 and \textbf{9.3} with reference 80.};
+  The judge (Qwen2.5-7B) gives it \textbf{2.9} with reference 35 and \textbf{9.3} with reference 80.\\[2pt]
+  With \textbf{one} correct answer, matching the reference is being correct, so the same habit helps.};
 
 % ---------------- (c) the result over the pool
-\node[panel] at (8.95, 2.6) {c\;\;Over 120 tasks};
-\node[anchor=north west, inner sep=0pt] at (8.75, 2.35) {\includegraphics[width=4.9cm]{figures/fig1_rotation.pdf}};
+\node[panel] at (8.55, 2.6) {c\;\;Over 120 tasks};
+\node[anchor=north west, inner sep=0pt] at (8.4, 2.35) {\includegraphics{figures/fig1_rotation.pdf}};
 \end{tikzpicture}
