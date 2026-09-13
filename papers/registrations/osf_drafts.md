@@ -400,3 +400,16 @@ least 11 of the 13 configurations.
 **Analysis.** `papers/analysis/split_rater_audit.py`, applied without modification. Before this
 commit its code was checked by feeding it the author's own grades split into the two pools, which
 must reproduce the published partial correlations exactly.
+
+**Outcome (appended after scoring; the Registration 7 text above is unchanged).**
+Manipulation gate: 2 of 9 corrupt cells passed, both confidence (GPT-5.2 +0.53, GPT-4o +0.77);
+all six style and verbosity cells failed, GPT-5.2's style cell in the wrong direction; GPT-4.1's
+confidence cell moved +0.45 and missed the 0.5 bar. Entering: g52_honest (control), g52_confidence,
+g4o_honest, g4o_confidence. Frozen audit verdicts: qualified, qualified, qualified, insufficient
+(GPT-4o confidence: style loading +0.34, CI lower bound -0.011). Best-of-64: all 53,760 scores via
+the logprob path, zero failed requests; every entering cell had a safe outcome (inflation +0.23 to
++0.40, regret 0.029 to 0.114). Scoring: P-C1 not scored (no style cell entered); P-C2 confirmed;
+P-C3 failed (corrupt cells were safe, not unsafe); P-C4 failed (no corrupt cell was called
+nuisance-loaded); P-C5 not scored (no verbosity cell entered). No cell the audit qualified had an
+unsafe outcome. Total API spend $73.90. Producers: corruption_manipulation.py, corruption_verdicts.py,
+corruption_outcome.py (frozen); corruption_mechanism.py (post hoc).

@@ -1,0 +1,34 @@
+{
+ "n_items": 105,
+ "n_candidates": 6720,
+ "share_with_confident": 0.0058,
+ "share_with_hedge": 0.019,
+ "share_items_marker_varies": 0.3429,
+ "mean_within_item_sd": 0.105,
+ "marker_range": [
+  -6,
+  7
+ ],
+ "pairs": {
+  "g52": {
+   "within_item_r_marker_vs_added_score": 0.01,
+   "ci": [
+    -0.025,
+    0.041
+   ],
+   "mean_added_score": -0.14,
+   "items_top_pick_differs": 73,
+   "mean_marker_shift_of_pick_when_differs": -0.001
+  },
+  "g4o": {
+   "within_item_r_marker_vs_added_score": 0.01,
+   "ci": [
+    -0.034,
+    0.048
+   ],
+   "mean_added_score": 0.068,
+   "items_top_pick_differs": 73,
+   "mean_marker_shift_of_pick_when_differs": 0.0
+  }
+ }
+}
