@@ -446,6 +446,15 @@ We registered a prediction that the frontier margin would be \emph{smaller} than
 We therefore claim that the frontier judge anchors, and not that it anchors more.
 For the same reason, and as the registration fixed in advance, no inflation figure is computed here: an eleven-value judge ties heavily under best-of-64, so by this paper's own resolution finding (Section~\ref{sec:norescue}) the estimate would measure the tie-break rather than the judge.
 
+\paragraph{A second check, through provider APIs rather than a CLI, on two production judges.}
+The CLI path settles the margin but not the inflation question, since its sampled-integer score cannot be trusted under best-of-$n$.
+A registered follow-up puts two production judges, Claude Sonnet~5 and GPT-4.1, through the open judges' own prompts and, where a logprob-expected-value score is available, the open judges' own estimator.
+The causal and mechanistic results reproduce cleanly on Claude Sonnet~5: rotation gainers $+3.04$ $[+2.49,+3.60]$ and losers $-2.66$ $[-3.34,-1.96]$ (rubric b replicates), unchanged when restricted to samples the judge blindly scored correct ($+2.79$, $92\%$ retained); the masking suite's semantic-not-lexical, cheap-or-nothing signature (bare margin $+3.06$, words $+3.13$, expression $+0.47$, a drop of $-2.58$); and the third-party MACE reversal, referenced margin $+5.29$ on non-mathematical items against a blind margin of $-1.37$, the largest referenced margin and the sharpest reversal measured anywhere in this paper.
+GPT-4.1 gives the first frontier-scale inflation figure: the reference adds $+0.12$ $[+0.02,+0.23]$ baseline standard deviations on the replication pool and selection collapses onto the key ($32$ referenced-only against $1$ blind-only), with a clean, tie-immune anchoring margin of $+1.19$ $[+0.92,+1.50]$.
+One prediction here failed and is reported as such: GPT-4.1 fails the paper's own score-resolution screen (Section~\ref{sec:norescue}), with a mean of $15.03$ candidates tied at the maximum per pool against the registered bar of $3.0$, a byproduct of the provider API capping the returned logprob mass at five tokens where the open judges' harness used twenty; and on the $k$-stratified pool, the registered $k$-step is positive but does not exclude zero ($+0.25$ $[-0.05,+0.58]$), the first place a headline open-judge boundary result does not clearly reproduce.
+A second, cleaner shot at the same statistic, the synthetic grid's paired step that gave every open judge a clean confirmation, is registered and reported in the technical report version rather than assumed either way here.
+The instruction mitigation of Section~\ref{sec:norescue} also reproduces, partially, on both production judges: each phrasing reduces the anchoring margin for both (GPT-4.1 $+0.99 \to +0.46$ and $+0.59$; Sonnet~5 $+3.00 \to +2.08$ and $+2.60$), a genuine but incomplete fix, consistent with the capability-gated pattern rather than contradicting it, since neither margin reaches zero.
+
 \subsection{The judge's own prior verdicts}
 \label{sec:aw}
 
@@ -471,7 +480,10 @@ Per the stopping rule adopted before the run, the mitigation-under-training ques
 
 One registered prediction inside this experiment failed, and the failure is informative.
 We predicted the reference-trained arm would emit the exact reference answer more often; it emits it $-0.037$ less often than the comparison arm, and its own match rate fell relative to base, so the damage is not key-copying.
-What the policy learned is something its judge rewards that is neither correctness nor key-matching; the registration's disclosed candidate, verbosity, is consistent with the generations growing from 1492 to 2476 mean characters but is not established here.
+What the policy learned is something its judge rewards that is neither correctness nor key-matching, and a post-hoc profile of the generations makes the candidate concrete rather than only consistent: the reference-trained arm's rate of emitting its final answer inside the checkable \texttt{\textbackslash boxed\{\}} format collapses from $0.58$ to $0.16$ on train items and from $0.61$ to $0.17$ on the $120$ held-out items, alongside the length growth from $1492$ to $2476$ mean characters.
+This is not degenerate repetition, which would predict the opposite: four-gram repetition \emph{falls}, from $0.080$ to $0.062$.
+Nor is it the answer hiding outside the box: of the reference arm's unboxed train samples, $390$ of $405$ are also oracle-invalid, so the collapse is a joint failure of format and correctness together, not an extraction artifact.
+The judge that trained this arm rewards a policy that stops complying with the convention its own scoring depends on, a concrete, measured failure mode rather than only a plausible one, though whether it is specific to reference conditioning or a generic overoptimization signature remains the open question of Section~\ref{sec:limits}.
 Companion A's analogous parroting prediction on unique-answer math also failed~\cite{companionA}: a corrupted preference signal damages a policy rather than teaching it to imitate the key.
 
 \section{Where the harm ends: tasks without a separable answer}
@@ -535,6 +547,7 @@ Everything verbal fails, the one structural remedy removes the measured inflatio
 \paragraph{Telling the judge to accept any valid answer is a placebo below frontier capability.}
 On the synthetic grid at $k{=}16$, adding a sentence saying the reference is one valid answer among many and any correct answer deserves full credit closes phi-4's anchoring margin essentially to zero ($+1.91 \to +0.03$) and helps Qwen-14B substantially ($+3.34 \to +1.21$), while leaving the smaller judges unmoved, or worse on one rubric at 1.5B ($+3.58 \to +4.54$).
 A registered second phrasing, telling the judge not to compare the candidate to the reference at all, reproduces the identical gate ordering, so the gate is not an artifact of one wording; below it, instructions do not work.
+Both phrasings also reproduce, partially, on two production frontier judges tested through provider APIs (Section~\ref{sec:frontier}): each cuts the anchoring margin by roughly a third to a half for Claude Sonnet~5 and GPT-4.1 alike, a genuine reduction with no judge-dependent split between the two phrasings, but neither instruction drives either judge's margin to zero, so the placebo line is judge-dependent rather than a hard capability cutoff, and frontier scale buys a partial fix, not the complete one phi-4 gets.
 
 \paragraph{Showing several references redistributes anchoring rather than removing it.}
 Showing $\min(3,k)$ references removes the detectable margin toward the original reference on the Qwen-generated pool without restoring blind-level inflation, and on the Llama-generated pool the same mitigation largely fails for the Qwen-7B judge, so how well it works depends on the generator distribution, which is not a property a practitioner controls.
@@ -560,6 +573,7 @@ Removing the blind score from the second call while keeping the reference and th
 Under neutral wording, ``a previous blind assessment scored this candidate,'' the number still protects phi-4 fully, while Qwen-7B loses $+0.51$ of protection relative to the score being labelled its own, falsifying the registered framing-equivalence prediction for that judge; and substituting the \emph{other} judge's blind score under identical wording protects exactly as well as the judge's own ($-0.15$ and $+0.00$, both registered equivalence predictions confirmed).
 On this evidence blind-then-reveal works by supplying an explicit numeric anchor that carries the blind pass's uncorrupted signal, which the judge defers to instead of the reference token; the deference requires the number, is strengthened for the weaker judge by self-attribution, and does not care whose number it is.
 That closes a loop with Section~\ref{sec:dose}: the reference dilutes the judge's own quality signal, and the mitigation succeeds by re-injecting that signal as a token the judge can match on instead.
+Fifth, the second call is not free, but it is not doubled inference either: the blind pass is reference-independent, so in a pipeline that scores the same candidates against several references or several rubrics, one blind pass amortizes across all of them, and only the reveal call scales with the number of references shown; a single-reference, single-rubric deployment pays the full second-call cost with no amortization to offset it.
 
 \paragraph{The soft validity gate helps one judge and backfires on the other.}
 A second registered protocol, \emph{M2}, scores blind and multiplies that score by a separate call's probability that the candidate is valid, with the reference shown to that call as one valid example.
@@ -615,6 +629,10 @@ Holding the answer fixed and rotating the reference's \emph{derivation} moves th
 The decomposition matters more than the verdict: an overall shift is calibration, whereas anchoring on method must appear as a differential favouring samples whose own route matches the shown one, and that differential appears in exactly one of four judge-by-rubric cells.
 Set against the $\pm 9.5$ points that answer rotation moves the identical text, method effects are twenty to four hundred times smaller, and the same machinery on the same items recovers the standing referenced-minus-blind difference, so the near-nulls are not an insensitive instrument.
 Reference-guided judging is therefore endangered by answer multiplicity and is not, on this evidence, endangered by two correct solutions taking different routes to one answer.
+
+\paragraph{Step-level and process-reward verification are untested.}
+Every judgment in this paper grades a completed final answer.
+Whether the same anchoring appears when a verifier scores individual reasoning steps rather than the final answer, as a process reward model does, is untested: a step carries its own candidate value that could itself be matched against a reference step, so the mechanism this paper documents predicts the failure mode would recur wherever an intermediate step has a separable, readable token to anchor on, and would not where it does not, but no experiment here isolates a step-level verifier from an outcome verifier to check it.
 
 \paragraph{The mechanism now has direct evidence, and what remains untested is narrower.}
 Rotation establishes reference dependence causally, and the masking-and-identity suite of Section~\ref{sec:maskident} characterises the operation directly, a semantic equality check requiring a readable answer token; the fresh exact-oracle rotation replication (Section~\ref{sec:p1}) and the held-out separability continuum (Section~\ref{sec:sepcont}) close the other two gaps an earlier draft of this list carried.
