@@ -1,0 +1,92 @@
+{
+ "mace": {
+  "acceptance": {
+   "nonmatch": {
+    "scored_10_blind": 201,
+    "scored_le3_with_reference": 63,
+    "share": 0.3134
+   },
+   "match": {
+    "scored_10_blind": 103,
+    "scored_le3_with_reference": 0,
+    "share": 0.0
+   }
+  },
+  "blind_10_rate": {
+   "wrong": {
+    "n": 257,
+    "blind_10": 13,
+    "share": 0.0506
+   },
+   "correct": {
+    "n": 381,
+    "blind_10": 310,
+    "share": 0.8136
+   }
+  }
+ },
+ "repl": {
+  "acceptance": {
+   "nonmatch": {
+    "scored_10_blind": 211,
+    "scored_le3_with_reference": 10,
+    "share": 0.0474
+   },
+   "match": {
+    "scored_10_blind": 88,
+    "scored_le3_with_reference": 0,
+    "share": 0.0
+   }
+  },
+  "blind_10_rate": {
+   "wrong": {
+    "n": 272,
+    "blind_10": 16,
+    "share": 0.0588
+   },
+   "correct": {
+    "n": 367,
+    "blind_10": 299,
+    "share": 0.8147
+   }
+  }
+ },
+ "kpool": {
+  "acceptance": {
+   "nonmatch": {
+    "scored_10_blind": 113,
+    "scored_le3_with_reference": 3,
+    "share": 0.0265
+   },
+   "match": {
+    "scored_10_blind": 56,
+    "scored_le3_with_reference": 0,
+    "share": 0.0
+   }
+  },
+  "blind_10_rate": {
+   "wrong": {
+    "n": 134,
+    "blind_10": 11,
+    "share": 0.0821
+   },
+   "correct": {
+    "n": 218,
+    "blind_10": 169,
+    "share": 0.7752
+   }
+  }
+ },
+ "pooled_acceptance": {
+  "nonmatch": {
+   "scored_10_blind": 525,
+   "scored_le3_with_reference": 76,
+   "share": 0.1448
+  },
+  "match": {
+   "scored_10_blind": 247,
+   "scored_le3_with_reference": 0,
+   "share": 0.0
+  }
+ }
+}

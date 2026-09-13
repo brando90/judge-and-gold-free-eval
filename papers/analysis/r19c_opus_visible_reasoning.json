@@ -1,0 +1,116 @@
+{
+ "mace": {
+  "visible_reasoning_share": {
+   "noref": 0.3339,
+   "ref": 0.1185
+  },
+  "all": {
+   "nonmatch_correct": 243,
+   "false_rejection_blind": 0.0617,
+   "false_rejection_ref": 0.4115,
+   "false_rejection_change": 0.3498,
+   "acceptance": {
+    "nonmatch": {
+     "scored_10_blind": 201,
+     "share_le3_with_reference": 0.3134
+    },
+    "match": {
+     "scored_10_blind": 103,
+     "share_le3_with_reference": 0.0
+    }
+   }
+  },
+  "bare_both": {
+   "nonmatch_correct": 153,
+   "false_rejection_blind": 0.0392,
+   "false_rejection_ref": 0.3922,
+   "false_rejection_change": 0.353,
+   "acceptance": {
+    "nonmatch": {
+     "scored_10_blind": 147,
+     "share_le3_with_reference": 0.3673
+    },
+    "match": {
+     "scored_10_blind": 93,
+     "share_le3_with_reference": 0.0
+    }
+   }
+  }
+ },
+ "repl": {
+  "visible_reasoning_share": {
+   "noref": 0.2457,
+   "ref": 0.1609
+  },
+  "all": {
+   "nonmatch_correct": 265,
+   "false_rejection_blind": 0.0189,
+   "false_rejection_ref": 0.0604,
+   "false_rejection_change": 0.0415,
+   "acceptance": {
+    "nonmatch": {
+     "scored_10_blind": 211,
+     "share_le3_with_reference": 0.0474
+    },
+    "match": {
+     "scored_10_blind": 88,
+     "share_le3_with_reference": 0.0
+    }
+   }
+  },
+  "bare_both": {
+   "nonmatch_correct": 183,
+   "false_rejection_blind": 0.0164,
+   "false_rejection_ref": 0.0383,
+   "false_rejection_change": 0.0219,
+   "acceptance": {
+    "nonmatch": {
+     "scored_10_blind": 162,
+     "share_le3_with_reference": 0.0309
+    },
+    "match": {
+     "scored_10_blind": 78,
+     "share_le3_with_reference": 0.0
+    }
+   }
+  }
+ },
+ "kpool": {
+  "visible_reasoning_share": {
+   "noref": 0.2386,
+   "ref": 0.1591
+  },
+  "all": {
+   "nonmatch_correct": 145,
+   "false_rejection_blind": 0.0138,
+   "false_rejection_ref": 0.0552,
+   "false_rejection_change": 0.0414,
+   "acceptance": {
+    "nonmatch": {
+     "scored_10_blind": 113,
+     "share_le3_with_reference": 0.0265
+    },
+    "match": {
+     "scored_10_blind": 56,
+     "share_le3_with_reference": 0.0
+    }
+   }
+  },
+  "bare_both": {
+   "nonmatch_correct": 103,
+   "false_rejection_blind": 0.0194,
+   "false_rejection_ref": 0.0485,
+   "false_rejection_change": 0.0291,
+   "acceptance": {
+    "nonmatch": {
+     "scored_10_blind": 88,
+     "share_le3_with_reference": 0.0341
+    },
+    "match": {
+     "scored_10_blind": 54,
+     "share_le3_with_reference": 0.0
+    }
+   }
+  }
+ }
+}

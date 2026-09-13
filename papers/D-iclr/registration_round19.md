@@ -56,6 +56,32 @@ R19-B (Claude Sonnet 5, adaptive thinking, MACE):
 
 ## Outcome
 
+### R19-A (recorded 2026-09-13, after the run)
+
+Run: 3,264 calls (1,280 replication, 1,280 MACE, 704 k-pool), 0 errors, 1 unparseable reply (treated as missing); tasks with all calls
+scored: 39 replication, 34 MACE, 22 k-pool (all at least 20). Ledger spend USD 32.19 at conservative prices.
+Producers: `r8_sonnet_analysis.py --scores runs/r19/opus_api --out ../../papers/analysis/r19a_opus_results.json`,
+`r19_acceptance.py --scores runs/r19/opus_api --out ../../papers/analysis/r19a_acceptance.json`.
+
+| Readout (Opus 5; Sonnet 5 R8-A for comparison) | Replication | MACE | k-pool |
+|---|---|---|---|
+| AUROC non-matching vs wrong, change | -0.015 [-0.038, +0.009] (Sonnet -0.037) | -0.165 [-0.223, -0.110] (Sonnet -0.153) | -0.057 [-0.117, -0.013] (Sonnet -0.080) |
+| False rejections, change (points) | +3.7 [+0.8, +6.9] | +36.3 [+26.7, +46.7] | +8.4 [+1.0, +20.2] |
+| Wrong answers scored 10 blind | 5.9% (16 of 272) | 5.1% (13 of 257) | 8.2% (11 of 134) |
+| Blind-10 correct answers scored <= 3 with the reference: non-matching / matching | 4.7% / 0% | 31.3% / 0% | 2.7% / 0% |
+
+- **P-R19A1 not confirmed** (replication AUROC change -0.015, interval includes zero).
+- **P-R19A2 confirmed** (MACE -0.165).
+- **P-R19A3 confirmed** (k-pool -0.057).
+- **P-R19A4 confirmed** (MACE false rejections +36.3).
+- **P-R19A5 confirmed** (pooled: 76 of 525 non-matching blind-10 answers scored <= 3 with the reference, 14.5%, against 0 of 247 matching).
+- **P-R19A6 falsified** (wrong answers scored 10 blind exceed 5% in every pool: 5.9%, 5.1%, 8.2%).
+
+Observed and disclosed, not a protocol change: with thinking disabled and a score-only rubric, Opus 5 wrote visible reasoning before
+the score on 25% (replication), 33% (MACE) and 24% (k-pool) of blind calls and 12-16% of referenced calls; the score was parsed from
+the last integer, which was the final score in every inspected reply. A post hoc check (`r19c_opus_visible_reasoning.py`) restricted
+to answers whose two calls both gave a bare score leaves the false-rejection rise essentially unchanged (MACE +35.3 against +35.0 pp).
+
 ### R19-B (recorded 2026-09-13, after the run; R19-A still running)
 
 Run: 1,280 calls on `runs/r8/sonnet_mace.jsonl`, 0 errors, 0 unparseable replies, 40 of 40 tasks fully scored, ledger spend USD 1.67.
