@@ -25,7 +25,13 @@ ap.add_argument("--price-in", type=float, default=2.00, help="USD per million in
 ap.add_argument("--price-out", type=float, default=10.00, help="USD per million output tokens (spend ledger only)")
 ap.add_argument("--thinking", choices=("disabled", "adaptive"), default="disabled")
 ap.add_argument("--max-tokens", type=int, default=512)
+ap.add_argument("--conds", default="noref,ref", help="R20: noref for blind re-tests, ref for instruction runs")
+ap.add_argument("--instruction", choices=("none", "anyvalid"), default="none",
+                help="R20-B: append the any-valid-answer sentence (verbatim from bon_judge.py) to the referenced rubric")
 args = ap.parse_args()
+ANYVALID = (" Note: the reference shown is one valid answer among possibly many; the "
+            "question may have several correct answers, and any correct answer "
+            "deserves full credit even if it differs from the reference.")
 
 MODEL = args.model
 PRICE_IN, PRICE_OUT = args.price_in / 1e6, args.price_out / 1e6
@@ -66,9 +72,13 @@ def one(job):
     row = dict(problem_id=t["problem_id"], idx=t["idx"][j], cond=cond, interface="api")
     if MODEL != "claude-sonnet-5" or args.thinking != "disabled":
         row.update(model=MODEL, thinking=args.thinking)
+    system = RUBRIC_TIES[(cond, "a")]
+    if cond == "ref" and args.instruction == "anyvalid":
+        system += ANYVALID
+        row.update(instruction="anyvalid")
     try:
         r = client.messages.create(model=MODEL, max_tokens=args.max_tokens, thinking={"type": args.thinking},
-                                   system=RUBRIC_TIES[(cond, "a")], messages=[{"role": "user", "content": user}])
+                                   system=system, messages=[{"role": "user", "content": user}])
         text = "".join(b.text for b in r.content if b.type == "text")
         row.update(score=parse(text), stop_reason=r.stop_reason, input_tokens=r.usage.input_tokens,
                    output_tokens=r.usage.output_tokens, tail=text[-200:])
@@ -87,7 +97,7 @@ if os.path.exists(outf):
         if not r.get("error"):
             done.add((r["problem_id"], r["idx"], r["cond"]))
 pool = [json.loads(l) for l in open(args.pool)]
-jobs = [(t, j, c) for t in pool for j in range(len(t["samples"])) for c in ("noref", "ref")
+jobs = [(t, j, c) for t in pool for j in range(len(t["samples"])) for c in args.conds.split(",")
         if (t["problem_id"], t["idx"][j], c) not in done]
 print(f"[api-pool {MODEL} thinking={args.thinking} {os.path.basename(args.pool)}] {len(jobs)} calls, spend so far ${spend['usd']:.2f}", flush=True)
 n_bad = 0
