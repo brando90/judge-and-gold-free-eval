@@ -31,7 +31,8 @@ FIG.mkdir(exist_ok=True)
 
 BLUE, ORANGE, TEAL, GREY = "#4269d0", "#c5541a", "#2a9d8f", "#9a9a9a"
 INK, MUTED, GRID = "#1a1a1a", "#5f5f5f", "#e6e6e6"
-MARK = {"Qwen2.5-7B": "o", "phi-4": "s", "Qwen2.5-14B": "D", "gemma-2-9b": "^", "Mistral-7B": "v"}
+MARK = {"Qwen2.5-7B": "o", "phi-4": "s", "Qwen2.5-14B": "D", "gemma-2-9b": "v", "Mistral-7B": "<", "Sonnet 5": "^",
+        "Qwen3-8B": "P", "Qwen3-14B": "X"}  # one judge -> one marker, in every figure
 
 plt.rcParams.update({
     "font.family": "sans-serif", "font.size": 8.5, "axes.titlesize": 9, "axes.labelsize": 8.5,
@@ -122,7 +123,7 @@ for i, (name, r) in enumerate(cols):
         m, ci = r[k]["mean"], r[k]["ci"]
         a2.bar(i + dx, m, width=w - 0.04, zorder=3, **kw)
         a2.errorbar(i + dx, m, yerr=yerr(m, ci), fmt="none", ecolor=INK, elinewidth=0.8, capsize=1.8, zorder=4)
-        if k != "placebo":
+        if k != "placebo":  # the matches-neither values are small and are given in the caption
             a2.text(i + dx, (ci[1] + 0.3) if m > 0 else (ci[0] - 0.3), sgn(m), ha="center",
                     va="bottom" if m > 0 else "top", fontsize=6.8, color=MUTED)
 a2.axhline(0, color=MUTED, lw=0.8, zorder=2)
@@ -131,12 +132,13 @@ a2.set_xlim(-0.6, (len(cols) - 1) * GAP + 0.6)
 a2.set_ylim(-8, 9.5)
 a2.set_ylabel("change in score of\nthe same text (0–10)")
 a2.set_title("Swap the reference", loc="left")
-a2.legend(handles=[Patch(color=BLUE, label="now matches it"), Patch(color=GREY, label="matches neither"),
-                   Patch(facecolor="white", edgecolor=BLUE, hatch="/////", label="no longer matches")],
-          loc="upper center", ncol=3, frameon=False, handlelength=1.1, fontsize=6.8, bbox_to_anchor=(0.45, -0.3), columnspacing=0.8)
 style(a2)
 label(a2, "b", x=-0.28)
 fig.tight_layout(w_pad=2.2)
+fig.legend(handles=[Patch(color=BLUE, label="reference moved onto the answer"), Patch(color=GREY, label="matches neither"),
+                    Patch(facecolor="white", edgecolor=BLUE, hatch="/////", label="reference moved off the answer")],
+           loc="upper center", ncol=3, frameon=False, handlelength=1.1, fontsize=6.8, bbox_to_anchor=(0.62, 0.02),
+           columnspacing=0.8)
 save(fig, "fig1_teaser")
 
 # ============================================================== Figure 2
@@ -193,10 +195,10 @@ r2r = load("r2_realism_results.json")
 fig, (a1, a2) = plt.subplots(1, 2, figsize=(5.5, 2.35), gridspec_kw={"width_ratios": [1.35, 1.0]})
 rows = [("Qwen2.5-7B, score only", rot[f"{Q}__a"]["losers"]["mean"], rot[f"{Q}__a"]["losers"]["ci"], "o", True),
         ("phi-4, score only", rot[f"{P}__a"]["losers"]["mean"], rot[f"{P}__a"]["losers"]["ci"], "s", True),
-        ("Sonnet 5, score only", fr["rotation__a"]["losers"]["mean"], fr["rotation__a"]["losers"]["ci"], "^", True),
+        ("Sonnet 5, score only", fr["rotation__a"]["losers"]["mean"], fr["rotation__a"]["losers"]["ci"], MARK["Sonnet 5"], True),
         ("Qwen2.5-7B, MT-Bench explanation", r2r["mtbench"]["rot"]["loser"][0], r2r["mtbench"]["rot"]["loser"][1], "o", True),
-        ("Qwen3-8B, thinking off", tog["off"]["rot"]["loser"][0], tog["off"]["rot"]["loser"][1], "D", True),
-        ("Qwen3-8B, thinking on", tog["on"]["rot"]["loser"][0], tog["on"]["rot"]["loser"][1], "D", False)]
+        ("Qwen3-8B, thinking off", tog["off"]["rot"]["loser"][0], tog["off"]["rot"]["loser"][1], MARK["Qwen3-8B"], True),
+        ("Qwen3-8B, thinking on", tog["on"]["rot"]["loser"][0], tog["on"]["rot"]["loser"][1], MARK["Qwen3-8B"], False)]
 for y, (lab, m, ci, mk, filled) in enumerate(rows[::-1]):
     a1.plot([ci[0], ci[1]], [y, y], color=BLUE, lw=1.0, zorder=3)
     a1.plot(m, y, marker=mk, ms=5.5, color=BLUE, mfc=BLUE if filled else "white", mec=BLUE, ls="", zorder=4)
@@ -247,14 +249,17 @@ for (lab, fn), x in zip(forms, xpos):
         m, ci = fn(j)
         a1.errorbar(x + dx, m, yerr=yerr(m, ci), fmt=MARK[name], color=BLUE, ms=5, elinewidth=0.9, capsize=1.8, zorder=4)
 a1.axvline(2.75, color=GRID, lw=1.0, zorder=1)
-a1.text(1.0, 5.6, "bare reference", ha="center", fontsize=7, color=MUTED)
-a1.text(4.0, 5.6, "worked solution,\nfinal answer", ha="center", va="bottom", fontsize=7, color=MUTED)
+a1.text(1.0, 5.6, "bare reference", ha="center", fontsize=7.6, color=INK)
+a1.text(4.0, 5.6, "worked solution,\nfinal answer", ha="center", va="bottom", fontsize=7.6, color=INK)
 a1.axhline(0, color=MUTED, lw=0.8, zorder=2)
 a1.set_xticks(xpos, ["31", "thirty-\none", "30+1", "visible", "masked"], fontsize=7.2)
 a1.set_xlim(-0.5, 5.0)
 a1.set_ylim(-1.6, 7.2)
 a1.set_ylabel("anchoring margin\n(points, 0–10 scale)")
 a1.set_title("How the reference is written", loc="left")
+a1.legend(handles=[Line2D([], [], marker="o", ls="", color=BLUE, label="Qwen2.5-7B"),
+                   Line2D([], [], marker="s", ls="", color=BLUE, label="phi-4")],
+          loc="lower left", frameon=False, handlelength=1.0, fontsize=6.8)
 style(a1)
 label(a1, "a")
 
@@ -287,12 +292,13 @@ for y, (name, key) in enumerate(KJ[::-1]):
     d = acc["kpool"][key]["kgt1"]
     (mr, cr, _), (mm, cm, _) = d["ref_minus_blind"], d["m1_minus_blind"]
     a1.annotate("", xy=(100 * mm, y), xytext=(100 * mr, y),
-                arrowprops=dict(arrowstyle="-|>", color=GREY, lw=0.9, shrinkA=4, shrinkB=4, mutation_scale=7), zorder=2)
+                arrowprops=dict(arrowstyle="-|>", color="#555555", lw=1.1, shrinkA=4, shrinkB=4, mutation_scale=8), zorder=2)
     for m, ci, col, off in ((mr, cr, BLUE, 0.13), (mm, cm, TEAL, -0.13)):
         a1.plot([100 * ci[0], 100 * ci[1]], [y + off] * 2, color=col, lw=1.0, zorder=3)
         a1.plot(100 * m, y + off, marker=MARK[name], ms=5, color=col, ls="", zorder=4)
 a1.axvline(0, color=ORANGE, lw=0.9, zorder=2)
-a1.text(1.5, -0.45, "blind", fontsize=7, color=ORANGE, va="center")
+a1.text(1.5, len(KJ) - 0.45, "blind", fontsize=7, color=ORANGE, va="center")
+a1.set_ylim(-0.5, len(KJ) - 0.2)
 a1.set_yticks(range(len(KJ)), [n for n, _ in KJ[::-1]])
 a1.set_xlim(-50, 20)
 a1.set_xlabel("change in accuracy vs. blind (points)")
