@@ -86,7 +86,7 @@ for rep in ("a", "b"):
                 f"{fc(r['losers']['mean'], r['losers']['ci'])} & {fc(r['placebo']['mean'], r['placebo']['ci'])} & "
                 f"{fc(r['gainer_minus_placebo']['mean'], r['gainer_minus_placebo']['ci'])} \\\\")
 r = fr["rotation_filtered__a"]
-body.append(f"\\quad blind-certified only & $a$ & {fc(r['gainers']['mean'], r['gainers']['ci'])} & "
+body.append(f"\\quad blind-accepted only & $a$ & {fc(r['gainers']['mean'], r['gainers']['ci'])} & "
             f"{fc(r['losers']['mean'], r['losers']['ci'])} & {fc(r['placebo']['mean'], r['placebo']['ci'])} & "
             f"{fc(r['gainer_minus_placebo']['mean'], r['gainer_minus_placebo']['ci'])} \\\\")
 body += ["\\bottomrule", "\\end{tabular}"]
@@ -381,17 +381,17 @@ body = ["\\begin{tabular}{llcccc}", "\\toprule",
         "Task type & Readout & Thinking off & Thinking on & Tokens (off / on) \\\\", "\\midrule"]
 body[0] = "\\begin{tabular}{llccc}"
 body.append(f"Arithmetic (rotation) & moved onto & {fc(tog['off']['rot']['gainer'][0], tog['off']['rot']['gainer'][1], 3)} & {fc(tog['on']['rot']['gainer'][0], tog['on']['rot']['gainer'][1], 3)} & {diag['rot|off|ref']['tokens_mean']} / {diag['rot|on|ref']['tokens_mean']} \\\\")
-body.append(f" & no longer matches & {fc(tog['off']['rot']['loser'][0], tog['off']['rot']['loser'][1], 3)} & {fc(tog['on']['rot']['loser'][0], tog['on']['rot']['loser'][1], 3)} & \\\\")
+body.append(f" & moved off & {fc(tog['off']['rot']['loser'][0], tog['off']['rot']['loser'][1], 3)} & {fc(tog['on']['rot']['loser'][0], tog['on']['rot']['loser'][1], 3)} & \\\\")
 body.append(f" & matches neither & {fc(tog['off']['rot']['placebo'][0], tog['off']['rot']['placebo'][1], 3)} & {fc(tog['on']['rot']['placebo'][0], tog['on']['rot']['placebo'][1], 3)} & \\\\")
-body.append(f"Arithmetic ($k$-subsample) & margin, ref $-$ blind & {fc(*tog['off']['ksub']['margin_diff_kgt1'][:2])} & {fc(*tog['on']['ksub']['margin_diff_kgt1'][:2])} & {diag['ksub|off|ref']['tokens_mean']} / {diag['ksub|on|ref']['tokens_mean']} \\\\")
-body.append(f"Factual (MACE subsample) & margin, ref $-$ blind & {fc(*tog['off']['macesub']['margin_diff'][:2])} & {fc(*tog['on']['macesub']['margin_diff'][:2])} & {diag['macesub|off|ref']['tokens_mean']} / {diag['macesub|on|ref']['tokens_mean']} \\\\")
+body.append(f"Arithmetic ($k$-subsample) & added margin & {fc(*tog['off']['ksub']['margin_diff_kgt1'][:2])} & {fc(*tog['on']['ksub']['margin_diff_kgt1'][:2])} & {diag['ksub|off|ref']['tokens_mean']} / {diag['ksub|on|ref']['tokens_mean']} \\\\")
+body.append(f"Factual (MACE subsample) & added margin & {fc(*tog['off']['macesub']['margin_diff'][:2])} & {fc(*tog['on']['macesub']['margin_diff'][:2])} & {diag['macesub|off|ref']['tokens_mean']} / {diag['macesub|on|ref']['tokens_mean']} \\\\")
 body.append(f" & false rejections, ref $-$ blind & {pp(tog['off']['macesub']['false_reject_diff'])} & {pp(tog['on']['macesub']['false_reject_diff'])} & \\\\")
 body += ["\\bottomrule", "\\end{tabular}"]
 write("toggle.tex", "\n".join(body) + "\n")
 
 mace3 = J("r3_mace_accuracy_results.json")
 body = ["\\begin{tabular}{llcccccc}", "\\toprule",
-        "Judge & Tasks & Blind & Reference & Reveal & Validity gate & Reference $-$ blind & Reveal $-$ reference \\\\", "\\midrule"]
+        "Judge & Tasks & Blind & Reference & Blind, then reveal & Validity gate & Reference $-$ blind & Reveal $-$ reference \\\\", "\\midrule"]
 for name, key in (("Qwen2.5-7B", Q), ("phi-4", P)):
     d = mace3[key]
     for g, lab in (("k1", f"$k{{=}}1$ ({mace3['n_k1']})"), ("kgt1", f"$k{{>}}1$ ({mace3['n_kgt1']})"), ("all", f"all ({mace3['n_tasks']})")):
@@ -423,7 +423,7 @@ r4 = J("r4_results.json") if (A / "r4_results.json").exists() else {}
 try:
     x = r4["rotation"]
     body = ["\\begin{tabular}{lccc}", "\\toprule", "Score used & Moved onto & Moved off & Matches neither \\\\", "\\midrule"]
-    for key, lab in (("escore", "Exact expected score"), ("escore_legacy", "Original rule, rescored"), ("greedy", "Greedy integer")):
+    for key, lab in (("escore", "Exact scorer"), ("escore_legacy", "Original scorer, rescored"), ("greedy", "Greedy integer")):
         body.append(f"{lab} & {fc(*x[key]['gainer'][:2])} & {fc(*x[key]['loser'][:2])} & {fc(*x[key]['placebo'][:2])} \\\\")
     write("r4_rotation.tex", done(body))
 except (KeyError, TypeError) as e:
@@ -464,7 +464,16 @@ try:
             continue
         for key, lab in (("G_nm", "that differ from the reference"), ("G_m", "that match the reference"), ("G_all", "all correct answers")):
             g = G[pool][key]
-            body.append(f"{plab if key == 'G_nm' else ''} & {lab} & {au(g['blind'])} & {au(g['ref'])} & {fc(*g['ref_minus_blind'][:2])} \\\\")
+            body.append(f"{plab + ', Qwen2.5-7B' if key == 'G_nm' else ''} & {lab} ({g['ref_minus_blind'][2]} tasks) & {au(g['blind'])} & {au(g['ref'])} & {fc(*g['ref_minus_blind'][:2])} \\\\")
+        body.append("\\addlinespace")
+    r4p_ = J("r4_posthoc_results.json").get("grading_other_judges", {}).get("microsoft__phi-4", {})
+    for pool, plab in (("repl", "Replication"), ("mace", "\\textsc{MACE}")):
+        gg = r4p_.get(f"grading_{pool}")
+        if not gg:
+            continue
+        for key, lab in (("G_nm", "that differ from the reference"), ("G_all", "all correct answers")):
+            g = gg[key]
+            body.append(f"{plab + ', phi-4' if key == 'G_nm' else ''} & {lab} ({g['ref_minus_blind'][2]} tasks) & {au(g['blind'])} & {au(g['ref'])} & {fc(*g['ref_minus_blind'][:2])} \\\\")
         body.append("\\addlinespace")
     body[-1] = "\\midrule"
     body.append("\\multicolumn{5}{l}{Blind verification AUROC: " + "; ".join(
@@ -481,10 +490,10 @@ try:
             d = d.get(k) if isinstance(d, dict) else None
         return d
 
-    rows = [("Arithmetic (rotation)", "moved onto", ("rot", "gainer")), ("", "no longer matches", ("rot", "loser")),
+    rows = [("Arithmetic (rotation)", "moved onto", ("rot", "gainer")), ("", "moved off", ("rot", "loser")),
             ("", "matches neither", ("rot", "placebo")),
-            ("Arithmetic ($k$-subsample)", "margin, ref $-$ blind", ("ksub", "margin_diff_kgt1")),
-            ("Factual (\\textsc{MACE} subsample)", "margin, ref $-$ blind", ("macesub", "margin_diff")),
+            ("Arithmetic ($k$-subsample)", "added margin", ("ksub", "margin_diff_kgt1")),
+            ("Factual (\\textsc{MACE} subsample)", "added margin", ("macesub", "margin_diff")),
             ("", "false rejections, ref $-$ blind", ("macesub", "false_reject_diff")),
             ("Blind verification AUROC", "arithmetic", ("verif_auroc_ksub",)), ("", "factual", ("verif_auroc_macesub",))]
     body = ["\\begin{tabular}{llcccc}", "\\toprule",
@@ -568,6 +577,17 @@ try:
     for jn, v in r5p["kpool_step"].items():
         st = v["step"]
         body.append(f"{jn} & ${_z(100 * v['k1'][0], 1):+.1f}$, ${_z(100 * v['kgt1'][0], 1):+.1f}$; step ${_z(100 * st[0], 1):+.1f}$ {{\\scriptsize$[{_z(100 * st[1][0], 1):+.1f},{_z(100 * st[1][1], 1):+.1f}]$}} \\\\")
+    r6 = J("r6_posthoc_results.json")
+    sec("What best-of-64 picks on the $k$-pool: correct / wrong containing the reference's answer text / other wrong (\\%, blind $\\to$ reference)")
+    for jn in ("Qwen2.5-7B", "phi-4", "Qwen2.5-14B", "gemma-2-9b", "Mistral-7B"):
+        for k_, lab in (("k1", "$k{=}1$"), ("kgt1", "$k{>}1$")):
+            pk = r6["picks"][jn][k_]
+            trip = lambda c_: "/".join(f"{100 * pk[c_][x][0]:.0f}" for x in ("correct", "lure", "other_wrong"))
+            body.append(f"{jn}, {lab} ({pk['n_tasks']} tasks) & {trip('noref')} $\\to$ {trip('ref')} \\\\")
+    sec("$k$-pool overall AUROC change with the reference, $k{=}1$ and $k{>}1$")
+    for jn in ("Qwen2.5-7B", "phi-4", "Qwen2.5-14B", "gemma-2-9b", "Mistral-7B"):
+        a_ = r6["kpool_overall_auroc"][jn]
+        body.append(f"{jn} & {fc(*a_['k1']['ref_minus_blind'][:2])}; {fc(*a_['kgt1']['ref_minus_blind'][:2])} \\\\")
     sec("Power to separate blind AUROC on the replication pool from \\textsc{MACE} (Qwen2.5-7B; share of 400 draws)")
     pw = r5p["power_rep_vs_mace"]
     for m_ in (16, 64):

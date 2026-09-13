@@ -202,7 +202,7 @@ save(fig, "fig2_selection")
 tog = load("r3_toggle_results.json")
 t14 = (load("r4_toggle14b_results.json") or {}).get("Qwen3-14B", {})
 r2r = load("r2_realism_results.json")
-fig, (a1, a2) = plt.subplots(1, 2, figsize=(5.5, 3.1), gridspec_kw={"width_ratios": [1.15, 1.0]})
+fig, (a1, a2) = plt.subplots(1, 2, figsize=(5.5, 3.2), gridspec_kw={"width_ratios": [1.05, 1.0]})
 q7l = r4res["rotation"]["escore"]["loser"] if r4res.get("rotation") else [rot[f"{Q}__a"]["losers"]["mean"], rot[f"{Q}__a"]["losers"]["ci"]]
 rows = [("hdr", "expected score"),
         ("Qwen2.5-7B", q7l[0], q7l[1], MARK["Qwen2.5-7B"], True),
@@ -214,7 +214,7 @@ rows = [("hdr", "expected score"),
         ("Qwen3-8B, thinking on", tog["on"]["rot"]["loser"][0], tog["on"]["rot"]["loser"][1], MARK["Qwen3-8B"], False)]
 r3s = load("r3_sonnet_results.json") or {}
 cli_rows = []
-for arm, lab, filled in (("fast", "Sonnet 5, CLI, score only", True), ("visible", "Sonnet 5, CLI, reasoning", True), ("think", "Sonnet 5, CLI, thinking on", False)):
+for arm, lab, filled in (("fast", "Sonnet 5, command line, score only", True), ("visible", "Sonnet 5, command line, reasoning", True), ("think", "Sonnet 5, command line, thinking on", False)):
     v = (r3s.get(arm) or {}).get("rot") if isinstance(r3s.get(arm), dict) else None
     if v and v.get("loser"):
         cli_rows.append((lab, v["loser"][0], v["loser"][1], MARK["Sonnet 5"], filled))
@@ -267,7 +267,7 @@ for i, (lab, off, on) in enumerate(groups):
 a2.axhline(0, color=MUTED, lw=0.8, zorder=2)
 a2.set_xticks(range(len(groups)), [g[0] for g in groups], fontsize=5.8)
 a2.set_ylim(-0.6, 10.2)
-a2.set_ylabel("margin increase from\nthe reference (points)")
+a2.set_ylabel("added margin (points)")
 a2.set_title("Thinking off vs. on", loc="left")
 a2.legend(handles=[Patch(color=INK, label="thinking off"), Patch(facecolor="white", edgecolor=INK, label="thinking on")],
           loc="upper left", frameon=False, handlelength=1.0, fontsize=6.6, borderaxespad=0.2)
@@ -289,7 +289,7 @@ fig, a1 = plt.subplots(figsize=(3.5, 2.2))
 for (lab, fn), x in zip(forms, xpos):
     for dx, j, name in ((-0.13, Q, "Qwen2.5-7B"), (0.13, P, "phi-4")):
         m, ci = fn(j)
-        a1.errorbar(x + dx, m, yerr=yerr(m, ci), fmt=MARK[name], color=BLUE, ms=4.8, elinewidth=0.9, capsize=1.8, zorder=4)
+        a1.errorbar(x + dx, m, yerr=yerr(m, ci), fmt=MARK[name], color=INK, ms=4.8, elinewidth=0.9, capsize=1.8, zorder=4)
 a1.axvline(2.75, color=GRID, lw=1.0, zorder=1)
 a1.text(1.0, 6.0, "bare reference", ha="center", fontsize=7.2, color=INK)
 a1.text(4.0, 6.0, "worked solution,\nfinal answer", ha="center", va="bottom", fontsize=7.2, color=INK)
@@ -298,8 +298,8 @@ a1.set_xticks(xpos, ["31", "thirty-\none", "30+1", "visible", "masked"], fontsiz
 a1.set_xlim(-0.5, 5.0)
 a1.set_ylim(-1.6, 7.6)
 a1.set_ylabel("anchoring margin\n(points, 0\u201310 scale)")
-fig.legend(handles=[Line2D([], [], marker="o", ls="", color=BLUE, label="Qwen2.5-7B"),
-                    Line2D([], [], marker="s", ls="", color=BLUE, label="phi-4")],
+fig.legend(handles=[Line2D([], [], marker="o", ls="", color=INK, label="Qwen2.5-7B"),
+                    Line2D([], [], marker="s", ls="", color=INK, label="phi-4")],
            loc="upper center", bbox_to_anchor=(0.55, 0.02), ncol=2, frameon=False, handlelength=1.0, fontsize=7)
 style(a1)
 fig.tight_layout()
@@ -311,14 +311,14 @@ fig, a2 = plt.subplots(figsize=(3.4, 2.1))
 for j, name, off in ((Q, "Qwen2.5-7B", -0.08), (P, "phi-4", 0.08)):
     for i, (st_, _) in enumerate(strata):
         m, ci = sc[j][st_]["infl"], sc[j][st_]["infl_ci"]
-        a2.errorbar(i + off, m, yerr=yerr(m, ci), fmt=MARK[name], color=BLUE, ms=4.5, elinewidth=0.9, capsize=1.8, zorder=4)
+        a2.errorbar(i + off, m, yerr=yerr(m, ci), fmt=MARK[name], color=INK, ms=4.5, elinewidth=0.9, capsize=1.8, zorder=4)
 a2.axhline(0, color=MUTED, lw=0.8, zorder=2)
 a2.set_xticks(range(4), [l for _, l in strata])
 a2.set_xlim(-0.5, 3.5)
 a2.set_xlabel("requested answer format")
 a2.set_ylabel("added inflation (pool SDs)")
-a2.legend(handles=[Line2D([], [], marker="o", ls="", color=BLUE, label="Qwen2.5-7B"),
-                   Line2D([], [], marker="s", ls="", color=BLUE, label="phi-4")], loc="upper right", frameon=False, handlelength=1.0, fontsize=7)
+a2.legend(handles=[Line2D([], [], marker="o", ls="", color=INK, label="Qwen2.5-7B"),
+                   Line2D([], [], marker="s", ls="", color=INK, label="phi-4")], loc="upper right", frameon=False, handlelength=1.0, fontsize=7)
 style(a2)
 fig.tight_layout()
 save(fig, "figA_continuum")
@@ -425,7 +425,7 @@ if r4res.get("grading") and r5.get("mace_grading_by_k"):
         a3.set_ylabel("change in AUROC with\nthe reference (other half)")
         a3.set_title("Within MACE", loc="left", fontsize=8)
         style(a3)
-        label(a3, "b", x=-0.36)
+        label(a3, "b", x=-0.5)
 
     pr = [("Replication", r4res["repl_accuracy"]["ref_minus_blind"], acc["repl"][P]["acc_ref_minus_blind"])]
     kq = r4res["kpool"][Q]["escore"]
@@ -435,7 +435,7 @@ if r4res.get("grading") and r5.get("mace_grading_by_k"):
     pr += [("MACE, k = 1", mq["k1"]["ref_minus_blind"], mace3[P]["k1"]["ref_minus_blind"]),
            ("MACE, k > 1", mq["kgt1"]["ref_minus_blind"], mace3[P]["kgt1"]["ref_minus_blind"])]
     mm = r4res["math"][Q]
-    pr += [("MATH-500, solution", mm["ref_minus_noref"], None), ("MATH-500, final answer", mm["refans_minus_noref"], None)]
+    pr += [("MATH-500, solution (Qwen only)", mm["ref_minus_noref"], None), ("MATH-500, final answer (Qwen only)", mm["refans_minus_noref"], None)]
     n = len(pr)
     for pos, (lab, qv, pv) in enumerate(pr):
         y = n - 1 - pos
@@ -448,13 +448,13 @@ if r4res.get("grading") and r5.get("mace_grading_by_k"):
     a2.set_yticks(range(n), [p[0] for p in pr[::-1]], fontsize=6.6)
     a2.set_xlim(-60, 50)
     a2.set_xlabel("change in best-of-64 accuracy from showing the reference (points)")
-    a2.legend(handles=[Line2D([], [], marker="o", ls="", color=INK, label="Qwen2.5-7B, exact scorer"),
-                       Line2D([], [], marker="s", ls="", color=MUTED, label="phi-4, original scorer")],
+    a2.legend(handles=[Line2D([], [], marker="o", ls="", color=INK, label="Qwen2.5-7B"),
+                       Line2D([], [], marker="s", ls="", color=MUTED, label="phi-4")],
               loc="upper left", frameon=False, handlelength=1.0, fontsize=6.4)
     style(a2, "x")
     label(a2, "c", x=-0.2)
-    a1.legend(handles=[Patch(color=ORANGE, label="blind"), Patch(color=BLUE, label="reference shown")], loc="lower right",
-              frameon=False, handlelength=1.0, fontsize=6.2, borderaxespad=0.2)
+    a1.legend(handles=[Patch(color=ORANGE, label="blind"), Patch(color=BLUE, label="reference shown")], loc="upper center",
+              bbox_to_anchor=(0.5, -0.24), ncol=2, frameon=False, handlelength=1.0, fontsize=6.2)
     save(fig, "fig3_cost")
 
 # ============================================================== Appendix figure

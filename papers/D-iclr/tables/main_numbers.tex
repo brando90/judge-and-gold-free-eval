@@ -35,6 +35,23 @@ Qwen2.5-14B & $+3.6$, $-23.1$; step $-26.7$ {\scriptsize$[-55.8,+3.0]$} \\
 gemma-2-9b & $+0.0$, $-15.4$; step $-15.4$ {\scriptsize$[-28.2,-5.1]$} \\
 Mistral-7B & $-10.4$, $-8.5$; step $+1.9$ {\scriptsize$[-4.9,+9.0]$} \\
 phi-4 (original scorer) & $+0.0$, $-20.5$; step $-20.5$ {\scriptsize$[-35.9,-7.6]$} \\
+\multicolumn{2}{l}{\emph{What best-of-64 picks on the $k$-pool: correct / wrong containing the reference's answer text / other wrong (\%, blind $\to$ reference)}} \\
+Qwen2.5-7B, $k{=}1$ (14 tasks) & 79/21/0 $\to$ 57/43/0 \\
+Qwen2.5-7B, $k{>}1$ (39 tasks) & 92/5/3 $\to$ 56/28/15 \\
+phi-4, $k{=}1$ (14 tasks) & 100/0/0 $\to$ 100/0/0 \\
+phi-4, $k{>}1$ (39 tasks) & 97/0/3 $\to$ 77/8/15 \\
+Qwen2.5-14B, $k{=}1$ (14 tasks) & 86/7/7 $\to$ 89/11/0 \\
+Qwen2.5-14B, $k{>}1$ (39 tasks) & 95/0/5 $\to$ 72/21/8 \\
+gemma-2-9b, $k{=}1$ (14 tasks) & 100/0/0 $\to$ 100/0/0 \\
+gemma-2-9b, $k{>}1$ (39 tasks) & 100/0/0 $\to$ 85/5/10 \\
+Mistral-7B, $k{=}1$ (14 tasks) & 80/9/11 $\to$ 69/18/13 \\
+Mistral-7B, $k{>}1$ (39 tasks) & 78/5/17 $\to$ 69/10/21 \\
+\multicolumn{2}{l}{\emph{$k$-pool overall AUROC change with the reference, $k{=}1$ and $k{>}1$}} \\
+Qwen2.5-7B & $-0.07$ {\scriptsize$[-0.12,-0.03]$}; $-0.21$ {\scriptsize$[-0.26,-0.17]$} \\
+phi-4 & $+0.01$ {\scriptsize$[+0.00,+0.02]$}; $-0.23$ {\scriptsize$[-0.28,-0.18]$} \\
+Qwen2.5-14B & $-0.03$ {\scriptsize$[-0.06,-0.01]$}; $-0.14$ {\scriptsize$[-0.18,-0.11]$} \\
+gemma-2-9b & $+0.04$ {\scriptsize$[+0.01,+0.07]$}; $-0.15$ {\scriptsize$[-0.19,-0.11]$} \\
+Mistral-7B & $-0.06$ {\scriptsize$[-0.10,-0.01]$}; $-0.07$ {\scriptsize$[-0.10,-0.03]$} \\
 \multicolumn{2}{l}{\emph{Power to separate blind AUROC on the replication pool from \textsc{MACE} (Qwen2.5-7B; share of 400 draws)}} \\
 16 candidates per task: 10, 20, 40 tasks & 0.14, 0.42, 0.76 \\
 64 candidates per task: 10, 20, 40 tasks & 0.21, 0.56, 0.93 \\

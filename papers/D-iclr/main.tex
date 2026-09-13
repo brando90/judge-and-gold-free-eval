@@ -1,4 +1,4 @@
-% ICLR 2027 submission version of Paper D (round 5).
+% ICLR 2027 submission version of Paper D (round 6).
 % Numbers: papers/analysis/*.json (produced by committed scripts), the story draft, and the registration
 % ledgers. Run scripts/check_numbers.py before committing.
 % OSF registrations (withheld for double-blind review): replication osf.io/ym5x9,
@@ -45,12 +45,11 @@
 \begin{abstract}
 LLM judges are often given a reference answer, because checking a candidate against a known-correct answer is easier than judging it from scratch.
 When a question has several correct answers, the reference is only one of them, and judges grade agreement with it.
-Moving the reference to a different correct answer while keeping a candidate's text fixed changes its score by 2.7 to 5.4 points out of 10 for Qwen2.5-7B, phi-4, and Claude Sonnet~5.
-With the reference shown, judges separate correct answers that differ from it from wrong answers less well, both on our constructed arithmetic tasks (per-task AUROC 0.87 to 0.60 for Qwen2.5-7B) and on the natural \textsc{MACE} benchmark (0.74 to 0.66).
-On the constructed tasks overall grading gets worse too, and best-of-64 accuracy on tasks with several correct answers falls by 8.5 to 35.9 points across five open judges; on \textsc{MACE}, the reference improves overall grading only on single-answer questions.
-The effect needs a final value stated explicitly in the reference.
-Reasoning before scoring removes most of it on arithmetic tasks for Claude Sonnet~5 and two Qwen3 models, but on factual questions extended thinking at most halves it.
-Scoring blind first and revealing the reference afterwards limits the worst-case selection loss for two of three judges.
+Moving the reference to a different correct answer while keeping a candidate's text fixed changes its score by 2.7 to 5.4 points out of 10 for Qwen2.5-7B, phi-4, and Claude Sonnet~5, even for answers the judge had accepted without a reference.
+With the reference shown, judges are worse at telling correct answers that differ from it apart from wrong answers: per-task AUROC falls from 0.87 to 0.60 on our constructed arithmetic tasks and from 0.74 to 0.66 on the natural \textsc{MACE} benchmark.
+In our rewrites of the reference, the effect appeared only when the reference stated a final value.
+On the constructed tasks, the reference also lowers overall AUROC and best-of-64 accuracy on tasks with several correct answers, by 15 to 36 points for four open judges; on \textsc{MACE}'s multi-answer questions neither changes.
+Reasoning before scoring removes most of the effect on arithmetic tasks, where these judges already give nearly every correct answer full marks, but on factual questions extended thinking at most halves it.
 \end{abstract}
 
 \section{Introduction}
@@ -77,10 +76,10 @@ None of it varies which correct answer is the reference or measures what that do
 We do this on tasks where correctness is decided by a program or an audited answer list, so we know every correct answer and, on our own tasks, can set how many there are:
 
 \begin{itemize}[leftmargin=1.2em,itemsep=2pt,topsep=2pt]
-\item \textbf{The score follows the reference} (\cref{sec:follows}). Moving the reference to a different correct answer, with the candidate's text unchanged, moves its score by 2.7 to 5.4 points, while correct answers that match neither reference barely move, including answers the judge had already accepted without a reference.
-\item \textbf{The judge compares final values} (\cref{sec:mechanism}). The effect survives writing the reference in words and mostly disappears when the reference is an expression to evaluate or a worked solution with its final answer masked.
-\item \textbf{Correct answers that differ from the reference are graded worse on every pool we tested} (\cref{sec:cost}). Overall grading and selection get worse on constructed arithmetic tasks; on \textsc{MACE}'s multi-answer questions, overall grading does not change.
-\item \textbf{Thinking reduces the effect, and a two-step protocol hedges} (\cref{sec:fix}). Reasoning before scoring removes most of it on arithmetic tasks, where scores sit near the ceiling, but extended thinking at most halves it on factual questions; scoring blind before revealing the reference bounds the worst-case loss for two of three judges.
+\item \textbf{The score follows the reference} (\cref{sec:follows}). Moving the reference to a different correct answer, with the candidate's text unchanged, moves its score by 2.7 to 5.4 points, even for answers the judge had already accepted without a reference; correct answers that match neither reference barely move.
+\item \textbf{Judges compare stated final values} (\cref{sec:mechanism}). In our rewrites, the effect survived writing the reference in words and mostly disappeared when the reference was an expression to evaluate or a worked solution with its final answer masked.
+\item \textbf{Correct answers that differ from the reference are graded worse on both pools where we measured grading} (\cref{sec:cost}). On constructed arithmetic tasks, overall grading and selection also get worse when several answers are correct; on \textsc{MACE}'s multi-answer questions they do not change.
+\item \textbf{Mitigations are partial} (\cref{sec:fix}). Reasoning before scoring removes most of the effect on arithmetic but at most halves it on factual questions, and scoring blind before revealing the reference had the smallest worst-case selection loss for two of three judges in post hoc comparisons.
 \end{itemize}
 
 We mark results as preregistered on OSF\osf, pre-specified in a timestamped commit before the data existed\pre, pre-specified re-analyses of an effect whose direction was already known\reana, or post hoc\ph. \Cref{app:ledger} scores all 150 registered predictions: 86 confirmed, 25 not confirmed or falsified, 16 split across judges, and 23 not evaluable, not scored, or excluded.
@@ -100,22 +99,24 @@ We mark results as preregistered on OSF\osf, pre-specified in a timestamped comm
 \paragraph{Tasks.}
 Our own tasks come from five constraint families (remainder systems, subset sums, Goldbach pairs, divisor counts, digit sums), for example ``name two primes that sum to 100.''
 Each task stores its full set of correct answers and one member, drawn at random when the task is built, that serves as the reference.
-The two main pools are a 120-task \emph{replication pool}\osf{} and a 75-task \emph{$k$-pool}\osf{} with exactly $k \in \{1,2,4,8,16\}$ correct answers per task, 15 tasks each.
-We also use the River and Language domains of \textsc{MACE}~\citep{mace2026}, a benchmark of factual questions with 1, 2, 4, or 6 correct answers, whose answer lists passed our completeness audit (133 tasks), MBPP~\citep{austin2021mbpp} for code, and MATH-500~\citep{hendrycks2021math} for unique answers (\cref{app:setup}).
+The two main pools are a 120-task \emph{replication pool}\osf{} and a 75-task \emph{$k$-pool}\osf{} with exactly $k \in \{1,2,4,8,16\}$ correct answers per task, 15 tasks each. A 60-task \emph{synthetic grid} whose correct sets enumerate exactly, and an exploratory pool of 51 tasks built from \textsc{RewardBench-2} Ties items, appear in \cref{sec:follows,sec:fix}.
+We also use the River and Language domains of \textsc{MACE}~\citep{mace2026}, a benchmark of factual questions with 1, 2, 4, or 6 correct answers, whose answer lists passed our completeness audit (133 tasks), and MATH-500~\citep{hendrycks2021math} for unique answers (\cref{app:setup}).
 
 \paragraph{Candidates, judges, and scores.}
-Llama-3.1-8B-Instruct writes 64 samples per task at temperature 1 (Qwen2.5-7B-Instruct for MATH-500 and MBPP).
+Llama-3.1-8B-Instruct writes 64 samples per task at temperature 1 (Qwen2.5-7B-Instruct for MATH-500).
 Each sample is judged \emph{blind}, from the question and the candidate, and \emph{referenced}, with the reference added under the heading ``Reference answer (trusted)''.
-The main judges are Qwen2.5-7B-Instruct and phi-4; we also test the Qwen2.5 family from 1.5B to 14B, Llama-3.1-8B, gemma-2-9b, Mistral-7B, Qwen3-8B and Qwen3-14B, Claude Sonnet~5, and GPT-4.1.
-The judge answers with an integer from 0 to 10; rubric~$a$, used in every figure, asks it to rate correctness ``using the reference to check it'', and a second wording, rubric~$b$, tells it to compare the candidate against the reference (\cref{app:setup}).
-For open judges the score is the expected value over the score tokens at the first generated position. Our original scorer approximated the probability of ``10'' for tokenizers that write it as two tokens; a pre-specified rescoring computes it exactly and changes no conclusion (\cref{app:estimator}). We name the scorer wherever it matters.
+The main judges are Qwen2.5-7B-Instruct and phi-4; we also test the Qwen2.5 family from 1.5B to 14B, Llama-3.1-8B, gemma-2-9b, Mistral-7B, Qwen3-8B and Qwen3-14B, Sonnet~5, and GPT-4.1.
+The judge answers with an integer from 0 to 10. Unless stated otherwise we use rubric~$a$, which asks it to rate correctness ``using the reference to check it''; a second wording, rubric~$b$, tells it to compare the candidate against the reference (\cref{app:setup}).
+For open judges the score is the expected value over the score tokens at the first generated position.
+Our original scorer approximated the probability of ``10'' for tokenizers that write it as two tokens, and a pre-specified rescoring computes it exactly (\cref{app:estimator}).
+phi-4 writes ``10'' as one token and Mistral-7B's scores are parsed integers, so both are unchanged by the rescoring; for the other open judges we report the exact scorer, except in the blind-then-reveal comparisons of \cref{sec:fix}, which were not rescored.
 
 \paragraph{Measurements.}
 The \emph{rotation change} is the change in the score of identical text when the reference moves.
 The \emph{anchoring margin} is the mean score of correct answers that match the reference minus that of correct answers that do not; the \emph{added margin} is the referenced margin minus the blind margin.
-For grading we report the \emph{false-rejection rate}, the share of correct answers that differ from the reference scored 3 or below, and the per-task AUROC of the score for separating correct from wrong answers.
-For selection we report the accuracy of the best-of-64 pick under rubric~$a$, averaging over ties, on tasks whose pass rate lies between 0.2 and 0.8 (between 0.05 and 0.95 on \textsc{MACE}), so that selection can change correctness.
-The preregistered endpoint of the OSF studies is best-of-64 \emph{inflation} (\cref{app:setup}); we mention it only where it was registered.
+For grading we report the \emph{false-rejection rate}, the share of correct answers that differ from the reference scored 3 or below, and the per-task AUROC of the score for separating correct from wrong answers; \emph{blind verification} is that AUROC without a reference.
+For selection we report the accuracy of the best-of-64 pick, averaging over ties, on tasks whose pass rate lies between 0.2 and 0.8 (between 0.05 and 0.95 on \textsc{MACE}); on the $k$-pool this leaves 14 tasks at $k{=}1$ and 39 at $k{>}1$, 7 of them at $k{=}16$.
+The preregistered endpoint of the OSF studies is best-of-64 \emph{inflation}: how many pool standard deviations the pick's rubric-$b$ score lies above samples of the same correctness (\cref{app:setup}).
 All contrasts are referenced minus blind, per task, with task-level bootstrap intervals.
 
 \section{Moving the reference moves the score}
@@ -124,21 +125,20 @@ All contrasts are referenced minus blind, per task, with task-level bootstrap in
 If the reference were an answer key, a candidate's score could not depend on which of two correct answers sits in the reference slot.
 We kept the replication pool's samples byte-identical and re-judged them with the reference moved to another correct answer, the one that appears most often among each task's correct samples.
 
-Text that the reference moves onto gains 4.97 points under Qwen2.5-7B and 4.09 under phi-4, text it moves off loses 5.04 and 3.92, and correct text that matches neither moves by $+0.13$ and $+0.30$; all twelve registered cells hold (two judges, two rubrics, three predictions; \cref{app:rotation}).\pre{}
-The exact scorer makes Qwen2.5-7B's changes slightly larger, $+5.25$ and $-5.41$, and its greedy integer scores larger still, $+5.65$ and $-5.78$ (\cref{tab:r4-rotation}).\reana{}
-Sonnet~5 shows the same pattern through the API ($+3.04$ and $-2.66$) and through a second interface on 60 of these tasks ($+3.57$ and $-2.85$).\pre
+Text that the reference moves onto gains 5.25 points under Qwen2.5-7B, text it moves off loses 5.41, and correct text that matches neither moves by $+0.12$; Qwen2.5-7B's greedy integer scores move even more ($+5.65$ and $-5.78$).\reana{} For phi-4 the changes are $+4.09$, $-3.92$, and $+0.30$, and all twelve registered cells held under the original scorer (two judges, two rubrics, three predictions; \cref{app:rotation}).\pre{}
+Sonnet~5 shows the same pattern through its API ($+3.04$ and $-2.66$) and through its command-line interface on 60 of these tasks ($+3.57$ and $-2.85$).\pre
 
 Two readings would make this reasonable behavior.
-In the first, the judge did not know the other answer was correct and the reference taught it; then answers the judge had already scored at 7 or above while blind should not move. They move just as much: $+4.99$ for Qwen2.5-7B (91\% of such answers kept), $+4.08$ for phi-4, and $+2.79$ for Sonnet~5.\pre{} Keeping only correct answers scored at least 9 blind leaves Qwen2.5-7B's gain at $+5.32$ and its loss at $-5.47$ (\cref{tab:main-numbers}).\ph{}
-In the second, the heading ``reference answer (trusted)'' implies that the question has one answer. Telling the judge that other correct answers deserve full credit shrinks Sonnet~5's margin on the $k$-pool by 0.93 points \ci{-1.23}{-0.64} from $+3.00$ and GPT-4.1's by 0.53 \ci{-0.80}{-0.31} from $+0.99$, but removes it for neither, and does not help Qwen2.5 judges below 14B (\cref{sec:fix}).\pre{}
-The effect is smaller for stronger judges (a rotation gain of 9.48 for Qwen2.5-1.5B and 3.07 for Qwen2.5-14B on an exploratory pool; \cref{tab:ladder}) but present in every judge we tested.
+In the first, the judge did not know the other answer was correct and the reference taught it; then answers the judge had already scored at 7 or above while blind should not move. They move just as much: $+5.27$ for Qwen2.5-7B, keeping 96\% of such answers (the registered test, under the original scorer, gave $+4.99$), $+4.08$ for phi-4, and $+2.79$ for Sonnet~5.\pre{} Among answers scored at least 9 blind, Qwen2.5-7B's gain is $+5.32$ and its loss $-5.47$ (\cref{tab:main-numbers}).\ph{}
+In the second, the heading ``Reference answer (trusted)'' implies that the question has one answer. Telling the judge that other correct answers deserve full credit shrinks Sonnet~5's added margin on the $k$-pool by 0.93 points \ci{-1.22}{-0.65} from $+3.00$, and GPT-4.1's by 0.53 \ci{-0.78}{-0.32} from $+0.99$ (GPT-4.1 failed our score-resolution screen, so its scores tie heavily), but removes it for neither.\pre{}
+The effect is smaller for stronger judges (a rotation gain of 9.48 for Qwen2.5-1.5B and 3.07 for Qwen2.5-14B on the Ties pool; \cref{tab:ladder}); every judge that scores without reasoning shows it, and Qwen3 judges that think before scoring show almost none on arithmetic tasks (\cref{sec:fix}).
 
-\section{What the judge is checking}
+\section{Judges compare stated final values}
 \label{sec:mechanism}
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.6\textwidth]{figures/fig3_mechanism.pdf}
+\includegraphics[width=0.5\textwidth]{figures/fig3_mechanism.pdf}
 \caption{\textbf{The effect needs a final value stated in the reference.} Anchoring margin when the reference is written as a numeral, in words, or as an expression (replication pool, 93 tasks), and when a worked solution is shown with its final answer visible or masked (21 $k$-pool tasks with a single-number answer). Rubric~$a$, 95\% intervals (\cref{tab:masking}).\pre}
 \label{fig:mechanism}
 \end{figure}
@@ -147,103 +147,81 @@ A cheap way to use a reference is to compare the candidate's final answer with t
 Three pre-specified rewrites of the reference test whether judges do this (\cref{fig:mechanism}).
 Writing 31 as ``thirty-one'' keeps most of the margin, although the reference then shares no characters with a numeric answer.
 Writing it as ``30+1'' cuts the margin by 94\% for Qwen2.5-7B and 77\% for phi-4, and masking the final answer in a worked solution removes it, although the same solution anchors strongly when its answer is visible.\pre{}
-Judges behave as if they compare the candidate's final answer with a final value stated explicitly in the reference: the comparison survives a change of surface form, but not a reference that must first be evaluated or that states no final value.
+Sonnet~5 behaves the same way: its margin is $+3.06$ with the numeral, $+3.14$ in words, and $+0.47$ as an expression (\cref{app:frontier}).\pre{}
+In these rewrites, judges behaved as if they compared the candidate's final answer with a final value stated in the reference.
+A control that encoded the reference with announced decoding steps also removed the margin, so we cannot separate a reference that must be evaluated from one that is merely framed unusually (\cref{app:mechanism}).
+Closeness to the reference matters little: our registered slope test found scores of non-matching correct answers falling with numeric distance from the reference, but a few tasks drive the average slope, and the near, middle, and far thirds score alike (\cref{app:composition}).\pre
 
-Closeness to the reference matters little.
-Our registered slope test found scores of non-matching correct answers falling with numeric distance from the reference for both judges, but a few tasks drive the average slope, and the near, middle, and far thirds score alike (\cref{app:composition}).\pre{}
-Answers that are programs rather than values anchor less, but programs also have fewer distinct correct outputs, and the registered prediction held for phi-4 only (\cref{app:code}).\pre
-
-\section{What the reference costs}
+\section{Per-answer grading degrades; the net cost depends on the pool}
 \label{sec:cost}
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=\textwidth]{figures/fig3_cost.pdf}
-\caption{\textbf{The reference damages grading of correct answers that differ from it everywhere; its overall cost depends on the pool.}
-\textbf{(a)}~Per-task AUROC of Qwen2.5-7B's score (exact scorer) for separating correct from wrong answers, blind (orange) and with the reference (blue), for correct answers that differ from the reference (non-matching) and for all correct answers; \textsc{MACE} is split by the number of correct answers.\textsuperscript{\textsc{pre/ph}}
+\caption{\textbf{The reference degrades grading of correct answers that differ from it on both pools; its overall cost depends on the pool.}
+\textbf{(a)}~Per-task AUROC of Qwen2.5-7B's score for separating correct from wrong answers, blind (orange) and with the reference (blue), for correct answers that differ from the reference (non-matching) and for all correct answers; \textsc{MACE} is split by the number of correct answers. The replication and \textsc{MACE} non-matching contrasts were pre-specified; the split by $k$ is post hoc.
 \textbf{(b)}~Within \textsc{MACE}, each task's blind AUROC, estimated on half of its samples, against the reference's change in overall AUROC on the other half (133 tasks).\ph{}
-\textbf{(c)}~Change in the accuracy of the best-of-64 pick when the reference is shown, 95\% intervals.\textsuperscript{\textsc{re/ph}}}
+\textbf{(c)}~Change in the accuracy of the best-of-64 pick when the reference is shown, 95\% intervals; circles Qwen2.5-7B, squares phi-4; MATH-500 rows are Qwen2.5-7B only. The $k$-pool $k{>}1$ and MATH-500 rows are pre-specified or pre-specified re-analyses; the other rows are post hoc.}
 \label{fig:cost}
 \end{figure}
 
 \paragraph{Correct answers that differ from the reference.}
 A judge that grades by agreement should separate correct answers that differ from the reference from wrong answers less well once it sees the reference.
-It does, on both pools we tested. For Qwen2.5-7B the per-task AUROC for these two groups falls from 0.87 blind to 0.60 with the reference on the replication pool, and from 0.74 to 0.66 on \textsc{MACE} (\cref{fig:cost}a).\pre{} phi-4 shows the same pattern, from 0.90 to 0.65 and from 0.79 to 0.73.\ph{}
-The share of these correct answers scored 3 or below rises from 0.4\% to 28.1\% for Qwen2.5-7B\pre{} and from 4.9\% to 26.2\% for Sonnet~5.\ph
+It does, on both pools where we measured it. For Qwen2.5-7B the per-task AUROC for these two groups falls from 0.87 blind to 0.60 with the reference on the replication pool, and from 0.74 to 0.66 on \textsc{MACE} (\cref{fig:cost}a).\pre{} phi-4 shows the same pattern, from 0.90 to 0.65 and from 0.79 to 0.73 (\cref{tab:r4-grading}).\ph{}
+The share of these correct answers scored 3 or below rises from 0.4\% to 28.1\% for Qwen2.5-7B,\reana{} from 0.0\% to 5.8\% for phi-4, and from 4.9\% to 26.2\% for Sonnet~5.\ph
 
 \paragraph{Grading overall.}
-Overall grading gets worse on the constructed pool and does not change on \textsc{MACE}'s multi-answer questions.
+Overall grading gets worse on the constructed pools when several answers are correct, and does not change on \textsc{MACE}'s multi-answer questions.
 On the replication pool, overall AUROC falls by 0.22 for Qwen2.5-7B\pre{} and by 0.19 for phi-4.\ph{}
-On \textsc{MACE} the reference raises it by 0.29 and 0.23 on single-answer questions, where every correct answer matches it, and changes it by $-0.00$ \ci{-0.05}{+0.05} and $+0.02$ \ci{-0.02}{+0.06} on questions with several correct answers (\cref{tab:main-numbers}).\ph{}
-Blind verification may moderate this. Qwen2.5-7B's blind AUROC is 0.87 on both constructed pools and 0.73 on \textsc{MACE}, as we predicted,\pre{} and within \textsc{MACE}, tasks the judge verifies well without a reference gain less from it: with blind AUROC and the reference's effect estimated on separate halves of each task's samples, Spearman $\rho$ is $-0.54$ for Qwen2.5-7B and $-0.38$ for phi-4, and $-0.50$ and $-0.36$ on multi-answer questions alone (\cref{fig:cost}b). Within the constructed pools, where blind AUROC is uniformly high, there is no such relationship (\cref{tab:main-numbers}).\ph{} Tasks with low blind AUROC also have more room to improve, so we treat blind verification as a candidate moderator, not a rule.
+On the $k$-pool it falls by 0.14 to 0.23 at $k{>}1$ for Qwen2.5-7B, Qwen2.5-14B, phi-4, and gemma-2-9b, and changes by $-0.07$ to $+0.04$ at $k{=}1$.\ph{}
+On \textsc{MACE} it rises by 0.29 and 0.23 on single-answer questions, where every correct answer matches the reference, and changes by 0.00 \ci{-0.05}{+0.05} and $+0.02$ \ci{-0.02}{+0.06} on questions with several correct answers (\cref{tab:main-numbers}).\ph{}
+Blind verification may moderate the overall cost. Qwen2.5-7B's blind AUROC is 0.87 on both constructed pools and 0.73 on \textsc{MACE}, as we predicted,\pre{} and within \textsc{MACE}, tasks the judge verifies well without a reference gain less from it: with blind AUROC and the reference's effect estimated on separate halves of each task's samples, Spearman $\rho$ is $-0.54$ for Qwen2.5-7B and $-0.38$ for phi-4 (\cref{fig:cost}b). Within the constructed pools, where blind AUROC is uniformly high, there is no such relationship.\ph{} Tasks with low blind AUROC also have more room to improve, and the pools differ in domain, so this is a lead for future work.
 
 \paragraph{Selection.}
-Best-of-64 selection follows the grading results (\cref{fig:cost}c).
-On the $k$-pool, pooled over $k{>}1$, the reference lowers accuracy by 35.9 points for Qwen2.5-7B, 23.1 for Qwen2.5-14B, 20.5 for phi-4, and 15.4 for gemma-2-9b, all with intervals excluding zero, and by 8.5 for Mistral-7B, whose scores are parsed integers and a third of whose blind replies contain no score.\reana{}
-Part of this loss is not specific to multiple answers: Qwen2.5-7B also loses 21.4 points at $k{=}1$, and the step from $k{=}1$ to $k{>}1$ excludes zero only for phi-4 and gemma-2-9b (\cref{tab:main-numbers}).\ph{}
-On the preregistered replication population the loss is 4.8 points for Qwen2.5-7B, an interval that includes zero, and 11.4 \ci{-19.1}{-4.8} for phi-4.\ph{}
-On \textsc{MACE} the reference raises accuracy by 29.4 points on single-answer questions and changes it by $+2.0$ \ci{-5.1}{+10.1} on multi-answer ones.\ph{}
-On MATH-500, where correct answers rarely differ from the reference and blind AUROC is 0.69, the reference raises accuracy by 28.6 to 30.6 points for Qwen2.5-7B and 14B, whether it is the full solution or only the final answer.\pre
+On the preregistered endpoint, best-of-64 inflation, the reference adds $+1.19$~\sd{} \ci{+1.02}{+1.36} on the replication pool, and the registered step from $k{=}1$ to $k{>}1$ on the $k$-pool was positive for Qwen2.5-7B and phi-4 (\cref{app:grid}).\osf{} We report accuracy because it is easier to interpret; on these pools the accuracy readouts are post hoc.
+At $k{>}1$ on the $k$-pool the reference lowers accuracy by 35.9 points for Qwen2.5-7B, 23.1 for Qwen2.5-14B, 20.5 for phi-4, and 15.4 for gemma-2-9b, all with intervals excluding zero (\cref{fig:cost}c).\reana{}
+Qwen2.5-7B also loses 21.4 points at $k{=}1$, where the reference is the only correct answer: there 43\% of its picks are wrong answers containing the reference's answer text, against 21\% blind, so wrong answers that resemble the reference, not other correct answers, cause that loss. The other three judges lose nothing at $k{=}1$ (\cref{tab:main-numbers}).\ph{}
+On the preregistered replication population, accuracy changes by $-4.8$ points \ci{-15.2}{+5.7} for Qwen2.5-7B and $-11.4$ \ci{-19.1}{-4.8} for phi-4.\ph{}
+On \textsc{MACE} the reference raises accuracy by 29.4 points on single-answer questions; on multi-answer questions it changes accuracy by $+2.0$ \ci{-5.1}{+10.1}, and our registered prediction that it would lower accuracy there failed for both judges (\cref{tab:mace-accuracy}).\pre{}
+On MATH-500, where correct answers rarely differ from the reference, it raises accuracy by 28.6 to 30.6 points for Qwen2.5-7B and 14B, as a full solution\reana{} or as the final answer alone.\pre
 
-\section{What to do about it}
+\section{Mitigations are partial}
 \label{sec:fix}
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=\textwidth]{figures/fig2_reasoning.pdf}
 \caption{\textbf{Reasoning removes most of the effect on arithmetic tasks, not on factual questions.}
-\textbf{(a)}~Score change of identical correct text when the reference moves off it, replication pool, grouped by how the score is read: expected scores over score tokens, or integers sampled from the reply (Sonnet~5's API tool call and its command-line replies with a score only, with reasoning, or with thinking on; the MT-Bench template; and the Qwen3 models at temperature 0.6, which think before a final ``Score: N'' line; hollow: thinking on). The Sonnet~5 command-line rows use 60 tasks with one sample per class. Qwen3 and MT-Bench rows use up to three samples per class per task.\pre{}
-\textbf{(b)}~Added margin with thinking off (filled) and on (hollow), on arithmetic tasks (16-sample $k$-pool subsample, 19 tasks) and factual \textsc{MACE} questions (81 tasks for Qwen3; 40 for Sonnet~5, score only versus thinking on), 95\% intervals; values in \cref{tab:r4-toggle} and \cref{app:reasoning}.\pre}
+\textbf{(a)}~Score change of identical correct text when the reference moves off it, replication pool, grouped by how the score is read: expected scores over score tokens, or integers sampled from the reply (Sonnet~5's API tool call and its command-line replies with a score only, with reasoning, or with thinking on; the MT-Bench template; and the Qwen3 models at temperature 0.6, which think before a final ``Score: N'' line; hollow: thinking on). Sonnet~5 command-line rows use 60 tasks with one sample per class; Qwen3 and MT-Bench rows use up to three samples per class per task.\pre{}
+\textbf{(b)}~Added margin with thinking off (filled) and on (hollow), on arithmetic tasks (16-sample $k$-pool subsample, 19 tasks) and factual \textsc{MACE} questions (81 tasks for Qwen3; 40 for Sonnet~5), 95\% intervals; values in \cref{tab:r4-toggle} and \cref{app:reasoning}.\pre}
 \label{fig:reasoning}
 \end{figure}
 
-\paragraph{Verify when you can.}
-When a program can check correctness, no judge is needed.
-Extended thinking helps without removing the problem.
-With the same weights, prompt, and sampling, turning on thinking removes the rotation effect on arithmetic tasks for Qwen3-8B ($-0.69$ to $+0.01$) and Qwen3-14B ($-1.98$ to $-0.12$), but with thinking on Qwen3-8B gives a score of 10 to 99.8\% of correct arithmetic answers when shown a reference and to 96.2\% blind, so the effect has little room to appear (\cref{fig:reasoning}a; \cref{app:rotation}).\pre{}
-On factual \textsc{MACE} questions thinking roughly halves the added margin, from $+6.16$ to $+3.62$ for Qwen3-8B and from $+7.07$ to $+3.13$ for Qwen3-14B (\cref{fig:reasoning}b).\pre{}
-Thinking does not make the reference safe for selection: shown the reference, Qwen3-8B with thinking still loses 5.8 points of best-of-16 accuracy at $k{=}1$ and 3.7 at $k{>}1$, and our prediction that it would not was falsified (\cref{tab:r2b-k}).\pre{}
-Sonnet~5 behaves the same way on arithmetic: on 60 rotation tasks, asking it to reason before scoring shrinks its loss from $-2.85$ to $-0.20$ without extended thinking and to $-0.32$ with it, and its false rejections from 26.7\% to 0.4\%.\pre{} On 40 factual \textsc{MACE} questions it still anchors with thinking on: its added margin is $+3.98$ with a score only and $+3.03$ with thinking on, a difference of $-0.95$ \ci{-2.45}{+0.63}, although without a reference it ranks both correct answers above the wrong one 97\% of the time.\pre
-A short explanation is not enough either: under the verbatim MT-Bench template, whose explanations average 259 tokens, Qwen2.5-7B's score still falls by 3.59 points when the reference moves off a correct answer.\pre
+\paragraph{Thinking helps on arithmetic, less on factual questions.}
+With the same weights, prompt, and sampling, turning on extended thinking removes the rotation effect on arithmetic for Qwen3-8B ($-0.69$ to $+0.01$) and Qwen3-14B ($-1.98$ to $-0.12$), and asking Sonnet~5 to reason before scoring shrinks its loss from $-2.85$ to $-0.20$ without extended thinking and to $-0.32$ with it (\cref{fig:reasoning}a).\pre{}
+These baselines are small, and with thinking on Qwen3-8B gives a score of 10 to 96.2\% of correct arithmetic answers even blind, so the effect has little room to appear.
+On factual \textsc{MACE} questions, thinking lowers the added margin from $+6.16$ to $+3.62$ for Qwen3-8B, from $+7.07$ to $+3.13$ for Qwen3-14B, and from $+3.98$ to $+3.03$ for Sonnet~5, a difference of $-0.95$ \ci{-2.45}{+0.63}, although without a reference Sonnet~5 ranks both correct answers above the wrong one 94\% of the time with a score only and 97\% with thinking on (\cref{fig:reasoning}b).\pre{}
+Thinking does not make the reference harmless for selection, and that harm is not specific to multiple answers: shown the reference, Qwen3-8B with thinking loses 5.8 points \ci{-11.4}{-1.8} of best-of-16 accuracy at $k{=}1$ and 3.7 \ci{-7.5}{0.0} at $k{>}1$, and our registered prediction that the loss would be larger at $k{>}1$ was falsified (\cref{tab:r2b-k}).\pre{}
+A 259-token explanation under the verbatim MT-Bench template leaves most of the effect: Qwen2.5-7B's score still falls by 3.59 points when the reference moves off a correct answer (\cref{app:rotation}).\pre
 
-\paragraph{Prompts help only some judges.}
-On a synthetic grid of 60 tasks whose correct sets enumerate exactly, adding ``the reference shown is one valid answer among possibly many \ldots\ any correct answer deserves full credit'' removes phi-4's margin at $k{=}16$ ($+1.91$ to $+0.03$) and shrinks Qwen2.5-14B's ($+3.34$ to $+1.21$), but does not help smaller Qwen2.5 judges.\pre{}
-For Sonnet~5 and GPT-4.1 two such wordings shrink the margin by 0.40 to 0.93 points, each interval excluding zero, and leave it positive (\cref{app:frontier}).\pre{}
-Showing up to three correct references instead of one removes the margin toward the original reference but does not restore blind-level selection (\cref{app:mitigation}).
+\paragraph{Instructions help only some judges.}
+Telling the judge that other correct answers deserve full credit removes phi-4's margin on the synthetic grid at $k{=}16$ but does not help Qwen2.5 judges below 14B,\pre{} and it shrinks Sonnet~5's and GPT-4.1's margins by 0.40 to 0.93 points without removing them (\cref{app:frontier}).\pre
 
 \paragraph{Blind, then reveal.}
-The protocol we preregistered as the main mitigation scores the candidate blind in a first call and, in a second, shows the reference with that blind score and states that a correct answer differing from the reference keeps its score.
-In accuracy on the $k$-pool at $k{>}1$ (original scorer), it recovers most of the reference's loss for Qwen2.5-7B (a loss of 10.3 points instead of 30.8) and all of it for Qwen2.5-14B and Mistral-7B, but little for phi-4 and gemma-2-9b, which still lose 15.4 and 12.8 points against blind judging.\ph{}
-On MATH-500 it keeps nearly all of the reference's benefit (95.2\% and 93.5\% accuracy, against 98.1\% and 95.2\% with the reference and 67.6\% blind).\pre{} On \textsc{MACE} our registered predictions that it would beat the reference failed for both judges: it was 1.5 to 3.0 points less accurate overall.\pre{}
-Removing the blind score from the second call brings back the preregistered inflation, so the displayed score does the work, consistent with judges anchoring on scores shown to them~\citep{kapetanovic2026anchoring}.\pre{}
-No protocol is best everywhere, and blind-then-reveal is a hedge (\cref{tab:regret}).
-Its largest loss against the best protocol in each pool is 10.2 points for Qwen2.5-7B and 1.7 for Qwen2.5-14B, compared with 30.8 and 20.5 for the plain reference and 30.5 and 27.6 for blind judging; for phi-4, measured on two pools, blind judging has the smaller worst case.\ph{}
-\Cref{tab:decide} organizes these options by two measurable properties of a deployment.
+Our preregistered mitigation scores the candidate blind, then shows the reference with that blind score and states that a correct answer differing from the reference keeps its score.
+It removes the preregistered inflation at $k{>}1$ for Qwen2.5-7B and phi-4,\osf{} and removing the displayed blind score brings the inflation back, consistent with judges anchoring on scores shown to them~\citep{kapetanovic2026anchoring}.\pre{}
+In accuracy under the original scorer, it recovers most of Qwen2.5-7B's loss at $k{>}1$ (10.3 points instead of 30.8, which is 35.9 under the exact scorer) and all of Qwen2.5-14B's and Mistral-7B's, but little of phi-4's and gemma-2-9b's, which stay 15.4 and 12.8 points below blind judging.\ph{}
+It keeps nearly all of the reference's benefit on MATH-500 (95.2\% and 93.5\% accuracy, against 98.1\% and 95.2\% with the reference and 67.6\% blind),\pre{} and on \textsc{MACE} our registered predictions that it would beat the reference failed for both judges: it was 1.5 to 3.0 points less accurate, and both intervals include zero.\pre{}
+Each judge's worst case over the pools it was run on is smallest with blind-then-reveal for Qwen2.5-7B and Qwen2.5-14B but not for phi-4, whose pools exclude MATH-500 (\cref{tab:regret}).\ph{}
+\Cref{tab:decide} summarizes the pools we measured.
 
 \begin{table}[t]
 \centering
 \small
-\caption{\textbf{No protocol is best everywhere.} Best-of-64 accuracy of each protocol minus the best of the three in each pool (points; 0 marks the best), and the worst case over pools. $k$-pool at $k{>}1$, MATH-500 with the reference solution, \textsc{MACE} overall; original scorer, because blind-then-reveal was not rescored.\ph}
+\caption{\textbf{Worst-case selection loss by protocol.} Best-of-64 accuracy of each protocol minus the best of the three in each pool (points; 0 marks the best), and the worst case over the pools each judge was run on, which differ by judge. $k$-pool at $k{>}1$, MATH-500 with the reference solution, \textsc{MACE} overall; original scorer, because blind-then-reveal was not rescored.\ph}
 \label{tab:regret}
 \setlength{\tabcolsep}{5pt}
 \begin{adjustbox}{max width=\linewidth}\input{tables/regret.tex}\end{adjustbox}
-\end{table}
-
-\begin{table}[t]
-\centering
-\small
-\caption{\textbf{Choosing a protocol by two measurable properties.} Rows: how often correct answers differ from the reference, which can be estimated by auditing about 50 questions by hand for alternative correct answers, as in our prevalence audit. Columns: the judge's blind AUROC for correct against wrong answers; separating 0.87 from 0.73 with 80\% power takes about 40 labeled tasks with 64 candidates each (power 0.93; 0.76 with 16 candidates). Cells report the pools we measured.}
-\label{tab:decide}
-\setlength{\tabcolsep}{4pt}
-\begin{tabular}{L{3.0cm}L{4.9cm}L{4.9cm}}
-\toprule
- & Blind AUROC high (0.87 to 0.90 here) & Blind AUROC lower (0.69 to 0.80 here) \\
-\midrule
-Correct answers rarely differ from the reference & Untested; on the $k$-pool at $k{=}1$ the reference lowers Qwen2.5-7B's and Mistral-7B's accuracy & MATH-500: the reference raises accuracy by 28.6 to 30.6 points. \textbf{Use the reference.} \\
-\addlinespace[3pt]
-Correct answers often differ from the reference & Constructed pools: overall AUROC $-0.19$ to $-0.22$, accuracy $-8.5$ to $-35.9$ points. \textbf{Judge blind, or use blind-then-reveal as a hedge.} & \textsc{MACE}, multi-answer questions: overall AUROC unchanged, correct non-matching answers graded worse. \textbf{Reference, auditing the answers it rejects.} \\
-\bottomrule
-\end{tabular}
 \end{table}
 
 \FloatBarrier
@@ -259,8 +237,9 @@ We keep the reference correct and vary which correct answer it is.
 Generating a reference before judging has been proposed as an improvement~\citep{dobefore2025}; our results predict that a self-generated reference anchors the same way on multi-answer tasks, which we have not tested.
 
 \paragraph{Single references and many correct answers.}
-Reference-based metrics in machine translation reward outputs that resemble the particular reference, which motivated paraphrased references~\citep{freitag2020bleu}; human raters shown a reference translation favor candidates close to it~\citep{fomicheva2016reference}; execution-based evaluation of code replaced similarity to a single reference solution~\citep{chen2021codex}; and single-reference evaluation undercounts correct outputs when questions admit several~\citep{min2020ambigqa}.
-Rule-based and model-based verifiers in reinforcement learning miss correct answers written in a different form~\citep{xu2025tinyv,huang2025pitfalls,chen2025xverify}, which concerns surface forms of one answer, and RL data pipelines often keep only problems that ``admit a single correct answer''~\citep{albalak2025bigmath}. \textsc{RewardBench-2} and \textsc{MACE} build benchmarks around questions with several answers~\citep{malik2025rewardbench2,mace2026}.
+Reference-based metrics in machine translation reward outputs that resemble the particular reference, which motivated paraphrased references~\citep{freitag2020bleu}; human raters shown a reference translation favor candidates close to it~\citep{fomicheva2016reference}; and execution-based evaluation of code replaced similarity to a single reference solution~\citep{chen2021codex}.
+Open-domain question answering evaluation under-credits correct answers that are missing from the gold list or phrased differently from it~\citep{min2020ambigqa,si2021whatsinaname,bulian2022tomayto,kamalloo2023evaluating}; in our setting the gold list is correct and complete, and the judge still favors the one answer it is shown.
+Rule-based and model-based verifiers in reinforcement learning miss correct answers written in a different form~\citep{xu2025tinyv,huang2025pitfalls,chen2025xverify}, and RL data pipelines often keep only problems that ``admit a single correct answer''~\citep{albalak2025bigmath}. \textsc{RewardBench-2} and \textsc{MACE} build benchmarks around questions with several answers~\citep{malik2025rewardbench2,mace2026}.
 
 \paragraph{Judge biases and optimization.}
 LLM judges favor the first response~\citep{wang2024fair}, longer responses~\citep{dubois2024lengthcontrolled}, and their own outputs~\citep{panickssery2024llm}, anchor on scores shown to them~\citep{kapetanovic2026anchoring}, and can be fooled by content-free responses~\citep{zhao2025onetoken}.
@@ -271,24 +250,24 @@ Closest to our protocol, a reference-free judge that commits to its own answer b
 \label{sec:limits}
 
 \begin{itemize}[leftmargin=1.2em,itemsep=1pt,topsep=2pt]
-\item \textbf{Tasks and generators.} Our results come from constraint problems, two audited factual domains of \textsc{MACE}, MBPP, and MATH-500, and most pools use one generator, Llama-3.1-8B. We do not test free-form generation, long references, contested correctness, or step-level verifiers, and our prevalence labels come from LLM annotators without a human check.
-\item \textbf{The overall cost.} Whether the reference hurts overall grading rests on one natural and two constructed pools, which also differ in domain, and the within-\textsc{MACE} relationship with blind verification is post hoc. \textsc{MACE}'s answer lists miss 2.3\% to 8.1\% of correct answers in our audit; an unlisted correct answer counts as wrong, which favors the reference.
-\item \textbf{Judges and scorers.} Open judges are 14B parameters or smaller, and the effect shrinks with judge strength. The thinking contrast uses two Qwen3 models and, on 40 to 60 tasks, one frontier judge. The blind-then-reveal comparisons, the phi-4 and Mistral-7B numbers, and several appendix analyses use the original scorer; Mistral-7B's tokenizer has no single-token digits, so its scores are parsed integers.
-\item \textbf{Registration.} Accuracy and false-rejection readouts on the OSF pools are post hoc, and three experiments have third-party timestamps while the rest rely on git commits. The registered blind-then-reveal contrast for Mistral-7B used one bootstrap seed; across 20 seeds its interval excludes zero in 11 (\cref{app:ledger}).
-\item \textbf{Wording and training.} Our reference heading may suggest a unique answer, which an explicit instruction only partly counters. A DPO policy trained against a referenced judge raised that judge's score while held-out accuracy fell, but every control arm failed its manipulation check (\cref{app:dpo}).
+\item \textbf{Tasks and generators.} Our results come from constraint problems, two audited factual domains of \textsc{MACE}, and MATH-500, and most pools use one generator, Llama-3.1-8B. We do not test free-form generation, long references, contested correctness, or step-level verifiers, and our prevalence labels come from LLM annotators of one model family without a human check.
+\item \textbf{Selection.} The $k$-pool leaves 7 to 15 tasks per $k$ after filtering. Part of Qwen2.5-7B's selection loss comes from wrong answers that contain the reference's text, which also costs accuracy when only one answer is correct.
+\item \textbf{The overall cost.} Whether the reference hurts overall grading rests on one natural and two constructed pools, which differ in domain, and the within-\textsc{MACE} relationship with blind verification is post hoc. \textsc{MACE}'s answer lists miss 2.3\% to 8.1\% of correct answers in our audit; an unlisted correct answer counts as wrong, which favors the reference.
+\item \textbf{Judges and scorers.} Open judges are 14B parameters or smaller, and the effect shrinks with judge strength. The thinking contrast uses two Qwen3 models and one frontier judge on 40 to 60 tasks; we did not test a reasoning judge from another frontier provider. The blind-then-reveal comparisons and several appendix analyses use the original scorer.
+\item \textbf{Registration.} Accuracy and false-rejection readouts on the OSF pools are post hoc. Three experiments have third-party timestamps and the rest rely on timestamped commits. We adopted the uniform verdict rule of \cref{app:ledger} after most outcomes were known. Our reference heading may suggest a unique answer, which an explicit instruction only partly counters.
 \end{itemize}
 
 \section{Conclusion}
 \label{sec:conclusion}
 
 A reference answer is a good check when a question has one right answer.
-When it has several, the reference is one of them, and judges grade agreement with it: moving the reference moves the score of unchanged text, and correct answers that differ from it are graded worse on every pool we measured.
-Whether this makes grading and selection worse overall depends on the pool, and blind verification is a candidate moderator rather than a settled rule.
-Extended thinking reduces the effect without removing it, and scoring blind before revealing the reference is a hedge, not a fix.
-When a program can check correctness, no judge is needed; when none can, the share of correct answers that differ from the reference and the judge's blind verification can both be measured before deployment.
+When it has several, the reference is one of them, and judges grade agreement with it: moving the reference moves the score of unchanged text, and correct answers that differ from it were graded worse on both pools where we measured grading.
+On constructed arithmetic tasks this also made overall grading and selection worse; on a natural factual benchmark it did not, and whether blind verification explains the difference is open.
+Reasoning before scoring removes most of the effect only where the answer can be checked by calculation, and scoring blind before revealing the reference trades some benefit for a smaller worst case.
+When correct answers can differ from the reference, measure how often they do and how well the judge verifies without one before trusting a reference-guided score.
 
 \subsection*{AI use statement}
-In this work, generative AI models were the experimental subjects: open and frontier LLMs generated candidate answers and served as the judges under study (\cref{sec:setup}, \cref{app:setup}). One pilot (\cref{app:mathconstraint}) used a Claude model to generate candidate solutions, each verified by exact programmatic checks. We used generative AI tools to help write analysis code, draft and edit text, produce figures, search and verify related work, audit the preregistration ledger, and label a sample of dataset questions for the prevalence audit, whose labels were double-coded and adjudicated but not checked by human annotators. Every number in the paper is produced by committed analysis scripts from stored model outputs, and we checked every claim against those outputs. We take responsibility for the final content of this work, including text, claims, and artifacts produced with the aid of generative AI.
+In this work, generative AI models were the experimental subjects: open and frontier LLMs generated candidate answers and served as the judges under study (\cref{sec:setup}, \cref{app:setup}). One pilot (\cref{app:mathconstraint}) used a Claude model to generate candidate solutions, each verified by exact programmatic checks. We used generative AI tools to help write analysis code, draft and edit text, produce figures, search and verify related work, audit the preregistration ledger, and label a sample of dataset questions for the prevalence audit; both labeling passes came from one model family, were adjudicated against each other, and were not checked by human annotators. Every number in the paper is produced by committed analysis scripts from stored model outputs, and we checked every claim against those outputs. We take responsibility for the final content of this work, including text, claims, and artifacts produced with the aid of generative AI.
 
 \subsection*{Ethics statement}
 This work studies a failure of automated evaluation that can make optimized models look better or worse than they are. We release no new model and no attack on a deployed system. Anyone optimizing against a reference-guided judge on multi-answer tasks can exploit the failure, which is why we pair it with measurements of when it matters and recommend verifying judges on the tasks where they are used. No human subjects were involved.

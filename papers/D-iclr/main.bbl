@@ -1,4 +1,4 @@
-\begin{thebibliography}{34}
+\begin{thebibliography}{36}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -13,14 +13,6 @@ Alon Albalak, Duy Phung, Nathan Lile, Rafael Rafailov, Kanishk Gandhi, Louis
   reinforcement learning in language models.
 \newblock arXiv preprint arXiv:2502.17387, 2025.
 
-\bibitem[Austin et~al.(2021)Austin, Odena, Nye, Bosma, Michalewski, Dohan,
-  Jiang, Cai, Terry, Le, and Sutton]{austin2021mbpp}
-Jacob Austin, Augustus Odena, Maxwell Nye, Maarten Bosma, Henryk Michalewski,
-  David Dohan, Ellen Jiang, Carrie Cai, Michael Terry, Quoc Le, and Charles
-  Sutton.
-\newblock Program synthesis with large language models.
-\newblock arXiv preprint arXiv:2108.07732, 2021.
-
 \bibitem[Badshah \& Sajjad(2025)Badshah and Sajjad]{refguided2024}
 Sher Badshah and Hassan Sajjad.
 \newblock Reference-guided verdict: {LLMs}-as-judges in automatic evaluation of
@@ -28,6 +20,17 @@ Sher Badshah and Hassan Sajjad.
 \newblock In \emph{Proceedings of the 9th Widening NLP Workshop}, pp.\
   251--267, Suzhou, China, 2025. Association for Computational Linguistics.
 \newblock \doi{10.18653/v1/2025.winlp-main.37}.
+
+\bibitem[Bulian et~al.(2022)Bulian, Buck, Gajewski, B{\"o}rschinger, and
+  Schuster]{bulian2022tomayto}
+Jannis Bulian, Christian Buck, Wojciech Gajewski, Benjamin B{\"o}rschinger, and
+  Tal Schuster.
+\newblock Tomayto, tomahto. beyond token-level answer equivalence for question
+  answering evaluation.
+\newblock In \emph{Proceedings of the 2022 Conference on Empirical Methods in
+  Natural Language Processing}, pp.\  291--305, Abu Dhabi, United Arab
+  Emirates, 2022. Association for Computational Linguistics.
+\newblock \doi{10.18653/v1/2022.emnlp-main.20}.
 
 \bibitem[Chen et~al.(2025)Chen, Yu, Wang, Hu, Zhang, Wang, Tang, Xiong,
   et~al.]{chen2025xverify}
@@ -98,6 +101,16 @@ Yuzhen Huang, Weihao Zeng, Xingshan Zeng, Qi~Zhu, and Junxian He.
 \newblock From accuracy to robustness: A study of rule- and model-based
   verifiers in mathematical reasoning.
 \newblock arXiv preprint arXiv:2505.22203, 2025.
+
+\bibitem[Kamalloo et~al.(2023)Kamalloo, Dziri, Clarke, and
+  Rafiei]{kamalloo2023evaluating}
+Ehsan Kamalloo, Nouha Dziri, Charles Clarke, and Davood Rafiei.
+\newblock Evaluating open-domain question answering in the era of large
+  language models.
+\newblock In \emph{Proceedings of the 61st Annual Meeting of the Association
+  for Computational Linguistics (Volume 1: Long Papers)}, pp.\  5591--5606,
+  Toronto, Canada, 2023. Association for Computational Linguistics.
+\newblock \doi{10.18653/v1/2023.acl-long.307}.
 
 \bibitem[Kapetanovic et~al.(2026)Kapetanovic, Altwlkany, Mercep, Duricic, and
   Lacic]{kapetanovic2026anchoring}
@@ -209,12 +222,20 @@ Rafael Rafailov, Yaswanth Chittepu, Ryan Park, Harshit Sikchi, Joey Hejna,
 \newblock In \emph{Advances in Neural Information Processing Systems 37
   (NeurIPS 2024)}, 2024.
 
+\bibitem[Si et~al.(2021)Si, Zhao, and Boyd-Graber]{si2021whatsinaname}
+Chenglei Si, Chen Zhao, and Jordan Boyd-Graber.
+\newblock What's in a name? {A}nswer equivalence for open-domain question
+  answering.
+\newblock In \emph{Proceedings of the 2021 Conference on Empirical Methods in
+  Natural Language Processing (EMNLP)}, pp.\  9623--9629, 2021.
+
 \bibitem[Thakur et~al.(2024)Thakur, Choudhary, Ramayapally, Vaidyanathan, and
   Hupkes]{thakur2024judging}
 Aman~Singh Thakur, Kartik Choudhary, Venkat~Srinik Ramayapally, Sankaran
   Vaidyanathan, and Dieuwke Hupkes.
 \newblock Judging the judges: Evaluating alignment and vulnerabilities in
-  {LLMs}-as-judges, 2024.
+  {LLMs}-as-judges.
+\newblock \emph{arXiv preprint arXiv:2406.12624}, 2024.
 
 \bibitem[Wang et~al.(2024)Wang, Li, Chen, Cai, Zhu, Lin, Cao, Liu, Liu, and
   Sui]{wang2024fair}
