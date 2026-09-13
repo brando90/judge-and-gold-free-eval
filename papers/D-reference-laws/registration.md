@@ -2394,3 +2394,39 @@ wording-only fixes, no new experiments requested:
 Reviewer's own summary: "additional experimentation has negative expected value relative to
 polishing the exposition" at this point; final score 8/10, strong accept side, would not assign
 a confident 9 absent a broader-scope result. Recompiled clean, 23 pages, 0 warnings.
+
+---
+
+## Staged beta-ordering held-out check on gemma (P-BG1) — outcome 2026-09-12, NOT folded into the submission
+
+Registered `9221d93` same day. Producer `papers/analysis/beta_prediction_gemma.py` ->
+`beta_prediction_gemma.json`. Refits `exploit_lure2d.py`'s selection model (ref_escore ~
+beta*blind_escore + match/lure indicators) on gemma-2-9b-it, using gemma's existing
+noref/ref kstrat scores that neither the original fit nor its beta numbers (Qwen-7B
+0.510/0.436, phi-4 0.690/0.682, rubric a/b) ever touched — a genuine held-out check, not a
+refit including the judge under test.
+
+**P-BG1 CONFIRMED, both rubrics: gemma beta_a = 0.338, beta_b = 0.310, below both comparison
+judges on both rubrics.** This is the same ordering (low composition-beta = more
+externally/match-driven under raw referencing) already implied by the M1-variant
+own-vs-other-anchor contrast, where phi-4 showed no identity sensitivity (+0.003
+[-0.095,+0.091]), Qwen a smaller not-quite-significant one (-0.149 [-0.401,+0.062]), and
+gemma the only CI-excluding-zero effect (+0.171 [+0.007,+0.380]): phi-4 highest beta, most
+self-referential, least identity-sensitive; gemma lowest beta, most externally anchored,
+most identity-sensitive; Qwen between both on every axis.
+
+**Material caveat, disclosed plainly:** gemma has no repl-pool scores, so eligibility runs
+against the kstrat pool alone and yields only 4 eligible items, versus 24 (kstrat+repl) for
+the original Qwen/phi-4 fit. The bootstrap CI is narrow ([0.324,0.385] rubric a) but that
+reflects resampling over 4 items, not real precision, and should not be read as a tight
+estimate. The result is a consistent point-estimate ordering across two independent
+prediction sources (composition-model beta and the M1-variant identity contrast), not a
+statistically powered confirmation, and should be described that way if it is ever used.
+
+**Disposition:** per the user's explicit 2026-09-12 decision, this stays out of the
+submitted manuscript. A prior AC reviewer recommended against elevating the beta
+compression term to a headline claim pre-acceptance; the paper keeps its current two-
+sentence descriptive framing unchanged. This result is banked, ready to fold into a future
+revision (rebuttal, camera-ready, or a follow-up paper) as a genuinely held-out
+cross-judge prediction rather than a same-data refit, should that framing decision change
+later.
