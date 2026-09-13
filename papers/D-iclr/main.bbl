@@ -5,14 +5,6 @@
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
 
-\bibitem[Albalak et~al.(2025)Albalak, Phung, Lile, Rafailov, Gandhi,
-  Castricato, Singh, Blagden, et~al.]{albalak2025bigmath}
-Alon Albalak, Duy Phung, Nathan Lile, Rafael Rafailov, Kanishk Gandhi, Louis
-  Castricato, Anikait Singh, Chase Blagden, et~al.
-\newblock {Big-Math}: A large-scale, high-quality math dataset for
-  reinforcement learning in language models.
-\newblock arXiv preprint arXiv:2502.17387, 2025.
-
 \bibitem[Badshah \& Sajjad(2025)Badshah and Sajjad]{refguided2024}
 Sher Badshah and Hassan Sajjad.
 \newblock Reference-guided verdict: {LLMs}-as-judges in automatic evaluation of
@@ -120,6 +112,15 @@ Ante Kapetanovic, Kemal Altwlkany, Andro Mercep, Tomislav Duricic, and Emanuel
   evaluation independence.
 \newblock arXiv preprint arXiv:2608.25869, 2026.
 \newblock To appear in CIKM 2026.
+
+\bibitem[Kim et~al.(2024)Kim, Shin, Cho, Jang, Longpre, Lee, Yun, Shin, Kim,
+  Thorne, and Seo]{kim2024prometheus}
+Seungone Kim, Jamin Shin, Yejin Cho, Joel Jang, Shayne Longpre, Hwaran Lee,
+  Sangdoo Yun, Seongjin Shin, Sungdong Kim, James Thorne, and Minjoon Seo.
+\newblock Prometheus: Inducing fine-grained evaluation capability in language
+  models.
+\newblock In \emph{International Conference on Learning Representations
+  (ICLR)}, 2024.
 
 \bibitem[Kranti \& Vajjala(2026)Kranti and Vajjala]{generous2026}
 Chalamalasetti Kranti and Sowmya Vajjala.
@@ -261,13 +262,6 @@ Zhangchen Xu, Yuetai Li, Fengqing Jiang, Bhaskar Ramasubramanian, Luyao Niu,
   {LLM} reasoning.
 \newblock arXiv preprint arXiv:2505.14625, 2025.
 
-\bibitem[Zhao et~al.(2025)Zhao, Liu, Yu, Kung, Chen, Mi, and
-  Yu]{zhao2025onetoken}
-Yulai Zhao, Haolin Liu, Dian Yu, Sunyuan Kung, Meijia Chen, Haitao Mi, and Dong
-  Yu.
-\newblock One token to fool {LLM}-as-a-judge.
-\newblock arXiv preprint arXiv:2507.08794, 2025.
-
 \bibitem[Zheng et~al.(2023)Zheng, Chiang, Sheng, Zhuang, Wu, Zhuang, Lin, Li,
   Li, Xing, Zhang, Gonzalez, and Stoica]{zheng2023judging}
 Lianmin Zheng, Wei-Lin Chiang, Ying Sheng, Siyuan Zhuang, Zhanghao Wu, Yonghao
@@ -282,5 +276,12 @@ Chenyu Zhou.
 \newblock More convincing, not more correct: Self-play reward hacking of
   reference-free {LLM} judges.
 \newblock arXiv preprint arXiv:2607.05904, 2026.
+
+\bibitem[Zhu et~al.(2025)Zhu, Wang, and Wang]{zhu2023judgelm}
+Lianghui Zhu, Xinggang Wang, and Xinlong Wang.
+\newblock {JudgeLM}: Fine-tuned large language models are scalable judges.
+\newblock In \emph{International Conference on Learning Representations
+  (ICLR)}, 2025.
+\newblock arXiv:2310.17631.
 
 \end{thebibliography}

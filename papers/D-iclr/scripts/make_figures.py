@@ -618,17 +618,29 @@ if L8b and r4res.get("math") and m3:
             ("Qwen2.5-14B", 100 * r4res["math"][K14]["acc_noref"][0], 100 * r4res["math"][K14]["acc_ref"][0]),
             ("hdr", "MACE, one answer"),
             ("Qwen2.5-7B", 100 * m3[Q]["k1"]["acc_noref"], 100 * m3[Q]["k1"]["acc_ref"]),
-            ("phi-4", 100 * m3[P]["k1"]["acc_noref"], 100 * m3[P]["k1"]["acc_ref"])]
+            ("phi-4", 100 * m3[P]["k1"]["acc_noref"], 100 * m3[P]["k1"]["acc_ref"]),
+            ("hdr", "MACE, several answers"),
+            ("Qwen2.5-7B", 100 * m3[Q]["kgt1"]["acc_noref"], 100 * m3[Q]["kgt1"]["acc_ref"]),
+            ("phi-4", 100 * m3[P]["kgt1"]["acc_noref"], 100 * m3[P]["kgt1"]["acc_ref"])]
 
     def g8(pool, j, key):
         return L8b["pools"][pool][j]["lenient"][key][0]
 
     right = [("hdr", "Replication"),
              ("Qwen2.5-7B", g8("repl|all", "Qwen2.5-7B", "G_nm_blind"), g8("repl|all", "Qwen2.5-7B", "G_nm_ref")),
-             ("phi-4", g8("repl|all", "phi-4", "G_nm_blind"), g8("repl|all", "phi-4", "G_nm_ref")),
-             ("hdr", "k-pool, k > 1")]
+             ("phi-4", g8("repl|all", "phi-4", "G_nm_blind"), g8("repl|all", "phi-4", "G_nm_ref"))]
+
+    def s8b(pool, how):
+        d = S8b.get("pools", {}).get(pool, {}).get(how, {})
+        return (d["G_nm_blind"][0], d["G_nm_ref"][0]) if isinstance(d, dict) and d.get("G_nm_blind") else None
+
+    if s8b("repl", "lenient"):
+        right.append(("Sonnet 5 (API)", *s8b("repl", "lenient")))
+    right.append(("hdr", "k-pool, k > 1"))
     for j in ("Qwen2.5-7B", "Qwen2.5-14B", "gemma-2-9b", "phi-4"):
         right.append((j, g8("kpool|kgt1", j, "G_nm_blind"), g8("kpool|kgt1", j, "G_nm_ref")))
+    if s8b("kpool", "lenient"):
+        right.append(("Sonnet 5 (API)", *s8b("kpool", "lenient")))
     right.append(("hdr", "MACE, several answers"))
     right.append(("Qwen2.5-7B", r4res["grading"]["mace"]["G_nm"]["blind"][0], r4res["grading"]["mace"]["G_nm"]["ref"][0]))
     p4m = ph4b.get("grading_other_judges", {}).get(P, {}).get("grading_mace", {}).get("G_nm", {})
@@ -637,15 +649,17 @@ if L8b and r4res.get("math") and m3:
     sm = S8b.get("pools", {}).get("mace", {}).get("oracle", {})
     if isinstance(sm, dict) and sm.get("G_nm_blind"):
         right.append(("Sonnet 5 (API)", sm["G_nm_blind"][0], sm["G_nm_ref"][0]))
-    fig, (a1, a2) = plt.subplots(1, 2, figsize=(5.4, 3.05), gridspec_kw={"width_ratios": [0.85, 1.15], "wspace": 0.8})
-    for ax, rowsx, xlim, xlabel, title in ((a1, left, (55, 103), "best-of-64 accuracy (%)", "a   One correct answer"),
-                                          (a2, right, (0.5, 1.0), "grading AUROC, non-matching\ncorrect vs. wrong answers", "b   Several correct answers")):
+    fig, (a1, a2) = plt.subplots(1, 2, figsize=(5.4, 3.5), gridspec_kw={"width_ratios": [0.85, 1.15], "wspace": 1.05})
+    for ax, rowsx, xlim, xlabel, title in ((a1, left, (55, 103), "best-of-64 accuracy (%)", "a   Selection"),
+                                          (a2, right, (0.5, 1.0), "grading AUROC, non-matching\ncorrect vs. wrong answers", "b   Grading, several correct answers")):
         n_ = len(rowsx)
         ticks = []
         for pos, r in enumerate(rowsx):
             yv = n_ - 1 - pos
             if r[0] == "hdr":
                 ticks.append((yv, r[1], True))
+                if pos:
+                    ax.axhline(yv + 0.5, color="#d9d9d9", lw=0.6, zorder=1)
                 continue
             lab, b0, r0 = r
             ax.annotate("", xy=(r0, yv), xytext=(b0, yv), arrowprops=dict(arrowstyle="-|>", color="#8a8a8a", lw=1.0, shrinkA=3.5, shrinkB=3.5, mutation_scale=7), zorder=2)
@@ -662,7 +676,7 @@ if L8b and r4res.get("math") and m3:
         ax.set_xlabel(xlabel, fontsize=8)
         ax.set_title(title, loc="left", fontsize=9, fontweight="bold")
         style(ax, "x")
-    fig.legend(handles=[Line2D([], [], marker="o", ls="", color=ORANGE, label="no reference"),
-                        Line2D([], [], marker="o", ls="", color=BLUE, label="reference shown")],
-               loc="upper center", bbox_to_anchor=(0.5, -0.09), ncol=2, frameon=False, fontsize=7.8, handlelength=0.8)
+    a1.legend(handles=[Line2D([], [], marker="o", ls="", color=ORANGE, label="no reference"),
+                       Line2D([], [], marker="o", ls="", color=BLUE, label="reference shown")],
+              loc="upper center", bbox_to_anchor=(0.5, -0.17), ncol=2, frameon=False, fontsize=7.6, handlelength=0.8, columnspacing=0.9)
     save(fig, "fig2_onevsseveral")
