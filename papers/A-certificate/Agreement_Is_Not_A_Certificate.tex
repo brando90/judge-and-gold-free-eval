@@ -405,7 +405,7 @@ Judge-minus-true wedge, train & $+0.31$ {\scriptsize$[+0.17, +0.44]$} & $-0.70$ 
 Judge-minus-true wedge, held-out & $-0.01$ & $-0.23$ \\
 \bottomrule
 \end{tabular}
-\caption{\textbf{Takeaway: training against the certified judge raises true accuracy on the training items while training against the convicted judge degrades held-out accuracy --- the verdicts predicted which judge was safe to optimize against --- and the registered wedge prediction is falsified in direction, the corruption expressing itself as damage rather than gaming at this scale.}
+\caption{\textbf{Takeaway: training against the certified judge raises true accuracy on the training items while training against the convicted judge degrades held-out accuracy --- the verdicts identified which of the two signals was harmful to optimize against, not that either was safe --- and the registered wedge prediction is falsified in direction, the corruption expressing itself as damage rather than gaming at this scale.}
 Externally registered DPO rerun (\texttt{osf.io/jg4ak}); identical LoRA-DPO arms differing only in which frozen judge built the preference pairs.
 Score gains are instrument-specific in the registered direction: the certified arm's gain is largest under its own judge ($+1.01$ versus $+0.31$ under the sabotaged judge, on train), and the convicted arm's loss is also largest under its own judge ($-1.40$ versus $-0.91$).}
 \label{tab:dpo}
