@@ -2761,3 +2761,42 @@ confirm the pilot's findings with more data, tighter intervals, and a third judg
 (P-MC4/P-MC4b, the paper's actual headline selection-degradation phenomenon) remains an
 open question on this domain after two genuinely different, disclosed, diagnosed failed
 attempts, and is reported as open rather than forced to a conclusion.
+
+---
+
+## REGISTER step-level (process-reward-style) rotation pilot (P-SL1), before any judging
+
+Motivation: the last unaddressed item from the broadening pass is whether anchoring occurs
+when a judge scores an intermediate reasoning STEP against a reference step, rather than a
+finished answer -- the mechanism this paper documents predicts the failure recurs wherever
+an intermediate step has a separable, readable token to anchor on (Section~\ref{sec:limits}
+already flags this as untested). This registers a minimal, deterministic first test.
+
+**Task family (new, built for this test, zero model generation needed for candidates or
+references):** "find two distinct numbers from a set that sum to a target," decomposed
+into its first move. Each instance has $K$ disjoint pairs $(a_i,b_i)$ with
+$a_i + b_i = T$, plus a few numbers not part of any such pair (noise), giving $2K$
+distinct valid FIRST-move choices (naming either element of any pair commits to a
+completable partial solution) and a `Continuing from here: {problem}, so far I have chosen
+first number X.` framing shown to the judge as an intermediate, unfinished state --
+never the full pair, never a final answer. The oracle for "is X a valid first move" is
+exact and mechanical: $X$ is in the set and $T-X$ is in the set and $T-X \neq X$; no model
+judgment enters the ground truth anywhere. 10 instances, $K \in \{3,4\}$ (6-8 valid first
+moves per instance), rng seed 11, built and oracle-verified before any judging exists.
+
+**Design mirrors this paper's own flagship exactly, one level down in granularity:** fix
+the candidate's proposed first move, swap which of two valid first moves is shown as "the
+reference step already confirmed correct," measure the score swing under Qwen-7B and
+phi-4 (the standing cross-family pair).
+
+**REGISTERED PREDICTION (committed before any step-level judging exists):**
+- **P-SL1** (step-level rotation): the same-direction swing this paper finds at the answer
+  level reproduces at the step level -- fixed candidate step scores higher when it matches
+  the shown "confirmed" reference step than when it does not, for both judges, paired per
+  item, 95% CI excluding zero.
+- Exploratory, no CI bar: whether the swing MAGNITUDE at the step level differs from the
+  answer-level magnitude measured elsewhere in this paper is descriptive only, since step
+  and answer prompts differ in more ways than granularity alone (this is a first existence
+  test, not a controlled magnitude comparison).
+
+Producer: `papers/analysis/steplevel_pilot_analysis.py`, to be written after judging.
