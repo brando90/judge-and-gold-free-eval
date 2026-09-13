@@ -79,4 +79,7 @@ All ten R2-B runs and both Qwen2.5-14B M1-math runs in the first chain failed at
 - KSUB: k>1 margin referenced +3.088, blind −0.097, paired difference +3.185 [+2.568, +3.877] (19 tasks); accuracy delta (ref − blind, best-of-16) at k=1 +0.166 [−0.015, +0.342], at k>1 −0.130 [−0.251, −0.011]; step −0.296 [−0.509, −0.088].
 - **P-R2B1 CONFIRMED, P-R2B2 CONFIRMED, P-R2B3 CONFIRMED, P-R2B4 CONFIRMED.**
 
-**R2-B, REASON**: pending at the time of this entry.
+**R2-B, REASON** (`r2_realism_results.json`, Qwen3-8B, thinking enabled; 0 of 879 rotation pairs and 13 of 2,400 k-subsample replies unparseable).
+- Rotation: gainers −0.006 [−0.017, 0.000]; losers +0.011 [0.000, +0.032]; placebo −0.003 [−0.009, 0.000].
+- KSUB: k>1 margin referenced +0.281, blind +0.226, paired difference +0.055 [−0.103, +0.259] (19 tasks); accuracy delta at k=1 −0.058 [−0.114, −0.018], at k>1 −0.037 [−0.075, 0.000]; step +0.021 [−0.034, +0.083].
+- **P-R2B1 FALSIFIED, P-R2B2 FALSIFIED, P-R2B3 FALSIFIED, P-R2B4 FALSIFIED.** A judge that reasons at length before scoring shows no measurable anchoring on these tasks.
