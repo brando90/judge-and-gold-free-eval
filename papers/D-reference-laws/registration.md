@@ -2167,3 +2167,27 @@ inflation would be closer to m1's than to the raw single-reference level; if gem
 number just as much but a different mechanism drives the residual, m1noscore should restore
 inflation to single-reference height as it does for the other two judges. Both outcomes are
 informative and neither is presupposed.
+
+---
+
+## Synthetic-grid extension OUTCOME (2026-09-12): P-FG1 not confirmed, and not interpretable either
+
+**Result.** k=1 delta $+0.09$ [$-0.22,+0.56$]; k>1 delta $-0.07$ [$-0.18,+0.03$]; step $-0.16$
+[$-0.67,+0.18$] — near zero, wrong-signed point estimate, CI including zero. **P-FG1 NOT
+CONFIRMED.**
+
+**But this is not a stronger negative finding than the k-stratified pool's; it is a worse-
+resolved one.** The score-resolution screen on this pool is **47.02 mean candidates tied at the
+maximum** per 64-sample pool (against the registered $\le 3.0$ bar), more than three times the
+replication pool's already-failing 15.03. The synthetic grid's tasks (prime windows, divisors)
+are short and cleanly binary, exactly the setting where GPT-4.1's confidence saturates hardest
+against the provider API's 5-logprob cap, so best-of-64 selection is close to a coin flip over
+most of the pool on both conditions. **Correction of the framing in this entry's own
+registration**, which called this "the cleanest available second shot" and predicted a null here
+would be "the strongest evidence yet" against frontier reproduction: that framing is wrong. A
+null on an unresolvable instrument is not evidence either way. GPT-4.1's k-step remains
+**genuinely unresolved** on both pools tested, not resolved negatively. No pool or protocol run
+so far gives GPT-4.1 a tie-resistant inflation readout; the only route that would (repeated
+sampling on a provider whose scores are not capped, or Claude Sonnet 5's fixed tool-call integer
+averaged over multiple draws) is not yet run and is noted as the right next step rather than
+attempted under time pressure here.
