@@ -2836,3 +2836,22 @@ baseline), this is a strong candidate for promotion to the main text's Limitatio
 section (which already names this exact question as untested) in a future revision,
 rather than staying appendix-only indefinitely -- flagged for that discussion, not
 decided here.
+
+---
+
+## Claim-calibration edit: P-SL1's paper writeup relabeled after light-QA review
+
+A light-QA review of the P-SL1 appendix addition (2026-09-12) flagged that "intermediate
+reasoning step" / "step-level" overstated the construction: the task is a two-number
+subset-sum whose finished answer is a pair, and the test concerns only the first of the
+two numbers -- a partial, unfinished ANSWER, not a step in any chain-of-thought or
+multi-step derivation. The reviewer noted the body text already hedged this explicitly
+("deliberately minimal," "no real multi-step derivation ... is involved") but judged the
+subsection title and framing could still mislead a reader who skims the title and the
+bolded numbers. Agreed and fixed rather than left at "0 critical issues, ship it": the
+subsection is retitled "A partial-answer proxy for the untested process-reward-model
+question," the opening now states plainly, before any number appears, that this is not a
+step-level or PRM test, and the Section 9 forward-pointer now says "a partial-answer
+proxy for this question, not the question itself." No number changed; P-SL1's numeric
+outcome (confirmed, both judges, both rubrics, per the entry above) is unaffected --
+only how it is described in the paper's prose changed.
