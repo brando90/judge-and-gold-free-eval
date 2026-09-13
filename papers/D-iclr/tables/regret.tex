@@ -1,0 +1,18 @@
+\begin{tabular}{llccc}
+\toprule
+Judge & Pool & Blind & Reference & Blind, then reveal \\
+\midrule
+Qwen2.5-7B & $k$-pool, $k{>}1$ & $+0.0$ & $-30.8$ & $-10.2$ \\
+ & MATH-500 & $-30.5$ & $+0.0$ & $-2.9$ \\
+ & \textsc{MACE} & $-9.8$ & $+0.0$ & $-3.0$ \\
+ & \emph{worst case} & $\mathbf{-30.5}$ & $\mathbf{-30.8}$ & $\mathbf{-10.2}$ \\
+\addlinespace
+phi-4 & $k$-pool, $k{>}1$ & $+0.0$ & $-20.5$ & $-15.4$ \\
+ & \textsc{MACE} & $-11.3$ & $+0.0$ & $-1.5$ \\
+ & \emph{worst case} & $\mathbf{-11.3}$ & $\mathbf{-20.5}$ & $\mathbf{-15.4}$ \\
+\addlinespace
+Qwen2.5-14B & $k$-pool, $k{>}1$ & $-2.6$ & $-20.5$ & $+0.0$ \\
+ & MATH-500 & $-27.6$ & $+0.0$ & $-1.7$ \\
+ & \emph{worst case} & $\mathbf{-27.6}$ & $\mathbf{-20.5}$ & $\mathbf{-1.7}$ \\
+\bottomrule
+\end{tabular}

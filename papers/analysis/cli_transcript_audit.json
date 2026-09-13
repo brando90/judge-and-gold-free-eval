@@ -1,0 +1,12 @@
+{
+ "sessions": 660,
+ "blind": {
+  "calls": 330,
+  "thinking": 178
+ },
+ "referenced": {
+  "calls": 330,
+  "thinking": 27
+ },
+ "tool_calls": 0
+}
