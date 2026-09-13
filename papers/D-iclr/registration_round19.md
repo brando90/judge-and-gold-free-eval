@@ -56,4 +56,22 @@ R19-B (Claude Sonnet 5, adaptive thinking, MACE):
 
 ## Outcome
 
-To be recorded here after the runs, with the producers' outputs and the commit that records them.
+### R19-B (recorded 2026-09-13, after the run; R19-A still running)
+
+Run: 1,280 calls on `runs/r8/sonnet_mace.jsonl`, 0 errors, 0 unparseable replies, 40 of 40 tasks fully scored, ledger spend USD 1.67.
+Producers: `r8_sonnet_analysis.py --scores runs/r19/sonnet_think_api --out ../../papers/analysis/r19b_sonnet_think_results.json`
+and `r19_acceptance.py --scores runs/r19/sonnet_think_api --out ../../papers/analysis/r19b_acceptance.json`.
+
+| Readout (MACE, k > 1) | Adaptive thinking (R19-B) | Thinking disabled (R8-A) |
+|---|---|---|
+| AUROC non-matching vs wrong, blind -> reference | 0.945 -> 0.854 | 0.938 -> 0.785 |
+| Change | -0.090 [-0.140, -0.051] | -0.153 [-0.219, -0.097] |
+| False rejections, change (points) | +14.9 [+8.2, +23.1] | +35.6 [+24.8, +48.0] |
+| Margin, change | +3.12 [+2.14, +4.09] | +4.21 [+2.89, +5.65] |
+
+- **P-R19B1 confirmed** (-0.090, interval excludes zero).
+- **P-R19B2 confirmed** (+14.9 pp, interval excludes zero).
+- **P-R19B3 confirmed** (point estimate -0.090 is smaller in magnitude than -0.15).
+
+Descriptive (not predicted): with thinking, Sonnet 5 gives a blind 10 to 0 of 258 wrong answers and 22 of 382 correct answers; of the
+13 non-matching correct answers it scored 10 blind, 1 is scored 3 or below with the reference, against 0 of 9 matching ones.

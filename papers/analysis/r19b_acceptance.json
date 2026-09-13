@@ -1,0 +1,40 @@
+{
+ "mace": {
+  "acceptance": {
+   "nonmatch": {
+    "scored_10_blind": 13,
+    "scored_le3_with_reference": 1,
+    "share": 0.0769
+   },
+   "match": {
+    "scored_10_blind": 9,
+    "scored_le3_with_reference": 0,
+    "share": 0.0
+   }
+  },
+  "blind_10_rate": {
+   "wrong": {
+    "n": 258,
+    "blind_10": 0,
+    "share": 0.0
+   },
+   "correct": {
+    "n": 382,
+    "blind_10": 22,
+    "share": 0.0576
+   }
+  }
+ },
+ "pooled_acceptance": {
+  "nonmatch": {
+   "scored_10_blind": 13,
+   "scored_le3_with_reference": 1,
+   "share": 0.0769
+  },
+  "match": {
+   "scored_10_blind": 9,
+   "scored_le3_with_reference": 0,
+   "share": 0.0
+  }
+ }
+}
