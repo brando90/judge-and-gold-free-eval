@@ -2673,3 +2673,39 @@ own entry if pursued and reported as exploratory if not.
 
 Producers: extending `papers/analysis/mathconstraint_pilot_analysis.py`; pool-construction
 scripts to be committed alongside first use of each, before any judging of that pool.
+
+---
+
+## P-MC4 outcome (FALSIFIED, design flaw diagnosed) and REGISTER P-MC4b (corrected retry)
+
+**P-MC4 as executed: FALSIFIED, in the opposite direction.** Ref valid-pick-rate = 1.000
+[1.000,1.000] for both judges, blind = 0.750 [0.500,1.000] (Qwen-7B) / 0.750
+[0.375,1.000] (phi-4), $n{=}8$ items, best-of-32. The registered prediction (ref lower
+than blind) is not just unconfirmed, it is reversed.
+
+**Diagnosed cause, disclosed rather than hidden: the pool was built wrong for what it was
+registered to test.** 4-7 of 32 samples per item were genuinely valid (Fable); the
+remaining ~25-28 were Llama-3.1-8B's attempts, and Section~\ref{sec:appendix-mathconstraint}
+already established these are essentially all obviously-garbled, not competitive
+near-misses. The paper's actual phenomenon (Section~\ref{sec:setup}) requires the harm
+condition: multiple DISTINCT valid answers competing, where the judge favours the
+reference-matching one over an equally-correct non-matching one, degrading true accuracy
+relative to blind. A pool with one correct needle in a pile of obvious garbage is
+structurally the paper's OWN "k=1, reference helps" case in disguise, not the harm case:
+blind's few misses (2/8 items each judge) look like ordinary noise on clearly-invalid
+text, and the reference simply hands the judge an easy way to spot the one real answer.
+This is a real methodological error in this session's pool construction, not evidence
+against the paper's central claim, and is reported as such rather than quietly redone
+without disclosure.
+
+**REGISTER P-MC4b (corrected, before any of its judging exists).** Zero new generation:
+reuses Fable's two valid solutions per item (sol_1 = reference, sol_2 = a genuinely
+different valid answer) and the lure / clean-invalid pair already built and independently
+verified for P-MC6. Pool per item: {sol_1 (valid, matches ref), sol_2 (valid, does not
+match ref), lure (invalid, resembles ref), clean invalid}, oracle $=[1,1,0,0]$, mirroring
+the paper's own 2D lure/composition design (Section~\ref{sec:dose}) rather than a
+from-scratch construction. Prediction: the referenced judge's rate of picking sol_2
+specifically (the valid-but-non-matching answer, the one case that isolates the harm) is
+lower under ref than under blind, for both judges, paired per item -- the literal
+selection-degradation phenomenon, now isolated from the "any valid answer beats obvious
+garbage" confound that sank P-MC4.
