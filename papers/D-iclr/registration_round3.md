@@ -1,0 +1,53 @@
+# Round-3 registration, written and committed BEFORE any of its judge scores exist
+
+Motivation: an external presentation-focused review of the revised draft (papers/D-iclr/reviews/round2_review.md) found that the draft's boundary claim rests on a confounded comparison (the only judge that reasons at length, Qwen3-8B with thinking, differs from the anchoring judges in model, estimator, and template), that no thinking judge was tested on tasks it cannot verify by calculation, and that the practical consequence was never measured end to end on a natural multi-answer pool. This file registers four experiments.
+
+Harnesses (committed with this file): `experiments/tfa-vs-judge/scripts/r3_build_subsamples.py`, `r3_judge.py`, `r3_mitigation_mace.py`, `r3_chain_gpu7.sh`, `r3_chain_gpu4.sh`.
+Producers (frozen, committed with this file): `papers/analysis/r3_toggle_analysis.py`, `r3_mace_accuracy_analysis.py`.
+All intervals: task-level bootstrap, 1,000 resamples, numpy default_rng(0).
+
+---
+
+## R3-A. Thinking on versus off, same weights (Qwen3-8B)
+
+**Design.** The R2-B REASON protocol (Qwen3-8B, rubric a with a final "Score: N" line, temperature 0.6, top-p 0.95, top-k 20, up to 4,096 new tokens) is rerun with `enable_thinking=False` and nothing else changed, on the same ROT subsample (conditions ref, refrot, noref) and KSUB subsample (ref, noref). The thinking-on arm is the existing R2-B REASON data.
+
+**Readouts.** As in R2-B: per-task mean same-sample change (refrot − ref) for gainers, losers, placebo; KSUB paired referenced-minus-blind margin at k>1; KSUB best-of-16 accuracy deltas. New: the per-task paired difference in loser change between arms (off − on), over tasks with losers in both arms.
+
+**Predictions.**
+- **P-R3A1.** Thinking off: loser change < 0, CI excluding zero.
+- **P-R3A2.** Thinking off: gainer change > 0, CI excluding zero.
+- **P-R3A3.** Loser change, thinking off minus thinking on, < 0 with CI excluding zero.
+- **P-R3A4.** Thinking off: KSUB referenced-minus-blind margin at k>1 > 0, CI excluding zero.
+
+## R3-B. Thinking on versus off, a frontier judge (Claude Sonnet 5)
+
+Registered separately in `registration_round3b.md` after a harness pilot on items outside its pool, and before any of its pool is judged. Its pool file `runs/r3/sonnet_rot.jsonl` is built by `r3_build_subsamples.py` with this commit.
+
+## R3-C. A thinking judge on tasks it cannot verify by calculation (MACE entity questions)
+
+**Pool.** `runs/r3/macesub.jsonl`: every MACE River or Language task with k > 1 that has both reference-matching and non-matching valid samples among its 64; up to 4 samples from each of matching-valid, non-matching-valid, and invalid (seed 1). Matching follows `papers/analysis/mace_analysis.py`. Validity of these questions is knowledge-based, so a judge cannot check a candidate by calculation.
+
+**Design.** Qwen3-8B, R2-B REASON prompt, conditions ref and noref, thinking on and thinking off.
+
+**Readouts.** Per arm: per-task referenced margin (matching-valid minus non-matching-valid mean score) minus blind margin; false-rejection rate of non-matching valid samples (score ≤ 3), referenced minus blind.
+
+**Predictions.**
+- **P-R3C1.** Thinking on: referenced-minus-blind margin > 0, CI excluding zero.
+- **P-R3C2.** Thinking off: referenced-minus-blind margin > 0, CI excluding zero.
+- **P-R3C3.** The thinking-on margin difference is smaller than the thinking-off one (point estimates).
+
+## R3-D. End to end on a natural multi-answer pool (MACE River + Language)
+
+**Pool.** All MACE River and Language tasks, with the benchmark's natural mix of k ∈ {1, 2, 4, 6}, restricted to tasks with pool pass rate in [0.05, 0.95] (the band `mace_analysis.py` uses).
+
+**Design.** Qwen2.5-7B-Instruct and phi-4. Blind and reference scores: the frozen `runs/bon_scores_mace/mace__{judge}__{noref,ref}_a.jsonl`. New: blind-then-reveal (m1) and the soft validity gate (m2), prompts copied verbatim from `mitigation_judge.py`, rubric a.
+
+**Readouts.** Best-of-64 selection accuracy (rubric-a selection, validity averaged over ties) for blind, reference, m1, m2; deltas by k = 1, k > 1, and pooled over the natural mix. Post hoc: the multi-answer prevalence at which m1 and the plain reference give equal expected accuracy, from the k = 1 and k > 1 deltas.
+
+**Predictions.**
+- **P-R3D1.** At k > 1, reference minus blind < 0 with CI excluding zero, both judges.
+- **P-R3D2.** At k > 1, m1 minus reference > 0 with CI excluding zero, both judges.
+- **P-R3D3.** Pooled over the natural mix, m1 accuracy ≥ reference accuracy (point estimates), both judges.
+
+Whatever the outcomes, all are reported in the paper's ledger.
