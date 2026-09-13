@@ -1,0 +1,126 @@
+{
+ "judges": [
+  "anthropic__claude-sonnet-5",
+  "openai__gpt-4.1-2025-04-14"
+ ],
+ "anthropic__claude-sonnet-5__have": {
+  "ref": true,
+  "refinst": true,
+  "refinst2": true,
+  "noref": true
+ },
+ "anthropic__claude-sonnet-5__margin_ref": {
+  "mean": 3.0,
+  "n": 37,
+  "ci": [
+   2.022,
+   4.019
+  ]
+ },
+ "anthropic__claude-sonnet-5__margin_refinst": {
+  "mean": 2.075,
+  "n": 37,
+  "ci": [
+   1.137,
+   3.142
+  ]
+ },
+ "anthropic__claude-sonnet-5__margin_refinst2": {
+  "mean": 2.604,
+  "n": 37,
+  "ci": [
+   1.59,
+   3.656
+  ]
+ },
+ "anthropic__claude-sonnet-5__margin_noref": {
+  "mean": 0.204,
+  "n": 37,
+  "ci": [
+   -0.459,
+   0.993
+  ]
+ },
+ "anthropic__claude-sonnet-5__refinst_minus_ref_margin": {
+  "mean": -0.925,
+  "n": 37,
+  "ci": [
+   -1.216,
+   -0.652
+  ]
+ },
+ "anthropic__claude-sonnet-5__P_FI1": true,
+ "anthropic__claude-sonnet-5__refinst2_minus_ref_margin": {
+  "mean": -0.396,
+  "n": 37,
+  "ci": [
+   -0.753,
+   -0.027
+  ]
+ },
+ "anthropic__claude-sonnet-5__P_FI2": true,
+ "openai__gpt-4.1-2025-04-14__have": {
+  "ref": true,
+  "refinst": true,
+  "refinst2": true,
+  "noref": true
+ },
+ "openai__gpt-4.1-2025-04-14__margin_ref": {
+  "mean": 0.994,
+  "n": 37,
+  "ci": [
+   0.567,
+   1.546
+  ]
+ },
+ "openai__gpt-4.1-2025-04-14__margin_refinst": {
+  "mean": 0.462,
+  "n": 37,
+  "ci": [
+   0.129,
+   0.94
+  ]
+ },
+ "openai__gpt-4.1-2025-04-14__margin_refinst2": {
+  "mean": 0.591,
+  "n": 37,
+  "ci": [
+   0.208,
+   1.121
+  ]
+ },
+ "openai__gpt-4.1-2025-04-14__margin_noref": {
+  "mean": 0.089,
+  "n": 37,
+  "ci": [
+   -0.464,
+   0.742
+  ]
+ },
+ "openai__gpt-4.1-2025-04-14__refinst_minus_ref_margin": {
+  "mean": -0.532,
+  "n": 37,
+  "ci": [
+   -0.781,
+   -0.317
+  ]
+ },
+ "openai__gpt-4.1-2025-04-14__P_FI1": true,
+ "openai__gpt-4.1-2025-04-14__refinst2_minus_ref_margin": {
+  "mean": -0.403,
+  "n": 37,
+  "ci": [
+   -0.592,
+   -0.226
+  ]
+ },
+ "openai__gpt-4.1-2025-04-14__P_FI2": true,
+ "openai__gpt-4.1-2025-04-14__gap_ref_minus_blind": {
+  "mean": -0.178,
+  "n": 60,
+  "ci": [
+   -0.379,
+   -0.006
+  ]
+ }
+}

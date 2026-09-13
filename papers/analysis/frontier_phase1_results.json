@@ -1,0 +1,295 @@
+{
+ "judge": "anthropic__claude-sonnet-5",
+ "rotation__a": {
+  "gainers": {
+   "mean": 3.035,
+   "ci": [
+    2.532,
+    3.563
+   ],
+   "n_items": 120
+  },
+  "losers": {
+   "mean": -2.657,
+   "ci": [
+    -3.36,
+    -2.002
+   ],
+   "n_items": 93
+  },
+  "placebo": {
+   "mean": 0.04,
+   "ci": [
+    -0.415,
+    0.464
+   ],
+   "n_items": 113
+  },
+  "gainer_minus_placebo": {
+   "mean": 3.085,
+   "ci": [
+    2.446,
+    3.779
+   ],
+   "n_items": 113
+  },
+  "retained": null,
+  "pred_gainers": true,
+  "pred_losers": true,
+  "pred_specificity": true
+ },
+ "rotation_filtered__a": {
+  "gainers": {
+   "mean": 2.787,
+   "ci": [
+    2.263,
+    3.403
+   ],
+   "n_items": 120
+  },
+  "losers": {
+   "mean": -2.5,
+   "ci": [
+    -3.199,
+    -1.832
+   ],
+   "n_items": 92
+  },
+  "placebo": {
+   "mean": 0.198,
+   "ci": [
+    -0.215,
+    0.648
+   ],
+   "n_items": 110
+  },
+  "gainer_minus_placebo": {
+   "mean": 2.67,
+   "ci": [
+    2.045,
+    3.328
+   ],
+   "n_items": 110
+  },
+  "retained": "3194/3494",
+  "pred_gainers": true,
+  "pred_losers": true,
+  "pred_specificity": true
+ },
+ "rotation__b": {
+  "gainers": {
+   "mean": 2.537,
+   "ci": [
+    2.037,
+    3.075
+   ],
+   "n_items": 120
+  },
+  "losers": {
+   "mean": -2.509,
+   "ci": [
+    -3.17,
+    -1.887
+   ],
+   "n_items": 93
+  },
+  "placebo": {
+   "mean": 0.285,
+   "ci": [
+    -0.099,
+    0.692
+   ],
+   "n_items": 113
+  },
+  "gainer_minus_placebo": {
+   "mean": 2.305,
+   "ci": [
+    1.753,
+    2.857
+   ],
+   "n_items": 113
+  },
+  "retained": null,
+  "pred_gainers": true,
+  "pred_losers": true,
+  "pred_specificity": true
+ },
+ "rotation_filtered__b": {
+  "gainers": {
+   "mean": 2.283,
+   "ci": [
+    1.806,
+    2.752
+   ],
+   "n_items": 120
+  },
+  "losers": {
+   "mean": -2.349,
+   "ci": [
+    -2.973,
+    -1.751
+   ],
+   "n_items": 92
+  },
+  "placebo": {
+   "mean": 0.263,
+   "ci": [
+    -0.118,
+    0.651
+   ],
+   "n_items": 110
+  },
+  "gainer_minus_placebo": {
+   "mean": 2.05,
+   "ci": [
+    1.538,
+    2.58
+   ],
+   "n_items": 110
+  },
+  "retained": "3194/3494",
+  "pred_gainers": true,
+  "pred_losers": true,
+  "pred_specificity": true
+ },
+ "masking__a": {
+  "bare": {
+   "mean": 3.057,
+   "ci": [
+    2.523,
+    3.602
+   ],
+   "n_items": 93
+  },
+  "blind": {
+   "mean": 0.092,
+   "ci": [
+    -0.208,
+    0.347
+   ],
+   "n_items": 93
+  },
+  "words": {
+   "mean": 3.135,
+   "ci": [
+    2.61,
+    3.651
+   ],
+   "n_items": 93
+  },
+  "expr": {
+   "mean": 0.473,
+   "ci": [
+    0.022,
+    0.878
+   ],
+   "n_items": 93
+  },
+  "words_minus_bare": {
+   "mean": 0.078,
+   "ci": [
+    -0.088,
+    0.267
+   ],
+   "n_items": 93
+  },
+  "expr_minus_bare": {
+   "mean": -2.584,
+   "ci": [
+    -3.178,
+    -2.022
+   ],
+   "n_items": 93
+  },
+  "pred_words_positive": true,
+  "pred_expr_below_bare": true
+ },
+ "masking__b": {
+  "bare": {
+   "mean": 2.492,
+   "ci": [
+    2.066,
+    2.987
+   ],
+   "n_items": 93
+  },
+  "blind": {
+   "mean": 0.385,
+   "ci": [
+    0.111,
+    0.641
+   ],
+   "n_items": 93
+  },
+  "words": {
+   "mean": 2.823,
+   "ci": [
+    2.356,
+    3.29
+   ],
+   "n_items": 93
+  },
+  "expr": {
+   "mean": 0.308,
+   "ci": [
+    -0.213,
+    0.843
+   ],
+   "n_items": 93
+  },
+  "words_minus_bare": {
+   "mean": 0.332,
+   "ci": [
+    0.156,
+    0.517
+   ],
+   "n_items": 93
+  },
+  "expr_minus_bare": {
+   "mean": -2.184,
+   "ci": [
+    -2.786,
+    -1.673
+   ],
+   "n_items": 93
+  },
+  "pred_words_positive": true,
+  "pred_expr_below_bare": true
+ },
+ "mace__ref_nonmath": {
+  "mean": 5.291,
+  "ci": [
+   4.568,
+   6.023
+  ],
+  "n_items": 81
+ },
+ "mace__ref_math": {
+  "mean": 3.861,
+  "ci": [
+   2.589,
+   5.032
+  ],
+  "n_items": 34
+ },
+ "mace__noref_nonmath": {
+  "mean": -1.372,
+  "ci": [
+   -2.047,
+   -0.673
+  ],
+  "n_items": 81
+ },
+ "mace__noref_math": {
+  "mean": -0.305,
+  "ci": [
+   -1.155,
+   0.543
+  ],
+  "n_items": 34
+ },
+ "mace_pred": {
+  "ref_positive": true,
+  "blind_null": false
+ }
+}

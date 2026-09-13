@@ -1,0 +1,32 @@
+{
+ "judges": [
+  "openai__gpt-4.1-2025-04-14"
+ ],
+ "pool": "runs/bon/bon_synthk__Qwen__Qwen2.5-7B-Instruct.jsonl",
+ "openai__gpt-4.1-2025-04-14__k1": {
+  "mean": -0.029,
+  "n": 12,
+  "ci": [
+   -0.282,
+   0.358
+  ]
+ },
+ "openai__gpt-4.1-2025-04-14__kgt1": {
+  "mean": -0.112,
+  "n": 48,
+  "ci": [
+   -0.221,
+   -0.01
+  ]
+ },
+ "openai__gpt-4.1-2025-04-14__step": {
+  "mean": -0.082,
+  "ci": [
+   -0.485,
+   0.197
+  ],
+  "n_k1": 12,
+  "n_kgt1": 48,
+  "P_FG1": false
+ }
+}

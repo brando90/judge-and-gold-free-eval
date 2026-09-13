@@ -1,0 +1,222 @@
+{
+ "judges": [
+  "openai__gpt-4.1-2025-04-14"
+ ],
+ "repl_delta__openai__gpt-4.1-2025-04-14": {
+  "n": 105,
+  "delta": 0.12,
+  "ci": [
+   0.019,
+   0.228
+  ],
+  "P_FR1": true
+ },
+ "repl_collapse__openai__gpt-4.1-2025-04-14": {
+  "eligible": 93,
+  "ref_only": 32,
+  "blind_only": 1,
+  "mcnemar_p": 0.0,
+  "P_FR2": true
+ },
+ "repl_margin__openai__gpt-4.1-2025-04-14": {
+  "n": 93,
+  "margin": 1.19,
+  "ci": [
+   0.917,
+   1.499
+  ],
+  "P_FR3": true
+ },
+ "kstrat_margin__openai__gpt-4.1-2025-04-14|noref|k2": {
+  "n": 15,
+  "margin": 0.12,
+  "ci": [
+   -0.615,
+   0.907
+  ]
+ },
+ "kstrat_margin__openai__gpt-4.1-2025-04-14|noref|k4": {
+  "n": 12,
+  "margin": -0.62,
+  "ci": [
+   -1.551,
+   0.246
+  ]
+ },
+ "kstrat_margin__openai__gpt-4.1-2025-04-14|noref|k8": {
+  "n": 10,
+  "margin": 0.9,
+  "ci": [
+   -0.227,
+   2.568
+  ]
+ },
+ "kstrat_margin__openai__gpt-4.1-2025-04-14|ref|k2": {
+  "n": 15,
+  "margin": 1.11,
+  "ci": [
+   0.483,
+   1.854
+  ]
+ },
+ "kstrat_margin__openai__gpt-4.1-2025-04-14|ref|k4": {
+  "n": 12,
+  "margin": 0.41,
+  "ci": [
+   0.152,
+   0.728
+  ]
+ },
+ "kstrat_margin__openai__gpt-4.1-2025-04-14|ref|k8": {
+  "n": 10,
+  "margin": 1.52,
+  "ci": [
+   0.403,
+   3.01
+  ]
+ },
+ "kstrat_margin__openai__gpt-4.1-2025-04-14|m1|k2": {
+  "n": 15,
+  "margin": 0.56,
+  "ci": [
+   0.057,
+   1.123
+  ]
+ },
+ "kstrat_margin__openai__gpt-4.1-2025-04-14|m1|k4": {
+  "n": 12,
+  "margin": 0.23,
+  "ci": [
+   0.036,
+   0.528
+  ]
+ },
+ "kstrat_margin__openai__gpt-4.1-2025-04-14|m1|k8": {
+  "n": 10,
+  "margin": 1.2,
+  "ci": [
+   0.12,
+   2.943
+  ]
+ },
+ "kstrat_gap__openai__gpt-4.1-2025-04-14|ref|k1": {
+  "n": 15,
+  "delta": -0.369,
+  "ci": [
+   -0.687,
+   -0.126
+  ]
+ },
+ "kstrat_gap__openai__gpt-4.1-2025-04-14|ref|k2": {
+  "n": 15,
+  "delta": -0.082,
+  "ci": [
+   -0.389,
+   0.232
+  ]
+ },
+ "kstrat_gap__openai__gpt-4.1-2025-04-14|ref|k4": {
+  "n": 13,
+  "delta": 0.098,
+  "ci": [
+   -0.074,
+   0.297
+  ]
+ },
+ "kstrat_gap__openai__gpt-4.1-2025-04-14|ref|k8": {
+  "n": 14,
+  "delta": -0.307,
+  "ci": [
+   -0.738,
+   0.021
+  ]
+ },
+ "kstrat_gap__openai__gpt-4.1-2025-04-14|ref|k16": {
+  "n": 11,
+  "delta": -0.078,
+  "ci": [
+   -0.292,
+   0.131
+  ]
+ },
+ "kstrat_gap__openai__gpt-4.1-2025-04-14|ref|kgt1": {
+  "n": 53,
+  "delta": -0.097,
+  "ci": [
+   -0.262,
+   0.052
+  ]
+ },
+ "kstrat_gap__openai__gpt-4.1-2025-04-14|m1|k1": {
+  "n": 15,
+  "delta": -0.198,
+  "ci": [
+   -0.537,
+   0.111
+  ]
+ },
+ "kstrat_gap__openai__gpt-4.1-2025-04-14|m1|k2": {
+  "n": 15,
+  "delta": -0.139,
+  "ci": [
+   -0.478,
+   0.109
+  ]
+ },
+ "kstrat_gap__openai__gpt-4.1-2025-04-14|m1|k4": {
+  "n": 13,
+  "delta": -0.116,
+  "ci": [
+   -0.307,
+   0.115
+  ]
+ },
+ "kstrat_gap__openai__gpt-4.1-2025-04-14|m1|k8": {
+  "n": 14,
+  "delta": -0.407,
+  "ci": [
+   -0.855,
+   -0.085
+  ]
+ },
+ "kstrat_gap__openai__gpt-4.1-2025-04-14|m1|k16": {
+  "n": 11,
+  "delta": -0.37,
+  "ci": [
+   -0.609,
+   -0.187
+  ]
+ },
+ "kstrat_gap__openai__gpt-4.1-2025-04-14|m1|kgt1": {
+  "n": 53,
+  "delta": -0.252,
+  "ci": [
+   -0.415,
+   -0.103
+  ]
+ },
+ "kstrat_step__openai__gpt-4.1-2025-04-14": {
+  "n_k1": 15,
+  "n_kgt1": 53,
+  "step": 0.273,
+  "ci": [
+   -0.021,
+   0.608
+  ],
+  "P_FK1": false
+ },
+ "kstrat_m1_minus_ref__openai__gpt-4.1-2025-04-14": {
+  "n": 53,
+  "contrast": -0.156,
+  "ci": [
+   -0.265,
+   -0.048
+  ],
+  "P_FK2": true
+ },
+ "kstrat_P_FK3__openai__gpt-4.1-2025-04-14": {
+  "m1_kgt1": -0.252,
+  "ref_kgt1": -0.097,
+  "directional": false
+ }
+}
