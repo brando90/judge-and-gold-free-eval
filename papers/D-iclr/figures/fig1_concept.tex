@@ -5,6 +5,7 @@
 % Sans-serif throughout so the text matches the matplotlib panel.
 \definecolor{refblue}{HTML}{4269D0}
 \definecolor{blindorange}{HTML}{C5541A}
+\definecolor{penalred}{HTML}{A51C30}
 \begin{tikzpicture}[
   font=\sffamily\footnotesize,
   >={Stealth[length=4pt]},
@@ -33,10 +34,10 @@
 \node[judge] (j2) at (6.85, 0.35) {judge};
 \foreach \i in {0,1,2} {\draw[->, black!60] (c\i) -- (j\i);}
 \node[score, text=blindorange] (s0) at (7.85, 1.95) {10.0};
-\node[score, text=refblue] (s1) at (7.85, 1.15) {\textbf{2.9}};
+\node[score, text=penalred] (s1) at (7.85, 1.15) {\textbf{2.9}};
 \node[score, text=refblue] (s2) at (7.85, 0.35) {\textbf{9.3}};
 \foreach \i in {0,1,2} {\draw[->, black!60] (j\i) -- (s\i);}
-\node[font=\sffamily\scriptsize, text=black!70, align=left, anchor=north west, text width=3.9cm, inner sep=0pt] at (4.0, -0.2) {Qwen2.5-7B, score only. Over the pool, it scores correct answers that differ from the reference 3 or below \textcolor{blindorange}{0.4\%} of the time blind and \textcolor{refblue}{\textbf{28\%}} of the time with it.};
+\node[font=\sffamily\footnotesize, text=black!75, align=left, anchor=north west, text width=4.1cm, inner sep=0pt] at (4.0, -0.15) {Qwen2.5-7B, score only. Over the pool it scores correct answers that differ from the reference 3 or below \textcolor{blindorange}{0.4\%} of the time blind and \textcolor{penalred}{\textbf{28\%}} with the reference.};
 
 % ---------------- (c) the result over the pool
 \node[panel] at (8.55, 2.6) {c\;\;Over the replication pool};

@@ -269,7 +269,7 @@ The thinking judge gives a score of 10 to 96.2\% of valid rotation samples blind
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.94\textwidth]{figures/fig3_cost.pdf}
-\caption{\textbf{Grading and selection under three ways of reading answers.} Referenced minus blind, per task. Blue circles: answers read in any format, 95\% intervals; grey ticks: registered checker; grey crosses: answers read by a model; blue diamonds: \textsc{MACE}'s answer lists and MATH-500's unique answers; blue squares: Sonnet~5 on 16-candidate subsamples. \textbf{(a)}~Change in grading AUROC for correct answers that differ from the reference against wrong answers. \textbf{(b)}~Change in best-of-64 accuracy; not shown for Sonnet~5, whose subsamples always contain a correct answer matching the reference, or GPT-4.1, whose scores tie. Exact scorer for Qwen2.5 and gemma-2. Any-format and model-read values for open judges are post hoc.\ph}
+\caption{\textbf{Grading and selection under three ways of reading answers.} Referenced minus blind, per task. Blue circles: answers read in any format, 95\% intervals; grey diamonds: registered labels; grey ticks: boxed replies only; grey crosses: answers read by a model; blue diamonds: \textsc{MACE}'s answer lists and MATH-500's unique answers; blue squares: Sonnet~5 on 16-candidate subsamples. \textbf{(a)}~Change in grading AUROC for correct answers that differ from the reference against wrong answers. \textbf{(b)}~Change in best-of-64 accuracy; not shown for Sonnet~5, whose subsamples always contain a correct answer matching the reference, or GPT-4.1, whose scores tie. Exact scorer for Qwen2.5 and gemma-2. Any-format and model-read values for open judges are post hoc.\ph}
 \label{fig:cost}
 \end{figure}
 
@@ -280,7 +280,7 @@ We relabeled every reply post hoc, before reading any judge score with the new l
 
 \begin{table}[htbp]
 \centering
-\caption{Change in best-of-64 accuracy from showing the reference (points, 95\% CI), constructed pools, under four labelings. The pass-rate band is recomputed under each labeling. Exact scorer for Qwen2.5 and gemma-2; Mistral-7B's scores are parsed integers. Registered-checker values for the four open $k$-pool judges at $k{>}1$ are pre-specified; the rest are post hoc.}
+\caption{Change in best-of-64 accuracy from showing the reference (points, 95\% CI), constructed pools, under four labelings. The pass-rate band is recomputed under each labeling. Exact scorer for Qwen2.5 and gemma-2; Mistral-7B's scores are parsed integers. Registered-checker values for the four open $k$-pool judges at $k{>}1$ are a pre-specified re-analysis ($\ddagger$); the rest are post hoc.}
 \label{tab:labelings-acc}
 \footnotesize
 \setlength{\tabcolsep}{3pt}
@@ -289,7 +289,7 @@ We relabeled every reply post hoc, before reading any judge score with the new l
 
 \begin{table}[htbp]
 \centering
-\caption{Change in per-task AUROC for separating correct answers that differ from the reference from wrong answers (95\% CI), under four labelings. Qwen2.5-7B's replication value under the registered checker is pre-specified; the rest are post hoc.}
+\caption{Change in per-task AUROC for separating correct answers that differ from the reference from wrong answers (95\% CI), under four labelings. Exact scorer for Qwen2.5 and gemma-2; matches are decided from the extracted answer (compare \cref{tab:r4-grading}). Qwen2.5-7B's replication value under the registered checker is pre-specified; the rest are post hoc.}
 \label{tab:labelings-gnm}
 \footnotesize
 \setlength{\tabcolsep}{3pt}
@@ -298,7 +298,7 @@ We relabeled every reply post hoc, before reading any judge score with the new l
 
 \begin{table}[htbp]
 \centering
-\caption{Change in the share of correct non-matching answers scored 3 or below (points, 95\% CI), under four labelings.\ph}
+\caption{Change in the share of correct non-matching answers scored 3 or below (points, 95\% CI), under four labelings. Exact scorer for Qwen2.5 and gemma-2; matches are decided from the extracted answer.\ph}
 \label{tab:labelings-fr}
 \footnotesize
 \setlength{\tabcolsep}{3pt}
@@ -629,7 +629,7 @@ A later pre-specified experiment ran blind-then-reveal on the 105 MATH-500 probl
 \end{table}
 
 \paragraph{Zero-cost score combinations.}
-Simple combinations of the blind and referenced scores compete with blind-then-reveal (\cref{tab:score-rules}). Taking the maximum loses nothing to blind judging on the $k$-pool at $k{>}1$ and keeps the reference's benefit on \textsc{MACE}, but on MATH-500 it trails the reference for Qwen2.5-7B; the mean does best on MATH-500 and worse on the $k$-pool. No rule is best everywhere.\ph
+Simple combinations of the blind and referenced scores compete with blind-then-reveal (\cref{tab:score-rules}). Taking the maximum loses nothing to blind judging on the $k$-pool at $k{>}1$ and keeps the reference's benefit on \textsc{MACE}, but on MATH-500 it trails the reference for Qwen2.5-7B; the mean does best on MATH-500 and worse on the $k$-pool. No rule is best everywhere. Computed from the same stored scores, the max rule also keeps grading AUROC within 0.03 of blind judging, where showing the reference lowers it by 0.06 to 0.25; blind-then-reveal does not, except for Qwen2.5-14B (\cref{tab:protocol-grading}).\ph
 
 \begin{table}[htbp]
 \centering
@@ -637,6 +637,15 @@ Simple combinations of the blind and referenced scores compete with blind-then-r
 \caption{Best-of-64 accuracy change against blind judging (points) for score combinations and blind-then-reveal: $k$-pool at $k{>}1$, \textsc{MACE} overall, MATH-500. Original scorer.\ph}
 \label{tab:score-rules}
 \begin{adjustbox}{max width=\linewidth}\input{tables/score_rules.tex}\end{adjustbox}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption{\textbf{The max rule removes the grading harm; blind-then-reveal mostly does not.} Top: change in per-task grading AUROC relative to blind judging (95\% CI), for correct answers that differ from the reference against wrong answers ($k$-pool with any-format labels, 59 tasks; \textsc{MACE}, 91 tasks), and for all correct answers against wrong answers on single-answer questions. Bottom: change in best-of-64 accuracy relative to the referenced judge (points, 95\% CI). Original scorer, from stored scores.\ph}
+\label{tab:protocol-grading}
+\begin{adjustbox}{max width=\linewidth}\input{tables/protocol_grading.tex}\end{adjustbox}\\[6pt]
+\begin{adjustbox}{max width=\linewidth}\input{tables/protocol_selection.tex}\end{adjustbox}
 \end{table}
 
 \begin{table}[htbp]

@@ -239,8 +239,8 @@ LIGHT = "#b7c6ee"
 KIND3 = {"score": dict(marker="o", mfc=BLUE, mec=BLUE, ms=5.0),
          "rationale": dict(marker="o", mfc="white", mec=BLUE, mew=1.1, ms=5.0),
          "think": dict(marker="D", mfc="white", mec=BLUE, mew=1.1, ms=4.4)}
-fig, (a1, a2) = plt.subplots(1, 2, figsize=(5.5, 3.0), gridspec_kw={"width_ratios": [1.2, 1.0], "wspace": 1.14})
-fig.subplots_adjust(left=0.27, right=0.985, top=0.92, bottom=0.24)
+fig, (a1, a2) = plt.subplots(1, 2, figsize=(5.0, 2.9), gridspec_kw={"width_ratios": [1.15, 1.0], "wspace": 0.95})
+fig.subplots_adjust(left=0.3, right=0.975, top=0.92, bottom=0.25)
 r3s = load("r3_sonnet_results.json") or {}
 rows = [("hdr", "Sonnet 5 (CLI), 60 tasks")]
 for arm, lab, kind in (("fast", "score only", "score"), ("visible", "explains first", "rationale"), ("think", "thinking on", "think")):
@@ -284,7 +284,7 @@ style(a1, "x")
 a1.legend(handles=[Line2D([], [], ls="", label="score only", **KIND3["score"]),
                    Line2D([], [], ls="", label="explanation first", **KIND3["rationale"]),
                    Line2D([], [], ls="", label="thinking on", **KIND3["think"])],
-          loc="upper center", bbox_to_anchor=(0.2, -0.3), ncol=3, frameon=False, fontsize=7.6, handlelength=0.9,
+          loc="upper center", bbox_to_anchor=(0.25, -0.3), ncol=3, frameon=False, fontsize=7.6, handlelength=0.9,
           columnspacing=0.9, handletextpad=0.3)
 
 r7fr = (load("r7_posthoc_results.json") or {}).get("false_reject_change", {})
@@ -299,11 +299,9 @@ def _sub(src, arm):
     return ((src.get(arm) or {}).get("macesub") or {}).get("false_reject_diff")
 
 
-groups = [("Qwen3-8B, arithmetic", _fr(r7fr.get("Qwen3-8B|arithmetic|thinking off")), _fr(r7fr.get("Qwen3-8B|arithmetic|thinking on"))),
-          ("Qwen3-8B, factual", _fr(_sub(tog, "off")), _fr(_sub(tog, "on"))),
-          ("Qwen3-14B, arithmetic", _fr(r7fr.get("Qwen3-14B|arithmetic|thinking off")), _fr(r7fr.get("Qwen3-14B|arithmetic|thinking on"))),
-          ("Qwen3-14B, factual", _fr(_sub(t14, "off")), _fr(_sub(t14, "on"))),
-          ("Sonnet 5 (CLI), factual", _fr((r5s.get("fast") or {}).get("false_reject_diff")), _fr((r5s.get("think") or {}).get("false_reject_diff")))]
+groups = [("Qwen3-8B", _fr(_sub(tog, "off")), _fr(_sub(tog, "on"))),
+          ("Qwen3-14B", _fr(_sub(t14, "off")), _fr(_sub(t14, "on"))),
+          ("Sonnet 5 (CLI)", _fr((r5s.get("fast") or {}).get("false_reject_diff")), _fr((r5s.get("think") or {}).get("false_reject_diff")))]
 h = 0.38
 n_g = len(groups)
 for i, (lab, off, on) in enumerate(groups):
@@ -317,13 +315,13 @@ for i, (lab, off, on) in enumerate(groups):
 a2.axvline(0, color=MUTED, lw=0.8, zorder=2)
 a2.set_yticks(range(n_g), [g[0] for g in groups][::-1], fontsize=7.8)
 a2.set_ylim(-0.6, n_g - 0.4)
-a2.set_xlim(-2, 70)
+a2.set_xlim(-2, 66)
 a2.set_xticks([0, 20, 40, 60])
 a2.tick_params(axis="x", labelsize=7.8)
 a2.set_xlabel("false rejections, reference\nminus blind (pp)", fontsize=8)
-a2.set_title("b   Thinking off vs. on", loc="left", fontsize=9, fontweight="bold")
+a2.set_title("b   Factual questions", loc="left", fontsize=9, fontweight="bold")
 a2.legend(handles=[Patch(color=BLUE, label="thinking off"), Patch(color=LIGHT, label="thinking on")],
-          loc="upper center", bbox_to_anchor=(0.35, -0.3), ncol=2, frameon=False, handlelength=1.0, fontsize=7.6, columnspacing=1.0)
+          loc="upper center", bbox_to_anchor=(0.3, -0.3), ncol=2, frameon=False, handlelength=1.0, fontsize=7.6, columnspacing=1.0)
 style(a2, "x")
 save(fig, "fig2_reasoning")
 
@@ -456,7 +454,7 @@ if L8 and r4res.get("grading"):
     for pool, grp_, js in (("repl|all", "Replication", ["Qwen2.5-7B", "phi-4", "GPT-4.1"]),
                            ("kpool|kgt1", "k-pool, k > 1", ["Qwen2.5-7B", "Qwen2.5-14B", "gemma-2-9b", "phi-4", "GPT-4.1"])):
         for j in js:
-            rows.append((grp_, j, {h: (lv(pool, j, h, "G_nm"), lv(pool, j, h, "acc")) for h in ("strict", "lenient", "model")}))
+            rows.append((grp_, j, {h: (lv(pool, j, h, "G_nm"), lv(pool, j, h, "acc")) for h in ("strict", "boxed_only", "lenient", "model")}))
         sp = "repl" if pool.startswith("repl") else "kpool"
         if s8(sp, "lenient", "G_nm"):
             rows.append((grp_, "Sonnet 5 (API)", {"strict": (s8(sp, "strict", "G_nm"), s8(sp, "strict", "acc")),
@@ -483,11 +481,12 @@ if L8 and r4res.get("grading"):
         ys.append(y)
         labels_.append(j)
         y -= 1.0
-    STY = {"strict": dict(marker="|", color=MUTED, ms=7, mew=1.3, zorder=4),
+    STY = {"strict": dict(marker="d", mfc="white", mec=MUTED, ms=4.0, mew=0.9, zorder=4),
+           "boxed_only": dict(marker="|", color=MUTED, ms=7, mew=1.3, zorder=4),
            "lenient": dict(marker="o", mfc=BLUE, mec=BLUE, ms=4.4, zorder=5),
            "model": dict(marker="x", color=MUTED, ms=4.2, mew=0.9, zorder=4),
            "oracle": dict(marker="D", mfc=BLUE, mec=BLUE, ms=3.9, zorder=5)}
-    OFF = {"strict": 0.24, "lenient": 0.0, "model": -0.24, "oracle": 0.0}
+    OFF = {"strict": 0.26, "boxed_only": 0.13, "lenient": 0.0, "model": -0.24, "oracle": 0.0}
     for yy, (grp_, j, d) in zip(ys, rows):
         for how, (g, a) in d.items():
             for ax, v, scale in ((a1, g, 1.0), (a2, a, 100.0)):
@@ -520,7 +519,8 @@ if L8 and r4res.get("grading"):
     a2.set_title("b   Selection", loc="left", fontsize=9, fontweight="bold")
     a2.tick_params(axis="y", length=0)
     fig.legend(handles=[Line2D([], [], ls="", **STY["lenient"], label="answers read in any format (95% CI)"),
-                        Line2D([], [], ls="", **STY["strict"], label="registered checker (boxed answers)"),
+                        Line2D([], [], ls="", **STY["strict"], label="registered labels"),
+                        Line2D([], [], ls="", **STY["boxed_only"], label="boxed replies only"),
                         Line2D([], [], ls="", **STY["model"], label="answers read by a model"),
                         Line2D([], [], ls="", **STY["oracle"], label="answer list or unique answer (95% CI)"),
                         Line2D([], [], ls="", marker="s", mfc=BLUE, mec=BLUE, ms=4.6, label="Sonnet 5: 16-candidate subsamples")],
@@ -682,8 +682,8 @@ if L8b and r4res.get("math") and m3 and ph4b.get("mace_exact_q7"):
             "gpt": dict(marker="^", mfc="white", mec=BLUE, mew=1.1, ms=5.0)}
     TICK = dict(marker="|", color=MUTED, ms=7, mew=1.4)
     nrow = max(len(left), len(right))
-    fig, (a1, a2) = plt.subplots(1, 2, figsize=(5.5, 0.152 * nrow + 0.85), gridspec_kw={"width_ratios": [1.0, 1.0], "wspace": 0.86})
-    fig.subplots_adjust(left=0.225, right=0.985, top=0.9, bottom=0.13)
+    fig, (a1, a2) = plt.subplots(1, 2, figsize=(5.05, 0.152 * nrow + 1.0), gridspec_kw={"width_ratios": [1.0, 1.0], "wspace": 0.95})
+    fig.subplots_adjust(left=0.25, right=0.985, top=0.86, bottom=0.12)
     for ax, rowsx, xlim, xticks, xlabel, title in (
             (a1, left, (-62, 52), [-40, -20, 0, 20, 40], "change in best-of-64 accuracy (pp)", "a   Selection"),
             (a2, right, (-0.37, 0.46), [-0.2, 0.0, 0.2, 0.4], "change in grading AUROC", "b   Grading")):
@@ -719,6 +719,6 @@ if L8b and r4res.get("math") and m3 and ph4b.get("mace_exact_q7"):
                         Line2D([], [], ls="", label="Sonnet 5, 16-candidate subsamples", **KIND["sonnet"]),
                         Line2D([], [], ls="", label="GPT-4.1", **KIND["gpt"]),
                         Line2D([], [], ls="", label="boxed replies only", **TICK)],
-               loc="lower center", bbox_to_anchor=(0.58, 0.95), ncol=4, frameon=False, fontsize=7.4, handlelength=0.9,
+               loc="lower center", bbox_to_anchor=(0.6, 0.905), ncol=2, frameon=False, fontsize=7.6, handlelength=0.9,
                columnspacing=0.9, handletextpad=0.3)
     save(fig, "fig2_onevsseveral")

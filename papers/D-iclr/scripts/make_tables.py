@@ -827,3 +827,39 @@ try:
     print("wrote Table 1 and sources")
 except (KeyError, TypeError, FileNotFoundError) as e:
     print("[skip Table 1 round 8]", repr(e))
+
+
+# ---------------------------------------------------------------- round 16: how the protocols grade, and selection intervals
+try:
+    pg = J("r16_protocol_grading.json")
+    body = ["\\begin{tabular}{llccc}", "\\toprule", "Pool & Judge & Reference & Max rule & Blind, then reveal \\\\", "\\midrule"]
+    for pool, plab, gk in (("kpool", "$k$-pool, $k{>}1$", "grading_any_format"), ("mace", "\\textsc{MACE}, $k{>}1$", "grading")):
+        first = True
+        for jn, d in pg[pool].items():
+            g = d[gk]
+            body.append(f"{plab if first else ''} & {jn} & " + " & ".join(fc(*g[f'{k}_minus_blind'][:2]) for k in ("reference", "max_rule", "reveal")) + " \\\\")
+            first = False
+        body.append("\\addlinespace")
+    body = body[:-1]
+    ub = J("r16b_unique_answer_grading.json")
+    body.append("\\midrule")
+    for pool, plab in (("mace_k1", "\\textsc{MACE}, $k{=}1$ (all correct)"), ("math500", "MATH-500 (all correct)")):
+        first = True
+        for jn, g in ub[pool].items():
+            body.append(f"{plab if first else ''} & {jn} & " + " & ".join(fc(*g[f'{k}_minus_blind'][:2]) for k in ("reference", "max_rule", "reveal")) + " \\\\")
+            first = False
+    write("protocol_grading.tex", done(body))
+    body = ["\\begin{tabular}{llcc}", "\\toprule", "Pool & Judge & Max rule $-$ reference & Blind, then reveal $-$ reference \\\\", "\\midrule"]
+    for jn, d in pg["math500"].items():
+        s_ = d["selection"]
+        body.append(f"MATH-500 & {jn} & {p4(s_['max_rule_minus_reference'])} & {p4(s_['reveal_minus_reference'])} \\\\")
+    body.append("\\addlinespace")
+    first = True
+    for jn, d in pg["kpool"].items():
+        s_ = d["selection_any_format"]
+        body.append(f"{'$k$-pool, $k{>}1$, any format' if first else ''} & {jn} & {p4(s_['max_rule_minus_reference'])} & {p4(s_['reveal_minus_reference'])} \\\\")
+        first = False
+    write("protocol_selection.tex", done(body))
+    print("wrote protocol tables")
+except (KeyError, TypeError, FileNotFoundError) as e:
+    print("[skip protocol tables]", e)
