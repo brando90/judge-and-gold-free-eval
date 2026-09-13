@@ -357,3 +357,12 @@ reported. A prediction whose treatment has no entering cell is reported as not s
 modification. **Budget.** The calibration and audit phases run under a hard ledger cap of $40.
 The pressure phase is estimated at $8 to $14 per cell with batch pricing and is authorized
 separately before submission; that authorization cannot depend on any score.
+
+**External registration (appended after posting; the Registration 7 text above is unchanged).**
+Posted to OSF as `osf.io/bx8hp` at 2026-09-13 00:31:38 UTC (2026-09-12 17:31 PDT), after the
+internal registration commit `379e5f2` and before any calibration score existed. At submission
+the registration entered the project administrators' approval window, as Registrations 1-3 did.
+OSF stored the two ">=" signs as the HTML entity "&gt;="; unescaping the stored text reproduces
+the committed text character for character. Posting needed two steps the original poster lacked,
+attaching the same two subjects as Registrations 1-3 and registering through the project's
+registrations endpoint, because the older submit action now returns 404. No content changed.
