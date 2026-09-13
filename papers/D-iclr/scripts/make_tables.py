@@ -292,7 +292,11 @@ for name, key in KJ:
         kk = f"{cond}_minus_blind"
         if kk not in d["k1"]:
             continue
-        body.append(f"{name if cond == 'ref' else ''} & {lab} & " + " & ".join(pp(d[st][kk]) for st in ("k1", "k2", "k4", "k8", "k16", "kgt1")) + " \\\\")
+        est = " & ".join(f"${_z(100 * d[st][kk][0], 1):+.1f}$" for st in ("k1", "k2", "k4", "k8", "k16", "kgt1"))
+        cis = " & ".join(f"{{\\scriptsize$[{_z(100 * d[st][kk][1][0], 0):+.0f},{_z(100 * d[st][kk][1][1], 0):+.0f}]$}}"
+                         for st in ("k1", "k2", "k4", "k8", "k16", "kgt1"))
+        body.append(f"{name if cond == 'ref' else ''} & {lab} & {est} \\\\")
+        body.append(f" & & {cis} \\\\")
     body.append("\\addlinespace")
 body[-1] = "\\bottomrule"
 body += ["\\end{tabular}"]
@@ -355,15 +359,46 @@ body += ["\\bottomrule", "\\end{tabular}"]
 write("r2a.tex", "\n".join(body) + "\n")
 
 r2b = J("r2_realism_results.json")
-body = ["\\begin{tabular}{lcccccc}", "\\toprule",
-        "Protocol & Moved onto & No longer matches & Neither & Margin, $k{>}1$ (ref $-$ blind) & Accuracy, $k{=}1$ & Accuracy, $k{>}1$ \\\\", "\\midrule"]
+rows_rot = ["\\begin{tabular}{lccc}", "\\toprule",
+            "Protocol & Moved onto & No longer matches & Neither \\\\", "\\midrule"]
+rows_k = ["\\begin{tabular}{lccc}", "\\toprule",
+          "Protocol & Margin, $k{>}1$ (ref $-$ blind) & Accuracy change, $k{=}1$ & Accuracy change, $k{>}1$ \\\\", "\\midrule"]
 for key, lab in (("mtbench", "MT-Bench template, Qwen2.5-7B"), ("reason", "Thinking judge, Qwen3-8B")):
     d = r2b.get(key)
     if not isinstance(d, dict) or "rot" not in d or "ksub" not in d:
         continue
     ro, ks = d["rot"], d["ksub"]
-    body.append(f"{lab} & {fc(ro['gainer'][0], ro['gainer'][1], 3)} & {fc(ro['loser'][0], ro['loser'][1], 3)} & {fc(ro['placebo'][0], ro['placebo'][1], 3)} & "
-                f"{fc(ks['margin_diff_kgt1'][0], ks['margin_diff_kgt1'][1])} & {pp(ks['acc_delta_k1'])} & {pp(ks['acc_delta_kgt1'])} \\\\")
-body += ["\\bottomrule", "\\end{tabular}"]
-write("r2b.tex", "\n".join(body) + "\n")
+    rows_rot.append(f"{lab} & {fc(ro['gainer'][0], ro['gainer'][1], 3)} & {fc(ro['loser'][0], ro['loser'][1], 3)} & {fc(ro['placebo'][0], ro['placebo'][1], 3)} \\\\")
+    rows_k.append(f"{lab} & {fc(ks['margin_diff_kgt1'][0], ks['margin_diff_kgt1'][1])} & {pp(ks['acc_delta_k1'])} & {pp(ks['acc_delta_kgt1'])} \\\\")
+write("r2b.tex", "\n".join(rows_rot + ["\\bottomrule", "\\end{tabular}"]) + "\n")
+write("r2b_k.tex", "\n".join(rows_k + ["\\bottomrule", "\\end{tabular}"]) + "\n")
 print("wrote r2 tables")
+
+# ---------------------------------------------------------------- round 3: thinking toggle, MACE natural pool
+tog = J("r3_toggle_results.json")
+diag = J("r3_toggle_diagnostics.json")
+body = ["\\begin{tabular}{llcccc}", "\\toprule",
+        "Task type & Readout & Thinking off & Thinking on & Tokens (off / on) \\\\", "\\midrule"]
+body[0] = "\\begin{tabular}{llccc}"
+body.append(f"Arithmetic (rotation) & moved onto & {fc(tog['off']['rot']['gainer'][0], tog['off']['rot']['gainer'][1], 3)} & {fc(tog['on']['rot']['gainer'][0], tog['on']['rot']['gainer'][1], 3)} & {diag['rot|off|ref']['tokens_mean']} / {diag['rot|on|ref']['tokens_mean']} \\\\")
+body.append(f" & no longer matches & {fc(tog['off']['rot']['loser'][0], tog['off']['rot']['loser'][1], 3)} & {fc(tog['on']['rot']['loser'][0], tog['on']['rot']['loser'][1], 3)} & \\\\")
+body.append(f" & matches neither & {fc(tog['off']['rot']['placebo'][0], tog['off']['rot']['placebo'][1], 3)} & {fc(tog['on']['rot']['placebo'][0], tog['on']['rot']['placebo'][1], 3)} & \\\\")
+body.append(f"Arithmetic ($k$-subsample) & margin, ref $-$ blind & {fc(*tog['off']['ksub']['margin_diff_kgt1'][:2])} & {fc(*tog['on']['ksub']['margin_diff_kgt1'][:2])} & {diag['ksub|off|ref']['tokens_mean']} / {diag['ksub|on|ref']['tokens_mean']} \\\\")
+body.append(f"Factual (MACE subsample) & margin, ref $-$ blind & {fc(*tog['off']['macesub']['margin_diff'][:2])} & {fc(*tog['on']['macesub']['margin_diff'][:2])} & {diag['macesub|off|ref']['tokens_mean']} / {diag['macesub|on|ref']['tokens_mean']} \\\\")
+body.append(f" & false rejections, ref $-$ blind & {pp(tog['off']['macesub']['false_reject_diff'])} & {pp(tog['on']['macesub']['false_reject_diff'])} & \\\\")
+body += ["\\bottomrule", "\\end{tabular}"]
+write("toggle.tex", "\n".join(body) + "\n")
+
+mace3 = J("r3_mace_accuracy_results.json")
+body = ["\\begin{tabular}{llcccccc}", "\\toprule",
+        "Judge & Tasks & Blind & Reference & Reveal & Validity gate & Reference $-$ blind & Reveal $-$ reference \\\\", "\\midrule"]
+for name, key in (("Qwen2.5-7B", Q), ("phi-4", P)):
+    d = mace3[key]
+    for g, lab in (("k1", f"$k{{=}}1$ ({mace3['n_k1']})"), ("kgt1", f"$k{{>}}1$ ({mace3['n_kgt1']})"), ("all", f"all ({mace3['n_tasks']})")):
+        x = d[g]
+        body.append(f"{name if g == 'k1' else ''} & {lab} & {100 * x['acc_noref']:.1f} & {100 * x['acc_ref']:.1f} & {100 * x['acc_m1']:.1f} & {100 * x['acc_m2']:.1f} & {pp(x['ref_minus_blind'])} & {pp(x['m1_minus_ref'])} \\\\")
+    body.append("\\addlinespace")
+body[-1] = "\\bottomrule"
+body += ["\\end{tabular}"]
+write("mace_accuracy.tex", "\n".join(body) + "\n")
+print("wrote round-3 tables")
