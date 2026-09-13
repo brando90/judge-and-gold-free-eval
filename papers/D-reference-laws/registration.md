@@ -2455,3 +2455,53 @@ scanning the ledger rather than cross-referencing git log.
 
 Both experiments remain staged per the standing 2026-09-12 decision: not folded into the
 submitted manuscript, banked for a future revision or appendix.
+
+---
+
+## Recoverability-cost dose-response (P-RC1..P-RC4) — outcome 2026-09-12, NOT folded into the submission
+
+Registered `2e24623` same day (see fix-ups `c4c797a`, `3d29b6e`). Producer
+`papers/analysis/recoverability_analysis.py` -> `recoverability_results.json`. Judging by
+`bon_judge.py`'s new cipher1/cipher2/cipher3 conditions on the 120-item replication pool
+(93 items with both matching and non-matching valid samples), Qwen2.5-7B and phi-4, rubric
+a selects.
+
+**Margins (rubric a):** bare +4.62 [+4.32,+4.96] (Qwen) / +3.79 [+3.46,+4.12] (phi-4);
+cipher1 -0.18 [-0.44,+0.08] / -0.02 [-0.07,+0.03]; cipher2 -0.28 [-0.57,-0.00] / +0.00
+[-0.00,+0.01]; cipher3 -0.27 [-0.56,+0.00] / +0.01 [-0.00,+0.01].
+
+**P-RC1 FALSIFIED, both judges:** the cipher1 margin is not positive; its CI includes (or
+sits at) zero for both. One reversible digit-shift is already enough to erase the effect,
+contrary to the registered prediction that it would survive one step.
+
+**P-RC2 SPLIT, same pattern both judges:** the bare-to-cipher1 drop is real and large
+(CI excluding zero); the cipher1-to-cipher2 and cipher2-to-cipher3 drops are NOT (both
+already sit at/near zero, nothing left to drop). The registered "graded curve across three
+steps" did not materialise -- what happened instead is a single cliff at the first step,
+then a floor.
+
+**P-RC3 CONFIRMED, both judges (trivially):** cipher3 margin is far below half of bare.
+
+**P-RC4 SPLIT:** phi-4's inflation dose is monotonically non-increasing across all four
+levels (+1.00 -> +0.54 -> -0.19 -> -0.36) as predicted; Qwen's is not (+1.27 -> -0.10 ->
++0.06 -> +0.06), noisy and non-monotonic near zero.
+
+**Reading (post hoc, and disclosed as interpretively uncertain):** this reinforces the
+existing masking suite's "cheap-or-nothing" characterisation rather than adding a genuine
+graded dose-response as designed for -- the effect looks like it requires the match to be
+essentially free, collapsing the moment ANY explicit decode step is introduced, rather than
+decaying in proportion to how many steps are required. One confound this design cannot
+rule out: the judge prompt states outright that the reference "has been encoded" at every
+cipher level, so the collapse could be driven by that framing signal itself rather than by
+the actual arithmetic cost -- notably, the masking suite's `expression` condition
+(`n-1+1`, arguably comparable computational cost, no "this has been encoded" framing) only
+partially collapsed the margin (+0.47 from a +2.97/+3.51 base), not to near-zero. This
+design cannot distinguish "cost causes collapse" from "being told it's encoded causes
+collapse," and that ambiguity should be disclosed if this result is ever used, not resolved
+by picking the cleaner-sounding reading.
+
+**Disposition:** stays out of the submitted manuscript per the standing 2026-09-12
+decision. Unlike P-BG1, this result is not simply weaker-than-hoped -- it changes the
+intended contribution (a graded curve was the goal; a sharper cliff-with-a-confound is what
+was found), so any future write-up should present it as a partial falsification with an
+open confound, not as a strengthened version of the separability continuum.
