@@ -1,0 +1,302 @@
+{
+ "mace_by_k": {
+  "Qwen__Qwen2.5-7B-Instruct": {
+   "k1": {
+    "n": 34,
+    "acc_noref": 0.6765,
+    "acc_ref": 1.0,
+    "acc_m1": 0.9118,
+    "ref_minus_blind": [
+     0.3235,
+     [
+      0.1765,
+      0.4706
+     ],
+     34
+    ],
+    "m1_minus_ref": [
+     -0.0882,
+     [
+      -0.2059,
+      0.0
+     ],
+     34
+    ]
+   },
+   "k2": {
+    "n": 35,
+    "acc_noref": 0.7429,
+    "acc_ref": 0.8286,
+    "acc_m1": 0.8286,
+    "ref_minus_blind": [
+     0.0857,
+     [
+      -0.0857,
+      0.2571
+     ],
+     35
+    ],
+    "m1_minus_ref": [
+     0.0,
+     [
+      -0.1143,
+      0.1429
+     ],
+     35
+    ]
+   },
+   "k4": {
+    "n": 32,
+    "acc_noref": 0.9375,
+    "acc_ref": 0.9062,
+    "acc_m1": 0.875,
+    "ref_minus_blind": [
+     -0.0312,
+     [
+      -0.1562,
+      0.0938
+     ],
+     32
+    ],
+    "m1_minus_ref": [
+     -0.0312,
+     [
+      -0.1562,
+      0.0625
+     ],
+     32
+    ]
+   },
+   "k6": {
+    "n": 32,
+    "acc_noref": 0.9375,
+    "acc_ref": 0.9375,
+    "acc_m1": 0.9375,
+    "ref_minus_blind": [
+     0.0,
+     [
+      0.0,
+      0.0
+     ],
+     32
+    ],
+    "m1_minus_ref": [
+     0.0,
+     [
+      -0.0938,
+      0.0938
+     ],
+     32
+    ]
+   }
+  },
+  "microsoft__phi-4": {
+   "k1": {
+    "n": 34,
+    "acc_noref": 0.7353,
+    "acc_ref": 1.0,
+    "acc_m1": 1.0,
+    "ref_minus_blind": [
+     0.2647,
+     [
+      0.1176,
+      0.4118
+     ],
+     34
+    ],
+    "m1_minus_ref": [
+     0.0,
+     [
+      0.0,
+      0.0
+     ],
+     34
+    ]
+   },
+   "k2": {
+    "n": 35,
+    "acc_noref": 0.8571,
+    "acc_ref": 0.9143,
+    "acc_m1": 0.8857,
+    "ref_minus_blind": [
+     0.0571,
+     [
+      -0.0857,
+      0.2
+     ],
+     35
+    ],
+    "m1_minus_ref": [
+     -0.0286,
+     [
+      -0.1429,
+      0.0571
+     ],
+     35
+    ]
+   },
+   "k4": {
+    "n": 32,
+    "acc_noref": 0.8438,
+    "acc_ref": 0.9688,
+    "acc_m1": 0.9375,
+    "ref_minus_blind": [
+     0.125,
+     [
+      0.0,
+      0.2812
+     ],
+     32
+    ],
+    "m1_minus_ref": [
+     -0.0312,
+     [
+      -0.0938,
+      0.0
+     ],
+     32
+    ]
+   },
+   "k6": {
+    "n": 32,
+    "acc_noref": 0.9375,
+    "acc_ref": 0.9375,
+    "acc_m1": 0.9375,
+    "ref_minus_blind": [
+     0.0,
+     [
+      0.0,
+      0.0
+     ],
+     32
+    ],
+    "m1_minus_ref": [
+     0.0,
+     [
+      0.0,
+      0.0
+     ],
+     32
+    ]
+   }
+  }
+ },
+ "regret": {
+  "Qwen__Qwen2.5-7B-Instruct": {
+   "accuracy": {
+    "kpool_kgt1": {
+     "blind": 0.8974,
+     "ref": 0.5897,
+     "reveal": 0.7949
+    },
+    "math500": {
+     "blind": 0.6762,
+     "ref": 0.981,
+     "reveal": 0.9524
+    },
+    "mace": {
+     "blind": 0.8195,
+     "ref": 0.9173,
+     "reveal": 0.8872
+    }
+   },
+   "regret": {
+    "kpool_kgt1": {
+     "blind": 0.0,
+     "ref": -0.3077,
+     "reveal": -0.1025
+    },
+    "math500": {
+     "blind": -0.3048,
+     "ref": 0.0,
+     "reveal": -0.0286
+    },
+    "mace": {
+     "blind": -0.0978,
+     "ref": 0.0,
+     "reveal": -0.0301
+    }
+   },
+   "worst_case": {
+    "blind": -0.3048,
+    "ref": -0.3077,
+    "reveal": -0.1025
+   },
+   "pools_available": [
+    "kpool_kgt1",
+    "mace",
+    "math500"
+   ]
+  },
+  "microsoft__phi-4": {
+   "accuracy": {
+    "kpool_kgt1": {
+     "blind": 0.9744,
+     "ref": 0.7692,
+     "reveal": 0.8205
+    },
+    "mace": {
+     "blind": 0.8421,
+     "ref": 0.9549,
+     "reveal": 0.9398
+    }
+   },
+   "regret": {
+    "kpool_kgt1": {
+     "blind": 0.0,
+     "ref": -0.2052,
+     "reveal": -0.1539
+    },
+    "mace": {
+     "blind": -0.1128,
+     "ref": 0.0,
+     "reveal": -0.0151
+    }
+   },
+   "worst_case": {
+    "blind": -0.1128,
+    "ref": -0.2052,
+    "reveal": -0.1539
+   },
+   "pools_available": [
+    "kpool_kgt1",
+    "mace"
+   ]
+  },
+  "Qwen__Qwen2.5-14B-Instruct": {
+   "accuracy": {
+    "kpool_kgt1": {
+     "blind": 0.9231,
+     "ref": 0.7436,
+     "reveal": 0.9487
+    },
+    "math500": {
+     "blind": 0.6762,
+     "ref": 0.9524,
+     "reveal": 0.9354
+    }
+   },
+   "regret": {
+    "kpool_kgt1": {
+     "blind": -0.0256,
+     "ref": -0.2051,
+     "reveal": 0.0
+    },
+    "math500": {
+     "blind": -0.2762,
+     "ref": 0.0,
+     "reveal": -0.017
+    }
+   },
+   "worst_case": {
+    "blind": -0.2762,
+    "ref": -0.2051,
+    "reveal": -0.017
+   },
+   "pools_available": [
+    "kpool_kgt1",
+    "math500"
+   ]
+  }
+ }
+}
