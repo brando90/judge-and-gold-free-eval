@@ -6,8 +6,9 @@ Deadlines (ICLR 2027 author guidelines): abstract registration **Sep 18, 2026 AO
 
 - **Title:** see `main.tex` `\title` (keep identical in OpenReview).
 - **Abstract:** paste the plain-text version of the `abstract` environment (replace `\%` with `%`, `$n$` with n).
-- **TL;DR:** When a question has several valid answers, LLM judges grade agreement with the one reference answer they are shown; extended thinking removes this only where the judge can verify the answer itself, and whether it costs best-of-n accuracy depends on how well the judge verifies without the reference.
-- **Keywords:** LLM-as-a-judge, reference-guided evaluation, best-of-n selection, anchoring, verification, reasoning judges, multiple correct answers, preregistration
+- **Title (round 9):** The Reference Is Not an Answer Key: LLM Judges Grade Agreement with One Correct Answer
+- **TL;DR:** On questions with several correct answers, a reference is one sample of the correct answers, and LLM judges grade agreement with it: swapping it moves the score of unchanged text, correct answers that differ from it are graded as failing (even for Sonnet 5 and for thinking judges on factual questions), and scoring blind before revealing the reference removes the resulting best-of-n inflation.
+- **Keywords:** LLM-as-a-judge, reference-guided evaluation, multiple correct answers, anchoring, best-of-n selection, reasoning judges, evaluation reliability, preregistration
 - **Primary area (suggested):** alignment, fairness, safety, privacy, and societal considerations — alternative: datasets and benchmarks / evaluation. Pick whichever area list ICLR 2027 shows that mentions evaluation of foundation models.
 
 ## Before submitting

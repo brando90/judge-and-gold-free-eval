@@ -17,9 +17,10 @@ PAPER = HERE.parent
 PAPERS = PAPER.parent
 D = PAPERS / "D-reference-laws"
 
-text_sources = [D / "The_Reference_Is_Not_An_Answer_Key.tex", D / "registration.md", PAPER / "registration_round2.md",
+text_sources = [D / "registration.md", PAPER / "registration_round2.md",
                 PAPER / "registration_round3.md", PAPER / "registration_round3b.md",
-                PAPER / "registration_round4.md"]
+                PAPER / "registration_round4.md", PAPER / "registration_round5.md", PAPER / "registration_round8.md",
+                *sorted((PAPER / "tables").glob("*.tex"))]  # generated tables carry JSON-produced numbers; the uncorrected source draft is not a source
 corpus = "\n".join(p.read_text(errors="ignore") for p in text_sources if p.exists())
 
 NUM = re.compile(r"(?<![\w.])[-+]?\d+(?:\.\d+)?")

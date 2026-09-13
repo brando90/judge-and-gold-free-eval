@@ -273,7 +273,7 @@ for tl, tk, t in zip(a1.get_yticklabels(), a1.yaxis.get_major_ticks(), ticks):
     if t[2]:
         tl.set_fontstyle("italic"); tl.set_color(MUTED)
         tk.tick1line.set_visible(False)
-a1.set_xlim(-8.3, 1.4)
+a1.set_xlim(-9.2, 1.6)
 a1.set_xticks([-6, -4, -2, 0])
 a1.set_ylim(-0.6, n - 0.4)
 a1.set_xlabel("score change when the reference\nmoves off a correct answer (points)")
@@ -300,10 +300,10 @@ for i, (lab, off, on) in enumerate(groups):
 a2.axvline(0, color=MUTED, lw=0.8, zorder=2)
 a2.set_yticks(range(n_g), [g[0].replace("\n", ", ") for g in groups][::-1], fontsize=7)
 a2.set_xlim(-0.6, 10.2)
-a2.set_xlabel("added margin, reference minus blind\n(points)", fontsize=7.6)
+a2.set_xlabel("added margin (points)", fontsize=7.6)
 a2.set_title("Thinking off vs. on", loc="left")
 a2.legend(handles=[Patch(color=INK, label="thinking off"), Patch(facecolor="white", edgecolor=INK, label="thinking on")],
-          loc="lower right", frameon=False, handlelength=1.0, fontsize=6.8, borderaxespad=0.2)
+          loc="upper right", frameon=False, handlelength=1.0, fontsize=6.8, borderaxespad=0.2)
 style(a2, "x")
 label(a2, "b", x=-0.62)
 fig.tight_layout(w_pad=2.0)
