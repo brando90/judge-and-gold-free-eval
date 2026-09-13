@@ -402,3 +402,134 @@ body[-1] = "\\bottomrule"
 body += ["\\end{tabular}"]
 write("mace_accuracy.tex", "\n".join(body) + "\n")
 print("wrote round-3 tables")
+
+
+# ---------------------------------------------------------------- round 4: exact estimator, bare-answer MATH-500, grading, Qwen3-14B
+def au(v):
+    return f"{v[0]:.2f} {{\\scriptsize$[{v[1][0]:.2f},{v[1][1]:.2f}]$}}"
+
+
+def p4(v):
+    return f"${_z(100 * v[0], 1):+.1f}$ {{\\scriptsize$[{_z(100 * v[1][0], 1):+.1f},{_z(100 * v[1][1], 1):+.1f}]$}}"
+
+
+def done(body):
+    return "\n".join(body + ["\\bottomrule", "\\end{tabular}"]) + "\n"
+
+
+K14, GEM, MIS = "Qwen__Qwen2.5-14B-Instruct", "google__gemma-2-9b-it", "mistralai__Mistral-7B-Instruct-v0.3"
+KN = [("Qwen2.5-7B", Q), ("Qwen2.5-14B", K14), ("gemma-2-9b", GEM), ("Mistral-7B", MIS)]
+r4 = J("r4_results.json") if (A / "r4_results.json").exists() else {}
+try:
+    x = r4["rotation"]
+    body = ["\\begin{tabular}{lccc}", "\\toprule", "Score used & Moved onto & Moved off & Matches neither \\\\", "\\midrule"]
+    for key, lab in (("escore", "Exact expected score"), ("escore_legacy", "Original rule, rescored"), ("greedy", "Greedy integer")):
+        body.append(f"{lab} & {fc(*x[key]['gainer'][:2])} & {fc(*x[key]['loser'][:2])} & {fc(*x[key]['placebo'][:2])} \\\\")
+    write("r4_rotation.tex", done(body))
+except (KeyError, TypeError) as e:
+    print("[skip r4_rotation]", e)
+try:
+    ks = ["k1", "k2", "k4", "k8", "k16", "kgt1"]
+    body = ["\\begin{tabular}{lcccccc}", "\\toprule",
+            "Judge & $k{=}1$ & $k{=}2$ & $k{=}4$ & $k{=}8$ & $k{=}16$ & pooled $k{>}1$ \\\\", "\\midrule"]
+    for name, key in KN:
+        if key not in r4["kpool"]:
+            continue
+        e = r4["kpool"][key]["escore"]
+        body.append(f"{name} & " + " & ".join(f"${_z(100 * e[k]['ref_minus_blind'][0], 1):+.1f}$" for k in ks) + " \\\\")
+        body.append(" & " + " & ".join(f"{{\\scriptsize$[{_z(100 * e[k]['ref_minus_blind'][1][0], 0):+.0f},{_z(100 * e[k]['ref_minus_blind'][1][1], 0):+.0f}]$}}" for k in ks) + " \\\\")
+    ra = r4["repl_accuracy"]
+    body.append("\\midrule")
+    body.append(f"\\multicolumn{{7}}{{l}}{{Replication pool, Qwen2.5-7B, 105 tasks: blind {100 * ra['acc_blind'][0]:.1f}\\%, reference {100 * ra['acc_ref'][0]:.1f}\\%, change {p4(ra['ref_minus_blind'])}}} \\\\")
+    write("r4_kpool.tex", done(body))
+except (KeyError, TypeError) as e:
+    print("[skip r4_kpool]", e)
+try:
+    body = ["\\begin{tabular}{lcccccc}", "\\toprule",
+            "Judge & Blind & Solution & Answer & Solution $-$ blind & Answer $-$ blind & Answer $-$ solution \\\\", "\\midrule"]
+    for name, key in KN[:2]:
+        d = r4["math"][key]
+        body.append(f"{name} & {100 * d['acc_noref'][0]:.1f} & {100 * d['acc_ref'][0]:.1f} & {100 * d['acc_refans'][0]:.1f} & "
+                    f"{p4(d['ref_minus_noref'])} & {p4(d['refans_minus_noref'])} & {p4(d['refans_minus_ref'])} \\\\")
+    write("r4_math.tex", done(body))
+except (KeyError, TypeError) as e:
+    print("[skip r4_math]", e)
+try:
+    V, G = r4["verification_auroc"], r4["grading"]
+    body = ["\\begin{tabular}{llccc}", "\\toprule", "Pool & Correct answers, against wrong ones & Blind & Reference & Change \\\\", "\\midrule"]
+    for pool, plab in (("repl", "Replication"), ("mace", "\\textsc{MACE}")):
+        if pool not in G:
+            continue
+        for key, lab in (("G_nm", "that differ from the reference"), ("G_m", "that match the reference"), ("G_all", "all correct answers")):
+            g = G[pool][key]
+            body.append(f"{plab if key == 'G_nm' else ''} & {lab} & {au(g['blind'])} & {au(g['ref'])} & {fc(*g['ref_minus_blind'][:2])} \\\\")
+        body.append("\\addlinespace")
+    body[-1] = "\\midrule"
+    body.append("\\multicolumn{5}{l}{Blind verification AUROC: " + "; ".join(
+        f"{lab} {au(V[p])}" for p, lab in (("repl", "replication"), ("kpool", "$k$-pool"), ("mace", "\\textsc{MACE}"), ("math", "MATH-500")) if V.get(p)) + "} \\\\")
+    write("r4_grading.tex", done(body))
+except (KeyError, TypeError) as e:
+    print("[skip r4_grading]", e)
+try:
+    t4 = J("r4_toggle14b_results.json")
+
+    def tget(model, arm, *path):
+        d = t4.get(model, {}).get(arm, {})
+        for k in path:
+            d = d.get(k) if isinstance(d, dict) else None
+        return d
+
+    rows = [("Arithmetic (rotation)", "moved onto", ("rot", "gainer")), ("", "no longer matches", ("rot", "loser")),
+            ("", "matches neither", ("rot", "placebo")),
+            ("Arithmetic ($k$-subsample)", "margin, ref $-$ blind", ("ksub", "margin_diff_kgt1")),
+            ("Factual (\\textsc{MACE} subsample)", "margin, ref $-$ blind", ("macesub", "margin_diff")),
+            ("", "false rejections, ref $-$ blind", ("macesub", "false_reject_diff")),
+            ("Blind verification AUROC", "arithmetic", ("verif_auroc_ksub",)), ("", "factual", ("verif_auroc_macesub",))]
+    body = ["\\begin{tabular}{llcccc}", "\\toprule",
+            "& & \\multicolumn{2}{c}{Qwen3-14B} & \\multicolumn{2}{c}{Qwen3-8B} \\\\", "\\cmidrule(lr){3-4}\\cmidrule(lr){5-6}",
+            "Task type & Readout & Off & On & Off & On \\\\", "\\midrule"]
+    for a, b, path in rows:
+        cells = []
+        for model in ("Qwen3-14B", "Qwen3-8B_posthoc"):
+            for arm in ("off", "on"):
+                v = tget(model, arm, *path)
+                if v is None:
+                    cells.append("---")
+                elif path[-1] == "false_reject_diff":
+                    cells.append(p4(v))
+                elif path[0].startswith("verif"):
+                    cells.append(au(v))
+                else:
+                    cells.append(fc(*v[:2]))
+        body.append(f"{a} & {b} & " + " & ".join(cells) + " \\\\")
+    write("r4_toggle.tex", done(body))
+except (KeyError, TypeError, FileNotFoundError) as e:
+    print("[skip r4_toggle]", e)
+try:
+    ph = J("r4_posthoc_results.json")
+    body = ["\\begin{tabular}{llcccc}", "\\toprule", "Judge & Tasks & Blind & Reference & Blind, then reveal & Reference $-$ blind \\\\", "\\midrule"]
+    for name, key in (("Qwen2.5-7B", Q), ("phi-4", P)):
+        for k in ("k1", "k2", "k4", "k6"):
+            x = ph["mace_by_k"][key][k]
+            body.append(f"{name if k == 'k1' else ''} & $k{{=}}{k[1:]}$ ({x['n']}) & {100 * x['acc_noref']:.1f} & {100 * x['acc_ref']:.1f} & {100 * x['acc_m1']:.1f} & {p4(x['ref_minus_blind'])} \\\\")
+        body.append("\\addlinespace")
+    body[-1] = "\\midrule"
+    body = body[:-1]
+    write("mace_by_k.tex", done(body))
+    body = ["\\begin{tabular}{llccc}", "\\toprule", "Judge & Pool & Blind & Reference & Blind, then reveal \\\\", "\\midrule"]
+    for name, key in (("Qwen2.5-7B", Q), ("phi-4", P), ("Qwen2.5-14B", K14)):
+        d = ph["regret"][key]
+        first = True
+        for pool, lab in (("kpool_kgt1", "$k$-pool, $k{>}1$"), ("math500", "MATH-500"), ("mace", "\\textsc{MACE}")):
+            if pool in d["regret"]:
+                r = d["regret"][pool]
+                body.append(f"{name if first else ''} & {lab} & " + " & ".join(f"${_z(100 * r[c_], 1):+.1f}$" for c_ in ("blind", "ref", "reveal")) + " \\\\")
+                first = False
+        w = d["worst_case"]
+        body.append(" & \\emph{worst case} & " + " & ".join(f"$\\mathbf{{{_z(100 * w[c_], 1):+.1f}}}$" for c_ in ("blind", "ref", "reveal")) + " \\\\")
+        body.append("\\addlinespace")
+    body = body[:-1]
+    write("regret.tex", done(body))
+except (KeyError, TypeError) as e:
+    print("[skip posthoc tables]", e)
+print("wrote round-4 tables")
