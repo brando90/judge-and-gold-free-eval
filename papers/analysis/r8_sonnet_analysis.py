@@ -11,13 +11,19 @@
 # A candidate whose call failed or whose reply had no score is missing in that condition; a task enters a readout when the
 # groups that readout needs have at least one scored candidate in both conditions. A pool with fewer than 20 tasks with
 # all 32 calls scored is "not scored". Intervals: task bootstrap, 1,000 resamples, numpy default_rng(0).
+import argparse
 import json
 import os
 
 import numpy as np
 
+# Amendment 1: API scores by default; --scores runs/r8/sonnet --out ../../papers/analysis/r8_sonnet_cli_partial.json for the CLI run
+ap = argparse.ArgumentParser()
+ap.add_argument("--scores", default="runs/r8/sonnet_api")
+ap.add_argument("--out", default="../../papers/analysis/r8_sonnet_results.json")
+ARGS = ap.parse_args()
 NBOOT = 1000
-OUT = "../../papers/analysis/r8_sonnet_results.json"
+OUT = ARGS.out
 
 
 def boot(x, seed=0):
@@ -59,7 +65,7 @@ def verdict(ci, direction):
 
 res = {"pools": {}}
 for pool in ("repl", "mace", "kpool"):
-    pf, sf = f"runs/r8/sonnet_{pool}.jsonl", f"runs/r8/sonnet/{pool}.jsonl"
+    pf, sf = f"runs/r8/sonnet_{pool}.jsonl", f"{ARGS.scores}/{pool}.jsonl"
     if not os.path.exists(sf):
         res["pools"][pool] = "no scores"
         continue

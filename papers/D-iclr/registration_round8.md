@@ -42,3 +42,21 @@ Labels: format-lenient (primary) and registered strict labels (secondary) for `r
 - **P-R8A6** (manipulation check). repl: margin > 0.
 
 No prediction for G_all, best-of-16 accuracy, or the max rule; they are reported for every pool that is scored.
+
+---
+
+## Amendment 1 (2026-09-13, committed before any R8-A API call)
+
+**What happened.** The CLI run stopped when the subscription reached its monthly spend limit (about 07:58). By then 939 of the 1,280 replication-pool calls had returned a score, 118 had failed with the limit error, and the MACE and k-pool pools had not started. The harness was stopped.
+
+**Disclosure.** Before this amendment, we ran the frozen producer on the partial CLI replication data (24 tasks with all 32 calls scored) and saw its readouts: non-matching AUROC change −0.076 [−0.116, −0.043], false-rejection change +0.231, margin change +3.34, best-of-16 accuracy change −0.006. No other R8-A readout was seen.
+
+**Change.** With the account owner's authorization to use the metered API key, every R8-A call, including the 939 already made through the CLI, is re-run through the Anthropic Messages API, so all confirmatory readouts come from one interface:
+- harness `experiments/tfa-vs-judge/scripts/sonnet_api_pool.py` (committed with this amendment), output `runs/r8/sonnet_api/{pool}.jsonl`;
+- `model="claude-sonnet-5"`, `thinking={"type": "disabled"}` (Sonnet 5 otherwise thinks adaptively by default, and the CLI arm ran with thinking off), no sampling parameters (API defaults), `max_tokens=512`;
+- the same system prompt (rubric a, blind or referenced) and the same user message as the CLI harness; the score is the last integer from 0 to 10 in the text reply;
+- same pools, same order (task by task, both conditions per candidate), eight workers, SDK retries, a spend cap of USD 40.
+
+**Unchanged.** Pools and their hashes, labels, readouts, predictions P-R8A1 to P-R8A6, verdict rule, and the completion rule (a pool with fewer than 20 fully scored tasks by 20 September 2026 is not scored).
+
+**Producer.** `papers/analysis/r8_sonnet_analysis.py` gains `--scores` (default `runs/r8/sonnet_api`) and `--out` arguments and no other change. Confirmatory results: `r8_sonnet_results.json` from the API files. The partial CLI run is reported separately (`r8_sonnet_cli_partial.json`) with no verdicts, together with the per-call agreement between CLI and API scores on the calls both interfaces completed (post hoc).
