@@ -613,20 +613,20 @@ if sg and e2 and mr:
 
 
 # ============================================================== Figure 2 (main): one correct answer vs. several
-# Change from showing the reference (referenced minus blind, per task, 95% CI). Registration status is given in the caption.
+# Change from showing the reference (referenced minus blind, per task, 95% CI), with one shared row list for both panels.
 # a: best-of-64 accuracy. MATH-500 with the bare final answer (r4_results.json, exact scorer); MACE k = 1 and k > 1
 #    (Qwen2.5-7B exact scorer: r4_posthoc_results.json mace_exact_q7; phi-4: r3_mace_accuracy_results.json);
 #    constructed pools with any-format labels (r8_lenient_results.json).
-# b: grading AUROC. One correct answer: all correct vs. wrong on MACE k = 1 (r5_posthoc_results.json). Several: correct answers
-#    that differ from the reference vs. wrong; constructed pools with any-format labels and boxed-only ticks
-#    (r8_lenient_results.json; Sonnet 5: r8_sonnet_results.json); MACE with its answer lists (r4_results.json,
-#    r4_posthoc_results.json, r8_sonnet_results.json).
+# b: grading AUROC. One correct answer: all correct vs. wrong (r16c_protocols_exact.json: MATH-500 bare answer, MACE k = 1).
+#    Several: correct answers that differ from the reference vs. wrong; constructed pools with any-format labels and boxed-only
+#    ticks (r8_lenient_results.json; Sonnet 5: r8_sonnet_results.json); MACE with its answer lists (r4_results.json,
+#    r4_posthoc_results.json, r8_sonnet_results.json). Blank cells are undefined or not run.
 L8b = load("r8_lenient_results.json")
 S8b = load("r8_sonnet_results.json") or {}
 m3 = load("r3_mace_accuracy_results.json") or {}
 ph4b = load("r4_posthoc_results.json") or {}
-r5pb = load("r5_posthoc_results.json") or {}
-if L8b and r4res.get("math") and m3 and ph4b.get("mace_exact_q7"):
+exb = load("r16c_protocols_exact.json") or {}
+if L8b and r4res.get("math") and m3 and ph4b.get("mace_exact_q7") and exb:
     K14 = "Qwen__Qwen2.5-14B-Instruct"
 
     def pct(v):
@@ -640,81 +640,70 @@ if L8b and r4res.get("math") and m3 and ph4b.get("mace_exact_q7"):
         return d.get("G_nm") if isinstance(d, dict) else None
 
     mq7 = ph4b["mace_exact_q7"]
-    left = [("hdr", "One correct answer"),
-            ("MATH-500, Qwen2.5-7B", pct(r4res["math"][Q]["refans_minus_noref"]), "open", None),
-            ("MATH-500, Qwen2.5-14B", pct(r4res["math"][K14]["refans_minus_noref"]), "open", None),
-            ("MACE, Qwen2.5-7B", pct(mq7["k1"]["ref_minus_blind"]), "open", None),
-            ("MACE, phi-4", pct(m3[P]["k1"]["ref_minus_blind"]), "open", None),
-            ("hdr", "Several correct answers"),
-            ("MACE, Qwen2.5-7B", pct(mq7["kgt1"]["ref_minus_blind"]), "open", None),
-            ("MACE, phi-4", pct(m3[P]["kgt1"]["ref_minus_blind"]), "open", None)]
-    for j in ("Qwen2.5-7B", "Qwen2.5-14B", "gemma-2-9b", "phi-4"):
-        left.append((f"k-pool, {j}", pct(lv("kpool|kgt1", j, "lenient", "acc")), "open", None))
-    for j in ("Qwen2.5-7B", "phi-4"):
-        left.append((f"replication, {j}", pct(lv("repl|all", j, "lenient", "acc")), "open", None))
-
-    right = [("hdr", "One answer · MACE")]
-    for jn in ("Qwen2.5-7B", "phi-4"):
-        g = (((r5pb.get("mace_grading_by_k") or {}).get(jn) or {}).get("k1") or {}).get("G_all", {}).get("ref_minus_blind")
-        if g:
-            right.append((jn, g, "open", None))
-    right.append(("hdr", "Several · replication"))
-    for j, kind in (("Qwen2.5-7B", "open"), ("phi-4", "open"), ("GPT-4.1", "gpt")):
-        right.append((j, lv("repl|all", j, "lenient", "G_nm"), kind, lv("repl|all", j, "boxed_only", "G_nm")))
-    if s8g("repl", "lenient"):
-        right.append(("Sonnet 5", s8g("repl", "lenient"), "sonnet", None))
-    right.append(("hdr", "Several · k-pool, k > 1"))
-    for j in ("Qwen2.5-7B", "Qwen2.5-14B", "gemma-2-9b", "phi-4"):
-        right.append((j, lv("kpool|kgt1", j, "lenient", "G_nm"), "open", lv("kpool|kgt1", j, "boxed_only", "G_nm")))
-    right.append(("GPT-4.1", lv("kpool|kgt1", "GPT-4.1", "lenient", "G_nm"), "gpt", lv("kpool|kgt1", "GPT-4.1", "boxed_only", "G_nm")))
-    if s8g("kpool", "lenient"):
-        right.append(("Sonnet 5", s8g("kpool", "lenient"), "sonnet", None))
-    right.append(("hdr", "Several · MACE"))
-    right.append(("Qwen2.5-7B", r4res["grading"]["mace"]["G_nm"]["ref_minus_blind"], "open", None))
-    p4m = ph4b.get("grading_other_judges", {}).get(P, {}).get("grading_mace", {}).get("G_nm", {})
-    if p4m:
-        right.append(("phi-4", p4m["ref_minus_blind"], "open", None))
+    p4m = ph4b.get("grading_other_judges", {}).get(P, {}).get("grading_mace", {}).get("G_nm", {}).get("ref_minus_blind")
+    ex_math = exb["math500"]
+    ex_mace = exb["mace"]
+    # (label, accuracy change, AUROC change, marker kind, boxed-only AUROC tick)
+    rows = [("hdr", "One correct answer"),
+            ("MATH-500, Qwen2.5-7B", pct(r4res["math"][Q]["refans_minus_noref"]), ex_math["Qwen2.5-7B"]["refans"]["grading_all_correct"]["reference_minus_blind"], "open", None),
+            ("MATH-500, Qwen2.5-14B", pct(r4res["math"][K14]["refans_minus_noref"]), ex_math["Qwen2.5-14B"]["refans"]["grading_all_correct"]["reference_minus_blind"], "open", None),
+            ("MACE, Qwen2.5-7B", pct(mq7["k1"]["ref_minus_blind"]), ex_mace["Qwen2.5-7B"]["grading_k1_all_correct"]["reference_minus_blind"], "open", None),
+            ("MACE, phi-4", pct(m3[P]["k1"]["ref_minus_blind"]), ex_mace["phi-4"]["grading_k1_all_correct"]["reference_minus_blind"], "open", None),
+            ("hdr", "Several correct answers")]
+    for pool, plab in (("repl|all", "replication"), ("kpool|kgt1", "k-pool")):
+        judges = ["Qwen2.5-7B", "phi-4"] if pool.startswith("repl") else ["Qwen2.5-7B", "Qwen2.5-14B", "gemma-2-9b", "phi-4"]
+        for j in judges:
+            rows.append((f"{plab}, {j}", pct(lv(pool, j, "lenient", "acc")), lv(pool, j, "lenient", "G_nm"), "open", lv(pool, j, "boxed_only", "G_nm")))
+        rows.append((f"{plab}, GPT-4.1", None, lv(pool, "GPT-4.1", "lenient", "G_nm"), "gpt", lv(pool, "GPT-4.1", "boxed_only", "G_nm")))
+        sp = "repl" if pool.startswith("repl") else "kpool"
+        if s8g(sp, "lenient"):
+            rows.append((f"{plab}, Sonnet 5", None, s8g(sp, "lenient"), "sonnet", None))
+    rows.append(("MACE, Qwen2.5-7B", pct(mq7["kgt1"]["ref_minus_blind"]), r4res["grading"]["mace"]["G_nm"]["ref_minus_blind"], "open", None))
+    rows.append(("MACE, phi-4", pct(m3[P]["kgt1"]["ref_minus_blind"]), p4m, "open", None))
     if s8g("mace", "oracle"):
-        right.append(("Sonnet 5", s8g("mace", "oracle"), "sonnet", None))
+        rows.append(("MACE, Sonnet 5", None, s8g("mace", "oracle"), "sonnet", None))
 
     KIND = {"open": dict(marker="o", mfc=BLUE, mec=BLUE, ms=4.6),
             "sonnet": dict(marker="s", mfc="white", mec=BLUE, mew=1.1, ms=4.4),
             "gpt": dict(marker="^", mfc="white", mec=BLUE, mew=1.1, ms=5.0)}
     TICK = dict(marker="|", color=MUTED, ms=7, mew=1.4)
-    nrow = max(len(left), len(right))
-    fig, (a1, a2) = plt.subplots(1, 2, figsize=(5.05, 0.152 * nrow + 1.0), gridspec_kw={"width_ratios": [1.0, 1.0], "wspace": 0.95})
-    fig.subplots_adjust(left=0.25, right=0.985, top=0.86, bottom=0.12)
-    for ax, rowsx, xlim, xticks, xlabel, title in (
-            (a1, left, (-62, 52), [-40, -20, 0, 20, 40], "change in best-of-64 accuracy (pp)", "a   Selection"),
-            (a2, right, (-0.37, 0.46), [-0.2, 0.0, 0.2, 0.4], "change in grading AUROC", "b   Grading")):
-        ticks = []
-        for pos, r in enumerate(rowsx):
-            yv = nrow - 1 - pos
-            if r[0] == "hdr":
-                ticks.append((yv, r[1], True))
-                if pos:
-                    ax.axhline(yv + 0.5, color="#d9d9d9", lw=0.6, zorder=1)
-                continue
-            lab, v, kind, boxed = r
+    nrow = len(rows)
+    fig, (a1, a2) = plt.subplots(1, 2, figsize=(5.2, 0.148 * nrow + 0.95), sharey=True, gridspec_kw={"width_ratios": [1.0, 1.0], "wspace": 0.12})
+    fig.subplots_adjust(left=0.27, right=0.985, top=0.87, bottom=0.12)
+    ticks, seps = [], []
+    for pos, r in enumerate(rows):
+        yv = nrow - 1 - pos
+        if r[0] == "hdr":
+            ticks.append((yv, r[1], True))
+            if pos:
+                seps.append(yv + 0.5)
+            continue
+        lab, acc_v, au_v, kind, boxed = r
+        for ax, v in ((a1, acc_v), (a2, au_v)):
             if v is None:
                 continue
             ax.plot([v[1][0], v[1][1]], [yv, yv], color=BLUE, lw=1.0, zorder=3)
             ax.plot(v[0], yv, ls="", zorder=4, **KIND[kind])
-            if boxed:
-                ax.plot(boxed[0], yv, ls="", zorder=5, **TICK)
-            ticks.append((yv, lab, False))
+        if boxed:
+            a2.plot(boxed[0], yv, ls="", zorder=5, **TICK)
+        ticks.append((yv, lab, False))
+    for ax, xlim, xticks, xlabel, title in ((a1, (-62, 52), [-40, -20, 0, 20, 40], "change in best-of-64 accuracy (pp)", "a   Selection"),
+                                           (a2, (-0.37, 0.46), [-0.2, 0.0, 0.2, 0.4], "change in grading AUROC", "b   Grading")):
+        for yy in seps:
+            ax.axhline(yy, color="#d9d9d9", lw=0.6, zorder=1)
         ax.axvline(0, color=MUTED, lw=0.8, zorder=2)
-        ax.set_yticks([t_[0] for t_ in ticks], [t_[1] for t_ in ticks], fontsize=7.8)
-        for tl, tk, t_ in zip(ax.get_yticklabels(), ax.yaxis.get_major_ticks(), ticks):
-            if t_[2]:
-                tl.set_fontweight("bold"); tk.tick1line.set_visible(False)
-        ax.set_ylim(-0.6, nrow - 0.4)
         ax.set_xlim(*xlim)
         ax.set_xticks(xticks)
         ax.tick_params(axis="x", labelsize=7.8)
         ax.set_xlabel(xlabel, fontsize=8)
         ax.set_title(title, loc="left", fontsize=9, fontweight="bold")
         style(ax, "x")
+    a1.set_yticks([t_[0] for t_ in ticks], [t_[1] for t_ in ticks], fontsize=7.8)
+    for tl, tk, t_ in zip(a1.get_yticklabels(), a1.yaxis.get_major_ticks(), ticks):
+        if t_[2]:
+            tl.set_fontweight("bold"); tk.tick1line.set_visible(False)
+    a2.tick_params(axis="y", length=0)
+    a1.set_ylim(-0.6, nrow - 0.4)
     fig.legend(handles=[Line2D([], [], ls="", label="open judges, 64 candidates", **KIND["open"]),
                         Line2D([], [], ls="", label="Sonnet 5, 16-candidate subsamples", **KIND["sonnet"]),
                         Line2D([], [], ls="", label="GPT-4.1", **KIND["gpt"]),

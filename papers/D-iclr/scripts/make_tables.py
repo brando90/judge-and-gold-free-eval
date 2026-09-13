@@ -185,7 +185,7 @@ body = ["\\begin{tabular}{llcccc}", "\\toprule",
 for key, name in ((Q, "Qwen2.5-7B"), (P, "phi-4")):
     body.append(f"{name} & added inflation ($n{{=}}25$) & " +
                 " & ".join(fc(sc[key][s]["infl"], sc[key][s]["infl_ci"]) for s in ("scalar", "pair", "json", "program")) + " \\\\")
-    body.append(" & anchoring margin & " +
+    body.append(" & margin & " +
                 " & ".join((f"{f(sc[key][s]['margin'])} {{\\scriptsize($n{{=}}{sc[key][s]['n_margin']}$)}}" if sc[key][s]['n_margin'] >= 5 else f"--- {{\\scriptsize($n{{=}}{sc[key][s]['n_margin']}$)}}")
                            for s in ("scalar", "pair", "json", "program")) + " \\\\")
 body += ["\\bottomrule", "\\end{tabular}"]
@@ -216,7 +216,7 @@ write("dose.tex", "\n".join(body) + "\n")
 # ---------------------------------------------------------------- resolution screen
 rs = J("score_resolution_screen.json")["judges"]
 body = ["\\begin{tabular}{lcccc}", "\\toprule",
-        "Judge & Distinct score values & Blind ties at max (of 64) & Blind selection accuracy & Anchoring margin \\\\", "\\midrule"]
+        "Judge & Distinct score values & Blind ties at max (of 64) & Blind selection accuracy & Margin \\\\", "\\midrule"]
 for key, name in ((Q, "Qwen2.5-7B"), (P, "phi-4"), ("Qwen__Qwen2.5-14B-Instruct", "Qwen2.5-14B"),
                   ("google__gemma-2-9b-it", "gemma-2-9b"), ("mistralai__Mistral-7B-Instruct-v0.3", "Mistral-7B")):
     r = rs[key]
@@ -232,7 +232,7 @@ s5 = "anthropic__claude-sonnet-5"
 body = ["\\begin{tabular}{lcc}", "\\toprule", "Readout & GPT-4.1 & Claude Sonnet 5 \\\\", "\\midrule",
         f"Replication pool: added inflation ($n{{=}}105$) & {fc(p2['repl_delta__' + g]['delta'], p2['repl_delta__' + g]['ci'])} & --- \\\\",
         f"Replication pool: referenced-only / blind-only picks & {p2['repl_collapse__' + g]['ref_only']} / {p2['repl_collapse__' + g]['blind_only']} & --- \\\\",
-        f"Replication pool: anchoring margin & {fc(p2['repl_margin__' + g]['margin'], p2['repl_margin__' + g]['ci'])} & --- \\\\",
+        f"Replication pool: margin & {fc(p2['repl_margin__' + g]['margin'], p2['repl_margin__' + g]['ci'])} & --- \\\\",
         f"$k$-pool: step $k{{>}}1$ minus $k{{=}}1$ & {fc(p2['kstrat_step__' + g]['step'], p2['kstrat_step__' + g]['ci'])} & --- \\\\",
         f"$k$-pool margin, reference & {fc(fi[g + '__margin_ref']['mean'], fi[g + '__margin_ref']['ci'])} & {fc(fi[s5 + '__margin_ref']['mean'], fi[s5 + '__margin_ref']['ci'])} \\\\",
         f"\\quad + any-valid-answer instruction & {fc(fi[g + '__margin_refinst']['mean'], fi[g + '__margin_refinst']['ci'])} & {fc(fi[s5 + '__margin_refinst']['mean'], fi[s5 + '__margin_refinst']['ci'])} \\\\",
@@ -380,7 +380,7 @@ diag = J("r3_toggle_diagnostics.json")
 body = ["\\begin{tabular}{llcccc}", "\\toprule",
         "Task type & Readout & Thinking off & Thinking on & Tokens (off / on) \\\\", "\\midrule"]
 body[0] = "\\begin{tabular}{llccc}"
-body.append(f"Arithmetic (rotation) & moved onto & {fc(tog['off']['rot']['gainer'][0], tog['off']['rot']['gainer'][1], 3)} & {fc(tog['on']['rot']['gainer'][0], tog['on']['rot']['gainer'][1], 3)} & {diag['rot|off|ref']['tokens_mean']} / {diag['rot|on|ref']['tokens_mean']} \\\\")
+body.append(f"Arithmetic (swap) & moved onto & {fc(tog['off']['rot']['gainer'][0], tog['off']['rot']['gainer'][1], 3)} & {fc(tog['on']['rot']['gainer'][0], tog['on']['rot']['gainer'][1], 3)} & {diag['rot|off|ref']['tokens_mean']} / {diag['rot|on|ref']['tokens_mean']} \\\\")
 body.append(f" & moved off & {fc(tog['off']['rot']['loser'][0], tog['off']['rot']['loser'][1], 3)} & {fc(tog['on']['rot']['loser'][0], tog['on']['rot']['loser'][1], 3)} & \\\\")
 body.append(f" & matches neither & {fc(tog['off']['rot']['placebo'][0], tog['off']['rot']['placebo'][1], 3)} & {fc(tog['on']['rot']['placebo'][0], tog['on']['rot']['placebo'][1], 3)} & \\\\")
 body.append(f"Arithmetic ($k$-subsample) & added margin & {fc(*tog['off']['ksub']['margin_diff_kgt1'][:2])} & {fc(*tog['on']['ksub']['margin_diff_kgt1'][:2])} & {diag['ksub|off|ref']['tokens_mean']} / {diag['ksub|on|ref']['tokens_mean']} \\\\")
@@ -490,7 +490,7 @@ try:
             d = d.get(k) if isinstance(d, dict) else None
         return d
 
-    rows = [("Arithmetic (rotation)", "moved onto", ("rot", "gainer")), ("", "moved off", ("rot", "loser")),
+    rows = [("Arithmetic (swap)", "moved onto", ("rot", "gainer")), ("", "moved off", ("rot", "loser")),
             ("", "matches neither", ("rot", "placebo")),
             ("Arithmetic ($k$-subsample)", "added margin", ("ksub", "margin_diff_kgt1")),
             ("Factual (\\textsc{MACE} subsample)", "added margin", ("macesub", "margin_diff")),
@@ -556,7 +556,7 @@ try:
             "\\multicolumn{2}{l}{\\small\\emph{\\cref{tab:main-numbers}, continued}} \\\\", "\\toprule", HDR, "\\midrule", "\\endhead",
             "\\bottomrule", "\\endfoot"]
     sec = lambda t: body.append(f"\\multicolumn{{2}}{{L{{13.2cm}}}}{{\\emph{{{t}}}}} \\\\")
-    sec("Rotation, Qwen2.5-7B, exact scorer, correct answers scored at least $t$ blind")
+    sec("Swap, Qwen2.5-7B, exact scorer, correct answers scored at least $t$ blind")
     for key, lab in (("gainer_ge7", "Moved onto, $t=7$"), ("gainer_ge9", "Moved onto, $t=9$"), ("loser_ge7", "Moved off, $t=7$"), ("loser_ge9", "Moved off, $t=9$")):
         v = r5p["blind_accepted"][key]
         body.append(f"{lab} & {fc(*v['change'][:2])} ({100 * v['share_kept']:.0f}\\% kept) \\\\")
@@ -770,7 +770,7 @@ try:
                  ("\\quad change", lambda p_, h: au2(g(p_, h, "G_nm"))),
                  ("AUROC, all correct vs.\\ wrong: change", lambda p_, h: au2(g(p_, h, "G_all"))),
                  ("False rejections, change (points)", lambda p_, h: pp1(g(p_, h, "FR"))),
-                 ("Anchoring margin, change (points of 10)", lambda p_, h: au2(g(p_, h, "margin"))),
+                 ("Margin, change (points of 10)", lambda p_, h: au2(g(p_, h, "margin"))),
                  ("Best-of-16 accuracy, change (points)", lambda p_, h: pp1(g(p_, h, "acc"))),
                  ("Max rule accuracy, change (points)", lambda p_, h: pp1(g(p_, h, "acc_max_rule")))]
         for lab_, fn in rowsS:
@@ -801,9 +801,9 @@ try:
            (fr7["Qwen2.5-7B|factual|score"], PH, "\\textsc{MACE} $k{>}1$, exact scorer"), (None, NA)),
           ("phi-4", (acc_["repl"][P]["false_reject_diff_nonmatch"], PH, "replication"), (None, NA),
            (fr7["phi-4|factual|score"], PH, "\\textsc{MACE} $k{>}1$"), (None, NA)),
-          ("Qwen3-8B", (fr7["Qwen3-8B|arithmetic|thinking off"], PH, "rotation subsample"), (fr7["Qwen3-8B|arithmetic|thinking on"], PH, "rotation subsample"),
+          ("Qwen3-8B", (fr7["Qwen3-8B|arithmetic|thinking off"], PH, "swap subsample"), (fr7["Qwen3-8B|arithmetic|thinking on"], PH, "swap subsample"),
            (tog3["off"]["macesub"]["false_reject_diff"], PRE, "MACE subsample, thinking toggle"), (tog3["on"]["macesub"]["false_reject_diff"], PRE, "MACE subsample, thinking toggle")),
-          ("Qwen3-14B", (fr7["Qwen3-14B|arithmetic|thinking off"], PH, "rotation subsample"), (fr7["Qwen3-14B|arithmetic|thinking on"], PH, "rotation subsample"),
+          ("Qwen3-14B", (fr7["Qwen3-14B|arithmetic|thinking off"], PH, "swap subsample"), (fr7["Qwen3-14B|arithmetic|thinking on"], PH, "swap subsample"),
            (t14_["Qwen3-14B"]["off"]["macesub"]["false_reject_diff"], PRE, "MACE subsample, thinking toggle"), (t14_["Qwen3-14B"]["on"]["macesub"]["false_reject_diff"], PRE, "MACE subsample, thinking toggle")),
           ("Sonnet~5, API", (s8fr, PRE, "replication subsamples with wrong answers, any-format labels, API"), (None, NR),
            (s8mace, PRE, "MACE subsamples with wrong answers, API"), (None, NR)),

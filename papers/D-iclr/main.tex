@@ -86,7 +86,7 @@ We test three predictions. P1 and P2 test the answer key; only P3 separates the 
 \item[\textbf{P2}] \textbf{With several correct answers, the others are graded worse.} Correct answers that differ from the reference lose ground against wrong answers; with one correct answer, every reading allows the reference to help (\cref{sec:p2}).
 \item[\textbf{P3}] \textbf{The effect survives verification.} It persists on correct answers the judge already accepts without a reference, which verification failure rules out (\cref{sec:p3}).
 \end{itemize}
-\Cref{tab:summary} gives what we observed for each: all three hold for judges that score without a thinking mode, and keeping the higher of the blind and referenced scores removes the grading harm on our multi-answer pools (\cref{sec:cost}).
+\Cref{tab:summary} gives what we observed for each: P1 and P2 hold for judges that score without a thinking mode, P3 holds for Sonnet~5 on factual questions, and keeping the higher of the blind and referenced scores removes the grading harm on our multi-answer pools (\cref{sec:cost}).
 
 Prior work comes close without isolating this failure.
 \citet{fixation2025} name ``solution fixation'' but measure it with flawed solutions rewritten in the reference's style; \citet{judgingref2026} and \citet{krumdick2025nofreelabels} replace the reference with a wrong one; \citet{kapetanovic2026anchoring} show judges anchor on scores they are shown; and human raters shown different reference translations favor candidates close to the one they see~\citep{fomicheva2016reference}. Benchmarks with several valid answers score judges against all of them but do not vary which one the judge is shown, and no study of LLM judges that we know of does.
@@ -102,13 +102,13 @@ Prior work comes close without isolating this failure.
 \toprule
 Prediction & Tests & Observed & Verdict \\
 \midrule
-\textbf{P1} Swapping the reference moves identical text (\cref{sec:p1}) & Rules out the answer key & 2.7--5.4 points for three score-only judges\reana{} (\cref{fig:concept}c); also on combinatorial puzzles; near zero on arithmetic with a thinking mode (\cref{sec:p3}) & Holds without a thinking mode \\
+\textbf{P1} Swapping the reference moves identical text (\cref{sec:p1}) & Rules out the answer key & 2.7--5.4 points for three score-only judges\reana{} (\cref{fig:concept}c) and on puzzles; near zero on arithmetic with a thinking mode, or when Sonnet~5 explains first & Holds for score-only and explain-first open judges \\
 \addlinespace[2pt]
-\textbf{P2} With several correct answers, the others are graded worse (\cref{sec:p2}) & Rules out the answer key & False rejections rise under every labeling.\ph{} Grading AUROC falls by 0.17--0.27 for the screened judges on constructed pools (0.07--0.14 counting only boxed replies),\ph{} by 0.06--0.08 on \textsc{MACE},\ph{} by 0.04--0.15 for Sonnet~5, and by at most 0.04 for GPT-4.1\ph{} (\cref{fig:onevsseveral}b) & Holds; small for GPT-4.1 \\
+\textbf{P2} With several correct answers, the others are graded worse (\cref{sec:p2}) & Rules out the answer key & False rejections rise under every labeling.\ph{} AUROC falls 0.17--0.27 for screened judges (0.07--0.14 boxed only),\ph{} 0.06--0.08 on \textsc{MACE},\ph{} 0.04--0.15 for Sonnet~5, $\le$0.04 for GPT-4.1\ph & Holds; small for GPT-4.1 \\
 \addlinespace[2pt]
 \textbf{P2$'$} With one correct answer, the reference helps (\cref{sec:p2}) & Nothing: every reading allows it & Best-of-64 accuracy on MATH-500 rises by 29--31~pp\reana & Holds \\
 \addlinespace[2pt]
-\textbf{P3} The effect persists on answers the judge accepts without a reference (\cref{sec:p3}) & Separates verification failure from agreement & Of correct answers Sonnet~5 scores 10 blind, 9--19\% of those that differ from the reference fall to 3 or below with it, against none that match and none of 111 on a second blind call\ph & Holds for Sonnet~5 \\
+\textbf{P3} The effect persists on answers the judge accepts without a reference (\cref{sec:p3}) & Separates verification failure from agreement & Of answers Sonnet~5 scores 10 blind, 9--19\% that differ from the reference fall to 3 or below with it; none that match, and none on a repeat blind call\ph & Holds for Sonnet~5 on factual questions \\
 \addlinespace[2pt]
 \emph{Not predicted:} a thinking mode (\cref{sec:p3}) & --- & Near zero on arithmetic (for Sonnet~5, explaining first suffices; not for open judges); on factual questions roughly halves the effect for Qwen3, with no detectable reduction for Sonnet~5 & Moderator; mechanism unresolved \\
 \bottomrule
@@ -218,7 +218,7 @@ Our referenced prompts call the reference trusted and tell the judge to use it. 
 \paragraph{A thinking mode.}
 On arithmetic, a thinking mode shrinks the effect to near zero (\cref{fig:reasoning}a): Qwen3-14B's swap loss is 1.98 points with thinking off and 0.12 with it on (Qwen3-8B: 0.69 and none), and Sonnet~5's falls from 2.85 points when it scores only to 0.32 with thinking. For Sonnet~5, explaining first is enough (0.20), but not for open judges: Qwen2.5-7B under the MT-Bench template still loses 3.59. With thinking on, Qwen3-8B gives 96\% of correct arithmetic answers a 10 blind and keeps that score when the reference moves off them, so a score ceiling does not explain the missing loss (\cref{app:reasoning}).
 On factual questions, thinking roughly halves the effect for Qwen3: false rejections rise by 22 and 18~pp with it on against 44 and 42~pp with it off (\cref{fig:reasoning}b). For Sonnet~5 the reduction in margin, 0.95 points \ci{-2.45}{+0.63}, is not distinguishable from zero.
-Thinking leaves blind AUROC on arithmetic unchanged (0.85 to 0.86 for Qwen3-14B; 0.86 in both modes for Qwen3-8B\ph) and raises it on factual questions (Qwen3-14B: 0.72 to 0.81; Qwen3-8B: 0.78 to 0.80\ph), so better verification may contribute there (\cref{app:estimator}). Why thinking removes the effect on arithmetic, our data do not say.
+Thinking leaves blind AUROC on arithmetic unchanged (0.85 to 0.86 for Qwen3-14B; 0.86 in both modes for Qwen3-8B\ph) and raises it on factual questions (Qwen3-14B: 0.72 to 0.81; Qwen3-8B: 0.78 to 0.80\ph), so better verification may contribute there (\cref{app:estimator}). Why thinking shrinks the effect on arithmetic, our data do not say.
 
 \paragraph{Verdict.} P3 holds for Sonnet~5 on factual questions: a registered ranking test, with and without thinking, and a post hoc acceptance test with a noise floor both show the penalty, so the effect is not only a failure to verify. For Qwen2.5-7B on arithmetic the evidence is consistent with agreement but is not an acceptance test. Where thinking removes the effect, P3 cannot be tested.
 
@@ -281,8 +281,8 @@ LLM judges favor the first response~\citep{wang2024fair}, longer responses~\cite
 \begin{itemize}[leftmargin=1.2em,itemsep=1pt,topsep=2pt]
 \item \textbf{Labels.} The registered checkers counted most prose answers as wrong. The any-format labels used in the main text agree with a model's reading on 88\% of unboxed replies and were not checked against human labels; boxed replies alone give the conservative grading estimates. \textsc{MACE}'s answer lists miss 2.3\% to 8.1\% of correct answers, and matching by normalized string containment can miscount aliases (\cref{app:mace}).
 \item \textbf{Tasks.} The constructed pools come from five arithmetic families with one generator, and the natural data from two \textsc{MACE} domains (133 questions); the puzzle and code studies are small, and open-domain question answering such as NQ-open is untested.
-\item \textbf{Judges and prompts.} All open judges have at most 14B parameters, and GPT-4.1, one of our two frontier judges, shows a much weaker effect. Our referenced prompts called the reference trusted and told the judge to use it; only the full-credit sentence tests that instruction directly (\cref{sec:p3}).
-\item \textbf{Mechanism and protocols.} No experiment manipulates verification directly, so we cannot say why a thinking mode removes the effect on arithmetic. The max rule was chosen post hoc from five score combinations and tested only on stored open-judge scores.
+\item \textbf{Judges and prompts.} All open judges have at most 14B parameters, and GPT-4.1, one of our two frontier judges, shows a much smaller fall in grading AUROC. Our referenced prompts called the reference trusted and told the judge to use it; only the full-credit sentence tests that instruction directly (\cref{sec:p3}).
+\item \textbf{Mechanism and protocols.} No experiment manipulates verification directly, so we cannot say why a thinking mode shrinks the effect on arithmetic. The max rule was chosen post hoc from five score combinations and tested only on stored open-judge scores.
 \item \textbf{Downstream.} Three DPO runs did not show a policy learning to copy the reference, and the protected arm failed its manipulation check (\cref{app:dpo}).
 \item \textbf{Registration.} Most registrations rely on timestamped commits, and the uniform verdict rule was applied retroactively to earlier predictions after most of their outcomes were known (\cref{app:ledger}).
 \end{itemize}
