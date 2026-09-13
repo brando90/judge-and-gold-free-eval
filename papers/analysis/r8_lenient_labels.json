@@ -1,0 +1,19 @@
+{
+ "repl": {
+  "samples": 7680,
+  "boxed": 4730,
+  "strict_correct": 3494,
+  "lenient_correct": 4189,
+  "flip_to_correct_unboxed": 682,
+  "flip_to_correct_boxed": 13,
+  "strict_correct_not_rechecked": 1
+ },
+ "kpool": {
+  "samples": 4800,
+  "boxed": 2739,
+  "strict_correct": 1926,
+  "lenient_correct": 2370,
+  "flip_to_correct_unboxed": 431,
+  "flip_to_correct_boxed": 13
+ }
+}

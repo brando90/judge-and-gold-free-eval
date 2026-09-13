@@ -60,3 +60,21 @@ No prediction for G_all, best-of-16 accuracy, or the max rule; they are reported
 **Unchanged.** Pools and their hashes, labels, readouts, predictions P-R8A1 to P-R8A6, verdict rule, and the completion rule (a pool with fewer than 20 fully scored tasks by 20 September 2026 is not scored).
 
 **Producer.** `papers/analysis/r8_sonnet_analysis.py` gains `--scores` (default `runs/r8/sonnet_api`) and `--out` arguments and no other change. Confirmatory results: `r8_sonnet_results.json` from the API files. The partial CLI run is reported separately (`r8_sonnet_cli_partial.json`) with no verdicts, together with the per-call agreement between CLI and API scores on the calls both interfaces completed (post hoc).
+
+---
+
+## Outcome, R8-A (recorded 2026-09-13 after running the frozen producer on the API scores; `r8_sonnet_results.json`)
+
+All 3,264 API calls returned a parseable score (no errors); spend USD 3.98. Every task in every pool has all 32 calls scored (40, 40, 22).
+
+| Pool (labels) | AUROC non-matching vs wrong, blind → ref | Change | False-rejection change | Margin change | Best-of-16 accuracy change |
+|---|---|---|---|---|---|
+| repl (any format) | 0.962 → 0.925 | −0.037 [−0.068, −0.011] | +0.092 [+0.051, +0.146] | +1.58 | +0.013 [−0.016, +0.042] |
+| mace (oracle) | 0.938 → 0.785 | −0.153 [−0.219, −0.097] | +0.356 [+0.248, +0.480] | +4.21 | +0.014 [−0.013, +0.047] |
+| kpool (any format) | 0.941 → 0.862 | −0.080 [−0.120, −0.043] | +0.225 [+0.118, +0.351] | +2.57 | −0.026 [−0.058, +0.004] |
+
+- **P-R8A1 CONFIRMED**, **P-R8A2 CONFIRMED**, **P-R8A3 CONFIRMED**, **P-R8A4 CONFIRMED**, **P-R8A5 CONFIRMED**, **P-R8A6 CONFIRMED**.
+- Registered-checker labels (secondary) give the same signs: repl AUROC change −0.053, k-pool −0.111.
+- Post hoc interface check (`r8_interface_agreement.json`): on the 939 calls both interfaces completed, CLI and API scores agree exactly on 66.9% and within one point on 81.6% (Spearman 0.874); API scores average 0.38 points higher. The partial CLI readout on 24 replication tasks (−0.076 AUROC change) was about twice the API estimate on all 40 tasks.
+
+Reading: Sonnet 5 grades correct answers that differ from the reference worse in every pool, most on natural factual questions, while its best-of-16 selection accuracy does not change.

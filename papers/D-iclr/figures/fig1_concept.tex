@@ -1,0 +1,46 @@
+% Figure 1: the idea and the method on one line. (a) a question with two correct answers; (b) the rotation test and
+% what each reading of the reference predicts; (c) the measured result (figures/fig1_rotation.pdf, make_figures.py).
+\definecolor{refblue}{HTML}{4269D0}
+\definecolor{blindorange}{HTML}{C5541A}
+\begin{tikzpicture}[
+  font=\footnotesize,
+  >={Stealth[length=4pt]},
+  panel/.style={font=\footnotesize\bfseries, anchor=west},
+  box/.style={draw=black!45, rounded corners=2pt, fill=black!3, align=left, inner sep=4pt},
+  refbox/.style={draw=refblue, rounded corners=2pt, fill=refblue!8, align=center, inner sep=3pt, minimum width=1.55cm},
+  candbox/.style={draw=black!55, rounded corners=2pt, fill=white, align=center, inner sep=3pt, minimum width=1.55cm},
+  judge/.style={draw=black!70, rounded corners=3pt, fill=black!8, align=center, inner sep=3pt, minimum width=1.0cm, minimum height=0.62cm},
+  score/.style={align=center, inner sep=2pt},
+]
+% ---------------- (a) the question
+\node[panel] at (0, 2.55) {a\;\;A question with two correct answers};
+\node[box, text width=3.45cm, anchor=north west] (q) at (0, 2.25) {%
+  \textbf{Question.} Give one divisor of 91 strictly between 1 and 91.\\[3pt]
+  \textbf{Correct answers.} 7 and 13.\\[3pt]
+  \textbf{Candidate} (fixed text):\\
+  \emph{``$91 = 7 \times 13$, so the answer is 13.''}};
+
+% ---------------- (b) the rotation test
+\node[panel] at (4.3, 2.55) {b\;\;The swap test};
+\node[refbox] (r1) at (5.05, 1.75) {Reference: \textbf{7}};
+\node[refbox] (r2) at (5.05, 0.35) {Reference: \textbf{13}};
+\node[candbox] (c1) at (5.05, 1.2) {same candidate};
+\node[candbox] (c2) at (5.05, -0.2) {same candidate};
+\node[judge] (j1) at (6.75, 1.475) {judge};
+\node[judge] (j2) at (6.75, 0.075) {judge};
+\draw[->, black!60] (r1.east) -- (j1.west |- r1.east);
+\draw[->, black!60] (c1.east) -- (j1.west |- c1.east);
+\draw[->, black!60] (r2.east) -- (j2.west |- r2.east);
+\draw[->, black!60] (c2.east) -- (j2.west |- c2.east);
+\node[score] (s1) at (7.75, 1.475) {$s_{7}$};
+\node[score] (s2) at (7.75, 0.075) {$s_{13}$};
+\draw[->, black!60] (j1) -- (s1);
+\draw[->, black!60] (j2) -- (s2);
+\node[box, text width=3.85cm, anchor=north west, fill=white] (pred) at (4.15, -0.75) {%
+  If the reference is an \textbf{answer key}: $s_{13} = s_{7}$.\\[2pt]
+  If it is \textbf{one sample} of the correct answers and the judge grades agreement: $s_{13} > s_{7}$.};
+
+% ---------------- (c) the result
+\node[panel] at (8.75, 2.55) {c\;\;What judges do};
+\node[anchor=north west, inner sep=0pt] at (8.6, 2.3) {\includegraphics[width=4.6cm]{figures/fig1_rotation.pdf}};
+\end{tikzpicture}

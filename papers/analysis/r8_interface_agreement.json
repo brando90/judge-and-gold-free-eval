@@ -1,0 +1,29 @@
+{
+ "noref": {
+  "calls": 469,
+  "exact_agreement": 0.6482,
+  "within_one": 0.8571,
+  "mean_abs_diff": 0.672,
+  "mean_cli": 4.947,
+  "mean_api": 5.286,
+  "spearman": 0.919
+ },
+ "ref": {
+  "calls": 470,
+  "exact_agreement": 0.6894,
+  "within_one": 0.7745,
+  "mean_abs_diff": 1.223,
+  "mean_cli": 4.317,
+  "mean_api": 4.745,
+  "spearman": 0.83
+ },
+ "both": {
+  "calls": 939,
+  "exact_agreement": 0.6688,
+  "within_one": 0.8158,
+  "mean_abs_diff": 0.948,
+  "mean_cli": 4.632,
+  "mean_api": 5.015,
+  "spearman": 0.874
+ }
+}

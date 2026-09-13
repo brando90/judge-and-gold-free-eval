@@ -1,13 +1,14 @@
 \begin{tabular}{lcccc}
 \toprule
- & \multicolumn{2}{c}{Arithmetic} & \multicolumn{2}{c}{Factual (\textsc{MACE})} \\
+ & \multicolumn{2}{c}{Arithmetic (constructed)} & \multicolumn{2}{c}{Factual (\textsc{MACE})} \\
 \cmidrule(lr){2-3}\cmidrule(lr){4-5}
-Judge & No thinking & Thinking & No thinking & Thinking \\
+Judge & Score only & Reasons first & Score only & Reasons first \\
 \midrule
-Qwen2.5-7B & $+27.7$ {\scriptsize$[+22.8,+33.2]$} & --- & $+63.8$ {\scriptsize$[+56.6,+70.2]$} & --- \\
-phi-4 & $+5.8$ {\scriptsize$[+2.9,+8.6]$} & --- & $+54.4$ {\scriptsize$[+46.9,+61.4]$} & --- \\
-Qwen3-8B & $+1.5$ {\scriptsize$[+0.5,+2.6]$} & $+0.0$ {\scriptsize$[+0.0,+0.0]$} & $+44.3$ {\scriptsize$[+36.9,+52.3]$} & $+21.6$ {\scriptsize$[+13.3,+29.9]$} \\
-Qwen3-14B & $+6.1$ {\scriptsize$[+3.8,+8.5]$} & $+0.3$ {\scriptsize$[+0.0,+0.7]$} & $+41.6$ {\scriptsize$[+33.2,+49.6]$} & $+17.8$ {\scriptsize$[+10.4,+26.2]$} \\
-Sonnet~5 & $+21.2$ & --- & $+17.5$ {\scriptsize$[+5.0,+30.0]$} & $+12.5$ {\scriptsize$[+2.5,+25.0]$} \\
+Qwen2.5-7B & $+27.7$ {\scriptsize$[+22.8,+33.2]$}\pre & n/a & $+63.8$ {\scriptsize$[+56.6,+70.2]$}\ph & n/a \\
+phi-4 & $+5.8$ {\scriptsize$[+2.9,+8.6]$}\ph & n/a & $+54.4$ {\scriptsize$[+46.9,+61.4]$}\ph & n/a \\
+Qwen3-8B & $+1.5$ {\scriptsize$[+0.5,+2.6]$}\ph & $+0.0$ {\scriptsize$[+0.0,+0.0]$}\ph & $+44.3$ {\scriptsize$[+36.9,+52.3]$}\pre & $+21.6$ {\scriptsize$[+13.3,+29.9]$}\pre \\
+Qwen3-14B & $+6.1$ {\scriptsize$[+3.8,+8.5]$}\ph & $+0.3$ {\scriptsize$[+0.0,+0.7]$}\ph & $+41.6$ {\scriptsize$[+33.2,+49.6]$}\pre & $+17.8$ {\scriptsize$[+10.4,+26.2]$}\pre \\
+Sonnet~5, API & $+9.2$ {\scriptsize$[+5.1,+14.6]$}\pre & not run & $+35.6$ {\scriptsize$[+24.8,+48.0]$}\pre & not run \\
+Sonnet~5, CLI & not run & not run & $+17.5$ {\scriptsize$[+5.0,+30.0]$}\pre & $+12.5$ {\scriptsize$[+2.5,+25.0]$}\pre \\
 \bottomrule
 \end{tabular}

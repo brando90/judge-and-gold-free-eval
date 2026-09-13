@@ -663,3 +663,123 @@ try:
     print("wrote round-7 tables")
 except (KeyError, TypeError, FileNotFoundError) as e:
     print("[skip round-7 tables]", repr(e))
+
+
+# ---------------------------------------------------------------- round 8: labelings, Sonnet 5 with wrong answers, Table 1 with per-cell labels
+def au2(v):
+    return "---" if v is None else fc(*v[:2])
+
+
+def lvl(v):
+    return "---" if v is None else f"{v[0]:.2f} {{\\scriptsize$[{v[1][0]:.2f},{v[1][1]:.2f}]$}}"
+
+
+try:
+    L8 = J("r8_lenient_results.json")
+    lab8 = J("r8_lenient_labels.json")
+    HOWL = [("strict", "Registered"), ("lenient", "Any format"), ("model", "Model-read"), ("boxed_only", "Boxed only")]
+    POOLJ = [("repl|all", "Replication", ["Qwen2.5-7B", "phi-4", "GPT-4.1"]),
+             ("kpool|k1", "$k$-pool, $k{=}1$", ["Qwen2.5-7B", "Qwen2.5-14B", "gemma-2-9b", "phi-4", "Mistral-7B", "GPT-4.1"]),
+             ("kpool|kgt1", "$k$-pool, $k{>}1$", ["Qwen2.5-7B", "Qwen2.5-14B", "gemma-2-9b", "phi-4", "Mistral-7B", "GPT-4.1"])]
+    for key, fname, fmt, pools in (("acc", "labelings_acc.tex", pp1, POOLJ), ("G_nm", "labelings_gnm.tex", au2, [POOLJ[0], POOLJ[2]]),
+                                   ("FR", "labelings_fr.tex", pp1, [POOLJ[0], POOLJ[2]])):
+        body = ["\\begin{tabular}{ll" + "c" * len(HOWL) + "}", "\\toprule", "Pool & Judge & " + " & ".join(h for _, h in HOWL) + " \\\\", "\\midrule"]
+        for pool, plab, js in pools:
+            for i, jn in enumerate(js):
+                d = L8["pools"].get(pool, {}).get(jn, {})
+                body.append(f"{plab if i == 0 else ''} & {jn} & " + " & ".join(fmt(d.get(h, {}).get(key)) for h, _ in HOWL) + " \\\\")
+            body.append("\\addlinespace")
+        write(fname, done(body[:-1]))
+    body = ["\\begin{tabular}{L{7.6cm}L{5.4cm}}", "\\toprule", "Quantity & Value \\\\", "\\midrule"]
+    for pool, plab in (("repl", "Replication pool"), ("kpool", "$k$-pool")):
+        x = lab8[pool]
+        body.append(f"{plab}: samples; with a \\texttt{{\\textbackslash boxed\\{{\\}}}} answer & {x['samples']}; {x['boxed']} ({100 * x['boxed'] / x['samples']:.1f}\\%) \\\\")
+        body.append(f"{plab}: correct under the registered checker; in any format & {x['strict_correct']}; {x['lenient_correct']} "
+                    f"(+{x['flip_to_correct_unboxed']} unboxed, +{x['flip_to_correct_boxed']} boxed) \\\\")
+    for pool, plab in (("repl", "Replication pool"), ("kpool", "$k$-pool")):
+        a_ = L8["rule_vs_model_agreement_unboxed"].get(pool)
+        if a_:
+            body.append(f"{plab}, unboxed replies: rule and model labels agree; correct by rule / by model & {100 * a_['agreement']:.1f}\\%; {a_['rule_correct']} / {a_['model_correct']} \\\\")
+    for jn, hows in L8["rules_kpool_kgt1"].items():
+        v = hows.get("lenient", {})
+        body.append(f"$k$-pool, $k{{>}}1$, any format, {jn}: accuracy change for reference; max rule; blind, then reveal (points) & "
+                    f"{pp1(v.get('reference'))}; {pp1(v.get('max'))}; {pp1(v.get('blind_then_reveal'))} \\\\")
+    write("labelings_numbers.tex", done(body))
+    print("wrote round-8 labeling tables")
+except (KeyError, TypeError, FileNotFoundError) as e:
+    print("[skip round-8 labeling tables]", repr(e))
+
+try:
+    S8 = J("r8_sonnet_results.json")
+    cols = [("repl", "lenient", "Replication"), ("repl", "strict", "Repl., registered"), ("mace", "oracle", "\\textsc{MACE}, $k{>}1$"),
+            ("kpool", "lenient", "$k$-pool, $k{>}1$")]
+    have = [(p_, h, l_) for p_, h, l_ in cols if isinstance(S8["pools"].get(p_), dict) and h in S8["pools"][p_] and not S8["pools"][p_][h].get("status")]
+    if have:
+        body = ["\\begin{tabular}{l" + "c" * len(have) + "}", "\\toprule", "Readout & " + " & ".join(l_ for _, _, l_ in have) + " \\\\", "\\midrule"]
+        g = lambda p_, h, k: S8["pools"][p_][h].get(k)
+        rowsS = [("Tasks with all 32 calls scored", lambda p_, h: str(g(p_, h, "tasks_all_calls_scored"))),
+                 ("AUROC, non-matching vs.\\ wrong: blind", lambda p_, h: lvl(g(p_, h, "G_nm_blind"))),
+                 ("\\quad with the reference", lambda p_, h: lvl(g(p_, h, "G_nm_ref"))),
+                 ("\\quad change", lambda p_, h: au2(g(p_, h, "G_nm"))),
+                 ("AUROC, all correct vs.\\ wrong: change", lambda p_, h: au2(g(p_, h, "G_all"))),
+                 ("False rejections, change (points)", lambda p_, h: pp1(g(p_, h, "FR"))),
+                 ("Anchoring margin, change (points of 10)", lambda p_, h: au2(g(p_, h, "margin"))),
+                 ("Best-of-16 accuracy, change (points)", lambda p_, h: pp1(g(p_, h, "acc"))),
+                 ("Max rule accuracy, change (points)", lambda p_, h: pp1(g(p_, h, "acc_max_rule")))]
+        for lab_, fn in rowsS:
+            body.append(f"{lab_} & " + " & ".join(fn(p_, h) for p_, h, _ in have) + " \\\\")
+        write("sonnet_r8.tex", done(body))
+        print("wrote sonnet_r8.tex")
+except (KeyError, TypeError, FileNotFoundError) as e:
+    print("[skip sonnet_r8]", repr(e))
+
+try:
+    r7, acc_, r4 = J("r7_posthoc_results.json"), J("accuracy_readouts.json"), J("r4_results.json")
+    tog3, t14_, r5s_ = J("r3_toggle_results.json"), J("r4_toggle14b_results.json"), J("r5_sonnet_mace_results.json")
+    try:
+        S8 = J("r8_sonnet_results.json")
+    except FileNotFoundError:
+        S8 = None
+    fr7 = r7["false_reject_change"]
+    s8fr = None
+    if S8 and isinstance(S8["pools"].get("repl"), dict) and not S8["pools"]["repl"]["lenient"].get("status"):
+        s8fr = S8["pools"]["repl"]["lenient"]["FR"]
+    s8mace = None
+    if S8 and isinstance(S8["pools"].get("mace"), dict) and not S8["pools"]["mace"]["oracle"].get("status"):
+        s8mace = S8["pools"]["mace"]["oracle"]["FR"]
+    PRE, PH = "\\pre", "\\ph"
+    cell = lambda v, t: "---" if v is None else pp1(v) + t
+    NA, NR = "n/a", "not run"
+    T1 = [("Qwen2.5-7B", (r4["repl_false_reject"]["le3"]["diff"], PRE, "replication, exact scorer, 93"), (None, NA),
+           (fr7["Qwen2.5-7B|factual|score"], PH, "\\textsc{MACE} $k{>}1$, exact scorer"), (None, NA)),
+          ("phi-4", (acc_["repl"][P]["false_reject_diff_nonmatch"], PH, "replication, 93"), (None, NA),
+           (fr7["phi-4|factual|score"], PH, "\\textsc{MACE} $k{>}1$"), (None, NA)),
+          ("Qwen3-8B", (fr7["Qwen3-8B|arithmetic|thinking off"], PH, "rotation subsample"), (fr7["Qwen3-8B|arithmetic|thinking on"], PH, "rotation subsample"),
+           (tog3["off"]["macesub"]["false_reject_diff"], PRE, "R3-C, 81"), (tog3["on"]["macesub"]["false_reject_diff"], PRE, "R3-C, 81")),
+          ("Qwen3-14B", (fr7["Qwen3-14B|arithmetic|thinking off"], PH, "rotation subsample"), (fr7["Qwen3-14B|arithmetic|thinking on"], PH, "rotation subsample"),
+           (t14_["Qwen3-14B"]["off"]["macesub"]["false_reject_diff"], PRE, "R4-C, 81"), (t14_["Qwen3-14B"]["on"]["macesub"]["false_reject_diff"], PRE, "R4-C, 81")),
+          ("Sonnet~5, API", (s8fr, PRE, "R8-A replication subsamples, any-format labels, API"), (None, NR),
+           (s8mace, PRE, "R8-A MACE subsamples, API"), (None, NR)),
+          ("Sonnet~5, CLI", (None, NR), (None, NR),
+           (r5s_["fast"]["false_reject_diff"], PRE, "R5-A, one answer per group, CLI"), (r5s_["think"]["false_reject_diff"], PRE, "R5-A, one answer per group, CLI"))]
+    body = ["\\begin{tabular}{lcccc}", "\\toprule",
+            " & \\multicolumn{2}{c}{Arithmetic (constructed)} & \\multicolumn{2}{c}{Factual (\\textsc{MACE})} \\\\", "\\cmidrule(lr){2-3}\\cmidrule(lr){4-5}",
+            "Judge & Score only & Reasons first & Score only & Reasons first \\\\", "\\midrule"]
+    src = ["\\begin{tabular}{llL{6.2cm}}", "\\toprule", "Judge & Cell & Value (95\\% CI), source \\\\", "\\midrule"]
+    names = ["arithmetic, score only", "arithmetic, reasons first", "factual, score only", "factual, reasons first"]
+    for jn, *cells in T1:
+        out = []
+        for nm_, c_ in zip(names, cells):
+            if c_[0] is None:
+                out.append(c_[1] if len(c_) == 2 else "\\pending{pending}")
+                if len(c_) == 3:
+                    src.append(f"{jn} & {nm_} & pending \\\\")
+                continue
+            out.append(cell(c_[0], c_[1]))
+            src.append(f"{jn} & {nm_} & {pp1(c_[0])}; {c_[2]}{'' if len(c_[0]) < 3 else f' ({c_[0][2]} tasks)'} \\\\")
+        body.append(f"{jn} & " + " & ".join(out) + " \\\\")
+    write("false_reject.tex", done(body))
+    write("false_reject_sources.tex", done(src))
+    print("wrote Table 1 and sources")
+except (KeyError, TypeError, FileNotFoundError) as e:
+    print("[skip Table 1 round 8]", repr(e))

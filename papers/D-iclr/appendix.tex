@@ -11,7 +11,7 @@ In own-built tasks, the reference is one member of the stored valid set, chosen 
 
 \begin{table}[htbp]
 \centering
-\caption{Pools. Generators write 64 samples per task at temperature 1.0. The 37-task subset of \cref{app:frontier} is the $k$-pool tasks with both matching and non-matching valid samples; the 21-task subset of \cref{fig:mechanism} is the $k$-pool tasks with a single-number answer.}
+\caption{Pools. Generators write 64 samples per task at temperature 1.0. The 37-task subset of \cref{app:frontier} is the $k$-pool tasks with both matching and non-matching valid samples; the 21-task subset of \cref{tab:masking} is the $k$-pool tasks with a single-number answer.}
 \label{tab:pools}
 \small
 \setlength{\tabcolsep}{4pt}
@@ -34,7 +34,7 @@ Answer formats\pre{} & 25 new constraint tasks, each requested in four formats &
 
 \paragraph{Scoring.}
 Open judges run in vLLM at temperature 0 and produce at most four tokens. We read the top-20 log-probabilities of the first generated token and take the probability-weighted mean over the score tokens 0 to 10, renormalized over their captured probability. For tokenizers that write ``10'' as the two tokens ``1'' and ``0'' (Qwen2.5, gemma-2, Mistral), the original scorer assigned all probability on ``1'' to the value 10 when the greedy reply began with ``10'' and to the value 1 otherwise. When less than 0.25 of the probability fell on score tokens, it used the integer in the greedy reply, or 5.0 if there was none. Mistral-7B's tokenizer has no single-token digits, so all of its scores, under either estimator, are the integers parsed from its greedy replies; phi-4 writes ``10'' as one token and is unaffected by the ``1'' rule. The pre-specified rescoring of \cref{app:estimator} replaces this rule with an exact two-step estimate: for each ``1'' token it runs one more forward step and splits that token's probability between 10 and 1 according to the probability of ``0'' next, and a reply with no score is treated as missing.
-Sonnet~5 through the Anthropic API ran with extended thinking disabled and returns its score through a forced, schema-validated tool call. The command-line replication of \cref{sec:follows} replaced the tool's default system prompt with our rubric, disabled tools, and ran from an empty working directory (\cref{app:reasoning}); an earlier command-line run from the project directory is described in \cref{app:frontier}. GPT-4.1 uses the same expected-score estimator as the open judges, but its API returns at most five alternatives per token.
+Sonnet~5 through the Anthropic API ran with extended thinking disabled and returns its score through a forced, schema-validated tool call. The command-line replication of \cref{sec:p1} replaced the tool's default system prompt with our rubric, disabled tools, and ran from an empty working directory (\cref{app:reasoning}); an earlier command-line run from the project directory is described in \cref{app:frontier}. GPT-4.1 uses the same expected-score estimator as the open judges, but its API returns at most five alternatives per token.
 
 \paragraph{Selection accuracy and false rejection.}
 For each task we select the sample with the highest rubric-$a$ score; when several samples tie at the maximum, accuracy is the mean validity of the tied samples. False rejection uses rubric-$a$ scores of oracle-valid samples whose extracted answer (the last \texttt{\textbackslash boxed\{\}} content, loosely normalized, or the whole reply if there is none) differs from the reference. Both are averaged per task and bootstrapped over tasks (1,000 resamples).
@@ -70,7 +70,7 @@ Blind-then-reveal first scores the candidate with the blind rubric. The second c
 \section{Preregistration ledger}
 \label{app:ledger}
 
-Every confirmatory prediction was written down before its data existed. Three experiments were registered on OSF with third-party timestamps\osf{} (links withheld for review; anonymized copies are in the supplementary material). The rest were committed to the project repository with a timestamp that predates the data\pre. Analyses marked post hoc\ph{} carry no registration weight. \Cref{tab:ledger} lists every experiment and its outcome as scored. Verdicts follow one rule. \emph{Confirmed} means the 95\% interval excludes zero in the predicted direction, or a registered point prediction holds. \emph{Not confirmed} means the interval includes zero. \emph{Falsified} means the interval excludes zero in the opposite direction, or a point prediction fails. We adopted this rule on 13 September 2026, after most outcomes were known, and re-derived every earlier verdict under it; several predictions that the registration documents mark as falsified are therefore reported here as not confirmed. The re-derivation moved predictions in both directions. Seven moved from falsified to not confirmed (P-R2B1 to P-R2B3, P-R3D1, P-R3D2, P-2D2, and the Qwen2.5-7B cell of P-RC1). Ten moved against us: P-M2 and P-S5 to falsified, P-FM3 from confirmed to falsified, P-S2, P-MC2, and P-EX2 to split, and P-FR1, P-FK2, P-SC1, and P-SC2 from confirmed to not evaluable. Counting each registered prediction once, the ledger records 86 confirmed, 10 not confirmed, and 15 falsified. Sixteen predictions registered for several judges or training arms got different verdicts across them (\emph{split}; the table lists each verdict), 18 could not be evaluated, 2 were not scored, and 3 from an August 2026 command-line check are excluded (\cref{app:frontier}).
+Every confirmatory prediction was committed before its analysis was run, and for new model calls before the data existed; the verdict rule applied to them was adopted afterwards (below). Three experiments were registered on OSF with third-party timestamps\osf{} (links withheld for review; anonymized copies are in the supplementary material). The rest were committed to the project repository with a timestamp that predates the analysis\pre. Some of these rescored or re-analyzed outputs whose direction of effect was already known, such as the exact scorer (\cref{app:estimator}); the ledger names them. Analyses marked post hoc\ph{} carry no registration weight. \Cref{tab:ledger} lists every experiment and its outcome as scored. Verdicts follow one rule. \emph{Confirmed} means the 95\% interval excludes zero in the predicted direction, or a registered point prediction holds. \emph{Not confirmed} means the interval includes zero. \emph{Falsified} means the interval excludes zero in the opposite direction, or a point prediction fails. We adopted this rule on 13 September 2026, after most outcomes were known, and re-derived every earlier verdict under it; several predictions that the registration documents mark as falsified are therefore reported here as not confirmed. The re-derivation moved predictions in both directions. Seven moved from falsified to not confirmed (P-R2B1 to P-R2B3, P-R3D1, P-R3D2, P-2D2, and the Qwen2.5-7B cell of P-RC1). Ten moved against us: P-M2 and P-S5 to falsified, P-FM3 from confirmed to falsified, P-S2, P-MC2, and P-EX2 to split, and P-FR1, P-FK2, P-SC1, and P-SC2 from confirmed to not evaluable. Counting each registered prediction once, the ledger records 92 confirmed, 10 not confirmed, and 15 falsified, of 156. Sixteen predictions registered for several judges or training arms got different verdicts across them (\emph{split}; the table lists each verdict), 18 could not be evaluated, 2 were not scored, and 3 from an August 2026 command-line check are excluded (\cref{app:frontier}).
 
 {\small
 \setlength{\tabcolsep}{4pt}
@@ -88,20 +88,20 @@ Experiment & Record & Predictions and outcome \\
 \bottomrule
 \endfoot
 Replication (\cref{sec:cost}) & OSF & Reference adds inflation (\textbf{confirmed}); picks shift toward the reference's answer (\textbf{confirmed}); positive margin (\textbf{confirmed}). Post hoc: accuracy, false rejection, selection pressure, population sensitivity. \\
-$k$-pool and mitigations (\cref{sec:cost,sec:fix}) & OSF & Step from $k{=}1$ to $k{>}1$ positive (\textbf{confirmed}); blind-then-reveal lowers inflation and margin against the reference at $k{>}1$ (\textbf{confirmed}); blind-then-reveal keeps the $k{=}1$ benefit (\textbf{not confirmed}: its $k{=}1$ intervals include zero); validity gate removes the margin at every $k{>}1$ (\textbf{falsified}: Qwen2.5-7B $+5.5$ to $+6.7$; phi-4 $-0.51$ \ci{-1.01}{-0.12} at $k{=}4$). The gate was registered as a hard gate and run as a soft multiplier, disclosed in a public amendment. Post hoc: accuracy readouts. \\
+$k$-pool and mitigations (\cref{sec:cost}) & OSF & Step from $k{=}1$ to $k{>}1$ positive (\textbf{confirmed}); blind-then-reveal lowers inflation and margin against the reference at $k{>}1$ (\textbf{confirmed}); blind-then-reveal keeps the $k{=}1$ benefit (\textbf{not confirmed}: its $k{=}1$ intervals include zero); validity gate removes the margin at every $k{>}1$ (\textbf{falsified}: Qwen2.5-7B $+5.5$ to $+6.7$; phi-4 $-0.51$ \ci{-1.01}{-0.12} at $k{=}4$). The gate was registered as a hard gate and run as a soft multiplier, disclosed in a public amendment. Post hoc: accuracy readouts. \\
 Judge coverage (\cref{app:mitigation}) & OSF & Reference adds inflation for each added judge (\textbf{split}: gemma-2-9b and Qwen2.5-14B confirmed; Mistral-7B not confirmed, a score-resolution artifact); blind-then-reveal lowers inflation against the reference for each (\textbf{confirmed}; in a post hoc rerun with 20 bootstrap seeds, Mistral-7B's interval excludes zero in 11); blind-then-reveal closer to blind than the reference (\textbf{split}: gemma-2-9b and Qwen2.5-14B confirmed; Mistral-7B falsified). \\
 Resolution screen, Ministral-8B (\cref{app:mitigation}) & commit & Passes the distinct-value and tie screen (\textbf{confirmed}); margin above Mistral-7B's (\textbf{falsified}: $+0.32$ against $+1.38$). \\
 Exploratory Ties study (\cref{app:ties}) & commit & Reference does not reduce lost accuracy (\textbf{confirmed}, direction only); matching answers score higher with the reference and not blind (\textbf{confirmed}); reference does not lower inflation (\textbf{confirmed}). The registered population left 7 tasks; full-pool and pooled estimators were chosen after seeing data (disclosed). \\
 Rotation, Ties pool (\cref{app:rotation}) & commit & Same-sample gain under rotation (\textbf{confirmed}, all four sizes). \\
-Rotation, replication pool (\cref{sec:follows}) & commit & Gain, loss, and gain above answers that match neither reference (\textbf{confirmed}, 12 of 12 cells). \\
-Blind-accepted filter (\cref{sec:follows}) & commit & Rotation gain survives on answers scored $\geq 7$ blind (\textbf{confirmed}, all four sizes); so does the margin (\textbf{confirmed}, four of four sizes, three required). \\
+Rotation, replication pool (\cref{sec:p1}) & commit & Gain, loss, and gain above answers that match neither reference (\textbf{confirmed}, 12 of 12 cells). \\
+Blind-accepted filter (\cref{sec:p3}) & commit & Rotation gain survives on answers scored $\geq 7$ blind (\textbf{confirmed}, all four sizes); so does the margin (\textbf{confirmed}, four of four sizes, three required). \\
 Synthetic grid (\cref{app:grid,app:mitigation}) & commit & Inflation added by the reference rises with $k$ (\textbf{confirmed}, six judges); reference lowers inflation at $k{=}1$ (\textbf{confirmed}, six judges); margins rise with $k$ (\textbf{falsified}: flat, and falling for Qwen2.5-14B and phi-4); instruction lowers the margin at every $k$ (\textbf{split}: Qwen2.5-14B confirmed; Qwen2.5-1.5B, 3B, and 7B falsified); several references lower it (\textbf{confirmed}); same pattern for Llama-3.1-8B and phi-4 (\textbf{confirmed}); same pattern on a Llama-generated pool (\textbf{falsified}: no $k{=}1$ benefit). Post hoc: paired step and slope estimates. \\
-Instruction, second wording (\cref{sec:fix}) & commit & Same ordering of judges as the first wording (\textbf{confirmed}). \\
+Instruction, second wording (\cref{sec:p3}) & commit & Same ordering of judges as the first wording (\textbf{confirmed}). \\
 Composition dose (\cref{app:composition}) & commit & Inflation rises with the number of matching valid answers and is null with none (\textbf{falsified}: it falls, and is largest with none); the referenced judge picks matching answers more often than blind (\textbf{confirmed}). \\
 Constructed lure test & commit & Two predictions (\textbf{not scored}): closed without judging after its naturalness audit failed in five rounds. \\
 Two-factor composition (\cref{app:composition}) & commit & Lures raise inflation when no answer matches (\textbf{split}: phi-4 confirmed, Qwen2.5-7B not confirmed); removing lures restores a rising dose response (\textbf{not confirmed}, both judges); lures lower the referenced valid-pick rate (\textbf{confirmed}); the selection model reproduces the surface (\textbf{confirmed}; Qwen2.5-7B's rank correlation sits at the 0.80 bar). \\
 Distance gradient (\cref{app:composition}) & commit & Among correct non-matching answers, score falls with distance from the reference (\textbf{confirmed}, both judges; the estimator is dominated by a few tasks); the fall exceeds blind's (\textbf{confirmed}); near, middle, and far thirds ordered (\textbf{falsified}, both judges). \\
-Masking suite (\cref{sec:mechanism}) & commit & Words preserve the margin, expression shrinks it, masking removes it (\textbf{confirmed}, 6 of 6 cells). \\
+Masking suite (\cref{sec:p1}) & commit & Words preserve the margin, expression shrinks it, masking removes it (\textbf{confirmed}, 6 of 6 cells). \\
 Worked reference (\cref{app:mitigation}) & commit & Differs from a bare reference, sign not predicted (\textbf{confirmed}: milder); rotating the derivation moves scores when valid answers differ (\textbf{confirmed}, positive control). \\
 Solution-route rotation (\cref{app:mechanism}) & commit & No score change when only the derivation rotates (\textbf{split}: Qwen2.5-7B falsified, $-0.32$ \ci{-0.56}{-0.08}; phi-4 confirmed, $-0.02$ \ci{-0.04}{0.00}). Effects are 20 to 400 times smaller than answer rotation. \\
 \textsc{MACE} (\cref{app:mace}) & commit & Step positive on audited domains (\textbf{confirmed}); referenced margin positive with blind margin null (\textbf{split}: Qwen2.5-7B confirmed; phi-4 falsified, blind margin $-0.80$ \ci{-1.44}{-0.15}); same sign in the math control (\textbf{confirmed}). \\
@@ -109,21 +109,22 @@ Frontier CLI judge (\cref{app:frontier}) & commit & \textbf{Excluded} from the c
 Frontier API judges (\cref{app:frontier}) & commit & Sonnet~5: rotation (\textbf{confirmed}); masking (\textbf{confirmed}); blind-accepted filter (\textbf{confirmed}); \textsc{MACE} referenced margin positive with blind margin null (\textbf{falsified}: blind margin $-1.37$ \ci{-2.05}{-0.67}). GPT-4.1 failed the registered score-resolution screen, so its four inflation predictions are \textbf{not evaluable}; its selection shift and margin (\textbf{confirmed}); its $k$ step on the synthetic grid (\textbf{not confirmed}). Both instructions shrink the margin for both judges (\textbf{confirmed}). GPT-5.4 was dropped before any data (provider batch failure). A parsing fault in the first Sonnet~5 collection was found; all Sonnet~5 data were discarded and recollected, and only recollected data are reported. \\
 Code exemplar (\cref{app:code}) & commit & Canonical solution adds inflation where the test suite does not (\textbf{split}: Qwen2.5-7B not confirmed; Qwen2.5-14B falsified, it lowers inflation); similarity to the solution raises scores (\textbf{split}: Qwen2.5-7B confirmed; Qwen2.5-14B not confirmed); effect smaller than on the math pools (\textbf{confirmed}). \\
 Answer-format continuum (\cref{app:code}) & commit & Margin positive at integer, pair, and JSON formats; sharp drop at the program format; drop rather than gradient (all \textbf{not evaluable}: 7 and 1 usable tasks at pair and JSON); inflation positive at the first three formats and not positive at the program format (\textbf{split}: phi-4 confirmed; Qwen2.5-7B falsified). A checker bug found after registration was fixed; no verdict changed. \\
-Reveal-call variants (\cref{sec:fix}) & commit & Removing the score restores inflation (\textbf{confirmed}); neutral wording changes nothing (\textbf{split}: phi-4 confirmed, Qwen2.5-7B falsified); another judge's score works as well (\textbf{confirmed}). \\
+Reveal-call variants (\cref{sec:cost}) & commit & Removing the score restores inflation (\textbf{confirmed}); neutral wording changes nothing (\textbf{split}: phi-4 confirmed, Qwen2.5-7B falsified); another judge's score works as well (\textbf{confirmed}). \\
 Variants on gemma-2-9b (\cref{app:mitigation}) & commit & Removing the score restores inflation (\textbf{confirmed}); another judge's score works as well (\textbf{falsified}). Neutral wording was registered without a predicted direction and is reported, not scored. \\
 Training, runs 1--3 (\cref{app:dpo}) & commit & Each arm raises its own judge's score: run 1 (\textbf{split}: reference arm confirmed, blind-then-reveal arm falsified); run 2 (\textbf{not confirmed}, both arms); run 3 (\textbf{split}: reference arm confirmed, blind-then-reveal arm falsified); run 3 blind arm (\textbf{falsified}). Reference arm copies the reference answer more (\textbf{falsified}: its rate fell). The other ten predictions compare against an arm that failed its check (\textbf{not evaluable}). A pre-adopted stopping rule closed the mitigation and attribution questions as unresolved. \\
 Decode cost (\cref{app:mechanism}) & commit & All four predictions are \textbf{split} because phi-4's cells are not evaluable (81\% to 98\% of its replies had no score). Qwen2.5-7B: margin survives one step (not confirmed); each further step lowers it (not confirmed); below half by three steps (confirmed); inflation non-increasing (falsified). \\
 Compression weight on gemma (\cref{app:mitigation}) & commit & Lower than both other judges (\textbf{confirmed}, 4 tasks). \\
 Constraint-problem pilot and follow-ups (\cref{app:mathconstraint}) & commit & Solve rate, rotation, margin (\textbf{confirmed}); rotation on all six answer pairs, lure effect, Sonnet~5 (\textbf{confirmed}). Selection harm, four designs: garbled invalid answers (\textbf{falsified}); no room to move, both conditions at zero (\textbf{not evaluable}); the reference's own text among the candidates (\textbf{falsified}); corrected design (\textbf{not confirmed}: right direction for both judges, intervals reach zero, 8 tasks). \\
-Blind-then-reveal on MATH-500 (\cref{sec:fix}) & commit & Reference raises accuracy over blind (\textbf{confirmed}, without registration weight after a disclosed amendment); the protocol keeps less than half of that benefit (\textbf{falsified}: it keeps nearly all of it). \\
-Judges that write first: MT-Bench template (\cref{sec:fix}) & commit & Rotation gain (\textbf{confirmed}); rotation loss (\textbf{confirmed}); referenced margin above blind at $k{>}1$ (\textbf{confirmed}); accuracy step below zero (\textbf{confirmed}). \\
+Blind-then-reveal on MATH-500 (\cref{sec:cost}) & commit & Reference raises accuracy over blind (\textbf{confirmed}, without registration weight after a disclosed amendment); the protocol keeps less than half of that benefit (\textbf{falsified}: it keeps nearly all of it). \\
+Judges that write first: MT-Bench template (\cref{sec:p3}) & commit & Rotation gain (\textbf{confirmed}); rotation loss (\textbf{confirmed}); referenced margin above blind at $k{>}1$ (\textbf{confirmed}); accuracy step below zero (\textbf{confirmed}). \\
 Judges that write first: thinking judge (Qwen3-8B) (\cref{app:rotation}) & commit & Rotation gain (\textbf{not confirmed}); rotation loss (\textbf{not confirmed}); referenced margin above blind at $k{>}1$ (\textbf{not confirmed}); accuracy step below zero (\textbf{falsified}). No measurable anchoring. \\
-Thinking on versus off, same weights (Qwen3-8B; \cref{sec:fix}) & commit & Thinking off: rotation loss (\textbf{confirmed}); rotation gain (\textbf{confirmed}); referenced margin above blind at $k{>}1$ (\textbf{confirmed}). Loss smaller with thinking on (\textbf{confirmed}). \\
-Thinking judge on factual questions (\textsc{MACE}; \cref{sec:fix}) & commit & Referenced margin above blind with thinking on (\textbf{confirmed}) and off (\textbf{confirmed}); smaller with thinking on (\textbf{confirmed}). \\
+Thinking on versus off, same weights (Qwen3-8B; \cref{sec:p3}) & commit & Thinking off: rotation loss (\textbf{confirmed}); rotation gain (\textbf{confirmed}); referenced margin above blind at $k{>}1$ (\textbf{confirmed}). Loss smaller with thinking on (\textbf{confirmed}). \\
+Thinking judge on factual questions (\textsc{MACE}; \cref{sec:p3}) & commit & Referenced margin above blind with thinking on (\textbf{confirmed}) and off (\textbf{confirmed}); smaller with thinking on (\textbf{confirmed}). \\
 Sonnet~5 with and without thinking, CLI (\cref{app:reasoning}) & commit & Score-only arm anchors under rotation (\textbf{confirmed}). Thinking arm has smaller loss (\textbf{confirmed}); thinking arm has fewer false rejections (\textbf{confirmed}); visible-reasoning arm has smaller loss (\textbf{confirmed}). \\
 \textsc{MACE} end to end (\cref{sec:cost,app:reasoning}) & commit & Reference lowers accuracy at $k{>}1$ (\textbf{not confirmed}, both judges); blind-then-reveal beats the reference at $k{>}1$ (\textbf{not confirmed}, both judges); blind-then-reveal at least as accurate pooled over the natural mix (\textbf{falsified}, both judges). \\
-Exact scorer, bare-answer reference, second thinking toggle, grading (\cref{app:estimator,sec:cost,sec:fix}) & commit & Under the exact scorer, rotation gain and loss (\textbf{confirmed}); $k{>}1$ accuracy loss for Qwen2.5-7B, Qwen2.5-14B, gemma-2-9b, and Mistral-7B (\textbf{confirmed}, 4 of 4); false rejections rise (\textbf{confirmed}). MATH-500: the bare final answer raises accuracy (\textbf{confirmed}, both judges); so does the reference solution (\textbf{confirmed}, both judges). Qwen3-14B: loss with thinking off, smaller with it on, factual margin with thinking on, smaller than with it off, verification higher on arithmetic than on factual questions (\textbf{confirmed}, 5 of 5). Blind verification lower on \textsc{MACE} than on both constructed pools, grading of correct non-matching answers worse on \textsc{MACE} and on the replication pool, overall grading better on \textsc{MACE} (\textbf{confirmed}, 4 of 4). \\
+Exact scorer, bare-answer reference, second thinking toggle, grading (\cref{app:estimator,sec:p2,sec:p3}) & commit & Under the exact scorer, rotation gain and loss (\textbf{confirmed}); $k{>}1$ accuracy loss for Qwen2.5-7B, Qwen2.5-14B, gemma-2-9b, and Mistral-7B (\textbf{confirmed}, 4 of 4); false rejections rise (\textbf{confirmed}). MATH-500: the bare final answer raises accuracy (\textbf{confirmed}, both judges); so does the reference solution (\textbf{confirmed}, both judges). Qwen3-14B: loss with thinking off, smaller with it on, factual margin with thinking on, smaller than with it off, verification higher on arithmetic than on factual questions (\textbf{confirmed}, 5 of 5). Blind verification lower on \textsc{MACE} than on both constructed pools, grading of correct non-matching answers worse on \textsc{MACE} and on the replication pool, overall grading better on \textsc{MACE} (\textbf{confirmed}, 4 of 4). \\
 Sonnet~5 with and without thinking on factual questions (\cref{app:reasoning}) & commit & Score-only arm anchors (\textbf{confirmed}); thinking arm anchors (\textbf{confirmed}); thinking arm anchors less, point estimates (\textbf{confirmed}; paired difference $-0.95$ \ci{-2.45}{+0.63}). \\
+Sonnet~5 with wrong answers (\cref{sec:p2,app:frontier}) & commit & Grading of correct non-matching answers worse with the reference on the replication pool, \textsc{MACE}, and the $k$-pool (\textbf{confirmed}, 3 of 3); false rejections rise on the replication pool and \textsc{MACE} (\textbf{confirmed}, 2 of 2); anchoring margin positive (\textbf{confirmed}). Begun through the CLI and stopped by an account spend limit; a registered amendment re-ran every call through the API before any API data existed, and disclosed that partial CLI readouts had been seen. \\
 Partial-answer rotation pilot & commit & A fixed first move scores higher when it matches the move shown as confirmed (\textbf{confirmed}, both judges). Not otherwise reported in this paper. \\
 \end{longtable}
 }
@@ -244,13 +245,50 @@ The thinking judge gives a score of 10 to 96.2\% of valid rotation samples blind
 
 \end{table}
 
-\paragraph{Look-alike wrong answers and the answer format.}
-The constructed pools judge an answer by its \texttt{\textbackslash boxed\{\}} content. On the $k$-pool a reply without a box is compared as a whole and so is always wrong; on the replication pool the checker parses the reply's last 100 characters, which often fails for prose answers. Wrong candidates whose text contains the reference's answer (look-alikes) are therefore common, and most of them state that answer without the required box (\cref{tab:round7}). Removing them leaves the grading results almost unchanged but removes the $k{=}1$ selection loss and shrinks the replication-pool loss; on the $k$-pool at $k{>}1$, a loss of 15 to 21 points remains for Qwen2.5-7B, gemma-2-9b, and phi-4, and its step from $k{=}1$ excludes zero.\ph
+\paragraph{Reading answers in any format.}
+The registered checkers read an answer from its \texttt{\textbackslash boxed\{\}} content. On the $k$-pool a reply without a box is compared as a whole, and on the replication pool the checker needs exactly one integer in the reply's last 100 characters, so most answers stated in prose count as wrong. Only 61.6\% of replication samples and 57.1\% of $k$-pool samples use the box.
+We relabeled every reply post hoc, before reading any judge score with the new labels. The extracted answer is the boxed content if there is one; otherwise it is the last integer in the reply for tasks with a one-integer answer, and the integers of the reply's last stated clause for subset-sum and Goldbach tasks. A reply counts as correct if the registered checker accepts it or the task's constraint accepts the extracted answer. In a second labeling, Qwen2.5-14B-Instruct reads each unboxed reply and reports the final answer it commits to, or none; 54\% and 55\% of unboxed replies commit to none. The rule relabels 695 replication and 444 $k$-pool candidates as correct, the model somewhat more, and the two agree on 88\% of unboxed replies (\cref{tab:labelings-numbers}). In a spot check of 30 replies the rule relabeled, 3 were doubtful: a hedged pair of answers or a truncated list of candidates.
+\Cref{tab:labelings-acc,tab:labelings-gnm,tab:labelings-fr} report selection accuracy, grading AUROC for correct non-matching against wrong answers, and false rejections under the registered labels, both relabelings, and the registered labels restricted to boxed replies. Grading gets worse under all four. The selection loss at $k{>}1$ does not: crediting answers in any format leaves a loss that excludes zero only for Qwen2.5-7B, and with model-read labels no loss excludes zero. An earlier version of this analysis instead set aside wrong candidates that contain the reference's answer (\cref{tab:round7}); most of those were unboxed replies stating a correct value, which the relabelings count as correct.\ph
+
+\begin{table}[htbp]
+\centering
+\caption{Change in best-of-64 accuracy from showing the reference (points, 95\% CI), constructed pools, under four labelings. The pass-rate band is recomputed under each labeling. Exact scorer for Qwen2.5 and gemma-2; Mistral-7B's scores are parsed integers. Registered-checker values for the four open $k$-pool judges at $k{>}1$ are pre-specified; the rest are post hoc.}
+\label{tab:labelings-acc}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{adjustbox}{max width=\linewidth}\input{tables/labelings_acc.tex}\end{adjustbox}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Change in per-task AUROC for separating correct answers that differ from the reference from wrong answers (95\% CI), under four labelings. Qwen2.5-7B's replication value under the registered checker is pre-specified; the rest are post hoc.}
+\label{tab:labelings-gnm}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{adjustbox}{max width=\linewidth}\input{tables/labelings_gnm.tex}\end{adjustbox}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Change in the share of correct non-matching answers scored 3 or below (points, 95\% CI), under four labelings.\ph}
+\label{tab:labelings-fr}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{adjustbox}{max width=\linewidth}\input{tables/labelings_fr.tex}\end{adjustbox}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Labeling counts, agreement between the rule and the model on unboxed replies, and $k$-pool selection at $k{>}1$ with answers read in any format for the referenced judge, the max rule, and blind-then-reveal (original scorer for all three, so the reference row differs from \cref{tab:labelings-acc}).\ph}
+\label{tab:labelings-numbers}
+\footnotesize
+\begin{adjustbox}{max width=\linewidth}\input{tables/labelings_numbers.tex}\end{adjustbox}
+\end{table}
 
 \begin{table}[htbp]
 \centering
 \footnotesize
-\caption{Robustness numbers: look-alike wrong answers, results with them removed, GPT-4.1 selection, Sonnet~5 score coverage, and the Sonnet~5 scores behind \cref{fig:teaser}a (95\% CI).\ph}
+\caption{Robustness numbers: look-alike wrong answers, results with them removed, GPT-4.1 selection, Sonnet~5 score coverage, and the Sonnet~5 scores behind \cref{fig:concept}a (95\% CI).\ph}
 \label{tab:round7}
 \begin{adjustbox}{max width=\linewidth}\input{tables/round7_numbers.tex}\end{adjustbox}
 \end{table}
@@ -364,6 +402,26 @@ Sonnet~5 reproduces the rotation (\cref{tab:rotation}), the blind-accepted filte
 \footnotesize
 \begin{adjustbox}{max width=\linewidth}\input{tables/frontier_api.tex}\end{adjustbox}
 
+\end{table}
+
+\paragraph{Sonnet~5 with wrong answers.}
+The Sonnet~5 scores behind \cref{fig:concept}a covered correct answers only. A pre-specified experiment scored 16-candidate subsamples that include wrong answers, blind and with the reference: 40 replication tasks (8 per family), 40 \textsc{MACE} tasks with $k{>}1$, and all 22 eligible $k$-pool tasks with $k{>}1$, each subsample holding at least one matching-correct, one non-matching-correct, and one wrong answer. It began through the command-line interface and stopped at the account's spend limit after 939 of the 1,280 replication calls; a registered amendment re-ran every call through the Messages API with extended thinking disabled and the same prompts, and those scores give the results (\cref{tab:sonnet-r8}).\pre{} Before the amendment we had seen the partial command-line readouts on 24 replication tasks, which the amendment records.
+
+\begin{table}[htbp]
+\centering
+\caption{Sonnet~5 (Messages API, thinking disabled) on 16-candidate subsamples with wrong answers: referenced minus blind unless stated (95\% CI). Replication and $k$-pool use answers read in any format; ``registered'' uses the registered checker.\pre}
+\label{tab:sonnet-r8}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\IfFileExists{tables/sonnet_r8.tex}{\begin{adjustbox}{max width=\linewidth}\input{tables/sonnet_r8.tex}\end{adjustbox}}{\pending{pending}}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Sources of the cells of \cref{tab:false-reject}: value (points, 95\% CI), pool, scorer or experiment, and number of tasks.}
+\label{tab:fr-sources}
+\footnotesize
+\begin{adjustbox}{max width=\linewidth}\input{tables/false_reject_sources.tex}\end{adjustbox}
 \end{table}
 
 %==========================================================================================
