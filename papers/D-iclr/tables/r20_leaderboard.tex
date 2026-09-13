@@ -1,0 +1,14 @@
+\begin{tabular}{lrrrrrrr}
+\toprule
+ & \multicolumn{4}{c}{Accuracy (\%)} & & & \\
+\cmidrule(lr){2-5}
+Generator & Answer list & Blind judge & Referenced judge & Max rule & Referenced $-$ list (points) & Correct answers that differ & Their false rejections: blind; referenced \\
+\midrule
+Llama-3.1-8B-Instruct & 69.1 & 67.8 & 55.7 & 68.5 & $-13.4$ {\scriptsize$[-20.8,-7.4]$} & 70 of 103 & 4.3\%; 18.6\% \\
+Claude Haiku 4.5 & 94.6 & 92.6 & 55.0 & 93.3 & $-39.6$ {\scriptsize$[-47.6,-31.5]$} & 110 of 141 & 0.9\%; 41.8\% \\
+Claude Sonnet 5 & 98.7 & 96.0 & 77.2 & 96.6 & $-21.5$ {\scriptsize$[-28.2,-14.8]$} & 107 of 147 & 0.0\%; 23.4\% \\
+Claude Opus 5 & 100.0 & 99.3 & 85.2 & 100.0 & $-14.8$ {\scriptsize$[-20.1,-9.4]$} & 109 of 149 & 0.0\%; 11.0\% \\
+\midrule
+Pooled, change against the list (points) & --- & $-1.7$ {\scriptsize$[-3.5,+0.0]$} & $-22.3$ {\scriptsize$[-27.0,-17.9]$} & $-1.0$ {\scriptsize$[-2.5,+0.5]$} & & & 1.0\%; 24.2\% \\
+\bottomrule
+\end{tabular}

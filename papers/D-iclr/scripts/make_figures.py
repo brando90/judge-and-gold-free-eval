@@ -326,6 +326,107 @@ a2.legend(handles=[Patch(color=BLUE, label="no thinking mode"), Patch(color=LIGH
 style(a2, "x")
 save(fig, "fig2_reasoning")
 
+# ============================================================== Figure 3 (main): answers the judge accepts blind, and thinking
+# a: correct answers the judge accepts without a reference. API judges: a blind score of 10 (r20a_{sonnet,opus}_retest.json, which
+#    also holds a second blind call through the same interface); arithmetic rows pool the replication and k-pool subsamples. Open
+#    judges: a blind expected score at or above the lowest threshold that at most 3% of wrong answers reach
+#    (r20d_matched_acceptance.json; expected scores are deterministic, so a second call would repeat the first). Plotted: the share
+#    scored 3 or below with the reference, for answers that differ from it and answers that match it, and on the second blind call.
+# b: points lost when the reference moves off a correct answer, thinking off and on: r3_sonnet_results.json (Sonnet 5 CLI, score
+#    only vs thinking), r3_toggle_results.json (Qwen3-8B), r4_toggle14b_results.json (Qwen3-14B); Qwen3 with thinking off explains first.
+# c: rise in false rejections on factual MACE questions, thinking off and on: the same Qwen3 files; Sonnet 5 API with thinking
+#    disabled (r8_sonnet_results.json) and adaptive (r19b_sonnet_think_results.json).
+RA = {"Sonnet 5": load("r20a_sonnet_retest.json"), "Opus 5": load("r20a_opus_retest.json")}
+MD = load("r20d_matched_acceptance.json")
+S8f, S19f = load("r8_sonnet_results.json"), load("r19b_sonnet_think_results.json")
+if all(RA.values()) and MD and tog and t14 and S8f and S19f:
+    def _share(d, pools, grp, key):
+        return sum(d[p][grp][key] for p in pools) / sum(d[p][grp]["n"] for p in pools)
+
+    rows = [("hdr", "Factual (MACE)")]
+    for pools in (["mace"], ["repl", "kpool"]):
+        if pools != ["mace"]:
+            rows.append(("hdr", "Arithmetic"))
+        for jn in ("Sonnet 5", "Opus 5"):
+            rows.append((f"{jn} (API)", _share(RA[jn], pools, "nonmatch", "referenced_le3"), _share(RA[jn], pools, "match", "referenced_le3"),
+                         _share(RA[jn], pools, "nonmatch", "retest_le3")))
+    for key, lab in (("repl|Qwen2.5-7B", "Qwen2.5-7B, replication"), ("kpool|Qwen2.5-7B", "Qwen2.5-7B, k-pool"),
+                     ("repl|phi-4", "phi-4, replication"), ("kpool|phi-4", "phi-4, k-pool"),
+                     ("kpool|Qwen2.5-14B", "Qwen2.5-14B, k-pool"), ("kpool|gemma-2-9b", "gemma-2-9b, k-pool")):
+        x = MD[key]
+        rows.append((lab, x["nonmatch"]["share_le3_with_reference"], x["match"]["share_le3_with_reference"], None))
+    fig = plt.figure(figsize=(5.5, 3.0))
+    a1 = fig.add_axes([0.255, 0.34, 0.25, 0.58])
+    a2 = fig.add_axes([0.745, 0.715, 0.235, 0.205])
+    a3 = fig.add_axes([0.745, 0.34, 0.235, 0.205])
+    n = len(rows)
+    ticks = []
+    for pos, r in enumerate(rows):
+        y = n - 1 - pos
+        if r[0] == "hdr":
+            ticks.append((y, r[1], True))
+            if pos:
+                a1.axhline(y + 0.5, color="#d9d9d9", lw=0.6, zorder=1)
+            continue
+        lab, nm, m, rt = r
+        a1.plot([0, 100 * nm], [y, y], color=BLUE, lw=1.0, alpha=0.45, zorder=2)
+        a1.plot(100 * nm, y, "o", ms=4.8, mfc=BLUE, mec=BLUE, zorder=4)
+        a1.plot(100 * m, y, "o", ms=4.8, mfc="white", mec=BLUE, mew=1.1, zorder=5)
+        if rt is not None:
+            a1.plot(100 * rt, y, "x", ms=4.4, mew=1.2, color=ORANGE, zorder=6)
+        a1.text(100 * nm + 3.5, y, f"{100 * nm:.0f}%", fontsize=7.0, color=MUTED, va="center")
+        ticks.append((y, lab, False))
+    a1.set_yticks([t[0] for t in ticks], [t[1] for t in ticks], fontsize=7.6)
+    for tl, tk, t in zip(a1.get_yticklabels(), a1.yaxis.get_major_ticks(), ticks):
+        if t[2]:
+            tl.set_fontweight("bold"); tk.tick1line.set_visible(False)
+    a1.set_ylim(-0.6, n - 0.4)
+    a1.set_xlim(-2, 70)
+    a1.set_xticks([0, 20, 40, 60])
+    a1.tick_params(axis="x", labelsize=7.4)
+    a1.set_xlabel("correct answers accepted blind\nthat score 3 or below (%)", fontsize=7.6, labelpad=1.5)
+    a1.set_title("a   Accepted without a reference", loc="left", fontsize=8.6, fontweight="bold", x=-0.62)
+    style(a1, "x")
+
+    def barpair(ax, groups, xlim, xticks, xlabel, title, fmt):
+        h = 0.38
+        for i, (lab, off, on) in enumerate(groups):
+            y = len(groups) - 1 - i
+            for dy, v, col in ((h / 2, off, BLUE), (-h / 2, on, LIGHT)):
+                ax.barh(y + dy, v[0], height=h - 0.05, color=col, zorder=3)
+                ax.errorbar(v[0], y + dy, xerr=[[max(v[0] - v[1][0], 0)], [max(v[1][1] - v[0], 0)]], fmt="none", ecolor=MUTED,
+                            elinewidth=0.8, capsize=1.3, zorder=4)
+                ax.text(max(v[1][1], v[0], 0) + 0.03 * xlim[1], y + dy, fmt(v[0]), fontsize=6.6, color=INK, va="center")
+        ax.axvline(0, color=MUTED, lw=0.8, zorder=2)
+        ax.set_yticks(range(len(groups)), [g[0] for g in groups][::-1], fontsize=7.4)
+        ax.set_ylim(-0.6, len(groups) - 0.4)
+        ax.set_xlim(*xlim)
+        ax.set_xticks(xticks)
+        ax.tick_params(axis="x", labelsize=7.2, pad=1.5)
+        ax.set_xlabel(xlabel, fontsize=7.4, labelpad=1.0)
+        ax.set_title(title, loc="left", fontsize=8.6, fontweight="bold", x=-0.52)
+        style(ax, "x")
+
+    neg = lambda v: (-v[0], [-v[1][1], -v[1][0]])
+    barpair(a2, [("Sonnet 5 (CLI)", neg(r3s["fast"]["rot"]["loser"]), neg(r3s["think"]["rot"]["loser"])),
+                 ("Qwen3-8B", neg(tog["off"]["rot"]["loser"]), neg(tog["on"]["rot"]["loser"])),
+                 ("Qwen3-14B", neg(t14["off"]["rot"]["loser"]), neg(t14["on"]["rot"]["loser"]))],
+            (-0.15, 4.9), [0, 1, 2, 3, 4], "points lost (reference moved off)", "b   Thinking: arithmetic swap",
+            lambda x: f"{x:.2f}".replace("-", "−"))
+    frp = lambda v: (100 * v[0], [100 * v[1][0], 100 * v[1][1]])
+    barpair(a3, [("Sonnet 5 (API)", frp(S8f["pools"]["mace"]["oracle"]["FR"]), frp(S19f["pools"]["mace"]["oracle"]["FR"])),
+                 ("Qwen3-8B", frp(tog["off"]["macesub"]["false_reject_diff"]), frp(tog["on"]["macesub"]["false_reject_diff"])),
+                 ("Qwen3-14B", frp(t14["off"]["macesub"]["false_reject_diff"]), frp(t14["on"]["macesub"]["false_reject_diff"]))],
+            (-1.5, 68), [0, 20, 40, 60], "rise in false rejections (pp)", "c   Thinking: factual questions", lambda x: f"+{x:.0f}")
+    fig.legend(handles=[Line2D([], [], marker="o", ls="", mfc=BLUE, mec=BLUE, ms=4.8, label="differs from the reference, reference shown"),
+                        Line2D([], [], marker="o", ls="", mfc="white", mec=BLUE, mew=1.1, ms=4.8, label="matches the reference, reference shown"),
+                        Line2D([], [], marker="x", ls="", color=ORANGE, mew=1.2, ms=4.4, label="differs, second blind call"),
+                        Patch(color=BLUE, label="thinking off (Sonnet 5: score only; Qwen3: explains first)"),
+                        Patch(color=LIGHT, label="thinking on")],
+               loc="lower center", bbox_to_anchor=(0.5, 0.035), ncol=2, frameon=False, fontsize=7.0, handlelength=1.0,
+               columnspacing=1.4, handletextpad=0.4, labelspacing=0.3)
+    save(fig, "fig3_acceptance")
+
 # ============================================================== Figure 3 (mechanism, single panel)
 mi = load("maskident_results.json")
 sc = load("sep_continuum_results.json")
@@ -663,13 +764,18 @@ if L8b and r4res.get("math") and m3 and ph4b.get("mace_exact_q7") and exb:
     rows.append(("MACE, phi-4", pct(m3[P]["kgt1"]["ref_minus_blind"]), p4m, "open", None))
     if s8g("mace", "oracle"):
         rows.append(("MACE, Sonnet 5", None, s8g("mace", "oracle"), "sonnet", None))
+    o19 = (((load("r19a_opus_results.json") or {}).get("pools", {}).get("mace") or {}).get("oracle") or {}).get("G_nm")
+    if o19:
+        rows.append(("MACE, Opus 5", None, o19, "opus", None))
 
     KIND = {"open": dict(marker="o", mfc=BLUE, mec=BLUE, ms=4.6),
             "sonnet": dict(marker="s", mfc="white", mec=BLUE, mew=1.1, ms=4.4),
+            "opus": dict(marker="D", mfc="white", mec=BLUE, mew=1.1, ms=4.0),
             "gpt": dict(marker="^", mfc="white", mec=BLUE, mew=1.1, ms=5.0)}
-    TICK = dict(marker="|", color=MUTED, ms=7, mew=1.4)
+    NOACC = {"sonnet": "not shown: subsamples", "opus": "not shown: subsamples", "gpt": "not shown: ties"}
+    TICK = dict(marker="|", color="#b5b5b5", ms=6, mew=1.1)
     nrow = len(rows)
-    fig, (a1, a2) = plt.subplots(1, 2, figsize=(5.2, 0.148 * nrow + 0.95), sharey=True, gridspec_kw={"width_ratios": [1.0, 1.0], "wspace": 0.12})
+    fig, (a1, a2) = plt.subplots(1, 2, figsize=(5.2, 0.14 * nrow + 0.98), sharey=True, gridspec_kw={"width_ratios": [1.0, 1.0], "wspace": 0.12})
     fig.subplots_adjust(left=0.27, right=0.985, top=0.87, bottom=0.12)
     ticks, seps = [], []
     for pos, r in enumerate(rows):
@@ -680,6 +786,9 @@ if L8b and r4res.get("math") and m3 and ph4b.get("mace_exact_q7") and exb:
                 seps.append(yv + 0.5)
             continue
         lab, acc_v, au_v, kind, boxed = r
+        if acc_v is None and kind in NOACC:
+            a1.text(0, yv, NOACC[kind], fontsize=6.4, color=MUTED, style="italic", ha="center", va="center", zorder=6,
+                    bbox=dict(facecolor="white", edgecolor="none", pad=0.3))
         for ax, v in ((a1, acc_v), (a2, au_v)):
             if v is None:
                 continue
@@ -706,9 +815,10 @@ if L8b and r4res.get("math") and m3 and ph4b.get("mace_exact_q7") and exb:
     a2.tick_params(axis="y", length=0)
     a1.set_ylim(-0.6, nrow - 0.4)
     fig.legend(handles=[Line2D([], [], ls="", label="open judges, 64 candidates", **KIND["open"]),
-                        Line2D([], [], ls="", label="Sonnet 5, 16-candidate subsamples", **KIND["sonnet"]),
+                        Line2D([], [], ls="", label="Sonnet 5, 16 candidates", **KIND["sonnet"]),
+                        Line2D([], [], ls="", label="Opus 5, 16 candidates", **KIND["opus"]),
                         Line2D([], [], ls="", label="GPT-4.1", **KIND["gpt"]),
                         Line2D([], [], ls="", label="boxed replies only", **TICK)],
-               loc="lower center", bbox_to_anchor=(0.6, 0.905), ncol=2, frameon=False, fontsize=7.6, handlelength=0.9,
+               loc="lower center", bbox_to_anchor=(0.6, 0.905), ncol=3, frameon=False, fontsize=7.3, handlelength=0.9,
                columnspacing=0.9, handletextpad=0.3)
     save(fig, "fig2_onevsseveral")

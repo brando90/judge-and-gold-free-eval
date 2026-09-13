@@ -95,9 +95,11 @@ scored: Sonnet 5 40 and 40; Opus 5 MACE 37 (at least 20, so scored).
 
 ### R20-C (recorded 2026-09-13; `papers/analysis/r20c_leaderboard.json`)
 
-Generation: 150 questions per API generator, 0 errors, every reply boxed; spend USD 0.11 (Haiku 4.5), 0.19 (Sonnet 5), Opus 5 see
-`runs/r20/mace_gen/spend_claude-opus-5.json`. Grading: 1,200 calls, 0 errors, 0 unparseable, USD 0.70. Questions with all eight calls
-scored and labels for every generator: 149 (at least 100, so scored).
+Generation: Haiku 4.5 and Sonnet 5 answered all 150 questions with no errors and every reply boxed (spend USD 0.11 and 0.19). Opus 5
+answered 149: on `mace/language-k2-11` it used all 512 tokens and returned no text (stop reason `max_tokens`), so
+`r20_build_leaderboard_pool.py` dropped that question for every generator (spend: `runs/r20/mace_gen/spend_claude-opus-5.json`).
+(Corrected after first recording, which said 150 for every API generator.) Grading: 149 questions x 4 answers x 2 conditions = 1,192
+calls, 0 errors, 0 unparseable, USD 0.70. Questions scored: 149 (at least 100, so scored).
 
 | Generator | Answer list | Blind judge | Referenced judge | Referenced minus list | Correct answers differing from reference | False rejections of those, blind / referenced |
 |---|---|---|---|---|---|---|

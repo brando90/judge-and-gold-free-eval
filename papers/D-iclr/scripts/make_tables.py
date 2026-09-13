@@ -903,3 +903,108 @@ try:
     print("wrote protocol_exact.tex")
 except (KeyError, TypeError, FileNotFoundError) as e:
     print("[skip protocol_exact]", e)
+
+
+# ---------------------------------------------------------------- round 20: acceptance across judges, API-judge safeguards, benchmark scores
+try:
+    RA = {"Sonnet 5": J("r20a_sonnet_retest.json"), "Opus 5": J("r20a_opus_retest.json")}
+    PL = (("mace", "\\textsc{MACE}, $k{>}1$"), ("repl", "Replication"), ("kpool", "$k$-pool, $k{>}1$"), ("pooled", "Pooled"))
+
+    def cnt(k, n):
+        return f"{k} ({100 * k / n:.1f}\\%)" if n else "---"
+
+    body = ["\\begin{tabular}{llrrrrrr}", "\\toprule",
+            " & & \\multicolumn{3}{c}{Differ from the reference} & \\multicolumn{3}{c}{Match the reference} \\\\",
+            "\\cmidrule(lr){3-5}\\cmidrule(lr){6-8}",
+            "Judge & Pool & Scored 10 blind & $\\leq 3$ with reference & $\\leq 3$ second blind call & Scored 10 blind & $\\leq 3$ with reference & $\\leq 3$ second blind call \\\\",
+            "\\midrule"]
+    for jn, d in RA.items():
+        first = True
+        for pool, lab in PL:
+            nm, m = d[pool]["nonmatch"], d[pool]["match"]
+            body.append(f"{jn if first else ''} & {lab} & {nm['n']} & {cnt(nm['referenced_le3'], nm['n'])} & {cnt(nm['retest_le3'], nm['n'])} & "
+                        f"{m['n']} & {cnt(m['referenced_le3'], m['n'])} & {cnt(m['retest_le3'], m['n'])} \\\\")
+            first = False
+        body.append("\\addlinespace")
+    write("r20_retest.tex", done(body[:-1]))
+
+    md, qf = J("r20d_matched_acceptance.json"), J("r20f_qwen3_acceptance.json")
+    body = ["\\begin{tabular}{llrrrr}", "\\toprule",
+            " & & & & \\multicolumn{2}{c}{Correct answers accepted blind: number; share $\\leq 3$ with reference} \\\\", "\\cmidrule(lr){5-6}",
+            "Judge & Pool & Acceptance threshold & Wrong answers accepted & Differ from the reference & Match it \\\\", "\\midrule"]
+    PN = {"repl": "Replication", "kpool": "$k$-pool, $k{>}1$"}
+    for key, x in md.items():
+        if "|" not in key:
+            continue
+        pool, jn = key.split("|")
+        body.append(f"{jn} & {PN[pool]} & {x['threshold']:.2f} & {100 * x['wrong_pass_rate']:.1f}\\% of {x['wrong_n']} & "
+                    f"{x['nonmatch']['n']}; {100 * x['nonmatch']['share_le3_with_reference']:.1f}\\% & {x['match']['n']}; {100 * x['match']['share_le3_with_reference']:.1f}\\% \\\\")
+    body.append("\\addlinespace")
+    for key, x in qf.items():
+        jn, arm = key.split("|")
+        body.append(f"{jn}, {arm} & \\textsc{{MACE}} subsample & 10 & {100 * x['wrong_blind_10_share']:.1f}\\% of {x['wrong_n']} & "
+                    f"{x['nonmatch']['scored_10_blind']}; {100 * x['nonmatch']['share_le3_with_reference']:.1f}\\% & {x['match']['scored_10_blind']}; {100 * x['match']['share_le3_with_reference']:.1f}\\% \\\\")
+    write("r20_matched_acceptance.tex", done(body))
+
+    sg = J("r20g_frontier_safeguards.json")
+
+    def g_(x, k):  # three decimals: an interval such as [-0.105, -0.004] must not print as reaching zero
+        return fc(*x[k][:2], d=3) if x.get(k) else "not run"
+
+    def p_(x, k):
+        return p4(x[k]) if x.get(k) else "not run"
+
+    body = ["\\begin{tabular}{llccccc}", "\\toprule",
+            " & & \\multicolumn{3}{c}{Grading AUROC, change against blind} & \\multicolumn{2}{c}{False rejections, change against blind (points)} \\\\",
+            "\\cmidrule(lr){3-5}\\cmidrule(lr){6-7}",
+            "Judge & Pool & Reference & Full-credit sentence & Max rule & Reference & Full-credit sentence \\\\", "\\midrule"]
+    for jn in ("Sonnet 5", "Opus 5"):
+        first = True
+        for pool, lab in PL[:3]:
+            x = sg.get(f"{jn}|{pool}")
+            if not x:
+                continue
+            body.append(f"{jn if first else ''} & {lab} & {g_(x, 'G_nm_ref_minus_blind')} & {g_(x, 'G_nm_inst_minus_blind')} & {g_(x, 'G_nm_max_minus_blind')} & "
+                        f"{p_(x, 'FR_ref_minus_blind')} & {p_(x, 'FR_inst_minus_blind')} \\\\")
+            first = False
+        body.append("\\addlinespace")
+    body = body[:-1] + ["\\midrule", " & & \\multicolumn{2}{c}{Sentence $-$ reference} & Max $-$ reference & \\multicolumn{2}{c}{Sentence $-$ reference} \\\\", "\\midrule"]
+    for jn in ("Sonnet 5", "Opus 5"):
+        first = True
+        for pool, lab in PL[:3]:
+            x = sg.get(f"{jn}|{pool}")
+            if not x:
+                continue
+            body.append(f"{jn if first else ''} & {lab} & \\multicolumn{{2}}{{c}}{{{g_(x, 'G_nm_inst_minus_ref')}}} & {g_(x, 'G_nm_max_minus_ref')} & "
+                        f"\\multicolumn{{2}}{{c}}{{{p_(x, 'FR_inst_minus_ref')}}} \\\\")
+            first = False
+    write("r20_safeguards.tex", done(body))
+
+    lb, lm = J("r20c_leaderboard.json"), sg["leaderboard_max_rule"]
+    GN = {"meta-llama__Llama-3.1-8B-Instruct": "Llama-3.1-8B-Instruct", "claude-haiku-4-5-20251001": "Claude Haiku 4.5",
+          "claude-sonnet-5": "Claude Sonnet 5", "claude-opus-5": "Claude Opus 5"}
+    body = ["\\begin{tabular}{lrrrrrrr}", "\\toprule",
+            " & \\multicolumn{4}{c}{Accuracy (\\%)} & & & \\\\", "\\cmidrule(lr){2-5}",
+            "Generator & Answer list & Blind judge & Referenced judge & Max rule & Referenced $-$ list (points) & Correct answers that differ & Their false rejections: blind; referenced \\\\",
+            "\\midrule"]
+    for gk, name in GN.items():
+        x = lb["generators"][gk]
+        body.append(f"{name} & {100 * x['accuracy_answer_list'][0]:.1f} & {100 * x['accuracy_blind'][0]:.1f} & {100 * x['accuracy_referenced'][0]:.1f} & "
+                    f"{100 * lm[gk]['accuracy_max_rule'][0]:.1f} & {p4(x['undercount_referenced_minus_list'])} & {x['correct_nonmatching']} of {x['correct']} & "
+                    f"{100 * x['false_rejection_nonmatch_blind']:.1f}\\%; {100 * x['false_rejection_nonmatch_ref']:.1f}\\% \\\\")
+    po = lb["pooled"]
+    body += ["\\midrule",
+             f"Pooled, change against the list (points) & --- & {p4(po['blind_minus_list'])} & {p4(po['undercount_referenced_minus_list'])} & {p4(lm['pooled_max_minus_list'])} & & & "
+             f"{100 * po['false_rejection_nonmatch_blind']:.1f}\\%; {100 * po['false_rejection_nonmatch_ref']:.1f}\\% \\\\"]
+    write("r20_leaderboard.tex", done(body))
+
+    be = J("r20e_benchmark_open_judges.json")
+    body = ["\\begin{tabular}{lrrrrr}", "\\toprule",
+            "Judge & Answer list (\\%) & Blind judge (\\%) & Referenced judge (\\%) & Referenced $-$ list (points) & Differing correct answers credited: blind; referenced \\\\", "\\midrule"]
+    for jn, x in be["judges"].items():
+        body.append(f"{jn} & {100 * x['accuracy_answer_list'][0]:.1f} & {100 * x['accuracy_blind'][0]:.1f} & {100 * x['accuracy_referenced'][0]:.1f} & "
+                    f"{p4(x['referenced_minus_list'])} & {100 * x['nonmatching_credited_blind']:.1f}\\%; {100 * x['nonmatching_credited_referenced']:.1f}\\% \\\\")
+    write("r20_benchmark_open.tex", done(body))
+    print("wrote round-20 tables")
+except (KeyError, TypeError, FileNotFoundError) as e:
+    print("[skip round-20 tables]", repr(e))
