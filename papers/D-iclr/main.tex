@@ -178,7 +178,7 @@ Where it already verifies well, the reference mostly redistributes credit toward
 \paragraph{Selection.}
 Best-of-64 selection shows the same pattern with wider intervals (\cref{fig:cost}b).
 On the preregistered replication pool the reference lowers the accuracy of the pick by 4.8 points for Qwen2.5-7B, an interval that includes zero, and by 11.4 points for phi-4 \ci{-19.1}{-4.8}.
-On the $k$-pool, pooled over $k{>}1$, it lowers accuracy by 35.9 points for Qwen2.5-7B and by \pending{X to Y} for Qwen2.5-14B, gemma-2-9b, and Mistral-7B.\pre{}
+On the $k$-pool, pooled over $k{>}1$, it lowers accuracy by 35.9 points for Qwen2.5-7B and by 8.5 to 23.1 points for Qwen2.5-14B, gemma-2-9b, and Mistral-7B, all with intervals that exclude zero.\pre{}
 The loss is largest at $k{=}16$, and Qwen2.5-7B also loses 21.4 points at $k{=}1$, where the reference is the only correct answer; wrong answers that contain the reference's text receive a bonus of 1.4 to 1.7 points (\cref{app:composition}), which may explain it.
 On \textsc{MACE} the reference raises accuracy, almost entirely on single-answer questions ($+29.4$ points for Qwen2.5-7B at $k{=}1$, against $+2.0$ at $k{>}1$); on questions with four or six correct answers the blind judge already picks a correct answer 84.4\% to 93.8\% of the time (\cref{app:mace}).
 On MATH-500, where correct answers rarely differ from the reference and blind verification is weakest (AUROC 0.69), the reference raises Qwen2.5-7B's accuracy by 30.5 points as a full solution and by 28.6 as a final answer alone (\cref{app:estimator}).\pre
@@ -199,7 +199,7 @@ On MATH-500, where correct answers rarely differ from the reference and blind ve
 When a program can check correctness, no judge is needed.
 When a judge can check answers by reasoning, extended thinking helps.
 With the same weights, prompt, and sampling, turning on thinking removes the rotation effect on arithmetic tasks for Qwen3-8B ($-0.69$ to $+0.01$) and Qwen3-14B ($-1.98$ to $-0.12$), at 569 to 1,092 generated tokens per candidate for Qwen3-8B (\cref{fig:reasoning}a).\pre{}
-On factual \textsc{MACE} questions, which these models verify less well blind, the thinking judges still anchor: the margin increase is $+3.62$ with thinking on against $+6.16$ off for Qwen3-8B, and \pending{X} against $+7.07$ for Qwen3-14B (\cref{fig:reasoning}b).\pre{}
+On factual \textsc{MACE} questions, which these models verify less well blind, the thinking judges still anchor: the margin increase is $+3.62$ with thinking on against $+6.16$ off for Qwen3-8B, and $+3.13$ against $+7.07$ for Qwen3-14B (\cref{fig:reasoning}b).\pre{}
 A shorter explanation is not enough: under the verbatim MT-Bench template, whose explanations average 259 tokens, Qwen2.5-7B's score still falls by 3.59 points when the reference moves off a correct answer.\pre
 
 \paragraph{Prompts help only some judges.}
