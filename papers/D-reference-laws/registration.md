@@ -2928,3 +2928,21 @@ not), for both judges, paired per item. This is the paper's lure mechanism
 (Section~\ref{sec:dose}) tested inside a genuine blind-vs-referenced selection
 comparison, rather than as a static margin (P-MC6) or with the reference itself sitting
 in the candidate pool (P-MC4, P-MC4b, P-MC4c).
+
+---
+
+## P-MC4d outcome: right direction for the first time, underpowered at n=8
+
+**Not cleanly confirmed, but the first attempt in the right direction.** Removing the
+reference-as-candidate confound (P-MC4d's actual fix) produces, for the first time
+across four attempts, a same-direction effect in both judges: valid-pick-rate (sol3 over
+the lure) falls under ref relative to blind for both Qwen-7B ($0.625\to0.375$) and phi-4
+($0.500\to0.375$), and Qwen-7B's margin (sol3 score minus lure score) flips sign entirely,
+$+0.473$ blind to $-0.722$ ref -- a real reversal, not noise in one direction. Both
+judges' pick-rate 95% CIs land at the zero boundary ($[-0.500,+0.000]$ and
+$[-0.375,+0000]$) rather than past it, so this does not clear the CI-excluding-zero bar
+used throughout this paper; $n{=}8$ items is thin for a binary pick-rate statistic. This
+is reported as directionally consistent, underpowered evidence, not a confirmation, and
+not another falsification -- a genuinely different outcome class from the first three
+attempts, now that the actual design flaw (reference double-counted as a candidate) is
+removed.
