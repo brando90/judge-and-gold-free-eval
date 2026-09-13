@@ -155,7 +155,7 @@ save(fig, "fig1_teaser")
 
 # Figure 1 data panel for the concept diagram (figures/fig1_concept.tex): the swap result over the pool.
 # Drawn at the size it is placed (natural size inside the TikZ picture) so every label prints at 7 pt or larger.
-fig, ax = plt.subplots(figsize=(2.0, 1.65))
+fig, ax = plt.subplots(figsize=(2.0, 1.5))
 for i, (name, r) in enumerate(cols):
     i = i * GAP
     for dx, k, kw in ((-w, "gainers", dict(color=BLUE)), (0, "placebo", dict(color="#bdbdbd")),
@@ -167,7 +167,7 @@ for i, (name, r) in enumerate(cols):
             ax.text(i + dx, (ci[1] + 0.3) if m > 0 else (ci[0] - 0.3), sgn(m), ha="center",
                     va="bottom" if m > 0 else "top", fontsize=7.2, color=MUTED)
 ax.axhline(0, color=MUTED, lw=0.8, zorder=2)
-ax.set_xticks([i * GAP for i in range(len(cols))], ["Qwen2.5-7B", "phi-4", "Sonnet 5"], fontsize=7.4)
+ax.set_xticks([i * GAP for i in range(len(cols))], ["Qwen2.5-7B", "phi-4", "Sonnet 5\n(API)"], fontsize=7.4)
 ax.set_xlim(-0.8, (len(cols) - 1) * GAP + 0.7)
 ax.set_ylim(-8.2, 9.2)
 ax.set_yticks([-6, -3, 0, 3, 6])
@@ -176,7 +176,7 @@ ax.set_ylabel("change in score", fontsize=7.6)
 style(ax)
 ax.legend(handles=[Patch(color=BLUE, label="reference moved onto its answer"), Patch(color="#bdbdbd", label="answer matches neither"),
                    Patch(facecolor="white", edgecolor=BLUE, hatch="/////", label="reference moved off its answer")],
-          loc="upper center", ncol=1, frameon=False, handlelength=1.1, fontsize=7.2, bbox_to_anchor=(0.4, -0.14))
+          loc="upper center", ncol=1, frameon=False, handlelength=1.1, fontsize=7.2, bbox_to_anchor=(0.4, -0.25))
 save(fig, "fig1_rotation")
 
 # ============================================================== Figure 2
@@ -239,8 +239,8 @@ LIGHT = "#b7c6ee"
 KIND3 = {"score": dict(marker="o", mfc=BLUE, mec=BLUE, ms=5.0),
          "rationale": dict(marker="o", mfc="white", mec=BLUE, mew=1.1, ms=5.0),
          "think": dict(marker="D", mfc="white", mec=BLUE, mew=1.1, ms=4.4)}
-fig, (a1, a2) = plt.subplots(1, 2, figsize=(5.0, 2.9), gridspec_kw={"width_ratios": [1.15, 1.0], "wspace": 0.95})
-fig.subplots_adjust(left=0.3, right=0.975, top=0.92, bottom=0.25)
+fig, (a1, a2) = plt.subplots(1, 2, figsize=(5.2, 2.9), gridspec_kw={"width_ratios": [1.05, 0.85], "wspace": 1.55})
+fig.subplots_adjust(left=0.29, right=0.975, top=0.92, bottom=0.25)
 r3s = load("r3_sonnet_results.json") or {}
 rows = [("hdr", "Sonnet 5 (CLI), 60 tasks")]
 for arm, lab, kind in (("fast", "score only", "score"), ("visible", "explains first", "rationale"), ("think", "thinking on", "think")):
@@ -299,9 +299,9 @@ def _sub(src, arm):
     return ((src.get(arm) or {}).get("macesub") or {}).get("false_reject_diff")
 
 
-groups = [("Qwen3-8B", _fr(_sub(tog, "off")), _fr(_sub(tog, "on"))),
-          ("Qwen3-14B", _fr(_sub(t14, "off")), _fr(_sub(t14, "on"))),
-          ("Sonnet 5 (CLI)", _fr((r5s.get("fast") or {}).get("false_reject_diff")), _fr((r5s.get("think") or {}).get("false_reject_diff")))]
+groups = [("Qwen3-8B\n(explains first / thinks)", _fr(_sub(tog, "off")), _fr(_sub(tog, "on"))),
+          ("Qwen3-14B\n(explains first / thinks)", _fr(_sub(t14, "off")), _fr(_sub(t14, "on"))),
+          ("Sonnet 5, CLI\n(score only / thinks)", _fr((r5s.get("fast") or {}).get("false_reject_diff")), _fr((r5s.get("think") or {}).get("false_reject_diff")))]
 h = 0.38
 n_g = len(groups)
 for i, (lab, off, on) in enumerate(groups):
@@ -311,7 +311,7 @@ for i, (lab, off, on) in enumerate(groups):
             continue
         a2.barh(y + dy, v[0], height=h - 0.05, color=col, zorder=3)
         a2.errorbar(v[0], y + dy, xerr=[[v[0] - v[1][0]], [v[1][1] - v[0]]], fmt="none", ecolor=MUTED, elinewidth=0.8, capsize=1.6, zorder=4)
-        a2.text(max(v[1][1], v[0], 0) + 2.5, y + dy, sgn(v[0], 1), fontsize=7.0, color=MUTED, va="center", ha="left")
+        a2.text(max(v[1][1], v[0], 0) + 2.5, y + dy, sgn(v[0], 1), fontsize=7.2, color=INK, va="center", ha="left")
 a2.axvline(0, color=MUTED, lw=0.8, zorder=2)
 a2.set_yticks(range(n_g), [g[0] for g in groups][::-1], fontsize=7.8)
 a2.set_ylim(-0.6, n_g - 0.4)
@@ -320,7 +320,7 @@ a2.set_xticks([0, 20, 40, 60])
 a2.tick_params(axis="x", labelsize=7.8)
 a2.set_xlabel("false rejections, reference\nminus blind (pp)", fontsize=8)
 a2.set_title("b   Factual questions", loc="left", fontsize=9, fontweight="bold")
-a2.legend(handles=[Patch(color=BLUE, label="thinking off"), Patch(color=LIGHT, label="thinking on")],
+a2.legend(handles=[Patch(color=BLUE, label="no thinking mode"), Patch(color=LIGHT, label="thinking on")],
           loc="upper center", bbox_to_anchor=(0.3, -0.3), ncol=2, frameon=False, handlelength=1.0, fontsize=7.6, columnspacing=1.0)
 style(a2, "x")
 save(fig, "fig2_reasoning")

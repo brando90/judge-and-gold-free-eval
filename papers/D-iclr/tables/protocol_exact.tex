@@ -1,22 +1,22 @@
-\begin{tabular}{llcccc}
+\begin{tabular}{llcccccc}
 \toprule
- & & \multicolumn{2}{c}{Best-of-64 accuracy (points)} & \multicolumn{2}{c}{Grading AUROC} \\
-\cmidrule(lr){3-4}\cmidrule(lr){5-6}
-Pool & Judge & Reference & Max rule & Reference & Max rule \\
+ & & \multicolumn{3}{c}{Best-of-64 accuracy (points)} & \multicolumn{3}{c}{Grading AUROC} \\
+\cmidrule(lr){3-5}\cmidrule(lr){6-8}
+Pool & Judge & Reference & Max rule & Max $-$ reference & Reference & Max rule & Max $-$ reference \\
 \midrule
-$k$-pool, $k{>}1$, any format & Qwen2.5-7B & $-30.3$ {\scriptsize$[-48.5,-12.1]$} & $+3.0$ {\scriptsize$[+0.0,+9.1]$} & $-0.23$ {\scriptsize$[-0.28,-0.19]$} & $+0.00$ {\scriptsize$[-0.01,+0.01]$} \\
- & Qwen2.5-14B & $-3.0$ {\scriptsize$[-18.2,+9.1]$} & $+3.0$ {\scriptsize$[-6.1,+12.1]$} & $-0.17$ {\scriptsize$[-0.21,-0.14]$} & $-0.03$ {\scriptsize$[-0.05,-0.01]$} \\
- & gemma-2-9b & $-3.0$ {\scriptsize$[-9.1,+0.0]$} & $+0.0$ {\scriptsize$[+0.0,+0.0]$} & $-0.19$ {\scriptsize$[-0.22,-0.15]$} & $+0.00$ {\scriptsize$[-0.01,+0.00]$} \\
- & phi-4 & $-15.2$ {\scriptsize$[-30.3,+0.0]$} & $+3.0$ {\scriptsize$[+0.0,+9.1]$} & $-0.25$ {\scriptsize$[-0.29,-0.20]$} & $-0.01$ {\scriptsize$[-0.02,+0.00]$} \\
+$k$-pool, $k{>}1$, any format & Qwen2.5-7B & $-30.3$ {\scriptsize$[-48.5,-12.1]$} & $+3.0$ {\scriptsize$[+0.0,+9.1]$} & $+33.3$ {\scriptsize$[+18.2,+51.5]$} & $-0.23$ {\scriptsize$[-0.28,-0.19]$} & $+0.00$ {\scriptsize$[-0.01,+0.01]$} & $+0.23$ {\scriptsize$[+0.19,+0.27]$} \\
+ & Qwen2.5-14B & $-3.0$ {\scriptsize$[-18.2,+9.1]$} & $+3.0$ {\scriptsize$[-6.1,+12.1]$} & $+6.1$ {\scriptsize$[+0.0,+15.2]$} & $-0.17$ {\scriptsize$[-0.21,-0.14]$} & $-0.03$ {\scriptsize$[-0.05,-0.01]$} & $+0.14$ {\scriptsize$[+0.11,+0.18]$} \\
+ & gemma-2-9b & $-3.0$ {\scriptsize$[-9.1,+0.0]$} & $+0.0$ {\scriptsize$[+0.0,+0.0]$} & $+3.0$ {\scriptsize$[+0.0,+9.1]$} & $-0.19$ {\scriptsize$[-0.22,-0.15]$} & $+0.00$ {\scriptsize$[-0.01,+0.00]$} & $+0.18$ {\scriptsize$[+0.15,+0.22]$} \\
+ & phi-4 & $-15.2$ {\scriptsize$[-30.3,+0.0]$} & $+3.0$ {\scriptsize$[+0.0,+9.1]$} & $+18.2$ {\scriptsize$[+6.1,+33.3]$} & $-0.25$ {\scriptsize$[-0.29,-0.20]$} & $-0.01$ {\scriptsize$[-0.02,+0.00]$} & $+0.24$ {\scriptsize$[+0.20,+0.28]$} \\
 \addlinespace
-\textsc{MACE} (accuracy: natural mix; AUROC: $k{>}1$) & Qwen2.5-7B & $+9.0$ {\scriptsize$[+2.3,+15.8]$} & $+9.8$ {\scriptsize$[+5.3,+15.0]$} & $-0.08$ {\scriptsize$[-0.14,-0.01]$} & $-0.01$ {\scriptsize$[-0.02,+0.00]$} \\
- & phi-4 & $+11.3$ {\scriptsize$[+4.5,+18.1]$} & $+11.3$ {\scriptsize$[+6.0,+17.3]$} & $-0.06$ {\scriptsize$[-0.10,-0.02]$} & $-0.01$ {\scriptsize$[-0.02,+0.00]$} \\
-\textsc{MACE} $k{=}1$, all correct & Qwen2.5-7B & --- & --- & $+0.29$ {\scriptsize$[+0.19,+0.41]$} & $+0.23$ {\scriptsize$[+0.14,+0.32]$} \\
-\textsc{MACE} $k{=}1$, all correct & phi-4 & --- & --- & $+0.23$ {\scriptsize$[+0.14,+0.34]$} & $+0.21$ {\scriptsize$[+0.12,+0.31]$} \\
+\textsc{MACE} (accuracy: natural mix; AUROC: $k{>}1$) & Qwen2.5-7B & $+9.0$ {\scriptsize$[+2.3,+15.8]$} & $+9.8$ {\scriptsize$[+5.3,+15.0]$} & $+0.8$ {\scriptsize$[-3.8,+6.0]$} & $-0.08$ {\scriptsize$[-0.14,-0.01]$} & $-0.01$ {\scriptsize$[-0.02,+0.00]$} & $+0.07$ {\scriptsize$[+0.01,+0.13]$} \\
+ & phi-4 & $+11.3$ {\scriptsize$[+4.5,+18.1]$} & $+11.3$ {\scriptsize$[+6.0,+17.3]$} & $+0.0$ {\scriptsize$[-3.8,+3.8]$} & $-0.06$ {\scriptsize$[-0.10,-0.02]$} & $-0.01$ {\scriptsize$[-0.02,+0.00]$} & $+0.05$ {\scriptsize$[+0.01,+0.09]$} \\
+\textsc{MACE} $k{=}1$, all correct & Qwen2.5-7B & --- & --- & --- & $+0.29$ {\scriptsize$[+0.19,+0.41]$} & $+0.23$ {\scriptsize$[+0.14,+0.32]$} & $-0.07$ {\scriptsize$[-0.11,-0.03]$} \\
+\textsc{MACE} $k{=}1$, all correct & phi-4 & --- & --- & --- & $+0.23$ {\scriptsize$[+0.14,+0.34]$} & $+0.21$ {\scriptsize$[+0.12,+0.31]$} & $-0.02$ {\scriptsize$[-0.04,-0.01]$} \\
 \addlinespace
-MATH-500, final answer & Qwen2.5-7B & $+28.6$ {\scriptsize$[+18.1,+38.1]$} & $+23.8$ {\scriptsize$[+14.3,+33.3]$} & $+0.29$ {\scriptsize$[+0.25,+0.33]$} & $+0.24$ {\scriptsize$[+0.20,+0.28]$} \\
-MATH-500, solution & Qwen2.5-7B & $+30.5$ {\scriptsize$[+21.9,+39.1]$} & $+23.8$ {\scriptsize$[+15.2,+32.4]$} & $+0.29$ {\scriptsize$[+0.24,+0.33]$} & $+0.13$ {\scriptsize$[+0.11,+0.16]$} \\
-MATH-500, final answer & Qwen2.5-14B & $+30.6$ {\scriptsize$[+21.9,+39.4]$} & $+29.7$ {\scriptsize$[+21.1,+39.1]$} & $+0.25$ {\scriptsize$[+0.21,+0.28]$} & $+0.22$ {\scriptsize$[+0.18,+0.25]$} \\
-MATH-500, solution & Qwen2.5-14B & $+28.6$ {\scriptsize$[+19.0,+38.1]$} & $+28.6$ {\scriptsize$[+19.0,+38.1]$} & $+0.24$ {\scriptsize$[+0.20,+0.28]$} & $+0.20$ {\scriptsize$[+0.17,+0.24]$} \\
+MATH-500, final answer & Qwen2.5-7B & $+28.6$ {\scriptsize$[+18.1,+38.1]$} & $+23.8$ {\scriptsize$[+14.3,+33.3]$} & $-4.8$ {\scriptsize$[-9.5,-0.9]$} & $+0.29$ {\scriptsize$[+0.25,+0.33]$} & $+0.24$ {\scriptsize$[+0.20,+0.28]$} & $-0.05$ {\scriptsize$[-0.07,-0.03]$} \\
+MATH-500, solution & Qwen2.5-7B & $+30.5$ {\scriptsize$[+21.9,+39.1]$} & $+23.8$ {\scriptsize$[+15.2,+32.4]$} & $-6.7$ {\scriptsize$[-11.4,-1.9]$} & $+0.29$ {\scriptsize$[+0.24,+0.33]$} & $+0.13$ {\scriptsize$[+0.11,+0.16]$} & $-0.15$ {\scriptsize$[-0.19,-0.12]$} \\
+MATH-500, final answer & Qwen2.5-14B & $+30.6$ {\scriptsize$[+21.9,+39.4]$} & $+29.7$ {\scriptsize$[+21.1,+39.1]$} & $-0.9$ {\scriptsize$[-2.9,+0.0]$} & $+0.25$ {\scriptsize$[+0.21,+0.28]$} & $+0.22$ {\scriptsize$[+0.18,+0.25]$} & $-0.03$ {\scriptsize$[-0.04,-0.02]$} \\
+MATH-500, solution & Qwen2.5-14B & $+28.6$ {\scriptsize$[+19.0,+38.1]$} & $+28.6$ {\scriptsize$[+19.0,+38.1]$} & $+0.0$ {\scriptsize$[+0.0,+0.0]$} & $+0.24$ {\scriptsize$[+0.20,+0.28]$} & $+0.20$ {\scriptsize$[+0.17,+0.24]$} & $-0.04$ {\scriptsize$[-0.05,-0.03]$} \\
 \bottomrule
 \end{tabular}

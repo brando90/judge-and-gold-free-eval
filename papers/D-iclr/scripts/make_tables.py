@@ -565,7 +565,7 @@ try:
     for key, lab in (("le3", "Scored 3 or below"), ("posthoc_le5", "Scored 5 or below (post hoc)")):
         x = fr[key]
         body.append(f"{lab}: blind {100 * x['blind'][0]:.1f}\\%, reference {100 * x['ref'][0]:.1f}\\% & change {p4(x['diff'])} \\\\")
-    sec("\\textsc{MACE}, Qwen2.5-7B exact scorer; phi-4 original scorer")
+    sec("\\textup{\\textsc{MACE}}, Qwen2.5-7B exact scorer; phi-4 original scorer")
     mq = r4p["mace_exact_q7"]
     for k_, lab in (("k1", "$k{=}1$"), ("kgt1", "$k{>}1$"), ("all", "all")):
         body.append(f"Selection accuracy change, Qwen2.5-7B, {lab} ({mq[k_]['n']} tasks) & {p4(mq[k_]['ref_minus_blind'])} \\\\")
@@ -593,7 +593,7 @@ try:
     for jn in ("Qwen2.5-7B", "phi-4", "Qwen2.5-14B", "gemma-2-9b", "Mistral-7B"):
         a_ = r6["kpool_overall_auroc"][jn]
         body.append(f"{jn} & {fc(*a_['k1']['ref_minus_blind'][:2])}; {fc(*a_['kgt1']['ref_minus_blind'][:2])} \\\\")
-    sec("Power to separate blind AUROC on the replication pool from \\textsc{MACE} (Qwen2.5-7B; share of 400 draws)")
+    sec("Power to separate blind AUROC on the replication pool from \\textup{\\textsc{MACE}} (Qwen2.5-7B; share of 400 draws)")
     pw = r5p["power_rep_vs_mace"]
     for m_ in (16, 64):
         body.append(f"{m_} candidates per task: 10, 20, 40 tasks & {pw[f'm{m_}_n10']:.2f}, {pw[f'm{m_}_n20']:.2f}, {pw[f'm{m_}_n40']:.2f} \\\\")
@@ -620,6 +620,11 @@ try:
     nf = J("r16d_sonnet_noise_floor.json")["nonmatch"]
     sec("Sonnet~5, replication subsamples: correct non-matching answers the API scored 10 blind, re-scored blind through the CLI (noise floor)")
     body.append(f"Scored 3 or below: second blind call (CLI); API with the reference & {nf['cli_blind_le3']} of {nf['api_blind_10_with_cli_blind']}; {nf['api_referenced_le3']} of {nf['api_blind_10_with_cli_blind']} ({100 * nf['share_api_referenced_le3']:.1f}\\%) \\\\")
+    wt = J("r19_sonnet_wrong_tens.json")
+    sec("Sonnet~5 (API) subsamples: share of wrong and correct answers scored 10 blind")
+    for pool, lab in (("mace", "\\textsc{MACE}, $k{>}1$"), ("repl", "Replication"), ("kpool", "$k$-pool, $k{>}1$")):
+        w_, c_ = wt[pool]["wrong"], wt[pool]["correct"]
+        body.append(f"{lab}: wrong answers; correct answers & {100 * w_['share_blind_10']:.1f}\\% of {w_['n']}; {100 * c_['share_blind_10']:.1f}\\% of {c_['n']} \\\\")
     write("main_numbers.tex", "\n".join(body + ["\\end{longtable}"]) + "\n")
     print("wrote main_numbers.tex")
 except (KeyError, TypeError, FileNotFoundError) as e:
@@ -871,29 +876,29 @@ except (KeyError, TypeError, FileNotFoundError) as e:
 # ---------------------------------------------------------------- round 17: protocols under the exact scorer; Sonnet 5 noise floor
 try:
     ex = J("r16c_protocols_exact.json")
-    body = ["\\begin{tabular}{llcccc}", "\\toprule",
-            " & & \\multicolumn{2}{c}{Best-of-64 accuracy (points)} & \\multicolumn{2}{c}{Grading AUROC} \\\\", "\\cmidrule(lr){3-4}\\cmidrule(lr){5-6}",
-            "Pool & Judge & Reference & Max rule & Reference & Max rule \\\\", "\\midrule"]
+    body = ["\\begin{tabular}{llcccccc}", "\\toprule",
+            " & & \\multicolumn{3}{c}{Best-of-64 accuracy (points)} & \\multicolumn{3}{c}{Grading AUROC} \\\\", "\\cmidrule(lr){3-5}\\cmidrule(lr){6-8}",
+            "Pool & Judge & Reference & Max rule & Max $-$ reference & Reference & Max rule & Max $-$ reference \\\\", "\\midrule"]
     first = True
     for jn, d in ex["kpool"].items():
         a_, g_ = d["accuracy"], d["grading"]
-        body.append(f"{'$k$-pool, $k{>}1$, any format' if first else ''} & {jn} & {p4(a_['reference_minus_blind'])} & {p4(a_['max_rule_minus_blind'])} & {fc(*g_['reference_minus_blind'][:2])} & {fc(*g_['max_rule_minus_blind'][:2])} \\\\")
+        body.append(f"{'$k$-pool, $k{>}1$, any format' if first else ''} & {jn} & {p4(a_['reference_minus_blind'])} & {p4(a_['max_rule_minus_blind'])} & {p4(a_['max_rule_minus_reference'])} & {fc(*g_['reference_minus_blind'][:2])} & {fc(*g_['max_rule_minus_blind'][:2])} & {fc(*g_['max_rule_minus_reference'][:2])} \\\\")
         first = False
     body.append("\\addlinespace")
     first = True
     for jn, d in ex["mace"].items():
         a_, g_ = d["accuracy_natural_mix"], d["grading_kgt1"]
         lab_ = "\\textsc{MACE} (accuracy: natural mix; AUROC: $k{>}1$)" if first else ""
-        body.append(f"{lab_} & {jn} & {p4(a_['reference_minus_blind'])} & {p4(a_['max_rule_minus_blind'])} & {fc(*g_['reference_minus_blind'][:2])} & {fc(*g_['max_rule_minus_blind'][:2])} \\\\")
+        body.append(f"{lab_} & {jn} & {p4(a_['reference_minus_blind'])} & {p4(a_['max_rule_minus_blind'])} & {p4(a_['max_rule_minus_reference'])} & {fc(*g_['reference_minus_blind'][:2])} & {fc(*g_['max_rule_minus_blind'][:2])} & {fc(*g_['max_rule_minus_reference'][:2])} \\\\")
         first = False
     for jn, d in ex["mace"].items():
         g_ = d["grading_k1_all_correct"]
-        body.append(f"\\textsc{{MACE}} $k{{=}}1$, all correct & {jn} & --- & --- & {fc(*g_['reference_minus_blind'][:2])} & {fc(*g_['max_rule_minus_blind'][:2])} \\\\")
+        body.append(f"\\textsc{{MACE}} $k{{=}}1$, all correct & {jn} & --- & --- & --- & {fc(*g_['reference_minus_blind'][:2])} & {fc(*g_['max_rule_minus_blind'][:2])} & {fc(*g_['max_rule_minus_reference'][:2])} \\\\")
     body.append("\\addlinespace")
     for jn, d in ex["math500"].items():
         for cond, lab in (("refans", "final answer"), ("ref", "solution")):
             a_, g_ = d[cond]["accuracy"], d[cond]["grading_all_correct"]
-            body.append(f"MATH-500, {lab} & {jn} & {p4(a_['reference_minus_blind'])} & {p4(a_['max_rule_minus_blind'])} & {fc(*g_['reference_minus_blind'][:2])} & {fc(*g_['max_rule_minus_blind'][:2])} \\\\")
+            body.append(f"MATH-500, {lab} & {jn} & {p4(a_['reference_minus_blind'])} & {p4(a_['max_rule_minus_blind'])} & {p4(a_['max_rule_minus_reference'])} & {fc(*g_['reference_minus_blind'][:2])} & {fc(*g_['max_rule_minus_blind'][:2])} & {fc(*g_['max_rule_minus_reference'][:2])} \\\\")
     write("protocol_exact.tex", done(body))
     print("wrote protocol_exact.tex")
 except (KeyError, TypeError, FileNotFoundError) as e:

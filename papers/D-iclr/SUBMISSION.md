@@ -6,8 +6,8 @@ Deadlines (ICLR 2027 author guidelines): abstract registration **Sep 18, 2026 AO
 
 - **Title:** see `main.tex` `\title` (keep identical in OpenReview).
 - **Abstract:** paste the plain-text version of the `abstract` environment (replace `\%` with `%`, `$n$` with n).
-- **Title (round 13):** The Reference Is Not an Answer Key: LLM Judges Favor the Correct Answer They Are Shown
-- **TL;DR:** When a question has several correct answers, swapping which one is the reference moves an LLM judge's score of identical text by 3 to 5 points out of 10 and makes other correct answers harder to separate from wrong ones; verification failure explains part of this, but Sonnet 5 still penalizes factual answers it verifies without a reference.
+- **Title (round 18):** The Reference Is Not an Answer Key: LLM Judges Favor the Correct Answer They Are Shown
+- **TL;DR:** When a question has several correct answers, LLM judges favor the one given as the reference: swapping it moves the score of identical text by several points, correct answers that differ from it are rejected far more often even when the judge accepts them without a reference, and scoring with and without the reference removes the grading harm.
 - **Keywords:** LLM-as-a-judge, reference-guided evaluation, multiple correct answers, anchoring, best-of-n selection, reasoning judges, evaluation reliability, preregistration
 - **Primary area (suggested):** alignment, fairness, safety, privacy, and societal considerations — alternative: datasets and benchmarks / evaluation. Pick whichever area list ICLR 2027 shows that mentions evaluation of foundation models.
 
@@ -15,8 +15,8 @@ Deadlines (ICLR 2027 author guidelines): abstract registration **Sep 18, 2026 AO
 
 - [ ] `latexmk -pdf main.tex` builds with no undefined references; main text ends on or before page 9.
 - [ ] `python scripts/make_figures.py && python scripts/make_tables.py` regenerated from current `papers/analysis/*.json`.
-- [ ] `python scripts/check_numbers.py`: every flagged number checked by hand (as of round 3: 46 = ledger sum, 825 = MACE subsample size from `r3_build_subsamples.py`, 1,200 = split by the thousands separator in the registration).
-- [ ] Optional before the deadline: if the Claude subscription usage limit resets, resume the R3-B visible and thinking arms (`experiments/tfa-vs-judge/scripts/sonnet_cli_judge.py --arm visible|think --cond ref|refrot`, resumable), rerun `r3_sonnet_analysis.py`, and score P-R3B2–B4 in the ledger.
+- [ ] `python scripts/check_numbers.py`: every flagged number checked by hand. As of round 18 the main text flags only 156 (ledger sum: 92 + 10 + 15 + 16 + 18 + 2 + 3) and 94 (Sonnet 5's 94.4% ranking and the 94% masking cut, stored as fractions); the appendix flags 116/420 (Figure 1 task id and length rule), 405, 825 and 1,200 as before.
+- [x] R3-B visible and thinking arms were completed after the usage limit reset (round 5); nothing pending.
 - [ ] PDF metadata anonymous: `pdfinfo main.pdf` shows no author; no acknowledgments; no OSF links in the PDF.
 - [ ] `supplement.zip` under 100 MB, anonymization audit clean (see `supplement/README.md`).
 - [ ] AI use statement present (required in 2027), ethics and reproducibility statements present.

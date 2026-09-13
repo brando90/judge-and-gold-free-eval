@@ -21,11 +21,11 @@ In own-built tasks, the reference is one member of the stored valid set, chosen 
 \toprule
 Pool & Contents & Generator & Judges \\
 \midrule
-Replication\osf{} & 120 tasks from five constraint families with exact checkers & Llama-3.1-8B-Instruct & Qwen2.5-7B, phi-4, Sonnet~5, GPT-4.1 \\
+Replication\osf{} & 120 tasks from five constraint families with exact checkers & Llama-3.1-8B-Instruct & Qwen2.5-7B, phi-4, Sonnet~5, GPT-4.1; on a 120-task subsample, Qwen2.5-7B (MT-Bench template), Qwen3-8B and Qwen3-14B \\
 $k$-pool\osf{} & 75 tasks with exactly $k \in \{1,2,4,8,16\}$ valid answers, 15 per $k$; all 465 stored answers checked & Llama-3.1-8B-Instruct & Qwen2.5-7B, phi-4, Qwen2.5-14B, gemma-2-9b, Mistral-7B \\
 Synthetic grid\pre{} & 60 tasks from two families whose valid sets enumerate exactly, 12 per $k$ & Qwen2.5-7B; Llama-3.1-8B & Qwen2.5 1.5B, 3B, 7B, and 14B, Llama-3.1-8B, and phi-4 \\
 Exploratory Ties & 51 generation tasks built from \textsc{RewardBench-2} Ties items & Qwen2.5-7B & Qwen2.5 1.5B--14B \\
-\textsc{MACE}\pre{} & 300 questions with 1, 2, 4, or 6 correct answers (River, Language, and Math domains) & Llama-3.1-8B-Instruct & Qwen2.5-7B, phi-4, Sonnet~5 \\
+\textsc{MACE}\pre{} & 300 questions with 1, 2, 4, or 6 correct answers (River, Language, and Math domains) & Llama-3.1-8B-Instruct & Qwen2.5-7B, phi-4, Sonnet~5; on an 81-task subsample, Qwen3-8B and Qwen3-14B \\
 MBPP\pre{} & 317 problems whose canonical solution passes the EvalPlus tests~\citep{liu2023evalplus} & Qwen2.5-7B & Qwen2.5-7B, 14B \\
 MATH-500 & 105 problems with pass rate in $[0.2, 0.8]$, unique answers; the reference is the full MATH solution, or the final answer alone in \cref{app:estimator} & Qwen2.5-7B & Qwen2.5 1.5B--14B \\
 Answer formats\pre{} & 25 new constraint tasks, each requested in four formats & Llama-3.1-8B-Instruct & Qwen2.5-7B, phi-4 \\
@@ -221,7 +221,7 @@ The MATH-500 contrast of the main text originally showed the judge a full refere
 
 \begin{table}[htbp]
 \centering
-\caption{MATH-500, 105 problems: best-of-64 selection accuracy (\%) blind, with the reference solution, and with its final answer alone, and the differences (points, 95\% CI). Exact scorer; both judges' scores are new runs, so blind accuracies differ slightly from the original-scorer files of \cref{tab:acc-math,tab:r2a} (68.6\% and 66.7\% against 67.6\%).\pre}
+\caption{MATH-500, 105 problems: best-of-64 selection accuracy (\%) blind, with the reference solution, and with its final answer alone, and the differences (points, 95\% CI). Exact scorer; both judges' scores are new runs, so blind accuracies differ slightly from the original-scorer files of \cref{tab:acc-math,tab:r2a} (68.6\% and 66.7\% against 67.6\%). Intervals here and in \cref{tab:protocol-grading} come from separate bootstrap runs, so the same contrast can show slightly different bounds.\pre}
 \label{tab:r4-math}
 \footnotesize
 \setlength{\tabcolsep}{3pt}
@@ -656,7 +656,7 @@ The first Sonnet~5 API scores (\cref{tab:round7}) covered correct answers only. 
 \label{app:reasoning}
 
 \paragraph{Thinking on versus off.}
-This pre-specified experiment reran the Qwen3-8B protocol of \cref{app:rotation} (rubric~$a$ ending in a ``Score: N'' line, temperature 0.6, top-p 0.95, top-k 20, up to 4,096 new tokens) with the chat template's thinking switch off and nothing else changed. The pools are the swap subsample and the 16-sample $k$-subsample of \cref{app:rotation}, plus a \textsc{MACE} subsample: every River or Language task with $k{>}1$ that has both matching and non-matching valid samples, with up to four samples each of matching-valid, non-matching-valid, and invalid answers (81 tasks, 825 samples). Twelve of 1,200 blind thinking-off replies on the $k$-subsample had no parseable score; none did elsewhere. \Cref{tab:toggle} gives the results. A second pre-specified toggle with Qwen3-14B repeats the pattern (\cref{tab:r4-toggle}). With thinking off, the loss under the swap is $-1.98$; with it on, $-0.12$. The \textsc{MACE} margin increase is $+7.07$ off and $+3.13$ on. With thinking on, blind verification AUROC is 0.86 on the arithmetic subsample and 0.81 on the factual one.
+This pre-specified experiment reran the Qwen3-8B protocol of \cref{app:rotation} (rubric~$a$ ending in a ``Score: N'' line, temperature 0.6, top-p 0.95, top-k 20, up to 4,096 new tokens) with the chat template's thinking switch off and nothing else changed. The pools are the swap subsample and the 16-sample $k$-subsample of \cref{app:rotation}, plus a \textsc{MACE} subsample: every River or Language task with $k{>}1$ that has both matching and non-matching valid samples, with up to four samples each of matching-valid, non-matching-valid, and invalid answers (81 tasks, 825 samples). Twelve of 1,200 blind thinking-off replies on the $k$-subsample had no parseable score; none did elsewhere. \Cref{tab:toggle} gives the results. A second pre-specified toggle with Qwen3-14B repeats the pattern (\cref{tab:r4-toggle}). With thinking off, the loss under the swap is $-1.98$; with it on, $-0.12$. The \textsc{MACE} margin increase is $+7.07$ off and $+3.13$ on. With thinking on, Qwen3-14B's blind verification AUROC is 0.86 on the arithmetic subsample and 0.81 on the factual one (Qwen3-8B: 0.86 and 0.80).
 
 \begin{table}[htbp]
 \centering
