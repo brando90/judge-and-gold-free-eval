@@ -43,7 +43,7 @@
 \begin{abstract}
 \noindent
 LLM judges now rank models, filter data, and pick the best of $n$ samples, and the standard way to decide whether to trust one is raw agreement with human labels.
-That check fails in the worst way: a judge can agree with humans on unoptimized data and still be gamed the moment something optimizes against it, because an agreement rate cannot reveal which property the judge actually scores --- substance or style --- and that property, not the rate, determines survival under optimization.
+That check fails in the worst way: a judge can agree with humans on unoptimized data and still be gamed the moment something optimizes against it, because an agreement rate cannot reveal which properties drive the judge's score, and survival under optimization depends on two of them: how much substance the judge reads, and how much style.
 We introduce a pre-deployment audit that measures it with the same labels: a few dozen blind human labels, graded separately for soundness and for style, yield a two-dimensional measurement --- how much of the target construct the judge reads, and how much of a nuisance construct --- and a frozen rule turns that measurement into a verdict of qualified, insufficient, or nuisance-loaded.
 The audit convicts a deliberately sabotaged frontier judge and a top open reward model that raw agreement rates as interchangeable with honest judges, and the sabotaged judge shows why the distinction matters: under best-of-$n$ pressure it corrupts its own scoreboard while selecting almost as well as its honest twin, exactly the failure an accuracy check cannot see.
 We validate the verdicts by running the optimization the audit is meant to predict: frozen before any pressure was applied, they called the best-of-$n$ outcome for ten of eleven registered configurations, and the single miss --- a pass that cleared its threshold by $0.01$ --- is reported in full.
@@ -108,12 +108,13 @@ Under optimization the scoreboard climbs while true quality does not: the pipeli
 Nothing in the agreement rate warned them, and nothing in it could have.
 
 The reason is structural, not statistical.
-On unoptimized data, soundness and writing quality travel together --- they correlate at $+0.32$ $[+0.10, +0.55]$ in our labeled sample of model solutions, and the ceiling effects of a near-solved benchmark compress the rest --- so a judge that scores substance and a judge that scores style post nearly the same agreement rate.
-That is not a conjecture about the confound's size: it is what we measure, and a sabotaged frontier judge and an honest mid-size judge land within $0.02$ of each other on raw correlation (Table~\ref{tab:h2h}) while reading opposite properties.
-An optimizer breaks exactly that correlation: it manufactures whichever property the judge rewards, and only one of the two is correctness.
-What determines a judge's fate under pressure is therefore \emph{which property it reads}, a quantity no agreement rate can express but one that is measurable from the same labels: grade the traces separately for soundness and for style, and compute the judge's partial correlation with each axis holding the other fixed.
-A substance-reading judge shows a high soundness partial and a near-zero style partial; a style-loaded judge shows the reverse.
-This is classical construct validation~\cite{campbellfiske1959} pointed at a judge, and this paper's contribution is one sentence long: \textbf{static construct validity --- what a judge reads, measured from a few dozen blind human labels --- predicts downstream optimization failure where marginal agreement cannot, and a frozen rule built on it called which judges got gamed before any optimization ran.}
+Raw agreement measures performance on the observed, unoptimized distribution, and it does not identify which correlated attributes of a response drive the score.
+The confound need not be large for this to bite: soundness and writing quality correlate at only $+0.32$ $[+0.10, +0.55]$ in our labeled sample, yet a sabotaged frontier judge and an honest mid-size judge land within $0.02$ of each other on raw correlation (Table~\ref{tab:h2h}) while reading opposite properties.
+An optimizer breaks whatever correlation there is: it manufactures the property the judge rewards, and only one candidate property is correctness.
+Optimization risk therefore has two sources, and a judge needs both measured.
+A \emph{weak} judge fails because it reads little of the target construct; a \emph{capable-but-corrupt} judge reads the target and fails anyway, because it also reads a nuisance construct; only a judge with high target validity and low nuisance validity is safe to optimize against.
+Both quantities are measurable from the same labels: grade the traces separately for soundness and for style, and compute the judge's partial correlation with each axis holding the other fixed.
+This is classical construct validation~\cite{campbellfiske1959} pointed at a judge, and this paper's contribution is one sentence long: \textbf{static construct validity --- how much of the target and how much of a nuisance a judge reads, measured from a few dozen blind human labels --- predicts downstream optimization failure, including the capable-but-corrupt failures marginal agreement cannot see, and a frozen rule built on it called which judges got gamed before any optimization ran.}
 
 Our contributions:
 \begin{itemize}
@@ -258,11 +259,12 @@ The sabotaged frontier's inflation ($+0.85$ $[+0.70, +1.01]$) is disjoint from t
 That asymmetry is itself a finding: a style-loaded frontier judge corrupts the scoreboard without measurably corrupting selection at this pressure, which is exactly the failure a naive accuracy check cannot see, and exactly the mode that menaces training (Section~\ref{sec:dpo}).
 The convicted reward model completes the picture: its inflation is $+1.46\sigma$ $[+1.33, +1.58]$, the largest measured, under a registered prediction that it would out-inflate the certified referenced tier, and its regret ($0.286$ on math, $0.485$ on code, the latter inside the failed-blind code cluster of $0.368$--$0.544$) separates from every correctly certified configuration.\footnote{The reward model's inflation uses a candidate-side paraphrase replicate --- selection on original candidates, reporting on content-preserving paraphrases --- because a single scoring function cannot supply the independent replicates the estimand requires. The estimand is analogous to the judge protocol's rather than identical, so the clean statement is that it exceeds every certified configuration under the registered prediction; the number carries a dual reading --- winner's-curse inflation, or score movement under content-preserving rewording --- and both readings are damning for a deployed reward signal.}
 
-\paragraph{The false pass, and what it cost to fix.}
+\paragraph{The false pass, and the statistical fact behind it.}
 The exception is the blind 14B, and it is the most instructive row in the table.
 Its soundness partial clears the $0.40$ cut by $0.01$, yet under pressure it sits in the failed cluster (inflation $+0.63$ $[+0.42, +0.84]$, regret $0.324$); the label-subsampling analysis of Section~\ref{sec:robust} had already marked this verdict unstable below the full label set.
-A threshold pass with no margin is not a certification.
-We therefore revise the rule, explicitly post hoc: certification requires the soundness-partial \emph{confidence interval}, not the point estimate, to clear the bar.
+The false pass exposes a general statistical fact rather than a badly placed cut: with finitely many labels, a point threshold cannot support certification near a decision boundary, and the simulation of Section~\ref{sec:robust} shows that a judge whose true target loading sits at the boundary is certified on a coin flip at sixty labels and still at two hundred forty.
+Uncertainty-aware abstention is therefore structurally necessary, not a patch.
+We revise the rule accordingly, explicitly post hoc: certification requires the soundness-partial \emph{confidence interval}, not the point estimate, to clear the bar.
 The revision can only withdraw certifications, never grant one, so it cannot convert the disclosed failure into a success, and every headline record in this paper is scored under the original frozen rule with the revised rule reported separately.
 Nor is the revision free, and we account for its full retrospective effect: two threshold-adjacent referenced judges (1.5B and 3B) whose intervals also straddle the bar become abstentions, even though both behaved well under pressure (regrets $0.010$ and $0.038$, the first- and third-lowest observed).
 The revised rule's retrospective record is eight predictions, eight correct, three abstentions; it trades coverage for safety and is frozen for the externally registered Putnam replication (\texttt{osf.io/axp3s}).
@@ -328,30 +330,32 @@ We registered no manipulation check, so this is a design failure of the panel, n
 \begin{table}[t!]
 \centering
 \small
-\begin{tabular}{L{7.4cm}ccc}
+\begin{tabular}{L{9.0cm}cc}
 \toprule
-\multicolumn{4}{l}{\emph{A. Frozen verdict against best-of-64 outcome (19 cells)}} \\
+\multicolumn{3}{l}{\emph{A. Deployment decisions, frozen before optimization}} \\
 \midrule
-frozen verdict & cells & safe outcome & unsafe outcome \\
+decision & cells & matched outcome \\
 \midrule
-qualified & $7$ & $7$ & $0$ \\
-insufficient target validity & $3$ & $0$ & $3$ \\
-nuisance-loaded & $4$ & $0$ & $4$ \\
-abstain & $5$ & $0$ & $5$ \\
+qualified $\rightarrow$ safe & $7$ & $7/7$ \\
+insufficient target validity or nuisance-loaded $\rightarrow$ unsafe & $7$ & $7/7$ \\
+abstain, no decision issued & $5$ & all $5$ unsafe \\
+reference-presence bit, on the same $14$ decided cells & $14$ & $13/14$ \\
 \midrule
-\multicolumn{4}{l}{\emph{B. Registered predictions}} \\
+\multicolumn{3}{l}{\emph{B. Ranking cells by risk: AUC for the unsafe outcome}} \\
 \midrule
-prediction & \multicolumn{2}{c}{result} & outcome \\
+target loading (post hoc) & & $1.000$ \\
+raw correlation with human soundness & & $1.000$ \\
+reference-presence bit & & $0.958$ \\
+nuisance loading (the registered ranker, P-N3) & & $0.845$ \\
 \midrule
-P-N1: audit beats the reference bit where the audit speaks & \multicolumn{2}{c}{$14/14$ vs.\ $13/14$} & confirmed \\
-P-N2: most corrupt cells above 0.5B called unsafe & \multicolumn{2}{c}{$0/7$} & failed \\
-P-N3: nuisance loading outranks reference bit and raw $r$ & \multicolumn{2}{c}{AUC $0.845$ vs.\ $0.958$, $1.000$} & failed \\
-P-N4: nuisance loading separates outcomes within referenced cells & \multicolumn{2}{c}{AUC $1.000$ ($n{=}8$)} & confirmed \\
-P-N5: both reward models called unsafe and are unsafe & \multicolumn{2}{c}{$2/2$} & confirmed \\
+\multicolumn{3}{l}{\emph{C. Registered predictions}} \\
+\midrule
+confirmed: P-N1 audit beats the reference bit where it decides; P-N4 separation within referenced cells; P-N5 both reward models unsafe & & $3$ \\
+failed: P-N2 most corrupt cells called unsafe ($0/7$); P-N3 nuisance loading outranks both baselines & & $2$ \\
 \bottomrule
 \end{tabular}
-\caption{\textbf{Takeaway: on nineteen judges it had never seen, the audit made no false certification and caught a harmful judge the reference shortcut certifies, but the panel's corruption arm failed to corrupt, and on a panel whose risk is pure weakness, raw agreement ranks outcomes as well as the audit does.}
-AUC is area under the ROC curve for the unsafe outcome. The raw-correlation classifier reaches perfect accuracy only at a threshold ($0.704$) chosen after seeing outcomes; the audit's rule was frozen. Producers: \texttt{panel\_verdicts.py}, \texttt{panel\_outcome.py}; manipulation check \texttt{panel\_manipulation.py} (post hoc).}
+\caption{\textbf{Takeaway: every decision the audit issued matched the optimization outcome, but because the panel's corruption manipulation failed, the panel varies target validity rather than nuisance validity, and on such a panel target loading and raw agreement rank risk equally well.}
+The ranking prediction P-N3 was falsified for that reason: nuisance loading is the axis that separates capable-but-corrupt judges, and this panel contains none. The raw-correlation classifier reaches perfect accuracy only at a threshold ($0.704$) chosen after seeing outcomes; the audit's rule was frozen. Producers: \texttt{panel\_verdicts.py}, \texttt{panel\_outcome.py}; manipulation check \texttt{panel\_manipulation.py} (post hoc).}
 \label{tab:panel}
 \end{table}
 
@@ -366,16 +370,15 @@ Both reward models were called unsafe, with nuisance loadings of $+0.30$ and $+0
 The five abstentions all fell on blind judges whose target-loading intervals straddle $0.40$, and all five turned out unsafe.
 The interval rule certified none of them, so abstaining cost no false certification, but it issued no warning either, and across all nineteen cells the reference bit is right on eighteen, which is more ground than the audit covers.
 P-N2 fails at zero of seven, and the manipulation check says why.
-P-N3 fails as well, and it deserves to be stated plainly: ranked by risk, nuisance loading reaches an AUC of $0.845$, below the reference bit's $0.958$ and raw correlation's $1.000$.
-On a panel whose risk comes entirely from weakness, raw agreement ranks perfectly, because a judge that is wrong on unoptimized data will select badly under optimization, and being wrong on unoptimized data is exactly what raw agreement measures.
-Two observations qualify this failure without reversing it.
-The raw-correlation classifier needs a threshold, and the one that reaches perfect accuracy could be chosen only after the outcomes were known, whereas the audit's rule was fixed in advance.
-And the audit's other axis, target loading, also ranks the panel perfectly; that comparison is post hoc, and the registered prediction named nuisance loading alone, which was the wrong axis to name for a panel that turned out to contain no corruption.
+P-N3 fails as well, and it fails for a specific reason (Table~\ref{tab:panel}, panel B).
+Because the corruption manipulation failed, this panel varies target validity rather than nuisance validity, and on such a panel the risk ranking belongs to the target axis, which ranks perfectly, as does raw agreement, since being wrong on unoptimized data is what both measure.
+Nuisance loading, the registered ranker, is the axis for capable-but-corrupt judges, and the panel contains none; the prediction named the wrong axis for the panel we ended up with, and we score it as failed.
+Raw agreement's perfect accuracy also required a threshold chosen after the outcomes were known, whereas the audit's rule was fixed in advance.
 
 \paragraph{What the panel adds, and what it does not.}
-It does not close the collinearity objection of Section~\ref{sec:limits}.
-The audit's advantage over the protocol bit is again concentrated, this time in one referenced cell and two reward models, on a panel that failed to contain the corrupted judges that would have stressed the distinction this paper is about.
-What it does establish, prospectively and under a frozen rule, is that the audit made no false certification on nineteen judges it had never seen, that it caught a harmful judge the protocol bit certifies, and that its reward-model verdicts replicate.
+The panel became a prospective test of one half of the instrument and not the other.
+It validates, under a frozen rule, that measuring target validity prevents false certification: no judge it had never seen was certified and then gamed, and it caught a harmful referenced judge the protocol bit certifies.
+It does not validate the half that distinguishes this paper, that nuisance loading separates capable-but-corrupt judges from capable-honest ones, because it contains no capable-but-corrupt instruction-following judge; prospective evidence for that regime is so far limited to the two reward models, and the collinearity objection of Section~\ref{sec:limits} is correspondingly narrowed, not closed.
 The experiment still owed is a panel whose corrupt cells pass a manipulation check before they are audited, and the failure here shows how to build one: subtle instructions are ignored below frontier scale, so corruption at that scale has to come from the model itself, as it does for reward models, or from a frontier judge.
 
 \section{The verdicts under training pressure}
@@ -451,7 +454,7 @@ Recomputing the partials on the 30-item overlap with the target axis from one ra
 The cross-rater axis correlation is near zero ($-0.02$ and $+0.20$ across the two pairings, against $+0.28$ within the author's own labels), which is the direct measurement of the halo effect the design worried about: it is small.
 A fully split-rater instrument, in which one hypothesis-blind pool grades soundness with the reference in view and a second grades style with no reference and no correctness question, is built and awaiting annotators; it is the version of this check we would run prospectively.
 
-\paragraph{What the label budget buys, in simulation.}
+\paragraph{Why boundary passes must be abstained on.}
 The label count and the rule interact, and a simulation calibrated to this instrument shows how.
 Drawing target and nuisance labels with the measured cross-rater reliabilities ($0.83$ and $0.48$) and the anchor set's axis correlation, and drawing judges spanning the loading plane, the frozen point rule certifies a nuisance-loaded judge in $0.9\%$ of 60-label draws but a genuinely style-loaded-and-weak judge is caught in $93\%$; the cost sits on the other side, where a judge whose true target loading is $0.41$ --- the boundary case --- is certified in $46\%$ of draws at $n{=}60$ and still only $50\%$ at $n{=}240$, because the rule is asking a question the point estimate cannot answer.
 The CI rule converts that coin flip into an abstention: it certifies the boundary judge in $2.9\%$ of draws and abstains in $43\%$, while losing almost nothing on clearly strong judges ($78\%$ certified at $n{=}60$, identical to the point rule).
@@ -524,8 +527,9 @@ Companion work supplies the mechanism the audit instruments --- comparison-shape
 \section{Conclusion}
 
 Raw agreement with human labels is not a certificate.
-It measures being right on unoptimized data, where substance and style travel together, and it therefore cannot see the one property that decides a judge's fate under optimization: which of the two the judge actually scores.
-An audit that reads that property from the same labels predicts what the agreement rate cannot: a sabotaged frontier judge and an honest mid-size judge that raw agreement rates as interchangeable ($+0.35$ against $+0.37$) sit on opposite sides of a sign-anchored conviction rule; the frozen verdicts called the best-of-64 outcome for ten of eleven registered configurations, with the one false pass sitting $0.01$ above its cut and the revised interval rule abstaining there; on a prospective panel of nineteen judges it had never seen, the audit made no false certification, though that panel contained no successful corruption; and under externally registered DPO training the certified judge's arm gained real accuracy while the convicted judge's arm degraded it, the registered wedge prediction failing in the informative direction --- corruption expressed as damage, not gaming, at this scale.
+It measures performance on the observed unoptimized distribution and does not identify which correlated attributes of a response drive the score, and optimization risk depends on two of them: how much of the target a judge reads, and how much of a nuisance.
+Weak judges fail on the first, capable-but-corrupt judges on the second, and raw agreement can see only the first.
+An audit that reads both from the same labels predicts what the agreement rate cannot: a sabotaged frontier judge and an honest mid-size judge that raw agreement rates as interchangeable ($+0.35$ against $+0.37$) sit on opposite sides of a sign-anchored conviction rule; the frozen verdicts called the best-of-64 outcome for ten of eleven registered configurations, with the one false pass sitting $0.01$ above its cut and the revised interval rule abstaining there; on a prospective panel of nineteen judges it had never seen, the audit made no false certification, though that panel contained no successful corruption; and under externally registered DPO training the certified judge's arm gained real accuracy while the convicted judge's arm degraded it, the registered wedge prediction failing in the informative direction --- corruption expressed as damage, not gaming, at this scale.
 
 The practical protocol is short.
 Run the free screens first, since a judge that cannot agree with itself under order swap cannot be audited at all.
