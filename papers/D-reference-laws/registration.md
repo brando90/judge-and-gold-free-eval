@@ -2257,3 +2257,43 @@ digits quoted earlier in this ledger and in the paper):
 
 Every verdict in the table above (P-FR1/2/3, P-FK1/2, P-FI1/2, P-FG1) is unchanged. The paper is
 updated to the post-fix canonical digits.
+
+---
+
+## M1-variant decomposition on gemma-2-9b OUTCOME (2026-09-12): P-GV1 confirmed, P-GV2 confirmed, P-GV3 falsified — gemma is the first judge where whose number it is matters
+
+Scored by `papers/analysis/m1_variants_gemma_analysis.py` (a separate mirror of the frozen,
+already-published `m1_variants_analysis.py`; that file is untouched and its Qwen-7B/phi-4 numbers
+are not re-run). Verified reproducible (identical output across repeated runs). Population n=58
+k>1 items, matching the original experiment's population exactly.
+
+| Condition | Inflation vs blind | Margin (rubric a) |
+|---|---|---|
+| m1 (baseline) | +1.213 [+0.914,+1.512] | +6.28 [+5.60,+6.98] |
+| m1noscore (number removed) | +1.406 [+1.117,+1.679] | +6.62 [+5.80,+7.27] |
+| m1prev (neutral framing, own number) | +1.304 [+1.022,+1.601] | +6.43 [+5.71,+7.12] |
+| m1indep (Qwen-7B's number shown instead) | +1.476 [+1.170,+1.798] | +6.63 [+5.89,+7.33] |
+
+- **P-GV1 (removing the number restores inflation): CONFIRMED.** m1noscore-minus-m1 contrast
+  +0.194 [+0.014,+0.374], CI excluding zero. The displayed blind score matters for gemma too,
+  in the same direction as Qwen-7B and phi-4 — gemma is not simply ignoring it.
+- **P-GV2 (neutral framing is inert): CONFIRMED.** m1prev-minus-m1 contrast +0.091
+  [-0.167,+0.307], CI including zero. Gemma patterns with phi-4 here (framing does not matter),
+  not with Qwen-7B (where the original experiment found framing mattered).
+- **P-GV3 (any judge's number works equally): FALSIFIED.** m1indep-minus-m1prev contrast
+  +0.172 [+0.007,+0.380], CI excluding zero (barely: lower bound +0.007). Showing gemma
+  Qwen-7B's blind score produces reliably more inflation than showing gemma its own previous
+  score. **Gemma is the first judge tested, of three, where whose number it is matters.** Both
+  original judges (Qwen-7B, phi-4) confirmed this null; gemma does not.
+
+**Reading.** This gives a partial, concrete answer to the reviewer's question about gemma's
+large M1 residual (+1.23, against near-full removal for Qwen-7B/phi-4). It is not that gemma
+disregards the displayed score: removing it makes things measurably worse (P-GV1), exactly as
+for the other two judges. But gemma's overall M1 protection stays far weaker than theirs even
+when the number is present, and it additionally discounts a number more heavily when that
+number is not recognizably its own (P-GV3) — a self-attribution sensitivity neither other judge
+showed. Read together with P-M1V2's original Qwen-7B/phi-4 split (framing mattered for the
+weaker judge, not the stronger one), the mechanism looks judge-specific in degree and in kind:
+weaker or differently-calibrated judges lean more on self-consistency cues that stronger judges
+do not need, and gemma's large residual is consistent with an intermediate, self-consistency-
+dependent, only-partially-effective version of the same mechanism, not a different one.
