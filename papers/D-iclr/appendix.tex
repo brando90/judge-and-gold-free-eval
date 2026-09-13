@@ -211,7 +211,7 @@ The thinking judge gives a score of 10 to 96.2\% of valid rotation samples blind
 \centering
 \footnotesize
 \begin{adjustbox}{max width=\linewidth}\input{tables/acc_repl.tex}\end{adjustbox}
-\caption{Replication pool: selection accuracy on the 105 tasks in the pass-rate band, and false-rejection rate (correct answers that differ from the reference scored 3 or below) on the 93 tasks with both kinds of valid answer.\ph}
+\caption{Replication pool: selection accuracy on the 105 tasks in the pass-rate band, and false-rejection rate (correct answers that differ from the reference scored 3 or below) on the 93 tasks with both kinds of valid answer. Original scorer. Sonnet~5's selection accuracy is not reported because its integer scores tie under best-of-64.\ph}
 \label{tab:acc-repl}
 \end{table}
 
@@ -316,7 +316,7 @@ In accuracy units, the reference raises MATH-500 selection accuracy at every jud
 \label{tab:mace-by-k}
 \end{table}
 
-Anchoring margins at $k{>}1$ are $+6.44$ and $+5.86$ on the audited domains, against blind margins of $-0.64$ and $-0.80$. Sonnet~5 has a referenced margin of $+5.29$ there, against a blind margin of $-1.37$.
+Anchoring margins at $k{>}1$ on the audited domains are $+6.44$ for Qwen2.5-7B and $+5.86$ for phi-4, against blind margins of $-0.64$ and $-0.80$. Sonnet~5 has a referenced margin of $+5.29$ there, against a blind margin of $-1.37$.
 
 %==========================================================================================
 \FloatBarrier
