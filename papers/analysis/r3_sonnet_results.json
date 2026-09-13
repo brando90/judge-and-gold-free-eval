@@ -1,0 +1,116 @@
+{
+ "fast": {
+  "rot": {
+   "gainer": [
+    3.567,
+    [
+     2.567,
+     4.55
+    ],
+    60
+   ],
+   "loser": [
+    -2.85,
+    [
+     -3.85,
+     -1.917
+    ],
+    60
+   ],
+   "placebo": [
+    -0.067,
+    [
+     -1.184,
+     1.101
+    ],
+    60
+   ]
+  },
+  "false_reject": [
+   0.267,
+   [
+    0.204,
+    0.333
+   ],
+   60
+  ],
+  "meta": {
+   "ref": {
+    "rows": 180,
+    "unparseable": 0,
+    "errors": 0,
+    "output_tokens_mean": 52,
+    "thinking_tokens_mean": 0
+   },
+   "refrot": {
+    "rows": 180,
+    "unparseable": 0,
+    "errors": 0,
+    "output_tokens_mean": 58,
+    "thinking_tokens_mean": 0
+   }
+  }
+ },
+ "visible": {
+  "rot": {
+   "gainer": null,
+   "loser": null,
+   "placebo": null
+  },
+  "false_reject": [
+   0.0,
+   [
+    0.0,
+    0.0
+   ],
+   60
+  ],
+  "meta": {
+   "ref": {
+    "rows": 180,
+    "unparseable": 0,
+    "errors": 0,
+    "output_tokens_mean": 188,
+    "thinking_tokens_mean": 0
+   },
+   "refrot": {
+    "rows": 2,
+    "unparseable": 0,
+    "errors": 178,
+    "output_tokens_mean": 433,
+    "thinking_tokens_mean": 0
+   }
+  }
+ },
+ "think": {
+  "rot": {
+   "gainer": null,
+   "loser": null,
+   "placebo": null
+  },
+  "false_reject": null,
+  "meta": {
+   "ref": {
+    "rows": 0,
+    "unparseable": 0,
+    "errors": 180,
+    "output_tokens_mean": null,
+    "thinking_tokens_mean": null
+   },
+   "refrot": {
+    "rows": 0,
+    "unparseable": 0,
+    "errors": 180,
+    "output_tokens_mean": null,
+    "thinking_tokens_mean": null
+   }
+  }
+ },
+ "P_R3B1": true,
+ "think_minus_fast_loser": null,
+ "visible_minus_fast_loser": null,
+ "think_minus_fast_false_reject": null,
+ "P_R3B2": null,
+ "P_R3B3": null,
+ "P_R3B4": null
+}

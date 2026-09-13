@@ -21,3 +21,14 @@ Unparseable replies and CLI errors are counted and excluded.
 - **P-R3B2.** THINK minus FAST loser change > 0, CI excluding zero.
 - **P-R3B3.** THINK minus FAST false-rejection rate < 0, CI excluding zero.
 - **P-R3B4.** VISIBLE minus FAST loser change > 0, CI excluding zero.
+
+---
+
+## Outcome (recorded 2026-09-13): run stopped by the subscription's monthly spend limit; one prediction scored
+
+The six runs were launched in the order FAST-ref, FAST-refrot, VISIBLE-ref, VISIBLE-refrot, THINK-ref, THINK-refrot. Midway through VISIBLE-refrot the CLI began returning "You've hit your monthly spend limit" for every call. FAST completed (360 calls, no errors); VISIBLE-ref completed (180); VISIBLE-refrot has 2 usable calls; THINK has none. We did not switch to a metered API key.
+
+**Producer amendment (before reading any prediction outcome).** The frozen producer crashed when an arm had no usable scores. It now marks such predictions as not scored (None); no readout or test changed.
+
+- **FAST** (`r3_sonnet_results.json`): gainer +3.567 [+2.567, +4.550]; loser −2.850 [−3.850, −1.917]; placebo −0.067 [−1.184, +1.101]; false-rejection rate 0.267 [0.204, 0.333]; 52–58 output tokens, no thinking tokens. **P-R3B1 CONFIRMED.**
+- **P-R3B2, P-R3B3, P-R3B4 NOT SCORED** (VISIBLE and THINK incomplete). The harness is resumable if the limit is lifted.

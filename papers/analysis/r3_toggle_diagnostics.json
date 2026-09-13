@@ -1,0 +1,72 @@
+{
+ "rot|on|ref": {
+  "tokens_mean": 569,
+  "valid_score_mean": 10.0,
+  "valid_share_10": 0.998
+ },
+ "rot|on|refrot": {
+  "tokens_mean": 573,
+  "valid_score_mean": 9.99,
+  "valid_share_10": 0.998
+ },
+ "rot|on|noref": {
+  "tokens_mean": 678,
+  "valid_score_mean": 9.94,
+  "valid_share_10": 0.962
+ },
+ "rot|off|ref": {
+  "tokens_mean": 159,
+  "valid_score_mean": 9.33,
+  "valid_share_10": 0.792
+ },
+ "rot|off|refrot": {
+  "tokens_mean": 151,
+  "valid_score_mean": 9.4,
+  "valid_share_10": 0.792
+ },
+ "rot|off|noref": {
+  "tokens_mean": 124,
+  "valid_score_mean": 9.48,
+  "valid_share_10": 0.769
+ },
+ "ksub|on|ref": {
+  "tokens_mean": 1009,
+  "valid_score_mean": 9.95,
+  "valid_share_10": 0.994
+ },
+ "ksub|on|noref": {
+  "tokens_mean": 1092,
+  "valid_score_mean": 9.9,
+  "valid_share_10": 0.957
+ },
+ "ksub|off|ref": {
+  "tokens_mean": 193,
+  "valid_score_mean": 9.36,
+  "valid_share_10": 0.796
+ },
+ "ksub|off|noref": {
+  "tokens_mean": 223,
+  "valid_score_mean": 9.46,
+  "valid_share_10": 0.776
+ },
+ "macesub|on|ref": {
+  "tokens_mean": 631,
+  "valid_score_mean": 7.96,
+  "valid_share_10": 0.773
+ },
+ "macesub|on|noref": {
+  "tokens_mean": 476,
+  "valid_score_mean": 8.18,
+  "valid_share_10": 0.756
+ },
+ "macesub|off|ref": {
+  "tokens_mean": 80,
+  "valid_score_mean": 5.84,
+  "valid_share_10": 0.469
+ },
+ "macesub|off|noref": {
+  "tokens_mean": 95,
+  "valid_score_mean": 6.89,
+  "valid_share_10": 0.439
+ }
+}

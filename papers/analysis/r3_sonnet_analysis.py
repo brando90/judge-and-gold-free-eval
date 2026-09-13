@@ -65,6 +65,10 @@ for arm in ARMS:
         if rej:
             fr[pid] = float(np.mean(rej))
     per[arm] = dict(ch=ch, fr=fr)
+    if not sref or not srot:
+        res[arm] = dict(rot={"gainer": None, "loser": None, "placebo": None}, false_reject=None, meta=dict(ref=mref, refrot=mrot))
+        per[arm] = dict(ch=ch, fr=fr)
+        continue
     res[arm] = dict(rot={c: boot(list(v.values())) for c, v in ch.items()}, false_reject=boot(list(fr.values())),
                     meta=dict(ref=mref, refrot=mrot))
 
@@ -73,13 +77,21 @@ def paired(x, y):
     return boot([x[p] - y[p] for p in x if p in y])
 
 
-if all(isinstance(res.get(a), dict) for a in ARMS):
-    res["think_minus_fast_loser"] = paired(per["think"]["ch"]["loser"], per["fast"]["ch"]["loser"])
-    res["visible_minus_fast_loser"] = paired(per["visible"]["ch"]["loser"], per["fast"]["ch"]["loser"])
-    res["think_minus_fast_false_reject"] = paired(per["think"]["fr"], per["fast"]["fr"])
-    res["P_R3B1"] = bool(res["fast"]["rot"]["loser"][1][1] < 0)
-    res["P_R3B2"] = bool(res["think_minus_fast_loser"][1][0] > 0)
-    res["P_R3B3"] = bool(res["think_minus_fast_false_reject"][1][1] < 0)
-    res["P_R3B4"] = bool(res["visible_minus_fast_loser"][1][0] > 0)
+# Amendment (registration_round3b.md): arms with no usable scores leave their predictions unscored (None)
+def ok(a):
+    return isinstance(res.get(a), dict) and res[a]["rot"]["loser"] is not None
+
+
+def verdict(x, test):
+    return None if x is None else bool(test(x))
+
+
+res["P_R3B1"] = verdict(res["fast"]["rot"]["loser"] if ok("fast") else None, lambda v: v[1][1] < 0)
+res["think_minus_fast_loser"] = paired(per["think"]["ch"]["loser"], per["fast"]["ch"]["loser"]) if ok("think") and ok("fast") else None
+res["visible_minus_fast_loser"] = paired(per["visible"]["ch"]["loser"], per["fast"]["ch"]["loser"]) if ok("visible") and ok("fast") else None
+res["think_minus_fast_false_reject"] = paired(per["think"]["fr"], per["fast"]["fr"]) if ok("think") and ok("fast") else None
+res["P_R3B2"] = verdict(res["think_minus_fast_loser"], lambda v: v[1][0] > 0)
+res["P_R3B3"] = verdict(res["think_minus_fast_false_reject"], lambda v: v[1][1] < 0)
+res["P_R3B4"] = verdict(res["visible_minus_fast_loser"], lambda v: v[1][0] > 0)
 json.dump(res, open(OUT, "w"), indent=1)
 print(json.dumps(res, indent=1))
