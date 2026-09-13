@@ -2571,3 +2571,59 @@ cluster, no new judge infrastructure.
   `magic_sequence`-specific multiplicity finding) is exploratory.
 
 Producer to be written and run after generation: `papers/analysis/mathconstraint_pilot_analysis.py`.
+
+---
+
+## Math-Constraint pilot (P-MC1..P-MC3) — outcome 2026-09-12, NOT folded into the submission
+
+Registered same day (see the entry above). Producer:
+`papers/analysis/mathconstraint_pilot_analysis.py` -> analysis run on
+`runs/mc_out/{ties,synthk,mace}__{judge}__ref_{a,b}.jsonl`. All 13 candidate solutions were
+independently re-verified against hand-written oracles (`check_all_interval`,
+`check_magic_sequence`) before any judging; none were taken on the generator's own say-so.
+
+**P-MC1 CONFIRMED: 13/13 items (100%) got at least one oracle-valid Fable solution**, well
+above the registered 77% bar. Zero fabricated solutions detected (Fable explicitly refused
+to invent a second solution on 4 of the 5 `magic_sequence` items once it proved uniqueness;
+see disclosure below).
+
+**Disclosure that narrows P-MC2/P-MC3's eligible pool (not a deviation, but reported before
+stating the confirmed numbers):** `magic_sequence` turns out to be essentially UNIQUE past
+the smallest sizes -- Fable proved this analytically for n=5, 7, 9, 11 (independently
+deriving the known closed-form result for n>=7, $(n-4,2,1,0,\ldots,0,1,0,0,0)$) rather than
+failing to find a second solution. Only `magic_sequence` n=4 has more than one solution
+(exactly two, exhaustively confirmed). So P-MC2 (rotation) is evaluated on `all_interval`
+only (8 items, always multi-valid by construction via reflection or independent
+backtracking), and P-MC3 (margin) pools `all_interval`'s 8 items with the single eligible
+`magic_sequence` item (9 items total), exactly as the registration anticipated
+("everything else... `magic_sequence`-specific multiplicity finding is exploratory").
+
+**P-MC2 CONFIRMED, both judges, both rubrics.** Paired per-candidate-per-item swing
+(matching-reference score minus non-matching-reference score, both of an item's two
+tested valid candidates): Qwen-7B $+3.46$ $[+2.71,+4.09]$ (rubric a) / $+3.93$
+$[+3.42,+4.40]$ (rubric b); phi-4 $+5.01$ $[+4.38,+5.54]$ / $+3.90$ $[+3.27,+4.49]$, $n=16$
+candidate-item pairs each. The paper's flagship causal test (fix the candidate text, swap
+which valid answer is shown as reference) replicates cleanly in a domain built on
+combinatorial symmetry rather than modular arithmetic.
+
+**P-MC3 CONFIRMED, both judges.** Margin (matching-valid minus mean non-matching-valid,
+rubric a): Qwen-7B $+4.45$ $[+3.60,+5.21]$; phi-4 $+5.32$ $[+4.40,+6.25]$, $n=9$ items.
+Every one of the 9 individual items is positive for both judges with no exceptions
+(range $+2.52$ to $+8.17$).
+
+**Caveats disclosed plainly:** this is a small pilot (13 items, 2-4 samples/item, not a
+64-sample BoN pool), so treat these as clean directional confirmations rather than
+precision estimates. The generator is a Claude-family reasoning model ("fable"), a
+disclosed deviation from the paper's Llama-3.1-8B-Instruct convention, required because the
+latter (and Qwen2.5-32B-Instruct with a worked example) scored 0/8 valid on this domain past
+trivial size. A mechanical bug was caught and fixed before any result was read: the first
+judging attempt reused one output-filename pattern across all three pools, silently
+skipping the two rotation pools after the margin pool claimed the shared filename; caught
+via file-count sanity checks, fixed by using distinct `--domain` values per pool, and
+re-run cleanly.
+
+**Disposition:** stays out of the submitted manuscript per the standing 2026-09-12
+decision, pending a placement discussion, though unlike the recoverability result this one
+is a clean two-for-two confirmation and a strong generalization result, not a partial
+falsification -- worth discussing whether it belongs in the same appendix as the other two
+extensions or is substantial enough to warrant its own treatment.
