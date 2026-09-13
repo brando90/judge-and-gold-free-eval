@@ -125,5 +125,90 @@ if bl and o4 and r4s:
             G.append(float(np.mean(g)))
     res["blind_accepted_gainers_exact_q7"] = dict(change=boot(G), share_kept=round(n_keep / n_all, 4) if n_all else None)
 
+# ---------------------------------------------------------------- MACE selection accuracy under the exact estimator (Qwen2.5-7B)
+m_b = _rows(f"{S4}/mace__Qwen__Qwen2.5-7B-Instruct__noref_a.jsonl")
+m_r = _rows(f"{S4}/mace__Qwen__Qwen2.5-7B-Instruct__ref_a.jsonl")
+if m_b and m_r:
+    def _sel(sc, orc):
+        s_ = np.array([-np.inf if v is None else v for v in sc], float)
+        return float(np.asarray(orc, float)[np.isclose(s_, s_.max(), rtol=0, atol=1e-9)].mean())
+
+    out = {}
+    for gname, sel in (("k1", lambda r: r["k"] == 1), ("kgt1", lambda r: r["k"] > 1), ("all", lambda r: True)):
+        ids = [r for r in pool if sel(r) and r["problem_id"] in m_b and r["problem_id"] in m_r]
+        ab = [_sel(m_b[r["problem_id"]], r["oracle"]) for r in ids]
+        ar = [_sel(m_r[r["problem_id"]], r["oracle"]) for r in ids]
+        out[gname] = dict(n=len(ids), acc_blind=boot(ab), acc_ref=boot(ar), ref_minus_blind=boot(np.subtract(ar, ab)))
+    res["mace_exact_q7"] = out
+
+# ---------------------------------------------------------------- grading and verification AUROC for other judges (original score files)
+# phi-4 writes "10" as one token and its main files carry no fallback scores, so its original files are valid here.
+
+
+def _auroc(sc, lab):
+    pos = np.array([x for x, l in zip(sc, lab) if l and x is not None], float)
+    neg = np.array([x for x, l in zip(sc, lab) if not l and x is not None], float)
+    if len(pos) == 0 or len(neg) == 0:
+        return None
+    return float(((pos[:, None] > neg[None, :]).sum() + 0.5 * (pos[:, None] == neg[None, :]).sum()) / (len(pos) * len(neg)))
+
+
+def _mnorm(a):
+    return re.sub(r"[^a-z0-9]+", "", a.strip().casefold())
+
+
+def _groups(t, rule):
+    g = []
+    for smp, ok in zip(t["samples"], t["oracle"]):
+        if not ok:
+            g.append("invalid")
+        elif rule == "mace":
+            refn, a = _mnorm(t["ref_answer"]), _mnorm(_boxed(smp) or smp[-200:])
+            g.append("match" if (a == refn or (len(refn) > 3 and refn in a)) else "nonmatch")
+        else:
+            g.append("match" if _norm(_boxed(smp) or smp) == _norm(t["ref_answer"]) else "nonmatch")
+    return g
+
+
+def _grading(tasks_, b, r, rule):
+    d = {"nm": ([], [], []), "all": ([], [], [])}
+    for t in tasks_:
+        pid = t["problem_id"]
+        if pid not in b or pid not in r:
+            continue
+        g = _groups(t, rule)
+        for key, keep, pos in (("nm", {"nonmatch", "invalid"}, {"nonmatch"}), ("all", {"match", "nonmatch", "invalid"}, {"match", "nonmatch"})):
+            ix = [i for i, x in enumerate(g) if x in keep]
+            lab = [g[i] in pos for i in ix]
+            ab, ar = _auroc([b[pid][i] for i in ix], lab), _auroc([r[pid][i] for i in ix], lab)
+            if ab is not None and ar is not None:
+                d[key][0].append(ab); d[key][1].append(ar); d[key][2].append(ar - ab)
+    return {f"G_{k}": dict(blind=boot(v[0]), ref=boot(v[1]), ref_minus_blind=boot(v[2])) for k, v in d.items()}
+
+
+mace_tasks = {json.loads(l)["problem_id"]: json.loads(l) for l in open("runs/mace_tasks.jsonl")}
+for t in pool:
+    t["ref_answer"] = mace_tasks[t["problem_id"]]["ref_answer"]
+repl_pool = [json.loads(l) for l in open("runs/bon/bon_repl__meta-llama__Llama-3.1-8B-Instruct.jsonl")]
+kp_pool = [json.loads(l) for l in open("runs/bon/bon_kstrat__meta-llama__Llama-3.1-8B-Instruct.jsonl")]
+res["grading_other_judges"] = {}
+for jt, files in (("microsoft__phi-4", dict(repl=("runs/bon_scores_repl/synthk__microsoft__phi-4__noref_a.jsonl", "runs/bon_scores_repl/synthk__microsoft__phi-4__ref_a.jsonl"),
+                                               mace=("runs/bon_scores_mace/mace__microsoft__phi-4__noref_a.jsonl", "runs/bon_scores_mace/mace__microsoft__phi-4__ref_a.jsonl"),
+                                               kpool=("runs/bon_scores_kstrat/synthk__microsoft__phi-4__noref_a.jsonl", None))),
+                  ):  # Sonnet 5 files score correct samples only, so no AUROC against wrong answers can be computed
+    out = {}
+    for name, (fb, fr) in files.items():
+        tasks_ = {"repl": repl_pool, "mace": pool, "kpool": kp_pool}[name]
+        b = _rows(fb)
+        if b is None:
+            continue
+        vals = [_auroc(b[t["problem_id"]], t["oracle"]) for t in tasks_ if t["problem_id"] in b]
+        out[f"verification_{name}"] = boot([v for v in vals if v is not None])
+        if fr:
+            r = _rows(fr)
+            if r is not None:
+                out[f"grading_{name}"] = _grading(tasks_, b, r, "mace" if name == "mace" else "repl")
+    res["grading_other_judges"][jt] = out
+
 json.dump(res, open(OUT, "w"), indent=1)
 print(json.dumps(res, indent=1))

@@ -448,6 +448,8 @@ try:
     body = ["\\begin{tabular}{lcccccc}", "\\toprule",
             "Judge & Blind & Solution & Answer & Solution $-$ blind & Answer $-$ blind & Answer $-$ solution \\\\", "\\midrule"]
     for name, key in KN[:2]:
+        if key not in r4.get("math", {}):
+            continue
         d = r4["math"][key]
         body.append(f"{name} & {100 * d['acc_noref'][0]:.1f} & {100 * d['acc_ref'][0]:.1f} & {100 * d['acc_refans'][0]:.1f} & "
                     f"{p4(d['ref_minus_noref'])} & {p4(d['refans_minus_noref'])} & {p4(d['refans_minus_ref'])} \\\\")

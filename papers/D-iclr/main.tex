@@ -166,14 +166,14 @@ Requesting the same content as an integer, a pair, a JSON object, or a program s
 
 \paragraph{Grading.}
 A judge that grades by agreement should become worse at separating correct answers that differ from the reference from wrong answers.
-It does, in both pools we tested (\cref{fig:cost}a). For Qwen2.5-7B, the per-task AUROC for these two groups falls from 0.87 blind to 0.60 with the reference on the replication pool, and from 0.74 to 0.66 on \textsc{MACE}.\pre{}
+It does, in both pools we tested (\cref{fig:cost}a). For Qwen2.5-7B, the per-task AUROC for these two groups falls from 0.87 blind to 0.60 with the reference on the replication pool, and from 0.74 to 0.66 on \textsc{MACE}.\pre{} phi-4 shows the same pattern, from 0.90 to 0.65 and from 0.79 to 0.73.\ph{}
 The share of these correct answers scored 3 or below rises from 0.4\% to 28.1\% (68.9\% at 5 or below), and for Sonnet~5 from 4.9\% to 26.2\%.\ph{}
 Correct answers that match the reference move the other way, from 0.85 to 0.97 and from 0.69 to 0.98.
 
 \paragraph{Grading overall depends on blind verification.}
 Whether the judge becomes a worse grader of all answers depends on what the reference adds.
 Blind, Qwen2.5-7B separates correct from wrong answers at an AUROC of 0.87 on the replication pool and on the $k$-pool, and 0.73 on \textsc{MACE}.
-Where it already verifies well, the reference mostly redistributes credit toward matching answers, and overall AUROC falls by 0.22. On \textsc{MACE}, the reference's help against wrong answers outweighs the damage and overall AUROC rises by 0.07.\pre
+Where it already verifies well, the reference mostly redistributes credit toward matching answers, and overall AUROC falls by 0.22. On \textsc{MACE}, the reference's help against wrong answers outweighs the damage and overall AUROC rises by 0.07.\pre{} phi-4 repeats both results, at blind AUROC 0.90 and 0.79: overall AUROC falls by 0.19 on the replication pool and rises by 0.07 on \textsc{MACE}.\ph
 
 \paragraph{Selection.}
 Best-of-64 selection shows the same pattern with wider intervals (\cref{fig:cost}b).
@@ -181,7 +181,7 @@ On the preregistered replication pool the reference lowers the accuracy of the p
 On the $k$-pool, pooled over $k{>}1$, it lowers accuracy by 35.9 points for Qwen2.5-7B and by \pending{X to Y} for Qwen2.5-14B, gemma-2-9b, and Mistral-7B.\pre{}
 The loss is largest at $k{=}16$, and Qwen2.5-7B also loses 21.4 points at $k{=}1$, where the reference is the only correct answer; wrong answers that contain the reference's text receive a bonus of 1.4 to 1.7 points (\cref{app:composition}), which may explain it.
 On \textsc{MACE} the reference raises accuracy, almost entirely on single-answer questions ($+29.4$ points for Qwen2.5-7B at $k{=}1$, against $+2.0$ at $k{>}1$); on questions with four or six correct answers the blind judge already picks a correct answer 84.4\% to 93.8\% of the time (\cref{app:mace}).
-On MATH-500 it raises accuracy by \pending{X} points with the full reference solution and by \pending{Y} with the final answer alone (\cref{app:estimator}).\ph
+On MATH-500, where correct answers rarely differ from the reference and blind verification is weakest (AUROC 0.69), the reference raises Qwen2.5-7B's accuracy by 30.5 points as a full solution and by 28.6 as a final answer alone (\cref{app:estimator}).\pre
 
 \section{What to do about it}
 \label{sec:fix}
@@ -233,7 +233,7 @@ Measured on a small labeled sample & Option & Evidence in this paper \\
 \midrule
 A program can check correctness & Check membership & No judge involved \\
 \addlinespace[2pt]
-Few correct answers differ from the reference & Reference & MATH-500: $+$\pending{X} points with the final answer alone \\
+Few correct answers differ from the reference & Reference & MATH-500: $+28.6$ points of best-of-64 accuracy with the final answer alone \\
 \addlinespace[2pt]
 Many differ, and blind AUROC is high & Blind judging, or blind-then-reveal as a hedge & Blind AUROC 0.87: the reference lowers overall AUROC by 0.22 and $k{>}1$ accuracy by up to 35.9 points \\
 \addlinespace[2pt]
