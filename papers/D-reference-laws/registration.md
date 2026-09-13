@@ -2855,3 +2855,42 @@ step-level or PRM test, and the Section 9 forward-pointer now says "a partial-an
 proxy for this question, not the question itself." No number changed; P-SL1's numeric
 outcome (confirmed, both judges, both rubrics, per the entry above) is unaffected --
 only how it is described in the paper's prose changed.
+
+---
+
+## REGISTER P-MC4c (third attempt, explicitly user-authorized), before any judging
+
+The prior decision (above) was to not attempt a third pool redesign unilaterally, to avoid
+post-hoc tuning. The user explicitly asked to fix the open question rather than leave it
+open, overriding that default -- a genuine authorization, not a quiet retry, and recorded
+as such. This registers the corrected design before any of its data exists.
+
+**Diagnosis driving the redesign:** re-examining P-MC4b's raw scores shows Fable's
+"solution 1" is *always* the canonical zigzag construction ($0,n{-}1,1,n{-}2,2,\ldots$)
+across every item tested, independent of $n$ -- the same structurally distinctive pattern
+every time, which is what dominated Qwen-7B's blind scoring (phi-4's blind scores were
+instead uninformatively near-ceiling across all four samples, a different but equally
+disqualifying problem). Solutions 2-4 come from backtracking search and look comparably
+unstructured to each other.
+
+**P-MC4c pool:** solution 1 (the canonical pattern) is dropped entirely. Candidates are
+sol2 (valid) and sol3 (valid, non-matching), each paired with its OWN plausible near-miss
+lure (an adjacent-element swap of that specific solution, built and oracle-verified
+exactly as in P-MC6, not the wildly-invalid open-model garbage that sank P-MC4): four
+samples per item, {sol2, sol3, lure-of-sol2, lure-of-sol3}, reference $=$ sol2, oracle
+$=[1,1,0,0]$. This removes the canonical-pattern confound (neither remaining valid answer
+is the structurally special one) and the garbage-invalid confound (both invalids are
+plausible near-misses of an actual valid answer, not an unrelated weak model's failures)
+at the same time, with zero new model generation.
+
+**REGISTERED PREDICTION (committed before any P-MC4c judging exists):**
+- **P-MC4c:** the referenced judge's rate of picking a genuinely valid answer (sol2 or
+  sol3, either counts) at argmax is lower under ref than under blind, for both judges,
+  paired per item. This isolates the actual phenomenon: does showing sol2 as "the
+  reference" pull the judge's pick toward sol2-or-its-own-lure and away from correctly
+  recognizing sol3 as an equally valid alternative, relative to what it would have picked
+  blind.
+- Exploratory: which specific wrong choice, if any, absorbs the loss (lure-of-sol2 vs
+  lure-of-sol3 vs a genuine tie) is reported descriptively, no bar registered.
+
+Producer: extends `papers/analysis/mathconstraint_pilot_analysis.py`.
