@@ -154,5 +154,21 @@ for t in repl:
         fr["ref_nonmatch"].append(np.mean([r[pid][i] <= 3 for i in idx]))
 res["repl_sonnet5_false_reject"] = {k: boot(v) for k, v in fr.items()}
 
+# ---------------------------------------------------------------- Sonnet 5 API: mean scores of valid answers, replication pool
+res["repl_sonnet5_scores"] = {}
+for cond in ("noref", "ref"):
+    sc = load(f"runs/bon_scores_repl/synthk__anthropic__claude-sonnet-5__{cond}_a.jsonl")
+    m_all, n_all, per_m, per_n = [], [], [], []
+    for t in repl:
+        pid = t["problem_id"]
+        if pid not in sc:
+            continue
+        refn = norm(t["ref_answer"])
+        m = [sc[pid][i] for i, s in enumerate(t["samples"]) if t["oracle"][i] and sc[pid][i] is not None and norm(extract_boxed(s) or s) == refn]
+        n = [sc[pid][i] for i, s in enumerate(t["samples"]) if t["oracle"][i] and sc[pid][i] is not None and norm(extract_boxed(s) or s) != refn]
+        if m and n:
+            per_m.append(np.mean(m)); per_n.append(np.mean(n))
+    res["repl_sonnet5_scores"][cond] = dict(match=boot(per_m), nonmatch=boot(per_n), margin=boot(np.subtract(per_m, per_n)))
+
 json.dump(res, open(OUT, "w"), indent=1)
 print(json.dumps(res, indent=1)[:6000])
