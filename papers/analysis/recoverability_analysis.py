@@ -83,8 +83,10 @@ def norm(a):
 
 
 def load(level, judge, cond, rep):
-    pool_tag = os.path.basename(POOL_F[level]).split("__")[0].replace("bon_", "")
-    f = f"{SDIR[level]}/{pool_tag}__{judge}__{cond}_{rep}.jsonl"
+    # bon_judge.py names outputs by --domain, not by the pool filename; the existing
+    # bare/noref repl scores were judged with --domain synthk, so the new cipher1/2/3
+    # runs must use the same flag to land in matching filenames.
+    f = f"{SDIR[level]}/synthk__{judge}__{cond}_{rep}.jsonl"
     if not os.path.exists(f):
         return None
     return {r["problem_id"]: r["escore"] for r in (json.loads(l) for l in open(f))}
