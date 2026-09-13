@@ -2709,3 +2709,55 @@ specifically (the valid-but-non-matching answer, the one case that isolates the 
 lower under ref than under blind, for both judges, paired per item -- the literal
 selection-degradation phenomenon, now isolated from the "any valid answer beats obvious
 garbage" confound that sank P-MC4.
+
+---
+
+## Gap-closing campaign, full outcome (P-MC4b, P-MC5, P-MC6, P-MC7) -- 2026-09-12
+
+**P-MC4b: INCONCLUSIVE, a second diagnosed design flaw, stopping here rather than a third
+attempt.** Sol2 (the valid, non-matching answer) was picked by argmax 0.000 of the time
+in BOTH blind and ref conditions, for both judges -- no headroom existed for a reference
+to lower it. Raw scores show sol1 (the canonical zigzag construction, $0,n{-}1,1,n{-}2,\ldots$)
+dominating even under blind scoring, before any reference is shown: this is a structural
+recognizability confound (one candidate looks more canonical independent of the reference
+mechanism), not the phenomenon under test. Separately notable: phi-4's blind scores in
+this pool cluster near 9.7-10.0 regardless of actual validity, indicating it is not
+reliably discriminating valid from invalid all-interval series when scoring blind at all,
+consistent with this domain's generation-difficulty finding extending to verification.
+**Decision: no P-MC4c.** Two attempts (P-MC4: garbage-invalid confound; P-MC4b:
+canonical-pattern confound) have each failed for a genuine, diagnosed, disclosed reason.
+A third redesign risks exactly the post-hoc-tuning-until-it-works failure mode this
+paper's own registration discipline exists to prevent. **The honest, final outcome for
+this sub-question: the selection-degradation phenomenon could not be cleanly isolated on
+this domain with the pool-construction approaches tried here, for two independently
+diagnosed reasons, and is reported as an open methodological question rather than either
+a confirmation or a clean falsification of the underlying phenomenon.**
+
+**P-MC5 CONFIRMED, both judges, both rubrics, with 6x the pilot's data.** Full
+$\binom{4}{2}=6$-pair rotation (reusing Fable's already-verified solutions, zero new
+generation): Qwen-7B $+3.21$ $[+2.92,+3.51]$ (rubric a) / $+3.53$ $[+3.27,+3.81]$ (rubric
+b); phi-4 $+5.04$ $[+4.79,+5.28]$ / $+4.10$ $[+3.84,+4.36]$, $n{=}96$ candidate-item-pair
+observations each (vs. $n{=}16$ in the pilot). Point estimates land almost exactly where
+the pilot's single-pair estimate did ($+3.46/+3.93$ and $+5.01/+3.90$), a strong internal
+consistency check, now with dramatically tighter intervals.
+
+**P-MC6 CONFIRMED, both judges** (lure test, `all_interval`, rubric a): lure-minus-clean
+margin $+3.47$ $[+2.31,+4.52]$ (Qwen-7B), $+1.42$ $[+0.77,+2.14]$ (phi-4), $n{=}8$ items.
+An invalid answer differing from the reference only by an adjacent-element swap scores
+meaningfully higher than an invalid answer with low textual overlap, replicating the
+paper's lure finding (Section~\ref{sec:dose}) on this domain.
+
+**P-MC7 CONFIRMED, Claude Sonnet 5 via the Anthropic API** (reusing the frontier harness's
+existing tool-call scoring fix, zero unparseable responses): rotation swing $+4.38$
+$[+1.88,+6.88]$ (rubric a) / $+2.50$ $[+0.63,+5.00]$ (rubric b); margin $+6.41$
+$[+3.70,+8.74]$, both same direction and larger magnitude than the open judges. Notable
+texture: Sonnet's scores are frequently stark 10/0 rather than graded, and at $n{=}4$
+(the smallest, most enumerable instance) it stops discriminating between valid candidates
+entirely (all four scored 10.0) -- a real judge-scale difference in scoring style, not
+just magnitude.
+
+**Campaign summary:** of the four gap-closing predictions, three (P-MC5, P-MC6, P-MC7)
+confirm the pilot's findings with more data, tighter intervals, and a third judge; one
+(P-MC4/P-MC4b, the paper's actual headline selection-degradation phenomenon) remains an
+open question on this domain after two genuinely different, disclosed, diagnosed failed
+attempts, and is reported as open rather than forced to a conclusion.
