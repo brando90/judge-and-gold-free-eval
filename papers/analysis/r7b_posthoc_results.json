@@ -1,0 +1,189 @@
+{
+ "lure_character": {
+  "replication": {
+   "wrong": 4186,
+   "lure": 988,
+   "lure_share_of_wrong": 0.236,
+   "lure_no_box": 724,
+   "lure_boxed_equal_reference": 0,
+   "lure_boxed_other": 264
+  },
+  "kpool": {
+   "wrong": 2874,
+   "lure": 770,
+   "lure_share_of_wrong": 0.2679,
+   "lure_no_box": 592,
+   "lure_boxed_equal_reference": 0,
+   "lure_boxed_other": 178
+  }
+ },
+ "replication_lures_removed": {
+  "Qwen2.5-7B": {
+   "G_nm_change": [
+    -0.237,
+    [
+     -0.2676,
+     -0.2085
+    ],
+    117
+   ],
+   "G_all_change": [
+    -0.1856,
+    [
+     -0.2161,
+     -0.1586
+    ],
+    117
+   ],
+   "accuracy_change": [
+    0.019,
+    [
+     -0.0571,
+     0.0952
+    ],
+    105
+   ]
+  },
+  "phi-4": {
+   "G_nm_change": [
+    -0.1962,
+    [
+     -0.2252,
+     -0.1693
+    ],
+    117
+   ],
+   "G_all_change": [
+    -0.1576,
+    [
+     -0.1852,
+     -0.1312
+    ],
+    117
+   ],
+   "accuracy_change": [
+    -0.0571,
+    [
+     -0.1143,
+     -0.0095
+    ],
+    105
+   ]
+  }
+ },
+ "mace_lures": {
+  "wrong": 3404,
+  "lure": 105,
+  "lure_share_of_wrong": 0.0308,
+  "G_nm_change_lures_removed_qwen": [
+   -0.0743,
+   [
+    -0.1361,
+    -0.0097
+   ],
+   91
+  ]
+ },
+ "math_rules": {
+  "Qwen2.5-7B": {
+   "reference": [
+    0.3048,
+    [
+     0.219,
+     0.4
+    ],
+    105
+   ],
+   "mean": [
+    0.3238,
+    [
+     0.2381,
+     0.4095
+    ],
+    105
+   ],
+   "min": [
+    0.3238,
+    [
+     0.2381,
+     0.4095
+    ],
+    105
+   ],
+   "max": [
+    0.2381,
+    [
+     0.1524,
+     0.3238
+    ],
+    105
+   ],
+   "blind_then_ref_tiebreak": [
+    0.1048,
+    [
+     0.0476,
+     0.1619
+    ],
+    105
+   ],
+   "blind_then_reveal": [
+    0.2762,
+    [
+     0.181,
+     0.3714
+    ],
+    105
+   ]
+  },
+  "Qwen2.5-14B": {
+   "reference": [
+    0.2762,
+    [
+     0.181,
+     0.3714
+    ],
+    105
+   ],
+   "mean": [
+    0.3048,
+    [
+     0.219,
+     0.3905
+    ],
+    105
+   ],
+   "min": [
+    0.2857,
+    [
+     0.2,
+     0.381
+    ],
+    105
+   ],
+   "max": [
+    0.2762,
+    [
+     0.181,
+     0.3714
+    ],
+    105
+   ],
+   "blind_then_ref_tiebreak": [
+    0.0476,
+    [
+     0.0095,
+     0.0952
+    ],
+    105
+   ],
+   "blind_then_reveal": [
+    0.2592,
+    [
+     0.1621,
+     0.3557
+    ],
+    105
+   ]
+  }
+ }
+}
