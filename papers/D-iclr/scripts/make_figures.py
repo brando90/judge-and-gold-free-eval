@@ -100,7 +100,7 @@ a1.set_xlim(0, 12.5)
 a1.set_ylim(-0.55, 1.95)
 a1.set_xticks([0, 5, 10])
 a1.set_xlabel("mean score (0–10)")
-a1.set_title("Sonnet 5, correct answers", loc="left")
+a1.set_title("Sonnet 5 scores", loc="left")
 a1.legend(handles=[Patch(color=ORANGE, label="blind"), Patch(color=BLUE, label="reference shown")],
           loc="upper left", bbox_to_anchor=(-0.02, 1.02), ncol=2, frameon=False, handlelength=1.0, fontsize=6.8,
           columnspacing=0.8)
@@ -135,8 +135,8 @@ a2.legend(handles=[Patch(color=BLUE, label="now matches it"), Patch(color=GREY, 
                    Patch(facecolor="white", edgecolor=BLUE, hatch="/////", label="no longer matches")],
           loc="upper center", ncol=3, frameon=False, handlelength=1.1, fontsize=6.8, bbox_to_anchor=(0.45, -0.3), columnspacing=0.8)
 style(a2)
-label(a2, "b")
-fig.tight_layout(w_pad=1.4)
+label(a2, "b", x=-0.28)
+fig.tight_layout(w_pad=2.2)
 save(fig, "fig1_teaser")
 
 # ============================================================== Figure 2
@@ -250,14 +250,11 @@ a1.axvline(2.75, color=GRID, lw=1.0, zorder=1)
 a1.text(1.0, 5.6, "bare reference", ha="center", fontsize=7, color=MUTED)
 a1.text(4.0, 5.6, "worked solution,\nfinal answer", ha="center", va="bottom", fontsize=7, color=MUTED)
 a1.axhline(0, color=MUTED, lw=0.8, zorder=2)
-a1.set_xticks(xpos, ["31", "thirty-one", "30+1", "visible", "masked"], fontsize=7.2)
+a1.set_xticks(xpos, ["31", "thirty-\none", "30+1", "visible", "masked"], fontsize=7.2)
 a1.set_xlim(-0.5, 5.0)
 a1.set_ylim(-1.6, 7.2)
 a1.set_ylabel("anchoring margin\n(points, 0–10 scale)")
 a1.set_title("How the reference is written", loc="left")
-a1.legend(handles=[Line2D([], [], marker="o", ls="", color=BLUE, label="Qwen2.5-7B"),
-                   Line2D([], [], marker="s", ls="", color=BLUE, label="phi-4")],
-          loc="upper center", bbox_to_anchor=(0.5, -0.14), ncol=2, frameon=False, handlelength=1.0)
 style(a1)
 label(a1, "a")
 
@@ -272,14 +269,14 @@ a2.set_xticks(range(4), [l for _, l in strata])
 a2.set_xlim(-0.5, 3.5)
 a2.set_ylim(-0.7, 2.2)
 a2.set_xlabel("requested answer format")
-a2.set_ylabel("added best-of-64 inflation\n(pool SDs of the score)")
+a2.set_ylabel("added inflation\n(pool SDs)")
 a2.set_title("What form the answer takes", loc="left")
 a2.legend(handles=[Line2D([], [], marker="o", ls="", color=BLUE, label="Qwen2.5-7B"),
                    Line2D([], [], marker="s", ls="", color=BLUE, label="phi-4")],
           loc="lower left", frameon=False, handlelength=1.0)
 style(a2)
-label(a2, "b")
-fig.tight_layout(w_pad=1.3)
+label(a2, "b", x=-0.22)
+fig.tight_layout(w_pad=2.0)
 save(fig, "fig3_mechanism")
 
 # ============================================================== Figure 4
