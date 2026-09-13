@@ -181,3 +181,16 @@ No Qwen2.5-14B, gemma-2-9b, Mistral-7B, MATH-500, MACE-referenced, or Qwen3-14B 
 - Replication G_nm, referenced minus blind: −0.275 [−0.305, −0.245]. **P-R4D4 CONFIRMED.**
 
 **R4-B** is recorded below once the Qwen2.5-14B runs finish.
+
+## Outcome, R4-B (recorded 2026-09-13 after the Qwen2.5-14B runs finished; `r4_results.json`)
+
+Every MATH-500 score used an expected value (flag 0). Best-of-64 accuracy over 105 problems:
+
+| Judge | Blind | Solution | Answer | Solution − blind | Answer − blind | Answer − solution |
+|---|---|---|---|---|---|---|
+| Qwen2.5-7B | 0.686 | 0.990 | 0.971 | +0.305 [+0.219, +0.400] | +0.286 [+0.181, +0.381] | −0.019 [−0.048, 0.000] |
+| Qwen2.5-14B | 0.667 | 0.952 | 0.973 | +0.286 [+0.181, +0.381] | +0.306 [+0.221, +0.392] | +0.021 [−0.018, +0.060] |
+
+**P-R4B1 CONFIRMED, P-R4B2 CONFIRMED** (both judges). The unique-answer benefit does not depend on showing a worked solution.
+
+All fifteen round-4 predictions are confirmed.

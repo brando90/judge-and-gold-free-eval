@@ -82,7 +82,7 @@ We do this on tasks where correctness is decided by a program or an audited answ
 \item \textbf{Thinking helps on checkable tasks, and a two-step protocol hedges} (\cref{sec:fix}). Extended thinking removes the effect on arithmetic tasks for Qwen3-8B and Qwen3-14B but not on factual questions; scoring blind before revealing the reference bounds the worst-case loss for two of three judges.
 \end{itemize}
 
-We mark evidence as preregistered on OSF\osf, pre-specified in a timestamped commit before the data existed\pre, or post hoc\ph, at the end of the paragraph or caption it applies to. \Cref{app:ledger} scores every prediction, including the \pending{N} of \pending{M} that were not confirmed or were falsified.
+We mark evidence as preregistered on OSF\osf, pre-specified in a timestamped commit before the data existed\pre, or post hoc\ph, at the end of the paragraph or caption it applies to. \Cref{app:ledger} scores all 147 registered predictions, including the 25 that were not confirmed or were falsified.
 
 \begin{figure}[t]
 \centering
@@ -181,7 +181,7 @@ On the preregistered replication pool the reference lowers the accuracy of the p
 On the $k$-pool, pooled over $k{>}1$, it lowers accuracy by 35.9 points for Qwen2.5-7B and by 8.5 to 23.1 points for Qwen2.5-14B, gemma-2-9b, and Mistral-7B, all with intervals that exclude zero.\pre{}
 The loss is largest at $k{=}16$, and Qwen2.5-7B also loses 21.4 points at $k{=}1$, where the reference is the only correct answer; wrong answers that contain the reference's text receive a bonus of 1.4 to 1.7 points (\cref{app:composition}), which may explain it.
 On \textsc{MACE} the reference raises accuracy, almost entirely on single-answer questions ($+29.4$ points for Qwen2.5-7B at $k{=}1$, against $+2.0$ at $k{>}1$); on questions with four or six correct answers the blind judge already picks a correct answer 84.4\% to 93.8\% of the time (\cref{app:mace}).
-On MATH-500, where correct answers rarely differ from the reference and blind verification is weakest (AUROC 0.69), the reference raises Qwen2.5-7B's accuracy by 30.5 points as a full solution and by 28.6 as a final answer alone (\cref{app:estimator}).\pre
+On MATH-500, where correct answers rarely differ from the reference and blind verification is weakest (AUROC 0.69), the reference raises accuracy by 28.6 to 30.6 points for Qwen2.5-7B and Qwen2.5-14B, whether it is the full solution or only the final answer (\cref{app:estimator}).\pre
 
 \section{What to do about it}
 \label{sec:fix}
@@ -225,7 +225,7 @@ Measured on a small labeled sample & Option & Evidence in this paper \\
 \midrule
 A program can check correctness & Check membership & No judge involved \\
 \addlinespace[2pt]
-Few correct answers differ from the reference & Reference & MATH-500: $+28.6$ points of best-of-64 accuracy with the final answer alone \\
+Few correct answers differ from the reference & Reference & MATH-500: $+28.6$ to $+30.6$ points of best-of-64 accuracy with the final answer alone \\
 \addlinespace[2pt]
 Many differ, and blind AUROC is high & Blind judging, or blind-then-reveal as a hedge & Blind AUROC 0.87: the reference lowers overall AUROC by 0.22 and $k{>}1$ accuracy by up to 35.9 points \\
 \addlinespace[2pt]
