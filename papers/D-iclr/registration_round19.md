@@ -1,0 +1,59 @@
+# Round 19 registration: a second frontier judge (R19-A) and a frontier thinking judge with wrong answers (R19-B)
+
+Registered 2026-09-13, before any R19 call. Committed together with the producers named below.
+
+## Context disclosed before any R19 call
+
+All R8-A results for Claude Sonnet 5 (Messages API, thinking disabled) are known and reported in the paper (round 19 draft):
+grading AUROC for correct answers that differ from the reference against wrong answers changes by -0.04 (replication, any-format
+labels), -0.15 (MACE) and -0.08 (k-pool); false rejections rise by +9.2, +35.6 and +22.5 pp. Post hoc analyses of those scores
+(`r15_checks.py`, `r16d_sonnet_noise_floor.py`, `r19_sonnet_wrong_tens.py`) found that, among correct answers Sonnet 5 scored 10
+blind, 18.5% / 8.7% / 14.9% of those that differ from the reference drop to 3 or below with the reference against 0% of those that
+match, and that Sonnet 5 gives a blind 10 to 1.8-3.7% of wrong answers. Thinking-mode results for Sonnet 5 exist only through the
+command-line interface on 40 MACE questions with one answer of each kind (R5-A). No Claude Opus 5 score and no Sonnet 5
+thinking-on API score exists for these pools.
+
+Purpose. R19-A asks whether the grading harm and the acceptance result replicate on a second, stronger frontier judge.
+R19-B asks, under the API design with wrong answers, whether a thinking mode removes Sonnet 5's grading harm on factual questions.
+
+## Design
+
+- Pools (unchanged R8-A subsamples, 16 candidates per task, blind and referenced calls), md5 at registration, identical to those
+  recorded in `registration_round8.md`:
+  - `runs/r8/sonnet_repl.jsonl` 4d7f8b6e4739f0bbff5c5e1de72b13d3 (40 tasks)
+  - `runs/r8/sonnet_mace.jsonl` 3382472341d573884a0a46b9141fb4cb (40 tasks)
+  - `runs/r8/sonnet_kpool.jsonl` 9809c9a2f172bc5f7c6b4e8de0a8f35f (22 tasks)
+  - labels `runs/r8/lenient_repl.jsonl` 9d7f1d32d5ac4c4332c1f93088a49944, `runs/r8/lenient_kpool.jsonl` f797c999ad5b9a10a8dac9fa3d141789
+- Harness: `experiments/tfa-vs-judge/scripts/sonnet_api_pool.py` (defaults reproduce R8-A; new flags only select the model,
+  thinking mode, token limit and ledger prices). Prompts, rubric (a), call order and score parsing are unchanged.
+  - R19-A: `--model claude-opus-5 --thinking disabled --max-tokens 512`, all three pools, output `runs/r19/opus_api/<pool>.jsonl`.
+  - R19-B: `--model claude-sonnet-5 --thinking adaptive --max-tokens 8000`, MACE pool only, output `runs/r19/sonnet_think_api/mace.jsonl`.
+- Spend caps: R19-A USD 40; R19-B USD 30 (ledger prices are conservative upper bounds).
+- Producers (frozen, committed with this file):
+  - `papers/analysis/r8_sonnet_analysis.py --scores <dir> --out <json>` (unchanged from R8-A) for AUROC, false rejections,
+    margin and best-of-16 accuracy;
+  - `papers/analysis/r19_acceptance.py --scores <dir> --out <json>` for the acceptance and blind-10 readouts.
+- Intervals: task-level bootstrap as in the producers. Verdicts: **confirmed** when the 95% interval excludes zero in the predicted
+  direction (or a point prediction holds), **falsified** when it excludes zero in the opposite direction (or a point prediction
+  fails), **not confirmed** otherwise.
+- Completion: a pool is scored if at least 20 tasks have all their calls scored. Unparseable replies are treated as missing, as in R8-A.
+
+## Predictions
+
+R19-A (Claude Opus 5, thinking disabled):
+- **P-R19A1.** Replication pool, any-format labels: grading AUROC (non-matching correct vs wrong) is lower with the reference.
+- **P-R19A2.** MACE: grading AUROC (non-matching correct vs wrong) is lower with the reference.
+- **P-R19A3.** k-pool, any-format labels: grading AUROC (non-matching correct vs wrong) is lower with the reference.
+- **P-R19A4.** MACE: the false-rejection rate of non-matching correct answers rises with the reference.
+- **P-R19A5.** Pooled over the three pools, among correct answers scored 10 blind, the share scored 3 or below with the reference is
+  higher for answers that differ from the reference than for answers that match it (point estimates, with the non-matching share above 0).
+- **P-R19A6.** In each pool, at most 5% of wrong answers are scored 10 blind (point estimate).
+
+R19-B (Claude Sonnet 5, adaptive thinking, MACE):
+- **P-R19B1.** Grading AUROC (non-matching correct vs wrong) is lower with the reference.
+- **P-R19B2.** The false-rejection rate of non-matching correct answers rises with the reference.
+- **P-R19B3.** The AUROC fall is smaller in magnitude than R8-A's thinking-disabled fall of -0.15 (point estimate).
+
+## Outcome
+
+To be recorded here after the runs, with the producers' outputs and the commit that records them.

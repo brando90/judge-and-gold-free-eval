@@ -1,6 +1,7 @@
 # R8-A, Amendment 1 (papers/D-iclr/registration_round8.md): Claude Sonnet 5 through the Anthropic Messages API, score-only
 # (rubric a, thinking disabled), blind and referenced, on the R8-A candidate subsamples. Same prompts and call order as
 # sonnet_cli_pool.py. Resumable; spend capped. Run from experiments/tfa-vs-judge.
+# R19 (papers/D-iclr/registration_round19.md) reuses it with --model and --thinking; the defaults reproduce R8-A exactly.
 import argparse
 import json
 import os
@@ -19,10 +20,15 @@ ap.add_argument("--pool", required=True)
 ap.add_argument("--out", required=True)
 ap.add_argument("--workers", type=int, default=8)
 ap.add_argument("--cap-usd", type=float, default=40.0)
+ap.add_argument("--model", default="claude-sonnet-5")
+ap.add_argument("--price-in", type=float, default=2.00, help="USD per million input tokens (spend ledger only)")
+ap.add_argument("--price-out", type=float, default=10.00, help="USD per million output tokens (spend ledger only)")
+ap.add_argument("--thinking", choices=("disabled", "adaptive"), default="disabled")
+ap.add_argument("--max-tokens", type=int, default=512)
 args = ap.parse_args()
 
-MODEL = "claude-sonnet-5"
-PRICE_IN, PRICE_OUT = 2.00 / 1e6, 10.00 / 1e6  # USD per token, Sonnet 5 list price
+MODEL = args.model
+PRICE_IN, PRICE_OUT = args.price_in / 1e6, args.price_out / 1e6
 outf = os.path.abspath(args.out)
 os.makedirs(os.path.dirname(outf), exist_ok=True)
 ledger = os.path.join(os.path.dirname(outf), "spend.json")
@@ -58,8 +64,10 @@ def one(job):
         user += f"Reference answer (trusted):\n{t['ref']}\n\n"
     user += f"Candidate solution:\n{t['samples'][j]}\n\nScore:"
     row = dict(problem_id=t["problem_id"], idx=t["idx"][j], cond=cond, interface="api")
+    if MODEL != "claude-sonnet-5" or args.thinking != "disabled":
+        row.update(model=MODEL, thinking=args.thinking)
     try:
-        r = client.messages.create(model=MODEL, max_tokens=512, thinking={"type": "disabled"},
+        r = client.messages.create(model=MODEL, max_tokens=args.max_tokens, thinking={"type": args.thinking},
                                    system=RUBRIC_TIES[(cond, "a")], messages=[{"role": "user", "content": user}])
         text = "".join(b.text for b in r.content if b.type == "text")
         row.update(score=parse(text), stop_reason=r.stop_reason, input_tokens=r.usage.input_tokens,
@@ -81,7 +89,7 @@ if os.path.exists(outf):
 pool = [json.loads(l) for l in open(args.pool)]
 jobs = [(t, j, c) for t in pool for j in range(len(t["samples"])) for c in ("noref", "ref")
         if (t["problem_id"], t["idx"][j], c) not in done]
-print(f"[sonnet-api-pool {os.path.basename(args.pool)}] {len(jobs)} calls, spend so far ${spend['usd']:.2f}", flush=True)
+print(f"[api-pool {MODEL} thinking={args.thinking} {os.path.basename(args.pool)}] {len(jobs)} calls, spend so far ${spend['usd']:.2f}", flush=True)
 n_bad = 0
 with open(outf, "a") as f, ThreadPoolExecutor(args.workers) as ex:
     for i, row in enumerate(ex.map(one, jobs)):
@@ -95,5 +103,5 @@ with open(outf, "a") as f, ThreadPoolExecutor(args.workers) as ex:
                 json.dump(spend, open(ledger, "w"))
                 print(f"  {i + 1}/{len(jobs)} unparseable/errors {n_bad} spend ${spend['usd']:.2f}", flush=True)
 json.dump(spend, open(ledger, "w"))
-print(f"[sonnet-api-pool done] {outf} unparseable/errors={n_bad} spend ${spend['usd']:.2f}"
+print(f"[api-pool done] {outf} unparseable/errors={n_bad} spend ${spend['usd']:.2f}"
       + (" (CAP REACHED)" if spend["usd"] >= args.cap_usd else ""), flush=True)
