@@ -1,0 +1,44 @@
+{
+ "mace": {
+  "nonmatch": {
+   "scored_10_blind": 81,
+   "share_of_10s_scored_le3_with_reference": 0.1852,
+   "all_correct": 249,
+   "share_scored_le3_with_reference": 0.3896
+  },
+  "match": {
+   "scored_10_blind": 38,
+   "share_of_10s_scored_le3_with_reference": 0.0,
+   "all_correct": 133,
+   "share_scored_le3_with_reference": 0.0677
+  }
+ },
+ "repl": {
+  "nonmatch": {
+   "scored_10_blind": 150,
+   "share_of_10s_scored_le3_with_reference": 0.0867,
+   "all_correct": 265,
+   "share_scored_le3_with_reference": 0.1283
+  },
+  "match": {
+   "scored_10_blind": 60,
+   "share_of_10s_scored_le3_with_reference": 0.0,
+   "all_correct": 102,
+   "share_scored_le3_with_reference": 0.0
+  }
+ },
+ "kpool": {
+  "nonmatch": {
+   "scored_10_blind": 87,
+   "share_of_10s_scored_le3_with_reference": 0.1494,
+   "all_correct": 145,
+   "share_scored_le3_with_reference": 0.2414
+  },
+  "match": {
+   "scored_10_blind": 39,
+   "share_of_10s_scored_le3_with_reference": 0.0,
+   "all_correct": 73,
+   "share_scored_le3_with_reference": 0.0
+  }
+ }
+}

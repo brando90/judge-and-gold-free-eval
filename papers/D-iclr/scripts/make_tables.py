@@ -549,8 +549,13 @@ print("wrote round-4 tables")
 # ---------------------------------------------------------------- round 5: numbers quoted in the main text
 try:
     r5p, r4p = J("r5_posthoc_results.json"), J("r4_posthoc_results.json")
-    body = ["\\begin{tabular}{L{8.2cm}L{5.0cm}}", "\\toprule", "Quantity & Value (95\\% CI) \\\\", "\\midrule"]
-    sec = lambda t: body.append(f"\\multicolumn{{2}}{{l}}{{\\emph{{{t}}}}} \\\\")
+    HDR = "Quantity & Value (95\\% CI) \\\\"
+    body = ["\\begin{longtable}{L{8.2cm}L{5.0cm}}",
+            "\\caption{Numbers quoted in the main text that are not in other tables, grouped by topic. Exact scorer for Qwen2.5-7B unless stated; phi-4 uses the original scorer, which is exact for its tokenizer. Post hoc unless the main text marks them otherwise.}\\label{tab:main-numbers} \\\\",
+            "\\toprule", HDR, "\\midrule", "\\endfirsthead",
+            "\\multicolumn{2}{l}{\\small\\emph{\\cref{tab:main-numbers}, continued}} \\\\", "\\toprule", HDR, "\\midrule", "\\endhead",
+            "\\bottomrule", "\\endfoot"]
+    sec = lambda t: body.append(f"\\multicolumn{{2}}{{L{{13.2cm}}}}{{\\emph{{{t}}}}} \\\\")
     sec("Rotation, Qwen2.5-7B, exact scorer, correct answers scored at least $t$ blind")
     for key, lab in (("gainer_ge7", "Moved onto, $t=7$"), ("gainer_ge9", "Moved onto, $t=9$"), ("loser_ge7", "Moved off, $t=7$"), ("loser_ge9", "Moved off, $t=9$")):
         v = r5p["blind_accepted"][key]
@@ -607,7 +612,12 @@ try:
         sh = a_["share_scored_le3_with_reference"]
         body.append(f"{lab}: tasks with such answers; answers; share scored 3 or below with the reference & {a_['tasks']}; {a_['answers']}; {100 * sh[0]:.1f}\\% {c(100 * sh[1][0], 100 * sh[1][1], 1)} \\\\")
         body.append(f"{lab}: answers scored 10 blind; share of them scored 3 or below with the reference & {b_['scored_10_blind']}; {100 * b_['share_of_10s_scored_le3_with_reference']:.1f}\\% \\\\")
-    write("main_numbers.tex", done(body))
+    r15 = J("r15_checks.json")
+    sec("Sonnet~5 (API), correct answers scored 10 blind: share scored 3 or below with the reference, differing from it against matching it")
+    for pool, lab in (("mace", "\\textsc{MACE}, $k{>}1$"), ("repl", "Replication"), ("kpool", "$k$-pool, $k{>}1$")):
+        nm_, m_ = r15[pool]["nonmatch"], r15[pool]["match"]
+        body.append(f"{lab} & {100 * nm_['share_of_10s_scored_le3_with_reference']:.1f}\\% of {nm_['scored_10_blind']}; {100 * m_['share_of_10s_scored_le3_with_reference']:.1f}\\% of {m_['scored_10_blind']} \\\\")
+    write("main_numbers.tex", "\n".join(body + ["\\end{longtable}"]) + "\n")
     print("wrote main_numbers.tex")
 except (KeyError, TypeError, FileNotFoundError) as e:
     print("[skip main_numbers]", e)
@@ -798,9 +808,9 @@ try:
            (r5s_["fast"]["false_reject_diff"], PRE, "MACE, one answer of each kind, CLI"), (r5s_["think"]["false_reject_diff"], PRE, "MACE, one answer of each kind, CLI"))]
     body = ["\\begin{tabular}{lcccc}", "\\toprule",
             " & \\multicolumn{2}{c}{Arithmetic (constructed)} & \\multicolumn{2}{c}{Factual (\\textsc{MACE})} \\\\", "\\cmidrule(lr){2-3}\\cmidrule(lr){4-5}",
-            "Judge & Score only & Reasons first & Score only & Reasons first \\\\", "\\midrule"]
+            "Judge & Thinking off & Thinking on & Thinking off & Thinking on \\\\", "\\midrule"]
     src = ["\\begin{tabular}{llL{6.2cm}}", "\\toprule", "Judge & Cell & Value (95\\% CI), source \\\\", "\\midrule"]
-    names = ["arithmetic, score only", "arithmetic, reasons first", "factual, score only", "factual, reasons first"]
+    names = ["arithmetic, thinking off", "arithmetic, thinking on", "factual, thinking off", "factual, thinking on"]
     for jn, *cells in T1:
         out = []
         for nm_, c_ in zip(names, cells):

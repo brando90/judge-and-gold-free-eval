@@ -5,6 +5,8 @@
 \section{Setup details}
 \label{app:setup}
 
+Appendices~\ref{app:setup}--\ref{app:prevalence}, \ref{app:mace}, \ref{app:frontier}, \ref{app:reasoning}, and \ref{app:estimator} give details for claims in the main text; the others report additional registered studies with their ledger verdicts. The appendix keeps the names used in the registrations: the swap test is \emph{rotation}, the margin is the \emph{anchoring margin}, and rubric wordings are $a$ and $b$.
+
 \paragraph{Pools.}
 \Cref{tab:pools} lists every pool. Validity is decided by a program in all own-built pools and in MBPP and MATH-500; \textsc{MACE} entity questions use the benchmark's answer lists after a completeness audit (\cref{app:mace}), and the exploratory Ties pool uses an enumerated answer list known to be incomplete (\cref{app:ties}).
 In own-built tasks, the reference is one member of the stored valid set, chosen by a seeded random draw when the task is built.
@@ -34,7 +36,7 @@ Answer formats\pre{} & 25 new constraint tasks, each requested in four formats &
 
 \paragraph{Scoring.}
 Open judges run in vLLM at temperature 0 and produce at most four tokens. We read the top-20 log-probabilities of the first generated token and take the probability-weighted mean over the score tokens 0 to 10, renormalized over their captured probability. For tokenizers that write ``10'' as the two tokens ``1'' and ``0'' (Qwen2.5, gemma-2, Mistral), the original scorer assigned all probability on ``1'' to the value 10 when the greedy reply began with ``10'' and to the value 1 otherwise. When less than 0.25 of the probability fell on score tokens, it used the integer in the greedy reply, or 5.0 if there was none. Mistral-7B's tokenizer has no single-token digits, so all of its scores, under either estimator, are the integers parsed from its greedy replies; phi-4 writes ``10'' as one token and is unaffected by the ``1'' rule. The pre-specified rescoring of \cref{app:estimator} replaces this rule with an exact two-step estimate: for each ``1'' token it runs one more forward step and splits that token's probability between 10 and 1 according to the probability of ``0'' next, and a reply with no score is treated as missing.
-Sonnet~5 through the Anthropic API ran with extended thinking disabled and returns its score through a forced, schema-validated tool call. The command-line replication of \cref{sec:p1} replaced the tool's default system prompt with our rubric, disabled tools, and ran from an empty working directory (\cref{app:reasoning}); an earlier command-line run from the project directory is described in \cref{app:frontier}. GPT-4.1 uses the same expected-score estimator as the open judges, but its API returns at most five alternatives per token.
+Sonnet~5 through the Anthropic API ran with extended thinking disabled and returns its score through a forced, schema-validated tool call. The command-line experiments of \cref{app:reasoning} replaced the tool's default system prompt with our rubric, disabled tools, and ran from an empty working directory (\cref{app:reasoning}); an earlier command-line run from the project directory is described in \cref{app:frontier}. GPT-4.1 uses the same expected-score estimator as the open judges, but its API returns at most five alternatives per token.
 
 \paragraph{Selection accuracy and false rejection.}
 For each task we select the sample with the highest rubric-$a$ score; when several samples tie at the maximum, accuracy is the mean validity of the tied samples. False rejection uses rubric-$a$ scores of oracle-valid samples whose extracted answer (the last \texttt{\textbackslash boxed\{\}} content, loosely normalized, or the whole reply if there is none) differs from the reference. Both are averaged per task and bootstrapped over tasks (1,000 resamples).
@@ -399,6 +401,8 @@ In accuracy units, the reference raises MATH-500 selection accuracy at every jud
 
 \textsc{MACE}~\citep{mace2026} asks factual questions whose number of correct answers is fixed by construction at $k \in \{1,2,4,6\}$. Before building the pool we audited each domain. All 2,000 Math-domain questions have correct and complete answer sets by direct computation, so the domain enters as a label-noise control. For the entity domains we measured how often a model names a valid answer missing from the shipped list: River (2.3\%) and Language (8.1\%) passed, and Region, Office, and Award (30.8\% to 43.5\%) were excluded.
 
+\paragraph{Matching answers.} A candidate's answer is its last \texttt{\textbackslash boxed\{\}} content, or its last 200 characters if there is none, lowercased with non-alphanumeric characters removed. It is correct if it equals or contains a normalized entry of the answer list (entries longer than three characters), and it matches the reference by the same test applied to the reference alone. A correct answer counted as differing from the reference therefore never contains the reference's name: an alias of the reference counts as a different correct answer only if it also contains another listed answer, and a reply that names several answers, the reference among them, counts as matching. Aliases missing from the list count as wrong, which lowers measured rejection of correct answers rather than raising it.
+
 \begin{table}[htbp]
 \centering
 \caption{\textsc{MACE}: added inflation (\sd, 95\% CI). The step holds in each audited domain, and the math control has the same sign.\pre}
@@ -712,7 +716,7 @@ This pre-specified experiment reran the Qwen3-8B protocol of \cref{app:rotation}
 
 \end{table}
 
-With thinking on, valid rotation samples receive 10 in 99.8\% of referenced replies and 96.2\% of blind ones; with thinking off, in 79.2\% and 76.9\%. The thinking judge's arithmetic scores therefore sit at the top of the scale whether or not the reference agrees, which is what verification looks like on these tasks and leaves no room for a reference to move them. On \textsc{MACE} its valid answers average 7.96 with the reference and 8.18 blind, away from the ceiling, and the anchoring returns. These diagnostics are post hoc.
+With thinking on, valid rotation samples receive 10 in 99.8\% of referenced replies and 96.2\% of blind ones; with thinking off, in 79.2\% and 76.9\%. The thinking judge's arithmetic scores therefore sit at the top of the scale whether or not the reference agrees, which leaves no room for a reference to raise them. A ceiling does not explain the missing loss, however: the same answers keep their scores when the reference moves off them ($+0.01$), although they were free to fall. On \textsc{MACE} its valid answers average 7.96 with the reference and 8.18 blind, away from the ceiling, and the anchoring returns. These diagnostics are post hoc.
 
 \paragraph{Sonnet~5 with and without thinking.}
 A pre-specified three-arm design tested the same contrast on a frontier judge through the Claude command-line tool, with the default system prompt replaced, no tools, and an empty working directory, on 60 replication-pool tasks with one sample each that gains, loses, or keeps neither reference under rotation. The score-only arm, with thinking off, anchors: $+3.57$ \ci{+2.57}{+4.55} for text the reference moves onto, $-2.85$ \ci{-3.85}{-1.92} for text it moves off, and $-0.07$ \ci{-1.18}{+1.10} for text matching neither, with 26.7\% \ci{20.4}{33.3} of correct non-matching answers scored 3 or below. Asking it to reason before a final ``Score: N'' line removes most of this, with thinking off ($+0.28$, $-0.20$ \ci{-0.37}{-0.05}, 0.4\% false rejections) or on ($+0.18$, $-0.32$ \ci{-0.67}{-0.07}, 0.4\%). All four registered predictions were confirmed; the reasoning and thinking arms were completed in a second session that re-ran only the calls that had failed.\pre{}
@@ -800,13 +804,7 @@ For each task we compute the AUROC of the judge's score for separating correct f
 \paragraph{Numbers quoted in the main text.}
 \Cref{tab:main-numbers} collects the exact-scorer and post hoc numbers quoted in the main text that appear in no other table.\ph
 
-\begin{table}[htbp]
-\centering
-\footnotesize
-\caption{Numbers quoted in the main text that are not in other tables. Exact scorer for Qwen2.5-7B unless stated; phi-4 uses the original scorer, which is exact for its tokenizer.\ph}
-\label{tab:main-numbers}
-\begin{adjustbox}{max width=\linewidth}\input{tables/main_numbers.tex}\end{adjustbox}
-\end{table}
+{\footnotesize\setlength{\tabcolsep}{4pt}\input{tables/main_numbers.tex}}
 
 \paragraph{A second thinking toggle.}
 Qwen3-14B was run with the protocol of \cref{app:reasoning}, thinking off and on (\cref{tab:r4-toggle}). The Qwen3-8B columns repeat \cref{tab:toggle}; its verification AUROCs were computed afterwards and are post hoc.\pre
