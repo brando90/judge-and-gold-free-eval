@@ -65,6 +65,13 @@ Saumya Malik, Valentina Pyatkin, et~al.
 \newblock Rewardbench 2: Advancing reward model evaluation.
 \newblock {\em arXiv preprint arXiv:2506.01937}, 2025.
 
+\bibitem{mathconstraint2026}
+{MathConstraint}.
+\newblock Mathconstraint: Automated generation of verified combinatorial
+  reasoning instances for llms, 2026.
+\newblock \url{https://github.com/vireshpati/Math-Constraint}, dataset:
+  \url{https://huggingface.co/datasets/MathConstraint/MathConstraint-Easy}.
+
 \bibitem{zheng2023judging}
 Lianmin Zheng et~al.
 \newblock Judging llm-as-a-judge with mt-bench and chatbot arena.
