@@ -1,0 +1,13 @@
+{
+ "models_resolved": [
+  "gpt-5.2-2025-12-11"
+ ],
+ "ledger_usd": 10.53,
+ "cell": "g52_confidence",
+ "input": "audit",
+ "rep": "a",
+ "model_requested": "gpt-5.2-2025-12-11",
+ "src_counts": {
+  "lp": 242
+ }
+}

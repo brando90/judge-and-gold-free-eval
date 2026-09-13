@@ -1,0 +1,102 @@
+{
+ "anchor_n": 60,
+ "stopped": false,
+ "configs": {
+  "g52_honest": {
+   "judge": "gpt-5.2-2025-12-11",
+   "treatment": "honest",
+   "n": 60,
+   "fallback": 0.0,
+   "distinct_scores": 13,
+   "target_loading": 0.891,
+   "target_ci": [
+    0.769,
+    0.971
+   ],
+   "nuisance_loading": -0.139,
+   "nuisance_ci": [
+    -0.284,
+    0.087
+   ],
+   "length_loading": -0.083,
+   "length_ci": [
+    -0.276,
+    0.164
+   ],
+   "raw_pearson": 0.895,
+   "verdict": "qualified"
+  },
+  "g52_confidence": {
+   "judge": "gpt-5.2-2025-12-11",
+   "treatment": "confidence",
+   "n": 60,
+   "fallback": 0.0,
+   "distinct_scores": 14,
+   "target_loading": 0.895,
+   "target_ci": [
+    0.761,
+    0.977
+   ],
+   "nuisance_loading": -0.153,
+   "nuisance_ci": [
+    -0.284,
+    0.056
+   ],
+   "length_loading": -0.071,
+   "length_ci": [
+    -0.26,
+    0.185
+   ],
+   "raw_pearson": 0.898,
+   "verdict": "qualified"
+  },
+  "g4o_honest": {
+   "judge": "gpt-4o-2024-11-20",
+   "treatment": "honest",
+   "n": 60,
+   "fallback": 0.0,
+   "distinct_scores": 30,
+   "target_loading": 0.908,
+   "target_ci": [
+    0.785,
+    0.98
+   ],
+   "nuisance_loading": -0.096,
+   "nuisance_ci": [
+    -0.25,
+    0.183
+   ],
+   "length_loading": -0.147,
+   "length_ci": [
+    -0.346,
+    0.051
+   ],
+   "raw_pearson": 0.914,
+   "verdict": "qualified"
+  },
+  "g4o_confidence": {
+   "judge": "gpt-4o-2024-11-20",
+   "treatment": "confidence",
+   "n": 60,
+   "fallback": 0.0,
+   "distinct_scores": 49,
+   "target_loading": 0.853,
+   "target_ci": [
+    0.711,
+    0.946
+   ],
+   "nuisance_loading": 0.345,
+   "nuisance_ci": [
+    -0.011,
+    0.671
+   ],
+   "length_loading": -0.438,
+   "length_ci": [
+    -0.643,
+    -0.159
+   ],
+   "raw_pearson": 0.867,
+   "verdict": "insufficient"
+  }
+ }
+}
