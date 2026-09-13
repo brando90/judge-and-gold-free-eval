@@ -2800,3 +2800,39 @@ phi-4 (the standing cross-family pair).
   test, not a controlled magnitude comparison).
 
 Producer: `papers/analysis/steplevel_pilot_analysis.py`, to be written after judging.
+
+---
+
+## Step-level rotation pilot (P-SL1) -- outcome 2026-09-12
+
+Registered same day. 10 instances, deterministic "first move of a two-number subset-sum"
+construction, zero model generation for candidates or references, oracle exact and
+mechanical for every valid move used.
+
+**P-SL1 CONFIRMED, both judges, both rubrics, CIs cleanly excluding zero and larger in
+magnitude than most of this paper's answer-level rotation numbers:** Qwen-7B $+6.02$
+$[+4.76,+7.29]$ (rubric a) / $+8.08$ $[+6.87,+9.17]$ (rubric b); phi-4 $+6.75$
+$[+6.61,+6.92]$ / $+6.36$ $[+6.19,+6.52]$, $n{=}20$ candidate-item observations each. The
+identical proposed first move (e.g. choosing the number 23 as the start of a solution)
+scores near $10$ when the judge is told that move was "already confirmed correct" and
+drops sharply, often below $1$, the moment a *different* equally-valid first move is
+labelled the confirmed one instead -- the same causal signature this paper's flagship
+experiment finds at the answer level, now reproduced one level down, on an intermediate,
+admittedly-unfinished reasoning step rather than a completed solution.
+
+**Scope, stated plainly:** this is a first existence test, not a claim about process
+reward models as actually deployed. The task is deliberately minimal (a two-element
+subset-sum's first move) so that ground truth stays exact and mechanical with no new
+oracle-trust question; it does not use a real multi-step derivation, a real trained PRM,
+or a task where determining step validity itself requires nontrivial reasoning by the
+judge. Whether the effect survives on genuinely harder, longer step sequences, or on an
+actual trained process reward model rather than a general-purpose LLM prompted to score a
+step, is not tested here.
+
+**Disposition:** stays out of the submitted manuscript per the standing 2026-09-12
+decision; closes the last unaddressed item from the broadening-scope pass. Given the
+result is unambiguous (both judges, both rubrics, effect larger than the answer-level
+baseline), this is a strong candidate for promotion to the main text's Limitations
+section (which already names this exact question as untested) in a future revision,
+rather than staying appendix-only indefinitely -- flagged for that discussion, not
+decided here.
