@@ -2297,3 +2297,47 @@ weaker judge, not the stronger one), the mechanism looks judge-specific in degre
 weaker or differently-calibrated judges lean more on self-consistency cues that stronger judges
 do not need, and gemma's large residual is consistent with an intermediate, self-consistency-
 dependent, only-partially-effective version of the same mechanism, not a different one.
+
+---
+
+## Claim-calibration edits (2026-09-12), from a fresh AC review of the gemma-updated draft (score 8/10, accept)
+
+A fresh AC-style review of the paper after the gemma decomposition landed. Overall verdict:
+8/10, accept, and explicitly framed the gemma result as making the paper *stronger* because it
+shows the mechanism's limits rather than forcing every judge into one story. No new experiments
+requested for acceptance. Four wording edits requested, plus one broader softening; all applied:
+
+1. **Abstract, "every judge tested shifts toward inflation at k=2."** False as stated once GPT-4.1
+   is included (its k-step is unresolved, not confirmatory). Replaced with "all six open-model
+   judges tested shift... and the inversion reproduces on a third-party benchmark... the
+   corresponding test on a production judge is inconclusive under the available score interface
+   rather than confirmatory."
+2. **Abstract, "pins the mechanism down."** Reviewer: the rest of the paper is more careful than
+   this phrase; the masking suite establishes a pattern consistent with the mechanism, not the
+   mechanism itself as directly observed. Replaced with "strongly supports a cheap
+   semantic-comparison mechanism... a pattern consistent with the judge performing a semantic
+   equality check," matching the paper's own body-text hedging elsewhere.
+3. **GPT-4.1's +0.12 inflation figure, §6.1.** Reviewer: leading with this number understates
+   that it fails the paper's own resolution screen; the tie-immune margin and the 32-to-1
+   collapse are the load-bearing frontier evidence, not the flagged inflation estimate. Reordered
+   to state the caveat first and lead with the two robust readouts.
+4. **Equation 1 units.** Reviewer: a reader expecting a standardized Goodhart-gap measure may
+   wonder whether $\sigma_V$ was omitted by mistake. Added one sentence: "Because $V$ is binary
+   validity, the second term is an absolute accuracy gain rather than a standardized validity
+   gain; 'baseline standard deviations' refers to the normalization of the scoreboard component
+   only, not of $G$ as a whole."
+5. **"Does not care whose number it is," §8 (norescue).** Reviewer: correct that this is now
+   false as a universal claim, and flagged the added interpretive clause ("consistent with an
+   intermediate version of the same mechanism rather than a different one") as unsupported by the
+   data. Rewritten to state only what is established: provenance sensitivity is judge-dependent
+   (null for the two original judges, present for gemma), and whether that is the same underlying
+   mechanism at a different strength or a distinct one is explicitly left open rather than
+   asserted either way.
+
+**Not adopted, by the reviewer's own recommendation:** elevating the $\beta \approx 0.5$-$0.7$
+compression term (Section~\ref{sec:dose}) to a headline claim. The paper already states it,
+disclosed as descriptive rather than causal; the reviewer explicitly suggested keeping it at that
+level rather than promoting it further pre-acceptance. No new experiments requested or run for
+this pass.
+
+Recompiled clean, 23 pages, 0 warnings.

@@ -2,24 +2,24 @@
 \providecommand\hyper@newdestlabel[2]{}
 \providecommand\HyField@AuxAddToFields[1]{}
 \providecommand\HyField@AuxAddToCoFields[2]{}
-\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
 \citation{refguided2024}
 \citation{generous2026}
 \citation{companionA}
-\citation{companionB}
 \@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces \textbf  {Takeaway: one explanation; three predictions and a mechanism probe confirmed; and one falsified scope prediction whose revised boundary hypothesis was then tested held-out, with a split verdict.} The explanation is that a reference on a multi-valid task is one sample from the valid set and the judge anchors on it. Anchoring is in points of the judge's 0--10 scale; inflation and the training wedge are in baseline standard deviations of the judge's own score distribution. Intervals, caveats, and the predictions that failed are in the sections named.}}{2}{table.caption.1}\protected@file@percent }
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
 \newlabel{tab:predictions}{{1}{2}{\textbf {Takeaway: one explanation; three predictions and a mechanism probe confirmed; and one falsified scope prediction whose revised boundary hypothesis was then tested held-out, with a split verdict.} The explanation is that a reference on a multi-valid task is one sample from the valid set and the judge anchors on it. Anchoring is in points of the judge's 0--10 scale; inflation and the training wedge are in baseline standard deviations of the judge's own score distribution. Intervals, caveats, and the predictions that failed are in the sections named}{table.caption.1}{}}
-\@writefile{toc}{\contentsline {paragraph}{One alternative explanation.}{2}{section*.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{2}{section.1}\protected@file@percent }
+\citation{companionB}
 \citation{fixation2025}
 \citation{judgingref2026}
 \citation{companionA}
 \citation{malik2025rewardbench2}
 \citation{gao2022scaling}
+\@writefile{toc}{\contentsline {paragraph}{One alternative explanation.}{3}{section*.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{Three predictions.}{3}{section*.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Registration.}{3}{section*.4}\protected@file@percent }
 \citation{malik2025rewardbench2}
 \citation{mace2026}
+\@writefile{toc}{\contentsline {paragraph}{Registration.}{4}{section*.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {2}Setup}{4}{section.2}\protected@file@percent }
 \newlabel{sec:setup}{{2}{4}{Setup}{section.2}{}}
 \@writefile{toc}{\contentsline {paragraph}{Tasks.}{4}{section*.5}\protected@file@percent }
@@ -31,10 +31,10 @@
 \citation{companionA}
 \@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces \textbf  {Takeaway: the same trusted reference that collapses gaming on unique-answer tasks increases it when several answers are valid.} Inflation (scoreboard excess over true quality under best-of-$n$ selection, in baseline standard deviations over a permutation null) at $n{=}64$, for blind (orange) and referenced (blue) judges at four Qwen2.5 judge scales; arrows show the effect of adding the reference. Left: unique-answer math (companion A~\cite  {companionA}), where the reference collapses inflation $4$--$13\times $ at every scale. Right: \textsc  {RewardBench-2} Ties generation tasks with multiple valid answers ($n{=}51$), where the reference \emph  {raises} it at every scale; hollow markers are the registered in-band subset ($n{=}7$), which agrees in direction throughout.}}{5}{figure.caption.8}\protected@file@percent }
 \newlabel{fig:inversion}{{1}{5}{\textbf {Takeaway: the same trusted reference that collapses gaming on unique-answer tasks increases it when several answers are valid.} Inflation (scoreboard excess over true quality under best-of-$n$ selection, in baseline standard deviations over a permutation null) at $n{=}64$, for blind (orange) and referenced (blue) judges at four Qwen2.5 judge scales; arrows show the effect of adding the reference. Left: unique-answer math (companion A~\cite {companionA}), where the reference collapses inflation $4$--$13\times $ at every scale. Right: \textsc {RewardBench-2} Ties generation tasks with multiple valid answers ($n{=}51$), where the reference \emph {raises} it at every scale; hollow markers are the registered in-band subset ($n{=}7$), which agrees in direction throughout}{figure.caption.8}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {3}The phenomenon: the reference makes selection worse}{5}{section.3}\protected@file@percent }
-\newlabel{sec:phenomenon}{{3}{5}{The phenomenon: the reference makes selection worse}{section.3}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces \textbf  {Takeaway: under external preregistration on a fresh pool with an exact checker and a cross-family generator-judge pairing, the reference adds $+1.19$ baseline standard deviations of inflation over judging blind, and all three registered predictions are confirmed.} Registered at \texttt  {osf.io/ym5x9} before any pool generation.}}{6}{table.caption.9}\protected@file@percent }
 \newlabel{tab:repl}{{2}{6}{\textbf {Takeaway: under external preregistration on a fresh pool with an exact checker and a cross-family generator-judge pairing, the reference adds $+1.19$ baseline standard deviations of inflation over judging blind, and all three registered predictions are confirmed.} Registered at \texttt {osf.io/ym5x9} before any pool generation}{table.caption.9}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}The phenomenon: the reference makes selection worse}{6}{section.3}\protected@file@percent }
+\newlabel{sec:phenomenon}{{3}{6}{The phenomenon: the reference makes selection worse}{section.3}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces \textbf  {Takeaway: rotating the shown reference to match a sample raises that identical sample's score by up to $+9.5$ of 10 points, with mirror-image losses for samples matching the displaced reference and a near-flat placebo. Anchoring is causal.} Bars are on the judge's 0--10 score scale at four judge sizes, averaged over two rubric paraphrases; whiskers span the union of the two paraphrases' 95\% bootstrap confidence intervals. \emph  {Navy}: the score gain of the identical, unchanged sample text when the reference is rotated to match its answer ($n{=}40$). \emph  {Blue}: the rotation-arm anchoring margin, the bonus valid reference-matching samples receive over equally valid non-matching ones ($n{=}18$). \emph  {Orange}: the same margin for blind judges on the same split, mostly null. \emph  {Light} bars: those two margins in the original-reference arm ($n{=}4$).}}{7}{figure.caption.10}\protected@file@percent }
 \newlabel{fig:anchoring}{{2}{7}{\textbf {Takeaway: rotating the shown reference to match a sample raises that identical sample's score by up to $+9.5$ of 10 points, with mirror-image losses for samples matching the displaced reference and a near-flat placebo. Anchoring is causal.} Bars are on the judge's 0--10 score scale at four judge sizes, averaged over two rubric paraphrases; whiskers span the union of the two paraphrases' 95\% bootstrap confidence intervals. \emph {Navy}: the score gain of the identical, unchanged sample text when the reference is rotated to match its answer ($n{=}40$). \emph {Blue}: the rotation-arm anchoring margin, the bonus valid reference-matching samples receive over equally valid non-matching ones ($n{=}18$). \emph {Orange}: the same margin for blind judges on the same split, mostly null. \emph {Light} bars: those two margins in the original-reference arm ($n{=}4$)}{figure.caption.10}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {4}Prediction 1: swapping the reference between valid answers}{7}{section.4}\protected@file@percent }
@@ -47,44 +47,44 @@
 \@writefile{toc}{\contentsline {paragraph}{Registered replication on exact oracles.}{8}{section*.15}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Pool composition, and a registered prediction that failed}{8}{subsection.4.1}\protected@file@percent }
 \newlabel{sec:dose}{{4.1}{8}{Pool composition, and a registered prediction that failed}{subsection.4.1}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}What kind of equality check: the masking-and-identity suite}{9}{subsection.4.2}\protected@file@percent }
-\newlabel{sec:maskident}{{4.2}{9}{What kind of equality check: the masking-and-identity suite}{subsection.4.2}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces \textbf  {Takeaway: the transition from $k{=}1$ to $k{>}1$ is the dominant and only universal effect, positive with an interval excluding zero for every judge tested; evidence for additional growth with $k$ beyond the step is mixed, positive for Llama-8B and phi-4 and null for the weaker Qwen judges.} Post-hoc paired re-analysis on the synthetic grid: per-item referenced-minus-blind inflation deltas at $k{=}1$, pooled over $k>1$, their difference, and the slope per $\log _2 k$; negative means the reference helps. The frozen estimator's pass-rate filter leaves $n{=}6$ items at $k{=}1$ and $n{=}20$ item-strata over $k>1$. The registered grid prediction had two legs: the inflation leg is confirmed in direction for all six judges, and the margin-growth leg is \emph  {falsified} for the weaker judges, whose margins sit flat at every $k>1$.}}{10}{table.caption.18}\protected@file@percent }
-\newlabel{tab:paired}{{4}{10}{\textbf {Takeaway: the transition from $k{=}1$ to $k{>}1$ is the dominant and only universal effect, positive with an interval excluding zero for every judge tested; evidence for additional growth with $k$ beyond the step is mixed, positive for Llama-8B and phi-4 and null for the weaker Qwen judges.} Post-hoc paired re-analysis on the synthetic grid: per-item referenced-minus-blind inflation deltas at $k{=}1$, pooled over $k>1$, their difference, and the slope per $\log _2 k$; negative means the reference helps. The frozen estimator's pass-rate filter leaves $n{=}6$ items at $k{=}1$ and $n{=}20$ item-strata over $k>1$. The registered grid prediction had two legs: the inflation leg is confirmed in direction for all six judges, and the margin-growth leg is \emph {falsified} for the weaker judges, whose margins sit flat at every $k>1$}{table.caption.18}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}What kind of equality check: the masking-and-identity suite}{10}{subsection.4.2}\protected@file@percent }
+\newlabel{sec:maskident}{{4.2}{10}{What kind of equality check: the masking-and-identity suite}{subsection.4.2}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {5}Prediction 2: the boundary at two valid answers}{10}{section.5}\protected@file@percent }
 \newlabel{sec:p2}{{5}{10}{Prediction 2: the boundary at two valid answers}{section.5}{}}
 \@writefile{toc}{\contentsline {paragraph}{The prediction.}{10}{section*.16}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{The test.}{10}{section*.17}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{The result.}{10}{section*.20}\protected@file@percent }
-\citation{mace2026}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces \textbf  {Takeaway: the transition from $k{=}1$ to $k{>}1$ is the dominant and only universal effect, positive with an interval excluding zero for every judge tested; evidence for additional growth with $k$ beyond the step is mixed, positive for Llama-8B and phi-4 and null for the weaker Qwen judges.} Post-hoc paired re-analysis on the synthetic grid: per-item referenced-minus-blind inflation deltas at $k{=}1$, pooled over $k>1$, their difference, and the slope per $\log _2 k$; negative means the reference helps. The frozen estimator's pass-rate filter leaves $n{=}6$ items at $k{=}1$ and $n{=}20$ item-strata over $k>1$. The registered grid prediction had two legs: the inflation leg is confirmed in direction for all six judges, and the margin-growth leg is \emph  {falsified} for the weaker judges, whose margins sit flat at every $k>1$.}}{11}{table.caption.18}\protected@file@percent }
+\newlabel{tab:paired}{{4}{11}{\textbf {Takeaway: the transition from $k{=}1$ to $k{>}1$ is the dominant and only universal effect, positive with an interval excluding zero for every judge tested; evidence for additional growth with $k$ beyond the step is mixed, positive for Llama-8B and phi-4 and null for the weaker Qwen judges.} Post-hoc paired re-analysis on the synthetic grid: per-item referenced-minus-blind inflation deltas at $k{=}1$, pooled over $k>1$, their difference, and the slope per $\log _2 k$; negative means the reference helps. The frozen estimator's pass-rate filter leaves $n{=}6$ items at $k{=}1$ and $n{=}20$ item-strata over $k>1$. The registered grid prediction had two legs: the inflation leg is confirmed in direction for all six judges, and the margin-growth leg is \emph {falsified} for the weaker judges, whose margins sit flat at every $k>1$}{table.caption.18}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces \textbf  {Takeaway: the reference is at worst harmless at $k{=}1$, inverts as $k$ grows, and the any-correct-answer instruction rescues the strongest judge tested (phi-4, right) while leaving the mid-size judge (Qwen-7B, left) inflated.} Inflation (excess hack gap, in baseline standard deviations) versus the number of valid answers $k$, on the synthetic Qwen-generator pool, under four context conditions; whiskers are 95\% per-stratum bootstrap CIs. 12 tasks were built per stratum, but the frozen estimator's pass-rate filter leaves 4 to 6 items per plotted cell. Marker shapes and line styles distinguish conditions in addition to color.}}{11}{figure.caption.19}\protected@file@percent }
 \newlabel{fig:synthk}{{3}{11}{\textbf {Takeaway: the reference is at worst harmless at $k{=}1$, inverts as $k$ grows, and the any-correct-answer instruction rescues the strongest judge tested (phi-4, right) while leaving the mid-size judge (Qwen-7B, left) inflated.} Inflation (excess hack gap, in baseline standard deviations) versus the number of valid answers $k$, on the synthetic Qwen-generator pool, under four context conditions; whiskers are 95\% per-stratum bootstrap CIs. 12 tasks were built per stratum, but the frozen estimator's pass-rate filter leaves 4 to 6 items per plotted cell. Marker shapes and line styles distinguish conditions in addition to color}{figure.caption.19}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}The same step on a third-party benchmark}{11}{subsection.5.1}\protected@file@percent }
-\newlabel{sec:mace}{{5.1}{11}{The same step on a third-party benchmark}{subsection.5.1}{}}
+\citation{mace2026}
 \@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces \textbf  {Takeaway: on a third-party benchmark of natural-language factual questions, the reference helps when the answer is unique and harms when it is not, reproducing the boundary end to end on tasks we did not construct.} Per-item paired referenced-minus-blind inflation deltas, in baseline standard deviations, item-level bootstrap. Non-math is River plus Language, the entity domains that passed a pre-run completeness audit; math is \textsc  {MACE}'s exactly-verified arithmetic domain, a label-noise control. The step is the $k{>}1$ delta minus the $k{=}1$ delta.}}{12}{table.caption.21}\protected@file@percent }
 \newlabel{tab:mace}{{5}{12}{\textbf {Takeaway: on a third-party benchmark of natural-language factual questions, the reference helps when the answer is unique and harms when it is not, reproducing the boundary end to end on tasks we did not construct.} Per-item paired referenced-minus-blind inflation deltas, in baseline standard deviations, item-level bootstrap. Non-math is River plus Language, the entity domains that passed a pre-run completeness audit; math is \textsc {MACE}'s exactly-verified arithmetic domain, a label-noise control. The step is the $k{>}1$ delta minus the $k{=}1$ delta}{table.caption.21}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}The same step on a third-party benchmark}{12}{subsection.5.1}\protected@file@percent }
+\newlabel{sec:mace}{{5.1}{12}{The same step on a third-party benchmark}{subsection.5.1}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {6}Prediction 3: what should neutralise the harm, and does not}{12}{section.6}\protected@file@percent }
 \newlabel{sec:p3}{{6}{12}{Prediction 3: what should neutralise the harm, and does not}{section.6}{}}
 \@writefile{toc}{\contentsline {paragraph}{The prediction.}{12}{section*.22}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Scale}{12}{subsection.6.1}\protected@file@percent }
-\newlabel{sec:frontier}{{6.1}{12}{Scale}{subsection.6.1}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces \textbf  {A frontier judge cannot tell equally valid answers apart until it is shown a reference, and then it fails $82.5\%$ of the correct answers that do not match it.} Mean scores on oracle-valid answers, 37 multi-valid items, 660 calls; the blind row is the control.}}{13}{table.caption.23}\protected@file@percent }
 \newlabel{tab:frontier2}{{6}{13}{\textbf {A frontier judge cannot tell equally valid answers apart until it is shown a reference, and then it fails $82.5\%$ of the correct answers that do not match it.} Mean scores on oracle-valid answers, 37 multi-valid items, 660 calls; the blind row is the control}{table.caption.23}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Scale}{13}{subsection.6.1}\protected@file@percent }
+\newlabel{sec:frontier}{{6.1}{13}{Scale}{subsection.6.1}{}}
 \@writefile{toc}{\contentsline {paragraph}{A second check, through provider APIs rather than a CLI, on two production judges.}{13}{section*.24}\protected@file@percent }
 \citation{gao2022scaling}
-\citation{companionA}
 \@writefile{toc}{\contentsline {subsection}{\numberline {6.2}The judge's own prior verdicts}{14}{subsection.6.2}\protected@file@percent }
 \newlabel{sec:aw}{{6.2}{14}{The judge's own prior verdicts}{subsection.6.2}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {6.3}Optimization}{14}{subsection.6.3}\protected@file@percent }
 \newlabel{sec:dpo}{{6.3}{14}{Optimization}{subsection.6.3}{}}
 \citation{companionA}
-\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces \textbf  {Takeaway: on code, a canonical solution in the reference slot does not inflate. It reduces inflation relative to blind, much as a test suite does, and the registered prediction that it would behave like an answer key is falsified.} Paired per-item inflation deltas against blind, in baseline standard deviations, on the 58 in-band MBPP items all three conditions share; negative means the reference helps. Blind and specification come from companion A's frozen runs; the exemplar condition was registered before any exemplar score existed.}}{15}{table.caption.27}\protected@file@percent }
-\newlabel{tab:code}{{7}{15}{\textbf {Takeaway: on code, a canonical solution in the reference slot does not inflate. It reduces inflation relative to blind, much as a test suite does, and the registered prediction that it would behave like an answer key is falsified.} Paired per-item inflation deltas against blind, in baseline standard deviations, on the 58 in-band MBPP items all three conditions share; negative means the reference helps. Blind and specification come from companion A's frozen runs; the exemplar condition was registered before any exemplar score existed}{table.caption.27}{}}
+\citation{companionA}
 \@writefile{toc}{\contentsline {section}{\numberline {7}Where the harm ends: tasks without a separable answer}{15}{section.7}\protected@file@percent }
 \newlabel{sec:code}{{7}{15}{Where the harm ends: tasks without a separable answer}{section.7}{}}
 \@writefile{toc}{\contentsline {paragraph}{The prediction, stated in the order it happened.}{15}{section*.25}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{The test.}{15}{section*.26}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{The result.}{15}{section*.28}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces \textbf  {Takeaway: on code, a canonical solution in the reference slot does not inflate. It reduces inflation relative to blind, much as a test suite does, and the registered prediction that it would behave like an answer key is falsified.} Paired per-item inflation deltas against blind, in baseline standard deviations, on the 58 in-band MBPP items all three conditions share; negative means the reference helps. Blind and specification come from companion A's frozen runs; the exemplar condition was registered before any exemplar score existed.}}{16}{table.caption.27}\protected@file@percent }
+\newlabel{tab:code}{{7}{16}{\textbf {Takeaway: on code, a canonical solution in the reference slot does not inflate. It reduces inflation relative to blind, much as a test suite does, and the registered prediction that it would behave like an answer key is falsified.} Paired per-item inflation deltas against blind, in baseline standard deviations, on the 58 in-band MBPP items all three conditions share; negative means the reference helps. Blind and specification come from companion A's frozen runs; the exemplar condition was registered before any exemplar score existed}{table.caption.27}{}}
+\@writefile{toc}{\contentsline {paragraph}{The result.}{16}{section*.28}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{What this bounds, and what it does not yet.}{16}{section*.29}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {7.1}The preregistered continuum: attenuation, with a judge-dependent cliff}{16}{subsection.7.1}\protected@file@percent }
 \newlabel{sec:sepcont}{{7.1}{16}{The preregistered continuum: attenuation, with a judge-dependent cliff}{subsection.7.1}{}}
@@ -92,37 +92,37 @@
 \newlabel{sec:norescue}{{8}{17}{What does not rescue the reference}{section.8}{}}
 \@writefile{toc}{\contentsline {paragraph}{Telling the judge to accept any valid answer is a placebo below frontier capability.}{17}{section*.30}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{Showing several references redistributes anchoring rather than removing it.}{17}{section*.31}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{A worked reference is milder, not safe.}{17}{section*.32}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{The strongest mitigation tested is an ordering, and its strength depends on the judge.}{17}{section*.33}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{The soft validity gate helps one judge and backfires on the other.}{18}{section*.34}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{A worked reference is milder, not safe.}{18}{section*.32}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{The strongest mitigation tested is an ordering, and its strength depends on the judge.}{18}{section*.33}\protected@file@percent }
 \citation{companionA}
 \citation{calver2026}
-\@writefile{lot}{\contentsline {table}{\numberline {8}{\ignorespaces \textbf  {What to do about a reference answer when several answers can be valid, in decreasing order of safety.} Verify where verification is possible; where a judge must be used with a reference, order its calls rather than instructing it.}}{19}{table.caption.36}\protected@file@percent }
-\newlabel{tab:decide}{{8}{19}{\textbf {What to do about a reference answer when several answers can be valid, in decreasing order of safety.} Verify where verification is possible; where a judge must be used with a reference, order its calls rather than instructing it}{table.caption.36}{}}
+\@writefile{toc}{\contentsline {paragraph}{The soft validity gate helps one judge and backfires on the other.}{19}{section*.34}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{A free screen rejects broken judges, and certifies nothing.}{19}{section*.35}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {9}Limitations and open questions}{20}{section.9}\protected@file@percent }
-\newlabel{sec:limits}{{9}{20}{Limitations and open questions}{section.9}{}}
-\@writefile{toc}{\contentsline {paragraph}{The scope is tasks with programmatic oracles, and the harm's scope is narrower still.}{20}{section*.37}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {9}Limitations and open questions}{19}{section.9}\protected@file@percent }
+\newlabel{sec:limits}{{9}{19}{Limitations and open questions}{section.9}{}}
+\@writefile{toc}{\contentsline {paragraph}{The scope is tasks with programmatic oracles, and the harm's scope is narrower still.}{19}{section*.37}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {8}{\ignorespaces \textbf  {What to do about a reference answer when several answers can be valid, in decreasing order of safety.} Verify where verification is possible; where a judge must be used with a reference, order its calls rather than instructing it.}}{20}{table.caption.36}\protected@file@percent }
+\newlabel{tab:decide}{{8}{20}{\textbf {What to do about a reference answer when several answers can be valid, in decreasing order of safety.} Verify where verification is possible; where a judge must be used with a reference, order its calls rather than instructing it}{table.caption.36}{}}
 \@writefile{toc}{\contentsline {paragraph}{Whether the mitigation survives training is now closed as unresolved, and attribution with it.}{20}{section*.38}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{Method anchoring is bounded, and small.}{20}{section*.39}\protected@file@percent }
 \citation{zheng2023judging}
 \citation{refguided2024}
 \citation{dobefore2025}
 \citation{generous2026}
+\@writefile{toc}{\contentsline {paragraph}{Step-level and process-reward verification are untested.}{21}{section*.40}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{The mechanism now has direct evidence, and what remains untested is narrower.}{21}{section*.41}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Per-item aggregation is only partly resolved, and registration weight is uneven.}{21}{section*.42}\protected@file@percent }
 \citation{fixation2025}
 \citation{judgingref2026}
 \citation{companionA}
 \citation{dobefore2025}
-\@writefile{toc}{\contentsline {paragraph}{Step-level and process-reward verification are untested.}{21}{section*.40}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{The mechanism now has direct evidence, and what remains untested is narrower.}{21}{section*.41}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Per-item aggregation is only partly resolved, and registration weight is uneven.}{21}{section*.42}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {10}Related work}{21}{section.10}\protected@file@percent }
 \citation{calver2026}
 \citation{malik2025rewardbench2}
 \citation{mace2026}
 \citation{gao2022scaling}
 \citation{companionA}
 \citation{companionB}
+\@writefile{toc}{\contentsline {section}{\numberline {10}Related work}{22}{section.10}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {11}Conclusion}{22}{section.11}\protected@file@percent }
 \bibstyle{plain}
 \bibdata{references}
