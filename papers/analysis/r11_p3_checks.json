@@ -1,0 +1,65 @@
+{
+ "accepted_filter": {
+  "Qwen2.5-7B": {
+   "share_correct_ge7": 0.9296,
+   "share_wrong_ge7": 0.2438,
+   "n_correct": 4189,
+   "n_wrong": 3491
+  },
+  "phi-4": {
+   "share_correct_ge7": 0.9632,
+   "share_wrong_ge7": 0.3039,
+   "n_correct": 4189,
+   "n_wrong": 3491
+  },
+  "GPT-4.1": {
+   "share_correct_ge7": 0.909,
+   "share_wrong_ge7": 0.1206,
+   "n_correct": 4189,
+   "n_wrong": 3491
+  },
+  "Sonnet 5 (API, repl subsamples)": {
+   "share_correct_ge7": 0.9455,
+   "share_wrong_ge7": 0.0806,
+   "n_correct": 367,
+   "n_wrong": 273
+  },
+  "Sonnet 5 (API, mace subsamples)": {
+   "share_correct_ge7": 0.856,
+   "share_wrong_ge7": 0.0659,
+   "n_correct": 382,
+   "n_wrong": 258
+  },
+  "Sonnet 5 (API, kpool subsamples)": {
+   "share_correct_ge7": 0.945,
+   "share_wrong_ge7": 0.1642,
+   "n_correct": 218,
+   "n_wrong": 134
+  }
+ },
+ "swap_vs_blind_auroc_qwen7b": {
+  "n_tasks": 120,
+  "spearman": -0.4,
+  "ci": [
+   -0.53,
+   -0.245
+  ],
+  "terciles": {
+   "low": {
+    "n": 40,
+    "blind_auroc_mean": 0.827,
+    "swap_size_mean": 5.166
+   },
+   "middle": {
+    "n": 40,
+    "blind_auroc_mean": 0.928,
+    "swap_size_mean": 5.384
+   },
+   "high": {
+    "n": 40,
+    "blind_auroc_mean": 0.983,
+    "swap_size_mean": 3.635
+   }
+  }
+ }
+}

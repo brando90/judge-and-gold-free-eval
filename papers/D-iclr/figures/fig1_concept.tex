@@ -16,11 +16,13 @@
 ]
 % ---------------- (a) the task
 \node[panel] at (0, 2.6) {a\;\;The task};
-\node[box, text width=3.3cm, anchor=north west] (q) at (0, 2.3) {%
-  \textbf{Question.} Give one 2-digit number that is divisible by 5 and whose digits sum to 8.\\[3pt]
-  \textbf{Correct answers.} 35 and 80.\\[3pt]
-  \textbf{Candidate} (abridged):\\
-  \emph{``\ldots\ the ones digit must be either 0 or 5. \ldots\ In this case, the tens digit must be 8 for the digits to sum to 8. \ldots\ The answer is 80.''}};
+\node[box, text width=3.45cm, anchor=north west] (q) at (0, 2.3) {%
+  \textbf{Question.} Give one 2-digit number that is divisible by 5 and whose digits sum to 8.\\[2pt]
+  \textbf{Correct answers.} 35 and 80.\\[2pt]
+  \textbf{Candidate} (fixed text): \emph{``\ldots\ The answer is 80.''}};
+\node[box, text width=3.45cm, anchor=north west, fill=white] (k) at (0, -0.05) {%
+  \textbf{One correct answer:} matching the reference is being correct, so it helps (MATH-500: about $+30$ accuracy points).\\[2pt]
+  \textbf{Several:} only one correct answer can match, so the others are graded worse (Sonnet~5, factual questions: AUROC 0.94 $\to$ 0.78).};
 
 % ---------------- (b) one candidate, three scores
 \node[panel] at (4.0, 2.6) {b\;\;Same text, three prompts};
@@ -37,10 +39,9 @@
 \foreach \i in {0,1,2} {\draw[->, black!60] (j\i) -- (s\i);}
 \node[box, text width=4.05cm, anchor=north west, fill=white] (pred) at (4.0, -0.2) {%
   An \textbf{answer key} would give this correct answer the same score under either reference.
-  The judge (Qwen2.5-7B) gives it \textbf{2.9} with reference 35 and \textbf{9.3} with reference 80.\\[2pt]
-  With \textbf{one} correct answer, matching the reference is being correct, so the same habit helps.};
+  The judge (Qwen2.5-7B) gives it \textbf{2.9} with reference 35 and \textbf{9.3} with reference 80.};
 
 % ---------------- (c) the result over the pool
-\node[panel] at (8.55, 2.6) {c\;\;Over 120 tasks};
+\node[panel] at (8.55, 2.6) {c\;\;Replication pool (93--120 tasks)};
 \node[anchor=north west, inner sep=0pt] at (8.4, 2.35) {\includegraphics{figures/fig1_rotation.pdf}};
 \end{tikzpicture}
