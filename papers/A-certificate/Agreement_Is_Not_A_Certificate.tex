@@ -379,7 +379,17 @@ Raw agreement's perfect accuracy also required a threshold chosen after the outc
 The panel became a prospective test of one half of the instrument and not the other.
 It validates, under a frozen rule, that measuring target validity prevents false certification: no judge it had never seen was certified and then gamed, and it caught a harmful referenced judge the protocol bit certifies.
 It does not validate the half that distinguishes this paper, that nuisance loading separates capable-but-corrupt judges from capable-honest ones, because it contains no capable-but-corrupt instruction-following judge; prospective evidence for that regime is so far limited to the two reward models, and the collinearity objection of Section~\ref{sec:limits} is correspondingly narrowed, not closed.
-The experiment still owed is a panel whose corrupt cells pass a manipulation check before they are audited, and the failure here shows how to build one: subtle instructions are ignored below frontier scale, so corruption at that scale has to come from the model itself, as it does for reward models, or from a frontier judge.
+The experiment this called for is a panel whose corrupt cells must pass a manipulation check before they are audited.
+
+\paragraph{Where capable-but-corrupt judges come from.}
+We ran that experiment as a second registered panel (\texttt{osf.io/bx8hp}): three frontier judges, GPT-5.2, GPT-4.1, and GPT-4o, each kept on the referenced correctness task and given an added incentive to reward polished style, length, or confident conclusions, and each required to pass a frozen manipulation check on calibration solutions disjoint from both the audit anchors and the pressure pool before entering the audit.
+The manipulation check is itself the finding.
+None of the six style or verbosity cells passed: four did not move their judge detectably, one moved half as far as the registered bar required, and the style cell on GPT-5.2 moved the opposite way.
+Confidence incentives moved all three judges, two past the bar, and every corrupt cell remained able to separate correct from incorrect solutions.
+A frontier judge that is still asked to grade correctness against a reference resists being told to also reward presentation.
+The sabotaged frontier judge of Section~\ref{sec:failure} style-loaded because its rubric replaced the correctness task outright, not because an incentive was appended to it.
+Instruction-level corruption of a capable judge is therefore harder to produce than the threat model assumed, and the capable-but-corrupt judges that exist without anyone constructing them are trained reward models, whose scoring objective is simply not the target.
+All three reward models audited in this paper were called nuisance-loaded before any optimization ran, and they are the three most inflated configurations measured on math, subject to the estimand caveat noted with the first of them in Section~\ref{sec:pressure}.
 
 \section{The verdicts under training pressure}
 \label{sec:dpo}
