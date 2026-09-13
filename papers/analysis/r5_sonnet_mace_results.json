@@ -1,0 +1,97 @@
+{
+ "fast": {
+  "margin_diff": [
+   3.975,
+   [
+    2.7,
+    5.3
+   ],
+   40
+  ],
+  "false_reject_diff": [
+   0.175,
+   [
+    0.05,
+    0.3
+   ],
+   40
+  ],
+  "blind_verification": [
+   0.944,
+   [
+    0.881,
+    0.988
+   ],
+   40
+  ],
+  "meta": {
+   "ref": {
+    "rows": 120,
+    "errors": 0,
+    "unparseable": 0,
+    "output_tokens_mean": 29,
+    "thinking_tokens_mean": 0
+   },
+   "noref": {
+    "rows": 120,
+    "errors": 0,
+    "unparseable": 0,
+    "output_tokens_mean": 63,
+    "thinking_tokens_mean": 0
+   }
+  }
+ },
+ "think": {
+  "margin_diff": [
+   3.025,
+   [
+    1.7,
+    4.65
+   ],
+   40
+  ],
+  "false_reject_diff": [
+   0.125,
+   [
+    0.025,
+    0.25
+   ],
+   40
+  ],
+  "blind_verification": [
+   0.969,
+   [
+    0.931,
+    0.994
+   ],
+   40
+  ],
+  "meta": {
+   "ref": {
+    "rows": 120,
+    "errors": 0,
+    "unparseable": 0,
+    "output_tokens_mean": 230,
+    "thinking_tokens_mean": 178
+   },
+   "noref": {
+    "rows": 120,
+    "errors": 0,
+    "unparseable": 0,
+    "output_tokens_mean": 208,
+    "thinking_tokens_mean": 181
+   }
+  }
+ },
+ "P_R5A1": true,
+ "P_R5A2": true,
+ "P_R5A3": true,
+ "think_minus_fast_margin_diff": [
+  -0.95,
+  [
+   -2.45,
+   0.627
+  ],
+  40
+ ]
+}

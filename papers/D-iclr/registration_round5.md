@@ -32,3 +32,23 @@ Harness (committed with this file): `experiments/tfa-vs-judge/scripts/r5_build_s
 - **P-R5A3.** THINK margin increase is smaller than FAST's (point estimates).
 
 If the subscription's usage limit interrupts the run, predictions without complete data are recorded as not scored, as in R3-B.
+
+---
+
+## Outcome, R5-A (recorded 2026-09-13 after running the frozen producer; `r5_sonnet_mace_results.json`)
+
+All 480 calls returned a parseable score (no errors). Mean output tokens:
+- FAST: 29 referenced, 63 blind;
+- THINK: 230 and 208, of which 178 and 181 were thinking tokens.
+
+| Arm | Margin increase | False-rejection change | Blind verification |
+|---|---|---|---|
+| FAST | +3.975 [+2.700, +5.300] | +0.175 [+0.050, +0.300] | 0.944 [0.881, 0.988] |
+| THINK | +3.025 [+1.700, +4.650] | +0.125 [+0.025, +0.250] | 0.969 [0.931, 0.994] |
+
+- **P-R5A1 CONFIRMED** (FAST margin increase excludes zero).
+- **P-R5A2 CONFIRMED** (THINK margin increase excludes zero).
+- **P-R5A3 CONFIRMED** (THINK is smaller than FAST, point estimates).
+- Paired THINK minus FAST margin increase, reported without prediction: −0.950 [−2.450, +0.627].
+
+Reading: Sonnet 5 ranks correct answers above the wrong one almost always without a reference, yet still anchors on factual questions with extended thinking on. Thinking lowers the effect by about a quarter, and that difference is not distinguishable from zero.

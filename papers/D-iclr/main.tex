@@ -49,7 +49,7 @@ Moving the reference to a different correct answer while keeping a candidate's t
 With the reference shown, judges separate correct answers that differ from it from wrong answers less well, both on our constructed arithmetic tasks (per-task AUROC 0.87 to 0.60 for Qwen2.5-7B) and on the natural \textsc{MACE} benchmark (0.74 to 0.66).
 On the constructed tasks overall grading gets worse too, and best-of-64 accuracy on tasks with several correct answers falls by 8.5 to 35.9 points across five open judges; on \textsc{MACE}, the reference improves overall grading only on single-answer questions.
 The effect needs a final value stated explicitly in the reference.
-In two Qwen3 models, extended thinking removes it on arithmetic tasks, where their scores sit near the ceiling, and roughly halves it on factual questions.
+Reasoning before scoring removes most of it on arithmetic tasks for Claude Sonnet~5 and two Qwen3 models, but on factual questions extended thinking at most halves it.
 Scoring blind first and revealing the reference afterwards limits the worst-case selection loss for two of three judges.
 \end{abstract}
 
@@ -80,10 +80,10 @@ We do this on tasks where correctness is decided by a program or an audited answ
 \item \textbf{The score follows the reference} (\cref{sec:follows}). Moving the reference to a different correct answer, with the candidate's text unchanged, moves its score by 2.7 to 5.4 points, while correct answers that match neither reference barely move, including answers the judge had already accepted without a reference.
 \item \textbf{The judge compares final values} (\cref{sec:mechanism}). The effect survives writing the reference in words and mostly disappears when the reference is an expression to evaluate or a worked solution with its final answer masked.
 \item \textbf{Correct answers that differ from the reference are graded worse on every pool we tested} (\cref{sec:cost}). Overall grading and selection get worse on constructed arithmetic tasks; on \textsc{MACE}'s multi-answer questions, overall grading does not change.
-\item \textbf{Thinking reduces the effect, and a two-step protocol hedges} (\cref{sec:fix}). Extended thinking removes it on arithmetic, where scores sit near the ceiling, and halves it on factual questions; scoring blind before revealing the reference bounds the worst-case loss for two of three judges.
+\item \textbf{Thinking reduces the effect, and a two-step protocol hedges} (\cref{sec:fix}). Reasoning before scoring removes most of it on arithmetic tasks, where scores sit near the ceiling, but extended thinking at most halves it on factual questions; scoring blind before revealing the reference bounds the worst-case loss for two of three judges.
 \end{itemize}
 
-We mark results as preregistered on OSF\osf, pre-specified in a timestamped commit before the data existed\pre, pre-specified re-analyses of an effect whose direction was already known\reana, or post hoc\ph. \Cref{app:ledger} scores all 147 registered predictions: 80 confirmed, 25 not confirmed or falsified, 16 split across judges, and 26 not evaluable, not scored, or excluded.
+We mark results as preregistered on OSF\osf, pre-specified in a timestamped commit before the data existed\pre, pre-specified re-analyses of an effect whose direction was already known\reana, or post hoc\ph. \Cref{app:ledger} scores all 150 registered predictions: 86 confirmed, 25 not confirmed or falsified, 16 split across judges, and 23 not evaluable, not scored, or excluded.
 
 \begin{figure}[t]
 \centering
@@ -191,9 +191,9 @@ On MATH-500, where correct answers rarely differ from the reference and blind AU
 \begin{figure}[t]
 \centering
 \includegraphics[width=\textwidth]{figures/fig2_reasoning.pdf}
-\caption{\textbf{Extended thinking removes the effect on arithmetic tasks and halves it on factual questions.}
+\caption{\textbf{Reasoning removes most of the effect on arithmetic tasks, not on factual questions.}
 \textbf{(a)}~Score change of identical correct text when the reference moves off it, replication pool, grouped by how the score is read: expected scores over score tokens, or integers sampled from the reply (Sonnet~5's API tool call and its command-line replies with a score only, with reasoning, or with thinking on; the MT-Bench template; and the Qwen3 models at temperature 0.6, which think before a final ``Score: N'' line; hollow: thinking on). The Sonnet~5 command-line rows use 60 tasks with one sample per class. Qwen3 and MT-Bench rows use up to three samples per class per task.\pre{}
-\textbf{(b)}~Added margin with thinking off (filled) and on (hollow), on arithmetic tasks (16-sample $k$-pool subsample, 19 tasks) and factual \textsc{MACE} questions (81 tasks), 95\% intervals; values in \cref{tab:r4-toggle}.\pre}
+\textbf{(b)}~Added margin with thinking off (filled) and on (hollow), on arithmetic tasks (16-sample $k$-pool subsample, 19 tasks) and factual \textsc{MACE} questions (81 tasks for Qwen3; 40 for Sonnet~5, score only versus thinking on), 95\% intervals; values in \cref{tab:r4-toggle} and \cref{app:reasoning}.\pre}
 \label{fig:reasoning}
 \end{figure}
 
@@ -203,7 +203,7 @@ Extended thinking helps without removing the problem.
 With the same weights, prompt, and sampling, turning on thinking removes the rotation effect on arithmetic tasks for Qwen3-8B ($-0.69$ to $+0.01$) and Qwen3-14B ($-1.98$ to $-0.12$), but with thinking on Qwen3-8B gives a score of 10 to 99.8\% of correct arithmetic answers when shown a reference and to 96.2\% blind, so the effect has little room to appear (\cref{fig:reasoning}a; \cref{app:rotation}).\pre{}
 On factual \textsc{MACE} questions thinking roughly halves the added margin, from $+6.16$ to $+3.62$ for Qwen3-8B and from $+7.07$ to $+3.13$ for Qwen3-14B (\cref{fig:reasoning}b).\pre{}
 Thinking does not make the reference safe for selection: shown the reference, Qwen3-8B with thinking still loses 5.8 points of best-of-16 accuracy at $k{=}1$ and 3.7 at $k{>}1$, and our prediction that it would not was falsified (\cref{tab:r2b-k}).\pre{}
-Sonnet~5 behaves the same way on arithmetic: on 60 rotation tasks, asking it to reason before scoring shrinks its loss from $-2.85$ to $-0.20$ without extended thinking and to $-0.32$ with it, and its false rejections from 26.7\% to 0.4\%.\pre{} \pending{On factual questions (R5-A), ...}
+Sonnet~5 behaves the same way on arithmetic: on 60 rotation tasks, asking it to reason before scoring shrinks its loss from $-2.85$ to $-0.20$ without extended thinking and to $-0.32$ with it, and its false rejections from 26.7\% to 0.4\%.\pre{} On 40 factual \textsc{MACE} questions it still anchors with thinking on: its added margin is $+3.98$ with a score only and $+3.03$ with thinking on, a difference of $-0.95$ \ci{-2.45}{+0.63}, although without a reference it ranks both correct answers above the wrong one 97\% of the time.\pre
 A short explanation is not enough either: under the verbatim MT-Bench template, whose explanations average 259 tokens, Qwen2.5-7B's score still falls by 3.59 points when the reference moves off a correct answer.\pre
 
 \paragraph{Prompts help only some judges.}
@@ -273,7 +273,7 @@ Closest to our protocol, a reference-free judge that commits to its own answer b
 \begin{itemize}[leftmargin=1.2em,itemsep=1pt,topsep=2pt]
 \item \textbf{Tasks and generators.} Our results come from constraint problems, two audited factual domains of \textsc{MACE}, MBPP, and MATH-500, and most pools use one generator, Llama-3.1-8B. We do not test free-form generation, long references, contested correctness, or step-level verifiers, and our prevalence labels come from LLM annotators without a human check.
 \item \textbf{The overall cost.} Whether the reference hurts overall grading rests on one natural and two constructed pools, which also differ in domain, and the within-\textsc{MACE} relationship with blind verification is post hoc. \textsc{MACE}'s answer lists miss 2.3\% to 8.1\% of correct answers in our audit; an unlisted correct answer counts as wrong, which favors the reference.
-\item \textbf{Judges and scorers.} Open judges are 14B parameters or smaller, and the effect shrinks with judge strength. The thinking contrast uses two models of one family. The blind-then-reveal comparisons, the phi-4 and Mistral-7B numbers, and several appendix analyses use the original scorer; Mistral-7B's tokenizer has no single-token digits, so its scores are parsed integers.
+\item \textbf{Judges and scorers.} Open judges are 14B parameters or smaller, and the effect shrinks with judge strength. The thinking contrast uses two Qwen3 models and, on 40 to 60 tasks, one frontier judge. The blind-then-reveal comparisons, the phi-4 and Mistral-7B numbers, and several appendix analyses use the original scorer; Mistral-7B's tokenizer has no single-token digits, so its scores are parsed integers.
 \item \textbf{Registration.} Accuracy and false-rejection readouts on the OSF pools are post hoc, and three experiments have third-party timestamps while the rest rely on git commits. The registered blind-then-reveal contrast for Mistral-7B used one bootstrap seed; across 20 seeds its interval excludes zero in 11 (\cref{app:ledger}).
 \item \textbf{Wording and training.} Our reference heading may suggest a unique answer, which an explicit instruction only partly counters. A DPO policy trained against a referenced judge raised that judge's score while held-out accuracy fell, but every control arm failed its manipulation check (\cref{app:dpo}).
 \end{itemize}
