@@ -62,3 +62,21 @@ Whatever the outcomes, all are reported in the paper's ledger.
 ## Amendment 2 (2026-09-12, 23:45 local), operational, before any R2-B score exists
 
 All ten R2-B runs and both Qwen2.5-14B M1-math runs in the first chain failed at engine start-up: the harness's `os._exit(0)` teardown left the vLLM engine processes of the two completed Qwen2.5-7B M1-math runs orphaned on the GPU, holding its memory. No R2-B output was produced. The two orphaned processes were killed by PID, both harnesses now kill their child processes before exiting, and the R2-B runs were relaunched unchanged (`scripts/r2_chain_b.sh`); the Qwen2.5-14B M1-math runs were relaunched on a second GPU. Designs, prompts, sampling, readouts, and predictions are unchanged.
+
+---
+
+## Outcomes (recorded 2026-09-13, after each producer run; producers unchanged except Amendment 1's path)
+
+**R2-A** (`r2_math_m1_results.json`, rubric-a selection, 105 problems). Call-1 blind scores match the frozen blind files (r = 0.991 and 0.973), confirming alignment.
+- Qwen2.5-7B: blind 0.676, reference 0.981, M1 0.952; M1 − reference −0.029 [−0.086, +0.019].
+- Qwen2.5-14B: blind 0.676, reference 0.952, M1 0.935; M1 − reference −0.017 [−0.074, +0.033].
+- **P-R2A1 CONFIRMED** for both judges (without registration weight, per Amendment 1).
+- **P-R2A2 FALSIFIED** for both judges: M1 keeps nearly all of the reference's benefit rather than less than half.
+- The Qwen2.5-14B rubric-b M1 run failed at start-up (orphaned engine from the rubric-a run, pre-fix code) and was not rerun; rubric b is not used by the registered readout.
+
+**R2-B, MTBENCH** (`r2_realism_results.json`, Qwen2.5-7B, verbatim MT-Bench templates). 20 of 879 rotation pairs dropped as unparseable.
+- Rotation: gainers +3.618 [+3.401, +3.842]; losers −3.591 [−3.936, −3.242]; placebo +0.077 [−0.212, +0.404].
+- KSUB: k>1 margin referenced +3.088, blind −0.097, paired difference +3.185 [+2.568, +3.877] (19 tasks); accuracy delta (ref − blind, best-of-16) at k=1 +0.166 [−0.015, +0.342], at k>1 −0.130 [−0.251, −0.011]; step −0.296 [−0.509, −0.088].
+- **P-R2B1 CONFIRMED, P-R2B2 CONFIRMED, P-R2B3 CONFIRMED, P-R2B4 CONFIRMED.**
+
+**R2-B, REASON**: pending at the time of this entry.

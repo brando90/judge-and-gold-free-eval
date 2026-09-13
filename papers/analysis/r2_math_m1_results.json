@@ -1,0 +1,63 @@
+{
+ "n_items": 105,
+ "Qwen__Qwen2.5-7B-Instruct": {
+  "n": 105,
+  "acc_blind": 0.6762,
+  "acc_ref": 0.981,
+  "acc_m1": 0.9524,
+  "ref_minus_blind": [
+   0.3048,
+   [
+    0.219,
+    0.4
+   ]
+  ],
+  "m1_minus_blind": [
+   0.2762,
+   [
+    0.181,
+    0.3714
+   ]
+  ],
+  "m1_minus_ref": [
+   -0.0286,
+   [
+    -0.0857,
+    0.019
+   ]
+  ],
+  "call1_vs_frozen_blind_r": 0.9911,
+  "P_R2A1": true,
+  "P_R2A2": false
+ },
+ "Qwen__Qwen2.5-14B-Instruct": {
+  "n": 105,
+  "acc_blind": 0.6762,
+  "acc_ref": 0.9524,
+  "acc_m1": 0.9354,
+  "ref_minus_blind": [
+   0.2762,
+   [
+    0.181,
+    0.3714
+   ]
+  ],
+  "m1_minus_blind": [
+   0.2592,
+   [
+    0.1621,
+    0.3557
+   ]
+  ],
+  "m1_minus_ref": [
+   -0.017,
+   [
+    -0.0735,
+    0.0334
+   ]
+  ],
+  "call1_vs_frozen_blind_r": 0.9729,
+  "P_R2A1": true,
+  "P_R2A2": false
+ }
+}

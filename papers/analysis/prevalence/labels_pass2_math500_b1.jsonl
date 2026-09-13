@@ -1,0 +1,100 @@
+{"id": "math500-0", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-7", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-8", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-11", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-13", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-16", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-18", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-19", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-20", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-23", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-31", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-32", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-35", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-37", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-41", "label": "UNIQUE", "subtype": null, "justification": "Of the three possible fourth vertices (6,-1),(8,9),(4,7), only (8,9) has x>7."}
+{"id": "math500-42", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-45", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-46", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-47", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-48", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-50", "label": "UNIQUE", "subtype": null, "justification": "203 under either reading of when there are more than 200 coins."}
+{"id": "math500-51", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-55", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-59", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-61", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-63", "label": "UNIQUE", "subtype": null, "justification": "Irreducible factorization is unique up to order; the sum is order-invariant."}
+{"id": "math500-66", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-71", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-72", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-74", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-75", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-76", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-87", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-94", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-95", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-96", "label": "UNIQUE", "subtype": null, "justification": "Asks for the full set of real roots, which is unique."}
+{"id": "math500-97", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-99", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-104", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-107", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-110", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-111", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-112", "label": "UNIQUE", "subtype": null, "justification": "A=2,B=2,{C,D}={3,6}; swapping C and D leaves the sum unchanged."}
+{"id": "math500-113", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-120", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-122", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-123", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-124", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-128", "label": "UNIQUE", "subtype": null, "justification": "Minimum is 36 in both 28- and 29-day Februaries."}
+{"id": "math500-132", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-133", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-138", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-140", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-141", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-144", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-147", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-148", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-149", "label": "UNIQUE", "subtype": null, "justification": "Only 49 satisfies the constraints under 75."}
+{"id": "math500-154", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-155", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-158", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-161", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-162", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-163", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-166", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-169", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-170", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-171", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-181", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-182", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-183", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-189", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-190", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-197", "label": "UNIQUE", "subtype": null, "justification": "x^3 positive forces x>0; 6 values."}
+{"id": "math500-200", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-204", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-207", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-214", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-215", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-217", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-218", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-222", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-226", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-227", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-229", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-230", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-241", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-243", "label": "UNIQUE", "subtype": null, "justification": "Triangle inequality forces 2<c<4, so c=3."}
+{"id": "math500-244", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-245", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-248", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-249", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-250", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-252", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-258", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-260", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-261", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-266", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-267", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-268", "label": "UNIQUE", "subtype": null, "justification": ""}

@@ -1,0 +1,100 @@
+{"id": "deepscaler-19755", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-19877", "label": "UNCLEAR", "subtype": null, "justification": "Refers to missing diagram; as written (3x4 grid of dots) axis-aligned rectangles = 18 (20 incl. tilted), reference 60 corresponds to a 3x4 grid of squares; intended object unclear."}
+{"id": "deepscaler-20325", "label": "UNCLEAR", "subtype": null, "justification": "Triangle ABB_1 uses undefined point B_1 (likely typo for O_1, which gives 9/2); malformed."}
+{"id": "deepscaler-20410", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-20722", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-20777", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-20975", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-21254", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-21312", "label": "UNIQUE", "subtype": null, "justification": "Numeric check gives 16."}
+{"id": "deepscaler-21639", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-21793", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-21807", "label": "UNCLEAR", "subtype": null, "justification": "Garbled: 2x3 orientation ambiguous (3 wide x 2 tall gives c=2/3; 2 wide x 3 tall gives c=-4/5, start point off region); reference 5/2 matches neither reading, line from (5/2,0) to (4,4) barely meets region."}
+{"id": "deepscaler-21832", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-21972", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-22433", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-22956", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-23186", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-23406", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-23420", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-23465", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-23498", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-24257", "label": "UNIQUE", "subtype": null, "justification": "Brute force confirms n=10."}
+{"id": "deepscaler-24383", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-25224", "label": "UNCLEAR", "subtype": null, "justification": "Inconsistent data: total 160 ribbons gives orange = 160/6 = 26.67, not an integer; no valid answer (reference 27 is rounding)."}
+{"id": "deepscaler-25247", "label": "UNIQUE", "subtype": null, "justification": "Brute force: 162*621=100602 is the only solution."}
+{"id": "deepscaler-25470", "label": "UNIQUE", "subtype": null, "justification": "Numeric check: both mirror configurations give 95."}
+{"id": "deepscaler-25638", "label": "UNIQUE", "subtype": null, "justification": "Managers under each VP unordered; unique count (reference may be wrong)."}
+{"id": "deepscaler-25642", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-25643", "label": "UNIQUE", "subtype": null, "justification": "Min area 8/5 at k=+-1; the line-equation part has unique answer set {y=x, y=-x}."}
+{"id": "deepscaler-26137", "label": "UNIQUE", "subtype": null, "justification": "Two parts, both evaluate to 1/8."}
+{"id": "deepscaler-26537", "label": "UNIQUE", "subtype": null, "justification": "Joint probability 0.7*0.95; unique under the natural reading."}
+{"id": "deepscaler-26863", "label": "UNCLEAR", "subtype": null, "justification": "Expression not homogeneous (deg 4 over deg 6): a=b=c=t gives 3/(64t^2) -> infinity, so no maximum; malformed."}
+{"id": "deepscaler-27487", "label": "UNCLEAR", "subtype": null, "justification": "As written red count stays even (2 + 2k), so 5 red is impossible (prob 0), which is not among choices; malformed."}
+{"id": "deepscaler-27562", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-27893", "label": "UNIQUE", "subtype": null, "justification": "Unique under the natural reading (h=18, d=45 gives ~527.3 m); reference 16.38 appears wrong."}
+{"id": "deepscaler-27926", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-28453", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-28578", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-28987", "label": "UNIQUE", "subtype": null, "justification": "Unique; sum evaluates to 15 (reference 31/2 appears wrong)."}
+{"id": "deepscaler-29012", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-29162", "label": "UNIQUE", "subtype": null, "justification": "Brute force confirms 972538."}
+{"id": "deepscaler-29358", "label": "UNCLEAR", "subtype": null, "justification": "640 = 2^9 + 2^7 has a unique binary representation; cannot be a sum of at least three distinct powers of 2; malformed."}
+{"id": "deepscaler-29528", "label": "UNIQUE", "subtype": null, "justification": "Unique; BI = sqrt(72-36sqrt2) (reference appears wrong)."}
+{"id": "deepscaler-30613", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-30816", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-30908", "label": "MULTI", "subtype": "other", "justification": "Underdetermined (one equation, two unknowns: p = 3750/(f+100)). f=25 full-price tickets at $30 (others $10) gives 750; f=150 at $15 (others $5) gives 2250; f=50 at $25 gives 1250. All sum to $2500 with 200 tickets."}
+{"id": "deepscaler-30942", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-31229", "label": "UNIQUE", "subtype": null, "justification": "Answer set {18, -18}; unique set."}
+{"id": "deepscaler-31234", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-31261", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-31407", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-31845", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-31879", "label": "UNIQUE", "subtype": null, "justification": "a.b = -x^2+2x+3 = 0 gives answer set {-1, 3}; unique set (reference lists only -1)."}
+{"id": "deepscaler-32065", "label": "UNCLEAR", "subtype": null, "justification": "With a+b+c=3 the expression is not constant (numeric checks give 0.07, -0.11, 0.25; a=b=c=1 gives -3); likely should be a+b+c=0; malformed."}
+{"id": "deepscaler-32286", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-32347", "label": "UNIQUE", "subtype": null, "justification": "Unique solution 1985 (AB=19, CD=85, EF=30)."}
+{"id": "deepscaler-33006", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-33075", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-33288", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-33331", "label": "UNIQUE", "subtype": null, "justification": "49y=50x gives the pair 49 and 50 only."}
+{"id": "deepscaler-33506", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-34167", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-34196", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-34378", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-34699", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-34902", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-35009", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-35408", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-35428", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-35585", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-35667", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-35863", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-35877", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-35959", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-36127", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-36210", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-36687", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-37192", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-37297", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-37340", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-37608", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-37725", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-37745", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-37990", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-38232", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-38474", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-38510", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-38653", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-39078", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-39091", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-39111", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-39446", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-39463", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-39530", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-39682", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-39736", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-40035", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-40101", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-40158", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-40159", "label": "UNIQUE", "subtype": null, "justification": ""}

@@ -1,0 +1,200 @@
+{"id": "deepscaler-74", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-865", "label": "UNCLEAR", "subtype": null, "justification": "figure missing (AMC grid)"}
+{"id": "deepscaler-920", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-1062", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-1417", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-1493", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-1749", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-2160", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-2384", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-2532", "label": "UNCLEAR", "subtype": null, "justification": "answer choices missing (\"then:\")"}
+{"id": "deepscaler-2580", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-2653", "label": "UNCLEAR", "subtype": null, "justification": "variable symbols stripped; t-s vs s-t sign undetermined"}
+{"id": "deepscaler-2964", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-3804", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-4000", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-4003", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-4075", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-4081", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-4127", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-4527", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-4587", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-4716", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-4832", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-4849", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-5259", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-5272", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-5398", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-5886", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-5977", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-5998", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-6005", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-6112", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-6214", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-6472", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-6593", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-6599", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-6613", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-6651", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-7147", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-7559", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-7605", "label": "MULTI", "subtype": "other", "justification": "cos(pi+theta)=-1/2 gives theta=+-pi/3 (+2k pi); tan(theta-9pi)=sqrt3 or -sqrt3, no quadrant given"}
+{"id": "deepscaler-7676", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-7681", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-7844", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-8119", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-8155", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-8179", "label": "MULTI", "subtype": "ambiguous_reading", "justification": "borderline: equal split over minimal 12 CDs -> 69.75; equal split over 13 CDs -> 64.38 also fits \"up to 75\"; filling -> 75"}
+{"id": "deepscaler-8534", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-9127", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-9158", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-9338", "label": "UNIQUE", "subtype": null, "justification": "multi-part; ref covers last part"}
+{"id": "deepscaler-9591", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-9631", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-9800", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-10368", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-10613", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-11103", "label": "UNIQUE", "subtype": null, "justification": "multi-part; ref 60 is price for max profit (part 3); part 2 answer 50"}
+{"id": "deepscaler-11172", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-11456", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-11817", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-12050", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-12122", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-12237", "label": "MULTI", "subtype": "ambiguous_reading", "justification": "broken chair position unspecified: end chair -> 7/9 (ref), interior chair -> 29/36"}
+{"id": "deepscaler-12354", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-12411", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-12476", "label": "UNCLEAR", "subtype": null, "justification": "\"as shown\" figure missing"}
+{"id": "deepscaler-12521", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-12752", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-13064", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-13317", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-13330", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-13400", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-13800", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-14103", "label": "UNIQUE", "subtype": null, "justification": "numeric approximation with tolerance 0.01"}
+{"id": "deepscaler-14315", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-14337", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-14448", "label": "UNIQUE", "subtype": null, "justification": "python check: only one equilateral configuration, EF=4sqrt3"}
+{"id": "deepscaler-14472", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-14529", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-15433", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-15637", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-15866", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-15927", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-15984", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-16417", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-16429", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-16445", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-16968", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-17034", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-17043", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-17048", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-17071", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-17762", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-18036", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-18063", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-18470", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-18851", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-19027", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-19076", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-19730", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-19755", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-19877", "label": "UNCLEAR", "subtype": null, "justification": "diagram missing; 3x4 dots gives 18 axis-aligned rectangles, ref 60 matches 3x4 cells"}
+{"id": "deepscaler-20325", "label": "UNCLEAR", "subtype": null, "justification": "B_1 undefined (likely O_1)"}
+{"id": "deepscaler-20410", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-20722", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-20777", "label": "UNIQUE", "subtype": null, "justification": "frequency = count 30 (relative frequency 0.3 is a different quantity name)"}
+{"id": "deepscaler-20975", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-21254", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-21312", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-21639", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-21793", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-21807", "label": "UNCLEAR", "subtype": null, "justification": "orientation of 2x3 rectangle unclear and ref 5/2 inconsistent with both"}
+{"id": "deepscaler-21832", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-21972", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-22433", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-22956", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-23186", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-23406", "label": "MULTI", "subtype": "ambiguous_reading", "justification": "borderline: population SD sqrt(2) (ref) vs sample SD with n-1 sqrt(5/2)"}
+{"id": "deepscaler-23420", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-23465", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-23498", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-24257", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-24383", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-25224", "label": "UNCLEAR", "subtype": null, "justification": "inconsistent data: orange = 160/6 not integer; ref 27"}
+{"id": "deepscaler-25247", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-25470", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-25638", "label": "UNCLEAR", "subtype": null, "justification": "ref 554400 matches neither labeled (997920) nor unlabeled VP (498960) counting"}
+{"id": "deepscaler-25642", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-25643", "label": "MULTI", "subtype": "open_choice", "justification": "borderline: min area 8/5 attained for k=+-1, so \"find the equation of line AB\" has y=x and y=-x; ref gives the area"}
+{"id": "deepscaler-26137", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-26537", "label": "UNIQUE", "subtype": null, "justification": "joint probability 0.665 natural reading"}
+{"id": "deepscaler-26863", "label": "UNCLEAR", "subtype": null, "justification": "expression not scale invariant (deg 4/deg 6) so unbounded; malformed"}
+{"id": "deepscaler-27487", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-27562", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-27893", "label": "UNCLEAR", "subtype": null, "justification": "natural reading gives width ~527 m, ref 16.38 cannot be reproduced; figure/setup missing"}
+{"id": "deepscaler-27926", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-28453", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-28578", "label": "UNIQUE", "subtype": null, "justification": "two-part; ref gives max |A|=16"}
+{"id": "deepscaler-28987", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-29012", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-29162", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-29358", "label": "UNCLEAR", "subtype": null, "justification": "640=2^9+2^7 uniquely; \"at least three distinct powers\" impossible"}
+{"id": "deepscaler-29528", "label": "UNIQUE", "subtype": null, "justification": "ref appears wrong but unique"}
+{"id": "deepscaler-30613", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-30816", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-30908", "label": "MULTI", "subtype": "other", "justification": "underdetermined: p(2f+200)=7500; f=50,p=25 -> 1250 (ref); f=25,p=30 -> 750; f=150,p=15 -> 2250"}
+{"id": "deepscaler-30942", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-31229", "label": "UNIQUE", "subtype": null, "justification": "\"find all integers A\": set is {18,-18}; ref incomplete but set unique"}
+{"id": "deepscaler-31234", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-31261", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-31407", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-31845", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-31879", "label": "MULTI", "subtype": "other", "justification": "a.b=-x^2+2x+3=0 -> x=3 or x=-1; \"find the value of x\", ref -1 only"}
+{"id": "deepscaler-32065", "label": "UNCLEAR", "subtype": null, "justification": "with a+b+c=3 the expression is not constant (likely a+b+c=0)"}
+{"id": "deepscaler-32286", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-32347", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-33006", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-33075", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-33288", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-33331", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-33506", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-34167", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-34196", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-34378", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-34699", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-34902", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-35009", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-35408", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-35428", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-35585", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-35667", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-35863", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-35877", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-35959", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-36127", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-36210", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-36687", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-37192", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-37297", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-37340", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-37608", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-37725", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-37745", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-37990", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-38232", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-38474", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-38510", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-38653", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-39078", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-39091", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-39111", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-39446", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-39463", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-39530", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-39682", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-39736", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-40035", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-40101", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-40158", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-40159", "label": "UNIQUE", "subtype": null, "justification": ""}

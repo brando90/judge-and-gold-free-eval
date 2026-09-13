@@ -1,0 +1,100 @@
+{"id": "deepscaler-74", "label": "UNIQUE", "subtype": null, "justification": "Standard reading (interior angle at C = 170, convex) gives 85; the alternative placement makes interior angle at C reflex (190), so not admissible."}
+{"id": "deepscaler-865", "label": "UNCLEAR", "subtype": null, "justification": "Refers to a grid figure 'shown below' that is missing; segment lengths cannot be pinned without it."}
+{"id": "deepscaler-920", "label": "UNIQUE", "subtype": null, "justification": "Answer choices missing but distance sqrt(72/17)~2.06 is determined; closest-to value within rounding tolerance."}
+{"id": "deepscaler-1062", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-1417", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-1493", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-1749", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-2160", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-2384", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-2532", "label": "UNCLEAR", "subtype": null, "justification": "Ends with 'then:' and missing answer choices; intended conclusion (a>1 vs solution interval for x) cannot be pinned."}
+{"id": "deepscaler-2580", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-2653", "label": "UNCLEAR", "subtype": null, "justification": "Variable symbols stripped ('Let  be', 'What is ?'); cannot tell whether t-s (-13.5) or s-t (13.5) is asked."}
+{"id": "deepscaler-2964", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-3804", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-4000", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-4003", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-4075", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-4081", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-4127", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-4527", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-4587", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-4716", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-4832", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-4849", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-5259", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-5272", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-5398", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-5886", "label": "UNIQUE", "subtype": null, "justification": "60/8 = 7.5; the division and its value are equivalent."}
+{"id": "deepscaler-5977", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-5998", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-6005", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-6112", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-6214", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-6472", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-6593", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-6599", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-6613", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-6651", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-7147", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-7559", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-7605", "label": "MULTI", "subtype": "other", "justification": "cos(pi+theta)=-1/2 gives cos theta=1/2 with sign of sin undetermined: theta=pi/3 gives tan=sqrt(3), theta=-pi/3 gives tan=-sqrt(3); both satisfy the condition (checked numerically)."}
+{"id": "deepscaler-7676", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-7681", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-7844", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-8119", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-8155", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-8179", "label": "MULTI", "subtype": "ambiguous_reading", "justification": "Distribution unspecified: even split over 12 CDs gives 69.75 min each (12*69.75=837), while filling CDs gives 75 min on 11 CDs and 12 min on the last (11*75+12=837)."}
+{"id": "deepscaler-8534", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-9127", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-9158", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-9338", "label": "UNIQUE", "subtype": null, "justification": "Multi-part; last part value unique."}
+{"id": "deepscaler-9591", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-9631", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-9800", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-10368", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-10613", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-11103", "label": "UNIQUE", "subtype": null, "justification": "Multi-part; last-asked quantity (price at max profit) is 60; each sub-answer unique (part 2: x=50)."}
+{"id": "deepscaler-11172", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-11456", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-11817", "label": "UNIQUE", "subtype": null, "justification": "Multi-part; last part evaluates to 221/2."}
+{"id": "deepscaler-12050", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-12122", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-12237", "label": "MULTI", "subtype": "ambiguous_reading", "justification": "Position of broken chair unspecified: broken chair at an end gives 1-8/36=7/9; broken chair in the interior (e.g. 5th) gives 1-7/36=29/36 (brute-force checked)."}
+{"id": "deepscaler-12354", "label": "UNIQUE", "subtype": null, "justification": "Standard reading: binomial coefficient of 4th term largest => n=6, constant term 15/4."}
+{"id": "deepscaler-12411", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-12476", "label": "UNCLEAR", "subtype": null, "justification": "Refers to squares positioned 'as shown' in a missing figure; configuration cannot be pinned."}
+{"id": "deepscaler-12521", "label": "UNIQUE", "subtype": null, "justification": "Unique value (computed 182.5; reference 181.5 appears wrong, not multi)."}
+{"id": "deepscaler-12752", "label": "UNIQUE", "subtype": null, "justification": "Unique y ~0.100015 (reference 1/10 is approximate)."}
+{"id": "deepscaler-13064", "label": "UNIQUE", "subtype": null, "justification": "168 shillings = 2016 pence = 8 pounds 8 shillings, equivalent units."}
+{"id": "deepscaler-13317", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-13330", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-13400", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-13800", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-14103", "label": "UNIQUE", "subtype": null, "justification": "Numeric approximation of ln 2 with 0.01 tolerance; values within tolerance treated as equivalent."}
+{"id": "deepscaler-14315", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-14337", "label": "UNIQUE", "subtype": null, "justification": "Determinable without diagram (E = AC\u2229BD, F on BC): CF=60."}
+{"id": "deepscaler-14448", "label": "UNIQUE", "subtype": null, "justification": "Rotation argument shows only the symmetric equilateral triangle exists; EF=4sqrt3."}
+{"id": "deepscaler-14472", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-14529", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-15433", "label": "UNIQUE", "subtype": null, "justification": "Brute force: only 2341 satisfies all constraints."}
+{"id": "deepscaler-15637", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-15866", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-15927", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-15984", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-16417", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-16429", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-16445", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-16968", "label": "UNIQUE", "subtype": null, "justification": "Major-axis vertex is collinear with foci, so vertex must be minor-axis vertex; e=1/2."}
+{"id": "deepscaler-17034", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-17043", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-17048", "label": "UNIQUE", "subtype": null, "justification": "Multi-part; last part value unique."}
+{"id": "deepscaler-17071", "label": "UNIQUE", "subtype": null, "justification": "Right angle at R or at P in PRS both give perimeter 22."}
+{"id": "deepscaler-17762", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-18036", "label": "UNIQUE", "subtype": null, "justification": "Multi-part; last-asked quantity min cost 3660 (m=38) unique."}
+{"id": "deepscaler-18063", "label": "UNIQUE", "subtype": null, "justification": "Multi-part; cos A=3/5 forced (A<120), area unique."}
+{"id": "deepscaler-18470", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-18851", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-19027", "label": "UNIQUE", "subtype": null, "justification": "Max of cos a is unique (numerically 1; reference >1 appears wrong, not multi)."}
+{"id": "deepscaler-19076", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "deepscaler-19730", "label": "UNIQUE", "subtype": null, "justification": "sqrt(a)-b representation of sqrt(164)-8 is unique for naturals."}

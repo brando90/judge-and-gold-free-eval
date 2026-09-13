@@ -1,0 +1,100 @@
+{"id": "math500-272", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-273", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-276", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-278", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-280", "label": "UNIQUE", "subtype": null, "justification": "expression simplifies to 2ab; 8 divisors for distinct odd primes"}
+{"id": "math500-282", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-286", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-290", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-293", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-294", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-296", "label": "UNIQUE", "subtype": null, "justification": "B has the smallest base for 0<r<3"}
+{"id": "math500-298", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-300", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-301", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-305", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-308", "label": "UNIQUE", "subtype": null, "justification": "the two pieces are congruent by symmetry, so surface area is the same either way"}
+{"id": "math500-309", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-310", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-312", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-313", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-316", "label": "UNIQUE", "subtype": null, "justification": "only integer pair is A=5,B=2 (checked all AB=10 pairs)"}
+{"id": "math500-319", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-320", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-322", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-327", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-328", "label": "UNIQUE", "subtype": null, "justification": "range {1,0,-1}"}
+{"id": "math500-329", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-334", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-335", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-336", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-338", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-342", "label": "UNIQUE", "subtype": null, "justification": "1.75<x<2.33 gives only x=2"}
+{"id": "math500-344", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-347", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-349", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-350", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-358", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-360", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-361", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-363", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-364", "label": "UNIQUE", "subtype": null, "justification": "x^2 coefficient fixed at 1 pins the quadruple"}
+{"id": "math500-368", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-372", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-373", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-378", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-381", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-382", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-385", "label": "UNIQUE", "subtype": null, "justification": "rounding the final difference gives 22.17->22; rounding each amount first would give 114-91=23, but the natural reading rounds the answer, so labeled conservatively as UNIQUE"}
+{"id": "math500-386", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-388", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-389", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-392", "label": "UNIQUE", "subtype": null, "justification": "only one pairing of squared distances has equal sums (9+121=49+81=130), so x^2=66"}
+{"id": "math500-394", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-396", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-397", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-398", "label": "UNIQUE", "subtype": null, "justification": "Navin, from computed dollar amounts"}
+{"id": "math500-399", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-400", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-401", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-408", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-409", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-411", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-412", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-414", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-418", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-421", "label": "UNIQUE", "subtype": null, "justification": "asks for the smallest possible value"}
+{"id": "math500-422", "label": "UNIQUE", "subtype": null, "justification": "answer is an unordered set"}
+{"id": "math500-423", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-424", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-425", "label": "UNIQUE", "subtype": null, "justification": "value is identically 3R^2"}
+{"id": "math500-426", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-427", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-430", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-432", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-435", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-439", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-440", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-441", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-442", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-443", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-447", "label": "UNIQUE", "subtype": null, "justification": "girls=26, boys=9 is the only split that works"}
+{"id": "math500-448", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-454", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-455", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-456", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-460", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-461", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-464", "label": "UNIQUE", "subtype": null, "justification": "x=-4 rejected since y^2=5x<0"}
+{"id": "math500-465", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-466", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-467", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-468", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-470", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-472", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-478", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-485", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-487", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-488", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-489", "label": "UNIQUE", "subtype": null, "justification": ""}
+{"id": "math500-498", "label": "UNIQUE", "subtype": null, "justification": "both roots of a^2-a+1=0 give a^9=-1"}

@@ -1,0 +1,1111 @@
+{
+ "math500": {
+  "dataset": "MATH-500",
+  "source": "HuggingFaceH4/MATH-500 (test, 500 rows)",
+  "sampling": "seeded sample of 200: random.seed(0); random.sample(range(500),200)",
+  "n": 200,
+  "multi": 0,
+  "unique": 200,
+  "unclear": 0,
+  "rate": 0.0,
+  "wilson_ci": [
+   0,
+   0.018845326668962936
+  ],
+  "rate_excl_unclear": 0.0,
+  "wilson_ci_excl_unclear": [
+   0,
+   0.018845326668962936
+  ],
+  "raw_agreement_3class": 1.0,
+  "kappa_3class": null,
+  "raw_agreement_multi_vs_rest": 1.0,
+  "kappa_multi_vs_rest": null,
+  "n_disagreements": 0,
+  "pass1_counts": {
+   "UNIQUE": 200
+  },
+  "pass2_counts": {
+   "UNIQUE": 200
+  },
+  "multi_subtypes": {},
+  "sensitivity": {
+   "both_annotators_multi": 0,
+   "rate_both": 0.0,
+   "wilson_both": [
+    0.0,
+    0.018845326668962936
+   ],
+   "either_annotator_multi": 0,
+   "rate_either": 0.0,
+   "wilson_either": [
+    0.0,
+    0.018845326668962936
+   ]
+  },
+  "examples": [],
+  "multi_items": [],
+  "unclear_items": [],
+  "adjudications": []
+ },
+ "gsm8k": {
+  "dataset": "GSM8K test",
+  "source": "openai/gsm8k, config main, split test (1319 rows)",
+  "sampling": "random.seed(0); random.sample(range(1319),200)",
+  "n": 200,
+  "multi": 5,
+  "unique": 194,
+  "unclear": 1,
+  "rate": 0.025,
+  "wilson_ci": [
+   0.010724719583860124,
+   0.05717834075165468
+  ],
+  "rate_excl_unclear": 0.02512562814070352,
+  "wilson_ci_excl_unclear": [
+   0.01077884831531117,
+   0.05745897129826251
+  ],
+  "raw_agreement_3class": 0.995,
+  "kappa_3class": 0.9069334574220568,
+  "raw_agreement_multi_vs_rest": 0.995,
+  "kappa_multi_vs_rest": 0.8863636363636364,
+  "n_disagreements": 1,
+  "pass1_counts": {
+   "UNIQUE": 195,
+   "MULTI": 4,
+   "UNCLEAR": 1
+  },
+  "pass2_counts": {
+   "UNIQUE": 194,
+   "MULTI": 5,
+   "UNCLEAR": 1
+  },
+  "multi_subtypes": {
+   "ambiguous_reading": 5
+  },
+  "sensitivity": {
+   "both_annotators_multi": 4,
+   "rate_both": 0.02,
+   "wilson_both": [
+    0.007804426362159347,
+    0.05028708724004507
+   ],
+   "either_annotator_multi": 5,
+   "rate_either": 0.025,
+   "wilson_either": [
+    0.010724719583860124,
+    0.05717834075165468
+   ]
+  },
+  "examples": [
+   {
+    "id": "gsm8k-187",
+    "question_snippet": "Mandy owes Benedict $100. They agreed to have monthly interest of 2%. If Mandy was able to pay it after 3 months, how much should she give to Benedict?",
+    "reference": "106",
+    "alternative_valid_answer": "106.12",
+    "verification": "Monthly compounding: 100*1.02^3 = 106.1208 (python); simple interest gives the reference 106.",
+    "subtype": "ambiguous_reading"
+   },
+   {
+    "id": "gsm8k-306",
+    "question_snippet": "A bakery produces 60 loaves of bread each day. Two-thirds of the loaves are sold in the morning and half of what is left is sold equally in the afternoon and evening. How many loaves of bread are sold in the afternoon?",
+    "reference": "10",
+    "alternative_valid_answer": "5",
+    "verification": "Literal parse: 20 loaves left; \"half of what is left\" (10) is split equally between afternoon and evening -> 5; reference splits all 20 -> 10.",
+    "subtype": "ambiguous_reading"
+   },
+   {
+    "id": "gsm8k-649",
+    "question_snippet": "Fishio posted her selfie on Instagram. She received 2000 likes on the photo after 1 week. Three weeks later, the number of likes was 70 times as many as the initial number of likes. If she received 20000 more new likes recently, how many In",
+    "reference": "162000",
+    "alternative_valid_answer": "160000",
+    "verification": "\"The number of likes was 70 times the initial\" read as the total: 140000 + 20000 = 160000; reference adds 140000 new likes to 2000 -> 162000.",
+    "subtype": "ambiguous_reading"
+   },
+   {
+    "id": "gsm8k-93",
+    "question_snippet": "Lee used to be able to run the 400-meter hurdles two seconds faster than Gerald would run the 400-meter hurdles.  But Gerald changed his diet, which improved his speed by 10%.  If Lee runs the 400-meter hurdles in 38 seconds, how fast can G",
+    "reference": "36",
+    "alternative_valid_answer": "36.36",
+    "verification": "Speed up 10% means time = 40/1.1 = 36.36 s; reference reduces time by 10% -> 36.",
+    "subtype": "ambiguous_reading"
+   },
+   {
+    "id": "gsm8k-1254",
+    "question_snippet": "Louise is an artist and needs to apply a coat of varnish to her latest paintings. Usually it takes 7 minutes for the coat of varnish to dry on one painting. However, today she is using a new varnish and it takes 12 minutes for the coat to d",
+    "reference": "30",
+    "alternative_valid_answer": "5",
+    "verification": "If the 6 paintings dry at the same time, the new varnish takes 12-7 = 5 min longer; reference sums per painting -> 30.",
+    "subtype": "ambiguous_reading"
+   }
+  ],
+  "multi_items": [
+   {
+    "id": "gsm8k-93",
+    "subtype": "ambiguous_reading",
+    "justification": "Gerald 40s; speed +10% literally -> time 40/1.1=36.36s; reading as time -10% -> 36 (ref)",
+    "adjudicated": false
+   },
+   {
+    "id": "gsm8k-187",
+    "subtype": "ambiguous_reading",
+    "justification": "monthly interest 2% for 3 months: simple interest gives 100*1.06=106 (ref); monthly compounding gives 100*1.02^3=106.1208 -> 106.12",
+    "adjudicated": false
+   },
+   {
+    "id": "gsm8k-306",
+    "subtype": "ambiguous_reading",
+    "justification": "60 loaves, 40 sold morning, 20 left; literal: half of what is left (10) is split equally between afternoon and evening -> 5; ref reading: remaining 20 split half each -> 10",
+    "adjudicated": false
+   },
+   {
+    "id": "gsm8k-649",
+    "subtype": "ambiguous_reading",
+    "justification": "\"number of likes was 70 times the initial\" read as total -> 140000+20000=160000; read as additional likes -> 2000+140000+20000=162000 (ref)",
+    "adjudicated": false
+   },
+   {
+    "id": "gsm8k-1254",
+    "subtype": "ambiguous_reading",
+    "justification": "Reading A: add up the drying time per painting, 6*12 - 6*7 = 30. Reading B: the 6 coats dry at the same time (drying needs no attention), so it takes 12 - 7 = 5 minutes longer.",
+    "adjudicated": true
+   }
+  ],
+  "unclear_items": [
+   {
+    "id": "gsm8k-255",
+    "reason": "malformed: says ten stalls then twenty stalls; 10 stalls -> 8*24=192 (ref), 20 stalls of 20 -> 8*22=176"
+   }
+  ],
+  "adjudications": [
+   {
+    "id": "gsm8k-1254",
+    "pass1": "UNIQUE",
+    "pass2": "MULTI",
+    "final": "MULTI",
+    "reason": "Both annotators identified the concurrent-drying reading; the question never says coats are applied one after another, so 12-7=5 min longer is as defensible as the cumulative 6*(12-7)=30 (ref)."
+   }
+  ]
+ },
+ "deepscaler": {
+  "dataset": "DeepScaleR-Preview (RLVR train)",
+  "source": "agentica-org/DeepScaleR-Preview-Dataset, split train (40315 rows)",
+  "sampling": "random.seed(0); random.sample(range(40315),200)",
+  "n": 200,
+  "multi": 5,
+  "unique": 182,
+  "unclear": 13,
+  "rate": 0.025,
+  "wilson_ci": [
+   0.010724719583860124,
+   0.05717834075165468
+  ],
+  "rate_excl_unclear": 0.026737967914438502,
+  "wilson_ci_excl_unclear": [
+   0.01147376000207577,
+   0.06105481404275709
+  ],
+  "raw_agreement_3class": 0.97,
+  "kappa_3class": 0.8207885304659496,
+  "raw_agreement_multi_vs_rest": 0.985,
+  "kappa_multi_vs_rest": 0.720149253731343,
+  "n_disagreements": 6,
+  "pass1_counts": {
+   "UNIQUE": 180,
+   "UNCLEAR": 13,
+   "MULTI": 7
+  },
+  "pass2_counts": {
+   "UNIQUE": 184,
+   "UNCLEAR": 12,
+   "MULTI": 4
+  },
+  "multi_subtypes": {
+   "other": 3,
+   "ambiguous_reading": 2
+  },
+  "sensitivity": {
+   "both_annotators_multi": 4,
+   "rate_both": 0.02,
+   "wilson_both": [
+    0.007804426362159347,
+    0.05028708724004507
+   ],
+   "either_annotator_multi": 7,
+   "rate_either": 0.035,
+   "wilson_either": [
+    0.01705554191525804,
+    0.07047061188687749
+   ]
+  },
+  "examples": [
+   {
+    "id": "deepscaler-30908",
+    "question_snippet": "The school club sells 200 tickets for a total of $2500. Some tickets are sold at full price, and the rest are sold for one-third the price of the full-price tickets. Determine the amount of money raised by the full-price tickets.",
+    "reference": "1250",
+    "alternative_valid_answer": "750 (or 2250)",
+    "verification": "Underdetermined p(2f+200)=7500: f=25 tickets at $30 + 175 at $10 = 2500 -> full-price revenue 750; f=150 at $15 + 50 at $5 = 2500 -> 2250; reference f=50,p=25 -> 1250 (python-enumerated).",
+    "subtype": "other"
+   },
+   {
+    "id": "deepscaler-31879",
+    "question_snippet": "Given two vectors in space, $\\overrightarrow{a} = (x - 1, 1, -x)$ and $\\overrightarrow{b} = (-x, 3, -1)$. If $\\overrightarrow{a}$ is perpendicular to $\\overrightarrow{b}$, find the value of $x$.",
+    "reference": "-1",
+    "alternative_valid_answer": "3",
+    "verification": "a.b = -x^2+2x+3 = 0 has roots 3 and -1; x=3 gives a=(2,1,-3), b=(-3,3,-1), dot = -6+3+3 = 0 (python); question asks for \"the value\", reference -1.",
+    "subtype": "other"
+   },
+   {
+    "id": "deepscaler-7605",
+    "question_snippet": "Given that $\\cos(\\pi+\\theta) = -\\frac{1}{2}$, find the value of $\\tan(\\theta - 9\\pi)$.",
+    "reference": "\\sqrt{3}",
+    "alternative_valid_answer": "-\\sqrt{3}",
+    "verification": "theta = -pi/3 satisfies cos(pi+theta) = -1/2 and gives tan(theta-9pi) = -sqrt3 (python); no quadrant given; reference sqrt3.",
+    "subtype": "other"
+   },
+   {
+    "id": "deepscaler-12237",
+    "question_snippet": "In a row of 10 chairs, one of which is broken and cannot be used, Mary and James randomly select their seats. What is the probability that they do not sit next to each other?",
+    "reference": "\\frac{7}{9}",
+    "alternative_valid_answer": "29/36",
+    "verification": "Broken chair in an interior position leaves 7 adjacent usable pairs of 36 -> 29/36; end chair -> 7/9 (reference); enumerated all 10 positions in python.",
+    "subtype": "ambiguous_reading"
+   },
+   {
+    "id": "deepscaler-8179",
+    "question_snippet": "If a podcast series that lasts for 837 minutes needs to be stored on CDs and each CD can hold up to 75 minutes of audio, determine the number of minutes of audio that each CD will contain.",
+    "reference": "69.75",
+    "alternative_valid_answer": "64.38 (837/13)",
+    "verification": "Weakest item: \"up to 75 minutes\" does not force the minimum number of CDs; 13 equal CDs hold 64.38 min each; reference assumes 12 -> 69.75.",
+    "subtype": "ambiguous_reading"
+   }
+  ],
+  "multi_items": [
+   {
+    "id": "deepscaler-7605",
+    "subtype": "other",
+    "justification": "cos(pi+theta)=-1/2 gives theta=+-pi/3 (+2k pi); tan(theta-9pi)=sqrt3 or -sqrt3, no quadrant given",
+    "adjudicated": false
+   },
+   {
+    "id": "deepscaler-8179",
+    "subtype": "ambiguous_reading",
+    "justification": "borderline: equal split over minimal 12 CDs -> 69.75; equal split over 13 CDs -> 64.38 also fits \"up to 75\"; filling -> 75",
+    "adjudicated": false
+   },
+   {
+    "id": "deepscaler-12237",
+    "subtype": "ambiguous_reading",
+    "justification": "broken chair position unspecified: end chair -> 7/9 (ref), interior chair -> 29/36",
+    "adjudicated": false
+   },
+   {
+    "id": "deepscaler-30908",
+    "subtype": "other",
+    "justification": "underdetermined: p(2f+200)=7500; f=50,p=25 -> 1250 (ref); f=25,p=30 -> 750; f=150,p=15 -> 2250",
+    "adjudicated": false
+   },
+   {
+    "id": "deepscaler-31879",
+    "subtype": "other",
+    "justification": "a.b=-x^2+2x+3=0 -> x=3 or x=-1; \"find the value of x\", ref -1 only",
+    "adjudicated": true
+   }
+  ],
+  "unclear_items": [
+   {
+    "id": "deepscaler-865",
+    "reason": "figure missing (AMC grid)"
+   },
+   {
+    "id": "deepscaler-2532",
+    "reason": "answer choices missing (\"then:\")"
+   },
+   {
+    "id": "deepscaler-2653",
+    "reason": "variable symbols stripped; t-s vs s-t sign undetermined"
+   },
+   {
+    "id": "deepscaler-12476",
+    "reason": "\"as shown\" figure missing"
+   },
+   {
+    "id": "deepscaler-19877",
+    "reason": "diagram missing; 3x4 dots gives 18 axis-aligned rectangles, ref 60 matches 3x4 cells"
+   },
+   {
+    "id": "deepscaler-20325",
+    "reason": "B_1 undefined (likely O_1)"
+   },
+   {
+    "id": "deepscaler-21807",
+    "reason": "orientation of 2x3 rectangle unclear and ref 5/2 inconsistent with both"
+   },
+   {
+    "id": "deepscaler-25224",
+    "reason": "inconsistent data: orange = 160/6 not integer; ref 27"
+   },
+   {
+    "id": "deepscaler-25643",
+    "reason": "Final request (\"find the equation of line AB\") has two valid lines y=x and y=-x, but the reference answers a different quantity (area 8/5); the reference/question mismatch makes the item malformed rather than cleanly MULTI -> conservative UNCLEAR."
+   },
+   {
+    "id": "deepscaler-26863",
+    "reason": "expression not scale invariant (deg 4/deg 6) so unbounded; malformed"
+   },
+   {
+    "id": "deepscaler-27487",
+    "reason": "Verified: adding two balls of the drawn colour keeps the red count even (2,4,6,8), so \"exactly five red\" is impossible; malformed transcription of the original problem."
+   },
+   {
+    "id": "deepscaler-29358",
+    "reason": "640=2^9+2^7 uniquely; \"at least three distinct powers\" impossible"
+   },
+   {
+    "id": "deepscaler-32065",
+    "reason": "with a+b+c=3 the expression is not constant (likely a+b+c=0)"
+   }
+  ],
+  "adjudications": [
+   {
+    "id": "deepscaler-23406",
+    "pass1": "MULTI",
+    "pass2": "UNIQUE",
+    "final": "UNIQUE",
+    "reason": "\"standard deviation of this sample\" (not \"sample standard deviation\"); in the source curriculum it is the n-denominator SD; n-1 variant is a convention difference -> conservative UNIQUE."
+   },
+   {
+    "id": "deepscaler-25638",
+    "pass1": "UNCLEAR",
+    "pass2": "UNIQUE",
+    "final": "UNIQUE",
+    "reason": "VP1/VP2 are labeled, so the count is determined (997920); the reference 554400 is a reference error, not answer multiplicity."
+   },
+   {
+    "id": "deepscaler-25643",
+    "pass1": "MULTI",
+    "pass2": "UNIQUE",
+    "final": "UNCLEAR",
+    "reason": "Final request (\"find the equation of line AB\") has two valid lines y=x and y=-x, but the reference answers a different quantity (area 8/5); the reference/question mismatch makes the item malformed rather than cleanly MULTI -> conservative UNCLEAR."
+   },
+   {
+    "id": "deepscaler-27487",
+    "pass1": "UNIQUE",
+    "pass2": "UNCLEAR",
+    "final": "UNCLEAR",
+    "reason": "Verified: adding two balls of the drawn colour keeps the red count even (2,4,6,8), so \"exactly five red\" is impossible; malformed transcription of the original problem."
+   },
+   {
+    "id": "deepscaler-27893",
+    "pass1": "UNCLEAR",
+    "pass2": "UNIQUE",
+    "final": "UNIQUE",
+    "reason": "Natural reading has one answer (~527 m, computed); the reference 16.38 is irreproducible, which is a reference error, not multiplicity."
+   },
+   {
+    "id": "deepscaler-31879",
+    "pass1": "MULTI",
+    "pass2": "UNIQUE",
+    "final": "MULTI",
+    "reason": "Question asks for \"the value of x\" (not \"find all\"); a.b=-x^2+2x+3=0 has roots x=3 and x=-1 (python-verified), each satisfies the question; reference lists only -1. Literal MULTI definition applies."
+   }
+  ]
+ },
+ "nqopen": {
+  "dataset": "Natural Questions open (val)",
+  "source": "google-research-datasets/nq_open, split validation (3610 rows); chosen over TriviaQA (both allowed by the brief; NQ-open is a small direct download)",
+  "sampling": "random.seed(0); random.sample(range(3610),200)",
+  "n": 200,
+  "multi": 60,
+  "unique": 132,
+  "unclear": 8,
+  "rate": 0.3,
+  "wilson_ci": [
+   0.24074744639257037,
+   0.3667906842750147
+  ],
+  "rate_excl_unclear": 0.3125,
+  "wilson_ci_excl_unclear": [
+   0.25115693477064904,
+   0.3811987451181489
+  ],
+  "raw_agreement_3class": 0.865,
+  "kappa_3class": 0.7196989358941085,
+  "raw_agreement_multi_vs_rest": 0.885,
+  "kappa_multi_vs_rest": 0.7381006604418129,
+  "n_disagreements": 27,
+  "pass1_counts": {
+   "MULTI": 58,
+   "UNIQUE": 137,
+   "UNCLEAR": 5
+  },
+  "pass2_counts": {
+   "MULTI": 71,
+   "UNIQUE": 121,
+   "UNCLEAR": 8
+  },
+  "multi_subtypes": {
+   "temporal": 23,
+   "ambiguous_reading": 21,
+   "multiple_entities": 16
+  },
+  "sensitivity": {
+   "both_annotators_multi": 53,
+   "rate_both": 0.265,
+   "wilson_both": [
+    0.2086815410670056,
+    0.33017576246740693
+   ],
+   "either_annotator_multi": 76,
+   "rate_either": 0.38,
+   "wilson_either": [
+    0.31559005800516143,
+    0.44893282039538956
+   ]
+  },
+  "multi_excluding_temporal": {
+   "count": 37,
+   "rate": 0.185,
+   "wilson_ci": [
+    0.1373019276778717,
+    0.24457062812357494
+   ]
+  },
+  "examples": [
+   {
+    "id": "nqopen-2502",
+    "question_snippet": "which president of the united states was a boy scout",
+    "reference": "Gerald Ford | President Gerald Ford",
+    "alternative_valid_answer": "John F. Kennedy",
+    "verification": "JFK was the first president who had been a Boy Scout; Ford was the only Eagle Scout; gold lists only Ford.",
+    "subtype": "multiple_entities"
+   },
+   {
+    "id": "nqopen-2783",
+    "question_snippet": "what does ss stand for on naval ships",
+    "reference": "Single-screw Steamship",
+    "alternative_valid_answer": "submarine",
+    "verification": "\"SS\" on naval ships is the US Navy hull classification for submarine; gold gives the civilian steamship prefix.",
+    "subtype": "ambiguous_reading"
+   },
+   {
+    "id": "nqopen-3458",
+    "question_snippet": "when was the death penalty reinstated in oregon",
+    "reference": "1984",
+    "alternative_valid_answer": "1978",
+    "verification": "Oregon restored the death penalty by ballot in 1978 (struck down 1981) and again in 1984; gold only 1984.",
+    "subtype": "ambiguous_reading"
+   },
+   {
+    "id": "nqopen-1154",
+    "question_snippet": "who has won the most f1 grand prix",
+    "reference": "Michael Schumacher",
+    "alternative_valid_answer": "Lewis Hamilton",
+    "verification": "Temporal: Schumacher (91) held the record until Hamilton passed him in 2020.",
+    "subtype": "temporal"
+   },
+   {
+    "id": "nqopen-3450",
+    "question_snippet": "who is stephanie's mom on the bold and the beautiful",
+    "reference": "Ridge Forrester | Taylor Hayes | Hunter Tylo",
+    "alternative_valid_answer": "Ann Douglas",
+    "verification": "Two characters named Stephanie Forrester: Stephanie Sr.'s mother is Ann Douglas; Steffy's mother is Taylor Hayes (gold).",
+    "subtype": "ambiguous_reading"
+   }
+  ],
+  "multi_items": [
+   {
+    "id": "nqopen-4",
+    "subtype": "temporal",
+    "justification": "\"last year\" unfixed: South Carolina (2017), Notre Dame (2018), UConn (2016)",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-165",
+    "subtype": "ambiguous_reading",
+    "justification": "White Witch: Tilda Swinton (2005 film) vs Barbara Kellerman (1988 BBC series)",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-254",
+    "subtype": "multiple_entities",
+    "justification": "Hindi and Bengali (and English) each a most-spoken language",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-255",
+    "subtype": "multiple_entities",
+    "justification": "three hyenas: Shenzi, Banzai, Ed",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-257",
+    "subtype": "ambiguous_reading",
+    "justification": "official name Kingdom of Saudi Arabia vs former name Kingdom of Hejaz and Nejd",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-472",
+    "subtype": "temporal",
+    "justification": "142,907 (2016 census) vs 154,331 (2021 census)",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-533",
+    "subtype": "temporal",
+    "justification": "next episode date depends on when asked",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-572",
+    "subtype": "multiple_entities",
+    "justification": "calf muscles: gastrocnemius and soleus",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-599",
+    "subtype": "multiple_entities",
+    "justification": "any album track: Old Dan Tucker, Jesse James",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-612",
+    "subtype": "ambiguous_reading",
+    "justification": "since 1988 (Larry Shaw) vs 2009 (US House resolution)",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-698",
+    "subtype": "ambiguous_reading",
+    "justification": "location unspecified: gold has 1990 and 1995 bans",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-753",
+    "subtype": "ambiguous_reading",
+    "justification": "character Hodel vs performer: Michele Marsh (1971 film) / Julia Migenes (1964 Broadway)",
+    "adjudicated": true
+   },
+   {
+    "id": "nqopen-837",
+    "subtype": "temporal",
+    "justification": "Eagles won Super Bowl LII (2017 season) and LIX (2024 season)",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-894",
+    "subtype": "multiple_entities",
+    "justification": "Cory, Kory",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-903",
+    "subtype": "ambiguous_reading",
+    "justification": "city proper (Chongqing/Shanghai/Beijing) vs metro (Tokyo/Delhi/Shanghai)",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-977",
+    "subtype": "multiple_entities",
+    "justification": "role theory and identity theory",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-1060",
+    "subtype": "temporal",
+    "justification": "6 seasons before 2020 revival, 7 after",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-1065",
+    "subtype": "temporal",
+    "justification": "return date depends on season",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-1066",
+    "subtype": "ambiguous_reading",
+    "justification": "UK 1983 vs US 1984",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-1127",
+    "subtype": "multiple_entities",
+    "justification": "Frankie Valli original; Andy Williams / Lauryn Hill / Boys Town Gang hit versions",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-1154",
+    "subtype": "temporal",
+    "justification": "Michael Schumacher (91) until 2020, Lewis Hamilton since",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-1234",
+    "subtype": "temporal",
+    "justification": "NBC, CBS, Fox in different seasons",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-1295",
+    "subtype": "temporal",
+    "justification": "2013 vs 2020",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-1298",
+    "subtype": "ambiguous_reading",
+    "justification": "Martin Lawrence (disguised) vs Ella Mitchell (actual Big Momma)",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-1373",
+    "subtype": "temporal",
+    "justification": "release date depends on when asked",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-1658",
+    "subtype": "ambiguous_reading",
+    "justification": "1983 (Ninety/One Ten) vs 1991 (named Defender)",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-1717",
+    "subtype": "temporal",
+    "justification": "11 at the time, more since",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-1834",
+    "subtype": "multiple_entities",
+    "justification": "Humboldt County, Del Norte County",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-1845",
+    "subtype": "temporal",
+    "justification": "Jim Justice (2017-Jan 2025) vs Patrick Morrisey (2025-)",
+    "adjudicated": true
+   },
+   {
+    "id": "nqopen-2094",
+    "subtype": "ambiguous_reading",
+    "justification": "quantitative/qualitative vs experimental/correlational",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-2135",
+    "subtype": "temporal",
+    "justification": "Fallout (2018), Dead Reckoning (2023), The Final Reckoning (2025)",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-2137",
+    "subtype": "multiple_entities",
+    "justification": "The Royalettes (1965) vs Deniece Williams (1982 hit)",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-2181",
+    "subtype": "ambiguous_reading",
+    "justification": "Radcliffe Line vs International Border",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-2188",
+    "subtype": "multiple_entities",
+    "justification": "Idina Menzel (original Elphaba) vs Rachel Tucker",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-2224",
+    "subtype": "ambiguous_reading",
+    "justification": "origin (South America/Brazil) vs top producers (Costa Rica, Philippines)",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-2247",
+    "subtype": "temporal",
+    "justification": "Sherwood CC, Thousand Oaks (to 2013) vs Albany, Bahamas (2015-)",
+    "adjudicated": true
+   },
+   {
+    "id": "nqopen-2257",
+    "subtype": "multiple_entities",
+    "justification": "Shia LaBeouf, Christy Carlson Romano",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-2350",
+    "subtype": "multiple_entities",
+    "justification": "several first-round sites that year, and year unspecified",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-2389",
+    "subtype": "temporal",
+    "justification": "NFC (2018) vs tied 27-27 after Super Bowl LVIII (2024); AFC led in 1970s",
+    "adjudicated": true
+   },
+   {
+    "id": "nqopen-2465",
+    "subtype": "ambiguous_reading",
+    "justification": "season unspecified: Chandan Shetty (S5) vs Pratham (S4)",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-2502",
+    "subtype": "multiple_entities",
+    "justification": "John F. Kennedy, Gerald Ford (Eagle Scout)",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-2506",
+    "subtype": "temporal",
+    "justification": "2012 vs 2017 vs later eruptions",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-2509",
+    "subtype": "multiple_entities",
+    "justification": "open list: lumber, carbon sink",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-2597",
+    "subtype": "ambiguous_reading",
+    "justification": "reopen closed tab (browsers) vs new tab (some apps)",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-2689",
+    "subtype": "temporal",
+    "justification": "2018 vs later wins",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-2783",
+    "subtype": "ambiguous_reading",
+    "justification": "steamship prefix vs US Navy hull code for submarine",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-2801",
+    "subtype": "temporal",
+    "justification": "2012-13 vs later seasons",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-2889",
+    "subtype": "ambiguous_reading",
+    "justification": "Cristiano Ronaldo (~311) vs Ronaldo Nazario (~104)",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-2947",
+    "subtype": "ambiguous_reading",
+    "justification": "tortoise vs Greenland shark vs ocean quahog",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-3215",
+    "subtype": "temporal",
+    "justification": "Action Jackson (2014) vs Bhuj (2021)",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-3318",
+    "subtype": "temporal",
+    "justification": "depends on when asked",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-3324",
+    "subtype": "ambiguous_reading",
+    "justification": "1864 (bronze) vs 1943 (zinc-coated steel) vs 1982 (copper-plated zinc)",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-3364",
+    "subtype": "temporal",
+    "justification": "\"this year\" unfixed",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-3391",
+    "subtype": "temporal",
+    "justification": "Osceola County Stadium (to 2016) vs West Palm Beach (2017+)",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-3450",
+    "subtype": "ambiguous_reading",
+    "justification": "Stephanie Forrester Sr: mother Ann Douglas vs Steffy (Stephanie) Forrester: mother Taylor Hayes",
+    "adjudicated": true
+   },
+   {
+    "id": "nqopen-3458",
+    "subtype": "ambiguous_reading",
+    "justification": "reinstated 1978 and again 1984",
+    "adjudicated": true
+   },
+   {
+    "id": "nqopen-3479",
+    "subtype": "temporal",
+    "justification": "return date depends on season",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-3483",
+    "subtype": "ambiguous_reading",
+    "justification": "Oct 14 2016 (first half) vs Jan 19 2018 (second half)",
+    "adjudicated": false
+   },
+   {
+    "id": "nqopen-3544",
+    "subtype": "multiple_entities",
+    "justification": "open-ended: improve communication vs ensure consistency",
+    "adjudicated": true
+   },
+   {
+    "id": "nqopen-3591",
+    "subtype": "multiple_entities",
+    "justification": "any 2018 inductee: Ray Lewis, Randy Moss",
+    "adjudicated": false
+   }
+  ],
+  "unclear_items": [
+   {
+    "id": "nqopen-446",
+    "reason": "record depends on era/definition; gold Tim Duncan doubtful"
+   },
+   {
+    "id": "nqopen-995",
+    "reason": "malformed; gold six|two inconsistent"
+   },
+   {
+    "id": "nqopen-1523",
+    "reason": "Version (US/UK/other) unspecified, but UK has several tied GBP1M winners and neither annotator could confirm the second gold name; cannot decide cleanly."
+   },
+   {
+    "id": "nqopen-2004",
+    "reason": "Classification scheme unspecified (multinational corporation / retail chain / for-profit); vague rather than cleanly multi."
+   },
+   {
+    "id": "nqopen-2214",
+    "reason": "Earliest continent is scientifically debated (Ur vs Vaalbara) and gold Pangaea is likely wrong; cannot decide cleanly."
+   },
+   {
+    "id": "nqopen-2415",
+    "reason": "no story specified"
+   },
+   {
+    "id": "nqopen-2600",
+    "reason": "Malformed: the Coral Sea is a marginal sea of the Pacific, no crisp meeting point."
+   },
+   {
+    "id": "nqopen-3254",
+    "reason": "Ranking is year- and source-dependent; neither annotator could confirm a concrete alternative rank."
+   }
+  ],
+  "adjudications": [
+   {
+    "id": "nqopen-373",
+    "pass1": "UNIQUE",
+    "pass2": "MULTI",
+    "final": "UNIQUE",
+    "reason": "Two co-writers form one complete answer (Pebe Sebert and Hugh Moffatt); co-author sets treated as UNIQUE throughout."
+   },
+   {
+    "id": "nqopen-753",
+    "pass1": "UNIQUE",
+    "pass2": "MULTI",
+    "final": "MULTI",
+    "reason": "\"Who sings\" admits the character (Hodel, ref) or a performer (Julia Migenes, 1964 Broadway; Michele Marsh, 1971 film); parallels Big Momma item 1298."
+   },
+   {
+    "id": "nqopen-908",
+    "pass1": "UNIQUE",
+    "pass2": "UNCLEAR",
+    "final": "UNIQUE",
+    "reason": "Edition page-count variation is a small numeric tolerance, not distinct answers; neither annotator could name a concrete alternative with confidence."
+   },
+   {
+    "id": "nqopen-1110",
+    "pass1": "MULTI",
+    "pass2": "UNIQUE",
+    "final": "UNIQUE",
+    "reason": "\"Amendments to the constitution\" are the 27 ratified ones; 33 counts proposals that did not become amendments."
+   },
+   {
+    "id": "nqopen-1352",
+    "pass1": "MULTI",
+    "pass2": "UNIQUE",
+    "final": "UNIQUE",
+    "reason": "Season 11 is complete with 24 episodes; gold 14/12 is an outdated partial count, not a second valid answer."
+   },
+   {
+    "id": "nqopen-1523",
+    "pass1": "UNCLEAR",
+    "pass2": "MULTI",
+    "final": "UNCLEAR",
+    "reason": "Version (US/UK/other) unspecified, but UK has several tied GBP1M winners and neither annotator could confirm the second gold name; cannot decide cleanly."
+   },
+   {
+    "id": "nqopen-1577",
+    "pass1": "UNIQUE",
+    "pass2": "MULTI",
+    "final": "UNIQUE",
+    "reason": "Literal \"tournament of power start\" is the tournament itself (ep. 97, July 2017); the Feb 2017 saga start is a looser reading -> conservative UNIQUE."
+   },
+   {
+    "id": "nqopen-1722",
+    "pass1": "UNIQUE",
+    "pass2": "MULTI",
+    "final": "UNIQUE",
+    "reason": "smen / samna / samneh are transliterations of the same Arabic word -> aliases."
+   },
+   {
+    "id": "nqopen-1845",
+    "pass1": "UNIQUE",
+    "pass2": "MULTI",
+    "final": "MULTI",
+    "reason": "Person heading WV executive changed (Jim Justice 2017-2025, Patrick Morrisey 2025-) and the wording fixes no time; same temporal rule as other items."
+   },
+   {
+    "id": "nqopen-1952",
+    "pass1": "UNIQUE",
+    "pass2": "MULTI",
+    "final": "UNIQUE",
+    "reason": "Henry system co-devised (Henry with Haque and Bose) -> treated as one co-developer set, consistent with co-writer rule."
+   },
+   {
+    "id": "nqopen-2004",
+    "pass1": "UNIQUE",
+    "pass2": "UNCLEAR",
+    "final": "UNCLEAR",
+    "reason": "Classification scheme unspecified (multinational corporation / retail chain / for-profit); vague rather than cleanly multi."
+   },
+   {
+    "id": "nqopen-2021",
+    "pass1": "UNIQUE",
+    "pass2": "MULTI",
+    "final": "UNIQUE",
+    "reason": "English/Welsh patronymic origin is one answer at British-Isles granularity."
+   },
+   {
+    "id": "nqopen-2213",
+    "pass1": "UNIQUE",
+    "pass2": "MULTI",
+    "final": "UNIQUE",
+    "reason": "Sierra Nevada snowmelt -> Feather River -> Delta intake is one water path described at different granularity."
+   },
+   {
+    "id": "nqopen-2214",
+    "pass1": "UNIQUE",
+    "pass2": "UNCLEAR",
+    "final": "UNCLEAR",
+    "reason": "Earliest continent is scientifically debated (Ur vs Vaalbara) and gold Pangaea is likely wrong; cannot decide cleanly."
+   },
+   {
+    "id": "nqopen-2247",
+    "pass1": "UNIQUE",
+    "pass2": "MULTI",
+    "final": "MULTI",
+    "reason": "Venue changed (Sherwood CC, Thousand Oaks until 2013; Albany, Bahamas since 2015) and present tense fixes no time; same temporal rule as Astros item 3391."
+   },
+   {
+    "id": "nqopen-2357",
+    "pass1": "UNIQUE",
+    "pass2": "MULTI",
+    "final": "UNIQUE",
+    "reason": "Composite anatomical answer (central retinal artery via optic nerve); choroid reading is a different vessel bed -> conservative UNIQUE."
+   },
+   {
+    "id": "nqopen-2389",
+    "pass1": "UNIQUE",
+    "pass2": "MULTI",
+    "final": "MULTI",
+    "reason": "Conference lead changed over time: AFC led through the 1970s-early 1980s (e.g. 11-4 after SB XV), NFC leads in the gold era; ties at times."
+   },
+   {
+    "id": "nqopen-2600",
+    "pass1": "UNIQUE",
+    "pass2": "UNCLEAR",
+    "final": "UNCLEAR",
+    "reason": "Malformed: the Coral Sea is a marginal sea of the Pacific, no crisp meeting point."
+   },
+   {
+    "id": "nqopen-2857",
+    "pass1": "UNIQUE",
+    "pass2": "MULTI",
+    "final": "UNIQUE",
+    "reason": "Tavarez is the Spanish form of Portuguese Tavares; one etymology at different depth -> conservative UNIQUE."
+   },
+   {
+    "id": "nqopen-2996",
+    "pass1": "UNIQUE",
+    "pass2": "MULTI",
+    "final": "UNIQUE",
+    "reason": "NYC supply systems (Catskill, Delaware, Croton) form one set answer."
+   },
+   {
+    "id": "nqopen-3254",
+    "pass1": "MULTI",
+    "pass2": "UNCLEAR",
+    "final": "UNCLEAR",
+    "reason": "Ranking is year- and source-dependent; neither annotator could confirm a concrete alternative rank."
+   },
+   {
+    "id": "nqopen-3380",
+    "pass1": "UNIQUE",
+    "pass2": "MULTI",
+    "final": "UNIQUE",
+    "reason": "Pacific Northwest states form one set answer."
+   },
+   {
+    "id": "nqopen-3431",
+    "pass1": "MULTI",
+    "pass2": "UNIQUE",
+    "final": "UNIQUE",
+    "reason": "\"played\" plus title \"101 Dalmatians\" matches the 1996 live-action film (1961 film is \"One Hundred and One Dalmatians\", voice role) -> Glenn Close."
+   },
+   {
+    "id": "nqopen-3450",
+    "pass1": "UNCLEAR",
+    "pass2": "MULTI",
+    "final": "MULTI",
+    "reason": "Two characters are named Stephanie Forrester: Stephanie Sr. (mother Ann Douglas) and Steffy (mother Taylor Hayes, the gold)."
+   },
+   {
+    "id": "nqopen-3458",
+    "pass1": "MULTI",
+    "pass2": "UNIQUE",
+    "final": "MULTI",
+    "reason": "Oregon reinstated the death penalty twice: 1978 (Ballot Measure 8) and 1984 (Measures 6/7, gold); wording does not say \"most recent\"."
+   },
+   {
+    "id": "nqopen-3503",
+    "pass1": "UNIQUE",
+    "pass2": "MULTI",
+    "final": "UNIQUE",
+    "reason": "Survivors (Edgar, Albany, Kent) form one set answer."
+   },
+   {
+    "id": "nqopen-3544",
+    "pass1": "UNIQUE",
+    "pass2": "MULTI",
+    "final": "MULTI",
+    "reason": "Plural open question \"what are the value(s)\": \"ensure consistency\" and \"improve communication\" are distinct valid values; consistent with forest-uses item 2509."
+   }
+  ]
+ },
+ "_meta": {
+  "date": "2026-09-12",
+  "annotators": "LLM annotators (Claude), not humans: pass 1 = orchestrating Claude session; pass 2 = fresh Claude subagents (one per dataset/batch of 100-200) that saw only the definitions and items; disagreements adjudicated by the pass-1 annotator with recorded reasons.",
+  "kappa_note": "Cohen kappa over 3 classes (MULTI/UNIQUE/UNCLEAR) and binary MULTI-vs-rest; MATH-500 kappa undefined because both passes labeled all 200 items UNIQUE (100% raw agreement).",
+  "ci": "95% Wilson score interval on MULTI/n (n=200, UNCLEAR kept in denominator); rate_excl_unclear also given."
+ }
+}
