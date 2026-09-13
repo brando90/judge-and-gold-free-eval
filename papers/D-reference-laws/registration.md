@@ -2627,3 +2627,49 @@ decision, pending a placement discussion, though unlike the recoverability resul
 is a clean two-for-two confirmation and a strong generalization result, not a partial
 falsification -- worth discussing whether it belongs in the same appendix as the other two
 extensions or is substantial enough to warrant its own treatment.
+
+---
+
+## REGISTER Math-Constraint gap-closing campaign (P-MC4..P-MC7), before any new data
+
+Motivation: a self-critique of the Math-Constraint pilot (P-MC1..P-MC3, above) identified
+that it tested only the paper's secondary/mechanistic evidence (rotation, margin), never
+the paper's actual headline phenomenon (reference-shown best-of-n selection degrades
+relative to blind), used only 1 of 6 available rotation pairs per item, never tested a
+lure condition, and used only two open judges. This registers four follow-ups before any
+of their new data exists. User authorized an extended overnight run, up to 3 cluster GPUs,
+plus Anthropic and OpenAI API keys for a frontier-judge leg.
+
+**P-MC4 (selection/inflation, the headline gap).** Construct best-of-n pools per
+`all_interval` item mixing: Fable's independently-verified valid solutions (already
+collected) with a large bulk of invalid attempts freshly sampled at temperature from a
+weak open model on the cluster (Llama-3.1-8B-Instruct or Qwen2.5-7B-Instruct, already
+shown to solve ~0% of these past trivial size, so a large, cheap, honestly-labelled
+invalid population). This is a DISCLOSED artificial construction, not organic
+single-model diversity (precedented by this paper's own matched sub-pool / lure
+constructions elsewhere). noref and ref conditions both scored. Prediction: the referenced
+judge's valid-pick rate at best-of-$n$ is lower than blind's, for both Qwen-7B and phi-4,
+paired per item, replicating Section~\ref{sec:setup}'s core phenomenon on this domain.
+**P-MC5 (full pairwise rotation).** Redo the rotation test using all $\binom{4}{2}=6$
+valid-answer pairs per `all_interval` item (the pilot used only 1 of 6), reusing Fable's
+already-collected, already-verified solutions -- zero new generation. Prediction: the
+same-direction swing confirmed in the pilot survives at a tighter CI with 6x the paired
+observations.
+**P-MC6 (lure test).** Construct invalid "lure" candidates by a minimal perturbation of
+each item's reference (adjacent-element swap, breaking the difference-permutation
+property while keeping maximal textual overlap with the reference) and "clean" invalid
+candidates (a random permutation, oracle-checked invalid, textually unrelated to the
+reference). Prediction: under the ref condition, lures score higher than clean invalids,
+for both judges, replicating the paper's lure finding (Section~\ref{sec:dose}) on this
+domain.
+**P-MC7 (frontier judge).** Re-score the existing margin and full-pairwise-rotation pools
+with Claude Sonnet 5 (model id as pinned in the existing frontier harness,
+`frontier_api_judge.py`) via the Anthropic API. Prediction: same-direction margin and
+rotation swing as the two open judges.
+
+Everything else generated in this campaign (additional problem types, additional items,
+the harder Math-Constraint split) is exploratory and not registered here; it will get its
+own entry if pursued and reported as exploratory if not.
+
+Producers: extending `papers/analysis/mathconstraint_pilot_analysis.py`; pool-construction
+scripts to be committed alongside first use of each, before any judging of that pool.
