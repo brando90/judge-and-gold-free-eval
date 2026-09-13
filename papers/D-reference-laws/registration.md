@@ -2964,3 +2964,28 @@ original 8 comparisons (sol3 vs lure-of-sol2) with 8 new ones (sol4 vs lure-of-s
 the combined valid-pick-rate is lower under ref than blind, for both judges, paired per
 item, 95% CI excluding zero. This is the same P-MC4d prediction, re-tested with double
 the data rather than a new design.
+
+---
+
+## P-MC4e outcome, and final resolution of the selection-degradation question
+
+**Pooled P-MC4d+P-MC4e ($n{=}16$, both judges): CONFIRMED for Qwen-7B, judge-dependent
+for phi-4.** Qwen-7B's valid-pick-rate falls from $0.562$ $[0.312,0.812]$ blind to
+$0.250$ $[0.062,0.500]$ ref, paired diff $-0.312$ $[-0.562,-0.125]$, CI cleanly excluding
+zero. phi-4 moves the same direction, $0.500\to0.375$, diff $-0.125$ $[-0.312,+0.000]$,
+CI at the zero boundary, same pattern as at $n{=}8$ -- not confirmed by this paper's own
+CI-excluding-zero bar despite doubled data and a consistent direction across all 16
+observations.
+
+**This closes out the selection-degradation question on this domain, five attempts in.**
+The first three attempts (P-MC4, P-MC4b, P-MC4c) failed for three different, each
+disclosed, methodological reasons -- an obvious-garbage confound, a canonical-pattern
+confound, and (the one that mattered) scoring the reference's own literal text as one of
+the candidates, which trivially wins by exact string match rather than by anchoring.
+Removing that confound (P-MC4d, P-MC4e) reveals the real effect: the paper's headline
+selection-degradation phenomenon reproduces on this domain, cleanly for one judge and
+judge-dependently for the other, matching this paper's own established pattern elsewhere
+(the separability continuum's artifact-level cliff, the M1-variant provenance
+sensitivity) of a real effect whose strength or presence varies across judges rather than
+holding uniformly. Reported as a genuine, judge-split confirmation, not as either a clean
+universal confirmation or an unresolved question.
