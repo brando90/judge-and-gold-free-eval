@@ -213,10 +213,13 @@ rows = [("hdr", "expected score"),
         ("Qwen3-8B, thinking off", tog["off"]["rot"]["loser"][0], tog["off"]["rot"]["loser"][1], MARK["Qwen3-8B"], True),
         ("Qwen3-8B, thinking on", tog["on"]["rot"]["loser"][0], tog["on"]["rot"]["loser"][1], MARK["Qwen3-8B"], False)]
 r3s = load("r3_sonnet_results.json") or {}
+cli_rows = []
 for arm, lab, filled in (("fast", "Sonnet 5, CLI, score only", True), ("visible", "Sonnet 5, CLI, reasoning", True), ("think", "Sonnet 5, CLI, thinking on", False)):
     v = (r3s.get(arm) or {}).get("rot") if isinstance(r3s.get(arm), dict) else None
     if v and v.get("loser"):
-        rows.append((lab, v["loser"][0], v["loser"][1], MARK["Sonnet 5"], filled))
+        cli_rows.append((lab, v["loser"][0], v["loser"][1], MARK["Sonnet 5"], filled))
+api_pos = next(i for i, r in enumerate(rows) if r[0] == "Sonnet 5, API")
+rows[api_pos + 1:api_pos + 1] = cli_rows
 for arm, lab, filled in (("off", "Qwen3-14B, thinking off", True), ("on", "Qwen3-14B, thinking on", False)):
     v = (t14.get(arm) or {}).get("rot")
     if v:
