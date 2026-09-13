@@ -213,17 +213,9 @@ On the $k$-pool it removes the preregistered inflation at $k{>}1$ for Qwen2.5-7B
 On the 58 multi-answer tasks of the variant study, removing the blind score from the second call brings the inflation back ($+1.42$ and $+0.36$), so the displayed number does the work, consistent with judges anchoring on scores shown to them~\citep{kapetanovic2026anchoring}.\pre{}
 No protocol wins everywhere: the plain reference is best on MATH-500 and \textsc{MACE}, and blind judging is best on the $k$-pool. Blind-then-reveal is a hedge (\cref{tab:regret}).
 Its largest loss against the best protocol in each pool is 10.2 points for Qwen2.5-7B and 1.7 for Qwen2.5-14B, against 30.8 and 20.5 for the plain reference and 30.5 and 27.6 for blind judging. For phi-4, measured on two pools, blind judging has the smaller worst case.\ph
+\Cref{tab:decide} summarizes when to use each option.
 
 \begin{table}[t]
-\centering
-\small
-\setlength{\tabcolsep}{5pt}
-\begin{adjustbox}{max width=\linewidth}\input{tables/regret.tex}\end{adjustbox}
-\caption{\textbf{No protocol is best everywhere.} Best-of-64 accuracy of each protocol minus the best of the three in each pool (points; 0 marks the best), and the worst case over pools. $k$-pool at $k{>}1$, MATH-500 with the reference solution, \textsc{MACE} overall; the original scorer, because blind-then-reveal was not rescored.\ph}
-\label{tab:regret}
-\end{table}
-
-\begin{table}[!ht]
 \centering
 \small
 \setlength{\tabcolsep}{4pt}
@@ -246,7 +238,7 @@ The judge can check answers by reasoning & A thinking judge & Removes the effect
 \label{tab:decide}
 \end{table}
 
-\Cref{tab:decide} summarizes these options.
+
 
 \section{Related work}
 \label{sec:related}

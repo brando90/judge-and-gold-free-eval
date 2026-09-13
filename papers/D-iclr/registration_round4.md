@@ -132,3 +132,52 @@ No Qwen2.5-14B, gemma-2-9b, Mistral-7B, MATH-500, MACE-referenced, or Qwen3-14B 
 - No R4 prediction, readout, or producer changes.
 - The Mistral-7B cell of P-R4A3 compares greedy integers, with replies that contain no integer excluded as missing (flag 2), exactly as the harness specifies.
 - In the paper, the phi-4 decode-cost cells become not evaluable, and the Mistral-7B and Ministral-8B results carry the fallback shares.
+
+---
+
+## Outcomes, R4-A, R4-C, R4-D (recorded 2026-09-13 after running the frozen producers; `r4_results.json`, `r4_toggle14b_results.json`)
+
+**Flags.**
+- Every Qwen2.5-7B, Qwen2.5-14B, and gemma-2-9b score used an expected value (flag 0).
+- Mean |exact − legacy| per Qwen2.5-7B file: 0.067 to 0.170.
+- Mistral-7B, which has no single-token digits:
+  - noref: 3,210 greedy integers (flag 1) and 1,590 missing (flag 2);
+  - ref: 4,610 and 190.
+
+**R4-A.**
+- Rotation, Qwen2.5-7B:
+
+  | Score | Gainer | Loser | Placebo |
+  |---|---|---|---|
+  | Exact | +5.251 [+4.969, +5.527] | −5.405 [−5.727, −5.088] | +0.116 [−0.066, +0.297] |
+  | Legacy, rescored | +4.955 | −5.014 | |
+  | Greedy integer | +5.649 | −5.785 | |
+
+  **P-R4A1 CONFIRMED, P-R4A2 CONFIRMED.**
+- k-pool accuracy change pooled over k > 1: **P-R4A3 CONFIRMED** (four of four cells).
+  - Qwen2.5-7B −0.359 [−0.513, −0.205]
+  - Qwen2.5-14B −0.231 [−0.385, −0.077]
+  - gemma-2-9b −0.154 [−0.282, −0.051]
+  - Mistral-7B −0.085 [−0.118, −0.047]
+- Reported without prediction, the k = 1 change:
+  - Qwen2.5-7B −0.214 [−0.429, 0.000]
+  - Qwen2.5-14B +0.036 [−0.214, +0.286]
+  - gemma-2-9b 0.000
+  - Mistral-7B −0.104 [−0.161, −0.044]
+- Replication false-rejection increase: +0.277 [+0.228, +0.332]. **P-R4A4 CONFIRMED.**
+
+**R4-C (Qwen3-14B).**
+- Thinking off, loser change: −1.984 [−2.495, −1.494]. **P-R4C1 CONFIRMED.**
+- Loser change, off minus on: −1.869 [−2.366, −1.384]. **P-R4C2 CONFIRMED.**
+- Thinking on, MACE margin difference: +3.130 [+2.102, +4.236]. **P-R4C3 CONFIRMED.**
+- On (+3.130) is smaller than off (+7.068). **P-R4C4 CONFIRMED.**
+- Thinking on, blind verification AUROC: 0.860 on the k-subsample, above 0.810 on the MACE subsample. **P-R4C5 CONFIRMED.**
+- Post hoc, Qwen3-8B verification AUROC (k-subsample vs MACE subsample): on 0.857 vs 0.799; off 0.864 vs 0.783.
+
+**R4-D (Qwen2.5-7B).**
+- Blind verification AUROC: replication 0.873, k-pool 0.871, MACE 0.735 (MATH-500 0.688). **P-R4D1 CONFIRMED.**
+- MACE G_nm, referenced minus blind: −0.080 [−0.143, −0.015]. **P-R4D2 CONFIRMED.**
+- MACE G_all, referenced minus blind: +0.073 [+0.020, +0.127]. **P-R4D3 CONFIRMED.**
+- Replication G_nm, referenced minus blind: −0.275 [−0.305, −0.245]. **P-R4D4 CONFIRMED.**
+
+**R4-B** is recorded below once the Qwen2.5-14B runs finish.

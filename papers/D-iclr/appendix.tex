@@ -468,6 +468,15 @@ The reference arm did not copy the reference more often; its exact-reference rat
 \label{fig:fix}
 \end{figure}
 
+\begin{table}[h]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{5pt}
+\begin{adjustbox}{max width=\linewidth}\input{tables/regret.tex}\end{adjustbox}
+\caption{\textbf{No protocol is best everywhere.} Best-of-64 accuracy of each protocol minus the best of the three in each pool (points; 0 marks the best), and the worst case over pools. $k$-pool at $k{>}1$, MATH-500 with the reference solution, \textsc{MACE} overall; the original scorer, because blind-then-reveal was not rescored.\ph}
+\label{tab:regret}
+\end{table}
+
 \paragraph{Instructions and several references.}
 On the synthetic grid at $k{=}16$, the any-valid-answer instruction closes phi-4's margin ($+1.91 \to +0.03$), shrinks Qwen2.5-14B's ($+3.34 \to +1.21$), and leaves smaller judges unmoved or worse (Qwen2.5-1.5B, rubric~$a$: $+3.58 \to +4.54$). Showing $\min(3,k)$ valid references removes the margin toward the original reference on the Qwen-generated grid without restoring blind-level inflation, and largely fails for Qwen2.5-7B on the Llama-generated grid.
 
