@@ -60,3 +60,10 @@ Whatever the outcomes, all are reported in the paper's ledger.
 - Qwen2.5-7B: reference − blind +0.324 [+0.176, +0.471] at k = 1, +0.020 [−0.051, +0.091] at k > 1, +0.098 [+0.023, +0.173] pooled; m1 − reference −0.088 at k = 1, −0.010 [−0.071, +0.061] at k > 1, −0.030 [−0.083, +0.023] pooled.
 - phi-4: reference − blind +0.265 at k = 1, +0.061 [−0.010, +0.131] at k > 1, +0.113 [+0.052, +0.181] pooled; m1 − reference 0.000 at k = 1, −0.020 [−0.061, +0.020] at k > 1, −0.015 [−0.045, +0.015] pooled.
 - **P-R3D1 FALSIFIED, P-R3D2 FALSIFIED, P-R3D3 FALSIFIED** for both judges. On this natural pool the reference raises best-of-64 accuracy overall and does not measurably lower it at k > 1, and blind-then-reveal does not beat the plain reference. The post-hoc break-even is undefined for Qwen2.5-7B (m1 never ahead) and 0 for phi-4.
+
+## Outcomes, R3-A and R3-C (recorded 2026-09-13 after running the frozen producer; `r3_toggle_results.json`)
+
+Unparseable: 12 of 1,200 KSUB blind thinking-off replies; none elsewhere. Thinking-on ROT/KSUB data are the R2-B REASON files.
+- **R3-A, thinking off:** gainer +0.567 [+0.414, +0.747]; loser −0.694 [−0.918, −0.471]; placebo −0.035 [−0.209, +0.142]; KSUB referenced-minus-blind margin at k>1 +1.179 [+0.247, +2.381]; loser change off − on −0.704 [−0.927, −0.482]. **P-R3A1, P-R3A2, P-R3A3, P-R3A4 CONFIRMED.**
+- **R3-C, MACE entity subsample (81 tasks):** referenced-minus-blind margin +3.615 [+2.551, +4.748] with thinking on and +6.160 [+5.229, +7.150] with thinking off; false-rejection increase +0.216 [+0.133, +0.299] on and +0.443 [+0.369, +0.523] off. **P-R3C1, P-R3C2, P-R3C3 CONFIRMED.**
+- Reading: within the same weights, extended thinking removes anchoring on tasks the judge can check by calculation and halves it, without removing it, on questions whose validity rests on knowledge.
