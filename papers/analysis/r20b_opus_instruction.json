@@ -1,0 +1,101 @@
+{
+ "pools": {
+  "repl": "no scores",
+  "mace": {
+   "calls": 1280,
+   "failed_or_unparseable": 3,
+   "oracle": {
+    "G_nm": [
+     -0.0525,
+     [
+      -0.1053,
+      -0.004
+     ],
+     40
+    ],
+    "G_all": [
+     -0.0321,
+     [
+      -0.0774,
+      0.0136
+     ],
+     40
+    ],
+    "FR": [
+     0.0811,
+     [
+      0.0207,
+      0.1586
+     ],
+     40
+    ],
+    "margin": [
+     0.6387,
+     [
+      0.0137,
+      1.3631
+     ],
+     39
+    ],
+    "acc": [
+     -0.0111,
+     [
+      -0.0719,
+      0.0401
+     ],
+     40
+    ],
+    "acc_max_rule": [
+     -0.0081,
+     [
+      -0.0229,
+      0.002
+     ],
+     40
+    ],
+    "G_nm_blind": [
+     0.9379,
+     [
+      0.8743,
+      0.9848
+     ],
+     40
+    ],
+    "G_nm_ref": [
+     0.8854,
+     [
+      0.8149,
+      0.9446
+     ],
+     40
+    ],
+    "G_all_blind": [
+     0.9424,
+     [
+      0.8992,
+      0.9756
+     ],
+     40
+    ],
+    "G_all_ref": [
+     0.9102,
+     [
+      0.8643,
+      0.9522
+     ],
+     40
+    ],
+    "tasks_all_calls_scored": 37
+   }
+  },
+  "kpool": "no scores"
+ },
+ "predictions": {
+  "P-R8A1 repl G_nm < 0": "not scored",
+  "P-R8A2 repl FR > 0": "not scored",
+  "P-R8A3 mace G_nm < 0": "confirmed",
+  "P-R8A4 mace FR > 0": "confirmed",
+  "P-R8A5 kpool G_nm < 0": "not scored",
+  "P-R8A6 repl margin > 0 (manipulation check)": "not scored"
+ }
+}

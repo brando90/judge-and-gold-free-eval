@@ -230,8 +230,8 @@ save(fig, "fig2_selection")
 # ============================================================== Figure: reasoning and verification
 # a: swap loss (reference moved off a correct answer): r3_sonnet_results.json (Sonnet 5 CLI arms), r2_realism_results.json
 #    (MT-Bench template), r3_toggle_results.json and r4_toggle14b_results.json (Qwen3).
-# b: false-rejection change, thinking off vs. on: r7_posthoc_results.json (arithmetic, post hoc), r3_toggle_results.json,
-#    r4_toggle14b_results.json, r5_sonnet_mace_results.json (factual).
+# b: false-rejection change on MACE, thinking off vs. on: r3_toggle_results.json and r4_toggle14b_results.json (Qwen3),
+#    r8_sonnet_results.json (Sonnet 5 API, thinking disabled) and r19b_sonnet_think_results.json (Sonnet 5 API, adaptive thinking).
 tog = load("r3_toggle_results.json")
 t14 = (load("r4_toggle14b_results.json") or {}).get("Qwen3-14B", {})
 r2r = load("r2_realism_results.json")
@@ -301,7 +301,8 @@ def _sub(src, arm):
 
 groups = [("Qwen3-8B\n(explains first / thinks)", _fr(_sub(tog, "off")), _fr(_sub(tog, "on"))),
           ("Qwen3-14B\n(explains first / thinks)", _fr(_sub(t14, "off")), _fr(_sub(t14, "on"))),
-          ("Sonnet 5, CLI\n(score only / thinks)", _fr((r5s.get("fast") or {}).get("false_reject_diff")), _fr((r5s.get("think") or {}).get("false_reject_diff")))]
+          ("Sonnet 5, API\n(score only / thinks)", _fr(((load("r8_sonnet_results.json") or {}).get("pools", {}).get("mace", {}).get("oracle") or {}).get("FR")),
+           _fr(((load("r19b_sonnet_think_results.json") or {}).get("pools", {}).get("mace", {}).get("oracle") or {}).get("FR")))]
 h = 0.38
 n_g = len(groups)
 for i, (lab, off, on) in enumerate(groups):

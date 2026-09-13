@@ -49,7 +49,7 @@ We distinguish three readings of a reference (an answer key, the only evidence f
 Swapping the reference between two correct answers moves the score of byte-identical text by 2.7 to 5.4 points out of 10, and correct answers that differ from the reference are rejected far more often (28\% against 0.4\% for Qwen2.5-7B), although a reference still helps when the answer is unique.
 The effect is not only a failure to verify: Claude Sonnet~5 penalizes answers it scores 10 without a reference, a score it rarely gives to wrong answers.
 It is small for GPT-4.1 and near zero on arithmetic when the judge thinks before scoring, but persists on factual questions.
-We test on program-enumerated tasks and public factual, math, puzzle, and code benchmarks, with 156 registered predictions, all reported.
+We test on program-enumerated tasks and public factual, math, puzzle, and code benchmarks, with 157 registered predictions, all reported.
 On such questions a low reference-guided score is weak evidence of error; in a post hoc analysis, scoring with and without the reference and keeping the higher score removed the grading harm.
 \end{abstract}
 
@@ -157,7 +157,7 @@ On the constructed pools the main text therefore uses \emph{any-format labels}, 
 \paragraph{Measurements and conventions.}
 The \emph{swap change} is the change in score of identical text when the reference moves. The \emph{false-rejection rate} is the share of correct answers that differ from the reference scored 3 or below, and the \emph{grading AUROC} is the per-task AUROC for separating those answers from wrong answers (with one correct answer, all correct answers against wrong ones). \emph{Best-of-64 accuracy} is the correctness of the highest-scored candidate, averaged over ties. The \emph{margin} is the mean score of correct answers that match the reference minus that of correct answers that do not. All changes are referenced minus blind, per task, with task-level bootstrap intervals, in points out of 10 for scores and percentage points (pp) for rates and accuracies. Unless stated otherwise, constructed pools use any-format labels, open judges use an exact expected score (\cref{app:estimator}), and Sonnet~5 results come from its API. We do not correct for multiplicity.
 Our OSF-preregistered primary endpoint, best-of-64 inflation, was confirmed ($+1.19$~\sd) and survives relabeling ($+1.14$~\sd\ph; \cref{app:grid}); we lead with measures that are easier to interpret.
-Marks apply to effect estimates: unmarked estimates were pre-specified in a timestamped commit or on OSF, \ph{} marks post hoc estimates, and \reana{} marks pre-specified re-analyses of an effect whose direction was already known; descriptive statistics such as format compliance and the prevalence audit are post hoc. \Cref{app:ledger} lists all 156 registered predictions: 92 confirmed, 10 not confirmed, 15 falsified, 16 split across judges, and 23 not evaluable, not scored, or excluded.
+Marks apply to effect estimates: unmarked estimates were pre-specified in a timestamped commit or on OSF, \ph{} marks post hoc estimates, and \reana{} marks pre-specified re-analyses of an effect whose direction was already known; descriptive statistics such as format compliance and the prevalence audit are post hoc. \Cref{app:ledger} lists all 157 registered predictions: 92 confirmed, 10 not confirmed, 15 falsified, 17 split across judges, and 23 not evaluable, not scored, or excluded.
 
 \section{Prediction 1: the score follows the reference}
 \label{sec:p1}

@@ -1,0 +1,74 @@
+{
+ "mace": {
+  "nonmatch": {
+   "n": 201,
+   "share_retest_le3": 0.01,
+   "share_referenced_le3": 0.3134,
+   "share_retest_10": 0.9751,
+   "retest_le3": 2,
+   "referenced_le3": 63
+  },
+  "match": {
+   "n": 102,
+   "share_retest_le3": 0.0,
+   "share_referenced_le3": 0.0,
+   "share_retest_10": 0.9412,
+   "retest_le3": 0,
+   "referenced_le3": 0
+  }
+ },
+ "repl": {
+  "nonmatch": {
+   "n": 211,
+   "share_retest_le3": 0.0,
+   "share_referenced_le3": 0.0474,
+   "share_retest_10": 0.9526,
+   "retest_le3": 0,
+   "referenced_le3": 10
+  },
+  "match": {
+   "n": 88,
+   "share_retest_le3": 0.0,
+   "share_referenced_le3": 0.0,
+   "share_retest_10": 0.9545,
+   "retest_le3": 0,
+   "referenced_le3": 0
+  }
+ },
+ "kpool": {
+  "nonmatch": {
+   "n": 113,
+   "share_retest_le3": 0.0,
+   "share_referenced_le3": 0.0265,
+   "share_retest_10": 0.9558,
+   "retest_le3": 0,
+   "referenced_le3": 3
+  },
+  "match": {
+   "n": 56,
+   "share_retest_le3": 0.0,
+   "share_referenced_le3": 0.0,
+   "share_retest_10": 0.9821,
+   "retest_le3": 0,
+   "referenced_le3": 0
+  }
+ },
+ "pooled": {
+  "nonmatch": {
+   "n": 525,
+   "share_retest_le3": 0.0038,
+   "share_referenced_le3": 0.1448,
+   "share_retest_10": 0.9619,
+   "retest_le3": 2,
+   "referenced_le3": 76
+  },
+  "match": {
+   "n": 246,
+   "share_retest_le3": 0.0,
+   "share_referenced_le3": 0.0,
+   "share_retest_10": 0.9553,
+   "retest_le3": 0,
+   "referenced_le3": 0
+  }
+ }
+}
