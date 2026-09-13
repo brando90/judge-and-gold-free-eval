@@ -248,7 +248,7 @@ mv1 = J("dpo_mv_results.json")
 mv3 = J("dpo_mv3_results.json")
 fp = J("dpo_failure_profile.json")
 body = ["\\begin{tabular}{llccc}", "\\toprule",
-        "Run & Arm & Own-judge gain (gate) & Wedge (points) & Held-out accuracy change \\\\", "\\midrule",
+        "Run & Arm & Own-judge gain (gate) & Score--accuracy gap (points) & Held-out accuracy change \\\\", "\\midrule",
         f"1 (4 ep., lr $2{{\\times}}10^{{-5}}$) & reference & {fc(mv1['gate']['ref'][0], mv1['gate']['ref'][1])} & "
         f"{fc(mv1['P_DP2']['ref_wedge'][0], mv1['P_DP2']['ref_wedge'][1])} & {fc(mv1['P_DP3']['ref_heldout'][0], mv1['P_DP3']['ref_heldout'][1], 3)} \\\\",
         f" & blind-then-reveal & {fc(mv1['gate']['m1'][0], mv1['gate']['m1'][1])} & "
@@ -415,6 +415,18 @@ def p4(v):
 
 def done(body):
     return "\n".join(body + ["\\bottomrule", "\\end{tabular}"]) + "\n"
+
+
+def stk(top, bottom):  # value above its interval in one cell
+    return f"\\begin{{tabular}}[c]{{@{{}}c@{{}}}}{top}\\\\{bottom}\\end{{tabular}}"
+
+
+def fs(v, d=2):
+    return stk(f(v[0], d), c(v[1][0], v[1][1], d))
+
+
+def p4s(v):
+    return stk(f"${_z(100 * v[0], 1):+.1f}$", f"{{\\scriptsize$[{_z(100 * v[1][0], 1):+.1f},{_z(100 * v[1][1], 1):+.1f}]$}}")
 
 
 K14, GEM, MIS = "Qwen__Qwen2.5-14B-Instruct", "google__gemma-2-9b-it", "mistralai__Mistral-7B-Instruct-v0.3"
@@ -617,9 +629,7 @@ try:
     for pool, lab in (("mace", "\\textsc{MACE}, $k{>}1$"), ("repl", "Replication"), ("kpool", "$k$-pool, $k{>}1$")):
         nm_, m_ = r15[pool]["nonmatch"], r15[pool]["match"]
         body.append(f"{lab} & {100 * nm_['share_of_10s_scored_le3_with_reference']:.1f}\\% of {nm_['scored_10_blind']}; {100 * m_['share_of_10s_scored_le3_with_reference']:.1f}\\% of {m_['scored_10_blind']} \\\\")
-    nf = J("r16d_sonnet_noise_floor.json")["nonmatch"]
-    sec("Sonnet~5, replication subsamples: correct non-matching answers the API scored 10 blind, re-scored blind through the CLI (noise floor)")
-    body.append(f"Scored 3 or below: second blind call (CLI); API with the reference & {nf['cli_blind_le3']} of {nf['api_blind_10_with_cli_blind']}; {nf['api_referenced_le3']} of {nf['api_blind_10_with_cli_blind']} ({100 * nf['share_api_referenced_le3']:.1f}\\%) \\\\")
+    # the command-line noise floor (r16d) was superseded by the same-interface second blind call (R20-A, tables/r20_retest.tex)
     wt = J("r19_sonnet_wrong_tens.json")
     sec("Sonnet~5 (API) subsamples: share of wrong and correct answers scored 10 blind")
     for pool, lab in (("mace", "\\textsc{MACE}, $k{>}1$"), ("repl", "Replication"), ("kpool", "$k$-pool, $k{>}1$")):
@@ -882,23 +892,23 @@ try:
     first = True
     for jn, d in ex["kpool"].items():
         a_, g_ = d["accuracy"], d["grading"]
-        body.append(f"{'$k$-pool, $k{>}1$, any format' if first else ''} & {jn} & {p4(a_['reference_minus_blind'])} & {p4(a_['max_rule_minus_blind'])} & {p4(a_['max_rule_minus_reference'])} & {fc(*g_['reference_minus_blind'][:2])} & {fc(*g_['max_rule_minus_blind'][:2])} & {fc(*g_['max_rule_minus_reference'][:2])} \\\\")
+        body.append(f"{'$k$-pool, $k{>}1$, any format' if first else ''} & {jn} & {p4s(a_['reference_minus_blind'])} & {p4s(a_['max_rule_minus_blind'])} & {p4s(a_['max_rule_minus_reference'])} & {fs(g_['reference_minus_blind'])} & {fs(g_['max_rule_minus_blind'])} & {fs(g_['max_rule_minus_reference'])} \\\\")
         first = False
     body.append("\\addlinespace")
     first = True
     for jn, d in ex["mace"].items():
         a_, g_ = d["accuracy_natural_mix"], d["grading_kgt1"]
         lab_ = "\\textsc{MACE} (accuracy: natural mix; AUROC: $k{>}1$)" if first else ""
-        body.append(f"{lab_} & {jn} & {p4(a_['reference_minus_blind'])} & {p4(a_['max_rule_minus_blind'])} & {p4(a_['max_rule_minus_reference'])} & {fc(*g_['reference_minus_blind'][:2])} & {fc(*g_['max_rule_minus_blind'][:2])} & {fc(*g_['max_rule_minus_reference'][:2])} \\\\")
+        body.append(f"{lab_} & {jn} & {p4s(a_['reference_minus_blind'])} & {p4s(a_['max_rule_minus_blind'])} & {p4s(a_['max_rule_minus_reference'])} & {fs(g_['reference_minus_blind'])} & {fs(g_['max_rule_minus_blind'])} & {fs(g_['max_rule_minus_reference'])} \\\\")
         first = False
     for jn, d in ex["mace"].items():
         g_ = d["grading_k1_all_correct"]
-        body.append(f"\\textsc{{MACE}} $k{{=}}1$, all correct & {jn} & --- & --- & --- & {fc(*g_['reference_minus_blind'][:2])} & {fc(*g_['max_rule_minus_blind'][:2])} & {fc(*g_['max_rule_minus_reference'][:2])} \\\\")
+        body.append(f"\\textsc{{MACE}} $k{{=}}1$, all correct & {jn} & --- & --- & --- & {fs(g_['reference_minus_blind'])} & {fs(g_['max_rule_minus_blind'])} & {fs(g_['max_rule_minus_reference'])} \\\\")
     body.append("\\addlinespace")
     for jn, d in ex["math500"].items():
         for cond, lab in (("refans", "final answer"), ("ref", "solution")):
             a_, g_ = d[cond]["accuracy"], d[cond]["grading_all_correct"]
-            body.append(f"MATH-500, {lab} & {jn} & {p4(a_['reference_minus_blind'])} & {p4(a_['max_rule_minus_blind'])} & {p4(a_['max_rule_minus_reference'])} & {fc(*g_['reference_minus_blind'][:2])} & {fc(*g_['max_rule_minus_blind'][:2])} & {fc(*g_['max_rule_minus_reference'][:2])} \\\\")
+            body.append(f"MATH-500, {lab} & {jn} & {p4s(a_['reference_minus_blind'])} & {p4s(a_['max_rule_minus_blind'])} & {p4s(a_['max_rule_minus_reference'])} & {fs(g_['reference_minus_blind'])} & {fs(g_['max_rule_minus_blind'])} & {fs(g_['max_rule_minus_reference'])} \\\\")
     write("protocol_exact.tex", done(body))
     print("wrote protocol_exact.tex")
 except (KeyError, TypeError, FileNotFoundError) as e:
@@ -916,7 +926,7 @@ try:
     body = ["\\begin{tabular}{llrrrrrr}", "\\toprule",
             " & & \\multicolumn{3}{c}{Differ from the reference} & \\multicolumn{3}{c}{Match the reference} \\\\",
             "\\cmidrule(lr){3-5}\\cmidrule(lr){6-8}",
-            "Judge & Pool & Scored 10 blind & $\\leq 3$ with reference & $\\leq 3$ second blind call & Scored 10 blind & $\\leq 3$ with reference & $\\leq 3$ second blind call \\\\",
+            "Judge & Pool & Blind 10 & Ref.\\ $\\leq 3$ & Retest $\\leq 3$ & Blind 10 & Ref.\\ $\\leq 3$ & Retest $\\leq 3$ \\\\",
             "\\midrule"]
     for jn, d in RA.items():
         first = True
@@ -926,18 +936,27 @@ try:
                         f"{m['n']} & {cnt(m['referenced_le3'], m['n'])} & {cnt(m['retest_le3'], m['n'])} \\\\")
             first = False
         body.append("\\addlinespace")
-    write("r20_retest.tex", done(body[:-1]))
+    both = {g: [sum(RA[j]["pooled"][g][k] for j in RA) for k in ("n", "referenced_le3", "retest_le3")] for g in ("nonmatch", "match")}
+    body.append(f"Both judges & Pooled & {both['nonmatch'][0]} & {cnt(both['nonmatch'][1], both['nonmatch'][0])} & {cnt(both['nonmatch'][2], both['nonmatch'][0])} & "
+                f"{both['match'][0]} & {cnt(both['match'][1], both['match'][0])} & {cnt(both['match'][2], both['match'][0])} \\\\")
+    write("r20_retest.tex", done(body))
 
     md, qf = J("r20d_matched_acceptance.json"), J("r20f_qwen3_acceptance.json")
     body = ["\\begin{tabular}{llrrrr}", "\\toprule",
             " & & & & \\multicolumn{2}{c}{Correct answers accepted blind: number; share $\\leq 3$ with reference} \\\\", "\\cmidrule(lr){5-6}",
-            "Judge & Pool & Acceptance threshold & Wrong answers accepted & Differ from the reference & Match it \\\\", "\\midrule"]
+            "Judge & Pool & Threshold & Wrong accepted & Differ & Match \\\\", "\\midrule"]
     PN = {"repl": "Replication", "kpool": "$k$-pool, $k{>}1$"}
     for key, x in md.items():
         if "|" not in key:
             continue
         pool, jn = key.split("|")
         body.append(f"{jn} & {PN[pool]} & {x['threshold']:.2f} & {100 * x['wrong_pass_rate']:.1f}\\% of {x['wrong_n']} & "
+                    f"{x['nonmatch']['n']}; {100 * x['nonmatch']['share_le3_with_reference']:.1f}\\% & {x['match']['n']}; {100 * x['match']['share_le3_with_reference']:.1f}\\% \\\\")
+    body.append("\\addlinespace")
+    ma = J("r21a_mace_acceptance.json")
+    for jn in ("Qwen2.5-7B", "phi-4"):
+        x = ma[f"{jn}|target3"]
+        body.append(f"{jn} & \\textsc{{MACE}}, $k{{>}}1$ & {x['threshold']:.2f} & {100 * x['wrong_pass_rate']:.1f}\\% of {x['wrong_n']} & "
                     f"{x['nonmatch']['n']}; {100 * x['nonmatch']['share_le3_with_reference']:.1f}\\% & {x['match']['n']}; {100 * x['match']['share_le3_with_reference']:.1f}\\% \\\\")
     body.append("\\addlinespace")
     for key, x in qf.items():
@@ -949,15 +968,15 @@ try:
     sg = J("r20g_frontier_safeguards.json")
 
     def g_(x, k):  # three decimals: an interval such as [-0.105, -0.004] must not print as reaching zero
-        return fc(*x[k][:2], d=3) if x.get(k) else "not run"
+        return fs(x[k], d=3) if x.get(k) else "not run"
 
     def p_(x, k):
-        return p4(x[k]) if x.get(k) else "not run"
+        return p4s(x[k]) if x.get(k) else "not run"
 
     body = ["\\begin{tabular}{llccccc}", "\\toprule",
             " & & \\multicolumn{3}{c}{Grading AUROC, change against blind} & \\multicolumn{2}{c}{False rejections, change against blind (points)} \\\\",
             "\\cmidrule(lr){3-5}\\cmidrule(lr){6-7}",
-            "Judge & Pool & Reference & Full-credit sentence & Max rule & Reference & Full-credit sentence \\\\", "\\midrule"]
+            "Judge & Pool & Reference & Sentence & Max rule & Reference & Sentence \\\\", "\\midrule"]
     for jn in ("Sonnet 5", "Opus 5"):
         first = True
         for pool, lab in PL[:3]:
@@ -985,16 +1004,16 @@ try:
           "claude-sonnet-5": "Claude Sonnet 5", "claude-opus-5": "Claude Opus 5"}
     body = ["\\begin{tabular}{lrrrrrrr}", "\\toprule",
             " & \\multicolumn{4}{c}{Accuracy (\\%)} & & & \\\\", "\\cmidrule(lr){2-5}",
-            "Generator & Answer list & Blind judge & Referenced judge & Max rule & Referenced $-$ list (points) & Correct answers that differ & Their false rejections: blind; referenced \\\\",
+            "Model & List & Blind & Ref. & Max & Ref.\\ $-$ list & Differ & $\\leq 3$: blind; ref. \\\\",
             "\\midrule"]
     for gk, name in GN.items():
         x = lb["generators"][gk]
         body.append(f"{name} & {100 * x['accuracy_answer_list'][0]:.1f} & {100 * x['accuracy_blind'][0]:.1f} & {100 * x['accuracy_referenced'][0]:.1f} & "
-                    f"{100 * lm[gk]['accuracy_max_rule'][0]:.1f} & {p4(x['undercount_referenced_minus_list'])} & {x['correct_nonmatching']} of {x['correct']} & "
+                    f"{100 * lm[gk]['accuracy_max_rule'][0]:.1f} & {p4s(x['undercount_referenced_minus_list'])} & {x['correct_nonmatching']} of {x['correct']} & "
                     f"{100 * x['false_rejection_nonmatch_blind']:.1f}\\%; {100 * x['false_rejection_nonmatch_ref']:.1f}\\% \\\\")
     po = lb["pooled"]
     body += ["\\midrule",
-             f"Pooled, change against the list (points) & --- & {p4(po['blind_minus_list'])} & {p4(po['undercount_referenced_minus_list'])} & {p4(lm['pooled_max_minus_list'])} & & & "
+             f"Pooled $-$ list & --- & {p4s(po['blind_minus_list'])} & {p4s(po['undercount_referenced_minus_list'])} & {p4s(lm['pooled_max_minus_list'])} & & & "
              f"{100 * po['false_rejection_nonmatch_blind']:.1f}\\%; {100 * po['false_rejection_nonmatch_ref']:.1f}\\% \\\\"]
     write("r20_leaderboard.tex", done(body))
 
@@ -1005,6 +1024,28 @@ try:
         body.append(f"{jn} & {100 * x['accuracy_answer_list'][0]:.1f} & {100 * x['accuracy_blind'][0]:.1f} & {100 * x['accuracy_referenced'][0]:.1f} & "
                     f"{p4(x['referenced_minus_list'])} & {100 * x['nonmatching_credited_blind']:.1f}\\%; {100 * x['nonmatching_credited_referenced']:.1f}\\% \\\\")
     write("r20_benchmark_open.tex", done(body))
+
+    GR = {"Sonnet 5": ("r21c_leaderboard_sonnet_t5.json", "r20c_leaderboard.json", "r21c_leaderboard_sonnet_t10.json", "r20g"),
+          "Opus 5": ("r21a_leaderboard_opus_t5.json", "r21a_leaderboard_opus.json", "r21a_leaderboard_opus_t10.json", "r21a_maxrule_opus.json"),
+          "Haiku 4.5": ("r21a_leaderboard_haiku_t5.json", "r21a_leaderboard_haiku.json", "r21a_leaderboard_haiku_t10.json", "r21a_maxrule_haiku.json")}
+    body = ["\\begin{tabular}{lrcccc}", "\\toprule", "Grader & Threshold & Blind $-$ list & Ref.\\ $-$ list & Max $-$ list & $\\leq 3$: blind; ref. \\\\", "\\midrule"]
+    for gn, (f5, f7, f10, fm) in GR.items():
+        first = True
+        for th, fn in ((5, f5), (7, f7), (10, f10)):
+            if not (A / fn).exists():
+                continue
+            po = J(fn)["pooled"]
+            mxl = "---"
+            if th == 7:
+                mxl = p4s(sg["leaderboard_max_rule"]["pooled_max_minus_list"]) if fm == "r20g" else (p4s(J(fm)["pooled_max_minus_list"]) if (A / fm).exists() else "---")
+            body.append(f"{gn if first else ''} & {th} & {p4s(po['blind_minus_list'])} & {p4s(po['undercount_referenced_minus_list'])} & {mxl} & "
+                        f"{100 * po['false_rejection_nonmatch_blind']:.1f}\\%; {100 * po['false_rejection_nonmatch_ref']:.1f}\\% \\\\")
+            first = False
+        if not first:
+            body.append("\\addlinespace")
+    if body[-1] == "\\addlinespace":
+        body = body[:-1]
+    write("r21_graders.tex", done(body))
     print("wrote round-20 tables")
 except (KeyError, TypeError, FileNotFoundError) as e:
     print("[skip round-20 tables]", repr(e))

@@ -1,0 +1,59 @@
+{
+ "questions": 150,
+ "Qwen2.5-7B|target3": {
+  "threshold": 9.8,
+  "wrong_pass_rate": 0.0265,
+  "wrong_n": 2493,
+  "correct_n": 3843,
+  "nonmatch": {
+   "n": 527,
+   "share_le3_with_reference": 0.833
+  },
+  "match": {
+   "n": 266,
+   "share_le3_with_reference": 0.0
+  }
+ },
+ "Qwen2.5-7B|target5": {
+  "threshold": 9.55,
+  "wrong_pass_rate": 0.0477,
+  "wrong_n": 2493,
+  "correct_n": 3843,
+  "nonmatch": {
+   "n": 693,
+   "share_le3_with_reference": 0.8499
+  },
+  "match": {
+   "n": 296,
+   "share_le3_with_reference": 0.0
+  }
+ },
+ "phi-4|target3": {
+  "threshold": 9.6,
+  "wrong_pass_rate": 0.029,
+  "wrong_n": 2926,
+  "correct_n": 6674,
+  "nonmatch": {
+   "n": 775,
+   "share_le3_with_reference": 0.4194
+  },
+  "match": {
+   "n": 434,
+   "share_le3_with_reference": 0.0
+  }
+ },
+ "phi-4|target5": {
+  "threshold": 9.15,
+  "wrong_pass_rate": 0.0434,
+  "wrong_n": 2926,
+  "correct_n": 6674,
+  "nonmatch": {
+   "n": 1494,
+   "share_le3_with_reference": 0.4304
+  },
+  "match": {
+   "n": 727,
+   "share_le3_with_reference": 0.0
+  }
+ }
+}

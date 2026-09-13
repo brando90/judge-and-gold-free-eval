@@ -1,0 +1,219 @@
+{
+ "questions": 149,
+ "threshold": 7,
+ "generators": {
+  "meta-llama__Llama-3.1-8B-Instruct": {
+   "accuracy_answer_list": [
+    0.6913,
+    [
+     0.6174,
+     0.7651
+    ]
+   ],
+   "accuracy_blind": [
+    0.6174,
+    [
+     0.5369,
+     0.698
+    ]
+   ],
+   "accuracy_referenced": [
+    0.6242,
+    [
+     0.5436,
+     0.7047
+    ]
+   ],
+   "undercount_referenced_minus_list": [
+    -0.0671,
+    [
+     -0.1342,
+     0.0
+    ]
+   ],
+   "blind_minus_list": [
+    -0.0738,
+    [
+     -0.1409,
+     -0.0067
+    ]
+   ],
+   "correct": 103,
+   "correct_nonmatching": 70,
+   "share_correct_nonmatching": 0.6796,
+   "false_rejection_nonmatch_blind": 0.1,
+   "false_rejection_nonmatch_ref": 0.2143,
+   "false_rejection_match_blind": 0.1212,
+   "false_rejection_match_ref": 0.0
+  },
+  "claude-haiku-4-5-20251001": {
+   "accuracy_answer_list": [
+    0.9463,
+    [
+     0.906,
+     0.9799
+    ]
+   ],
+   "accuracy_blind": [
+    0.8456,
+    [
+     0.7852,
+     0.906
+    ]
+   ],
+   "accuracy_referenced": [
+    0.5503,
+    [
+     0.4631,
+     0.6309
+    ]
+   ],
+   "undercount_referenced_minus_list": [
+    -0.396,
+    [
+     -0.4765,
+     -0.3087
+    ]
+   ],
+   "blind_minus_list": [
+    -0.1007,
+    [
+     -0.1611,
+     -0.0403
+    ]
+   ],
+   "correct": 141,
+   "correct_nonmatching": 110,
+   "share_correct_nonmatching": 0.7801,
+   "false_rejection_nonmatch_blind": 0.1091,
+   "false_rejection_nonmatch_ref": 0.3909,
+   "false_rejection_match_blind": 0.0645,
+   "false_rejection_match_ref": 0.0
+  },
+  "claude-sonnet-5": {
+   "accuracy_answer_list": [
+    0.9866,
+    [
+     0.9664,
+     1.0
+    ]
+   ],
+   "accuracy_blind": [
+    0.8792,
+    [
+     0.8255,
+     0.9262
+    ]
+   ],
+   "accuracy_referenced": [
+    0.8121,
+    [
+     0.7517,
+     0.8725
+    ]
+   ],
+   "undercount_referenced_minus_list": [
+    -0.1745,
+    [
+     -0.2349,
+     -0.1141
+    ]
+   ],
+   "blind_minus_list": [
+    -0.1074,
+    [
+     -0.1611,
+     -0.0604
+    ]
+   ],
+   "correct": 147,
+   "correct_nonmatching": 107,
+   "share_correct_nonmatching": 0.7279,
+   "false_rejection_nonmatch_blind": 0.0748,
+   "false_rejection_nonmatch_ref": 0.1963,
+   "false_rejection_match_blind": 0.075,
+   "false_rejection_match_ref": 0.0
+  },
+  "claude-opus-5": {
+   "accuracy_answer_list": [
+    1.0,
+    [
+     1.0,
+     1.0
+    ]
+   ],
+   "accuracy_blind": [
+    0.9128,
+    [
+     0.8658,
+     0.953
+    ]
+   ],
+   "accuracy_referenced": [
+    0.8322,
+    [
+     0.7718,
+     0.8859
+    ]
+   ],
+   "undercount_referenced_minus_list": [
+    -0.1678,
+    [
+     -0.2282,
+     -0.1141
+    ]
+   ],
+   "blind_minus_list": [
+    -0.0872,
+    [
+     -0.1342,
+     -0.047
+    ]
+   ],
+   "correct": 149,
+   "correct_nonmatching": 109,
+   "share_correct_nonmatching": 0.7315,
+   "false_rejection_nonmatch_blind": 0.0826,
+   "false_rejection_nonmatch_ref": 0.1927,
+   "false_rejection_match_blind": 0.075,
+   "false_rejection_match_ref": 0.0
+  }
+ },
+ "ranking_answer_list": [
+  "claude-opus-5",
+  "claude-sonnet-5",
+  "claude-haiku-4-5-20251001",
+  "meta-llama__Llama-3.1-8B-Instruct"
+ ],
+ "ranking_blind": [
+  "claude-opus-5",
+  "claude-sonnet-5",
+  "claude-haiku-4-5-20251001",
+  "meta-llama__Llama-3.1-8B-Instruct"
+ ],
+ "ranking_referenced": [
+  "claude-opus-5",
+  "claude-sonnet-5",
+  "meta-llama__Llama-3.1-8B-Instruct",
+  "claude-haiku-4-5-20251001"
+ ],
+ "pooled": {
+  "false_rejection_nonmatch_blind": 0.0909,
+  "false_rejection_nonmatch_ref": 0.2525,
+  "false_rejection_match_ref": 0.0,
+  "undercount_referenced_minus_list": [
+   -0.2013,
+   [
+    -0.245,
+    -0.1594
+   ]
+  ],
+  "blind_minus_list": [
+   -0.0923,
+   [
+    -0.1259,
+    -0.0604
+   ]
+  ]
+ }
+}

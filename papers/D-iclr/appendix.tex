@@ -21,7 +21,7 @@ In own-built tasks, the reference is one member of the stored valid set, chosen 
 \toprule
 Pool & Contents & Generator & Judges \\
 \midrule
-Replication\osf{} & 120 tasks from five constraint families with exact checkers & Llama-3.1-8B-Instruct & Qwen2.5-7B, phi-4, Sonnet~5, GPT-4.1; on a 120-task subsample, Qwen2.5-7B (MT-Bench template), Qwen3-8B and Qwen3-14B \\
+Replication\osf{} & 120 tasks from five constraint families with exact checkers & Llama-3.1-8B-Instruct & Qwen2.5-7B, phi-4, Sonnet~5, GPT-4.1; on all 120 tasks with up to three candidates per type, Qwen2.5-7B (MT-Bench template), Qwen3-8B and Qwen3-14B \\
 $k$-pool\osf{} & 75 tasks with exactly $k \in \{1,2,4,8,16\}$ valid answers, 15 per $k$; all 465 stored answers checked & Llama-3.1-8B-Instruct & Qwen2.5-7B, phi-4, Qwen2.5-14B, gemma-2-9b, Mistral-7B \\
 Synthetic grid\pre{} & 60 tasks from two families whose valid sets enumerate exactly, 12 per $k$ & Qwen2.5-7B; Llama-3.1-8B & Qwen2.5 1.5B, 3B, 7B, and 14B, Llama-3.1-8B, and phi-4 \\
 Exploratory Ties & 51 generation tasks built from \textsc{RewardBench-2} Ties items & Qwen2.5-7B & Qwen2.5 1.5B--14B \\
@@ -82,7 +82,7 @@ The answer is \texttt{\textbackslash boxed\{80\}}.
 \section{Preregistration ledger}
 \label{app:ledger}
 
-Every confirmatory prediction was committed before its analysis was run, and for new model calls before the data existed; the verdict rule applied to them was adopted afterwards (below). Three experiments were registered on OSF with third-party timestamps\osf{} (links withheld for review; anonymized copies are in the supplementary material). The rest were committed to the project repository with a timestamp that predates the analysis\pre. Some of these rescored or re-analyzed outputs whose direction of effect was already known, such as the exact scorer (\cref{app:estimator}); the ledger names them. Analyses marked post hoc\ph{} carry no registration weight. The main text marks pre-specified re-analyses of an effect whose direction was already known with $\ddagger$; the appendix labels them \pre{} and the ledger names them. \Cref{tab:ledger} lists every experiment and its outcome as scored. Verdicts follow one rule. \emph{Confirmed} means the 95\% interval excludes zero in the predicted direction, or a registered point prediction holds. \emph{Not confirmed} means the interval includes zero. \emph{Falsified} means the interval excludes zero in the opposite direction, or a point prediction fails. The rule was written into a registration made partway through the project for later experiments, and applied retroactively to all earlier predictions after most of their outcomes were known; several predictions that the registration documents mark as falsified are therefore reported here as not confirmed. The re-derivation moved predictions in both directions. Seven moved from falsified to not confirmed (P-R2B1 to P-R2B3, P-R3D1, P-R3D2, P-2D2, and the Qwen2.5-7B cell of P-RC1). Ten moved against us: P-M2 and P-S5 to falsified, P-FM3 from confirmed to falsified, P-S2, P-MC2, and P-EX2 to split, and P-FR1, P-FK2, P-SC1, and P-SC2 from confirmed to not evaluable. Counting each registered prediction once, the ledger records 109 confirmed, 11 not confirmed, and 16 falsified, of 176. Seventeen predictions registered for several judges or training arms got different verdicts across them (\emph{split}; the table lists each verdict), 18 could not be evaluated, 2 were not scored, and 3 from an August 2026 command-line check are excluded (\cref{app:frontier}).
+Every confirmatory prediction was committed before its analysis was run, and for new model calls before the data existed; the verdict rule applied to them was adopted afterwards (below). Three experiments were registered on OSF with third-party timestamps\osf{} (links withheld for review; anonymized copies are in the supplementary material). The rest were committed to the project repository with a timestamp that predates the analysis\pre. Some of these rescored or re-analyzed outputs whose direction of effect was already known, such as the exact scorer (\cref{app:estimator}); the ledger names them. Analyses marked post hoc\ph{} carry no registration weight. The main text marks pre-specified re-analyses of an effect whose direction was already known with $\ddagger$; the appendix labels them \pre{} and the ledger names them. \Cref{tab:ledger} lists every experiment and its outcome as scored. Verdicts follow one rule. \emph{Confirmed} means the 95\% interval excludes zero in the predicted direction, or a registered point prediction holds. \emph{Not confirmed} means the interval includes zero. \emph{Falsified} means the interval excludes zero in the opposite direction, or a point prediction fails. The rule was written into a registration made partway through the project for later experiments, and applied retroactively to all earlier predictions after most of their outcomes were known; several predictions that the registration documents mark as falsified are therefore reported here as not confirmed. The re-derivation moved predictions in both directions. Seven moved from falsified to not confirmed (P-R2B1 to P-R2B3, P-R3D1, P-R3D2, P-2D2, and the Qwen2.5-7B cell of P-RC1). Ten moved against us: P-M2 and P-S5 to falsified, P-FM3 from confirmed to falsified, P-S2, P-MC2, and P-EX2 to split, and P-FR1, P-FK2, P-SC1, and P-SC2 from confirmed to not evaluable. Counting each registered prediction once, the ledger records 118 confirmed, 11 not confirmed, and 16 falsified, of 185. Seventeen predictions registered for several judges or training arms got different verdicts across them (\emph{split}; the table lists each verdict), 18 could not be evaluated, 2 were not scored, and 3 from an August 2026 command-line check are excluded (\cref{app:frontier}).
 
 {\small
 \setlength{\tabcolsep}{4pt}
@@ -142,6 +142,7 @@ Sonnet~5 with adaptive thinking through the API, \textsc{MACE} (\cref{sec:p3,app
 Second blind call through the same interface (\cref{sec:p3,app:acceptance}) & commit & Of correct non-matching answers scored 10 blind, at most 2\% score 3 or below on a second blind call, and fewer than with the reference: Sonnet~5 (\textbf{confirmed}); Opus~5 (\textbf{confirmed}); each judge on \textsc{MACE} alone (\textbf{confirmed}). \\
 Full-credit sentence, measured by grading (\cref{sec:p3,app:acceptance}) & commit & With the sentence, grading on \textsc{MACE} still worse than blind for Sonnet~5 (\textbf{confirmed}) and Opus~5 (\textbf{confirmed}); the rise in false rejections smaller than without the sentence for Sonnet~5 on \textsc{MACE} (\textbf{confirmed}) and on the replication pool (\textbf{confirmed}; both point estimates). \\
 Benchmark scores (\cref{sec:cost,app:acceptance}) & commit & Referenced accuracy below answer-list accuracy, pooled over models (\textbf{confirmed}); correct non-matching answers scored 3 or below more often with the reference than blind (\textbf{confirmed}); referenced accuracy below answer-list accuracy for every model with at least 10 such answers (\textbf{confirmed}, 4 of 4). Rankings are reported without a prediction. \\
+Two more benchmark graders (\cref{sec:cost,app:acceptance}) & commit & With Opus~5 and with Haiku~4.5 as the grader: referenced accuracy below answer-list accuracy, pooled (\textbf{confirmed}, both); correct non-matching answers scored 3 or below more often with the reference (\textbf{confirmed}, both); referenced accuracy below the list for every model with at least 10 such answers (\textbf{confirmed}, both, 4 of 4); max-rule accuracy within 5 points of the list and clear of referenced accuracy (\textbf{confirmed}, both); Opus~5's blind accuracy within 5 points of the list (\textbf{confirmed}). \\
 Partial-answer rotation pilot & commit & A fixed first move scores higher when it matches the move shown as confirmed (\textbf{confirmed}, both judges). Not otherwise reported in this paper. \\
 \end{longtable}
 }
@@ -523,7 +524,7 @@ Only 61.6\% of samples put their answer in the requested \texttt{\textbackslash 
 \section{Swap test: all cells and the judge-size ladder}
 \label{app:rotation}
 
-The ledger calls the swap test \emph{rot\-ation}: the reference is moved to a different correct answer while the candidate text stays fixed. Samples the new reference moves onto are \emph{gainers}, samples it moves off are \emph{losers}, and correct samples that match neither reference are the \emph{placebo}.
+The ledger calls the swap test \emph{rot\-ation}: the reference is moved to a different correct answer while the candidate text stays fixed.
 
 The swap assigns each task the valid alternative that appears most often among its valid samples, so that enough samples match the new reference. This choice makes cross-sample margins partly reflect how common an answer is; the paired same-sample changes in \cref{tab:rotation} compare each sample with itself and are not affected.
 
@@ -621,7 +622,7 @@ Holding the reference answer fixed and swapping its derivation to a different me
 \label{app:frontier}
 
 \paragraph{An excluded command-line check.}
-An earlier check called \texttt{claude -p --model sonnet} from the project directory in August 2026 on 37 $k$-pool tasks. We exclude it from the ledger counts and do not use it in the main text. It ran with the command-line interface's default agent context, which may have included a git status listing recent commit messages that name the anchoring hypothesis (the stored transcripts record thinking but not the context, so we cannot confirm this, and we exclude the run either way), and extended thinking engaged on 178 of 330 blind calls but 27 of 330 referenced calls. For the record, its mean per-task margin was $+0.35$ \ci{-0.56}{+1.27} blind and $+7.49$ \ci{+6.58}{+8.27} with the reference, and it scored 19.6\% of correct non-matching answers at 3 or below blind and 82.5\% with the reference, pooled over samples. The command-line replication of \cref{app:reasoning} removes this context.
+An earlier check called \texttt{claude -p --model sonnet} from the project directory in August 2026 on 37 $k$-pool tasks. It ran with the interface's default agent context, which may have shown repository metadata naming the hypothesis, and with extended thinking on 178 of 330 blind but 27 of 330 referenced calls, so we exclude it from the ledger counts and the main text. For the record, its mean per-task margin was $+0.35$ \ci{-0.56}{+1.27} blind and $+7.49$ \ci{+6.58}{+8.27} with the reference, and it scored 19.6\% of correct non-matching answers at 3 or below blind and 82.5\% with the reference, pooled over samples. The command-line replication of \cref{app:reasoning} removes this context.
 
 \paragraph{API judges.}
 Sonnet~5 reproduces the swap (\cref{tab:rotation}), the blind-accepted filter, the masking pattern (bare reference $+3.06$, words $+3.14$, expression $+0.47$), and the \textsc{MACE} result that its blind margin is negative. GPT-4.1 picks matching answers far more often with the reference (32 referenced-only against 1 blind-only picks) and has a margin of $+1.19$. It failed our pre-specified score-resolution screen: an average of 15.03 candidates per pool tie at its maximum score, against a bar of 3.0. Its $k$ step is $+0.27$ \ci{-0.02}{+0.61} on the $k$-pool and $-0.08$ \ci{-0.49}{+0.20} on the synthetic grid, where ties are heavier (47.0 per pool), so we report it as unresolved.
@@ -671,18 +672,18 @@ A pre-specified experiment re-scored blind, through the same interface and with 
 
 \begin{table}[htbp]
 \centering
-\caption{Correct answers each API judge scored 10 on its first blind call: how many score 3 or below with the reference, and on a second blind call through the same interface.\pre}
+\caption{Correct answers each API judge scored 10 on its first blind call: how many score 3 or below with the reference, and on a second blind call through the same interface. One of Opus~5's second calls, on a matching \textsc{MACE} answer, returned no score, so its pooled matching count is 246 here and 247 in the registered acceptance readout.\pre}
 \label{tab:r20-retest}
 \footnotesize
 \begin{adjustbox}{max width=\linewidth}\input{tables/r20_retest.tex}\end{adjustbox}
 \end{table}
 
 \paragraph{A matched acceptance threshold for the open judges.}
-Open judges' expected scores are deterministic, so a second call would repeat the first, and they rarely give any answer exactly 10. For each open judge and constructed pool we took the lowest blind expected score, on a grid of 0.05, that at most 3\% of wrong answers reach, and asked how often correct answers at or above it score 3 or below with the reference (\cref{tab:r20-matched}). The pattern of the API judges repeats: 5\% to 57\% of those that differ from the reference, against at most 0.4\% of those that match.\ph{} For Qwen3 on the 81-task \textsc{MACE} subsample we use a blind 10, which with thinking on 21\% to 24\% of wrong answers also receive, so those rows do not isolate acceptance; we report them for completeness.
+Open judges' expected scores are deterministic, so a second call would repeat the first, and they rarely give any answer exactly 10. For each open judge and pool we took the lowest blind expected score, on a grid of 0.05, that at most 3\% of wrong answers reach, and asked how often correct answers at or above it score 3 or below with the reference (\cref{tab:r20-matched}). On the constructed pools, 5\% to 57\% of those that differ from the reference score 3 or below, against at most 0.4\% of those that match; on \textsc{MACE}, 83.3\% (Qwen2.5-7B) and 41.9\% (phi-4), against none of the matching ones, and a 5\% threshold gives 85.0\% and 43.0\%.\ph{} For Qwen3 on the 81-task \textsc{MACE} subsample we use a blind 10, which with thinking on 21\% to 24\% of wrong answers also receive, so those rows do not isolate acceptance; we report them for completeness.
 
 \begin{table}[htbp]
 \centering
-\caption{Acceptance at a matched threshold for the open judges (full 64-candidate pools, any-format labels, exact scorer for Qwen2.5 and gemma-2), and at a blind 10 for Qwen3 on the \textsc{MACE} subsample.\ph}
+\caption{Acceptance at a matched threshold for the open judges (full 64-candidate pools; any-format labels on the constructed pools, answer lists on \textsc{MACE}; exact scorer for Qwen2.5 and gemma-2), and at a blind 10 for Qwen3 on the \textsc{MACE} subsample. Threshold: the lowest blind expected score that at most 3\% of wrong answers reach.\ph}
 \label{tab:r20-matched}
 \footnotesize
 \begin{adjustbox}{max width=\linewidth}\input{tables/r20_matched_acceptance.tex}\end{adjustbox}
@@ -708,6 +709,28 @@ A pre-specified experiment asked Claude Haiku~4.5, Sonnet~5, and Opus~5 (API, de
 \label{tab:r20-leaderboard}
 \footnotesize
 \begin{adjustbox}{max width=\linewidth}\input{tables/r20_leaderboard.tex}\end{adjustbox}
+\end{table}
+
+\paragraph{Two more graders.}
+A pre-specified follow-up graded the same answers with Opus~5 and Haiku~4.5 (API, thinking disabled, 1,192 calls each). Opus~5 left 11 referenced replies without a score, all cut off at 512 tokens while it reasoned about whether a differing answer was acceptable; their questions drop out of its readouts (141 remain), which may understate its shortfall. All nine predictions were confirmed (\cref{tab:r21-graders}). With the reference, pooled accuracy falls 15.6 points below the answer lists under Opus~5 and 20.1 under Haiku~4.5; blind, Opus~5 differs from the lists by $+0.4$ points and Haiku~4.5, a weaker verifier, by $-9.2$; under the max rule both stay within 2 points. Reported without a prediction: Opus~5 keeps the answer-list ranking with the reference, while Haiku~4.5 puts Llama-3.1-8B (62.4\%) above its own answers (55.0\%). The shortfall also holds at a threshold of 5; at a threshold of 10 every grader under-counts even blind, because blind 10s are rare.
+
+\begin{table}[htbp]
+\centering
+\caption{The benchmark study under three graders: pooled changes against the answer lists (points, 95\% CI) at score thresholds 5, 7, and 10, the max rule at 7, and the shares of correct non-matching answers scored 3 or below, blind and with the reference. For Opus~5 and Haiku~4.5, threshold 7 and the max rule carry registered predictions and thresholds 5 and 10 are registered readouts; Sonnet~5's thresholds 5 and 10 and its max rule are post hoc.}
+\label{tab:r21-graders}
+\footnotesize
+\input{tables/r21_graders.tex}
+\end{table}
+
+\paragraph{Open judges as graders.}
+Graded by Qwen2.5-7B or phi-4, Llama-3.1-8B's 64 stored samples per question on the same 150 questions are under-counted blind as well as with the reference, and with the reference these judges credit at most 1.4\% of the correct answers that differ from it (\cref{tab:r20-benchopen}).\ph{} Each judge's row uses the samples it scored in both conditions, so answer-list accuracy differs between the rows.
+
+\begin{table}[htbp]
+\centering
+\caption{Open judges as graders of Llama-3.1-8B's stored samples on the 150 multi-answer \textsc{MACE} questions (a score of 7 or above counts as correct; question-level bootstrap).\ph}
+\label{tab:r20-benchopen}
+\footnotesize
+\begin{adjustbox}{max width=\linewidth}\input{tables/r20_benchmark_open.tex}\end{adjustbox}
 \end{table}
 
 %==========================================================================================
@@ -875,7 +898,7 @@ Each of 25 new tasks was requested in four formats with the content fixed. Three
 \section{Training runs}
 \label{app:dpo}
 
-Arms trained Llama-3.1-8B-Instruct with LoRA-DPO~\citep{rafailov2023dpo,hu2022lora} on identical tasks and hyperparameters, differing only in the judge protocol that labeled the preference pairs: the referenced Qwen2.5-7B judge, the same judge under blind-then-reveal, and in run 3 the blind judge. Each arm's manipulation check required its own judge's score to rise. The \emph{wedge} is the rise in own-judge score (points) minus ten times the rise in accuracy, so both terms are on the 0--10 scale.
+Arms trained Llama-3.1-8B-Instruct with LoRA-DPO~\citep{rafailov2023dpo,hu2022lora} on identical tasks and hyperparameters, differing only in the judge protocol that labeled the preference pairs: the referenced Qwen2.5-7B judge, the same judge under blind-then-reveal, and in run 3 the blind judge. Each arm's manipulation check required its own judge's score to rise. The \emph{score--accuracy gap} is the rise in own-judge score (points) minus ten times the rise in accuracy, so both terms are on the 0--10 scale.
 
 \begin{table}[htbp]
 \centering

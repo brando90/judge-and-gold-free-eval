@@ -1,0 +1,77 @@
+{
+ "questions": 141,
+ "threshold": 7,
+ "generators": {
+  "meta-llama__Llama-3.1-8B-Instruct": {
+   "accuracy_max_rule": [
+    0.7021,
+    [
+     0.6312,
+     0.773
+    ]
+   ],
+   "max_minus_list": [
+    0.0,
+    [
+     -0.0355,
+     0.0355
+    ]
+   ]
+  },
+  "claude-haiku-4-5-20251001": {
+   "accuracy_max_rule": [
+    0.9574,
+    [
+     0.922,
+     0.9858
+    ]
+   ],
+   "max_minus_list": [
+    0.0142,
+    [
+     0.0,
+     0.0355
+    ]
+   ]
+  },
+  "claude-sonnet-5": {
+   "accuracy_max_rule": [
+    0.9929,
+    [
+     0.9787,
+     1.0
+    ]
+   ],
+   "max_minus_list": [
+    0.0071,
+    [
+     0.0,
+     0.0213
+    ]
+   ]
+  },
+  "claude-opus-5": {
+   "accuracy_max_rule": [
+    1.0,
+    [
+     1.0,
+     1.0
+    ]
+   ],
+   "max_minus_list": [
+    0.0,
+    [
+     0.0,
+     0.0
+    ]
+   ]
+  }
+ },
+ "pooled_max_minus_list": [
+  0.0053,
+  [
+   -0.0053,
+   0.0177
+  ]
+ ]
+}

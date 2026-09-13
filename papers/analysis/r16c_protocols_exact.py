@@ -1,4 +1,4 @@
-# POST HOC (round-16 review). Run from experiments/tfa-vs-judge. Writes papers/analysis/r16c_protocols_exact.json.
+# POST HOC (round-16 review; accuracy_kgt1 added after the round-20 review). Run from experiments/tfa-vs-judge. Writes papers/analysis/r16c_protocols_exact.json.
 # The protocol comparison of Table 2 under the exact scorer (no reveal calls exist under it): reference and max rule
 # (max of blind and referenced score) against blind, and max rule minus reference, with paired task-bootstrap intervals.
 # Accuracy: k-pool k > 1 (any-format labels, pass-rate band recomputed), MACE River/Language natural mix (pass rate in
@@ -125,6 +125,7 @@ for t in jl("runs/bon/bon_mace__meta-llama__Llama-3.1-8B-Instruct.jsonl"):
 for jn, f in (("Qwen2.5-7B", f"{S4}/mace__Qwen__Qwen2.5-7B-Instruct__{{}}_a.jsonl"), ("phi-4", "runs/bon_scores_mace/mace__microsoft__phi-4__{}_a.jsonl")):
     b, r = rows(f.format("noref")), rows(f.format("ref"))
     res["mace"][jn] = dict(accuracy_natural_mix=compare(mace, b, r, acc("oracle")),
+                           accuracy_kgt1=compare([t for t in mace if t["k"] > 1], b, r, acc("oracle")),  # round 21: multi-answer questions only
                            grading_kgt1=compare([t for t in mace if t["k"] > 1], b, r, g_nm("oracle", "match")),
                            grading_k1_all_correct=compare([t for t in mace if t["k"] == 1], b, r, g_all("oracle")))
 math_pool = [t for t in jl("runs/bon/bon_math__Qwen__Qwen2.5-7B-Instruct.jsonl") if "oracle" in t and 0.2 <= np.mean(t["oracle"]) <= 0.8]

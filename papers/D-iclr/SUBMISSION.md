@@ -15,7 +15,7 @@ Deadlines (ICLR 2027 author guidelines): abstract registration **Sep 18, 2026 AO
 
 - [ ] `latexmk -pdf main.tex` builds with no undefined references; main text ends on or before page 9.
 - [ ] `python scripts/make_figures.py && python scripts/make_tables.py` regenerated from current `papers/analysis/*.json`.
-- [ ] `python scripts/check_numbers.py`: every flagged number checked by hand. As of round 20 the main text flags nothing (176 = 109 + 11 + 16 + 17 + 18 + 2 + 3 is typed only in the ledger text, where the registration files carry its parts); the appendix flags 420 (Figure 1 length rule), 94, 405, 825 and 1,200, each a count checked by hand.
+- [ ] `python scripts/check_numbers.py`: every flagged number checked by hand. As of round 21 the main text flags only 185 (the ledger sum 118 + 11 + 16 + 17 + 18 + 2 + 3); the appendix flags 420 (Figure 1 length rule), 94, 405, 825 and 1,200, each a count checked by hand.
 - [x] R3-B visible and thinking arms were completed after the usage limit reset (round 5); nothing pending.
 - [ ] PDF metadata anonymous: `pdfinfo main.pdf` shows no author; no acknowledgments; no OSF links in the PDF.
 - [ ] `supplement.zip` under 100 MB, anonymization audit clean (see `supplement/README.md`).
