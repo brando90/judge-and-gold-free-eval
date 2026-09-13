@@ -103,4 +103,17 @@ with open(out + ".part", "w") as f:
         print(f"[m1-math {args.judge} {args.rep}] {min(i + B, len(pool))}/{len(pool)}", flush=True)
 os.replace(out + ".part", out)
 print("[r2 done]", out, flush=True)
-os._exit(0)  # vLLM 0.25.1 can hang on teardown
+# vLLM 0.25.1 can hang on teardown and orphan its engine; kill children first
+import psutil
+for _c in psutil.Process().children(recursive=True):
+    try:
+        _c.kill()
+    except Exception:
+        pass
+import psutil
+for _c in psutil.Process().children(recursive=True):
+    try:
+        _c.kill()
+    except Exception:
+        pass
+os._exit(0)

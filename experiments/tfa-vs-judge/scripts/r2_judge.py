@@ -120,4 +120,10 @@ with open(out + ".part", "w") as f:
                                 n_tokens=[x["n_tokens"] for x in lst], tail=[x["tail"] for x in lst])) + "\n")
 os.replace(out + ".part", out)
 print(f"[r2 done] {out} unparseable={n_bad}/{len(prompts)}", flush=True)
+import psutil
+for _c in psutil.Process().children(recursive=True):
+    try:
+        _c.kill()
+    except Exception:
+        pass
 os._exit(0)
