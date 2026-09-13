@@ -51,3 +51,12 @@ Registered separately in `registration_round3b.md` after a harness pilot on item
 - **P-R3D3.** Pooled over the natural mix, m1 accuracy ≥ reference accuracy (point estimates), both judges.
 
 Whatever the outcomes, all are reported in the paper's ledger.
+
+---
+
+## Outcome, R3-D (recorded 2026-09-13 after running the frozen producer; `r3_mace_accuracy_results.json`)
+
+133 MACE River+Language tasks in the [0.05, 0.95] band (34 with k = 1, 99 with k > 1). Blind scores correlate with validity at r = 0.361 (Qwen2.5-7B) and 0.477 (phi-4), so the frozen MACE score files are aligned.
+- Qwen2.5-7B: reference − blind +0.324 [+0.176, +0.471] at k = 1, +0.020 [−0.051, +0.091] at k > 1, +0.098 [+0.023, +0.173] pooled; m1 − reference −0.088 at k = 1, −0.010 [−0.071, +0.061] at k > 1, −0.030 [−0.083, +0.023] pooled.
+- phi-4: reference − blind +0.265 at k = 1, +0.061 [−0.010, +0.131] at k > 1, +0.113 [+0.052, +0.181] pooled; m1 − reference 0.000 at k = 1, −0.020 [−0.061, +0.020] at k > 1, −0.015 [−0.045, +0.015] pooled.
+- **P-R3D1 FALSIFIED, P-R3D2 FALSIFIED, P-R3D3 FALSIFIED** for both judges. On this natural pool the reference raises best-of-64 accuracy overall and does not measurably lower it at k > 1, and blind-then-reveal does not beat the plain reference. The post-hoc break-even is undefined for Qwen2.5-7B (m1 never ahead) and 0 for phi-4.
