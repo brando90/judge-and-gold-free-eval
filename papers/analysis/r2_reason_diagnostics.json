@@ -1,0 +1,102 @@
+{
+ "reason|rot|noref": {
+  "n_valid": 879,
+  "valid_mean": 9.94,
+  "valid_modal_score": 10.0,
+  "valid_share_modal": 0.962,
+  "n_invalid": 0,
+  "invalid_mean": null,
+  "tokens_mean": 678,
+  "mention_reference": 0.003
+ },
+ "reason|rot|ref": {
+  "n_valid": 879,
+  "valid_mean": 10.0,
+  "valid_modal_score": 10.0,
+  "valid_share_modal": 0.998,
+  "n_invalid": 0,
+  "invalid_mean": null,
+  "tokens_mean": 569,
+  "mention_reference": 0.827
+ },
+ "reason|rot|refrot": {
+  "n_valid": 879,
+  "valid_mean": 9.99,
+  "valid_modal_score": 10.0,
+  "valid_share_modal": 0.998,
+  "n_invalid": 0,
+  "invalid_mean": null,
+  "tokens_mean": 573,
+  "mention_reference": 0.803
+ },
+ "reason|ksub|noref": {
+  "n_valid": 485,
+  "valid_mean": 9.9,
+  "valid_modal_score": 10.0,
+  "valid_share_modal": 0.957,
+  "n_invalid": 708,
+  "invalid_mean": 3.67,
+  "tokens_mean": 1092,
+  "mention_reference": 0.014
+ },
+ "reason|ksub|ref": {
+  "n_valid": 486,
+  "valid_mean": 9.95,
+  "valid_modal_score": 10.0,
+  "valid_share_modal": 0.994,
+  "n_invalid": 708,
+  "invalid_mean": 3.15,
+  "tokens_mean": 1009,
+  "mention_reference": 0.66
+ },
+ "mtbench|rot|noref": {
+  "n_valid": 869,
+  "valid_mean": 6.68,
+  "valid_modal_score": 7.0,
+  "valid_share_modal": 0.41,
+  "n_invalid": 0,
+  "invalid_mean": null,
+  "tokens_mean": 164,
+  "mention_reference": 0.002
+ },
+ "mtbench|rot|ref": {
+  "n_valid": 864,
+  "valid_mean": 4.97,
+  "valid_modal_score": 4.0,
+  "valid_share_modal": 0.172,
+  "n_invalid": 0,
+  "invalid_mean": null,
+  "tokens_mean": 259,
+  "mention_reference": 0.332
+ },
+ "mtbench|rot|refrot": {
+  "n_valid": 874,
+  "valid_mean": 5.52,
+  "valid_modal_score": 8.0,
+  "valid_share_modal": 0.199,
+  "n_invalid": 0,
+  "invalid_mean": null,
+  "tokens_mean": 241,
+  "mention_reference": 0.344
+ },
+ "mtbench|ksub|noref": {
+  "n_valid": 481,
+  "valid_mean": 6.66,
+  "valid_modal_score": 7.0,
+  "valid_share_modal": 0.407,
+  "n_invalid": 705,
+  "invalid_mean": 3.94,
+  "tokens_mean": 183,
+  "mention_reference": 0.0
+ },
+ "mtbench|ksub|ref": {
+  "n_valid": 474,
+  "valid_mean": 5.55,
+  "valid_modal_score": 4.0,
+  "valid_share_modal": 0.171,
+  "n_invalid": 675,
+  "invalid_mean": 3.39,
+  "tokens_mean": 292,
+  "mention_reference": 0.266
+ }
+}
