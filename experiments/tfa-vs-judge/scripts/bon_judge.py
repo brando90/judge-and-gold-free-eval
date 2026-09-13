@@ -21,7 +21,8 @@ ap = argparse.ArgumentParser()
 ap.add_argument("--pool", required=True)
 ap.add_argument("--judge", required=True)
 ap.add_argument("--cond", choices=["noref", "ref", "sabotage", "refinst", "refinst2", "multiref",
-                                   "refsol", "refsol2", "refexem"], required=True)
+                                   "refsol", "refsol2", "refexem",
+                                   "cipher1", "cipher2", "cipher3"], required=True)
 ap.add_argument("--rep", choices=["a", "b"], required=True)
 ap.add_argument("--domain", choices=["math", "code", "ties", "synthk", "simcorr", "mace"], default="math")
 ap.add_argument("--filter-band", action="store_true", help="only items with pool pass in [0.2,0.8]")
@@ -82,8 +83,29 @@ for v in range(11):
         if len(ids) == 1:
             CAND.setdefault(ids[0], v)
 
+CIPHER_RULE = {
+    # Recoverability-cost dose-response (P-RC1..P-RC4). Each level adds one more required
+    # inversion to check a match; the rule is stated explicitly (cf. refexpr's "n-1+1"),
+    # so the manipulation is decode COST, not decode impossibility. Built by
+    # scripts/build_recoverability_pool.py, which applies the same transform to ref_answer.
+    "cipher1": (" The reference answer below has been encoded: every digit has been "
+                "shifted up by 3 (mod 10), e.g. 0->3, 7->0, 9->2. Decode it digit-by-digit "
+                "before comparing."),
+    "cipher2": (" The reference answer below has been encoded in two steps: first every "
+                "digit was shifted up by 3 (mod 10), e.g. 0->3, 7->0, 9->2, then the "
+                "resulting digit string was base64-encoded. Reverse both steps before "
+                "comparing."),
+    "cipher3": (" The reference answer below has been encoded in three steps: first every "
+                "digit was shifted up by 3 (mod 10), e.g. 0->3, 7->0, 9->2, then the "
+                "resulting digit string was base64-encoded, then that base64 string was "
+                "reversed character-by-character. Reverse all three steps before "
+                "comparing."),
+}
+
+
 def build(r, s):
-    cond_key = ("ref" if args.cond in ("refinst", "refinst2", "multiref", "refsol", "refsol2", "refexem")
+    cond_key = ("ref" if args.cond in ("refinst", "refinst2", "multiref", "refsol", "refsol2",
+                                        "refexem", "cipher1", "cipher2", "cipher3")
                 else args.cond)
     if args.cond == "refexem":
         sys = RUBRIC_CODE_EXEM[args.rep]
@@ -99,6 +121,8 @@ def build(r, s):
                 "Use the reference only to understand the problem. Verify the candidate's "
                 "answer on its own merits; a correct answer that differs from the reference "
                 "must receive the same score as one that matches it.")
+    if args.cond in CIPHER_RULE:
+        sys += CIPHER_RULE[args.cond]
     q = r.get("problem") or r.get("question") or r.get("prompt")
     parts = [f"Problem:\n{q}"]
     if args.cond == "multiref":
