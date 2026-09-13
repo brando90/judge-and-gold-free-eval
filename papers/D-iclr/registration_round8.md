@@ -13,6 +13,13 @@ Harness (committed with this file): `experiments/tfa-vs-judge/scripts/sonnet_cli
 - `mace`: 40 MACE River and Language tasks with k > 1 and pass rate in [0.05, 0.95]; 640 candidates.
 - `kpool`: all 22 eligible k-pool tasks with k > 1 and lenient pass rate in [0.2, 0.8]; 352 candidates.
 
+Pool and label files are not tracked by git (runs/ is ignored); their md5 hashes at registration:
+- `runs/r8/sonnet_repl.jsonl` 4d7f8b6e4739f0bbff5c5e1de72b13d3
+- `runs/r8/sonnet_mace.jsonl` 3382472341d573884a0a46b9141fb4cb
+- `runs/r8/sonnet_kpool.jsonl` 9809c9a2f172bc5f7c6b4e8de0a8f35f
+- `runs/r8/lenient_repl.jsonl` 9d7f1d32d5ac4c4332c1f93088a49944
+- `runs/r8/lenient_kpool.jsonl` f797c999ad5b9a10a8dac9fa3d141789
+
 Labels: format-lenient (primary) and registered strict labels (secondary) for `repl` and `kpool`; the registered MACE oracle for `mace`. "Matching" means the candidate's extracted answer equals the reference's (constructed pools) or its boxed answer or last 200 characters equals or contains the reference (MACE, as in `r7_posthoc.py`).
 
 **Interface.** Identical to R5-A FAST: `claude -p --model claude-sonnet-5` with the subscription login and no API key, `--system-prompt` set to rubric a (blind or referenced version, ending "Respond with only the integer score."), no tools, `--strict-mcp-config`, `--setting-sources ""`, `alwaysThinkingEnabled: false`, an empty working directory. The last integer from 0 to 10 in the reply is the score.
