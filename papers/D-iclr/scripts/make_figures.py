@@ -230,7 +230,7 @@ save(fig, "fig2_selection")
 tog = load("r3_toggle_results.json")
 t14 = (load("r4_toggle14b_results.json") or {}).get("Qwen3-14B", {})
 r2r = load("r2_realism_results.json")
-fig, (a1, a2) = plt.subplots(1, 2, figsize=(5.5, 3.2), gridspec_kw={"width_ratios": [1.2, 1.0]})
+fig, (a1, a2) = plt.subplots(1, 2, figsize=(5.9, 3.2), gridspec_kw={"width_ratios": [1.0, 1.25]})
 q7l = r4res["rotation"]["escore"]["loser"] if r4res.get("rotation") else [rot[f"{Q}__a"]["losers"]["mean"], rot[f"{Q}__a"]["losers"]["ci"]]
 rows = [("hdr", "expected score"),
         ("Qwen2.5-7B", q7l[0], q7l[1], MARK["Qwen2.5-7B"], True),
@@ -288,22 +288,24 @@ for mname, src in (("Qwen3-8B", tog), ("Qwen3-14B", t14)):
 r5s = load("r5_sonnet_mace_results.json") or {}
 if isinstance(r5s.get("fast"), dict) and isinstance(r5s.get("think"), dict):
     groups.append(("Sonnet 5\nfactual", r5s["fast"]["margin_diff"], r5s["think"]["margin_diff"]))
-w = 0.34
+h = 0.36
+n_g = len(groups)
 for i, (lab, off, on) in enumerate(groups):
-    for dx, v, kw in ((-w / 2, off, dict(color=INK)), (w / 2, on, dict(facecolor="white", edgecolor=INK, lw=1.0))):
+    y = n_g - 1 - i
+    for dy, v, kw in ((h / 2, off, dict(color=INK)), (-h / 2, on, dict(facecolor="white", edgecolor=INK, lw=1.0))):
         if v is None:
             continue
-        a2.bar(i + dx, v[0], width=w - 0.04, zorder=3, **kw)
-        a2.errorbar(i + dx, v[0], yerr=yerr(v[0], v[1]), fmt="none", ecolor=MUTED, elinewidth=0.8, capsize=1.6, zorder=4)
-a2.axhline(0, color=MUTED, lw=0.8, zorder=2)
-a2.set_xticks(range(len(groups)), [g[0] for g in groups], fontsize=7, rotation=35, ha="right", rotation_mode="anchor")
-a2.set_ylim(-0.6, 10.2)
-a2.set_ylabel("added margin (points)")
+        a2.barh(y + dy, v[0], height=h - 0.05, zorder=3, **kw)
+        a2.errorbar(v[0], y + dy, xerr=[[v[0] - v[1][0]], [v[1][1] - v[0]]], fmt="none", ecolor=MUTED, elinewidth=0.8, capsize=1.6, zorder=4)
+a2.axvline(0, color=MUTED, lw=0.8, zorder=2)
+a2.set_yticks(range(n_g), [g[0].replace("\n", ", ") for g in groups][::-1], fontsize=7)
+a2.set_xlim(-0.6, 10.2)
+a2.set_xlabel("added margin, reference minus blind\n(points)", fontsize=7.6)
 a2.set_title("Thinking off vs. on", loc="left")
 a2.legend(handles=[Patch(color=INK, label="thinking off"), Patch(facecolor="white", edgecolor=INK, label="thinking on")],
-          loc="upper left", frameon=False, handlelength=1.0, fontsize=6.6, borderaxespad=0.2)
-style(a2)
-label(a2, "b", x=-0.38)
+          loc="lower right", frameon=False, handlelength=1.0, fontsize=6.8, borderaxespad=0.2)
+style(a2, "x")
+label(a2, "b", x=-0.62)
 fig.tight_layout(w_pad=2.0)
 save(fig, "fig2_reasoning")
 
@@ -549,7 +551,7 @@ if sg and e2 and mr:
     for key, name in ((Q, "Qwen2.5-7B"), (P, "phi-4")):
         r = mr[key]["nonmath"]
         rows.append((name, (r["k1"][0], r["k1"][1]), (r["kgt1"][0], r["kgt1"][1])))
-    fig, ax = plt.subplots(figsize=(3.3, 3.05))
+    fig, ax = plt.subplots(figsize=(2.75, 2.9))
     y, ticks = 0.0, []
     for r in rows:
         if r[0] == "hdr":

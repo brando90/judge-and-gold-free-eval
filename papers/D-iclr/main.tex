@@ -55,9 +55,9 @@ Third, the effect should survive what would cure ignorance; it persists for answ
 Best-of-$n$ selection is more robust than grading, and scoring blind before revealing the reference removes the selection inflation we preregistered.
 \end{abstract}
 
-\begin{figure}[t]
+\begin{figure}[!b]
 \centering
-\input{figures/fig1_concept.tex}
+\resizebox{\textwidth}{!}{\input{figures/fig1_concept.tex}}
 \caption{\textbf{The reference is one correct answer among several, and judges grade agreement with it.}
 \textbf{(a)}~Our tasks store every correct answer; one is shown to the judge as the reference.
 \textbf{(b)}~The swap test scores byte-identical text twice, with the reference set to each of two correct answers. An answer key predicts no change.
@@ -171,15 +171,17 @@ Sonnet~5 behaves the same way (\cref{app:frontier}). Closeness to the reference 
 \section{Prediction 2: the damage starts at two correct answers}
 \label{sec:p2}
 
-\begin{wrapfigure}{r}{0.43\textwidth}
-\vspace{-14pt}
+\begin{figure}[t]
 \centering
-\includegraphics[width=0.43\textwidth]{figures/fig2_boundary.pdf}
-\vspace{-16pt}
-\caption{\textbf{The reference helps with one correct answer and hurts with several.} Inflation added by the reference, per task, 95\% intervals.\osf\pre}
+\begin{minipage}[c]{0.5\textwidth}
+\centering
+\includegraphics[width=\linewidth]{figures/fig2_boundary.pdf}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.46\textwidth}
+\caption{\textbf{The reference helps with one correct answer and hurts with several.} Best-of-64 inflation added by the reference (referenced minus blind, in standard deviations of the judge's scores), per task, with 95\% intervals, on tasks with one correct answer (hollow) and with several (filled). Synthetic grid: six judges on tasks built with exactly $k$ correct answers.\pre{} $k$-pool: the preregistered replication of that design.\osf{} \textsc{MACE}: factual questions with 1, 2, 4, or 6 correct answers, River and Language domains.\pre{} Tables in \cref{app:grid,app:mace}.}
 \label{fig:boundary}
-\vspace{-10pt}
-\end{wrapfigure}
+\end{minipage}
+\end{figure}
 
 \paragraph{Prediction.} With one correct answer, agreement is correctness and the reference should help. With two or more, the match bonus should go to one correct answer and not the others.
 
