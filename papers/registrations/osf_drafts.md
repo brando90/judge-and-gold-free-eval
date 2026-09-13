@@ -366,3 +366,37 @@ OSF stored the two ">=" signs as the HTML entity "&gt;="; unescaping the stored 
 the committed text character for character. Posting needed two steps the original poster lacked,
 attaching the same two subjects as Registrations 1-3 and registering through the project's
 registrations endpoint, because the older submit action now returns 404. No content changed.
+
+---
+
+## Registration 8: fully split-rater audit (Paper A)
+
+**Status at registration.** No split-rater label exists. The two labeling pages
+(`human_eval/label_split_{sound,style}_v2.html`) and the analysis producer
+(`papers/analysis/split_rater_audit.py`) are committed in this commit, before any annotator sees
+an item. Internal registration only: this commit.
+
+**Why.** Every published partial correlation uses one annotator for both soundness and style, so
+an error correlated across the two axes, for example "this looks wrong, so the writing feels
+muddled", could manufacture the structure the audit reads. A post-hoc reanalysis mixing two raters
+on a 30-item overlap was reassuring; this is the prospective version on all 60 items.
+
+**Design.** Two pools of hypothesis-blind annotators outside the author list, and no person grades
+both constructs. Pool A grades soundness (plus final-answer correctness and lucky-correct) with the
+reference solution in view. Pool B grades clarity and style with no reference solution and no
+correctness question on the page. Items are shuffled and shown under opaque codes; model names,
+judge scores, correctness flags and every other machine signal are removed from the page source,
+not merely hidden. Several annotators within a pool are averaged per item. Every published
+configuration's audit is recomputed with the target axis from pool A and the nuisance axis from
+pool B, using the published estimators and bootstrap.
+
+**Predictions.** Scored only if both pools cover at least 50 of the 60 items.
+P-SR1: the sabotaged GPT-5.2 judge's style partial has a 95% CI lower bound above zero.
+P-SR2: the Skywork reward model's style partial has a 95% CI lower bound above zero.
+P-SR3: the honest GPT-5.2 judge is qualified under the CI rule.
+P-SR4: point-rule verdicts on split-rater labels match the published author-label verdicts for at
+least 11 of the 13 configurations.
+
+**Analysis.** `papers/analysis/split_rater_audit.py`, applied without modification. Before this
+commit its code was checked by feeding it the author's own grades split into the two pools, which
+must reproduce the published partial correlations exactly.
