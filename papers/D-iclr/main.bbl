@@ -1,4 +1,4 @@
-\begin{thebibliography}{36}
+\begin{thebibliography}{38}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -121,6 +121,14 @@ Seungone Kim, Jamin Shin, Yejin Cho, Joel Jang, Shayne Longpre, Hwaran Lee,
   models.
 \newblock In \emph{International Conference on Learning Representations
   (ICLR)}, 2024.
+
+\bibitem[Koo et~al.(2024)Koo, Lee, Raheja, Park, Kim, and
+  Kang]{koo2024benchmarking}
+Ryan Koo, Minhwa Lee, Vipul Raheja, Jong~Inn Park, Zae~Myung Kim, and Dongyeop
+  Kang.
+\newblock Benchmarking cognitive biases in large language models as evaluators.
+\newblock In \emph{Findings of the Association for Computational Linguistics:
+  ACL 2024}, 2024.
 
 \bibitem[Kranti \& Vajjala(2026)Kranti and Vajjala]{generous2026}
 Chalamalasetti Kranti and Sowmya Vajjala.
@@ -261,6 +269,15 @@ Zhangchen Xu, Yuetai Li, Fengqing Jiang, Bhaskar Ramasubramanian, Luyao Niu,
 \newblock {TinyV}: Reducing false negatives in verification improves {RL} for
   {LLM} reasoning.
 \newblock arXiv preprint arXiv:2505.14625, 2025.
+
+\bibitem[Ye et~al.(2025)Ye, Wang, Huang, Chen, Zhang, Moniz, Gao, Geyer, Huang,
+  Chen, Chawla, and Zhang]{ye2025justice}
+Jiayi Ye, Yanbo Wang, Yue Huang, Dongping Chen, Qihui Zhang, Nuno Moniz, Tian
+  Gao, Werner Geyer, Chao Huang, Pin-Yu Chen, Nitesh~V. Chawla, and Xiangliang
+  Zhang.
+\newblock Justice or prejudice? quantifying biases in {LLM}-as-a-judge.
+\newblock In \emph{International Conference on Learning Representations
+  (ICLR)}, 2025.
 
 \bibitem[Zheng et~al.(2023)Zheng, Chiang, Sheng, Zhuang, Wu, Zhuang, Lin, Li,
   Li, Xing, Zhang, Gonzalez, and Stoica]{zheng2023judging}

@@ -1,0 +1,16 @@
+{
+ "nonmatch": {
+  "api_blind_10_with_cli_blind": 111,
+  "share_cli_blind_le3": 0.0,
+  "share_api_referenced_le3": 0.1081,
+  "cli_blind_le3": 0,
+  "api_referenced_le3": 12
+ },
+ "match": {
+  "api_blind_10_with_cli_blind": 39,
+  "share_cli_blind_le3": 0.0,
+  "share_api_referenced_le3": 0.0,
+  "cli_blind_le3": 0,
+  "api_referenced_le3": 0
+ }
+}

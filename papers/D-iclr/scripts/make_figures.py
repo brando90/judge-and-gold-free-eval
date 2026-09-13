@@ -500,7 +500,7 @@ if L8 and r4res.get("grading"):
                     st.update(marker="s", ms=4.6)
                 ax.plot(scale * v[0], yo, ls="", **st)
         if all(g is None for g, _ in d.values()):
-            a1.text(-0.41, yy, "not defined (one correct answer)", fontsize=7.5, color=MUTED, va="center", ha="left")
+            a1.text(-0.41, yy, "one correct answer: see Table 2", fontsize=7.5, color=MUTED, va="center", ha="left")
     for ax in (a1, a2):
         ax.axvline(0, color=MUTED, lw=0.8, zorder=2)
         for hy, _ in heads[1:]:

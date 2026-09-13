@@ -617,6 +617,9 @@ try:
     for pool, lab in (("mace", "\\textsc{MACE}, $k{>}1$"), ("repl", "Replication"), ("kpool", "$k$-pool, $k{>}1$")):
         nm_, m_ = r15[pool]["nonmatch"], r15[pool]["match"]
         body.append(f"{lab} & {100 * nm_['share_of_10s_scored_le3_with_reference']:.1f}\\% of {nm_['scored_10_blind']}; {100 * m_['share_of_10s_scored_le3_with_reference']:.1f}\\% of {m_['scored_10_blind']} \\\\")
+    nf = J("r16d_sonnet_noise_floor.json")["nonmatch"]
+    sec("Sonnet~5, replication subsamples: correct non-matching answers the API scored 10 blind, re-scored blind through the CLI (noise floor)")
+    body.append(f"Scored 3 or below: second blind call (CLI); API with the reference & {nf['cli_blind_le3']} of {nf['api_blind_10_with_cli_blind']}; {nf['api_referenced_le3']} of {nf['api_blind_10_with_cli_blind']} ({100 * nf['share_api_referenced_le3']:.1f}\\%) \\\\")
     write("main_numbers.tex", "\n".join(body + ["\\end{longtable}"]) + "\n")
     print("wrote main_numbers.tex")
 except (KeyError, TypeError, FileNotFoundError) as e:
@@ -863,3 +866,35 @@ try:
     print("wrote protocol tables")
 except (KeyError, TypeError, FileNotFoundError) as e:
     print("[skip protocol tables]", e)
+
+
+# ---------------------------------------------------------------- round 17: protocols under the exact scorer; Sonnet 5 noise floor
+try:
+    ex = J("r16c_protocols_exact.json")
+    body = ["\\begin{tabular}{llcccc}", "\\toprule",
+            " & & \\multicolumn{2}{c}{Best-of-64 accuracy (points)} & \\multicolumn{2}{c}{Grading AUROC} \\\\", "\\cmidrule(lr){3-4}\\cmidrule(lr){5-6}",
+            "Pool & Judge & Reference & Max rule & Reference & Max rule \\\\", "\\midrule"]
+    first = True
+    for jn, d in ex["kpool"].items():
+        a_, g_ = d["accuracy"], d["grading"]
+        body.append(f"{'$k$-pool, $k{>}1$, any format' if first else ''} & {jn} & {p4(a_['reference_minus_blind'])} & {p4(a_['max_rule_minus_blind'])} & {fc(*g_['reference_minus_blind'][:2])} & {fc(*g_['max_rule_minus_blind'][:2])} \\\\")
+        first = False
+    body.append("\\addlinespace")
+    first = True
+    for jn, d in ex["mace"].items():
+        a_, g_ = d["accuracy_natural_mix"], d["grading_kgt1"]
+        lab_ = "\\textsc{MACE} (accuracy: natural mix; AUROC: $k{>}1$)" if first else ""
+        body.append(f"{lab_} & {jn} & {p4(a_['reference_minus_blind'])} & {p4(a_['max_rule_minus_blind'])} & {fc(*g_['reference_minus_blind'][:2])} & {fc(*g_['max_rule_minus_blind'][:2])} \\\\")
+        first = False
+    for jn, d in ex["mace"].items():
+        g_ = d["grading_k1_all_correct"]
+        body.append(f"\\textsc{{MACE}} $k{{=}}1$, all correct & {jn} & --- & --- & {fc(*g_['reference_minus_blind'][:2])} & {fc(*g_['max_rule_minus_blind'][:2])} \\\\")
+    body.append("\\addlinespace")
+    for jn, d in ex["math500"].items():
+        for cond, lab in (("refans", "final answer"), ("ref", "solution")):
+            a_, g_ = d[cond]["accuracy"], d[cond]["grading_all_correct"]
+            body.append(f"MATH-500, {lab} & {jn} & {p4(a_['reference_minus_blind'])} & {p4(a_['max_rule_minus_blind'])} & {fc(*g_['reference_minus_blind'][:2])} & {fc(*g_['max_rule_minus_blind'][:2])} \\\\")
+    write("protocol_exact.tex", done(body))
+    print("wrote protocol_exact.tex")
+except (KeyError, TypeError, FileNotFoundError) as e:
+    print("[skip protocol_exact]", e)
