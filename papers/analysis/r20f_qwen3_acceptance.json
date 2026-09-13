@@ -1,0 +1,50 @@
+{
+ "Qwen3-8B|thinking off": {
+  "wrong_n": 260,
+  "wrong_blind_10_share": 0.1231,
+  "nonmatch": {
+   "scored_10_blind": 132,
+   "share_le3_with_reference": 0.5379
+  },
+  "match": {
+   "scored_10_blind": 116,
+   "share_le3_with_reference": 0.0086
+  }
+ },
+ "Qwen3-8B|thinking on": {
+  "wrong_n": 260,
+  "wrong_blind_10_share": 0.2077,
+  "nonmatch": {
+   "scored_10_blind": 227,
+   "share_le3_with_reference": 0.2335
+  },
+  "match": {
+   "scored_10_blind": 200,
+   "share_le3_with_reference": 0.02
+  }
+ },
+ "Qwen3-14B|thinking off": {
+  "wrong_n": 260,
+  "wrong_blind_10_share": 0.1192,
+  "nonmatch": {
+   "scored_10_blind": 117,
+   "share_le3_with_reference": 0.3248
+  },
+  "match": {
+   "scored_10_blind": 76,
+   "share_le3_with_reference": 0.0
+  }
+ },
+ "Qwen3-14B|thinking on": {
+  "wrong_n": 260,
+  "wrong_blind_10_share": 0.2423,
+  "nonmatch": {
+   "scored_10_blind": 241,
+   "share_le3_with_reference": 0.2199
+  },
+  "match": {
+   "scored_10_blind": 213,
+   "share_le3_with_reference": 0.0
+  }
+ }
+}
