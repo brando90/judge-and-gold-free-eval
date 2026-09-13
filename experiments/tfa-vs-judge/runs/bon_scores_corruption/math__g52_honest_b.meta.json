@@ -1,0 +1,12 @@
+{
+ "models_resolved": [
+  "gpt-5.2-2025-12-11"
+ ],
+ "ledger_usd": 24.9866,
+ "cell": "g52_honest",
+ "rep": "b",
+ "batch_id": "batch_6aa5f173f8108190a5c5430e065c8565",
+ "src_counts": {
+  "lp": 6720
+ }
+}

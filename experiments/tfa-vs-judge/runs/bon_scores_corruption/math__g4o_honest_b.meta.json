@@ -1,0 +1,12 @@
+{
+ "models_resolved": [
+  "gpt-4o-2024-11-20"
+ ],
+ "ledger_usd": 42.7572,
+ "cell": "g4o_honest",
+ "rep": "b",
+ "batch_id": "batch_6aa5f188f5888190a7e0c53384dac701",
+ "src_counts": {
+  "lp": 6720
+ }
+}
