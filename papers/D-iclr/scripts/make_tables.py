@@ -943,7 +943,7 @@ try:
 
     md, qf = J("r20d_matched_acceptance.json"), J("r20f_qwen3_acceptance.json")
     body = ["\\begin{tabular}{llrrrr}", "\\toprule",
-            " & & & & \\multicolumn{2}{c}{Correct answers accepted blind: number; share $\\leq 3$ with reference} \\\\", "\\cmidrule(lr){5-6}",
+            " & & & & \\multicolumn{2}{c}{Accepted: $n$; share $\\leq 3$ with ref.} \\\\", "\\cmidrule(lr){5-6}",
             "Judge & Pool & Threshold & Wrong accepted & Differ & Match \\\\", "\\midrule"]
     PN = {"repl": "Replication", "kpool": "$k$-pool, $k{>}1$"}
     for key, x in md.items():
@@ -1019,10 +1019,10 @@ try:
 
     be = J("r20e_benchmark_open_judges.json")
     body = ["\\begin{tabular}{lrrrrr}", "\\toprule",
-            "Judge & Answer list (\\%) & Blind judge (\\%) & Referenced judge (\\%) & Referenced $-$ list (points) & Differing correct answers credited: blind; referenced \\\\", "\\midrule"]
+            "Judge & List (\\%) & Blind (\\%) & Ref.\\ (\\%) & Ref.\\ $-$ list & Differing credited: blind; ref. \\\\", "\\midrule"]
     for jn, x in be["judges"].items():
         body.append(f"{jn} & {100 * x['accuracy_answer_list'][0]:.1f} & {100 * x['accuracy_blind'][0]:.1f} & {100 * x['accuracy_referenced'][0]:.1f} & "
-                    f"{p4(x['referenced_minus_list'])} & {100 * x['nonmatching_credited_blind']:.1f}\\%; {100 * x['nonmatching_credited_referenced']:.1f}\\% \\\\")
+                    f"{p4s(x['referenced_minus_list'])} & {100 * x['nonmatching_credited_blind']:.1f}\\%; {100 * x['nonmatching_credited_referenced']:.1f}\\% \\\\")
     write("r20_benchmark_open.tex", done(body))
 
     GR = {"Sonnet 5": ("r21c_leaderboard_sonnet_t5.json", "r20c_leaderboard.json", "r21c_leaderboard_sonnet_t10.json", "r20g"),

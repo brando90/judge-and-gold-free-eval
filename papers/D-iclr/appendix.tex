@@ -686,7 +686,8 @@ Open judges' expected scores are deterministic, so a second call would repeat th
 \caption{Acceptance at a matched threshold for the open judges (full 64-candidate pools; any-format labels on the constructed pools, answer lists on \textsc{MACE}; exact scorer for Qwen2.5 and gemma-2), and at a blind 10 for Qwen3 on the \textsc{MACE} subsample. Threshold: the lowest blind expected score that at most 3\% of wrong answers reach.\ph}
 \label{tab:r20-matched}
 \footnotesize
-\begin{adjustbox}{max width=\linewidth}\input{tables/r20_matched_acceptance.tex}\end{adjustbox}
+\setlength{\tabcolsep}{2.6pt}
+\input{tables/r20_matched_acceptance.tex}
 \end{table}
 
 \paragraph{The full-credit sentence, measured by grading.}
@@ -730,7 +731,7 @@ Graded by Qwen2.5-7B or phi-4, Llama-3.1-8B's 64 stored samples per question on 
 \caption{Open judges as graders of Llama-3.1-8B's stored samples on the 150 multi-answer \textsc{MACE} questions (a score of 7 or above counts as correct; question-level bootstrap).\ph}
 \label{tab:r20-benchopen}
 \footnotesize
-\begin{adjustbox}{max width=\linewidth}\input{tables/r20_benchmark_open.tex}\end{adjustbox}
+\input{tables/r20_benchmark_open.tex}
 \end{table}
 
 %==========================================================================================
