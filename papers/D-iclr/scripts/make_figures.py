@@ -154,7 +154,7 @@ a2.legend(handles=[Patch(color="#3a3a3a", label="reference moved onto the answer
 save(fig, "fig1_teaser")
 
 # Figure 1 data panel for the concept diagram (figures/fig1_concept.tex): the rotation result alone
-fig, ax = plt.subplots(figsize=(2.3, 2.15))
+fig, ax = plt.subplots(figsize=(2.45, 2.35))
 for i, (name, r) in enumerate(cols):
     i = i * GAP
     for dx, k, kw in ((-w, "gainers", dict(color="#3a3a3a")), (0, "placebo", dict(color="#bdbdbd")),
@@ -164,18 +164,18 @@ for i, (name, r) in enumerate(cols):
         ax.errorbar(i + dx, m, yerr=yerr(m, ci), fmt="none", ecolor=INK, elinewidth=0.8, capsize=1.6, zorder=4)
         if k != "placebo":
             ax.text(i + dx, (ci[1] + 0.3) if m > 0 else (ci[0] - 0.3), sgn(m), ha="center",
-                    va="bottom" if m > 0 else "top", fontsize=7, color=MUTED)
+                    va="bottom" if m > 0 else "top", fontsize=8.2, color=MUTED)
 ax.axhline(0, color=MUTED, lw=0.8, zorder=2)
-ax.set_xticks([i * GAP for i in range(len(cols))], ["Qwen2.5-7B", "phi-4", "Sonnet 5"], fontsize=7.2)
+ax.set_xticks([i * GAP for i in range(len(cols))], ["Qwen2.5-7B", "phi-4", "Sonnet 5"], fontsize=8.5)
 ax.set_xlim(-0.6, (len(cols) - 1) * GAP + 0.6)
 ax.set_ylim(-8, 9.5)
 ax.set_yticks([-6, -3, 0, 3, 6])
-ax.tick_params(axis="y", labelsize=7.2)
-ax.set_ylabel("change in score of the same text", fontsize=7.4)
+ax.tick_params(axis="y", labelsize=8.5)
+ax.set_ylabel("change in score of the same text", fontsize=8.5)
 style(ax)
 ax.legend(handles=[Patch(color="#3a3a3a", label="reference moved onto its answer"), Patch(color="#bdbdbd", label="answer matches neither"),
                    Patch(facecolor="white", edgecolor="#3a3a3a", hatch="/////", label="reference moved off its answer")],
-          loc="upper center", ncol=1, frameon=False, handlelength=1.1, fontsize=7, bbox_to_anchor=(0.45, -0.13))
+          loc="upper center", ncol=1, frameon=False, handlelength=1.1, fontsize=8.2, bbox_to_anchor=(0.42, -0.13))
 save(fig, "fig1_rotation")
 
 # ============================================================== Figure 2
@@ -230,12 +230,12 @@ save(fig, "fig2_selection")
 tog = load("r3_toggle_results.json")
 t14 = (load("r4_toggle14b_results.json") or {}).get("Qwen3-14B", {})
 r2r = load("r2_realism_results.json")
-fig, (a1, a2) = plt.subplots(1, 2, figsize=(5.9, 3.2), gridspec_kw={"width_ratios": [1.0, 1.25]})
+fig, (a1, a2) = plt.subplots(1, 2, figsize=(5.25, 3.35), gridspec_kw={"width_ratios": [1.3, 1.0]})
 q7l = r4res["rotation"]["escore"]["loser"] if r4res.get("rotation") else [rot[f"{Q}__a"]["losers"]["mean"], rot[f"{Q}__a"]["losers"]["ci"]]
-rows = [("hdr", "expected score"),
+rows = [("hdr", "score from token probabilities"),
         ("Qwen2.5-7B", q7l[0], q7l[1], MARK["Qwen2.5-7B"], True),
         ("phi-4", rot[f"{P}__a"]["losers"]["mean"], rot[f"{P}__a"]["losers"]["ci"], MARK["phi-4"], True),
-        ("hdr", "sampled integer"),
+        ("hdr", "integer written by the judge"),
         ("Sonnet 5, API", fr["rotation__a"]["losers"]["mean"], fr["rotation__a"]["losers"]["ci"], MARK["Sonnet 5"], True),
         ("Qwen2.5-7B, MT-Bench", r2r["mtbench"]["rot"]["loser"][0], r2r["mtbench"]["rot"]["loser"][1], MARK["Qwen2.5-7B"], True),
         ("Qwen3-8B, thinking off", tog["off"]["rot"]["loser"][0], tog["off"]["rot"]["loser"][1], MARK["Qwen3-8B"], True),
@@ -264,16 +264,15 @@ for pos, r in enumerate(rows):
     lab, m, ci, mk, filled = r
     a1.plot([ci[0], ci[1]], [y, y], color=INK, lw=1.0, zorder=3)
     a1.plot(m, y, marker=mk, ms=5.2, color=INK, mfc=INK if filled else "white", mec=INK, ls="", zorder=4)
-    a1.text(ci[0] - 0.2 if m < -0.5 else ci[1] + 0.25, y, sgn(m, 2), fontsize=7, color=MUTED,
-            ha="right" if m < -0.5 else "left", va="center")
+    a1.text(1.0, y, sgn(m, 2), fontsize=7.5, color=MUTED, ha="left", va="center")
     ticks.append((y, lab, False))
 a1.axvline(0, color=MUTED, lw=0.8, zorder=2)
-a1.set_yticks([t[0] for t in ticks], [t[1] for t in ticks], fontsize=7)
+a1.set_yticks([t[0] for t in ticks], [t[1] for t in ticks], fontsize=7.6)
 for tl, tk, t in zip(a1.get_yticklabels(), a1.yaxis.get_major_ticks(), ticks):
     if t[2]:
         tl.set_fontstyle("italic"); tl.set_color(MUTED)
         tk.tick1line.set_visible(False)
-a1.set_xlim(-9.2, 1.6)
+a1.set_xlim(-7.4, 2.5)
 a1.set_xticks([-6, -4, -2, 0])
 a1.set_ylim(-0.6, n - 0.4)
 a1.set_xlabel("score change when the reference\nmoves off a correct answer (points)")
@@ -298,12 +297,12 @@ for i, (lab, off, on) in enumerate(groups):
         a2.barh(y + dy, v[0], height=h - 0.05, zorder=3, **kw)
         a2.errorbar(v[0], y + dy, xerr=[[v[0] - v[1][0]], [v[1][1] - v[0]]], fmt="none", ecolor=MUTED, elinewidth=0.8, capsize=1.6, zorder=4)
 a2.axvline(0, color=MUTED, lw=0.8, zorder=2)
-a2.set_yticks(range(n_g), [g[0].replace("\n", ", ") for g in groups][::-1], fontsize=7)
+a2.set_yticks(range(n_g), [g[0].replace("\n", ", ") for g in groups][::-1], fontsize=7.6)
 a2.set_xlim(-0.6, 10.2)
-a2.set_xlabel("added margin (points)", fontsize=7.6)
+a2.set_xlabel("added margin (points)", fontsize=8)
 a2.set_title("Thinking off vs. on", loc="left")
 a2.legend(handles=[Patch(color=INK, label="thinking off"), Patch(facecolor="white", edgecolor=INK, label="thinking on")],
-          loc="upper right", frameon=False, handlelength=1.0, fontsize=6.8, borderaxespad=0.2)
+          loc="upper center", bbox_to_anchor=(0.35, -0.24), ncol=2, frameon=False, handlelength=1.0, fontsize=7.6, columnspacing=1.0)
 style(a2, "x")
 label(a2, "b", x=-0.62)
 fig.tight_layout(w_pad=2.0)
@@ -441,19 +440,19 @@ if L8 and r4res.get("grading"):
             rows.append((grp_, j, {h: (lv(pool, j, h, "G_nm"), lv(pool, j, h, "acc")) for h in ("strict", "lenient", "model")}))
         sp = "repl" if pool.startswith("repl") else "kpool"
         if s8(sp, "lenient", "G_nm"):
-            rows.append((grp_, "Sonnet 5*", {"strict": (s8(sp, "strict", "G_nm"), s8(sp, "strict", "acc")),
+            rows.append((grp_, "Sonnet 5 (API)", {"strict": (s8(sp, "strict", "G_nm"), s8(sp, "strict", "acc")),
                                              "lenient": (s8(sp, "lenient", "G_nm"), s8(sp, "lenient", "acc"))}))
     mq = ph4.get("mace_exact_q7", {})
     p4g = ph4.get("grading_other_judges", {}).get(P, {}).get("grading_mace", {}).get("G_nm", {})
-    rows.append(("MACE, k > 1", "Qwen2.5-7B", {"lenient": (r4res["grading"]["mace"]["G_nm"]["ref_minus_blind"], mq["kgt1"]["ref_minus_blind"])}))
-    rows.append(("MACE, k > 1", "phi-4", {"lenient": (p4g.get("ref_minus_blind"), mace3[P]["kgt1"]["ref_minus_blind"])}))
+    rows.append(("MACE, k > 1", "Qwen2.5-7B", {"oracle": (r4res["grading"]["mace"]["G_nm"]["ref_minus_blind"], mq["kgt1"]["ref_minus_blind"])}))
+    rows.append(("MACE, k > 1", "phi-4", {"oracle": (p4g.get("ref_minus_blind"), mace3[P]["kgt1"]["ref_minus_blind"])}))
     if s8("mace", "oracle", "G_nm"):
-        rows.append(("MACE, k > 1", "Sonnet 5*", {"lenient": (s8("mace", "oracle", "G_nm"), s8("mace", "oracle", "acc"))}))
+        rows.append(("MACE, k > 1", "Sonnet 5 (API)", {"oracle": (s8("mace", "oracle", "G_nm"), s8("mace", "oracle", "acc"))}))
     for j, key in (("Qwen2.5-7B", Q), ("Qwen2.5-14B", "Qwen__Qwen2.5-14B-Instruct")):
-        rows.append(("MATH-500 (one answer)", j, {"lenient": (None, r4res["math"][key]["ref_minus_noref"])}))
+        rows.append(("MATH-500 (one answer)", j, {"oracle": (None, r4res["math"][key]["ref_minus_noref"])}))
 
     n = len(rows)
-    fig, (a1, a2) = plt.subplots(1, 2, figsize=(5.6, 0.2 * n + 0.9), sharey=True, gridspec_kw={"width_ratios": [1.0, 1.0], "wspace": 0.08})
+    fig, (a1, a2) = plt.subplots(1, 2, figsize=(5.2, 0.215 * n + 1.0), sharey=True, gridspec_kw={"width_ratios": [1.0, 1.0], "wspace": 0.08})
     ys, labels_, prev = [], [], None
     y = 0.0
     heads = []
@@ -467,40 +466,42 @@ if L8 and r4res.get("grading"):
         y -= 1.0
     STY = {"strict": dict(marker="o", mfc="white", mec=MUTED, ms=4.2, mew=0.9, zorder=4),
            "lenient": dict(marker="o", mfc=INK, mec=INK, ms=4.4, zorder=5),
-           "model": dict(marker="x", color=MUTED, ms=4.2, mew=0.9, zorder=4)}
-    OFF = {"strict": 0.24, "lenient": 0.0, "model": -0.24}
+           "model": dict(marker="x", color=MUTED, ms=4.2, mew=0.9, zorder=4),
+           "oracle": dict(marker="D", mfc=INK, mec=INK, ms=3.9, zorder=5)}
+    OFF = {"strict": 0.24, "lenient": 0.0, "model": -0.24, "oracle": 0.0}
     for yy, (grp_, j, d) in zip(ys, rows):
         for how, (g, a) in d.items():
             for ax, v, scale in ((a1, g, 1.0), (a2, a, 100.0)):
                 if v is None:
                     continue
                 yo = yy + OFF[how]
-                if how == "lenient":
+                if how in ("lenient", "oracle"):
                     ax.plot([scale * v[1][0], scale * v[1][1]], [yo, yo], color=INK, lw=1.0, zorder=3)
                 ax.plot(scale * v[0], yo, ls="", **STY[how])
-        if d.get("lenient", (1, 1))[0] is None and d.get("lenient") is not None:
-            a1.text(-0.15, yy, "not defined (one correct answer)", fontsize=6.8, color=MUTED, va="center", ha="center")
+        if all(g is None for g, _ in d.values()):
+            a1.text(-0.15, yy, "not defined (one correct answer)", fontsize=7.5, color=MUTED, va="center", ha="center")
     for ax in (a1, a2):
         ax.axvline(0, color=MUTED, lw=0.8, zorder=2)
         for hy, _ in heads[1:]:
             ax.axhline(hy + 0.35, color=GRID, lw=0.9, zorder=1)
         style(ax, "x")
     for hy, txt in heads:
-        a1.text(-0.02, hy, txt, transform=a1.get_yaxis_transform(), ha="right", va="center", fontsize=7.2, fontweight="bold")
-    a1.set_yticks(ys, labels_, fontsize=7.2)
+        a1.text(-0.02, hy, txt, transform=a1.get_yaxis_transform(), ha="right", va="center", fontsize=7.8, fontweight="bold")
+    a1.set_yticks(ys, labels_, fontsize=7.8)
     a1.set_ylim(min(ys) - 0.7, heads[0][0] + 0.6)
     a1.set_xlim(-0.42, 0.12)
     a1.set_xticks([-0.4, -0.3, -0.2, -0.1, 0.0, 0.1])
-    a1.set_xlabel("change in AUROC, non-matching\ncorrect vs. wrong answers", fontsize=7.6)
-    a1.set_title("a   Grading", loc="left", fontsize=8.5, fontweight="bold")
+    a1.set_xlabel("change in AUROC, non-matching\ncorrect vs. wrong answers", fontsize=8)
+    a1.set_title("a   Grading", loc="left", fontsize=9, fontweight="bold")
     a2.set_xlim(-55, 45)
-    a2.set_xlabel("change in best-of-64 accuracy\n(points)", fontsize=7.6)
-    a2.set_title("b   Selection", loc="left", fontsize=8.5, fontweight="bold")
+    a2.set_xlabel("change in best-of-64 accuracy\n(points)", fontsize=8)
+    a2.set_title("b   Selection", loc="left", fontsize=9, fontweight="bold")
     a2.tick_params(axis="y", length=0)
     fig.legend(handles=[Line2D([], [], ls="", **STY["lenient"], label="answers read in any format (95% CI)"),
                         Line2D([], [], ls="", **STY["strict"], label="registered checker (boxed answers)"),
-                        Line2D([], [], ls="", **STY["model"], label="answers read by a model")],
-               loc="upper center", bbox_to_anchor=(0.5, -0.025), ncol=3, frameon=False, fontsize=7.0,
+                        Line2D([], [], ls="", **STY["model"], label="answers read by a model"),
+                        Line2D([], [], ls="", **STY["oracle"], label="answer list or unique answer (95% CI)")],
+               loc="upper center", bbox_to_anchor=(0.5, -0.025), ncol=2, frameon=False, fontsize=7.6,
                handlelength=1.0, columnspacing=1.0)
     save(fig, "fig3_cost")
 
@@ -537,12 +538,7 @@ sg = load("synthk_paired.json")
 e2 = (load("mitigation_results.json") or {}).get("E2_gap_deltas", {})
 mr = (load("mace_results.json") or {}).get("predictions", {})
 if sg and e2 and mr:
-    rows = [("hdr", "Synthetic grid")]
-    for key, name in (("Qwen__Qwen2.5-1.5B-Instruct", "Qwen2.5-1.5B"), ("Qwen__Qwen2.5-3B-Instruct", "Qwen2.5-3B"),
-                      ("Qwen__Qwen2.5-7B-Instruct", "Qwen2.5-7B"), ("Qwen__Qwen2.5-14B-Instruct", "Qwen2.5-14B"),
-                      ("meta-llama__Llama-3.1-8B-Instruct", "Llama-3.1-8B"), ("microsoft__phi-4", "phi-4")):
-        pp = sg["paired_pooled"][key]
-        rows.append((name, (pp["delta_k1"], pp["ci_k1"]), (pp["delta_kgt1"], pp["ci_kgt1"])))
+    rows = []
     rows.append(("hdr", "k-pool (preregistered)"))
     for key, name in ((Q, "Qwen2.5-7B"), (P, "phi-4")):
         a, b = e2[f"{key}|ref|k1"], e2[f"{key}|ref|kgt1"]
@@ -551,6 +547,12 @@ if sg and e2 and mr:
     for key, name in ((Q, "Qwen2.5-7B"), (P, "phi-4")):
         r = mr[key]["nonmath"]
         rows.append((name, (r["k1"][0], r["k1"][1]), (r["kgt1"][0], r["kgt1"][1])))
+    rows.append(("hdr", "Synthetic grid"))
+    for key, name in (("Qwen__Qwen2.5-1.5B-Instruct", "Qwen2.5-1.5B"), ("Qwen__Qwen2.5-3B-Instruct", "Qwen2.5-3B"),
+                      ("Qwen__Qwen2.5-7B-Instruct", "Qwen2.5-7B"), ("Qwen__Qwen2.5-14B-Instruct", "Qwen2.5-14B"),
+                      ("meta-llama__Llama-3.1-8B-Instruct", "Llama-3.1-8B"), ("microsoft__phi-4", "phi-4")):
+        pp = sg["paired_pooled"][key]
+        rows.append((name, (pp["delta_k1"], pp["ci_k1"]), (pp["delta_kgt1"], pp["ci_kgt1"])))
     fig, ax = plt.subplots(figsize=(2.75, 2.9))
     y, ticks = 0.0, []
     for r in rows:

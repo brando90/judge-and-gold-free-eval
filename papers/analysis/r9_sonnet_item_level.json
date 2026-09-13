@@ -1,0 +1,62 @@
+{
+ "mace": {
+  "tasks": 38,
+  "answers": 214,
+  "share_scored_le3_with_reference": [
+   0.3487,
+   [
+    0.2317,
+    0.467
+   ],
+   38
+  ],
+  "mean_score_change": [
+   -3.0143,
+   [
+    -4.0619,
+    -1.9956
+   ],
+   38
+  ]
+ },
+ "repl": {
+  "tasks": 40,
+  "answers": 248,
+  "share_scored_le3_with_reference": [
+   0.0923,
+   [
+    0.0545,
+    0.1382
+   ],
+   40
+  ],
+  "mean_score_change": [
+   -0.9221,
+   [
+    -1.3796,
+    -0.5212
+   ],
+   40
+  ]
+ },
+ "kpool": {
+  "tasks": 22,
+  "answers": 137,
+  "share_scored_le3_with_reference": [
+   0.218,
+   [
+    0.1083,
+    0.3419
+   ],
+   22
+  ],
+  "mean_score_change": [
+   -2.0588,
+   [
+    -3.012,
+    -1.2085
+   ],
+   22
+  ]
+ }
+}

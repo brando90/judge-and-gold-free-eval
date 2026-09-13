@@ -1,0 +1,194 @@
+{
+ "strict|Qwen__Qwen2.5-7B-Instruct|ref|k1": {
+  "n": 15,
+  "delta": 0.051,
+  "ci": [
+   -0.3,
+   0.423
+  ]
+ },
+ "strict|Qwen__Qwen2.5-7B-Instruct|ref|kgt1": {
+  "n": 53,
+  "delta": 1.496,
+  "ci": [
+   1.159,
+   1.822
+  ]
+ },
+ "strict|Qwen__Qwen2.5-7B-Instruct|m1|k1": {
+  "n": 15,
+  "delta": 0.407,
+  "ci": [
+   -0.09,
+   0.834
+  ]
+ },
+ "strict|Qwen__Qwen2.5-7B-Instruct|m1|kgt1": {
+  "n": 53,
+  "delta": -0.049,
+  "ci": [
+   -0.313,
+   0.21
+  ]
+ },
+ "strict|microsoft__phi-4|ref|k1": {
+  "n": 15,
+  "delta": -0.112,
+  "ci": [
+   -0.15,
+   -0.077
+  ]
+ },
+ "strict|microsoft__phi-4|ref|kgt1": {
+  "n": 53,
+  "delta": 1.058,
+  "ci": [
+   0.787,
+   1.337
+  ]
+ },
+ "strict|microsoft__phi-4|m1|k1": {
+  "n": 15,
+  "delta": 0.04,
+  "ci": [
+   -0.138,
+   0.275
+  ]
+ },
+ "strict|microsoft__phi-4|m1|kgt1": {
+  "n": 53,
+  "delta": 0.155,
+  "ci": [
+   -0.014,
+   0.328
+  ]
+ },
+ "lenient|Qwen__Qwen2.5-7B-Instruct|ref|k1": {
+  "n": 15,
+  "delta": -0.268,
+  "ci": [
+   -0.544,
+   -0.035
+  ]
+ },
+ "lenient|Qwen__Qwen2.5-7B-Instruct|ref|kgt1": {
+  "n": 53,
+  "delta": 1.44,
+  "ci": [
+   1.135,
+   1.742
+  ]
+ },
+ "lenient|Qwen__Qwen2.5-7B-Instruct|m1|k1": {
+  "n": 15,
+  "delta": 0.136,
+  "ci": [
+   -0.261,
+   0.457
+  ]
+ },
+ "lenient|Qwen__Qwen2.5-7B-Instruct|m1|kgt1": {
+  "n": 53,
+  "delta": -0.109,
+  "ci": [
+   -0.344,
+   0.119
+  ]
+ },
+ "lenient|microsoft__phi-4|ref|k1": {
+  "n": 15,
+  "delta": -0.145,
+  "ci": [
+   -0.19,
+   -0.105
+  ]
+ },
+ "lenient|microsoft__phi-4|ref|kgt1": {
+  "n": 53,
+  "delta": 0.977,
+  "ci": [
+   0.733,
+   1.239
+  ]
+ },
+ "lenient|microsoft__phi-4|m1|k1": {
+  "n": 15,
+  "delta": -0.16,
+  "ci": [
+   -0.207,
+   -0.116
+  ]
+ },
+ "lenient|microsoft__phi-4|m1|kgt1": {
+  "n": 53,
+  "delta": 0.009,
+  "ci": [
+   -0.116,
+   0.134
+  ]
+ },
+ "model|Qwen__Qwen2.5-7B-Instruct|ref|k1": {
+  "n": 15,
+  "delta": -0.277,
+  "ci": [
+   -0.541,
+   -0.026
+  ]
+ },
+ "model|Qwen__Qwen2.5-7B-Instruct|ref|kgt1": {
+  "n": 53,
+  "delta": 1.345,
+  "ci": [
+   1.02,
+   1.68
+  ]
+ },
+ "model|Qwen__Qwen2.5-7B-Instruct|m1|k1": {
+  "n": 15,
+  "delta": 0.029,
+  "ci": [
+   -0.343,
+   0.251
+  ]
+ },
+ "model|Qwen__Qwen2.5-7B-Instruct|m1|kgt1": {
+  "n": 53,
+  "delta": -0.128,
+  "ci": [
+   -0.358,
+   0.108
+  ]
+ },
+ "model|microsoft__phi-4|ref|k1": {
+  "n": 15,
+  "delta": -0.187,
+  "ci": [
+   -0.232,
+   -0.143
+  ]
+ },
+ "model|microsoft__phi-4|ref|kgt1": {
+  "n": 53,
+  "delta": 0.846,
+  "ci": [
+   0.583,
+   1.125
+  ]
+ },
+ "model|microsoft__phi-4|m1|k1": {
+  "n": 15,
+  "delta": -0.199,
+  "ci": [
+   -0.251,
+   -0.148
+  ]
+ },
+ "model|microsoft__phi-4|m1|kgt1": {
+  "n": 53,
+  "delta": -0.042,
+  "ci": [
+   -0.167,
+   0.083
+  ]
+ }
+}

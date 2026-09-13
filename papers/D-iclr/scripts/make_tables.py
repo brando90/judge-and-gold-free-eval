@@ -710,6 +710,25 @@ except (KeyError, TypeError, FileNotFoundError) as e:
     print("[skip round-8 labeling tables]", repr(e))
 
 try:
+    ir, ik = J("r9_inflation_relabeled.json"), J("r9_inflation_relabeled_kpool.json")
+    LABS = [("strict", "Registered"), ("lenient", "Any format"), ("model", "Model-read")]
+    body = ["\\begin{tabular}{ll" + "c" * len(LABS) + "}", "\\toprule", "Endpoint & Judge & " + " & ".join(l_ for _, l_ in LABS) + " \\\\", "\\midrule"]
+    cell = lambda x: fc(x["delta"], x["ci"])
+    for jn, key in (("Qwen2.5-7B", Q), ("phi-4", P), ("Pooled", "pooled")):
+        body.append(f"{'Replication, 105 tasks' if jn == 'Qwen2.5-7B' else ''} & {jn} & " + " & ".join(cell(ir[f'registered_band|{h}'][key]) for h, _ in LABS) + " \\\\")
+    body.append(" & Pooled, band recomputed & --- & " + " & ".join(cell(ir[f'band_under_labeling|{h}']['pooled']) for h in ("lenient", "model")) + " \\\\")
+    body.append("\\addlinespace")
+    for cond, clab in (("ref", "reference"), ("m1", "blind, then reveal")):
+        for kname, klab in (("k1", "$k{=}1$"), ("kgt1", "$k{>}1$")):
+            for jn, key in (("Qwen2.5-7B", Q), ("phi-4", P)):
+                first = jn == "Qwen2.5-7B"
+                body.append(f"{f'$k$-pool, {clab}, {klab}' if first else ''} & {jn} & " + " & ".join(cell(ik[f'{h}|{key}|{cond}|{kname}']) for h, _ in LABS) + " \\\\")
+    write("inflation_relabeled.tex", done(body))
+    print("wrote inflation_relabeled.tex")
+except (KeyError, TypeError, FileNotFoundError) as e:
+    print("[skip inflation_relabeled]", repr(e))
+
+try:
     S8 = J("r8_sonnet_results.json")
     cols = [("repl", "lenient", "Replication"), ("repl", "strict", "Repl., registered"), ("mace", "oracle", "\\textsc{MACE}, $k{>}1$"),
             ("kpool", "lenient", "$k$-pool, $k{>}1$")]
