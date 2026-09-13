@@ -192,8 +192,8 @@ On MATH-500, where correct answers rarely differ from the reference, it raises a
 \centering
 \includegraphics[width=\textwidth]{figures/fig2_reasoning.pdf}
 \caption{\textbf{Reasoning removes most of the effect on arithmetic tasks, not on factual questions.}
-\textbf{(a)}~Score change of identical correct text when the reference moves off it, replication pool, grouped by how the score is read: expected scores over score tokens, or integers sampled from the reply (Sonnet~5's API tool call and its command-line replies with a score only, with reasoning, or with thinking on; the MT-Bench template; and the Qwen3 models at temperature 0.6, which think before a final ``Score: N'' line; hollow: thinking on). Sonnet~5 command-line rows use 60 tasks with one sample per class; Qwen3 and MT-Bench rows use up to three samples per class per task.\pre{}
-\textbf{(b)}~Added margin with thinking off (filled) and on (hollow), on arithmetic tasks (16-sample $k$-pool subsample, 19 tasks) and factual \textsc{MACE} questions (81 tasks for Qwen3; 40 for Sonnet~5), 95\% intervals; values in \cref{tab:r4-toggle} and \cref{app:reasoning}.\pre}
+\textbf{(a)}~Score change of identical correct text when the reference moves off it, replication pool, grouped by how the score is read: expected scores over score tokens, or integers sampled from the reply (Sonnet~5's API tool call and its command-line replies with a score only, with reasoning, or with thinking on; the MT-Bench template; and the Qwen3 models at temperature 0.6, which think before a final ``Score: N'' line; hollow: thinking on). Sonnet~5 command-line rows, grouped under their own header, use 60 tasks with one sample per class; Qwen3 and MT-Bench rows use up to three samples per class per task.\pre{}
+\textbf{(b)}~Added margin with thinking off (filled) and on (hollow), on arithmetic tasks (16-sample $k$-pool subsample, 19 tasks) and factual \textsc{MACE} questions (81 tasks for Qwen3; 40 for Sonnet~5); 8B and 14B are the Qwen3 models, S5 is Sonnet~5, arith.\ is arithmetic and fact.\ is factual; 95\% intervals; values in \cref{tab:r4-toggle} and \cref{app:reasoning}.\pre}
 \label{fig:reasoning}
 \end{figure}
 

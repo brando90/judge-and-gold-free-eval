@@ -202,7 +202,7 @@ save(fig, "fig2_selection")
 tog = load("r3_toggle_results.json")
 t14 = (load("r4_toggle14b_results.json") or {}).get("Qwen3-14B", {})
 r2r = load("r2_realism_results.json")
-fig, (a1, a2) = plt.subplots(1, 2, figsize=(5.5, 3.2), gridspec_kw={"width_ratios": [1.05, 1.0]})
+fig, (a1, a2) = plt.subplots(1, 2, figsize=(5.5, 3.2), gridspec_kw={"width_ratios": [1.2, 1.0]})
 q7l = r4res["rotation"]["escore"]["loser"] if r4res.get("rotation") else [rot[f"{Q}__a"]["losers"]["mean"], rot[f"{Q}__a"]["losers"]["ci"]]
 rows = [("hdr", "expected score"),
         ("Qwen2.5-7B", q7l[0], q7l[1], MARK["Qwen2.5-7B"], True),
@@ -214,10 +214,12 @@ rows = [("hdr", "expected score"),
         ("Qwen3-8B, thinking on", tog["on"]["rot"]["loser"][0], tog["on"]["rot"]["loser"][1], MARK["Qwen3-8B"], False)]
 r3s = load("r3_sonnet_results.json") or {}
 cli_rows = []
-for arm, lab, filled in (("fast", "Sonnet 5, command line, score only", True), ("visible", "Sonnet 5, command line, reasoning", True), ("think", "Sonnet 5, command line, thinking on", False)):
+for arm, lab, filled in (("fast", "score only", True), ("visible", "reasoning", True), ("think", "thinking on", False)):
     v = (r3s.get(arm) or {}).get("rot") if isinstance(r3s.get(arm), dict) else None
     if v and v.get("loser"):
         cli_rows.append((lab, v["loser"][0], v["loser"][1], MARK["Sonnet 5"], filled))
+if cli_rows:
+    cli_rows.insert(0, ("hdr", "Sonnet 5, command line"))
 api_pos = next(i for i, r in enumerate(rows) if r[0] == "Sonnet 5, API")
 rows[api_pos + 1:api_pos + 1] = cli_rows
 for arm, lab, filled in (("off", "Qwen3-14B, thinking off", True), ("on", "Qwen3-14B, thinking on", False)):
@@ -246,17 +248,17 @@ a1.set_xlim(-8.3, 1.4)
 a1.set_xticks([-6, -4, -2, 0])
 a1.set_ylim(-0.6, n - 0.4)
 a1.set_xlabel("score change when the reference\nmoves off a correct answer (points)")
-a1.set_title("Arithmetic tasks, same text", loc="left")
+a1.set_title("Arithmetic, same text", loc="left")
 style(a1, "x")
 label(a1, "a", x=-0.7)
 
 groups = []
 for mname, src in (("Qwen3-8B", tog), ("Qwen3-14B", t14)):
     for task, key, sub in (("arith.", "ksub", "margin_diff_kgt1"), ("factual", "macesub", "margin_diff")):
-        groups.append((f"{mname.split('-')[1]}\n{task}", ((src.get("off") or {}).get(key) or {}).get(sub), ((src.get("on") or {}).get(key) or {}).get(sub)))
+        groups.append((f"{mname.split('-')[1]}\n{ {'arith.': 'arith.', 'factual': 'fact.'}[task] }", ((src.get("off") or {}).get(key) or {}).get(sub), ((src.get("on") or {}).get(key) or {}).get(sub)))
 r5s = load("r5_sonnet_mace_results.json") or {}
 if isinstance(r5s.get("fast"), dict) and isinstance(r5s.get("think"), dict):
-    groups.append(("Sonnet\nfactual", r5s["fast"]["margin_diff"], r5s["think"]["margin_diff"]))
+    groups.append(("S5\nfact.", r5s["fast"]["margin_diff"], r5s["think"]["margin_diff"]))
 w = 0.34
 for i, (lab, off, on) in enumerate(groups):
     for dx, v, kw in ((-w / 2, off, dict(color=INK)), (w / 2, on, dict(facecolor="white", edgecolor=INK, lw=1.0))):
@@ -265,15 +267,15 @@ for i, (lab, off, on) in enumerate(groups):
         a2.bar(i + dx, v[0], width=w - 0.04, zorder=3, **kw)
         a2.errorbar(i + dx, v[0], yerr=yerr(v[0], v[1]), fmt="none", ecolor=MUTED, elinewidth=0.8, capsize=1.6, zorder=4)
 a2.axhline(0, color=MUTED, lw=0.8, zorder=2)
-a2.set_xticks(range(len(groups)), [g[0] for g in groups], fontsize=5.8)
+a2.set_xticks(range(len(groups)), [g[0] for g in groups], fontsize=6.4)
 a2.set_ylim(-0.6, 10.2)
 a2.set_ylabel("added margin (points)")
 a2.set_title("Thinking off vs. on", loc="left")
 a2.legend(handles=[Patch(color=INK, label="thinking off"), Patch(facecolor="white", edgecolor=INK, label="thinking on")],
           loc="upper left", frameon=False, handlelength=1.0, fontsize=6.6, borderaxespad=0.2)
 style(a2)
-label(a2, "b", x=-0.3)
-fig.tight_layout(w_pad=1.2)
+label(a2, "b", x=-0.38)
+fig.tight_layout(w_pad=2.0)
 save(fig, "fig2_reasoning")
 
 # ============================================================== Figure 3 (mechanism, single panel)
