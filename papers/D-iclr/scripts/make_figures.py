@@ -368,7 +368,7 @@ if all(RA.values()) and MD and tog and t14 and S8f and S19f:
         rows.append((jn, _open(keys, "nonmatch"), _open(keys, "match"), None))
     fig = plt.figure(figsize=(5.5, 2.75))
     a1 = fig.add_axes([0.235, 0.33, 0.27, 0.61])
-    a3 = fig.add_axes([0.745, 0.47, 0.235, 0.4])
+    a3 = fig.add_axes([0.745, 0.36, 0.235, 0.52])
     n = len(rows)
     ticks = []
     for pos, r in enumerate(rows):
@@ -803,7 +803,7 @@ if L8b and r4res.get("math") and m3 and ph4b.get("mace_exact_q7") and exb:
             ax.plot([v[1][0], v[1][1]], [yv, yv], color=BLUE, lw=1.0, zorder=3)
             ax.plot(v[0], yv, ls="", zorder=4, **KIND[kind])
         if boxed:
-            a2.plot(boxed[0], yv - 0.34, ls="", zorder=5, **TICK)
+            a2.plot(boxed[0], yv - 0.45, ls="", zorder=5, **TICK)
         ticks.append((yv, lab, False))
     for ax, xlim, xticks, xlabel, title in ((a1, (-62, 52), [-40, -20, 0, 20, 40], "change in best-of-64 accuracy (pp)", "a   Selection"),
                                            (a2, (-0.37, 0.46), [-0.2, 0.0, 0.2, 0.4], "change in grading AUROC", "b   Grading")):
@@ -865,7 +865,7 @@ if GRADERS:
             lo = min(lo, 100 * lo_ci)
             if R22.get(gname):
                 v2 = 100 * R22[gname]["generators"][key]["accuracy_ref_draw2"][0]
-                ax.plot(XS[2] + 0.2 + 0.09 * [m[0] for m in MODELS].index(key), v2, marker=mk, ms=3.8, ls="", mfc="white", mec=col, mew=1.0, zorder=5)
+                ax.plot(XS[2] + 0.16 + 0.15 * [m[0] for m in MODELS].index(key), v2, marker=mk, ms=3.8, ls="", mfc="white", mec=col, mew=1.0, zorder=5)
                 lo = min(lo, v2)
         ax.set_xticks(XS, ["answer\nlist", "judge,\nblind", "judge,\nreference", "max\nrule"], fontsize=7.2)
         ax.set_xlim(-0.3, 3.65)

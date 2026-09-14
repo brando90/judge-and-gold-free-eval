@@ -38,7 +38,14 @@ def fc(x, ci, d=2):
     return f"{f(x, d)} {c(ci[0], ci[1], d)}"
 
 
+STACKED = {"r4_toggle.tex", "score_rules.tex", "protocol_grading.tex", "protocol_selection.tex", "coverage.tex", "acc_variants.tex", "kpool.tex", "dpo.tex"}
+_CELL = __import__("re").compile(r"((?:\$[^$&\\]*\$)|(?:[-+]?\d+(?:\.\d+)?))\s+(\{\\scriptsize\$\[[^\]]*\]\$\})")
+
+
 def write(name, body):
+    # Tables that were printing at about 5 pt after shrink-to-fit: put each interval under its value so they fit at full size.
+    if name in STACKED:
+        body = _CELL.sub(lambda m: "\\begin{tabular}[c]{@{}c@{}}" + m.group(1) + "\\\\" + m.group(2) + "\\end{tabular}", body)
     (OUT / name).write_text(body)
 
 
@@ -901,6 +908,9 @@ try:
         lab_ = "\\textsc{MACE} (accuracy: natural mix; AUROC: $k{>}1$)" if first else ""
         body.append(f"{lab_} & {jn} & {p4s(a_['reference_minus_blind'])} & {p4s(a_['max_rule_minus_blind'])} & {p4s(a_['max_rule_minus_reference'])} & {fs(g_['reference_minus_blind'])} & {fs(g_['max_rule_minus_blind'])} & {fs(g_['max_rule_minus_reference'])} \\\\")
         first = False
+    for jn, d in ex["mace"].items():  # multi-answer accuracy, the values Table 2 quotes (round-24 review M5)
+        a_ = d["accuracy_kgt1"]
+        body.append(f"\\textsc{{MACE}} $k{{>}}1$, accuracy & {jn} & {p4s(a_['reference_minus_blind'])} & {p4s(a_['max_rule_minus_blind'])} & {p4s(a_['max_rule_minus_reference'])} & --- & --- & --- \\\\")
     for jn, d in ex["mace"].items():
         g_ = d["grading_k1_all_correct"]
         body.append(f"\\textsc{{MACE}} $k{{=}}1$, all correct & {jn} & --- & --- & --- & {fs(g_['reference_minus_blind'])} & {fs(g_['max_rule_minus_blind'])} & {fs(g_['max_rule_minus_reference'])} \\\\")
@@ -1110,7 +1120,7 @@ except (KeyError, TypeError, FileNotFoundError) as e:
 try:
     RG = (("Sonnet 5", "r23a_regrade_sonnet.json"), ("Opus 5", "r23a_regrade_opus.json"), ("Haiku 4.5", "r23a_regrade_haiku.json"))
     body = ["\\begin{tabular}{lrcccccc}", "\\toprule",
-            " & & \\multicolumn{2}{c}{Pooled accuracy change} & \\multicolumn{2}{c}{Credited (\\%): first, regrade, draw 2} & \\multicolumn{2}{c}{Haiku $-$ Llama gap change} \\\\",
+            " & & \\multicolumn{2}{c}{Pooled accuracy change} & \\multicolumn{2}{c}{Credited (\\%): first $\\to$ regrade $\\to$ draw 2} & \\multicolumn{2}{c}{Haiku $-$ Llama gap change} \\\\",
             "\\cmidrule(lr){3-4}\\cmidrule(lr){5-6}\\cmidrule(lr){7-8}",
             "Grader & $n$ & Regrade & Draw 2 & Stop matching & Start matching & Regrade & Draw 2 \\\\", "\\midrule"]
     for gn, fn in RG:
@@ -1120,7 +1130,7 @@ try:
         po, hl = d["pooled"], d["haiku_minus_llama"]
 
         def trip(k):
-            return f"{100 * po[k + '_credited_original'][0]:.0f}, {100 * po[k + '_credited_regrade'][0]:.0f}, {100 * po[k + '_credited_draw2'][0]:.0f}"
+            return f"{100 * po[k + '_credited_original'][0]:.0f} $\\to$ {100 * po[k + '_credited_regrade'][0]:.0f} $\\to$ {100 * po[k + '_credited_draw2'][0]:.0f}"
 
         body.append(f"{gn} & {d['questions']} & {p4s(po['same_draw_change'])} & {p4s(po['between_draw_change'])} & {trip('stop')} & {trip('start')} & "
                     f"{p4s(hl['same_draw_change'])} & {p4s(hl['between_draw_change'])} \\\\")

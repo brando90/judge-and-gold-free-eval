@@ -1,4 +1,4 @@
-\begin{thebibliography}{38}
+\begin{thebibliography}{31}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -24,13 +24,6 @@ Jannis Bulian, Christian Buck, Wojciech Gajewski, Benjamin B{\"o}rschinger, and
   Emirates, 2022. Association for Computational Linguistics.
 \newblock \doi{10.18653/v1/2022.emnlp-main.20}.
 
-\bibitem[Chen et~al.(2025)Chen, Yu, Wang, Hu, Zhang, Wang, Tang, Xiong,
-  et~al.]{chen2025xverify}
-Ding Chen, Qingchen Yu, Pengyuan Wang, Mengting Hu, Wentao Zhang, Zhengren
-  Wang, Bo~Tang, Feiyu Xiong, et~al.
-\newblock {xVerify}: Efficient answer verifier for reasoning model evaluations.
-\newblock arXiv preprint arXiv:2504.10481, 2025.
-
 \bibitem[Chen et~al.(2026)Chen, Gulati, Miranda, Tang, and
   Koyejo]{chen2026rethinking}
 Eric Chen, Aryan Gulati, Brando Miranda, Zeyu Tang, and Sanmi Koyejo.
@@ -38,13 +31,6 @@ Eric Chen, Aryan Gulati, Brando Miranda, Zeyu Tang, and Sanmi Koyejo.
   for math grading.
 \newblock In \emph{ICLR 2026 Workshop on Logical Reasoning of Large Language
   Models}, 2026.
-
-\bibitem[Chen et~al.(2021)Chen, Tworek, Jun, Yuan, Pinto, Kaplan, Edwards,
-  Burda, et~al.]{chen2021codex}
-Mark Chen, Jerry Tworek, Heewoo Jun, Qiming Yuan, Henrique Ponde de~Oliveira
-  Pinto, Jared Kaplan, Harri Edwards, Yuri Burda, et~al.
-\newblock Evaluating large language models trained on code.
-\newblock arXiv preprint arXiv:2107.03374, 2021.
 
 \bibitem[Dubois et~al.(2024)Dubois, Galambosi, Liang, and
   Hashimoto]{dubois2024lengthcontrolled}
@@ -87,12 +73,6 @@ Edward~J. Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean
 \newblock {LoRA}: Low-rank adaptation of large language models.
 \newblock In \emph{International Conference on Learning Representations
   (ICLR)}, 2022.
-
-\bibitem[Huang et~al.(2025)Huang, Zeng, Zeng, Zhu, and He]{huang2025pitfalls}
-Yuzhen Huang, Weihao Zeng, Xingshan Zeng, Qi~Zhu, and Junxian He.
-\newblock From accuracy to robustness: A study of rule- and model-based
-  verifiers in mathematical reasoning.
-\newblock arXiv preprint arXiv:2505.22203, 2025.
 
 \bibitem[Kamalloo et~al.(2023)Kamalloo, Dziri, Clarke, and
   Rafiei]{kamalloo2023evaluating}
@@ -143,11 +123,6 @@ Michael Krumdick, Charles Lovering, Varshini Reddy, Seth Ebner, and Chris
   grounding.
 \newblock arXiv preprint arXiv:2503.05061, 2025.
 
-\bibitem[Landesberg(2026)]{landesberg2026bestofn}
-Eddie Landesberg.
-\newblock When {LLM} judge scores look good but best-of-{N} decisions fail.
-\newblock arXiv preprint arXiv:2603.12520, 2026.
-
 \bibitem[Lee et~al.(2026)Lee, Hwang, Kang, Lee, Chae, and Jung]{judgingref2026}
 Dongryeol Lee, Yerin Hwang, Taegwan Kang, Minwoo Lee, Younhyung Chae, and
   Kyomin Jung.
@@ -165,15 +140,6 @@ Weiyuan Li, Xintao Wang, Siyu Yuan, Rui Xu, Jiangjie Chen, Qingqing Dong,
   EMNLP 2025}, pp.\  14900--14924, Suzhou, China, 2025. Association for
   Computational Linguistics.
 \newblock \doi{10.18653/v1/2025.findings-emnlp.805}.
-
-\bibitem[Lin et~al.(2025)Lin, Wei, Huang, and Chen]{dobefore2025}
-Wei-Hsiang Lin, Sheng-Lun Wei, Hen-Hsen Huang, and Hsin-Hsi Chen.
-\newblock Do before you judge: Self-reference as a pathway to better {LLM}
-  evaluation.
-\newblock In \emph{Findings of the Association for Computational Linguistics:
-  EMNLP 2025}, pp.\  24651--24672, Suzhou, China, 2025. Association for
-  Computational Linguistics.
-\newblock \doi{10.18653/v1/2025.findings-emnlp.1342}.
 
 \bibitem[Liu et~al.(2023)Liu, Xia, Wang, and Zhang]{liu2023evalplus}
 Jiawei Liu, Chunqiu~Steven Xia, Yuyao Wang, and Lingming Zhang.
@@ -262,14 +228,6 @@ Yuhan Wang, Shiyu Ni, Zhikai Ding, Zihang Zhan, Yuanzi Li, and Keping Bi.
   multiple correct answers.
 \newblock arXiv preprint arXiv:2602.07842, 2026.
 
-\bibitem[Xu et~al.(2025)Xu, Li, Jiang, Ramasubramanian, Niu, Lin, and
-  Poovendran]{xu2025tinyv}
-Zhangchen Xu, Yuetai Li, Fengqing Jiang, Bhaskar Ramasubramanian, Luyao Niu,
-  Bill~Yuchen Lin, and Radha Poovendran.
-\newblock {TinyV}: Reducing false negatives in verification improves {RL} for
-  {LLM} reasoning.
-\newblock arXiv preprint arXiv:2505.14625, 2025.
-
 \bibitem[Ye et~al.(2025)Ye, Wang, Huang, Chen, Zhang, Moniz, Gao, Geyer, Huang,
   Chen, Chawla, and Zhang]{ye2025justice}
 Jiayi Ye, Yanbo Wang, Yue Huang, Dongping Chen, Qihui Zhang, Nuno Moniz, Tian
@@ -287,12 +245,6 @@ Lianmin Zheng, Wei-Lin Chiang, Ying Sheng, Siyuan Zhuang, Zhanghao Wu, Yonghao
 \newblock Judging {LLM}-as-a-judge with {MT}-bench and {Chatbot Arena}.
 \newblock In \emph{Advances in Neural Information Processing Systems 36
   (NeurIPS 2023), Datasets and Benchmarks Track}, 2023.
-
-\bibitem[Zhou(2026)]{zhou2026convincing}
-Chenyu Zhou.
-\newblock More convincing, not more correct: Self-play reward hacking of
-  reference-free {LLM} judges.
-\newblock arXiv preprint arXiv:2607.05904, 2026.
 
 \bibitem[Zhu et~al.(2025)Zhu, Wang, and Wang]{zhu2023judgelm}
 Lianghui Zhu, Xinggang Wang, and Xinlong Wang.
