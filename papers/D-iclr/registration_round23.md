@@ -48,6 +48,21 @@ with intervals, and the pairwise order flips.
 Point predictions are confirmed when they hold and falsified otherwise. Unparseable or errored calls are missing. A grader is scored if at
 least 100 questions have all calls scored.
 
-## Outcome
+## Outcome (recorded 2026-09-13; `papers/analysis/r23a_regrade_{sonnet,opus,haiku}.json`)
 
-To be recorded here after the runs.
+Runs: 596 referenced calls per grader after seeding, no errors; unscored replies: Sonnet 5 0, Opus 5 4, Haiku 4.5 0 (spend USD 0.37,
+4.29, 0.70). Questions with all four calls complete for all answers: Sonnet 5 149, Opus 5 135, Haiku 4.5 149 (all at least 100, scored).
+
+| Grader | Pooled change: regrade; second draw | Stop matching credited: first call, regrade, draw 2 (n) | Start matching: first call, regrade, draw 2 (n) | Haiku 4.5 − Llama-3.1-8B gap change: regrade; draw 2 | Pairwise flips of 6: regrade; draw 2 |
+|---|---|---|---|---|---|
+| Sonnet 5 | +0.5 [−1.5, +2.5]; +1.0 | 100.0%, 99.3%, 61.8% (144) | 64.4%, 65.5%, 99.4% (174) | 0.0 [−6.7, +7.4]; +7.4 [−3.4, +18.1] | 0; 1 |
+| Opus 5 | −1.9 [−4.3, +0.7]; −2.4 | 99.3%, 99.3%, 72.1% (140) | 77.6%, 74.5%, 99.4% (161) | −0.7 [−6.7, +5.9]; +8.9 [+0.7, +17.8] | 0; 1 |
+| Haiku 4.5 | −0.3 [−3.5, +2.9]; +3.0 | 99.3%, 98.6%, 74.3% (144) | 68.4%, 69.0%, 97.7% (174) | +10.7 [+2.7, +19.5]; +10.7 [0.0, +21.5] | 2; 1 |
+
+- **P-R23A1:** Sonnet 5 **confirmed**; Opus 5 **confirmed**; Haiku 4.5 **confirmed**.
+- **P-R23A2:** Sonnet 5 **confirmed** (+37.5 pp); Opus 5 **confirmed** (+27.1); Haiku 4.5 **confirmed** (+24.3).
+- **P-R23A3:** Sonnet 5 **confirmed** (+33.9 pp); Opus 5 **confirmed** (+24.8); Haiku 4.5 **confirmed** (+28.7).
+- Reported without a prediction: per-model same-draw changes are within 4.1 points except Haiku 4.5 graded by itself (+6.7 [+0.7,
+  +12.8]); for Haiku 4.5 as grader, the Haiku 4.5 − Llama-3.1-8B gap moves as much under the same-reference regrade as under the second
+  draw, so ranking changes between draws are not distinguishable from call-to-call variation. The credit shift for answers whose match
+  changes is a draw effect: the regrade leaves it within about 3 points.

@@ -366,10 +366,9 @@ if all(RA.values()) and MD and tog and t14 and S8f and S19f:
     for jn, keys in (("Qwen2.5-7B", ["repl|Qwen2.5-7B", "kpool|Qwen2.5-7B"]), ("phi-4", ["repl|phi-4", "kpool|phi-4"]),
                      ("Qwen2.5-14B", ["kpool|Qwen2.5-14B"]), ("gemma-2-9b", ["kpool|gemma-2-9b"])):
         rows.append((jn, _open(keys, "nonmatch"), _open(keys, "match"), None))
-    fig = plt.figure(figsize=(5.5, 3.5))
-    a1 = fig.add_axes([0.235, 0.25, 0.27, 0.68])
-    a0 = fig.add_axes([0.645, 0.56, 0.235, 0.36])
-    a3 = fig.add_axes([0.745, 0.25, 0.235, 0.17])
+    fig = plt.figure(figsize=(5.5, 2.75))
+    a1 = fig.add_axes([0.235, 0.33, 0.27, 0.61])
+    a3 = fig.add_axes([0.745, 0.47, 0.235, 0.4])
     n = len(rows)
     ticks = []
     for pos, r in enumerate(rows):
@@ -423,44 +422,13 @@ if all(RA.values()) and MD and tog and t14 and S8f and S19f:
     barpair(a3, [("Sonnet 5 (API)", frp(S8f["pools"]["mace"]["oracle"]["FR"]), frp(S19f["pools"]["mace"]["oracle"]["FR"])),
                  ("Qwen3-8B", frp(tog["off"]["macesub"]["false_reject_diff"]), frp(tog["on"]["macesub"]["false_reject_diff"])),
                  ("Qwen3-14B", frp(t14["off"]["macesub"]["false_reject_diff"]), frp(t14["on"]["macesub"]["false_reject_diff"]))],
-            (-1.5, 68), [0, 20, 40, 60], "rise in false rejections (pp)", "c   Thinking: factual questions", lambda x: f"+{x:.0f}")
-    BIN = load("r22c_acceptance_bins.json") or {}  # post hoc, round-21 review M5; matching answers as a grey floor (round-22 review M1)
-    XPOS_API = {(0, 7): 5.0, (7, 9): 7.5, (9, 10): 9.0, (10, 10): 10.0}  # integer bins at their integer values
-    ends = []
-    for key, lab, mk in (("mace|Qwen2.5-7B", "Qwen2.5-7B", "o"), ("mace|phi-4", "phi-4", "s"), ("mace|Sonnet 5", "Sonnet 5", "^"), ("mace|Opus 5", "Opus 5", "D")):
-        api = lab in ("Sonnet 5", "Opus 5")
-        rows_ = [bb for bb in BIN.get(key, []) if bb["nonmatch"]["n"] >= 10]
-        if not rows_:
-            continue
-        xs = [XPOS_API[tuple(bb["bin"])] if api else (bb["bin"][0] + bb["bin"][1]) / 2 for bb in rows_]
-        dif = [100 * bb["nonmatch"]["share_le3_with_reference"] for bb in rows_]
-        mat = [100 * bb["match"]["share_le3_with_reference"] if bb["match"]["share_le3_with_reference"] is not None else float("nan") for bb in rows_]
-        col = "#1f3a8a" if api else BLUE
-        a0.plot(xs, mat, marker=mk, ms=2.6, lw=0.7, color="#a8a8a8", mfc="#a8a8a8", mec="#a8a8a8", zorder=2)
-        a0.plot(xs, dif, marker=mk, ms=3.6, lw=1.1, color=col, mfc=col, mec=col, zorder=3)
-        ends.append([xs[-1], dif[-1], lab, col])
-    ends.sort(key=lambda e: e[1])
-    for k_ in range(1, len(ends)):
-        if ends[k_][1] - ends[k_ - 1][1] < 13:
-            ends[k_][1] = ends[k_ - 1][1] + 13
-    for x_, y_, lab, col in ends:
-        a0.text(10.45, y_, lab, fontsize=7.0, color=col, va="center", ha="left")
-    a0.set_xlim(1.5, 10.25)
-    a0.set_ylim(-3, 105)
-    a0.set_xticks([3, 5, 7, 9, 10])
-    a0.set_yticks([0, 50, 100])
-    a0.tick_params(axis="both", labelsize=7.2, pad=1.5)
-    a0.set_xlabel("blind score of the correct answer", fontsize=7.4, labelpad=1.0)
-    a0.set_ylabel("scored $\\leq 3$ with ref. (%)", fontsize=7.2, labelpad=1.0)
-    a0.set_title("b   Rejection by blind score (MACE)", loc="left", fontsize=8.6, fontweight="bold", x=-0.3)
-    style(a0, "y")
+            (-1.5, 68), [0, 20, 40, 60], "rise in false rejections (pp)", "b   Thinking: factual questions", lambda x: f"+{x:.0f}")
     fig.legend(handles=[Line2D([], [], marker="o", ls="", mfc=BLUE, mec=BLUE, ms=4.8, label="differs from the reference, reference shown"),
                         Line2D([], [], marker="o", ls="", mfc="white", mec=BLUE, mew=1.1, ms=4.8, label="matches the reference, reference shown"),
                         Line2D([], [], marker="x", ls="", color=ORANGE, mew=1.2, ms=4.4, label="differs, second blind call"),
-                        Line2D([], [], marker="o", ls="-", lw=0.7, color="#a8a8a8", ms=2.6, label="matches the reference (b)"),
                         Patch(color=BLUE, label="thinking off (Sonnet 5: score only; Qwen3: explains first)"),
                         Patch(color=LIGHT, label="thinking on")],
-               loc="lower center", bbox_to_anchor=(0.5, 0.005), ncol=2, frameon=False, fontsize=7.0, handlelength=1.0,
+               loc="lower center", bbox_to_anchor=(0.5, -0.01), ncol=2, frameon=False, fontsize=7.0, handlelength=1.0,
                columnspacing=1.4, handletextpad=0.4, labelspacing=0.3)
     save(fig, "fig3_acceptance")
 
@@ -827,7 +795,7 @@ if L8b and r4res.get("math") and m3 and ph4b.get("mace_exact_q7") and exb:
             continue
         lab, acc_v, au_v, kind, boxed = r
         if acc_v is None and kind in NOACC:
-            a1.text(-59, yv, NOACC[kind], fontsize=6.0, color=MUTED, style="italic", ha="left", va="center", zorder=6,
+            a1.text(-59, yv, NOACC[kind], fontsize=7.0, color=MUTED, style="italic", ha="left", va="center", zorder=6,
                     bbox=dict(facecolor="white", edgecolor="none", pad=0.3))
         for ax, v in ((a1, acc_v), (a2, au_v)):
             if v is None:
@@ -835,7 +803,7 @@ if L8b and r4res.get("math") and m3 and ph4b.get("mace_exact_q7") and exb:
             ax.plot([v[1][0], v[1][1]], [yv, yv], color=BLUE, lw=1.0, zorder=3)
             ax.plot(v[0], yv, ls="", zorder=4, **KIND[kind])
         if boxed:
-            a2.plot(boxed[0], yv + 0.42, ls="", zorder=5, **TICK)
+            a2.plot(boxed[0], yv - 0.34, ls="", zorder=5, **TICK)
         ticks.append((yv, lab, False))
     for ax, xlim, xticks, xlabel, title in ((a1, (-62, 52), [-40, -20, 0, 20, 40], "change in best-of-64 accuracy (pp)", "a   Selection"),
                                            (a2, (-0.37, 0.46), [-0.2, 0.0, 0.2, 0.4], "change in grading AUROC", "b   Grading")):
@@ -897,7 +865,7 @@ if GRADERS:
             lo = min(lo, 100 * lo_ci)
             if R22.get(gname):
                 v2 = 100 * R22[gname]["generators"][key]["accuracy_ref_draw2"][0]
-                ax.plot(XS[2] + 0.24, v2, marker=mk, ms=3.8, ls="", mfc="white", mec=col, mew=1.0, zorder=5)
+                ax.plot(XS[2] + 0.2 + 0.09 * [m[0] for m in MODELS].index(key), v2, marker=mk, ms=3.8, ls="", mfc="white", mec=col, mew=1.0, zorder=5)
                 lo = min(lo, v2)
         ax.set_xticks(XS, ["answer\nlist", "judge,\nblind", "judge,\nreference", "max\nrule"], fontsize=7.2)
         ax.set_xlim(-0.3, 3.65)
@@ -912,3 +880,38 @@ if GRADERS:
     fig.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, -0.02), ncol=5, frameon=False, fontsize=7.4,
                handlelength=2.2, columnspacing=1.4)
     save(fig, "fig4_benchmark")
+
+
+# ============================================================== Appendix figure: rejection by blind score (post hoc; round-23 review M4)
+# r22c_acceptance_bins.json. On MACE, the share of correct answers scored 3 or below with the reference, by blind-score bin, for answers
+# that differ from the reference (solid) and answers that match it (dashed grey); open judges binned on expected score, API judges on
+# integer score; bins with at least 10 differing answers.
+BINS = load("r22c_acceptance_bins.json")
+if BINS:
+    fig, (b1, b2) = plt.subplots(1, 2, figsize=(5.5, 2.5), sharey=True, gridspec_kw={"width_ratios": [1.45, 1.0], "wspace": 0.08})
+    for ax, series, edges, title in ((b1, (("mace|Qwen2.5-7B", "Qwen2.5-7B", "o"), ("mace|phi-4", "phi-4", "s")),
+                                     ["<5", "5-7", "7-9", "9-9.6", "9.6-9.8", "\u22659.8"], "a   Open judges (expected blind score)"),
+                                    (b2, (("mace|Sonnet 5", "Sonnet 5", "^"), ("mace|Opus 5", "Opus 5", "D")),
+                                     ["\u22646", "7-8", "9", "10"], "b   API judges (integer blind score)")):
+        for key, lab, mk in series:
+            xs, dif, mat = [], [], []
+            for k_, bb in enumerate(BINS[key]):
+                if bb["nonmatch"]["n"] < 10:
+                    continue
+                xs.append(k_)
+                dif.append(100 * bb["nonmatch"]["share_le3_with_reference"])
+                mat.append(100 * bb["match"]["share_le3_with_reference"] if bb["match"]["share_le3_with_reference"] is not None else float("nan"))
+            ax.plot(xs, dif, marker=mk, ms=4.6, lw=1.3, color=BLUE, mfc=BLUE, mec=BLUE, label=f"{lab}: differs")
+            ax.plot(xs, mat, marker=mk, ms=4.0, lw=0.9, ls=(0, (3, 2)), color="#8c8c8c", mfc="white", mec="#8c8c8c", label=f"{lab}: matches")
+        ax.set_xticks(range(len(edges)), edges, fontsize=7.6)
+        ax.set_xlim(-0.4, len(edges) - 0.6)
+        ax.set_xlabel("blind-score bin", fontsize=8)
+        ax.set_title(title, loc="left", fontsize=9, fontweight="bold")
+        style(ax, "y")
+    hs = b1.get_legend_handles_labels()[0] + b2.get_legend_handles_labels()[0]
+    fig.legend(handles=hs, loc="upper center", bbox_to_anchor=(0.5, -0.02), ncol=4, frameon=False, fontsize=7.2, handlelength=2.0,
+               columnspacing=1.0, labelspacing=0.25)
+    b1.set_ylabel("scored 3 or below with the reference (%)", fontsize=8)
+    b1.set_ylim(-3, 105)
+    b1.tick_params(axis="y", labelsize=7.6)
+    save(fig, "figA_bins")

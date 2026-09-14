@@ -1,0 +1,316 @@
+{
+ "grader": "opus",
+ "questions": 135,
+ "threshold": 7,
+ "generators": {
+  "meta-llama__Llama-3.1-8B-Instruct": {
+   "accuracy_answer_list": [
+    0.7111,
+    [
+     0.637,
+     0.7852
+    ]
+   ],
+   "ref_original": [
+    0.5778,
+    [
+     0.4963,
+     0.6593
+    ]
+   ],
+   "ref_regrade": [
+    0.5556,
+    [
+     0.4741,
+     0.637
+    ]
+   ],
+   "ref_draw2": [
+    0.5185,
+    [
+     0.4296,
+     0.6074
+    ]
+   ],
+   "same_draw_change": [
+    -0.0222,
+    [
+     -0.0667,
+     0.0222
+    ]
+   ],
+   "between_draw_change": [
+    -0.0593,
+    [
+     -0.1333,
+     0.0148
+    ]
+   ]
+  },
+  "claude-haiku-4-5-20251001": {
+   "accuracy_answer_list": [
+    0.9407,
+    [
+     0.8963,
+     0.9778
+    ]
+   ],
+   "ref_original": [
+    0.7407,
+    [
+     0.6593,
+     0.8148
+    ]
+   ],
+   "ref_regrade": [
+    0.7111,
+    [
+     0.6296,
+     0.7926
+    ]
+   ],
+   "ref_draw2": [
+    0.7704,
+    [
+     0.7037,
+     0.8444
+    ]
+   ],
+   "same_draw_change": [
+    -0.0296,
+    [
+     -0.0741,
+     0.0148
+    ]
+   ],
+   "between_draw_change": [
+    0.0296,
+    [
+     -0.0519,
+     0.1111
+    ]
+   ]
+  },
+  "claude-sonnet-5": {
+   "accuracy_answer_list": [
+    0.9852,
+    [
+     0.963,
+     1.0
+    ]
+   ],
+   "ref_original": [
+    0.7852,
+    [
+     0.7111,
+     0.8519
+    ]
+   ],
+   "ref_regrade": [
+    0.7778,
+    [
+     0.7111,
+     0.8519
+    ]
+   ],
+   "ref_draw2": [
+    0.763,
+    [
+     0.6889,
+     0.8296
+    ]
+   ],
+   "same_draw_change": [
+    -0.0074,
+    [
+     -0.0593,
+     0.0444
+    ]
+   ],
+   "between_draw_change": [
+    -0.0222,
+    [
+     -0.1039,
+     0.0667
+    ]
+   ]
+  },
+  "claude-opus-5": {
+   "accuracy_answer_list": [
+    1.0,
+    [
+     1.0,
+     1.0
+    ]
+   ],
+   "ref_original": [
+    0.9481,
+    [
+     0.9037,
+     0.9852
+    ]
+   ],
+   "ref_regrade": [
+    0.9333,
+    [
+     0.8889,
+     0.9778
+    ]
+   ],
+   "ref_draw2": [
+    0.9037,
+    [
+     0.8517,
+     0.9481
+    ]
+   ],
+   "same_draw_change": [
+    -0.0148,
+    [
+     -0.0444,
+     0.0148
+    ]
+   ],
+   "between_draw_change": [
+    -0.0444,
+    [
+     -0.1037,
+     0.0148
+    ]
+   ]
+  }
+ },
+ "pooled": {
+  "same_draw_change": [
+   -0.0185,
+   [
+    -0.0426,
+    0.0074
+   ]
+  ],
+  "between_draw_change": [
+   -0.0241,
+   [
+    -0.0704,
+    0.0222
+   ]
+  ],
+  "stop_credited_original": [
+   0.9929,
+   [
+    0.9762,
+    1.0
+   ],
+   140
+  ],
+  "stop_credited_regrade": [
+   0.9929,
+   [
+    0.9762,
+    1.0
+   ],
+   140
+  ],
+  "stop_credited_draw2": [
+   0.7214,
+   [
+    0.6293,
+    0.8148
+   ],
+   140
+  ],
+  "stop_regrade_minus_draw2": [
+   0.2714,
+   [
+    0.1825,
+    0.3629
+   ],
+   140
+  ],
+  "start_credited_original": [
+   0.7764,
+   [
+    0.6893,
+    0.8519
+   ],
+   161
+  ],
+  "start_credited_regrade": [
+   0.7453,
+   [
+    0.66,
+    0.8253
+   ],
+   161
+  ],
+  "start_credited_draw2": [
+   0.9938,
+   [
+    0.9793,
+    1.0
+   ],
+   161
+  ],
+  "start_draw2_minus_regrade": [
+   0.2484,
+   [
+    0.1689,
+    0.3333
+   ],
+   161
+  ]
+ },
+ "haiku_minus_llama": {
+  "answer_list": [
+   0.2296,
+   [
+    0.1481,
+    0.3111
+   ]
+  ],
+  "original": [
+   0.163,
+   [
+    0.0741,
+    0.252
+   ]
+  ],
+  "regrade": [
+   0.1556,
+   [
+    0.0667,
+    0.252
+   ]
+  ],
+  "draw2": [
+   0.2519,
+   [
+    0.1556,
+    0.3481
+   ]
+  ],
+  "same_draw_change": [
+   -0.0074,
+   [
+    -0.0667,
+    0.0593
+   ]
+  ],
+  "between_draw_change": [
+   0.0889,
+   [
+    0.0072,
+    0.1778
+   ]
+  ]
+ },
+ "pairwise_order_flips_of_6": {
+  "regrade": 0,
+  "draw2": 1
+ },
+ "predictions": {
+  "P-R23A1 regrade within 3 points (point)": "confirmed",
+  "P-R23A2 stop-matching: regrade credits more than draw 2 (point)": "confirmed",
+  "P-R23A3 start-matching: draw 2 credits more than regrade (point)": "confirmed"
+ }
+}

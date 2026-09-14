@@ -1104,3 +1104,27 @@ try:
     print("wrote round-22 tables")
 except (KeyError, TypeError, FileNotFoundError) as e:
     print("[skip round-22 tables]", repr(e))
+
+
+# ---------------------------------------------------------------- round 23: same-reference regrade
+try:
+    RG = (("Sonnet 5", "r23a_regrade_sonnet.json"), ("Opus 5", "r23a_regrade_opus.json"), ("Haiku 4.5", "r23a_regrade_haiku.json"))
+    body = ["\\begin{tabular}{lrcccccc}", "\\toprule",
+            " & & \\multicolumn{2}{c}{Pooled accuracy change} & \\multicolumn{2}{c}{Credited (\\%): first, regrade, draw 2} & \\multicolumn{2}{c}{Haiku $-$ Llama gap change} \\\\",
+            "\\cmidrule(lr){3-4}\\cmidrule(lr){5-6}\\cmidrule(lr){7-8}",
+            "Grader & $n$ & Regrade & Draw 2 & Stop matching & Start matching & Regrade & Draw 2 \\\\", "\\midrule"]
+    for gn, fn in RG:
+        if not (A / fn).exists():
+            continue
+        d = J(fn)
+        po, hl = d["pooled"], d["haiku_minus_llama"]
+
+        def trip(k):
+            return f"{100 * po[k + '_credited_original'][0]:.0f}, {100 * po[k + '_credited_regrade'][0]:.0f}, {100 * po[k + '_credited_draw2'][0]:.0f}"
+
+        body.append(f"{gn} & {d['questions']} & {p4s(po['same_draw_change'])} & {p4s(po['between_draw_change'])} & {trip('stop')} & {trip('start')} & "
+                    f"{p4s(hl['same_draw_change'])} & {p4s(hl['between_draw_change'])} \\\\")
+    write("r23_regrade.tex", done(body))
+    print("wrote round-23 table")
+except (KeyError, TypeError, FileNotFoundError) as e:
+    print("[skip round-23 table]", repr(e))
