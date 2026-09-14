@@ -101,6 +101,6 @@ Reader run after Amendment 1: 200 of 200 replies answered, no errors, ledger spe
 - **P-R22A2: falsified** (the reader confirms 86.2% of any-format "correct" replies; predicted at least 90%).
 - **P-R22A3: confirmed** (the reader calls 7.4% of any-format "wrong" replies correct).
 - Disagreements (21 of 200): of the 13 replies the any-format rule credits and the reader does not, 6 end by listing several numbers (the
-  rule takes the last integer of the last line) and 5 commit to no answer; of the 8 replies the rule rejects and the reader credits, 5
-  are subset-sum or Goldbach answers written in an order or format the rule misparses. The Qwen2.5-14B reading agrees with the reader more
+  rule takes the last integer of the last line) and 5 commit to no answer; of the 8 replies the rule rejects and the reader credits, 6
+  (corrected from 5 by problem id after the round-22 review) are subset-sum or Goldbach answers written in an order or format the rule misparses. The Qwen2.5-14B reading agrees with the reader more
   often than the any-format rule does on every stratum.

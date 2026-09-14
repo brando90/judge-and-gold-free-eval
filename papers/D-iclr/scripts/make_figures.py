@@ -368,9 +368,8 @@ if all(RA.values()) and MD and tog and t14 and S8f and S19f:
         rows.append((jn, _open(keys, "nonmatch"), _open(keys, "match"), None))
     fig = plt.figure(figsize=(5.5, 3.5))
     a1 = fig.add_axes([0.235, 0.25, 0.27, 0.68])
-    a0 = fig.add_axes([0.745, 0.735, 0.235, 0.19])
-    a2 = fig.add_axes([0.745, 0.475, 0.235, 0.14])
-    a3 = fig.add_axes([0.745, 0.215, 0.235, 0.14])
+    a0 = fig.add_axes([0.645, 0.56, 0.235, 0.36])
+    a3 = fig.add_axes([0.745, 0.25, 0.235, 0.17])
     n = len(rows)
     ticks = []
     for pos, r in enumerate(rows):
@@ -408,7 +407,7 @@ if all(RA.values()) and MD and tog and t14 and S8f and S19f:
                 ax.barh(y + dy, v[0], height=h - 0.05, color=col, zorder=3)
                 ax.errorbar(v[0], y + dy, xerr=[[max(v[0] - v[1][0], 0)], [max(v[1][1] - v[0], 0)]], fmt="none", ecolor=MUTED,
                             elinewidth=0.8, capsize=1.3, zorder=4)
-                ax.text(max(v[1][1], v[0], 0) + 0.05 * xlim[1], y + dy, fmt(v[0]), fontsize=6.3, color=INK, va="center")
+                ax.text(max(v[1][1], v[0], 0) + 0.05 * xlim[1], y + dy, fmt(v[0]), fontsize=7.0, color=INK, va="center")
         ax.axvline(0, color=MUTED, lw=0.8, zorder=2)
         ax.set_yticks(range(len(groups)), [g[0] for g in groups][::-1], fontsize=7.4)
         ax.set_ylim(-0.6, len(groups) - 0.4)
@@ -420,35 +419,45 @@ if all(RA.values()) and MD and tog and t14 and S8f and S19f:
         style(ax, "x")
 
     neg = lambda v: (-v[0], [-v[1][1], -v[1][0]])
-    barpair(a2, [("Sonnet 5 (CLI)", neg(r3s["fast"]["rot"]["loser"]), neg(r3s["think"]["rot"]["loser"])),
-                 ("Qwen3-8B", neg(tog["off"]["rot"]["loser"]), neg(tog["on"]["rot"]["loser"])),
-                 ("Qwen3-14B", neg(t14["off"]["rot"]["loser"]), neg(t14["on"]["rot"]["loser"]))],
-            (-0.15, 4.9), [0, 1, 2, 3, 4], "points lost (reference moved off)", "c   Thinking: arithmetic swap",
-            lambda x: f"{x:.2f}".replace("-", "−"))
     frp = lambda v: (100 * v[0], [100 * v[1][0], 100 * v[1][1]])
     barpair(a3, [("Sonnet 5 (API)", frp(S8f["pools"]["mace"]["oracle"]["FR"]), frp(S19f["pools"]["mace"]["oracle"]["FR"])),
                  ("Qwen3-8B", frp(tog["off"]["macesub"]["false_reject_diff"]), frp(tog["on"]["macesub"]["false_reject_diff"])),
                  ("Qwen3-14B", frp(t14["off"]["macesub"]["false_reject_diff"]), frp(t14["on"]["macesub"]["false_reject_diff"]))],
-            (-1.5, 68), [0, 20, 40, 60], "rise in false rejections (pp)", "d   Thinking: factual questions", lambda x: f"+{x:.0f}")
-    BIN = load("r22c_acceptance_bins.json") or {}  # post hoc, round-21 review M5
+            (-1.5, 68), [0, 20, 40, 60], "rise in false rejections (pp)", "c   Thinking: factual questions", lambda x: f"+{x:.0f}")
+    BIN = load("r22c_acceptance_bins.json") or {}  # post hoc, round-21 review M5; matching answers as a grey floor (round-22 review M1)
+    XPOS_API = {(0, 7): 5.0, (7, 9): 7.5, (9, 10): 9.0, (10, 10): 10.0}  # integer bins at their integer values
+    ends = []
     for key, lab, mk in (("mace|Qwen2.5-7B", "Qwen2.5-7B", "o"), ("mace|phi-4", "phi-4", "s"), ("mace|Sonnet 5", "Sonnet 5", "^"), ("mace|Opus 5", "Opus 5", "D")):
-        pts = [((b["bin"][0] + b["bin"][1]) / 2 if b["bin"][1] > b["bin"][0] else b["bin"][0], 100 * b["nonmatch"]["share_le3_with_reference"])
-               for b in BIN.get(key, []) if b["nonmatch"]["n"] >= 10]
-        if pts:
-            a0.plot([x for x, _ in pts], [y for _, y in pts], marker=mk, ms=3.6, lw=1.0, color=BLUE, mfc="white" if "5" in lab else BLUE, mec=BLUE, label=lab)
-    a0.set_xlim(1.5, 10.4)
-    a0.set_ylim(0, 105)
+        api = lab in ("Sonnet 5", "Opus 5")
+        rows_ = [bb for bb in BIN.get(key, []) if bb["nonmatch"]["n"] >= 10]
+        if not rows_:
+            continue
+        xs = [XPOS_API[tuple(bb["bin"])] if api else (bb["bin"][0] + bb["bin"][1]) / 2 for bb in rows_]
+        dif = [100 * bb["nonmatch"]["share_le3_with_reference"] for bb in rows_]
+        mat = [100 * bb["match"]["share_le3_with_reference"] if bb["match"]["share_le3_with_reference"] is not None else float("nan") for bb in rows_]
+        col = "#1f3a8a" if api else BLUE
+        a0.plot(xs, mat, marker=mk, ms=2.6, lw=0.7, color="#a8a8a8", mfc="#a8a8a8", mec="#a8a8a8", zorder=2)
+        a0.plot(xs, dif, marker=mk, ms=3.6, lw=1.1, color=col, mfc=col, mec=col, zorder=3)
+        ends.append([xs[-1], dif[-1], lab, col])
+    ends.sort(key=lambda e: e[1])
+    for k_ in range(1, len(ends)):
+        if ends[k_][1] - ends[k_ - 1][1] < 13:
+            ends[k_][1] = ends[k_ - 1][1] + 13
+    for x_, y_, lab, col in ends:
+        a0.text(10.45, y_, lab, fontsize=7.0, color=col, va="center", ha="left")
+    a0.set_xlim(1.5, 10.25)
+    a0.set_ylim(-3, 105)
     a0.set_xticks([3, 5, 7, 9, 10])
     a0.set_yticks([0, 50, 100])
     a0.tick_params(axis="both", labelsize=7.2, pad=1.5)
     a0.set_xlabel("blind score of the correct answer", fontsize=7.4, labelpad=1.0)
-    a0.set_ylabel("$\\leq 3$ with ref. (%)", fontsize=7.2, labelpad=1.0)
-    a0.set_title("b   Rejection by blind score (MACE)", loc="left", fontsize=8.6, fontweight="bold", x=-0.52)
-    a0.legend(loc="lower left", ncol=1, frameon=False, fontsize=5.9, handlelength=1.4, handletextpad=0.3, borderaxespad=0.1, labelspacing=0.15)
+    a0.set_ylabel("scored $\\leq 3$ with ref. (%)", fontsize=7.2, labelpad=1.0)
+    a0.set_title("b   Rejection by blind score (MACE)", loc="left", fontsize=8.6, fontweight="bold", x=-0.3)
     style(a0, "y")
     fig.legend(handles=[Line2D([], [], marker="o", ls="", mfc=BLUE, mec=BLUE, ms=4.8, label="differs from the reference, reference shown"),
                         Line2D([], [], marker="o", ls="", mfc="white", mec=BLUE, mew=1.1, ms=4.8, label="matches the reference, reference shown"),
                         Line2D([], [], marker="x", ls="", color=ORANGE, mew=1.2, ms=4.4, label="differs, second blind call"),
+                        Line2D([], [], marker="o", ls="-", lw=0.7, color="#a8a8a8", ms=2.6, label="matches the reference (b)"),
                         Patch(color=BLUE, label="thinking off (Sonnet 5: score only; Qwen3: explains first)"),
                         Patch(color=LIGHT, label="thinking on")],
                loc="lower center", bbox_to_anchor=(0.5, 0.005), ncol=2, frameon=False, fontsize=7.0, handlelength=1.0,
@@ -804,7 +813,7 @@ if L8b and r4res.get("math") and m3 and ph4b.get("mace_exact_q7") and exb:
             "opus": dict(marker="D", mfc="white", mec=BLUE, mew=1.1, ms=4.0),
             "gpt": dict(marker="^", mfc="white", mec=BLUE, mew=1.1, ms=5.0)}
     NOACC = {"sonnet": "n/a (subsamples)", "opus": "n/a (subsamples)", "gpt": "n/a (ties)"}
-    TICK = dict(marker="|", color="#b5b5b5", ms=4, mew=1.1)
+    TICK = dict(marker="|", color="#b5b5b5", ms=3.5, mew=1.1)
     nrow = len(rows)
     fig, (a1, a2) = plt.subplots(1, 2, figsize=(5.2, 0.118 * nrow + 0.98), sharey=True, gridspec_kw={"width_ratios": [1.0, 1.0], "wspace": 0.12})
     fig.subplots_adjust(left=0.27, right=0.985, top=0.87, bottom=0.12)
@@ -826,7 +835,7 @@ if L8b and r4res.get("math") and m3 and ph4b.get("mace_exact_q7") and exb:
             ax.plot([v[1][0], v[1][1]], [yv, yv], color=BLUE, lw=1.0, zorder=3)
             ax.plot(v[0], yv, ls="", zorder=4, **KIND[kind])
         if boxed:
-            a2.plot(boxed[0], yv + 0.36, ls="", zorder=5, **TICK)
+            a2.plot(boxed[0], yv + 0.42, ls="", zorder=5, **TICK)
         ticks.append((yv, lab, False))
     for ax, xlim, xticks, xlabel, title in ((a1, (-62, 52), [-40, -20, 0, 20, 40], "change in best-of-64 accuracy (pp)", "a   Selection"),
                                            (a2, (-0.37, 0.46), [-0.2, 0.0, 0.2, 0.4], "change in grading AUROC", "b   Grading")):
@@ -867,6 +876,7 @@ if GRADERS:
     MODELS = [("claude-opus-5", "Opus 5", "D", "#b8b8b8", "-"), ("claude-sonnet-5", "Sonnet 5", "^", "#5c5c5c", "-"),
               ("claude-haiku-4-5-20251001", "Haiku 4.5", "s", INK, "-"), ("meta-llama__Llama-3.1-8B-Instruct", "Llama-3.1-8B", "o", "#4d4d4d", (0, (3, 1.5)))]
     XS = [0, 1, 2, 3.35]
+    R22 = {"Sonnet 5": load("r22b_redraw_sonnet.json"), "Opus 5": load("r22b_redraw_opus.json"), "Haiku 4.5": load("r22b_redraw_haiku.json")}
     fig, axes = plt.subplots(1, len(GRADERS), figsize=(5.5, 1.9), sharey=True, gridspec_kw={"wspace": 0.1})
     axes = list(axes) if len(GRADERS) > 1 else [axes]
     lo = 100
@@ -878,13 +888,17 @@ if GRADERS:
             ys = [100 * g["accuracy_answer_list"][0], 100 * g["accuracy_blind"][0], 100 * g["accuracy_referenced"][0], 100 * mrg[key]["accuracy_max_rule"][0]]
             lo = min(lo, min(ys))
             heavy = key.startswith("claude-haiku")
-            ax.plot(XS[:3], ys[:3], marker=mk, ms=4.3 if heavy else 3.8, lw=1.7 if heavy else 1.0, color=col, ls=ls, mfc="white" if mk == "D" else col, mec=col,
+            ax.plot(XS[:3], ys[:3], marker=mk, ms=4.3 if heavy else 3.8, lw=1.7 if heavy else 1.0, color=col, ls=ls, mfc=col, mec=col,
                     zorder=4 if heavy else 3, label=lab)
             ax.plot(XS[2:], ys[2:], ls=":", lw=0.9, color=col, zorder=2)
-            ax.plot(XS[3], ys[3], marker=mk, ms=4.3 if heavy else 3.8, ls="", mfc="white" if mk == "D" else col, mec=col, zorder=4 if heavy else 3)
+            ax.plot(XS[3], ys[3], marker=mk, ms=4.3 if heavy else 3.8, ls="", mfc=col, mec=col, zorder=4 if heavy else 3)
             lo_ci, hi_ci = g["accuracy_referenced"][1]
             ax.plot([XS[2], XS[2]], [100 * lo_ci, 100 * hi_ci], color=col, lw=0.8, alpha=0.8, zorder=2)
             lo = min(lo, 100 * lo_ci)
+            if R22.get(gname):
+                v2 = 100 * R22[gname]["generators"][key]["accuracy_ref_draw2"][0]
+                ax.plot(XS[2] + 0.24, v2, marker=mk, ms=3.8, ls="", mfc="white", mec=col, mew=1.0, zorder=5)
+                lo = min(lo, v2)
         ax.set_xticks(XS, ["answer\nlist", "judge,\nblind", "judge,\nreference", "max\nrule"], fontsize=7.2)
         ax.set_xlim(-0.3, 3.65)
         ax.set_title(f"Graded by {gname}", loc="left", fontsize=8.6, fontweight="bold")
@@ -893,7 +907,8 @@ if GRADERS:
     axes[0].set_ylim(max(0, 10 * int(lo // 10) - 5), 103)
     axes[0].tick_params(axis="y", labelsize=7.4)
     handles = [Line2D([], [], marker=mk, ms=4.3 if key.startswith("claude-haiku") else 3.8, lw=1.7 if key.startswith("claude-haiku") else 1.0, color=col, ls=ls,
-                      mfc="white" if mk == "D" else col, mec=col, label=lab) for key, lab, mk, col, ls in MODELS]
-    fig.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, -0.02), ncol=4, frameon=False, fontsize=7.4,
+                      mfc=col, mec=col, label=lab) for key, lab, mk, col, ls in MODELS]
+    handles.append(Line2D([], [], marker="o", ls="", ms=3.8, mfc="white", mec="#5c5c5c", mew=1.0, label="second reference draw"))
+    fig.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, -0.02), ncol=5, frameon=False, fontsize=7.4,
                handlelength=2.2, columnspacing=1.4)
     save(fig, "fig4_benchmark")
