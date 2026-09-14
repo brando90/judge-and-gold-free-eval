@@ -71,7 +71,7 @@ Producers: `r20_leaderboard_analysis.py` (thresholds 7, 5, 10) and `r21_leaderbo
 | Haiku 4.5 | Opus 5 | 100.0 | 91.3 | 83.2 | 98.0 | −16.8 [−22.8, −11.4] |
 | Haiku 4.5 | pooled (change vs list) | | −9.2 [−12.6, −6.0] | −20.1 [−24.5, −15.9] | −1.7 [−4.0, +0.5] | |
 
-False rejections of non-matching correct answers, pooled, blind / referenced: Opus 5 0.5% / 23.4%; Haiku 4.5 9.1% / 25.3%.
+False rejections of non-matching correct answers, pooled, blind / referenced: Opus 5 0.5% / 23.4%; Haiku 4.5 9.1% / 25.2% (JSON 0.2525; one decimal as printed in the paper's tables).
 
 - **P-R21A1:** Opus 5 **confirmed**; Haiku 4.5 **confirmed**.
 - **P-R21A2:** Opus 5 **confirmed**; Haiku 4.5 **confirmed**.

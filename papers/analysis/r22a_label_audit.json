@@ -1,0 +1,229 @@
+{
+ "answered": 200,
+ "sampled": 200,
+ "scored": true,
+ "strata": {
+  "kpool|correct": {
+   "n": 50,
+   "size": 453,
+   "agree_any_format": 0.9,
+   "agree_qwen14b": 0.96,
+   "reader_correct": 0.9,
+   "none": 0.08
+  },
+  "kpool|wrong": {
+   "n": 50,
+   "size": 1608,
+   "agree_any_format": 0.88,
+   "agree_qwen14b": 0.92,
+   "reader_correct": 0.12,
+   "none": 0.6
+  },
+  "repl|correct": {
+   "n": 50,
+   "size": 760,
+   "agree_any_format": 0.84,
+   "agree_qwen14b": 0.96,
+   "reader_correct": 0.84,
+   "none": 0.02
+  },
+  "repl|wrong": {
+   "n": 50,
+   "size": 2190,
+   "agree_any_format": 0.96,
+   "agree_qwen14b": 0.96,
+   "reader_correct": 0.04,
+   "none": 0.64
+  }
+ },
+ "pooled": {
+  "agree_any_format": 0.9107,
+  "agree_qwen14b": 0.9472,
+  "any_correct_confirmed": 0.8624,
+  "any_wrong_called_correct": 0.0739,
+  "none_share": 0.4825
+ },
+ "pool_repl": {
+  "agree_any_format": 0.9291,
+  "agree_qwen14b": 0.96
+ },
+ "pool_kpool": {
+  "agree_any_format": 0.8844,
+  "agree_qwen14b": 0.9288
+ },
+ "predictions": {
+  "P-R22A1 weighted agreement >= 0.85": "confirmed",
+  "P-R22A2 any-format correct confirmed >= 0.90": "falsified",
+  "P-R22A3 any-format wrong called correct <= 0.15": "confirmed"
+ },
+ "disagreements": [
+  {
+   "stratum": "repl|correct",
+   "problem_id": "repl/crt-22",
+   "idx": 10,
+   "any_format": 1,
+   "reader": 0,
+   "reader_line": "17"
+  },
+  {
+   "stratum": "repl|correct",
+   "problem_id": "repl/crt-3",
+   "idx": 31,
+   "any_format": 1,
+   "reader": 0,
+   "reader_line": "43, 67, 91"
+  },
+  {
+   "stratum": "repl|correct",
+   "problem_id": "repl/digitsum-109",
+   "idx": 11,
+   "any_format": 1,
+   "reader": 0,
+   "reader_line": "39, 93"
+  },
+  {
+   "stratum": "repl|correct",
+   "problem_id": "repl/crt-12",
+   "idx": 63,
+   "any_format": 1,
+   "reader": 0,
+   "reader_line": "65, 89"
+  },
+  {
+   "stratum": "repl|correct",
+   "problem_id": "repl/crt-7",
+   "idx": 56,
+   "any_format": 1,
+   "reader": 0,
+   "reader_line": "16, 36, 46, 56"
+  },
+  {
+   "stratum": "repl|correct",
+   "problem_id": "repl/crt-3",
+   "idx": 2,
+   "any_format": 1,
+   "reader": 0,
+   "reader_line": "NONE"
+  },
+  {
+   "stratum": "repl|correct",
+   "problem_id": "repl/divcount-72",
+   "idx": 18,
+   "any_format": 1,
+   "reader": 0,
+   "reader_line": "79, 83, 89"
+  },
+  {
+   "stratum": "repl|correct",
+   "problem_id": "repl/digitsum-108",
+   "idx": 37,
+   "any_format": 1,
+   "reader": 0,
+   "reader_line": "39, 66, 48, 75, 84, 93"
+  },
+  {
+   "stratum": "repl|wrong",
+   "problem_id": "repl/subset-34",
+   "idx": 48,
+   "any_format": 0,
+   "reader": 1,
+   "reader_line": "31,29"
+  },
+  {
+   "stratum": "repl|wrong",
+   "problem_id": "repl/crt-14",
+   "idx": 2,
+   "any_format": 0,
+   "reader": 1,
+   "reader_line": "55"
+  },
+  {
+   "stratum": "kpool|correct",
+   "problem_id": "kstrat/crt-k4-0",
+   "idx": 26,
+   "any_format": 1,
+   "reader": 0,
+   "reader_line": "NONE"
+  },
+  {
+   "stratum": "kpool|correct",
+   "problem_id": "kstrat/digitsum-k1-3",
+   "idx": 19,
+   "any_format": 1,
+   "reader": 0,
+   "reader_line": "31"
+  },
+  {
+   "stratum": "kpool|correct",
+   "problem_id": "kstrat/crt-k16-12",
+   "idx": 44,
+   "any_format": 1,
+   "reader": 0,
+   "reader_line": "NONE"
+  },
+  {
+   "stratum": "kpool|correct",
+   "problem_id": "kstrat/subset-k2-11",
+   "idx": 24,
+   "any_format": 1,
+   "reader": 0,
+   "reader_line": "NONE"
+  },
+  {
+   "stratum": "kpool|correct",
+   "problem_id": "kstrat/crt-k16-4",
+   "idx": 5,
+   "any_format": 1,
+   "reader": 0,
+   "reader_line": "NONE"
+  },
+  {
+   "stratum": "kpool|wrong",
+   "problem_id": "kstrat/goldbach-k8-3",
+   "idx": 39,
+   "any_format": 0,
+   "reader": 1,
+   "reader_line": "7,307"
+  },
+  {
+   "stratum": "kpool|wrong",
+   "problem_id": "kstrat/subset-k2-4",
+   "idx": 19,
+   "any_format": 0,
+   "reader": 1,
+   "reader_line": "29, 23"
+  },
+  {
+   "stratum": "kpool|wrong",
+   "problem_id": "kstrat/subset-k2-11",
+   "idx": 52,
+   "any_format": 0,
+   "reader": 1,
+   "reader_line": "37,33"
+  },
+  {
+   "stratum": "kpool|wrong",
+   "problem_id": "kstrat/digitsum-k4-8",
+   "idx": 18,
+   "any_format": 0,
+   "reader": 1,
+   "reader_line": "78"
+  },
+  {
+   "stratum": "kpool|wrong",
+   "problem_id": "kstrat/subset-k1-2",
+   "idx": 48,
+   "any_format": 0,
+   "reader": 1,
+   "reader_line": "32, 33, 13"
+  },
+  {
+   "stratum": "kpool|wrong",
+   "problem_id": "kstrat/subset-k2-11",
+   "idx": 13,
+   "any_format": 0,
+   "reader": 1,
+   "reader_line": "37, 33"
+  }
+ ]
+}

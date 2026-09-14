@@ -939,6 +939,9 @@ try:
     both = {g: [sum(RA[j]["pooled"][g][k] for j in RA) for k in ("n", "referenced_le3", "retest_le3")] for g in ("nonmatch", "match")}
     body.append(f"Both judges & Pooled & {both['nonmatch'][0]} & {cnt(both['nonmatch'][1], both['nonmatch'][0])} & {cnt(both['nonmatch'][2], both['nonmatch'][0])} & "
                 f"{both['match'][0]} & {cnt(both['match'][1], both['match'][0])} & {cnt(both['match'][2], both['match'][0])} \\\\")
+    mb = {g: [sum(RA[j]["mace"][g][k] for j in RA) for k in ("n", "referenced_le3", "retest_le3")] for g in ("nonmatch", "match")}
+    body.append(f"Both judges & \\textsc{{MACE}}, $k{{>}}1$ & {mb['nonmatch'][0]} & {cnt(mb['nonmatch'][1], mb['nonmatch'][0])} & {cnt(mb['nonmatch'][2], mb['nonmatch'][0])} & "
+                f"{mb['match'][0]} & {cnt(mb['match'][1], mb['match'][0])} & {cnt(mb['match'][2], mb['match'][0])} \\\\")
     write("r20_retest.tex", done(body))
 
     md, qf = J("r20d_matched_acceptance.json"), J("r20f_qwen3_acceptance.json")
@@ -1049,3 +1052,55 @@ try:
     print("wrote round-20 tables")
 except (KeyError, TypeError, FileNotFoundError) as e:
     print("[skip round-20 tables]", repr(e))
+
+
+# ---------------------------------------------------------------- round 22: second reference draw; rejection by blind score
+try:
+    GRD = (("Sonnet 5", "r22b_redraw_sonnet.json"), ("Opus 5", "r22b_redraw_opus.json"), ("Haiku 4.5", "r22b_redraw_haiku.json"))
+    body = ["\\begin{tabular}{lrccccc}", "\\toprule",
+            " & & \\multicolumn{3}{c}{Referenced $-$ list (points)} & \\multicolumn{2}{c}{Credited (\\%), draw 1 $\\to$ 2 ($n$)} \\\\",
+            "\\cmidrule(lr){3-5}\\cmidrule(lr){6-7}",
+            "Grader & $n$ & Draw 1 & Draw 2 & Change & Stop matching & Start matching \\\\", "\\midrule"]
+    models = ["\\begin{tabular}{llrrrc}", "\\toprule", "Grader & Model & List & Ref., draw 1 & Ref., draw 2 & Draw 2 $-$ draw 1 \\\\", "\\midrule"]
+    GNm = {"meta-llama__Llama-3.1-8B-Instruct": "Llama-3.1-8B", "claude-haiku-4-5-20251001": "Haiku 4.5", "claude-sonnet-5": "Sonnet 5", "claude-opus-5": "Opus 5"}
+    for gn, fn in GRD:
+        if not (A / fn).exists():
+            continue
+        d = J(fn)
+        po = d["pooled"]
+        body.append(f"{gn} & {d['questions']} & {p4s(po['draw1_minus_list'])} & {p4s(po['draw2_minus_list'])} & {p4s(po['draw2_minus_draw1'])} & "
+                    f"{100 * po['losers_credited_draw1'][0]:.0f} $\\to$ {100 * po['losers_credited_draw2'][0]:.0f} ({po['losers_credited_draw1'][2]}) & "
+                    f"{100 * po['gainers_credited_draw1'][0]:.0f} $\\to$ {100 * po['gainers_credited_draw2'][0]:.0f} ({po['gainers_credited_draw1'][2]}) \\\\")
+        first = True
+        for gk, v in d["generators"].items():
+            models.append(f"{gn if first else ''} & {GNm[gk]} & {100 * v['accuracy_answer_list'][0]:.1f} & {100 * v['accuracy_ref_draw1'][0]:.1f} & "
+                          f"{100 * v['accuracy_ref_draw2'][0]:.1f} & {p4(v['draw2_minus_draw1'])} \\\\")
+            first = False
+        models.append("\\addlinespace")
+    write("r22_redraw.tex", done(body))
+    write("r22_redraw_models.tex", done(models[:-1]))
+    rk = J("r22d_ranking_intervals.json")
+    body = ["\\begin{tabular}{lcccc}", "\\toprule", "Grader & Answer list & Blind & Reference, draw 1 & Reference, draw 2 \\\\", "\\midrule"]
+    for gn, fn in GRD:
+        d2 = J(fn)["haiku_minus_llama"] if (A / fn).exists() else None
+        body.append(f"{gn} & {p4s(rk[gn]['answer_list'])} & {p4s(rk[gn]['blind'])} & {p4s(rk[gn]['reference'])} & {p4s(d2['ref_draw2']) if d2 else '---'} \\\\")
+    write("r22_haiku_llama.tex", done(body))
+    bins = J("r22c_acceptance_bins.json")
+    PNm = {"mace": "\\textsc{MACE}", "repl": "Replication", "kpool": "$k$-pool"}
+
+    def cell(b, g):
+        x = b[g]
+        return "---" if x["share_le3_with_reference"] is None else f"{100 * x['share_le3_with_reference']:.0f} ({x['n']})"
+
+    for kind, name, hdr in (("open", "r22_bins_open.tex", ["$<5$", "5--7", "7--9", "9--9.6", "9.6--9.8", "$\\geq 9.8$"]),
+                            ("api", "r22_bins_api.tex", ["$\\leq 6$", "7--8", "9", "10"])):
+        keys = [k for k in bins if (k.split("|")[1] in ("Sonnet 5", "Opus 5")) == (kind == "api")]
+        body = ["\\begin{tabular}{ll" + "r" * len(hdr) + "}", "\\toprule", "Judge and pool & Answers & " + " & ".join(hdr) + " \\\\", "\\midrule"]
+        for k in keys:
+            pn, jn = k.split("|")
+            body.append(f"{jn}, {PNm[pn]} & differ & " + " & ".join(cell(b, "nonmatch") for b in bins[k]) + " \\\\")
+            body.append(" & match & " + " & ".join(cell(b, "match") for b in bins[k]) + " \\\\")
+        write(name, done(body))
+    print("wrote round-22 tables")
+except (KeyError, TypeError, FileNotFoundError) as e:
+    print("[skip round-22 tables]", repr(e))

@@ -1,0 +1,313 @@
+{
+ "grader": "sonnet",
+ "questions": 149,
+ "threshold": 7,
+ "generators": {
+  "meta-llama__Llama-3.1-8B-Instruct": {
+   "accuracy_answer_list": [
+    0.6913,
+    [
+     0.6174,
+     0.7651
+    ]
+   ],
+   "accuracy_blind": [
+    0.6779,
+    [
+     0.5973,
+     0.7517
+    ]
+   ],
+   "accuracy_ref_draw1": [
+    0.557,
+    [
+     0.4765,
+     0.6376
+    ]
+   ],
+   "accuracy_ref_draw2": [
+    0.5503,
+    [
+     0.4765,
+     0.6243
+    ]
+   ],
+   "draw2_minus_list": [
+    -0.1409,
+    [
+     -0.2013,
+     -0.0805
+    ]
+   ],
+   "draw2_minus_draw1": [
+    -0.0067,
+    [
+     -0.0805,
+     0.0671
+    ]
+   ]
+  },
+  "claude-haiku-4-5-20251001": {
+   "accuracy_answer_list": [
+    0.9463,
+    [
+     0.906,
+     0.9799
+    ]
+   ],
+   "accuracy_blind": [
+    0.9262,
+    [
+     0.8859,
+     0.9664
+    ]
+   ],
+   "accuracy_ref_draw1": [
+    0.5503,
+    [
+     0.4698,
+     0.6309
+    ]
+   ],
+   "accuracy_ref_draw2": [
+    0.6174,
+    [
+     0.5369,
+     0.6913
+    ]
+   ],
+   "draw2_minus_list": [
+    -0.3289,
+    [
+     -0.4029,
+     -0.255
+    ]
+   ],
+   "draw2_minus_draw1": [
+    0.0671,
+    [
+     -0.0268,
+     0.1611
+    ]
+   ]
+  },
+  "claude-sonnet-5": {
+   "accuracy_answer_list": [
+    0.9866,
+    [
+     0.9664,
+     1.0
+    ]
+   ],
+   "accuracy_blind": [
+    0.9597,
+    [
+     0.9262,
+     0.9866
+    ]
+   ],
+   "accuracy_ref_draw1": [
+    0.7718,
+    [
+     0.7047,
+     0.8389
+    ]
+   ],
+   "accuracy_ref_draw2": [
+    0.7785,
+    [
+     0.7114,
+     0.8456
+    ]
+   ],
+   "draw2_minus_list": [
+    -0.2081,
+    [
+     -0.2752,
+     -0.1409
+    ]
+   ],
+   "draw2_minus_draw1": [
+    0.0067,
+    [
+     -0.0738,
+     0.0872
+    ]
+   ]
+  },
+  "claude-opus-5": {
+   "accuracy_answer_list": [
+    1.0,
+    [
+     1.0,
+     1.0
+    ]
+   ],
+   "accuracy_blind": [
+    0.9933,
+    [
+     0.9799,
+     1.0
+    ]
+   ],
+   "accuracy_ref_draw1": [
+    0.8523,
+    [
+     0.7987,
+     0.906
+    ]
+   ],
+   "accuracy_ref_draw2": [
+    0.8255,
+    [
+     0.7651,
+     0.8859
+    ]
+   ],
+   "draw2_minus_list": [
+    -0.1745,
+    [
+     -0.2349,
+     -0.1141
+    ]
+   ],
+   "draw2_minus_draw1": [
+    -0.0268,
+    [
+     -0.0872,
+     0.0403
+    ]
+   ]
+  }
+ },
+ "pooled": {
+  "draw2_minus_list": [
+   -0.2131,
+   [
+    -0.2584,
+    -0.1678
+   ]
+  ],
+  "draw1_minus_list": [
+   -0.2232,
+   [
+    -0.2701,
+    -0.1795
+   ]
+  ],
+  "draw2_minus_draw1": [
+   0.0101,
+   [
+    -0.0386,
+    0.0587
+   ]
+  ],
+  "losers_credited_draw1": [
+   1.0,
+   [
+    1.0,
+    1.0
+   ],
+   144
+  ],
+  "losers_credited_draw2": [
+   0.6181,
+   [
+    0.5214,
+    0.7099
+   ],
+   144
+  ],
+  "losers_draw2_minus_draw1": [
+   -0.3819,
+   [
+    -0.4786,
+    -0.2901
+   ],
+   144
+  ],
+  "gainers_credited_draw1": [
+   0.6437,
+   [
+    0.5549,
+    0.7278
+   ],
+   174
+  ],
+  "gainers_credited_draw2": [
+   0.9943,
+   [
+    0.9808,
+    1.0
+   ],
+   174
+  ],
+  "gainers_draw2_minus_draw1": [
+   0.3506,
+   [
+    0.2703,
+    0.4417
+   ],
+   174
+  ]
+ },
+ "ranking_answer_list": [
+  "claude-opus-5",
+  "claude-sonnet-5",
+  "claude-haiku-4-5-20251001",
+  "meta-llama__Llama-3.1-8B-Instruct"
+ ],
+ "ranking_blind": [
+  "claude-opus-5",
+  "claude-sonnet-5",
+  "claude-haiku-4-5-20251001",
+  "meta-llama__Llama-3.1-8B-Instruct"
+ ],
+ "ranking_ref_draw1": [
+  "claude-opus-5",
+  "claude-sonnet-5",
+  "meta-llama__Llama-3.1-8B-Instruct",
+  "claude-haiku-4-5-20251001"
+ ],
+ "ranking_ref_draw2": [
+  "claude-opus-5",
+  "claude-sonnet-5",
+  "claude-haiku-4-5-20251001",
+  "meta-llama__Llama-3.1-8B-Instruct"
+ ],
+ "haiku_minus_llama": {
+  "answer_list": [
+   0.255,
+   [
+    0.181,
+    0.329
+   ]
+  ],
+  "blind": [
+   0.2483,
+   [
+    0.1678,
+    0.3289
+   ]
+  ],
+  "ref_draw1": [
+   -0.0067,
+   [
+    -0.1074,
+    0.0874
+   ]
+  ],
+  "ref_draw2": [
+   0.0671,
+   [
+    -0.0336,
+    0.1611
+   ]
+  ]
+ },
+ "predictions": {
+  "P-R22B1 draw-2 referenced below list (interval)": "confirmed",
+  "P-R22B2 losers credited less under draw 2 (point)": "confirmed",
+  "P-R22B3 gainers credited more under draw 2 (point)": "confirmed"
+ }
+}

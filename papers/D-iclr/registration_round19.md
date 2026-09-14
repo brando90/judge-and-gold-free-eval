@@ -58,7 +58,7 @@ R19-B (Claude Sonnet 5, adaptive thinking, MACE):
 
 ### R19-A (recorded 2026-09-13, after the run)
 
-Run: 3,264 calls (1,280 replication, 1,280 MACE, 704 k-pool), 0 errors, 1 unparseable reply (treated as missing); tasks with all calls
+Run: 3,264 calls (1,280 replication, 1,280 MACE, 704 k-pool), 0 errors, 10 replies without a score (treated as missing; corrected 2026-09-13 from "1 unparseable reply": 1 on the replication pool and 9 on MACE cut off at 512 tokens, found in a supplement audit; no readout changes because the producers already treated them as missing); tasks with all calls
 scored: 39 replication, 34 MACE, 22 k-pool (all at least 20). Ledger spend USD 32.19 at conservative prices.
 Producers: `r8_sonnet_analysis.py --scores runs/r19/opus_api --out ../../papers/analysis/r19a_opus_results.json`,
 `r19_acceptance.py --scores runs/r19/opus_api --out ../../papers/analysis/r19a_acceptance.json`.
