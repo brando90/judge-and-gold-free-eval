@@ -85,7 +85,7 @@ We test three predictions. P1 and P2 rule out the answer key; P3 tests for an ag
 \begin{itemize}[leftmargin=1.5em,itemsep=2pt,topsep=2pt]
 \item[\textbf{P1}] \textbf{The score follows the reference.} Swapping which correct answer is the reference moves the score of unchanged text (\cref{sec:p1}).
 \item[\textbf{P2}] \textbf{Correct answers that differ from the reference are graded worse.} With several correct answers, they lose ground against wrong answers; with one, every reading allows the reference to help (\cref{sec:p2}).
-\item[\textbf{P3}] \textbf{The effect survives verification.} It persists on correct answers the judge already accepts without a reference, which verification failure rules out (\cref{sec:p3}).
+\item[\textbf{P3}] \textbf{The effect survives blind acceptance.} It remains for correct answers the judge already accepts without a reference, which verification failure alone does not predict (\cref{sec:p3}).
 \end{itemize}
 \Cref{tab:summary} gives what we observed. All three predictions hold; P3 establishes an agreement component beyond verification failure for all six judges with a usable acceptance test, and on factual questions for four of them from three developers. A thinking mode nearly removes the effect on arithmetic but only about halves it on factual questions, and an instruction that any correct answer deserves full credit also reduces it there without removing it (\cref{sec:p3}). The effect lowers benchmark scores under both of two reference draws, and which answer is drawn decides which correct answers get credit; an exploratory safeguard that keeps the higher of the blind and referenced scores protects grading at a cost when the answer is unique (\cref{sec:cost}).
 
@@ -154,7 +154,7 @@ On the constructed pools the main text therefore uses \emph{any-format labels}, 
 
 \paragraph{Measurements and conventions.}
 The \emph{swap change} is the change in score of identical text when the reference moves. The \emph{false-rejection rate} is the share of correct answers that differ from the reference scored 3 or below, and the \emph{grading AUROC} is the per-task AUROC for separating those answers from wrong answers (with one correct answer, all correct answers against wrong ones). \emph{Best-of-64 accuracy} is the correctness of the highest-scored candidate, averaged over ties. All changes are referenced minus blind, per task, with task-level bootstrap intervals, in points out of 10 for scores and percentage points (pp) for rates and accuracies. Unless stated otherwise, constructed pools use any-format labels and open judges use an exact expected score (\cref{app:estimator}). We do not correct for multiplicity.
-Marks apply to effect estimates: unmarked estimates were pre-specified in a timestamped commit or on OSF, \ph{} marks post hoc estimates, and \reana{} marks pre-specified re-analyses of an effect whose direction was already known. \Cref{app:ledger} lists all 206 registered predictions: 138 confirmed, 11 not confirmed, 17 falsified, 17 split across judges, and 23 not evaluable, not scored, or excluded.
+Marks apply to effect estimates: unmarked estimates were pre-specified in a timestamped commit or on OSF, \ph{} marks post hoc estimates, and \reana{} marks pre-specified re-analyses of an effect whose direction was already known. \Cref{app:ledger} lists every registered prediction and its outcome.
 
 \section{Prediction 1: the score follows the reference}
 \label{sec:p1}
@@ -182,7 +182,7 @@ With one correct answer the reference helps, as every reading allows. Showing on
 
 \paragraph{Verdict.} P2 holds for every judge we ran on factual questions (Sonnet~5, Opus~5, Qwen2.5-7B, phi-4) and for the four open judges on the constructed pools. On the constructed pools the API judges fall less: Sonnet~5 and Opus~5 by 0.06 to 0.08 on the $k$-pool and by 0.04 and 0.02 on the replication pool (Opus~5's interval includes zero), and GPT-4.1 by at most 0.04 on either pool. With one correct answer the reference helps. Selection among sampled answers is less exposed: on \textsc{MACE}'s multi-answer questions best-of-64 accuracy did not fall ($+2.0$ and $+6.1$~pp, intervals including zero; our registered loss was not confirmed), and $k$-pool losses concentrate where no correct candidate matches the reference (\cref{app:estimator}).\ph
 
-\section{Prediction 3: the effect survives verification}
+\section{Prediction 3: the effect survives blind acceptance}
 \label{sec:p3}
 
 \begin{figure}[t]
@@ -281,7 +281,7 @@ LLM judges favor the first response~\citep{wang2024fair}, longer responses~\cite
 \section{Conclusion}
 \label{sec:conclusion}
 
-A reference answer is a good check when a question has one correct answer.
+On the unique-answer tasks we study, a reference answer is a useful check.
 When it has several, LLM judges favor the one they are shown: swapping it moves the score of unchanged text by 2.7 to 5.4 points, and correct answers that differ from it are rejected far more often, even ones the judge accepts without a reference. On factual questions, frontier graders shown a reference scored four models 7 to 40 points below their answer-list accuracy, and redrawing the reference moved credit for individual answers by 23 to 38 points, against about 3 on a regrade.
 A thinking mode nearly removes the effect on arithmetic; on factual questions, thinking and an instruction that any correct answer counts reduce it without removing it.
 Evaluations of such questions should use the full answer set when it exists and otherwise inspect blind and referenced scores separately.
