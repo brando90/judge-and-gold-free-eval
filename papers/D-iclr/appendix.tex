@@ -313,10 +313,17 @@ Simple combinations of the blind and referenced scores compete with blind-then-r
 \begin{table}[htbp]
 \centering
 \footnotesize
-\caption{\textbf{The max rule removes the grading harm; blind-then-reveal mostly does not.} Top: change in per-task grading AUROC relative to blind judging (95\% CI), for correct answers that differ from the reference against wrong answers ($k$-pool with any-format labels, 59 tasks; \textsc{MACE}, 91 tasks), and for all correct answers against wrong answers on single-answer questions. Middle: change in best-of-64 accuracy relative to the referenced judge (points, 95\% CI). These two blocks use the original scorer, as the reveal calls did. Bottom: the reference and the max rule under the exact scorer, changes against blind judging (95\% CI), the values quoted in \cref{tab:protocols}. From stored scores.\ph}
+\caption{\textbf{The max rule removes the grading harm; blind-then-reveal mostly does not.} Top: change in per-task grading AUROC relative to blind judging (95\% CI), for correct answers that differ from the reference against wrong answers ($k$-pool with any-format labels, 59 tasks; \textsc{MACE}, 91 tasks), and for all correct answers against wrong answers on single-answer questions. Bottom: change in best-of-64 accuracy relative to the referenced judge (points, 95\% CI). Both blocks use the original scorer, as the reveal calls did. From stored scores.\ph}
 \label{tab:protocol-grading}
 \begin{adjustbox}{max width=\linewidth}\input{tables/protocol_grading.tex}\end{adjustbox}\\[6pt]
-\begin{adjustbox}{max width=\linewidth}\input{tables/protocol_selection.tex}\end{adjustbox}\\[6pt]
+\begin{adjustbox}{max width=\linewidth}\input{tables/protocol_selection.tex}\end{adjustbox}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption{The reference and the max rule under the exact scorer, changes against blind judging (95\% CI); the values quoted in \cref{tab:protocols}. From stored scores.\ph}
+\label{tab:protocol-exact}
 \begin{adjustbox}{max width=\linewidth}\input{tables/protocol_exact.tex}\end{adjustbox}
 \end{table}
 
