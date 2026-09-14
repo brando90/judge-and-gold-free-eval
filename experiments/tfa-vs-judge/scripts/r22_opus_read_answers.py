@@ -1,6 +1,6 @@
 # R22-A harness (papers/D-iclr/registration_round22.md): Claude Opus 5 reads the sampled unboxed replies of
 # runs/r22/label_sample.jsonl and reports the final answer each commits to, with the extraction prompt of
-# scripts/r8_extract_answers.py verbatim. Messages API, thinking disabled, temperature 0, 200 output tokens. Resumable; spend capped.
+# scripts/r8_extract_answers.py verbatim. Messages API, thinking disabled, default temperature (Amendment 1), 200 output tokens. Resumable; spend capped.
 # Run from experiments/tfa-vs-judge. Output: runs/r22/opus_read.jsonl rows {pool, problem_id, idx, answer, stop_reason}.
 import argparse
 import json
@@ -53,7 +53,7 @@ def one(r):
             return None
     row = dict(pool=r["pool"], problem_id=r["problem_id"], idx=r["idx"])
     try:
-        m = client.messages.create(model=args.model, max_tokens=200, temperature=0, thinking={"type": "disabled"}, system=SYSTEM,
+        m = client.messages.create(model=args.model, max_tokens=200, thinking={"type": "disabled"}, system=SYSTEM,
                                    messages=[{"role": "user", "content": USER.format(q=r["question"], r=r["reply"])}])
         row.update(answer="".join(b.text for b in m.content if b.type == "text").strip(), stop_reason=m.stop_reason)
         with lock:

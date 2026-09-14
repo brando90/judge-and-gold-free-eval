@@ -50,6 +50,13 @@ Registered 2026-09-13, before any R22 call. Committed together with the builders
   minus Llama-3.1-8B accuracy under each draw with paired intervals.
 - Scored for a grader if at least 100 questions have all calls scored.
 
+## Amendment 1 (2026-09-13, before any reader answer existed)
+
+The first R22-A run returned HTTP 400 for all 200 calls ("`temperature` is deprecated for this model"), so no reader answer and no
+spend exist. The reader now runs with the API's default temperature; nothing else changes. The failed rows stay in
+`runs/r22/opus_read.jsonl` and the producer ignores rows with errors. No R22-B result had been read when this amendment was written
+(the Sonnet 5 second-draw producer had been run; its output is not an input to R22-A).
+
 ## Verdicts
 
 Confirmed when the interval excludes zero in the predicted direction (or a point prediction holds); falsified when it excludes zero in the
