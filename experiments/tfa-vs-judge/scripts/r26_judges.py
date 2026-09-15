@@ -29,6 +29,8 @@ ap.add_argument("--cap-usd", type=float, required=True)
 ap.add_argument("--price-in", type=float, required=True)
 ap.add_argument("--price-out", type=float, required=True)
 ap.add_argument("--dry-run", action="store_true")
+ap.add_argument("--max-tokens", type=int, default=1024, help="R27 Amendment 2: output limit (default 1024 = R26 setting)")
+ap.add_argument("--redo-missing", action="store_true", help="R27 Amendment 2: re-run calls whose earlier reply had no grade")
 args = ap.parse_args()
 
 
@@ -127,13 +129,15 @@ def one(job):
             return None
     user = prompt(t, j, cond)
     row = dict(problem_id=t["problem_id"], idx=t["idx"][j], cond=cond, template=args.template, provider=args.provider, model=args.model)
+    if args.max_tokens != 1024:
+        row["max_tokens"] = args.max_tokens
     try:
         if args.provider == "anthropic":
-            r = aclient.messages.create(model=args.model, max_tokens=1024, thinking={"type": "disabled"}, messages=[{"role": "user", "content": user}])
+            r = aclient.messages.create(model=args.model, max_tokens=args.max_tokens, thinking={"type": "disabled"}, messages=[{"role": "user", "content": user}])
             text = "".join(b.text for b in r.content if b.type == "text")
             tin, tout, stop = r.usage.input_tokens, r.usage.output_tokens, r.stop_reason
         else:
-            r = oclient.chat.completions.create(model=args.model, messages=[{"role": "user", "content": user}], temperature=0, max_tokens=1024)
+            r = oclient.chat.completions.create(model=args.model, messages=[{"role": "user", "content": user}], temperature=0, max_tokens=args.max_tokens)
             text = r.choices[0].message.content or ""
             tin, tout, stop = r.usage.prompt_tokens, r.usage.completion_tokens, r.choices[0].finish_reason
         row.update(score=grade(text), stop_reason=stop, input_tokens=tin, output_tokens=tout, tail=text[-300:])
@@ -149,7 +153,9 @@ done = set()
 if os.path.exists(outf):
     for l in open(outf):
         r = json.loads(l)
-        if not r.get("error"):
+        if not r.get("error") and not (args.redo_missing and r.get("score") is None):
+            done.add((r["problem_id"], r["idx"], r["cond"]))
+        elif args.redo_missing and r.get("score") is not None:
             done.add((r["problem_id"], r["idx"], r["cond"]))
 jobs = [(t, j, c) for t in pool for j in range(len(t["samples"])) for c in conds if (t["problem_id"], t["idx"][j], c) not in done]
 print(f"[r26 {args.provider}/{args.model} {args.template} {args.conds} {os.path.basename(args.pool)}] {len(jobs)} calls, spend ${spend['usd']:.2f}", flush=True)

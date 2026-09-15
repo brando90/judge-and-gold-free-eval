@@ -76,3 +76,16 @@ The first run of `scripts/r27_run.sh` used a Python interpreter without the `ant
 and pool building, labeling and grading then failed for lack of the pool, so no label or grader call was made. GPT-4.1-mini's 200 answers
 were generated as registered; 43 of them reached the 2,048-token limit before an answer line and are kept as generated (they will be
 labeled and graded as given). The driver now calls an explicit interpreter that has both SDKs; nothing else changes.
+
+## Amendment 2 (2026-09-15, before any R27-B outcome analysis)
+
+With the registered 1,024-token output limit, the solve-first prompt often ran out of tokens before its verdict on these hard questions:
+161 of GPT-4.1's 800 calls and 334 of the first 444 Sonnet 5 calls ended at the limit without a "correct:" line (4 more Sonnet 5
+replies were refusals). So many missing grades would leave too few complete questions for P-R27B1 and P-R27B3. The Sonnet 5 solve-first
+run was stopped by PID. Solve-first calls without a grade, and Sonnet 5's not-yet-made solve-first calls, are now run with a 4,096-token
+limit (`scripts/r26_judges.py --max-tokens 4096 --redo-missing`); earlier rows are kept, the new row carries `max_tokens: 4096`, and the
+producer uses the graded row. Caps for these runs: GPT-4.1 USD 12 and Sonnet 5 USD 35 (ledger totals). The truncation rates at 1,024
+tokens are reported as a registered finding on the practical cost of solve-first. Before this amendment we had looked only at run
+logs, counts of missing grades by stop reason, and the label base rate (7 of 400 answers labeled correct); no grader outcome had been
+computed. Other cells are unchanged: their missing grades (Sonnet 5: 4 refusals and 2 cut off in the HLE-judge cell, 4 refusals in the
+direct cell) stay missing.
