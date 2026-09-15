@@ -22,6 +22,7 @@ ap.add_argument("--pool", default="runs/r20/mace_gen/pool.jsonl")
 ap.add_argument("--tasks", default="runs/mace_tasks.jsonl")
 ap.add_argument("--out", required=True)
 ap.add_argument("--dry-run", action="store_true")
+ap.add_argument("--limit", type=int, default=0, help="Amendment 3: stop after this many generations (0 = all)")
 args = ap.parse_args()
 
 
@@ -73,6 +74,8 @@ if os.path.exists(outf):
         r = json.loads(l)
         done.add((r["problem_id"], r["idx"], r["cond"]))
 jobs = [(t, j, c) for t in pool for j in range(len(t["samples"])) for c in conds if (t["problem_id"], t["idx"][j], c) not in done]
+if args.limit:
+    jobs = jobs[:args.limit]
 print(f"[r26 verifier {name}] {len(jobs)} generations", flush=True)
 t0 = time.time()
 with open(outf, "a") as f:

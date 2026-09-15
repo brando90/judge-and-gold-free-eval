@@ -129,5 +129,6 @@ The sequential verifier run was stopped a second time by the machine's low-memor
 generations and 58 CompassVerifier generations; MPS cached memory grows over a long generation loop. `scripts/r26_verifiers.py` now
 deletes each generation's tensors and calls `torch.mps.empty_cache()` after every generation, and the runs resume with
 `PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.7` and `PYTORCH_MPS_LOW_WATERMARK_RATIO=0.5` (the first restart set only the high
-watermark, which PyTorch rejected before loading the model; no generation ran). Decoding (greedy, same model, prompt and token limits) is unchanged; completed generations are
+watermark, which PyTorch rejected before loading the model; no generation ran). A third low-memory stop came after 154 more General-Reasoner generations,
+so the runs continue in fresh processes of at most 100 generations each (`--limit 100`), which releases all memory between chunks. Decoding (greedy, same model, prompt and token limits) is unchanged; completed generations are
 kept. No R26-C output had been analyzed; we had looked only at run logs and line counts.
