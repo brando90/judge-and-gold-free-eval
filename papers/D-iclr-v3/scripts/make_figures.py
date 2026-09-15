@@ -889,8 +889,8 @@ if GRADERS:
 #     (r24a_<cell>.json; one reference and the full list), open RL verifiers (r26c_<v>.json), and the paper's score rubric
 #     (r20c/r21a, r24b_gpt41.json; blind and one reference). a2: the same quantity on a zoomed axis for prompts that ask whether the answer
 #     is correct: direct yes/no (r26a), chain of thought, verify first, solve first (r25), and the HLE judge without its match-only
-#     clause (r26a). b: grading AUROC change against blind on the R8-A MACE subsample (r24c): one reference and the full list; Sonnet 5
-#     with thinking plus the full-credit sentence (r24d).
+#     clause (r26a). b: grading AUROC change against blind on the R8-A MACE subsample (r24c): one reference and the full list.
+#     v3: the Sonnet 5 thinking plus full-credit-sentence marker (r24d, one judge) moved to the appendix text.
 STD = [("s41", "SimpleQA grader, GPT-4.1"), ("h41", "BrowseComp judge, GPT-4.1"), ("h03", "HLE judge, o3-mini"),
        ("sS5", "SimpleQA grader, Sonnet 5"), ("hS5", "HLE judge, Sonnet 5")]
 A24 = {c: load(f"r24a_{c}.json") for c, _ in STD}
@@ -982,10 +982,6 @@ if all(A24.values()) and B24 and all(C24.values()) and D24 and all(r[1] for r in
             v = d[key]
             b.plot(v[1], [y + dy, y + dy], color=MUTED, lw=0.8, zorder=2)
             b.plot(v[0], y + dy, "o", ms=4.2, zorder=4, **kw)
-        if lab == "Sonnet 5":
-            v = D24["combined"]["G_change"]
-            b.plot(v[1], [y - 0.42, y - 0.42], color=MUTED, lw=0.8, zorder=2)
-            b.plot(v[0], y - 0.42, "^", ms=4.2, mfc=LIGHT, mec=BLUE, zorder=4)
     b.axvline(0, color=MUTED, lw=0.8, zorder=1)
     b.set_yticks(range(len(jrows)), [j[0] for j in jrows][::-1], fontsize=7.8)
     b.set_ylim(-0.7, len(jrows) - 0.4)
@@ -996,9 +992,8 @@ if all(A24.values()) and B24 and all(C24.values()) and D24 and all(r[1] for r in
     style(b, "x")
     fig.legend(handles=[Line2D([], [], marker="o", ls="", mfc=BLUE, mec=BLUE, ms=4.2, label="one reference"),
                         Line2D([], [], marker="o", ls="", mfc="white", mec=BLUE, mew=1.1, ms=4.2, label="full answer list"),
-                        Line2D([], [], marker="x", ls="", color=ORANGE, mew=1.2, ms=4.0, label="blind"),
-                        Line2D([], [], marker="^", ls="", mfc=LIGHT, mec=BLUE, ms=4.2, label="thinking + full-credit sentence")],
-               loc="lower center", bbox_to_anchor=(0.5, 0.0), ncol=4, frameon=False, fontsize=7.8, handlelength=1.0,
+                        Line2D([], [], marker="x", ls="", color=ORANGE, mew=1.2, ms=4.0, label="blind")],
+               loc="lower center", bbox_to_anchor=(0.5, 0.0), ncol=3, frameon=False, fontsize=7.8, handlelength=1.0,
                columnspacing=1.0, handletextpad=0.4)
     save(fig, "fig4_graders")
 
