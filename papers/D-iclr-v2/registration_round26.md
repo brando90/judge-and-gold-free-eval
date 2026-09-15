@@ -77,3 +77,12 @@ here as a dated amendment before its results are analyzed. 30 predictions.
 Apple MPS; no generation was produced. `scripts/r26_verifiers.py` now loads both verifiers with `attn_implementation="sdpa"` (PyTorch
 scaled dot-product attention). The General-Reasoner verifier run, already in progress, is unaffected (its configuration does not
 request FlashAttention). Nothing else changes.
+
+## Amendment 2 (2026-09-14, during the runs, before any R26-B analysis)
+
+The R26 runs were interrupted once when the machine ran low on memory while both local verifiers were loaded; every harness is
+resumable, the runs were restarted with the verifiers in sequence, and no call was duplicated. Sonnet 5's verify-first and solve-first
+cells on the MACE subsample project to about USD 6 each against the USD 5 per-cell cap (written reasoning on 16-candidate tasks); their
+caps are raised to USD 9, and the Anthropic total to USD 38. If a cap stops a cell, the same command is re-run with `--cap-usd 9`.
+Before this amendment we had looked at run logs, spend ledgers, and the R26-A (benchmark pool) results, which were analyzed as
+registered; no R26-B or R26-C data had been analyzed.
