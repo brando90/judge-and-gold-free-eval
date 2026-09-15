@@ -22,6 +22,8 @@ text_sources = [D / "registration.md", PAPER / "registration_round2.md",
                 PAPER / "registration_round4.md", PAPER / "registration_round5.md", PAPER / "registration_round8.md",
                 PAPER / "registration_round19.md", PAPER / "registration_round20.md",
                 PAPER / "registration_round21.md", PAPER / "registration_round22.md",
+                PAPER / "registration_round23.md", PAPER / "registration_round24.md", PAPER / "registration_round25.md",
+                PAPERS / "analysis" / "prevalence_v2" / "RESULTS.md", PAPER / "survey" / "practice_survey.md",
                 *sorted((PAPER / "tables").glob("*.tex"))]  # generated tables carry JSON-produced numbers; the uncorrected source draft is not a source
 corpus = "\n".join(p.read_text(errors="ignore") for p in text_sources if p.exists())
 

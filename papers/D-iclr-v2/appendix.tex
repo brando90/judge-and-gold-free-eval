@@ -5,7 +5,7 @@
 \section{Setup details}
 \label{app:setup}
 
-Appendices~\ref{app:setup}--\ref{app:reasoning} give details for claims in the main text, in the order the main text first uses them; Appendices~\ref{app:composition}--\ref{app:dpo} report additional registered studies with their ledger verdicts. The ledger keeps the names used in the registrations, calling the swap test \emph{rot\-ation} and the margin the \emph{an\-choring margin}; the two rubric wordings are $a$ and $b$.
+Appendices~\ref{app:setup}--\ref{app:mitigation} give details for claims in the main text, in the order the main text first uses them; Appendices~\ref{app:composition}--\ref{app:dpo} report additional registered studies with their ledger verdicts. The ledger keeps the names used in the registrations, calling the swap test \emph{rot\-ation} and the margin the \emph{an\-choring margin}; the two rubric wordings are $a$ and $b$.
 
 \paragraph{Pools.}
 \Cref{tab:pools} lists every pool. Validity is decided by a program in all own-built pools and in MBPP and MATH-500; \textsc{MACE} entity questions use the benchmark's answer lists after a completeness audit (\cref{app:mace}), and the exploratory Ties pool uses an enumerated answer list known to be incomplete (\cref{app:ties}).
@@ -78,6 +78,65 @@ The number 80 meets the given conditions, so we can stop here.\\[2pt]
 The answer is \texttt{\textbackslash boxed\{80\}}.
 \end{quote}
 
+%==========================================================================================
+\FloatBarrier
+\section{How widely graders rely on one reference}
+\label{app:survey}
+
+We surveyed benchmarks whose official scorer is an LLM judge, evaluation libraries and cloud platforms with a built-in correctness judge, RL reward pipelines that use an LLM verifier, and research papers from 2023 to 2026 that evaluate or train with an LLM judge. Every entry was checked on 14 September 2026 against its primary source (repository code at a pinned commit, official documentation, or the paper); the records, 24 verbatim judge templates, and all quotes are in the supplementary material. An entry counts as \emph{reference-guided} when the judge sees one gold answer, or a closed list of them, and decides correctness from it (\cref{tab:survey}).
+
+\begin{table}[htbp]
+\centering
+\caption{Surveyed graders that give an LLM judge one reference answer or a closed list of them. Research papers were selected because they use such a judge; 10 checked candidates that did not were dropped. Partly: Arize Phoenix (reference template only in an older release) and Rubrics as Rewards (references write the rubrics).\ph}
+\label{tab:survey}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{L{2.2cm}ccL{7.8cm}}
+\toprule
+Group & Surveyed & One reference & Reference-guided entries \\
+\midrule
+Benchmarks & 16 & 11 & SimpleQA~\citep{wei2024simpleqa}, SimpleQA Verified~\citep{haas2025simpleqaverified}, BrowseComp~\citep{wei2025browsecomp}, HLE~\citep{phan2025hle}, the simple-evals MATH checker~\citep{simpleevals}, MT-Bench~\citep{zheng2023judging}, FreshQA~\citep{vu2023freshllms}, CRAG~\citep{yang2024crag}, MixEval~\citep{ni2024mixeval}, Omni-MATH~\citep{gao2024omnimath}, FRAMES~\citep{krishna2025frames}. Not: TruthfulQA, HealthBench, GAIA, LiveBench, Arena-Hard \\
+Evaluation libraries & 12 & 11 + 1 partly & Inspect AI~\citep{inspectai}, OpenAI Evals~\citep{openaievals}, LangChain~\citep{langchainevals}, openevals~\citep{openevals}, LlamaIndex~\citep{llamaindexcorrectness}, RAGAS~\citep{es2023ragas}, DeepEval~\citep{deepeval}, MLflow~\citep{mlflowjudges}, promptfoo~\citep{promptfoofactuality}, TruLens~\citep{trulens}, OpenCompass~\citep{opencompassjudge}; Phoenix~\citep{phoenixevals} partly \\
+Cloud platforms & 4 & 3 & OpenAI graders~\citep{openaigraders}, Azure AI Foundry~\citep{azurefoundrysimilarity}, AWS Bedrock~\citep{bedrockjudgeprompts}. Not: Vertex AI \\
+RL reward pipelines & 11 & 10 + 1 partly & DeepSeek-R1~\citep{deepseek2025r1}, Kimi k1.5~\citep{kimi2025k15}, Qwen3~\citep{yang2025qwen3}, Seed1.5-Thinking~\citep{seed2025thinking}, General-Reasoner~\citep{ma2025generalreasoner}, RLVR across domains~\citep{su2025rewardbridge}, xVerify~\citep{chen2025xverify}, CompassVerifier~\citep{liu2025compassverifier}, TinyV~\citep{xu2025tinyv}, OpenAI reinforcement fine-tuning~\citep{openairft}; Rubrics as Rewards~\citep{gunjal2025rar} partly \\
+Research papers, 2023--2026 & --- & 34 & Math and science~\citep{huang2025pitfalls,chernyshev2024umath,lu2025ineqmath,xu2025ugphysics,minimax2025m1,cheng2025guru,bercovich2025llamanemotron,huang2024olympicarena,fang2024mathodyssey}; proofs and competition grading~\citep{petrov2025proofbluff,luong2025imobench,mahdavi2025refgrader,balunovic2025matharena}; code~\citep{zhuo2024icescore,tong2024codejudge}; QA and RAG~\citep{chandak2025answermatching,he2024chinesesimpleqa,ru2024ragchecker,rau2024bergen,refguided2024,kamalloo2023evaluating,thakur2024judging,wang2023evouna}; agents and deep research~\citep{wu2025webwalker,zhou2025browsecompzh,wu2025webdancer,li2025websailor,gao2025asearcher,zheng2025deepresearcher,chen2025browsecompplus,du2025deepresearchbench,li2025webthinker,liu2025webexplorer,tongyi2025deepresearch} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{What the prompts say.} We could read 34 judge prompts in full. Of these, 27 define correctness as matching the reference, 4 partly, and 3 offer it only as an aid. Two say that several answers can be valid, and both give the judge a closed list~\citep{ni2024mixeval,vu2023freshllms}; three more allow different wording but require the reference's content. None tells the judge to credit a correct answer outside the reference. Five declare the reference correct: ``Take it as granted that the Ground Truth is always correct'' (CRAG), ``The reference answer is ALWAYS correct'' (Omni-MATH), ``THE STANDARD ANSWER IS ALWAYS CORRECT AND THE QUESTION IS PERFECTLY VALID. NEVER QUESTION THEM'' (CompassVerifier), ``You can assume that the standard answer is definitely correct'' (OpenCompass), and the HLE and BrowseComp judge's ``precise and unambiguous [correct\_answer]''. Reward prompts follow the same pattern: DeepSeek-R1's rates an answer correct when it ``fully aligns with the reference answer''~\citep{deepseek2025r1}.
+
+\paragraph{Research papers.} Eight of the 34 papers use the judge as an RL reward or data filter. In seven others, all evaluations, the tasks admit several valid answers and the judge still sees one reference or a closed list~\citep{kamalloo2023evaluating,wang2023evouna,zheng2025deepresearcher,du2025deepresearchbench,zhuo2024icescore,tong2024codejudge,petrov2025proofbluff}; among them, providing reference code made all three LLM-based evaluators worse on CoNaLa~\citep{tong2024codejudge}. IMO-ProofBench's grader is told the reference ``demonstrates one valid approach'' and is reported to be ``prone to be overly punitive'' for unconventional correct solutions~\citep{luong2025imobench}. Across NLP conferences, LLM judges appear in 46\% of 2025 NLG papers, up from under 1\% before 2023~\citep{yang2026nlgmeta}; we found no count of reference-guided judges specifically.
+
+%==========================================================================================
+\FloatBarrier
+\section{How common are questions with several valid answers?}
+\label{app:prevalence}
+
+We sampled 200 questions (seed 0) from each of four datasets that ship one reference answer per question and labeled each as having multiple non-equivalent valid answers, a unique answer up to equivalence, or unclear. Equivalent forms of one answer (for example $1/2$ and $0.5$) count as unique, and ``find all'' questions whose answer is a single set count as unique. Each item was labeled twice independently by LLM annotators (Claude models) that did not see each other's labels, and disagreements were adjudicated by re-reading the item. Every alternative answer given for a math item was checked by computation. Both passes come from one model family, so agreement may overstate reliability, and we did not validate the labels against human annotators.
+
+\begin{table}[htbp]
+\centering
+\caption{Share of sampled questions with more than one valid answer (95\% Wilson interval) and inter-pass agreement on the multiple-versus-other label. Both MATH-500 passes labeled every item unique, so $\kappa$ is undefined.\ph}
+\label{tab:prevalence}
+\footnotesize
+\begin{adjustbox}{max width=\linewidth}\input{tables/prevalence.tex}\end{adjustbox}
+
+\end{table}
+
+Curated math sets are almost entirely single-answer. The multi-answer math items are mostly underspecified problems rather than requests for an example: a vector problem asks for ``the value of $x$'' when $-x^2+2x+3=0$ has roots $-1$ (the reference) and $3$; a ticket problem admits several whole-dollar prices; an interest problem is consistent with both simple and compound interest. In NQ-open, 30.0\% of questions admit several correct answers, and 18.5\% after excluding questions whose answer changed over time. The audit also flagged 13 malformed DeepScaleR items and several references that appear to be wrong, which are separate problems from multiplicity.
+
+\paragraph{Benchmarks graded against one reference, and a second annotator family.} A pre-specified extension (protocol committed before any labeling call) sampled 200 questions each from SimpleQA~\citep{wei2024simpleqa}, BrowseComp~\citep{wei2025browsecomp}, text-only exact-answer HLE questions~\citep{phan2025hle}, TriviaQA~\citep{joshi2017triviaqa}, and the WebInstruct-verified RL training set~\citep{ma2025generalreasoner}, with the definitions above. Two annotators from different developers labeled every item independently, Claude Sonnet~5 and GPT-5-mini; Claude Opus~5 adjudicated disagreements until its spending cap, after which the remaining 135 disagreements (106 on BrowseComp, most about whether an item needs deep solving) kept the conservative label (\cref{tab:prevalence-v2}); the fallback can only lower the count of questions with several answers, and had the six HLE fallbacks that involve that label gone the other way, HLE would reach 6.0\%. BrowseComp's unclear labels are mostly fallbacks. Questions written for a single answer rarely admit several: 0\% to 4\%. The RL training set reaches 5.5\%, and 18\% by either annotator. Agreement between the two annotators is low ($\kappa \le 0.35$ on the several-versus-other label), so these rates are rough; none was checked by humans. A GPT-5-mini relabel of the first audit's 800 items agrees with its final labels at $\kappa = 0.53$ on the several-versus-other label and marks more items as having several answers (87 of 200 NQ-open questions, against 60), so the first audit's rates are likely low.
+
+\begin{table}[htbp]
+\centering
+\caption{Share of sampled questions with several valid answers after adjudication (95\% Wilson interval), agreement between the two annotators on the several-versus-other label, and the share labeled several by both and by either annotator. 200 questions per dataset; LLM annotators, not humans.\pre}
+\label{tab:prevalence-v2}
+\footnotesize
+\begin{adjustbox}{max width=\linewidth}\input{tables/prevalence_v2.tex}\end{adjustbox}
+\end{table}
+
+%==========================================================================================
 \FloatBarrier
 \section{Preregistration ledger}
 \label{app:ledger}
@@ -150,68 +209,10 @@ Benchmark graders, one reference and the full answer list (\cref{sec:cost,sec:fi
 GPT-4.1 as a benchmark grader (\cref{sec:cost,app:r24}) & commit & Referenced accuracy below the answer lists (\textbf{confirmed}); blind accuracy within 5 points of them (\textbf{confirmed}); answers that stop matching under a second draw lose credit (\textbf{confirmed}); answers that start matching gain credit (\textbf{confirmed}). \\
 Full answer list, measured by grading (\cref{sec:fix,app:r24}) & commit & For Sonnet~5, Opus~5, and GPT-4.1 on the \textsc{MACE} subsample: grading AUROC with the list no more than 0.03 below blind (\textbf{confirmed}, 3 of 3); rise in false rejections at most 5 points (\textbf{confirmed}, 3 of 3); AUROC with the list above AUROC with one reference (\textbf{confirmed}, 3 of 3). \\
 Thinking and the full-credit sentence together (\cref{sec:fix,app:r24}) & commit & Sonnet~5 on the \textsc{MACE} subsample: rise in false rejections below both thinking alone and the sentence alone (\textbf{confirmed}); change in grading AUROC above both (\textbf{confirmed}); false rejections still rise (\textbf{not confirmed}: $-0.2$~pp \ci{-7.2}{+4.6}). \\
-Judges that reason before deciding (\cref{sec:cost,app:r25}) & commit & Chain-of-thought, verify-first, and solve-first prompts with GPT-4.1 and Sonnet~5 on the benchmark pool: referenced accuracy below the answer lists (\textbf{confirmed} for four; \textbf{not confirmed} for verify-first and solve-first GPT-4.1); blind accuracy within 5 points of the lists (\textbf{confirmed}, 6 of 6); credit for differing correct answers at least 10 points lower with the reference (\textbf{falsified}, 6 of 6: 0.7 to 8.6 points). \\
+Judges that reason before deciding (\cref{sec:cost,app:r25}) & commit & Chain-of-thought, verify-first, and solve-first prompts with GPT-4.1 and Sonnet~5 on the benchmark pool: referenced accuracy below the answer lists (\textbf{confirmed} for four; \textbf{not confirmed} for verify-first and solve-first GPT-4.1); blind accuracy within 5 points of the lists (\textbf{confirmed}, 6 of 6); credit for differing correct answers at least 10 points lower with the reference (\textbf{falsified}, 6 of 6: 0.8 to 8.6 points). \\
 Partial-answer rotation pilot & commit & A fixed first move scores higher when it matches the move shown as confirmed (\textbf{confirmed}, both judges). Not otherwise reported in this paper. \\
 \end{longtable}
 }
-
-%==========================================================================================
-\FloatBarrier
-\section{How common are questions with several valid answers?}
-\label{app:prevalence}
-
-We sampled 200 questions (seed 0) from each of four datasets that ship one reference answer per question and labeled each as having multiple non-equivalent valid answers, a unique answer up to equivalence, or unclear. Equivalent forms of one answer (for example $1/2$ and $0.5$) count as unique, and ``find all'' questions whose answer is a single set count as unique. Each item was labeled twice independently by LLM annotators (Claude models) that did not see each other's labels, and disagreements were adjudicated by re-reading the item. Every alternative answer given for a math item was checked by computation. Both passes come from one model family, so agreement may overstate reliability, and we did not validate the labels against human annotators.
-
-\begin{table}[htbp]
-\centering
-\caption{Share of sampled questions with more than one valid answer (95\% Wilson interval) and inter-pass agreement on the multiple-versus-other label. Both MATH-500 passes labeled every item unique, so $\kappa$ is undefined.\ph}
-\label{tab:prevalence}
-\footnotesize
-\begin{adjustbox}{max width=\linewidth}\input{tables/prevalence.tex}\end{adjustbox}
-
-\end{table}
-
-Curated math sets are almost entirely single-answer. The multi-answer math items are mostly underspecified problems rather than requests for an example: a vector problem asks for ``the value of $x$'' when $-x^2+2x+3=0$ has roots $-1$ (the reference) and $3$; a ticket problem admits several whole-dollar prices; an interest problem is consistent with both simple and compound interest. In NQ-open, 30.0\% of questions admit several correct answers, and 18.5\% after excluding questions whose answer changed over time. The audit also flagged 13 malformed DeepScaleR items and several references that appear to be wrong, which are separate problems from multiplicity.
-
-\paragraph{Benchmarks graded against one reference, and a second annotator family.} A pre-specified extension (protocol committed before any labeling call) sampled 200 questions each from SimpleQA~\citep{wei2024simpleqa}, BrowseComp~\citep{wei2025browsecomp}, text-only exact-answer HLE questions~\citep{phan2025hle}, TriviaQA~\citep{joshi2017triviaqa}, and the WebInstruct-verified RL training set~\citep{ma2025generalreasoner}, with the definitions above. Two annotators from different developers labeled every item independently, Claude Sonnet~5 and GPT-5-mini; Claude Opus~5 adjudicated disagreements until its spending cap, after which the remaining 135 disagreements (106 on BrowseComp, most about whether an item needs deep solving) kept the conservative label (\cref{tab:prevalence-v2}). Questions written for a single answer rarely admit several: 0\% to 4\%. The RL training set reaches 5.5\%, and 18\% by either annotator. Agreement between the two annotators is low ($\kappa \le 0.35$ on the several-versus-other label), so these rates are rough; none was checked by humans.
-
-\begin{table}[htbp]
-\centering
-\caption{Share of sampled questions with several valid answers after adjudication (95\% Wilson interval), agreement between the two annotators on the several-versus-other label, and the share labeled several by both and by either annotator. 200 questions per dataset; LLM annotators, not humans.\pre}
-\label{tab:prevalence-v2}
-\footnotesize
-\begin{adjustbox}{max width=\linewidth}\input{tables/prevalence_v2.tex}\end{adjustbox}
-\end{table}
-
-%==========================================================================================
-\FloatBarrier
-\section{How widely graders rely on one reference}
-\label{app:survey}
-
-We surveyed benchmarks whose official scorer is an LLM judge, evaluation libraries and cloud platforms with a built-in correctness judge, RL reward pipelines that use an LLM verifier, and research papers from 2023 to 2026 that evaluate or train with an LLM judge. Every entry was checked on 14 September 2026 against its primary source (repository code at a pinned commit, official documentation, or the paper); the records, 24 verbatim judge templates, and all quotes are in the supplementary material. An entry counts as \emph{reference-guided} when the judge sees one gold answer, or a closed list of them, and decides correctness from it (\cref{tab:survey}).
-
-\begin{table}[htbp]
-\centering
-\caption{Surveyed graders that give an LLM judge one reference answer. Partly: Arize Phoenix (reference template only in an older release) and Rubrics as Rewards (references write the rubrics).\ph}
-\label{tab:survey}
-\footnotesize
-\setlength{\tabcolsep}{3pt}
-\begin{tabular}{L{2.2cm}ccL{7.8cm}}
-\toprule
-Group & Surveyed & One reference & Reference-guided entries \\
-\midrule
-Benchmarks & 16 & 11 & SimpleQA~\citep{wei2024simpleqa}, SimpleQA Verified~\citep{haas2025simpleqaverified}, BrowseComp~\citep{wei2025browsecomp}, HLE~\citep{phan2025hle}, the simple-evals MATH checker~\citep{simpleevals}, MT-Bench~\citep{zheng2023judging}, FreshQA~\citep{vu2023freshllms}, CRAG~\citep{yang2024crag}, MixEval~\citep{ni2024mixeval}, Omni-MATH~\citep{gao2024omnimath}, FRAMES~\citep{krishna2025frames}. Not: TruthfulQA, HealthBench, GAIA, LiveBench, Arena-Hard \\
-Evaluation libraries & 12 & 11 + 1 partly & Inspect AI~\citep{inspectai}, OpenAI Evals~\citep{openaievals}, LangChain~\citep{langchainevals}, openevals~\citep{openevals}, LlamaIndex~\citep{llamaindexcorrectness}, RAGAS~\citep{es2023ragas}, DeepEval~\citep{deepeval}, MLflow~\citep{mlflowjudges}, promptfoo~\citep{promptfoofactuality}, TruLens~\citep{trulens}, OpenCompass~\citep{opencompassjudge}; Phoenix~\citep{phoenixevals} partly \\
-Cloud platforms & 4 & 3 & OpenAI graders~\citep{openaigraders}, Azure AI Foundry~\citep{azurefoundrysimilarity}, AWS Bedrock~\citep{bedrockjudgeprompts}. Not: Vertex AI \\
-RL reward pipelines & 11 & 10 + 1 partly & DeepSeek-R1~\citep{deepseek2025r1}, Kimi k1.5~\citep{kimi2025k15}, Qwen3~\citep{yang2025qwen3}, Seed1.5-Thinking~\citep{seed2025thinking}, General-Reasoner~\citep{ma2025generalreasoner}, RLVR across domains~\citep{su2025rewardbridge}, xVerify~\citep{chen2025xverify}, CompassVerifier~\citep{liu2025compassverifier}, TinyV~\citep{xu2025tinyv}, OpenAI reinforcement fine-tuning~\citep{openairft}; Rubrics as Rewards~\citep{gunjal2025rar} partly \\
-Research papers, 2023--2026 & 34 & 34 & Math and science~\citep{huang2025pitfalls,chernyshev2024umath,lu2025ineqmath,xu2025ugphysics,minimax2025m1,cheng2025guru,bercovich2025llamanemotron,huang2024olympicarena,fang2024mathodyssey}; proofs and competition grading~\citep{petrov2025proofbluff,luong2025imobench,mahdavi2025refgrader,balunovic2025matharena}; code~\citep{zhuo2024icescore,tong2024codejudge}; QA and RAG~\citep{chandak2025answermatching,he2024chinesesimpleqa,ru2024ragchecker,rau2024bergen,refguided2024,kamalloo2023evaluating,thakur2025judging,wang2023evouna}; agents and deep research~\citep{wu2025webwalker,zhou2025browsecompzh,wu2025webdancer,li2025websailor,gao2025asearcher,zheng2025deepresearcher,chen2025browsecompplus,du2025deepresearchbench,li2025webthinker,liu2025webexplorer,tongyi2025deepresearch} \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\paragraph{What the prompts say.} We could read 34 judge prompts in full. Of these, 27 define correctness as matching the reference, 4 partly, and 3 offer it only as an aid. Two say that several answers can be valid, and both give the judge a closed list~\citep{ni2024mixeval,vu2023freshllms}; three more allow different wording but require the reference's content. None tells the judge to credit a correct answer outside the reference. Five declare the reference correct: ``Take it as granted that the Ground Truth is always correct'' (CRAG), ``The reference answer is ALWAYS correct'' (Omni-MATH), ``THE STANDARD ANSWER IS ALWAYS CORRECT AND THE QUESTION IS PERFECTLY VALID. NEVER QUESTION THEM'' (CompassVerifier), ``You can assume that the standard answer is definitely correct'' (OpenCompass), and the HLE and BrowseComp judge's ``precise and unambiguous [correct\_answer]''. Reward prompts follow the same pattern: DeepSeek-R1's rates an answer correct when it ``fully aligns with the reference answer''~\citep{deepseek2025r1}.
-
-\paragraph{Research papers.} Eight of the 34 papers use the judge as an RL reward or data filter. In seven the tasks admit several valid answers, and the judge still sees one reference or a closed list; IMO-ProofBench's grader is told the reference ``demonstrates one valid approach'' and is reported to be ``prone to be overly punitive'' for unconventional correct solutions~\citep{luong2025imobench}, and providing reference code made all three LLM-based evaluators worse on CoNaLa~\citep{tong2024codejudge}. Across NLP conferences, LLM judges appear in 46\% of 2025 NLG papers, up from under 1\% before 2023~\citep{yang2026nlgmeta}; we found no count of reference-guided judges specifically.
 
 %==========================================================================================
 \FloatBarrier
@@ -241,224 +242,6 @@ Research papers, 2023--2026 & 34 & 34 & Math and science~\citep{huang2025pitfall
 \end{table}
 
 Margins at $k{>}1$ on the audited domains are $+6.44$ for Qwen2.5-7B and $+5.86$ for phi-4, against blind margins of $-0.64$ and $-0.80$. Sonnet~5 has a referenced margin of $+5.29$ there, against a blind margin of $-1.37$.
-
-%==========================================================================================
-\FloatBarrier
-\section{Exact scoring, a bare-answer reference, and grading}
-\label{app:estimator}
-
-\paragraph{Rescoring with the exact scorer.}
-A pre-specified experiment rescored Qwen2.5-7B on the replication pool (blind and referenced), the swapped replication pool, the $k$-pool, \textsc{MACE}, and MATH-500, and Qwen2.5-14B, gemma-2-9b, and Mistral-7B on the $k$-pool, with the exact scorer of \cref{app:setup}; the bare-answer experiment below scored Qwen2.5-14B anew on MATH-500 under all three conditions. Each score also stores the value under the original rule and the greedy integer. No Qwen2.5-7B reply fell below the captured-probability threshold, and the exact and original values differ by 0.07 to 0.17 points per score on average. The swap effect is slightly larger under the exact scorer and larger still on greedy integers (\cref{tab:r4-rotation}), so the original rule did not create it. \Cref{tab:r4-kpool} gives $k$-pool selection accuracy under the exact scorer.\pre
-
-\begin{table}[htbp]
-\centering
-\caption{Swap on the replication pool for Qwen2.5-7B, rubric~$a$, under three ways of reading the score (points, 95\% CI; 120, 93, and 113 tasks).\pre}
-\label{tab:r4-rotation}
-\footnotesize
-\setlength{\tabcolsep}{3pt}
-\begin{adjustbox}{max width=\linewidth}\input{tables/r4_rotation.tex}\end{adjustbox}
-
-\end{table}
-
-\begin{table}[htbp]
-\centering
-\caption{$k$-pool: change in best-of-64 selection accuracy from showing the reference, exact scorer (points, 95\% CI). Mistral-7B's scores are parsed integers, with replies that contain no score excluded.\pre}
-\label{tab:r4-kpool}
-\footnotesize
-\setlength{\tabcolsep}{3pt}
-\begin{adjustbox}{max width=\linewidth}\input{tables/r4_kpool.tex}\end{adjustbox}
-
-\end{table}
-
-\paragraph{A bare-answer reference on MATH-500.}
-The MATH-500 contrast of the main text originally showed the judge a full reference solution. The same experiment added a condition that shows only the final answer, with the rubric's ``reference solution'' changed to ``reference answer'' (\cref{tab:r4-math}).\pre
-
-\begin{table}[htbp]
-\centering
-\caption{MATH-500, 105 problems: best-of-64 selection accuracy (\%) blind, with the reference solution, and with its final answer alone, and the differences (points, 95\% CI). Exact scorer; both judges' scores are new runs, so blind accuracies differ slightly from the original-scorer files of \cref{tab:acc-math,tab:r2a} (68.6\% and 66.7\% against 67.6\%). Intervals here and in \cref{tab:protocol-grading} come from separate bootstrap runs, so the same contrast can show slightly different bounds.\pre}
-\label{tab:r4-math}
-\footnotesize
-\setlength{\tabcolsep}{3pt}
-\begin{adjustbox}{max width=\linewidth}\input{tables/r4_math.tex}\end{adjustbox}
-
-\end{table}
-
-\paragraph{Grading and blind verification.}
-For each task we compute the AUROC of the judge's score for separating correct from wrong answers, blind and with the reference, over three sets of correct answers: those that differ from the reference, those that match it, and all of them (\cref{tab:r4-grading}). Blind verification is the AUROC over all answers without a reference; we predicted that it would be lower on \textsc{MACE} than on both constructed pools.\pre
-
-\begin{table}[htbp]
-\centering
-\caption{Grading AUROC (per-task mean, 95\% CI), with the number of tasks per row, under the registered labels and the registered rule for deciding which answers match the reference. \Cref{tab:labelings-gnm} decides matches from the extracted answer instead, so its registered-label replication changes differ slightly ($-0.29$ and $-0.28$); the main text quotes that table's any-format values. Qwen2.5-7B uses the exact scorer; phi-4 writes ``10'' as one token, so its scores are the same under both scorers. The Qwen2.5-7B rows were pre-specified; the phi-4 rows are post hoc.}
-\label{tab:r4-grading}
-\footnotesize
-\setlength{\tabcolsep}{3pt}
-\begin{adjustbox}{max width=\linewidth}\input{tables/r4_grading.tex}\end{adjustbox}
-
-\end{table}
-
-\paragraph{Numbers quoted in the main text.}
-\Cref{tab:main-numbers} collects the exact-scorer and post hoc numbers quoted in the main text that appear in no other table.\ph
-
-{\footnotesize\setlength{\tabcolsep}{4pt}\input{tables/main_numbers.tex}}
-
-\paragraph{A second thinking toggle.}
-Qwen3-14B was run with the protocol of \cref{app:reasoning}, thinking off and on (\cref{tab:r4-toggle}). The Qwen3-8B columns repeat \cref{tab:toggle}; its verification AUROCs were computed afterwards and are post hoc.\pre
-
-\begin{table}[htbp]
-\centering
-\caption{Thinking off and on for Qwen3-14B and Qwen3-8B, same weights and prompt within each model (points, 95\% CI; verification as blind AUROC).\pre}
-\label{tab:r4-toggle}
-\footnotesize
-\setlength{\tabcolsep}{3pt}
-\begin{adjustbox}{max width=\linewidth}\input{tables/r4_toggle.tex}\end{adjustbox}
-
-\end{table}
-
-%==========================================================================================
-\FloatBarrier
-\section{Mitigations in full}
-\label{app:mitigation}
-
-\begin{table}[htbp]
-\centering
-\footnotesize
-\caption{\textbf{What helps: a full-credit sentence reduces the grading harm; an exploratory max rule restores grading at a cost when the answer is unique.} Change against blind judging, except \emph{Reveal $-$ ref.}, which is the registered blind-then-reveal protocol (score blind, then rescore with the reference and an instruction to keep the blind score unless the reference shows the answer is wrong) minus the reference, both with the original scorer. \emph{Sentence}: the full-credit instruction of \cref{sec:fix}. Bold: the Sentence and Max rule cells differ from the Reference cell, and Reveal $-$ ref.\ differs from zero (95\% intervals); ---: not run or not defined. Task counts are in \cref{app:mitigation}. Pre-specified: the API judges' Reference and Sentence values, Qwen2.5-7B's \textsc{MACE} Reference grading, and \textsc{MACE} Reference accuracy (the original scorer gives the same values); MATH-500 Reference accuracy is a re-analysis; every Reveal $-$ ref.\ and Max rule value, and the rest, is post hoc.}
-\label{tab:protocols}
-\setlength{\tabcolsep}{3.1pt}
-\begin{tabular}{@{}llrrrrrr@{}}
-\toprule
-& & \multicolumn{4}{c}{Grading AUROC} & \multicolumn{2}{c}{Accuracy (pp)} \\
-\cmidrule(lr){3-6}\cmidrule(lr){7-8}
-Pool & Judge & Reference & Sentence & Reveal $-$ ref. & Max rule & Reference & Max rule \\
-\midrule
-\multicolumn{8}{@{}l}{\emph{Several correct answers}}\\
-\textsc{MACE} & Sonnet~5 & $-0.15$ & $\mathbf{-0.06}$ & --- & $\mathbf{-0.01}$ & --- & --- \\
- & Opus~5 & $-0.16$ & $\mathbf{-0.05}$ & --- & $\mathbf{-0.01}$ & --- & --- \\
- & Qwen2.5-7B & $-0.08$ & --- & $0.00$ & $\mathbf{-0.01}$ & $+2.0$ & $+4.0$ \\
- & phi-4 & $-0.06$ & --- & $+0.01$ & $\mathbf{-0.01}$ & $+6.1$ & $+6.1$ \\
-$k$-pool, $k{>}1$ & Qwen2.5-7B & $-0.23$ & --- & $\mathbf{+0.11}$ & $\mathbf{+0.00}$ & $-30.3$ & $\mathbf{+3.0}$ \\
- & Qwen2.5-14B & $-0.17$ & --- & $\mathbf{+0.12}$ & $\mathbf{-0.03}$ & $-3.0$ & $+3.0$ \\
- & gemma-2-9b & $-0.19$ & --- & $\mathbf{-0.06}$ & $\mathbf{+0.00}$ & $-3.0$ & $+0.0$ \\
- & phi-4 & $-0.25$ & --- & $\mathbf{+0.04}$ & $\mathbf{-0.01}$ & $-15.2$ & $\mathbf{+3.0}$ \\
-\multicolumn{8}{@{}l}{\emph{One correct answer}}\\
-MATH-500, answer & Qwen2.5-7B & $+0.29$ & --- & --- & $\mathbf{+0.24}$ & $+28.6$ & $\mathbf{+23.8}$ \\
- & Qwen2.5-14B & $+0.25$ & --- & --- & $\mathbf{+0.22}$ & $+30.6$ & $+29.7$ \\
-MATH-500, solution & Qwen2.5-7B & $+0.29$ & --- & $\mathbf{-0.04}$ & $\mathbf{+0.13}$ & $+30.5$ & $\mathbf{+23.8}$ \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=\textwidth]{figures/fig4_fix.pdf}
-\caption{\textbf{Blind-then-reveal, original scorer.} \textbf{(a)}~Change in selection accuracy relative to blind judging (orange line) on the $k$-pool at $k{>}1$, with the reference shown (blue) and with blind-then-reveal (teal); arrows run from one to the other. 39 tasks, 95\% intervals.\ph{} \textbf{(b)}~Selection accuracy on 105 MATH-500 problems with the reference solution, best of 64.\pre}
-\label{fig:fix}
-\end{figure}
-
-\paragraph{Instructions and several references.}
-On the synthetic grid at $k{=}16$, the any-valid-answer instruction closes phi-4's margin ($+1.91 \to +0.03$), shrinks Qwen2.5-14B's ($+3.34 \to +1.21$), and does little or nothing for smaller judges, even raising Qwen2.5-1.5B's on rubric~$a$ ($+3.58 \to +4.54$). Showing $\min(3,k)$ valid references removes the margin toward the original reference on the Qwen-generated grid without restoring blind-level inflation, and largely fails for Qwen2.5-7B on the Llama-generated grid.
-
-\paragraph{Worked references.}
-With a short worked solution in the reference slot on the $k$-pool, the margin falls from $+5.17$ to $+3.73$ (Qwen2.5-7B) and from $+4.20$ to $+3.67$ (phi-4), and added inflation falls from $+1.50$ to $+1.08$ and from $+1.07$ to $+0.77$.
-
-\paragraph{Blind-then-reveal on unique answers.}
-A later pre-specified experiment ran blind-then-reveal on the 105 MATH-500 problems (\cref{tab:r2a}). The first call reproduces the frozen blind scores ($r=0.991$ and $0.973$), so the comparison is on aligned data.
-
-\begin{table}[htbp]
-\centering
-\caption{MATH-500 selection accuracy under three protocols, best of 64, rubric-$a$ selection. The blind-then-reveal comparisons were pre-specified; after a disclosed amendment, the reference-versus-blind contrast carries no registration weight (\cref{tab:ledger}).}
-\label{tab:r2a}
-\footnotesize
-\begin{adjustbox}{max width=\linewidth}\input{tables/r2a.tex}\end{adjustbox}
-
-\end{table}
-
-\paragraph{Zero-cost score combinations.}
-Simple combinations of the blind and referenced scores compete with blind-then-reveal (\cref{tab:score-rules}). Taking the maximum loses nothing to blind judging on the $k$-pool at $k{>}1$ and keeps the reference's benefit on \textsc{MACE}, but on MATH-500 it trails the reference for Qwen2.5-7B; the mean does best on MATH-500 and worse on the $k$-pool. No rule is best everywhere. Computed from the same stored scores, the max rule also keeps grading AUROC within 0.03 of blind judging, where showing the reference lowers it by 0.06 to 0.25; blind-then-reveal does not, except for Qwen2.5-14B (\cref{tab:protocol-grading}).\ph
-
-\begin{table}[htbp]
-\centering
-\footnotesize
-\caption{Best-of-64 accuracy change against blind judging (points) for score combinations and blind-then-reveal: $k$-pool at $k{>}1$ (registered labels, 39 tasks), \textsc{MACE} overall, MATH-500. Original scorer. \Cref{tab:protocols} uses any-format labels for the $k$-pool.\ph}
-\label{tab:score-rules}
-\begin{adjustbox}{max width=\linewidth}\input{tables/score_rules.tex}\end{adjustbox}
-\end{table}
-
-\begin{table}[htbp]
-\centering
-\footnotesize
-\caption{\textbf{The max rule nearly removes the grading harm; blind-then-reveal mostly does not.} Top: change in per-task grading AUROC relative to blind judging (95\% CI), for correct answers that differ from the reference against wrong answers ($k$-pool with any-format labels, 59 tasks; \textsc{MACE}, 91 tasks), and for all correct answers against wrong answers on single-answer questions. Bottom: change in best-of-64 accuracy relative to the referenced judge (points, 95\% CI). Both blocks use the original scorer, as the reveal calls did. From stored scores.\ph}
-\label{tab:protocol-grading}
-\begin{adjustbox}{max width=\linewidth}\input{tables/protocol_grading.tex}\end{adjustbox}\\[6pt]
-\begin{adjustbox}{max width=\linewidth}\input{tables/protocol_selection.tex}\end{adjustbox}
-\end{table}
-
-\begin{table}[htbp]
-\centering
-\footnotesize
-\caption{The reference and the max rule under the exact scorer, changes against blind judging (95\% CI); the values quoted in \cref{tab:protocols}. From stored scores.\ph}
-\label{tab:protocol-exact}
-\begin{adjustbox}{max width=\linewidth}\input{tables/protocol_exact.tex}\end{adjustbox}
-\end{table}
-
-\begin{table}[htbp]
-\centering
-\footnotesize
-\caption{Worst-case selection loss by protocol: accuracy of each protocol minus the best of the three in each pool (points; 0 marks the best), and the worst case over the pools each judge was run on, which differ by judge. Original scorer; registered labels, which count most prose answers as wrong (\cref{app:grid}).\ph}
-\label{tab:regret}
-\begin{adjustbox}{max width=\linewidth}\input{tables/regret.tex}\end{adjustbox}
-\end{table}
-
-\paragraph{Blind-then-reveal across judges.}
-\Cref{tab:coverage} gives the preregistered coverage extension in inflation units, and \cref{tab:acc-kpool} gives all five $k$-pool judges in accuracy units.
-
-\begin{table}[htbp]
-\centering
-\caption{Judge-coverage extension on the $k$-pool (\sd, 95\% CI).\osf}
-\label{tab:coverage}
-\scriptsize
-\setlength{\tabcolsep}{3pt}
-\begin{adjustbox}{max width=\linewidth}\input{tables/coverage.tex}\end{adjustbox}
-
-\end{table}
-
-\paragraph{Variants of the reveal call.}
-\Cref{tab:m1variants} gives the pre-specified variants in inflation units (58 multi-answer tasks from the $k$-pool and replication pool) and \cref{tab:acc-variants} in accuracy units (39 $k$-pool tasks). In inflation, removing the displayed score restores the harm for all three judges. For Qwen2.5-7B, neutral wording costs $+0.51$ \ci{+0.28}{+0.73} of protection, which falsified our equivalence prediction for that judge, and another judge's score gives $+0.38$ against $+0.01$ for its own. For gemma-2-9b, another judge's score costs $+0.17$ \ci{+0.01}{+0.38} relative to its own. gemma also puts the lowest weight on its own blind score in the selection model of \cref{app:composition} ($\beta = 0.34$, against $0.51$ and $0.69$), a consistent ordering on only four eligible tasks. In accuracy units the variant contrasts are imprecise.
-
-\begin{table}[htbp]
-\centering
-\caption{Reveal-call variants: added inflation over blind (\sd, 95\% CI), 58 tasks.\pre}
-\label{tab:m1variants}
-\footnotesize
-\setlength{\tabcolsep}{3pt}
-\begin{adjustbox}{max width=\linewidth}\input{tables/m1variants.tex}\end{adjustbox}
-
-\end{table}
-
-\begin{table}[htbp]
-\centering
-\caption{Reveal-call variants: change in selection accuracy relative to blind, in points (95\% CI), 39 $k$-pool tasks at $k{>}1$.\ph}
-\label{tab:acc-variants}
-\footnotesize
-\setlength{\tabcolsep}{3pt}
-\begin{adjustbox}{max width=\linewidth}\input{tables/acc_variants.tex}\end{adjustbox}
-
-\end{table}
-
-\paragraph{The validity gate backfires for one judge.}
-A second preregistered protocol multiplies the blind score by a separate call's probability that the candidate is valid, with the reference shown to that call as one valid example. For phi-4 it removes the inflation. For Qwen2.5-7B it raises the $k{=}2$ margin from $+5.02$ to $+6.62$, because the validity call itself anchors: its probability averages $0.998$ for matching valid answers and $0.422$ for non-matching valid ones.
-
-\paragraph{A free screen rejects broken judges and certifies nothing.}
-Mistral-7B's null harm in inflation units is a resolution artifact. Its tokenizer writes every digit as two tokens, a space marker and the digit, so no score token is ever captured and every score is the integer parsed from its greedy reply. When a reply contained no integer the scorer substituted 5.0, which happened for 32.3\% of its blind rubric-$a$ scores and 19.9\% of its blind-then-reveal scores. Its scores therefore take only 11 distinct values, 52.6\% of its referenced scores are exactly 10, and with the reference an average of 32.1 of its 64 candidates tie at the maximum, so selection cannot act on its anchoring (margin $+1.38$). Counting distinct values and ties catches this (\cref{tab:resolution}). Ministral-8B passes the distinct-value check but has a score standard deviation of $0.55$ around a mean of $4.73$, is essentially uncorrelated with validity, and picks a valid answer 21.7\% of the time against a 38.6\% random baseline. Passing the screen certifies nothing: gemma-2-9b passes easily and is the most anchored of the five $k$-pool judges.
-
-\begin{table}[htbp]
-\centering
-\caption{Score-resolution screen on the $k$-pool; tie counts and selection accuracy use blind scores.\pre}
-\label{tab:resolution}
-\footnotesize
-\begin{adjustbox}{max width=\linewidth}\input{tables/resolution.tex}\end{adjustbox}
-
-\end{table}
 
 %==========================================================================================
 \FloatBarrier
@@ -600,6 +383,78 @@ Only 61.6\% of samples put their answer in the requested \texttt{\textbackslash 
 \label{tab:repl-pressure}
 \footnotesize
 \begin{adjustbox}{max width=\linewidth}\input{tables/repl_pressure.tex}\end{adjustbox}
+
+\end{table}
+
+%==========================================================================================
+\FloatBarrier
+\section{Exact scoring, a bare-answer reference, and grading}
+\label{app:estimator}
+
+\paragraph{Rescoring with the exact scorer.}
+A pre-specified experiment rescored Qwen2.5-7B on the replication pool (blind and referenced), the swapped replication pool, the $k$-pool, \textsc{MACE}, and MATH-500, and Qwen2.5-14B, gemma-2-9b, and Mistral-7B on the $k$-pool, with the exact scorer of \cref{app:setup}; the bare-answer experiment below scored Qwen2.5-14B anew on MATH-500 under all three conditions. Each score also stores the value under the original rule and the greedy integer. No Qwen2.5-7B reply fell below the captured-probability threshold, and the exact and original values differ by 0.07 to 0.17 points per score on average. The swap effect is slightly larger under the exact scorer and larger still on greedy integers (\cref{tab:r4-rotation}), so the original rule did not create it. \Cref{tab:r4-kpool} gives $k$-pool selection accuracy under the exact scorer.\pre
+
+\begin{table}[htbp]
+\centering
+\caption{Swap on the replication pool for Qwen2.5-7B, rubric~$a$, under three ways of reading the score (points, 95\% CI; 120, 93, and 113 tasks).\pre}
+\label{tab:r4-rotation}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{adjustbox}{max width=\linewidth}\input{tables/r4_rotation.tex}\end{adjustbox}
+
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{$k$-pool: change in best-of-64 selection accuracy from showing the reference, exact scorer (points, 95\% CI). Mistral-7B's scores are parsed integers, with replies that contain no score excluded.\pre}
+\label{tab:r4-kpool}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{adjustbox}{max width=\linewidth}\input{tables/r4_kpool.tex}\end{adjustbox}
+
+\end{table}
+
+\paragraph{A bare-answer reference on MATH-500.}
+The MATH-500 contrast of the main text originally showed the judge a full reference solution. The same experiment added a condition that shows only the final answer, with the rubric's ``reference solution'' changed to ``reference answer'' (\cref{tab:r4-math}).\pre
+
+\begin{table}[htbp]
+\centering
+\caption{MATH-500, 105 problems: best-of-64 selection accuracy (\%) blind, with the reference solution, and with its final answer alone, and the differences (points, 95\% CI). Exact scorer; both judges' scores are new runs, so blind accuracies differ slightly from the original-scorer files of \cref{tab:acc-math,tab:r2a} (68.6\% and 66.7\% against 67.6\%). Intervals here and in \cref{tab:protocol-grading} come from separate bootstrap runs, so the same contrast can show slightly different bounds.\pre}
+\label{tab:r4-math}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{adjustbox}{max width=\linewidth}\input{tables/r4_math.tex}\end{adjustbox}
+
+\end{table}
+
+\paragraph{Grading and blind verification.}
+For each task we compute the AUROC of the judge's score for separating correct from wrong answers, blind and with the reference, over three sets of correct answers: those that differ from the reference, those that match it, and all of them (\cref{tab:r4-grading}). Blind verification is the AUROC over all answers without a reference; we predicted that it would be lower on \textsc{MACE} than on both constructed pools.\pre
+
+\begin{table}[htbp]
+\centering
+\caption{Grading AUROC (per-task mean, 95\% CI), with the number of tasks per row, under the registered labels and the registered rule for deciding which answers match the reference. \Cref{tab:labelings-gnm} decides matches from the extracted answer instead, so its registered-label replication changes differ slightly ($-0.29$ and $-0.28$); the main text quotes that table's any-format values. Qwen2.5-7B uses the exact scorer; phi-4 writes ``10'' as one token, so its scores are the same under both scorers. The Qwen2.5-7B rows were pre-specified; the phi-4 rows are post hoc.}
+\label{tab:r4-grading}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{adjustbox}{max width=\linewidth}\input{tables/r4_grading.tex}\end{adjustbox}
+
+\end{table}
+
+\paragraph{Numbers quoted in the main text.}
+\Cref{tab:main-numbers} collects the exact-scorer and post hoc numbers quoted in the main text that appear in no other table.\ph
+
+{\footnotesize\setlength{\tabcolsep}{4pt}\input{tables/main_numbers.tex}}
+
+\paragraph{A second thinking toggle.}
+Qwen3-14B was run with the protocol of \cref{app:reasoning}, thinking off and on (\cref{tab:r4-toggle}). The Qwen3-8B columns repeat \cref{tab:toggle}; its verification AUROCs were computed afterwards and are post hoc.\pre
+
+\begin{table}[htbp]
+\centering
+\caption{Thinking off and on for Qwen3-14B and Qwen3-8B, same weights and prompt within each model (points, 95\% CI; verification as blind AUROC).\pre}
+\label{tab:r4-toggle}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{adjustbox}{max width=\linewidth}\input{tables/r4_toggle.tex}\end{adjustbox}
 
 \end{table}
 
@@ -936,7 +791,7 @@ The wrong answers credited only with the full list are ``The Democratic Republic
 \section{Judges that reason before deciding}
 \label{app:r25}
 
-A pre-specified experiment graded the benchmark answers of \cref{sec:cost} with three prompts that ask the judge to reason about correctness, blind and with the first reference, with GPT-4.1 (temperature 0) and Sonnet~5 (thinking disabled), each allowed 1,024 output tokens; none of the prompts says whether a question can have several correct answers. \emph{Chain of thought}: ``Think step by step about whether the response is correct''. \emph{Verify first}: ``1.~Verify: using your own knowledge, check whether the response's final answer is correct for the question as asked. 2.~Compare: check the response against the reference answer. 3.~Decide whether the response is correct.'' \emph{Solve first}: ``First answer the question yourself. Then grade the response, using your own answer and the reference answer.'' Each ends with a line ``correct: yes'' or ``correct: no''; every one of the 7,152 replies had one, and none was cut off (\cref{tab:r25}). We had predicted a drop of at least 10 points in credit for differing correct answers; the drop was 0.7 to 8.6, so that prediction failed for all six.
+A pre-specified experiment graded the benchmark answers of \cref{sec:cost} with three prompts that ask the judge to reason about correctness, blind and with the first reference, with GPT-4.1 (temperature 0) and Sonnet~5 (thinking disabled), each allowed 1,024 output tokens; none of the prompts says whether a question can have several correct answers. \emph{Chain of thought}: ``Think step by step about whether the response is correct''. \emph{Verify first}: ``1.~Verify: using your own knowledge, check whether the response's final answer is correct for the question as asked. 2.~Compare: check the response against the reference answer. 3.~Decide whether the response is correct.'' \emph{Solve first}: ``First answer the question yourself. Then grade the response, using your own answer and the reference answer.'' Each ends with a line ``correct: yes'' or ``correct: no''; every one of the 7,152 replies had one, and none was cut off (\cref{tab:r25}). We had predicted a drop of at least 10 points in credit for differing correct answers; the drop was 0.8 to 8.6, so that prediction failed for all six.
 
 \begin{table}[htbp]
 \centering
@@ -1000,6 +855,152 @@ The last pre-specified experiment measured selection accuracy on the benchmark's
 \footnotesize
 \setlength{\tabcolsep}{3pt}
 \begin{adjustbox}{max width=\linewidth}\input{tables/mace_accuracy.tex}\end{adjustbox}
+
+\end{table}
+
+%==========================================================================================
+\FloatBarrier
+\section{Mitigations in full}
+\label{app:mitigation}
+
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption{\textbf{What helps: a full-credit sentence reduces the grading harm; an exploratory max rule restores grading at a cost when the answer is unique.} Change against blind judging, except \emph{Reveal $-$ ref.}, which is the registered blind-then-reveal protocol (score blind, then rescore with the reference and an instruction to keep the blind score unless the reference shows the answer is wrong) minus the reference, both with the original scorer. \emph{Sentence}: the full-credit instruction of \cref{sec:fix}. Bold: the Sentence and Max rule cells differ from the Reference cell, and Reveal $-$ ref.\ differs from zero (95\% intervals); ---: not run or not defined. Task counts are in \cref{app:mitigation}. Pre-specified: the API judges' Reference and Sentence values, Qwen2.5-7B's \textsc{MACE} Reference grading, and \textsc{MACE} Reference accuracy (the original scorer gives the same values); MATH-500 Reference accuracy is a re-analysis; every Reveal $-$ ref.\ and Max rule value, and the rest, is post hoc.}
+\label{tab:protocols}
+\setlength{\tabcolsep}{3.1pt}
+\begin{tabular}{@{}llrrrrrr@{}}
+\toprule
+& & \multicolumn{4}{c}{Grading AUROC} & \multicolumn{2}{c}{Accuracy (pp)} \\
+\cmidrule(lr){3-6}\cmidrule(lr){7-8}
+Pool & Judge & Reference & Sentence & Reveal $-$ ref. & Max rule & Reference & Max rule \\
+\midrule
+\multicolumn{8}{@{}l}{\emph{Several correct answers}}\\
+\textsc{MACE} & Sonnet~5 & $-0.15$ & $\mathbf{-0.06}$ & --- & $\mathbf{-0.01}$ & --- & --- \\
+ & Opus~5 & $-0.16$ & $\mathbf{-0.05}$ & --- & $\mathbf{-0.01}$ & --- & --- \\
+ & Qwen2.5-7B & $-0.08$ & --- & $0.00$ & $\mathbf{-0.01}$ & $+2.0$ & $+4.0$ \\
+ & phi-4 & $-0.06$ & --- & $+0.01$ & $\mathbf{-0.01}$ & $+6.1$ & $+6.1$ \\
+$k$-pool, $k{>}1$ & Qwen2.5-7B & $-0.23$ & --- & $\mathbf{+0.11}$ & $\mathbf{+0.00}$ & $-30.3$ & $\mathbf{+3.0}$ \\
+ & Qwen2.5-14B & $-0.17$ & --- & $\mathbf{+0.12}$ & $\mathbf{-0.03}$ & $-3.0$ & $+3.0$ \\
+ & gemma-2-9b & $-0.19$ & --- & $\mathbf{-0.06}$ & $\mathbf{+0.00}$ & $-3.0$ & $+0.0$ \\
+ & phi-4 & $-0.25$ & --- & $\mathbf{+0.04}$ & $\mathbf{-0.01}$ & $-15.2$ & $\mathbf{+3.0}$ \\
+\multicolumn{8}{@{}l}{\emph{One correct answer}}\\
+MATH-500, answer & Qwen2.5-7B & $+0.29$ & --- & --- & $\mathbf{+0.24}$ & $+28.6$ & $\mathbf{+23.8}$ \\
+ & Qwen2.5-14B & $+0.25$ & --- & --- & $\mathbf{+0.22}$ & $+30.6$ & $+29.7$ \\
+MATH-500, solution & Qwen2.5-7B & $+0.29$ & --- & $\mathbf{-0.04}$ & $\mathbf{+0.13}$ & $+30.5$ & $\mathbf{+23.8}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{figures/fig4_fix.pdf}
+\caption{\textbf{Blind-then-reveal, original scorer.} \textbf{(a)}~Change in selection accuracy relative to blind judging (orange line) on the $k$-pool at $k{>}1$, with the reference shown (blue) and with blind-then-reveal (teal); arrows run from one to the other. 39 tasks, 95\% intervals.\ph{} \textbf{(b)}~Selection accuracy on 105 MATH-500 problems with the reference solution, best of 64.\pre}
+\label{fig:fix}
+\end{figure}
+
+\paragraph{Instructions and several references.}
+On the synthetic grid at $k{=}16$, the any-valid-answer instruction closes phi-4's margin ($+1.91 \to +0.03$), shrinks Qwen2.5-14B's ($+3.34 \to +1.21$), and does little or nothing for smaller judges, even raising Qwen2.5-1.5B's on rubric~$a$ ($+3.58 \to +4.54$). Showing $\min(3,k)$ valid references removes the margin toward the original reference on the Qwen-generated grid without restoring blind-level inflation, and largely fails for Qwen2.5-7B on the Llama-generated grid.
+
+\paragraph{Worked references.}
+With a short worked solution in the reference slot on the $k$-pool, the margin falls from $+5.17$ to $+3.73$ (Qwen2.5-7B) and from $+4.20$ to $+3.67$ (phi-4), and added inflation falls from $+1.50$ to $+1.08$ and from $+1.07$ to $+0.77$.
+
+\paragraph{Blind-then-reveal on unique answers.}
+A later pre-specified experiment ran blind-then-reveal on the 105 MATH-500 problems (\cref{tab:r2a}). The first call reproduces the frozen blind scores ($r=0.991$ and $0.973$), so the comparison is on aligned data.
+
+\begin{table}[htbp]
+\centering
+\caption{MATH-500 selection accuracy under three protocols, best of 64, rubric-$a$ selection. The blind-then-reveal comparisons were pre-specified; after a disclosed amendment, the reference-versus-blind contrast carries no registration weight (\cref{tab:ledger}).}
+\label{tab:r2a}
+\footnotesize
+\begin{adjustbox}{max width=\linewidth}\input{tables/r2a.tex}\end{adjustbox}
+
+\end{table}
+
+\paragraph{Zero-cost score combinations.}
+Simple combinations of the blind and referenced scores compete with blind-then-reveal (\cref{tab:score-rules}). Taking the maximum loses nothing to blind judging on the $k$-pool at $k{>}1$ and keeps the reference's benefit on \textsc{MACE}, but on MATH-500 it trails the reference for Qwen2.5-7B; the mean does best on MATH-500 and worse on the $k$-pool. No rule is best everywhere. Computed from the same stored scores, the max rule also keeps grading AUROC within 0.03 of blind judging, where showing the reference lowers it by 0.06 to 0.25; blind-then-reveal does not, except for Qwen2.5-14B (\cref{tab:protocol-grading}).\ph
+
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption{Best-of-64 accuracy change against blind judging (points) for score combinations and blind-then-reveal: $k$-pool at $k{>}1$ (registered labels, 39 tasks), \textsc{MACE} overall, MATH-500. Original scorer. \Cref{tab:protocols} uses any-format labels for the $k$-pool.\ph}
+\label{tab:score-rules}
+\begin{adjustbox}{max width=\linewidth}\input{tables/score_rules.tex}\end{adjustbox}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption{\textbf{The max rule nearly removes the grading harm; blind-then-reveal mostly does not.} Top: change in per-task grading AUROC relative to blind judging (95\% CI), for correct answers that differ from the reference against wrong answers ($k$-pool with any-format labels, 59 tasks; \textsc{MACE}, 91 tasks), and for all correct answers against wrong answers on single-answer questions. Bottom: change in best-of-64 accuracy relative to the referenced judge (points, 95\% CI). Both blocks use the original scorer, as the reveal calls did. From stored scores.\ph}
+\label{tab:protocol-grading}
+\begin{adjustbox}{max width=\linewidth}\input{tables/protocol_grading.tex}\end{adjustbox}\\[6pt]
+\begin{adjustbox}{max width=\linewidth}\input{tables/protocol_selection.tex}\end{adjustbox}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption{The reference and the max rule under the exact scorer, changes against blind judging (95\% CI); the values quoted in \cref{tab:protocols}. From stored scores.\ph}
+\label{tab:protocol-exact}
+\begin{adjustbox}{max width=\linewidth}\input{tables/protocol_exact.tex}\end{adjustbox}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption{Worst-case selection loss by protocol: accuracy of each protocol minus the best of the three in each pool (points; 0 marks the best), and the worst case over the pools each judge was run on, which differ by judge. Original scorer; registered labels, which count most prose answers as wrong (\cref{app:grid}).\ph}
+\label{tab:regret}
+\begin{adjustbox}{max width=\linewidth}\input{tables/regret.tex}\end{adjustbox}
+\end{table}
+
+\paragraph{Blind-then-reveal across judges.}
+\Cref{tab:coverage} gives the preregistered coverage extension in inflation units, and \cref{tab:acc-kpool} gives all five $k$-pool judges in accuracy units.
+
+\begin{table}[htbp]
+\centering
+\caption{Judge-coverage extension on the $k$-pool (\sd, 95\% CI).\osf}
+\label{tab:coverage}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{adjustbox}{max width=\linewidth}\input{tables/coverage.tex}\end{adjustbox}
+
+\end{table}
+
+\paragraph{Variants of the reveal call.}
+\Cref{tab:m1variants} gives the pre-specified variants in inflation units (58 multi-answer tasks from the $k$-pool and replication pool) and \cref{tab:acc-variants} in accuracy units (39 $k$-pool tasks). In inflation, removing the displayed score restores the harm for all three judges. For Qwen2.5-7B, neutral wording costs $+0.51$ \ci{+0.28}{+0.73} of protection, which falsified our equivalence prediction for that judge, and another judge's score gives $+0.38$ against $+0.01$ for its own. For gemma-2-9b, another judge's score costs $+0.17$ \ci{+0.01}{+0.38} relative to its own. gemma also puts the lowest weight on its own blind score in the selection model of \cref{app:composition} ($\beta = 0.34$, against $0.51$ and $0.69$), a consistent ordering on only four eligible tasks. In accuracy units the variant contrasts are imprecise.
+
+\begin{table}[htbp]
+\centering
+\caption{Reveal-call variants: added inflation over blind (\sd, 95\% CI), 58 tasks.\pre}
+\label{tab:m1variants}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{adjustbox}{max width=\linewidth}\input{tables/m1variants.tex}\end{adjustbox}
+
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Reveal-call variants: change in selection accuracy relative to blind, in points (95\% CI), 39 $k$-pool tasks at $k{>}1$.\ph}
+\label{tab:acc-variants}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{adjustbox}{max width=\linewidth}\input{tables/acc_variants.tex}\end{adjustbox}
+
+\end{table}
+
+\paragraph{The validity gate backfires for one judge.}
+A second preregistered protocol multiplies the blind score by a separate call's probability that the candidate is valid, with the reference shown to that call as one valid example. For phi-4 it removes the inflation. For Qwen2.5-7B it raises the $k{=}2$ margin from $+5.02$ to $+6.62$, because the validity call itself anchors: its probability averages $0.998$ for matching valid answers and $0.422$ for non-matching valid ones.
+
+\paragraph{A free screen rejects broken judges and certifies nothing.}
+Mistral-7B's null harm in inflation units is a resolution artifact. Its tokenizer writes every digit as two tokens, a space marker and the digit, so no score token is ever captured and every score is the integer parsed from its greedy reply. When a reply contained no integer the scorer substituted 5.0, which happened for 32.3\% of its blind rubric-$a$ scores and 19.9\% of its blind-then-reveal scores. Its scores therefore take only 11 distinct values, 52.6\% of its referenced scores are exactly 10, and with the reference an average of 32.1 of its 64 candidates tie at the maximum, so selection cannot act on its anchoring (margin $+1.38$). Counting distinct values and ties catches this (\cref{tab:resolution}). Ministral-8B passes the distinct-value check but has a score standard deviation of $0.55$ around a mean of $4.73$, is essentially uncorrelated with validity, and picks a valid answer 21.7\% of the time against a 38.6\% random baseline. Passing the screen certifies nothing: gemma-2-9b passes easily and is the most anchored of the five $k$-pool judges.
+
+\begin{table}[htbp]
+\centering
+\caption{Score-resolution screen on the $k$-pool; tie counts and selection accuracy use blind scores.\pre}
+\label{tab:resolution}
+\footnotesize
+\begin{adjustbox}{max width=\linewidth}\input{tables/resolution.tex}\end{adjustbox}
 
 \end{table}
 

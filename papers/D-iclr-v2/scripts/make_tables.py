@@ -1218,3 +1218,44 @@ try:
     print("wrote prevalence v2 table")
 except (KeyError, TypeError, FileNotFoundError) as e:
     print("[skip prevalence v2 table]", repr(e))
+
+
+# ---------------------------------------------------------------- round 26 (v2): instruction against reasoning, false acceptance, RL verifiers
+try:
+    JN = (("gpt41", "GPT-4.1"), ("sonnet", "Sonnet~5"))
+    body = ["\\begin{tabular}{llcccc}", "\\toprule",
+            "Judge & Prompt & Condition & Accuracy minus list (points) & Differing correct credited (\\%) & Wrong credited (\\%) \\\\", "\\midrule"]
+    for j, jl in JN:
+        d = J(f"r26a_{j}.json")["conditions"]
+        for key, lab, cond in (("direct|noref", "Direct yes/no", "blind"), ("direct|ref", "Direct yes/no", "reference"),
+                               ("hle|ref", "HLE judge, verbatim", "reference"), ("hle_edit|ref", "HLE judge, match clause removed", "reference")):
+            x = d[key]
+            body.append(f"{jl if key == 'direct|noref' else ''} & {lab} & {cond} & {p4s(x['minus_list'])} & {100 * x['nonmatch_credited'][0]:.1f} & {100 * x['wrong_credited'][0]:.1f} \\\\")
+        body.append("\\addlinespace")
+    body[-1] = "\\bottomrule"
+    write("r26_instruction.tex", "\n".join(body + ["\\end{tabular}"]) + "\n")
+    body = ["\\begin{tabular}{llcccc}", "\\toprule",
+            "Judge & Prompt & AUROC, blind $\\to$ reference & AUROC change & False rejections change (pp) & False acceptances change (pp) \\\\", "\\midrule"]
+    for j, jl in JN:
+        d = J(f"r26b_{j}.json")
+        for t, tl in (("direct", "Direct yes/no"), ("verify", "Verify first"), ("solve", "Solve first")):
+            lv, ch = d["levels"], d["changes"][t]
+            body.append(f"{jl if t == 'direct' else ''} & {tl} & {lv[t + '|noref']['G'][0]:.3f} $\\to$ {lv[t + '|ref']['G'][0]:.3f} & {fs(ch['G'], 3)} & {p4s(ch['FR'])} & {p4s(ch['FA'])} \\\\")
+        h = d["changes"]["hle_edit_minus_hle"]
+        body.append(f" & HLE edited minus verbatim & {d['levels']['hle|ref']['G'][0]:.3f} $\\to$ {d['levels']['hle_edit|ref']['G'][0]:.3f} & {fs(h['G'], 3)} & {p4s(h['FR'])} & {p4s(h['FA'])} \\\\")
+        body.append("\\addlinespace")
+    body[-1] = "\\bottomrule"
+    write("r26_subsample.tex", "\n".join(body + ["\\end{tabular}"]) + "\n")
+    body = ["\\begin{tabular}{lcccccc}", "\\toprule",
+            " & \\multicolumn{2}{c}{Accuracy minus list (points)} & \\multicolumn{2}{c}{Differing correct credited (\\%)} & \\multicolumn{2}{c}{Wrong credited (\\%)} \\\\",
+            "\\cmidrule(lr){2-3}\\cmidrule(lr){4-5}\\cmidrule(lr){6-7}",
+            "Verifier & One reference & Full list & One ref. & Full list & One ref. & Full list \\\\", "\\midrule"]
+    for v, vl in (("general", "General-Reasoner verifier (1.5B)"), ("compass", "CompassVerifier-3B")):
+        d = J(f"r26c_{v}.json")["conditions"]
+        r, l = d["v|ref"], d["v|reflist"]
+        body.append(f"{vl} & {p4s(r['minus_list'])} & {p4s(l['minus_list'])} & {100 * r['nonmatch_credited'][0]:.1f} & {100 * l['nonmatch_credited'][0]:.1f} & "
+                    f"{100 * r['wrong_credited'][0]:.1f} & {100 * l['wrong_credited'][0]:.1f} \\\\")
+    write("r26_verifiers.tex", done(body))
+    print("wrote round-26 tables")
+except (KeyError, TypeError, FileNotFoundError) as e:
+    print("[skip round-26 tables]", repr(e))

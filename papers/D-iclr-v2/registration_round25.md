@@ -55,14 +55,14 @@ verify 1.78, solve 1.14); Anthropic USD 18.69 (cot 5.29, verify 6.48, solve 6.92
 | cot, GPT-4.1 | −0.8 [−2.4, +0.7] | −3.0 [−4.7, −1.3] | −2.2 [−4.0, −0.3] | 97.7%, 94.7% | 10.7%, 8.9% |
 | verify, GPT-4.1 | −0.3 [−1.8, +1.2] | −1.5 [−3.0, +0.0] | −1.2 [−2.4, +0.0] | 98.0%, 96.7% | 12.5%, 10.7% |
 | solve, GPT-4.1 | −0.3 [−1.7, +1.0] | −0.5 [−2.0, +1.2] | −0.2 [−1.5, +1.0] | 98.2%, 97.5% | 12.5%, 12.5% |
-| cot, Sonnet 5 | −0.5 [−1.8, +1.0] | −6.0 [−8.7, −3.5] | −5.5 [−7.9, −3.4] | 98.0%, 90.1% | 10.7%, 7.1% |
-| verify, Sonnet 5 | −0.2 [−1.3, +1.0] | −6.2 [−8.9, −3.7] | −6.0 [−8.7, −3.5] | 98.7%, 90.1% | 8.9%, 5.4% |
+| cot, Sonnet 5 | −0.5 [−1.8, +1.0] | −6.0 [−8.7, −3.5] | −5.5 [−7.9, −3.4] | 98.0%, 90.2% | 10.7%, 7.1% |
+| verify, Sonnet 5 | −0.2 [−1.3, +1.0] | −6.2 [−8.9, −3.7] | −6.0 [−8.7, −3.5] | 98.7%, 90.2% | 8.9%, 5.4% |
 | solve, Sonnet 5 | +0.0 [−1.3, +1.3] | −3.4 [−5.7, −1.2] | −3.4 [−5.2, −1.8] | 98.2%, 93.4% | 12.5%, 10.7% |
 
 - **P-R25A1:** cot GPT-4.1 **confirmed**; verify GPT-4.1 **not confirmed**; solve GPT-4.1 **not confirmed**; cot, verify and solve
   Sonnet 5 **confirmed**.
 - **P-R25A2:** **confirmed** in all six cells.
-- **P-R25A3:** **falsified** in all six cells (the drop in credit for differing correct answers is 0.7 to 8.6 points).
+- **P-R25A3:** **falsified** in all six cells (the drop in credit for differing correct answers is 0.8 to 8.6 points).
 
 Totals: 18 predictions; 10 confirmed, 2 not confirmed, 6 falsified. Judges prompted to reason about correctness before deciding show a
 shortfall one to two orders of magnitude smaller than the benchmark graders of R24-A, and it remains measurable for Sonnet 5.

@@ -148,7 +148,7 @@ complete: 149 questions in every R24-A cell and both R24-B readouts, 40 tasks in
   entry "Papua New Guinea"; h41, h03), "Sudan" (list entry "South Sudan"; s41) and "Wales" (list entry "United Kingdom"; h03).
 
 R24-B (GPT-4.1, the paper's rubric): referenced minus list −9.6 [−12.9, −6.4], blind minus list −2.5 [−4.7, −0.3]; second draw minus
-list −7.1 [−10.1, −4.0]; answers that stop matching are credited 100% under the first draw and 87.5% under the second (144 answers);
+list −7.0 [−10.1, −4.0]; answers that stop matching are credited 100% under the first draw and 87.5% under the second (144 answers);
 answers that start matching 80.5% and 99.4% (174).
 - **P-R24B1 confirmed; P-R24B2 confirmed; P-R24B3 confirmed (+12.5 pp); P-R24B4 confirmed (+19.0 pp).**
 
@@ -156,7 +156,7 @@ R24-C (40 tasks; grading AUROC blind, one reference, full list; changes against 
 
 | Judge | AUROC blind / one ref / full list | One ref minus blind | Full list minus blind | Full list minus one ref | False-rejection rise: one ref, full list (pp) |
 |---|---|---|---|---|---|
-| Sonnet 5 | 0.938 / 0.785 / 0.970 | −0.153 [−0.219, −0.097] | +0.032 [+0.008, +0.060] | +0.185 [+0.125, +0.258] | +35.6, −2.3 [−8.0, +4.9] |
+| Sonnet 5 | 0.938 / 0.785 / 0.970 | −0.153 [−0.219, −0.097] | +0.032 [+0.008, +0.060] | +0.185 [+0.125, +0.258] | +35.6, −2.2 [−8.0, +4.9] |
 | Opus 5 | 0.936 / 0.771 / 0.969 | −0.165 [−0.223, −0.110] | +0.033 [−0.000, +0.084] | +0.198 [+0.145, +0.253] | +36.3, −6.3 [−12.8, −1.1] |
 | GPT-4.1 | 0.935 / 0.872 / 0.992 | −0.063 [−0.133, +0.004] | +0.057 [+0.013, +0.121] | +0.120 [+0.055, +0.190] | +15.6, −2.2 [−4.6, −0.5] |
 

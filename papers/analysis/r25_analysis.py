@@ -30,7 +30,7 @@ boots = [rng.integers(0, n, n) for _ in range(2000)]
 def ci(x):
     x = np.asarray(x, float)
     m = [x[b].mean() for b in boots]
-    return [round(float(x.mean()), 4), [round(float(np.percentile(m, 2.5)), 4), round(float(np.percentile(m, 97.5)), 4)]]
+    return [round(float(x.mean()), 6), [round(float(np.percentile(m, 2.5)), 6), round(float(np.percentile(m, 97.5)), 6)]]
 
 
 def masked(mask, val):
@@ -38,7 +38,7 @@ def masked(mask, val):
         d = mask[ix].sum()
         return float((mask[ix] * val[ix]).sum() / d) if d else np.nan
     m = [f(b) for b in boots]
-    return [round(f(np.arange(n)), 4), [round(float(np.nanpercentile(m, 2.5)), 4), round(float(np.nanpercentile(m, 97.5)), 4)], int(mask.sum())]
+    return [round(f(np.arange(n)), 6), [round(float(np.nanpercentile(m, 2.5)), 6), round(float(np.nanpercentile(m, 97.5)), 6)], int(mask.sum())]
 
 
 B = np.array([[S[(t["problem_id"], i, "noref")] >= 7 for i in t["idx"]] for t in rows], float)

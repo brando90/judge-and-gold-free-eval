@@ -1,0 +1,154 @@
+{
+ "part": "a",
+ "judge": "gpt41",
+ "questions": 149,
+ "conditions": {
+  "direct|noref": {
+   "minus_list": [
+    -0.053691,
+    [
+     -0.077181,
+     -0.031837
+    ]
+   ],
+   "nonmatch_credited": [
+    0.914141,
+    [
+     0.884613,
+     0.942559
+    ],
+    396
+   ],
+   "match_credited": [
+    0.965278,
+    [
+     0.934908,
+     0.992063
+    ],
+    144
+   ],
+   "wrong_credited": [
+    0.125,
+    [
+     0.036364,
+     0.22807
+    ],
+    56
+   ]
+  },
+  "direct|ref": {
+   "minus_list": [
+    -0.174497,
+    [
+     -0.209773,
+     -0.14094
+    ]
+   ],
+   "nonmatch_credited": [
+    0.732323,
+    [
+     0.686865,
+     0.778922
+    ],
+    396
+   ],
+   "match_credited": [
+    0.986111,
+    [
+     0.963768,
+     1.0
+    ],
+    144
+   ],
+   "wrong_credited": [
+    0.071429,
+    [
+     0.016123,
+     0.145455
+    ],
+    56
+   ]
+  },
+  "hle|ref": {
+   "minus_list": [
+    -0.666107,
+    [
+     -0.718121,
+     -0.615772
+    ]
+   ],
+   "nonmatch_credited": [
+    0.0,
+    [
+     0.0,
+     0.0
+    ],
+    396
+   ],
+   "match_credited": [
+    0.993056,
+    [
+     0.976744,
+     1.0
+    ],
+    144
+   ],
+   "wrong_credited": [
+    0.0,
+    [
+     0.0,
+     0.0
+    ],
+    56
+   ]
+  },
+  "hle_edit|ref": {
+   "minus_list": [
+    -0.312081,
+    [
+     -0.364094,
+     -0.263423
+    ]
+   ],
+   "nonmatch_credited": [
+    0.532828,
+    [
+     0.469221,
+     0.597023
+    ],
+    396
+   ],
+   "match_credited": [
+    0.993056,
+    [
+     0.976744,
+     1.0
+    ],
+    144
+   ],
+   "wrong_credited": [
+    0.0,
+    [
+     0.0,
+     0.0
+    ],
+    56
+   ]
+  }
+ },
+ "cot_ref_minus_list_r25": -0.030201,
+ "hle_edit_minus_hle": [
+  0.354027,
+  [
+   0.305369,
+   0.40604
+  ]
+ ],
+ "predictions": {
+  "P-R26A1 direct reference below list (interval)": "confirmed",
+  "P-R26A2 direct blind within 5 points of list (point)": "falsified",
+  "P-R26A3 direct shortfall within 5 points of the R25 chain-of-thought shortfall (point)": "falsified",
+  "P-R26A4 edited HLE judge's shortfall at least 30 points smaller than the verbatim judge's (point)": "confirmed",
+  "P-R26A5 edited HLE judge within 10 points of list (point)": "falsified"
+ }
+}

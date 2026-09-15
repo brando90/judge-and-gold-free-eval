@@ -52,7 +52,7 @@ def boot_rows(n, nb, seed):
 def ci_mean(x, boots):
     x = np.asarray(x, float)
     m = [x[b].mean() for b in boots]
-    return [round(float(x.mean()), 4), [round(float(np.percentile(m, 2.5)), 4), round(float(np.percentile(m, 97.5)), 4)]]
+    return [round(float(x.mean()), 6), [round(float(np.percentile(m, 2.5)), 6), round(float(np.percentile(m, 97.5)), 6)]]
 
 
 def ci_masked(mask, val, boots):
@@ -60,7 +60,7 @@ def ci_masked(mask, val, boots):
         d = mask[ix].sum()
         return float((mask[ix] * val[ix]).sum() / d) if d else np.nan
     m = [f(b) for b in boots]
-    return [round(f(np.arange(len(mask))), 4), [round(float(np.nanpercentile(m, 2.5)), 4), round(float(np.nanpercentile(m, 97.5)), 4)],
+    return [round(f(np.arange(len(mask))), 6), [round(float(np.nanpercentile(m, 2.5)), 6), round(float(np.nanpercentile(m, 97.5)), 6)],
             int(mask.sum())]
 
 

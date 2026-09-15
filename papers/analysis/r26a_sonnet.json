@@ -1,0 +1,154 @@
+{
+ "part": "a",
+ "judge": "sonnet",
+ "questions": 149,
+ "conditions": {
+  "direct|noref": {
+   "minus_list": [
+    -0.016779,
+    [
+     -0.035277,
+     0.0
+    ]
+   ],
+   "nonmatch_credited": [
+    0.964646,
+    [
+     0.940377,
+     0.984615
+    ],
+    396
+   ],
+   "match_credited": [
+    0.986111,
+    [
+     0.964286,
+     1.0
+    ],
+    144
+   ],
+   "wrong_credited": [
+    0.107143,
+    [
+     0.035714,
+     0.189676
+    ],
+    56
+   ]
+  },
+  "direct|ref": {
+   "minus_list": [
+    -0.100671,
+    [
+     -0.13255,
+     -0.068792
+    ]
+   ],
+   "nonmatch_credited": [
+    0.833333,
+    [
+     0.788114,
+     0.878111
+    ],
+    396
+   ],
+   "match_credited": [
+    1.0,
+    [
+     1.0,
+     1.0
+    ],
+    144
+   ],
+   "wrong_credited": [
+    0.107143,
+    [
+     0.037718,
+     0.193548
+    ],
+    56
+   ]
+  },
+  "hle|ref": {
+   "minus_list": [
+    -0.651007,
+    [
+     -0.70302,
+     -0.600671
+    ]
+   ],
+   "nonmatch_credited": [
+    0.017677,
+    [
+     0.005812,
+     0.031414
+    ],
+    396
+   ],
+   "match_credited": [
+    0.993056,
+    [
+     0.976744,
+     1.0
+    ],
+    144
+   ],
+   "wrong_credited": [
+    0.035714,
+    [
+     0.0,
+     0.090909
+    ],
+    56
+   ]
+  },
+  "hle_edit|ref": {
+   "minus_list": [
+    -0.125839,
+    [
+     -0.162752,
+     -0.090604
+    ]
+   ],
+   "nonmatch_credited": [
+    0.80303,
+    [
+     0.75255,
+     0.851857
+    ],
+    396
+   ],
+   "match_credited": [
+    0.993056,
+    [
+     0.976744,
+     1.0
+    ],
+    144
+   ],
+   "wrong_credited": [
+    0.071429,
+    [
+     0.0,
+     0.163275
+    ],
+    56
+   ]
+  }
+ },
+ "cot_ref_minus_list_r25": -0.060403,
+ "hle_edit_minus_hle": [
+  0.525168,
+  [
+   0.473154,
+   0.577181
+  ]
+ ],
+ "predictions": {
+  "P-R26A1 direct reference below list (interval)": "confirmed",
+  "P-R26A2 direct blind within 5 points of list (point)": "confirmed",
+  "P-R26A3 direct shortfall within 5 points of the R25 chain-of-thought shortfall (point)": "confirmed",
+  "P-R26A4 edited HLE judge's shortfall at least 30 points smaller than the verbatim judge's (point)": "confirmed",
+  "P-R26A5 edited HLE judge within 10 points of list (point)": "falsified"
+ }
+}
