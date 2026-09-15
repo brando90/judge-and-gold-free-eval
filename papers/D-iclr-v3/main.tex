@@ -188,7 +188,9 @@ Relabeling moves their size, not their sign. All four open judges fall under reg
 With one correct answer the reference helps, as P2 requires: showing only the final answer raises best-of-64 accuracy on MATH-500 by 28.6 and 30.6~pp for Qwen2.5-7B and 14B,\reana{} as the full solution does, and on \textsc{MACE}'s single-answer questions by 29.4\ph{} and 26.5~pp for Qwen2.5-7B and phi-4 (\cref{fig:onevsseveral}a).
 
 \paragraph{Verdict.}
-P2 holds for Sonnet~5, Opus~5, Qwen2.5-7B, and phi-4 on factual questions and for the four open judges and Sonnet~5 on the constructed pools. On the constructed pools the API judges fall far less than the open judges (by at most 0.08), and the interval includes zero for Opus~5 on the replication pool; GPT-4.1's falls are small everywhere (0.01 to 0.06), and its interval includes zero on factual questions (\cref{app:ledger,tab:labelings-gnm}). Selection among sampled answers is less exposed: on \textsc{MACE}'s multi-answer questions best-of-64 accuracy did not fall ($+2.0$ and $+6.1$~pp, intervals including zero; our registered loss was not confirmed), and $k$-pool losses concentrate where no correct candidate matches the reference\ph{} (\cref{app:estimator}).
+P2 holds on factual questions for Sonnet~5, Opus~5, Qwen2.5-7B, and phi-4, and on the constructed pools for the four open judges and Sonnet~5. Two intervals include zero: GPT-4.1 on factual questions, whose falls are small everywhere, and Opus~5 on the replication pool (\cref{app:ledger}). On the constructed pools the API judges fall far less than the open judges.
+
+Selection is less exposed than grading. Best-of-64 accuracy did not fall on \textsc{MACE}'s multi-answer questions, so our registered loss there was not confirmed, and on the $k$-pool the losses concentrate where no correct candidate matches the reference\ph{} (\cref{app:estimator}).
 
 \section{Prediction 3: the effect persists after blind acceptance}
 \label{sec:p3}
