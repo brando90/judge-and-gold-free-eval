@@ -154,11 +154,12 @@ Unmarked estimates were pre-specified in a timestamped commit or on OSF; \ph{} m
 \label{sec:p1}
 
 We re-judged the replication pool's byte-identical samples with the reference moved to another correct answer.
-Under rubric~$a$, text the reference moves onto gains 5.25 points under Qwen2.5-7B,\reana{} 4.09 under phi-4, and 3.04 under Sonnet~5; text it moves off loses 5.41,\reana{} 3.92, and 2.66; correct text that matches neither reference barely moves (\cref{app:rotation}). Rubric~$b$ gives larger swaps for Qwen2.5-7B ($+6.34$ onto and $-6.58$ off).
-All twelve registered cells (two judges, two rubric wordings, three readouts) went as predicted; a registered ordering of the swap by numeric distance from the reference failed (\cref{app:ledger}).
-The swap survives the verbatim MT-Bench template, which drops ``trusted'' and asks for an explanation first (3.59 points for Qwen2.5-7B; \cref{app:rotation}). On arithmetic, it survives a reference written in words but mostly vanishes when the reference is written as an expression or masked inside a worked solution (\cref{app:mechanism}).
+Under Qwen2.5-7B, phi-4, and Sonnet~5, text the reference moves onto gains 3 to 5 points and text it moves off loses about as much, while correct text that matches neither reference barely moves (\cref{app:rotation}).\reana{}
+All twelve registered cells for Qwen2.5-7B and phi-4 went as predicted; one registered prediction, that the swap would be ordered by numeric distance from the reference, failed (\cref{app:ledger}).
 
-A judge that thinks before scoring also removes most of the swap on arithmetic (\cref{app:reasoning}), which raises the question of whether the problem fades as judges improve. On factual questions it shrinks but does not disappear: with adaptive thinking, the rise in Sonnet~5's false rejections falls from 36 to 15 points (\cref{app:acceptance}), and Sonnet~5 still under-credits differing correct answers under every reasoning prompt we tried (\cref{sec:cost}). Nor does reasoning protect a grader told to match: o3-mini, a reasoning model, running the HLE judge credits almost no correct answer that differs from the reference (\cref{sec:cost}).
+The swap is not an artifact of our wording: it survives the verbatim MT-Bench template, which drops ``trusted'' and asks for an explanation first. On arithmetic it mostly vanishes, however, when the reference is written as an expression or hidden inside a worked solution (\cref{app:rotation,app:mechanism}).
+
+Does the problem fade as judges improve? On arithmetic, a judge that thinks before scoring removes most of the swap (\cref{app:reasoning}). On factual questions it does not: thinking only shrinks Sonnet~5's added false rejections, from 36 to 15 points (\cref{app:acceptance}), and o3-mini, a reasoning model, running the HLE grader still credits almost no correct answer that differs from the reference (\cref{sec:cost}).
 
 \section{Prediction 2: correct answers that differ from the reference are graded worse}
 \label{sec:p2}
