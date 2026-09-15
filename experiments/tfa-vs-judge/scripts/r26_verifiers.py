@@ -62,7 +62,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer  # noqa: E402
 
 name = {"general": "TIGER-Lab/general-verifier", "compass": "opencompass/CompassVerifier-3B"}[args.verifier]
 tok = AutoTokenizer.from_pretrained(name)
-model = AutoModelForCausalLM.from_pretrained(name, torch_dtype=torch.float16).to("mps").eval()
+model = AutoModelForCausalLM.from_pretrained(name, torch_dtype=torch.float16, attn_implementation="sdpa").to("mps").eval()  # Amendment 1
 max_new = 512 if args.verifier == "general" else 32
 
 outf = os.path.abspath(args.out)

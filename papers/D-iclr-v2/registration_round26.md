@@ -70,3 +70,10 @@ Interval predictions are confirmed when the 95% interval excludes zero in the pr
 zero, and falsified when it excludes zero in the opposite direction; point predictions are confirmed or falsified. Caps: OpenAI
 USD 15, Anthropic USD 30 (ledger prices GPT-4.1 2/8, Sonnet 5 3/15 per million tokens). Any change after the first R26 call is recorded
 here as a dated amendment before its results are analyzed. 30 predictions.
+
+## Amendment 1 (2026-09-14, before any CompassVerifier generation and before any R26 analysis)
+
+`opencompass/CompassVerifier-3B` failed to load because its configuration requests FlashAttention 2, which is not available on
+Apple MPS; no generation was produced. `scripts/r26_verifiers.py` now loads both verifiers with `attn_implementation="sdpa"` (PyTorch
+scaled dot-product attention). The General-Reasoner verifier run, already in progress, is unaffected (its configuration does not
+request FlashAttention). Nothing else changes.
