@@ -83,6 +83,7 @@ with open(outf, "a") as f:
         enc = tok(text_in, return_tensors="pt").to("mps")
         with torch.no_grad():
             out = model.generate(**enc, max_new_tokens=max_new, do_sample=False, pad_token_id=tok.eos_token_id)
+        n_new = int(out.shape[1] - enc["input_ids"].shape[1])
         gen = tok.decode(out[0, enc["input_ids"].shape[1]:], skip_special_tokens=True)
         if args.verifier == "general":
             score = 10.0 if "Final Decision: Yes" in gen else 0.0
@@ -91,8 +92,10 @@ with open(outf, "a") as f:
             m = re.search(r"\\boxed\{([ABC])\}", gen) or re.search(r"\b([ABC])\b", gen)
             score = None if not m else (10.0 if m.group(1) == "A" else 0.0)
             parsed = m is not None
+        del enc, out
+        torch.mps.empty_cache()  # Amendment 3: release cached MPS memory after every generation
         f.write(json.dumps(dict(problem_id=t["problem_id"], idx=t["idx"][j], cond=c, verifier=name, score=score, parsed=parsed,
-                                new_tokens=int(out.shape[1] - enc["input_ids"].shape[1]), tail=gen[-300:])) + "\n")
+                                new_tokens=n_new, tail=gen[-300:])) + "\n")
         f.flush()
         if (i + 1) % 50 == 0:
             print(f"  {i + 1}/{len(jobs)} {(time.time() - t0) / (i + 1):.1f}s per generation", flush=True)
