@@ -180,9 +180,9 @@ Does the problem fade as judges improve? On arithmetic, a judge that thinks befo
 
 \paragraph{Several correct answers.}
 The reference makes judges reject correct answers they would otherwise accept: under the registered labels, Qwen2.5-7B scores 28\% of the differing correct answers 3 or below with the reference, against 0.4\% blind\reana{} (\cref{app:grid}).
-Grading suffers with it. The AUROC that separates those answers from wrong ones falls for every judge we ran, by 0.06 to 0.16 on factual questions and by 0.17 to 0.27 on the constructed pools\ph{} (\cref{fig:onevsseveral}b).
+Grading suffers with it. The AUROC that separates those answers from wrong ones falls for every judge we ran, by 0.06 to 0.16 on factual questions and by 0.17 to 0.27 on the constructed pools (\cref{fig:onevsseveral}b). We registered the factual falls for Qwen2.5-7B, Sonnet~5, and Opus~5 in advance; the constructed-pool falls are post hoc,\ph{} because they use the any-format labels we adopted after the registered checker proved too strict.
 
-How answers are labeled changes the size of these falls, not their direction (\cref{tab:labelings-gnm}). The constructed-pool estimates use the any-format labels adopted after the registered checker proved too strict, so they are post hoc; the one pre-specified estimate under the registered labels, Qwen2.5-7B on the replication pool, falls by 0.29.
+Relabeling moves their size, not their sign. All four open judges fall under registered, model-read, and boxed-only labels alike, and the pre-specified estimate under the registered labels, Qwen2.5-7B on the replication pool, falls by 0.29 (\cref{tab:labelings-gnm}); \cref{app:ledger} gives every registered prediction and its outcome.
 
 \paragraph{One correct answer.}
 With one correct answer the reference helps, as P2 requires: showing only the final answer raises best-of-64 accuracy on MATH-500 by 28.6 and 30.6~pp for Qwen2.5-7B and 14B,\reana{} as the full solution does, and on \textsc{MACE}'s single-answer questions by 29.4\ph{} and 26.5~pp for Qwen2.5-7B and phi-4 (\cref{fig:onevsseveral}a).
