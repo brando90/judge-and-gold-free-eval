@@ -86,3 +86,39 @@ cells on the MACE subsample project to about USD 6 each against the USD 5 per-ce
 caps are raised to USD 9, and the Anthropic total to USD 38. If a cap stops a cell, the same command is re-run with `--cap-usd 9`.
 Before this amendment we had looked at run logs, spend ledgers, and the R26-A (benchmark pool) results, which were analyzed as
 registered; no R26-B or R26-C data had been analyzed.
+
+## Outcome, R26-A and R26-B (recorded 2026-09-14; `papers/analysis/r26a_{gpt41,sonnet}.json`, `r26b_{gpt41,sonnet}.json`)
+
+Runs: every call completed with no API error; one Sonnet 5 solve-first reply on the subsample was cut off at 1,024 tokens and is
+missing. Both capped Sonnet 5 cells finished under Amendment 2 (verify USD 6.40, solve USD 6.26). All experiments complete: 149
+questions in R26-A, 40 tasks in R26-B.
+
+R26-A (benchmark pool; accuracy minus answer-list accuracy, points; credit for differing correct answers):
+
+| Judge | Direct, blind | Direct, reference | HLE verbatim | HLE, match clause removed | R25 chain of thought |
+|---|---|---|---|---|---|
+| GPT-4.1 | −5.4 [−7.7, −3.2] | −17.4 [−21.0, −14.1], 73.2% | −66.6, 0.0% | −31.2 [−36.4, −26.3], 53.3% | −3.0 |
+| Sonnet 5 | −1.7 [−3.5, +0.0] | −10.1 [−13.3, −6.9], 83.3% | −65.1, 1.8% | −12.6 [−16.3, −9.1], 80.3% | −6.0 |
+
+- **P-R26A1:** confirmed for both judges. **P-R26A2:** GPT-4.1 **falsified** (−5.4); Sonnet 5 **confirmed**.
+- **P-R26A3:** GPT-4.1 **falsified** (−17.4 against −3.0); Sonnet 5 **confirmed** (−10.1 against −6.0).
+- **P-R26A4:** confirmed for both (+35.4 and +52.5 points). **P-R26A5:** **falsified** for both (−31.2, −12.6).
+
+R26-B (MACE subsample, 40 tasks; changes with the reference against blind for direct, verify, solve):
+
+| Judge | Prompt | AUROC change | False rejections (pp) | False acceptances (pp) |
+|---|---|---|---|---|
+| GPT-4.1 | direct | −0.089 [−0.141, −0.038] | +23.0 | −5.1 |
+| GPT-4.1 | verify | −0.068 [−0.115, −0.026] | +10.3 | +3.2 |
+| GPT-4.1 | solve | −0.040 [−0.088, −0.002] | +4.7 | +3.2 |
+| Sonnet 5 | direct | −0.057 [−0.106, −0.014] | +13.8 | −2.5 |
+| Sonnet 5 | verify | −0.090 [−0.143, −0.041] | +17.1 | +0.9 |
+| Sonnet 5 | solve | −0.047 [−0.082, −0.016] | +7.4 | +1.9 |
+
+The verbatim HLE judge rejects 100% (GPT-4.1) and 95.6% (Sonnet 5) of differing correct answers (AUROC 0.485, 0.501); with the match
+clause removed, 71.5% and 29.7% (AUROC 0.611, 0.818; +0.126 [+0.077, +0.176] and +0.317 [+0.263, +0.369]).
+- **P-R26B1:** direct **falsified** for both; verify **falsified** for both; solve **confirmed** for both.
+- **P-R26B2:** **confirmed** for every prompt and judge.
+- **P-R26B3:** **confirmed** for both judges.
+
+R26-A and R26-B totals: 24 predictions; 16 confirmed, 8 falsified. R26-C pending.
