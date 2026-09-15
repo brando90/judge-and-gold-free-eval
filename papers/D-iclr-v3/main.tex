@@ -141,8 +141,14 @@ The labeling matters for a simple reason. The prompt asks for the final answer i
 We therefore label the constructed pools with \emph{any-format labels}, which accept a final answer stated in any form. A registered audit by Claude Opus~5 agrees with these labels on 91\% of unboxed replies but confirms only 86\% of the answers they credit, short of the 90\% we predicted (\cref{app:grid}). Boxed replies alone give the smallest effects, and selection accuracy depends on the labeling more than grading does.
 
 \paragraph{Measurements and conventions.}
-The \emph{swap change} is the change in score of identical text when the reference moves. The \emph{false-rejection rate} is the share of correct answers that differ from the reference scored 3 or below, and the \emph{grading AUROC} is the per-task AUROC for separating those answers from wrong answers (with one correct answer, all correct answers against wrong ones). \emph{Best-of-64 accuracy} is the correctness of the highest-scored candidate, averaged over ties. All changes are referenced minus blind, per task, with task-level bootstrap intervals, in points out of 10 for scores and percentage points (pp) for rates and accuracies. Unless stated otherwise, constructed pools use any-format labels and open judges use an exact expected score (\cref{app:estimator}). We do not correct for multiplicity.
-Marks apply to effect estimates: unmarked estimates were pre-specified in a timestamped commit or on OSF, \ph{} marks post hoc estimates, and \reana{} marks pre-specified re-analyses of an effect whose direction was already known. \Cref{app:ledger} summarizes every registered prediction and lists each failure.
+\begin{itemize}[leftmargin=1.2em,itemsep=1pt,topsep=2pt]
+\item \textbf{Swap change:} the change in score of identical text when the reference moves to another correct answer.
+\item \textbf{False-rejection rate:} the share of correct answers that differ from the reference scored 3 or below.
+\item \textbf{Grading AUROC:} how well a judge's scores separate those answers from wrong answers, per task (with one correct answer, all correct answers against wrong ones).
+\item \textbf{Best-of-64 accuracy:} the correctness of the highest-scored candidate, averaged over ties.
+\end{itemize}
+Changes are referenced minus blind, per task, with task-level bootstrap intervals; scores are out of 10, and rates and accuracies are in percentage points (pp). By default, constructed pools use any-format labels and open judges an exact expected score (\cref{app:estimator}). We do not correct for multiplicity.
+Unmarked estimates were pre-specified in a timestamped commit or on OSF; \ph{} marks post hoc estimates, and \reana{} marks pre-specified re-analyses of an effect whose direction was already known. \Cref{app:ledger} summarizes every registered prediction and lists each failure.
 
 \section{Prediction 1: the score follows the reference}
 \label{sec:p1}
