@@ -173,7 +173,7 @@ Does the problem fade as judges improve? On arithmetic, a judge that thinks befo
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.96\textwidth]{figures/fig2_onevsseveral.pdf}
+\includegraphics[width=0.92\textwidth]{figures/fig2_onevsseveral.pdf}
 \caption{\textbf{With one correct answer the reference helps; with several, it lowers grading.} Change from showing the reference (referenced minus blind, per task, 95\% intervals). \textbf{(a)}~Best-of-64 accuracy; on MATH-500 the reference shows only the final answer. n/a: API-judge subsamples always include a matching answer; GPT-4.1's scores tie. \textbf{(b)}~Grading AUROC; constructed pools use any-format labels (grey ticks: boxed replies only), \textsc{MACE} its answer lists. Registration status per value is given in the captions of \cref{tab:labelings-gnm,tab:protocols}.}
 \label{fig:onevsseveral}
 \end{figure}
@@ -218,7 +218,7 @@ P3 holds for all six judges with a usable acceptance test, and on factual questi
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=0.96\textwidth]{figures/fig4_graders.pdf}
+\includegraphics[width=0.92\textwidth]{figures/fig4_graders.pdf}
 \caption{\textbf{Graders told to match under-count correct answers; asking whether the answer is correct shrinks the gap, and the full answer list closes it for all graders but one verifier.}
 \textbf{(a)}~Accuracy of four models' answers to 149 \textsc{MACE} questions with several correct answers, with a reference drawn at random from each list, minus their answer-list accuracy. Upper: benchmark graders run verbatim with their configured judges (GPT-4.1; o3-mini) and with Sonnet~5, open RL-reward verifiers, and our score rubric. Lower, on a different scale: prompts that ask whether the answer is correct, and the HLE judge with its match clause removed.
 \textbf{(b)}~Grading AUROC change against blind on the 40-task \textsc{MACE} subsample. 95\% intervals; all values pre-specified.}
@@ -282,8 +282,8 @@ LLM judges favor the first response~\citep{wang2024fair}, longer responses~\cite
 \label{sec:conclusion}
 
 On the unique-answer tasks we study, a reference answer is a useful check.
-When a question has several correct answers, LLM judges favor the one they are shown, even over answers they accept without a reference, and the graders of SimpleQA, BrowseComp, and HLE score four models 30 to 67 points below their answer-list accuracy, largely because of what they are asked.
-Where the correct answers can be listed, grade against all of them; otherwise ask whether the answer is correct where the judge can answer the question, and audit disagreements between blind and referenced scores.
+When a question has several correct answers, LLM judges favor the one they are shown, even over answers they accept without one, and shipped graders score models far below their answer-list accuracy, largely because of what they are asked.
+Where the correct answers can be listed, grade against all of them; otherwise ask whether the answer is correct, and audit disagreements between blind and referenced scores.
 
 \subsection*{AI use statement}
 Generative AI models were the experimental subjects: open and frontier LLMs generated candidate answers and served as the judges and verifiers under study (\cref{sec:setup}, \cref{app:setup}); three Claude models answered the benchmark questions of \cref{sec:cost}, which Claude models, GPT-4.1, and o3-mini graded; GPT-4.1-mini and Claude Haiku~4.5 answered the HLE questions of \cref{sec:fix}, which o3-mini labeled; and Claude Opus~5 read replies for the label audit. One pilot in the extended appendix used a Claude model to generate candidate solutions, each verified by exact checks, and Qwen2.5-14B read unboxed replies for one labeling. We used generative AI tools to help write analysis code, draft and edit text, produce figures, search and verify related work, audit the preregistration ledger, and label samples of dataset questions for two prevalence audits, the first with two passes from one model family and the second with Claude Sonnet~5 and GPT-5-mini adjudicated by Claude Opus~5; no label was checked by human annotators. Every number in the paper is produced by committed analysis scripts from stored model outputs, and we checked every quoted number against those outputs. We take responsibility for the final content of this work.
