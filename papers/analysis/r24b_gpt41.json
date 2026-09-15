@@ -1,0 +1,245 @@
+{
+ "part": "b",
+ "questions_leaderboard": 149,
+ "generators": {
+  "meta-llama__Llama-3.1-8B-Instruct": {
+   "list": [
+    0.6913,
+    [
+     0.6174,
+     0.7651
+    ]
+   ],
+   "blind": [
+    0.6376,
+    [
+     0.5638,
+     0.7181
+    ]
+   ],
+   "ref": [
+    0.6577,
+    [
+     0.5837,
+     0.7315
+    ]
+   ],
+   "ref_minus_list": [
+    -0.0336,
+    [
+     -0.0872,
+     0.0134
+    ]
+   ],
+   "blind_minus_list": [
+    -0.0537,
+    [
+     -0.1143,
+     0.0067
+    ]
+   ]
+  },
+  "claude-haiku-4-5-20251001": {
+   "list": [
+    0.9463,
+    [
+     0.906,
+     0.9799
+    ]
+   ],
+   "blind": [
+    0.9463,
+    [
+     0.906,
+     0.9799
+    ]
+   ],
+   "ref": [
+    0.8054,
+    [
+     0.7383,
+     0.8658
+    ]
+   ],
+   "ref_minus_list": [
+    -0.1409,
+    [
+     -0.2081,
+     -0.0805
+    ]
+   ],
+   "blind_minus_list": [
+    0.0,
+    [
+     -0.0337,
+     0.0336
+    ]
+   ]
+  },
+  "claude-sonnet-5": {
+   "list": [
+    0.9866,
+    [
+     0.9664,
+     1.0
+    ]
+   ],
+   "blind": [
+    0.9396,
+    [
+     0.8993,
+     0.9732
+    ]
+   ],
+   "ref": [
+    0.7987,
+    [
+     0.7383,
+     0.8591
+    ]
+   ],
+   "ref_minus_list": [
+    -0.1879,
+    [
+     -0.255,
+     -0.1275
+    ]
+   ],
+   "blind_minus_list": [
+    -0.047,
+    [
+     -0.0872,
+     -0.0134
+    ]
+   ]
+  },
+  "claude-opus-5": {
+   "list": [
+    1.0,
+    [
+     1.0,
+     1.0
+    ]
+   ],
+   "blind": [
+    1.0,
+    [
+     1.0,
+     1.0
+    ]
+   ],
+   "ref": [
+    0.9799,
+    [
+     0.953,
+     1.0
+    ]
+   ],
+   "ref_minus_list": [
+    -0.0201,
+    [
+     -0.047,
+     0.0
+    ]
+   ],
+   "blind_minus_list": [
+    0.0,
+    [
+     0.0,
+     0.0
+    ]
+   ]
+  }
+ },
+ "pooled": {
+  "ref_minus_list": [
+   -0.0956,
+   [
+    -0.1292,
+    -0.0638
+   ]
+  ],
+  "blind_minus_list": [
+   -0.0252,
+   [
+    -0.047,
+    -0.0034
+   ]
+  ]
+ },
+ "questions_redraw": 149,
+ "redraw": {
+  "draw2_minus_list": [
+   -0.0705,
+   [
+    -0.1007,
+    -0.0403
+   ]
+  ],
+  "draw2_minus_draw1": [
+   0.0252,
+   [
+    -0.0084,
+    0.0587
+   ]
+  ],
+  "stop_credited_draw1": [
+   1.0,
+   [
+    1.0,
+    1.0
+   ],
+   144
+  ],
+  "stop_credited_draw2": [
+   0.875,
+   [
+    0.8113,
+    0.9324
+   ],
+   144
+  ],
+  "stop_draw1_minus_draw2": [
+   0.125,
+   [
+    0.0676,
+    0.1887
+   ],
+   144
+  ],
+  "start_credited_draw1": [
+   0.8046,
+   [
+    0.7421,
+    0.8642
+   ],
+   174
+  ],
+  "start_credited_draw2": [
+   0.9943,
+   [
+    0.9808,
+    1.0
+   ],
+   174
+  ],
+  "start_draw2_minus_draw1": [
+   0.1897,
+   [
+    0.1302,
+    0.2512
+   ],
+   174
+  ]
+ },
+ "status": {
+  "leaderboard": "scored",
+  "redraw": "scored"
+ },
+ "predictions": {
+  "P-R24B1 ref below list (interval)": "confirmed",
+  "P-R24B2 blind within 5 points of list (point)": "confirmed",
+  "P-R24B3 stop-matching credit draw1 minus draw2 > 0 (point)": "confirmed",
+  "P-R24B4 start-matching credit draw2 minus draw1 > 0 (point)": "confirmed"
+ }
+}

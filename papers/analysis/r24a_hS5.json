@@ -1,0 +1,279 @@
+{
+ "part": "a",
+ "cell": "hS5",
+ "questions": 149,
+ "questions_in_pool": 149,
+ "generators": {
+  "meta-llama__Llama-3.1-8B-Instruct": {
+   "list": [
+    0.6913,
+    [
+     0.6174,
+     0.7651
+    ]
+   ],
+   "ref": [
+    0.2349,
+    [
+     0.1678,
+     0.3087
+    ]
+   ],
+   "reflist": [
+    0.698,
+    [
+     0.6242,
+     0.7718
+    ]
+   ],
+   "ref_minus_list": [
+    -0.4564,
+    [
+     -0.5436,
+     -0.3758
+    ]
+   ],
+   "reflist_minus_list": [
+    0.0067,
+    [
+     -0.0134,
+     0.0268
+    ]
+   ]
+  },
+  "claude-haiku-4-5-20251001": {
+   "list": [
+    0.9463,
+    [
+     0.906,
+     0.9799
+    ]
+   ],
+   "ref": [
+    0.2215,
+    [
+     0.1544,
+     0.2886
+    ]
+   ],
+   "reflist": [
+    0.9463,
+    [
+     0.906,
+     0.9799
+    ]
+   ],
+   "ref_minus_list": [
+    -0.7248,
+    [
+     -0.7987,
+     -0.651
+    ]
+   ],
+   "reflist_minus_list": [
+    0.0,
+    [
+     0.0,
+     0.0
+    ]
+   ]
+  },
+  "claude-sonnet-5": {
+   "list": [
+    0.9866,
+    [
+     0.9664,
+     1.0
+    ]
+   ],
+   "ref": [
+    0.2819,
+    [
+     0.2148,
+     0.3557
+    ]
+   ],
+   "reflist": [
+    0.9866,
+    [
+     0.9664,
+     1.0
+    ]
+   ],
+   "ref_minus_list": [
+    -0.7047,
+    [
+     -0.7785,
+     -0.6309
+    ]
+   ],
+   "reflist_minus_list": [
+    0.0,
+    [
+     0.0,
+     0.0
+    ]
+   ]
+  },
+  "claude-opus-5": {
+   "list": [
+    1.0,
+    [
+     1.0,
+     1.0
+    ]
+   ],
+   "ref": [
+    0.2886,
+    [
+     0.2215,
+     0.3559
+    ]
+   ],
+   "reflist": [
+    1.0,
+    [
+     1.0,
+     1.0
+    ]
+   ],
+   "ref_minus_list": [
+    -0.7114,
+    [
+     -0.7785,
+     -0.6441
+    ]
+   ],
+   "reflist_minus_list": [
+    0.0,
+    [
+     0.0,
+     0.0
+    ]
+   ]
+  }
+ },
+ "pooled": {
+  "list": [
+   0.906,
+   [
+    0.8842,
+    0.9279
+   ]
+  ],
+  "ref": [
+   0.2567,
+   [
+    0.2064,
+    0.3087
+   ]
+  ],
+  "reflist": [
+   0.9077,
+   [
+    0.8859,
+    0.9295
+   ]
+  ],
+  "ref_minus_list": [
+   -0.6493,
+   [
+    -0.703,
+    -0.599
+   ]
+  ],
+  "reflist_minus_list": [
+   0.0017,
+   [
+    -0.0034,
+    0.0067
+   ]
+  ],
+  "reflist_minus_ref": [
+   0.651,
+   [
+    0.6006,
+    0.7047
+   ]
+  ],
+  "nonmatch_correct_credited_ref": [
+   0.0227,
+   [
+    0.0097,
+    0.0384
+   ],
+   396
+  ],
+  "nonmatch_correct_credited_reflist": [
+   0.9975,
+   [
+    0.992,
+    1.0
+   ],
+   396
+  ],
+  "nonmatch_correct_credited_reflist_minus_ref": [
+   0.9747,
+   [
+    0.958,
+    0.9895
+   ],
+   396
+  ],
+  "match_correct_credited_ref": [
+   0.9931,
+   [
+    0.9767,
+    1.0
+   ],
+   144
+  ],
+  "match_correct_credited_reflist": [
+   1.0,
+   [
+    1.0,
+    1.0
+   ],
+   144
+  ],
+  "match_correct_credited_reflist_minus_ref": [
+   0.0069,
+   [
+    0.0,
+    0.0233
+   ],
+   144
+  ],
+  "wrong_credited_ref": [
+   0.0179,
+   [
+    0.0,
+    0.0588
+   ],
+   56
+  ],
+  "wrong_credited_reflist": [
+   0.0357,
+   [
+    0.0,
+    0.0943
+   ],
+   56
+  ],
+  "wrong_credited_reflist_minus_ref": [
+   0.0179,
+   [
+    0.0,
+    0.0566
+   ],
+   56
+  ]
+ },
+ "status": "scored",
+ "predictions": {
+  "P-R24A1 ref below list (interval)": "confirmed",
+  "P-R24A2 reflist within 5 points of list (point)": "confirmed",
+  "P-R24A3 non-matching credit reflist minus ref >= 20 pp (point)": "confirmed",
+  "P-R24A4 wrong-answer credit reflist minus ref <= 3 pp (point)": "confirmed"
+ }
+}

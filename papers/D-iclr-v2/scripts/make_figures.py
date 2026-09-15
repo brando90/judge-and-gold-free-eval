@@ -882,6 +882,87 @@ if GRADERS:
     save(fig, "fig4_benchmark")
 
 
+# ============================================================== v2 Figure: standard graders and fixes (R24)
+# a: pooled benchmark accuracy minus answer-list accuracy (points) on the 149-question pool. Benchmark graders with verbatim prompts
+#    (r24a_<cell>.json): one reference and the full answer list. The paper's rubric: blind and one reference (r20c_leaderboard.json,
+#    r21a_leaderboard_{opus,haiku}.json, r24b_gpt41.json).
+# b: grading AUROC change against blind on the R8-A MACE subsample (r24c_<judge>.json): one reference and the full answer list; for
+#    Sonnet 5 also thinking plus the full-credit sentence (r24d_think_sentence.json).
+STD = [("s41", "SimpleQA grader, GPT-4.1"), ("h41", "BrowseComp judge, GPT-4.1"), ("h03", "HLE judge, o3-mini"),
+       ("sS5", "SimpleQA grader, Sonnet 5"), ("hS5", "HLE judge, Sonnet 5")]
+A24 = {c: load(f"r24a_{c}.json") for c, _ in STD}
+B24 = load("r24b_gpt41.json")
+C24 = {j: load(f"r24c_{j}.json") for j in ("sonnet", "opus", "gpt41")}
+D24 = load("r24d_think_sentence.json")
+RUB = [("Sonnet 5", load("r20c_leaderboard.json")), ("Opus 5", load("r21a_leaderboard_opus.json")), ("Haiku 4.5", load("r21a_leaderboard_haiku.json"))]
+if all(A24.values()) and B24 and all(C24.values()) and D24 and all(r[1] for r in RUB):
+    pts = lambda v: (100 * v[0], [100 * v[1][0], 100 * v[1][1]])
+    rows = [("hdr", "Benchmark graders, verbatim prompts")]
+    for c, lab in STD:
+        p = A24[c]["pooled"]
+        rows.append((lab, pts(p["ref_minus_list"]), pts(p["reflist_minus_list"]), None))
+    rows.append(("hdr", "Score rubric of this paper"))
+    for lab, d in RUB:
+        rows.append((lab, pts(d["pooled"]["undercount_referenced_minus_list"]), None, pts(d["pooled"]["blind_minus_list"])))
+    rows.append(("GPT-4.1", pts(B24["pooled"]["ref_minus_list"]), None, pts(B24["pooled"]["blind_minus_list"])))
+    fig = plt.figure(figsize=(5.5, 2.9))
+    a1 = fig.add_axes([0.285, 0.30, 0.34, 0.64])
+    a2 = fig.add_axes([0.80, 0.42, 0.185, 0.46])
+    n = len(rows)
+    ticks = []
+    for pos, r in enumerate(rows):
+        y = n - 1 - pos
+        if r[0] == "hdr":
+            ticks.append((y, r[1], True))
+            if pos:
+                a1.axhline(y + 0.5, color="#d9d9d9", lw=0.6, zorder=1)
+            continue
+        lab, one, full, blind = r
+        for v, dy, kw in ((one, 0.14, dict(mfc=BLUE, mec=BLUE)), (full, -0.14, dict(mfc="white", mec=BLUE, mew=1.1))):
+            if v is None:
+                continue
+            a1.plot([v[1][0], v[1][1]], [y + dy, y + dy], color=MUTED, lw=0.8, zorder=2)
+            a1.plot(v[0], y + dy, "o", ms=4.4, zorder=4, **kw)
+        if blind is not None:
+            a1.plot(blind[0], y - 0.14, "x", ms=4.0, mew=1.2, color=ORANGE, zorder=5)
+        ticks.append((y, lab, False))
+    a1.axvline(0, color=MUTED, lw=0.8, zorder=1)
+    a1.set_yticks([t[0] for t in ticks], [t[1] for t in ticks], fontsize=7.3)
+    for tl, tk, t in zip(a1.get_yticklabels(), a1.yaxis.get_major_ticks(), ticks):
+        if t[2]:
+            tl.set_fontweight("bold"); tk.tick1line.set_visible(False)
+    a1.set_ylim(-0.6, n - 0.4)
+    a1.tick_params(axis="x", labelsize=7.3)
+    a1.set_xlabel("accuracy minus answer-list accuracy (points)", fontsize=7.5, labelpad=1.5)
+    a1.set_title("a   Benchmark scores", loc="left", fontsize=8.6, fontweight="bold", x=-0.76)
+    style(a1, "x")
+    jrows = [("Sonnet 5", C24["sonnet"]), ("Opus 5", C24["opus"]), ("GPT-4.1", C24["gpt41"])]
+    for i, (lab, d) in enumerate(jrows):
+        y = len(jrows) - 1 - i
+        for key, dy, kw in (("G_ref_minus_blind", 0.14, dict(mfc=BLUE, mec=BLUE)), ("G_reflist_minus_blind", -0.14, dict(mfc="white", mec=BLUE, mew=1.1))):
+            v = d[key]
+            a2.plot(v[1], [y + dy, y + dy], color=MUTED, lw=0.8, zorder=2)
+            a2.plot(v[0], y + dy, "o", ms=4.4, zorder=4, **kw)
+        if lab == "Sonnet 5":
+            v = D24["combined"]["G_change"]
+            a2.plot(v[1], [y - 0.38, y - 0.38], color=MUTED, lw=0.8, zorder=2)
+            a2.plot(v[0], y - 0.38, "^", ms=4.2, mfc=LIGHT, mec=BLUE, zorder=4)
+    a2.axvline(0, color=MUTED, lw=0.8, zorder=1)
+    a2.set_yticks(range(len(jrows)), [j[0] for j in jrows][::-1], fontsize=7.3)
+    a2.set_ylim(-0.7, len(jrows) - 0.4)
+    a2.tick_params(axis="x", labelsize=7.2)
+    a2.set_xlabel("grading AUROC change\nagainst blind", fontsize=7.4, labelpad=1.0)
+    a2.set_title("b   Grading (MACE)", loc="left", fontsize=8.6, fontweight="bold", x=-0.62)
+    style(a2, "x")
+    fig.legend(handles=[Line2D([], [], marker="o", ls="", mfc=BLUE, mec=BLUE, ms=4.4, label="one reference"),
+                        Line2D([], [], marker="o", ls="", mfc="white", mec=BLUE, mew=1.1, ms=4.4, label="full answer list"),
+                        Line2D([], [], marker="x", ls="", color=ORANGE, mew=1.2, ms=4.2, label="blind"),
+                        Line2D([], [], marker="^", ls="", mfc=LIGHT, mec=BLUE, ms=4.2, label="thinking + full-credit sentence")],
+               loc="lower center", bbox_to_anchor=(0.5, -0.01), ncol=4, frameon=False, fontsize=7.2, handlelength=1.0,
+               columnspacing=1.4, handletextpad=0.4)
+    save(fig, "fig4_graders")
+
+
 # ============================================================== Appendix figure: rejection by blind score (post hoc; round-23 review M4)
 # r22c_acceptance_bins.json. On MACE, the share of correct answers scored 3 or below with the reference, by blind-score bin, for answers
 # that differ from the reference (solid) and answers that match it (dashed grey); open judges binned on expected score, API judges on

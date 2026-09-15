@@ -122,3 +122,49 @@ Its ledger showed USD 2.64 after 401 of 1,192 calls (projection about USD 7.8); 
 SimpleQA few-shot prompt. If the cap stops the run, the same command is re-run with `--cap-usd 10`; the harness resumes and skips
 completed calls. Nothing else changes. Before this amendment we had looked only at run logs, spend ledgers and a parse check of the
 first rows of each output file (counts of parsed grades by condition, error counts); no producer was run on R24 data.
+
+## Outcome (recorded 2026-09-14; `papers/analysis/r24a_{s41,h41,h03,sS5,hS5}.json`, `r24b_gpt41.json`, `r24c_{sonnet,opus,gpt41}.json`, `r24d_think_sentence.json`)
+
+Runs: every call completed with no API error and no unparseable reply (1,192 per R24-A cell; 1,192 + 1,192 for R24-B; 640
+`reflist` calls each for Sonnet 5 and Opus 5 and 1,920 calls for GPT-4.1 in R24-C; 640 for R24-D). The markdown-robust parse and the
+official parse agree on every binary grade. Spend: OpenAI USD 7.76 (s41 3.45, h41 1.37, h03 1.83, R24-B 0.58, R24-C 0.53);
+Anthropic USD 16.18 (sS5 7.80 under Amendment 1, hS5 4.14, R24-C Sonnet 5 0.50 and Opus 5 2.47, R24-D 1.27). All experiments
+complete: 149 questions in every R24-A cell and both R24-B readouts, 40 tasks in R24-C and R24-D. Answer-list accuracy of the pool:
+90.6%.
+
+| Cell | One reference minus list (pts) | Full list minus list (pts) | Differing correct answers credited: one ref, full list | Wrong answers credited (of 56): one ref, full list |
+|---|---|---|---|---|
+| s41 SimpleQA grader, GPT-4.1 | −30.4 [−35.4, −25.3] | +0.3 [−0.7, +1.5] | 53.0%, 99.2% | 8.9%, 8.9% |
+| h41 BrowseComp judge, GPT-4.1 | −66.8 [−71.8, −61.7] | −0.2 [−0.8, +0.5] | 0.0%, 99.2% | 0.0%, 3.6% |
+| h03 HLE judge, o3-mini | −66.6 [−71.8, −61.6] | 0.0 [−0.8, +0.8] | 0.0%, 99.2% | 0.0%, 5.4% |
+| sS5 SimpleQA grader, Sonnet 5 | −34.4 [−39.9, −29.2] | +0.5 [−0.3, +1.5] | 46.7%, 99.5% | 10.7%, 8.9% |
+| hS5 HLE judge, Sonnet 5 | −64.9 [−70.3, −59.9] | +0.2 [−0.3, +0.7] | 2.3%, 99.8% | 1.8%, 3.6% |
+
+- **P-R24A1:** confirmed in all five cells. **P-R24A2:** confirmed in all five. **P-R24A3:** confirmed in all five.
+- **P-R24A4:** s41 **confirmed** (0.0 pp); sS5 **confirmed** (−1.8); hS5 **confirmed** (+1.8); h41 **falsified** (+3.6, 2 of 56 wrong
+  answers); h03 **falsified** (+5.4, 3 of 56).
+- Descriptive, post hoc: the wrong answers credited only with the full list are "The Democratic Republic of Congo" (list entry
+  "Democratic Republic of the Congo", which string containment misses; credited in four cells), "Territory of New Guinea" (list
+  entry "Papua New Guinea"; h41, h03), "Sudan" (list entry "South Sudan"; s41) and "Wales" (list entry "United Kingdom"; h03).
+
+R24-B (GPT-4.1, the paper's rubric): referenced minus list −9.6 [−12.9, −6.4], blind minus list −2.5 [−4.7, −0.3]; second draw minus
+list −7.1 [−10.1, −4.0]; answers that stop matching are credited 100% under the first draw and 87.5% under the second (144 answers);
+answers that start matching 80.5% and 99.4% (174).
+- **P-R24B1 confirmed; P-R24B2 confirmed; P-R24B3 confirmed (+12.5 pp); P-R24B4 confirmed (+19.0 pp).**
+
+R24-C (40 tasks; grading AUROC blind, one reference, full list; changes against blind):
+
+| Judge | AUROC blind / one ref / full list | One ref minus blind | Full list minus blind | Full list minus one ref | False-rejection rise: one ref, full list (pp) |
+|---|---|---|---|---|---|
+| Sonnet 5 | 0.938 / 0.785 / 0.970 | −0.153 [−0.219, −0.097] | +0.032 [+0.008, +0.060] | +0.185 [+0.125, +0.258] | +35.6, −2.3 [−8.0, +4.9] |
+| Opus 5 | 0.936 / 0.771 / 0.969 | −0.165 [−0.223, −0.110] | +0.033 [−0.000, +0.084] | +0.198 [+0.145, +0.253] | +36.3, −6.3 [−12.8, −1.1] |
+| GPT-4.1 | 0.935 / 0.872 / 0.992 | −0.063 [−0.133, +0.004] | +0.057 [+0.013, +0.121] | +0.120 [+0.055, +0.190] | +15.6, −2.2 [−4.6, −0.5] |
+
+- **P-R24C1, P-R24C2, P-R24C3:** confirmed for all three judges.
+
+R24-D (Sonnet 5, 40 tasks): with adaptive thinking and the full-credit sentence, the rise in false rejections is −0.2 pp [−7.2, +4.6]
+and the grading AUROC change −0.024 [−0.062, +0.006], against +14.9 and −0.090 with thinking alone and +18.1 and −0.065 with the
+sentence alone.
+- **P-R24D1 confirmed; P-R24D2 confirmed; P-R24D3 not confirmed** (the combination leaves no measurable rise in false rejections).
+
+Totals: 36 predictions; 33 confirmed, 1 not confirmed, 2 falsified.

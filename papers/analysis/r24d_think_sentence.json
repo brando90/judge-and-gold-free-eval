@@ -1,0 +1,59 @@
+{
+ "part": "d",
+ "combined": {
+  "tasks": 40,
+  "G_change": [
+   -0.0238,
+   [
+    -0.0624,
+    0.0063
+   ]
+  ],
+  "FR_change": [
+   -0.0024,
+   [
+    -0.0718,
+    0.0464
+   ]
+  ]
+ },
+ "thinking_alone": {
+  "tasks": 40,
+  "G_change": [
+   -0.0905,
+   [
+    -0.1402,
+    -0.0505
+   ]
+  ],
+  "FR_change": [
+   0.149,
+   [
+    0.0819,
+    0.2307
+   ]
+  ]
+ },
+ "sentence_alone": {
+  "tasks": 40,
+  "G_change": [
+   -0.0649,
+   [
+    -0.1145,
+    -0.0192
+   ]
+  ],
+  "FR_change": [
+   0.1806,
+   [
+    0.0991,
+    0.28
+   ]
+  ]
+ },
+ "predictions": {
+  "P-R24D1 FR rise combined below thinking alone and sentence alone (point)": "confirmed",
+  "P-R24D2 AUROC change combined above thinking alone and sentence alone (point)": "confirmed",
+  "P-R24D3 FR rise combined > 0 (interval)": "not confirmed"
+ }
+}

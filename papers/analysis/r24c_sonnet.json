@@ -1,0 +1,73 @@
+{
+ "part": "c",
+ "judge": "sonnet",
+ "tasks": 40,
+ "G_blind": [
+  0.9378,
+  [
+   0.9061,
+   0.9663
+  ]
+ ],
+ "G_ref": [
+  0.7847,
+  [
+   0.7104,
+   0.8469
+  ]
+ ],
+ "G_reflist": [
+  0.9701,
+  [
+   0.9489,
+   0.9873
+  ]
+ ],
+ "G_ref_minus_blind": [
+  -0.1531,
+  [
+   -0.2189,
+   -0.0966
+  ]
+ ],
+ "G_reflist_minus_blind": [
+  0.0323,
+  [
+   0.0077,
+   0.0596
+  ]
+ ],
+ "G_reflist_minus_ref": [
+  0.1854,
+  [
+   0.1251,
+   0.2578
+  ]
+ ],
+ "FR_ref_minus_blind": [
+  0.3563,
+  [
+   0.2483,
+   0.4798
+  ]
+ ],
+ "FR_reflist_minus_blind": [
+  -0.0225,
+  [
+   -0.0803,
+   0.0489
+  ]
+ ],
+ "FR_reflist_minus_ref": [
+  -0.3788,
+  [
+   -0.5099,
+   -0.2566
+  ]
+ ],
+ "predictions": {
+  "P-R24C1 AUROC reflist minus blind >= -0.03 (point)": "confirmed",
+  "P-R24C2 false-rejection rise reflist minus blind <= 5 pp (point)": "confirmed",
+  "P-R24C3 AUROC reflist minus ref > 0 (interval)": "confirmed"
+ }
+}

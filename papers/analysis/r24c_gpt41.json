@@ -1,0 +1,73 @@
+{
+ "part": "c",
+ "judge": "gpt41",
+ "tasks": 40,
+ "G_blind": [
+  0.9349,
+  [
+   0.8688,
+   0.9799
+  ]
+ ],
+ "G_ref": [
+  0.8718,
+  [
+   0.8007,
+   0.9364
+  ]
+ ],
+ "G_reflist": [
+  0.992,
+  [
+   0.9835,
+   0.9985
+  ]
+ ],
+ "G_ref_minus_blind": [
+  -0.0631,
+  [
+   -0.1328,
+   0.0036
+  ]
+ ],
+ "G_reflist_minus_blind": [
+  0.0571,
+  [
+   0.0132,
+   0.1213
+  ]
+ ],
+ "G_reflist_minus_ref": [
+  0.1202,
+  [
+   0.0553,
+   0.1902
+  ]
+ ],
+ "FR_ref_minus_blind": [
+  0.1565,
+  [
+   0.0668,
+   0.2616
+  ]
+ ],
+ "FR_reflist_minus_blind": [
+  -0.0218,
+  [
+   -0.0456,
+   -0.0047
+  ]
+ ],
+ "FR_reflist_minus_ref": [
+  -0.1783,
+  [
+   -0.2835,
+   -0.089
+  ]
+ ],
+ "predictions": {
+  "P-R24C1 AUROC reflist minus blind >= -0.03 (point)": "confirmed",
+  "P-R24C2 false-rejection rise reflist minus blind <= 5 pp (point)": "confirmed",
+  "P-R24C3 AUROC reflist minus ref > 0 (interval)": "confirmed"
+ }
+}

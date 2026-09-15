@@ -1,0 +1,73 @@
+{
+ "part": "c",
+ "judge": "opus",
+ "tasks": 40,
+ "G_blind": [
+  0.9358,
+  [
+   0.8724,
+   0.9834
+  ]
+ ],
+ "G_ref": [
+  0.7714,
+  [
+   0.6984,
+   0.8322
+  ]
+ ],
+ "G_reflist": [
+  0.969,
+  [
+   0.9359,
+   0.9912
+  ]
+ ],
+ "G_ref_minus_blind": [
+  -0.1645,
+  [
+   -0.2229,
+   -0.1099
+  ]
+ ],
+ "G_reflist_minus_blind": [
+  0.0332,
+  [
+   -0.0002,
+   0.084
+  ]
+ ],
+ "G_reflist_minus_ref": [
+  0.1977,
+  [
+   0.1454,
+   0.2532
+  ]
+ ],
+ "FR_ref_minus_blind": [
+  0.3626,
+  [
+   0.2671,
+   0.4667
+  ]
+ ],
+ "FR_reflist_minus_blind": [
+  -0.0628,
+  [
+   -0.1275,
+   -0.0111
+  ]
+ ],
+ "FR_reflist_minus_ref": [
+  -0.4254,
+  [
+   -0.5353,
+   -0.3198
+  ]
+ ],
+ "predictions": {
+  "P-R24C1 AUROC reflist minus blind >= -0.03 (point)": "confirmed",
+  "P-R24C2 false-rejection rise reflist minus blind <= 5 pp (point)": "confirmed",
+  "P-R24C3 AUROC reflist minus ref > 0 (interval)": "confirmed"
+ }
+}
