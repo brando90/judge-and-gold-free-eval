@@ -89,3 +89,36 @@ tokens are reported as a registered finding on the practical cost of solve-first
 logs, counts of missing grades by stop reason, and the label base rate (7 of 400 answers labeled correct); no grader outcome had been
 computed. Other cells are unchanged: their missing grades (Sonnet 5: 4 refusals and 2 cut off in the HLE-judge cell, 4 refusals in the
 direct cell) stay missing.
+
+## Outcome, R27-B (recorded 2026-09-15; `papers/analysis/r27b_<judge>.json`)
+
+Spend: generation and labels within their caps; graders GPT-4.1 USD 8.58 (solve-first ledger), Sonnet 5 USD 25.85 (solve-first ledger).
+Labels: 7 of 400 answers labeled correct. Scored questions (both answers labeled, every condition graded): GPT-4.1 191 (375 wrong,
+7 correct answers), Sonnet 5 196 (385 wrong, 7 correct).
+
+Truncation (registered finding of Amendment 2): at 1,024 output tokens, 161 of GPT-4.1's 800 solve-first calls and 342 of the 460
+Sonnet 5 solve-first calls made at that limit ended without a grade. At 4,096 tokens, 11 of GPT-4.1's 161 reruns and 1 of Sonnet 5's
+686 calls were still cut off (Sonnet 5 also refused 4). Final ungraded solve-first calls: GPT-4.1 11, Sonnet 5 5.
+
+False acceptance (share of label-wrong answers credited; 95% interval, question bootstrap) and recall (of 7 label-correct answers):
+
+| Condition | GPT-4.1 FA | GPT-4.1 recall | Sonnet 5 FA | Sonnet 5 recall |
+|---|---|---|---|---|
+| HLE judge, verbatim (reference) | 0.0 [0.0, 0.0] | 6/7 | 0.0 [0.0, 0.0] | 7/7 |
+| Direct, blind | 61.1 [55.9, 66.1] | 3/7 | 8.8 [5.5, 12.4] | 1/7 |
+| Direct, reference | 17.3 [13.4, 21.4] | 7/7 | 0.5 [0.0, 1.3] | 7/7 |
+| Solve first, blind | 69.6 [64.1, 74.7] | 6/7 | 21.0 [16.6, 25.9] | 3/7 |
+| Solve first, reference | 25.9 [21.2, 30.6] | 7/7 | 1.0 [0.3, 2.1] | 6/7 |
+
+- **P-R27B1** (solve-first FA ≤ HLE judge + 5): GPT-4.1 **falsified** (+25.9); Sonnet 5 **confirmed** (+1.0).
+- **P-R27B2** (direct FA ≤ HLE judge + 5): GPT-4.1 **falsified** (+17.3); Sonnet 5 **confirmed** (+0.5).
+- **P-R27B3** (solve-first recall ≥ HLE judge − 5): GPT-4.1 **confirmed** (7/7 vs 6/7); Sonnet 5 **falsified** (6/7 vs 7/7; one answer).
+
+R27 total: 14 predictions, 11 confirmed, 3 falsified.
+
+Post hoc (`papers/analysis/r27b_posthoc.py`, `r27b_posthoc_gpt41_sonnet.json`; not registered): restricted to wrong answers that state an
+"Answer:" line (336 and 341), referenced FA is 15.2% (direct) and 22.9% (solve first) for GPT-4.1 and 0.6% and 1.2% for Sonnet 5.
+Of GPT-4.1's 97 solve-first false acceptances with the reference, at least 40 (41%) end with a reply saying the reference is wrong (regex
+on the stored last 300 characters, a lower bound). In a reading of 10 of them, most credit a different final answer after the judge's
+own solution disagreed with the reference; two credit replies cut off before an answer line. Labels come from a judge instructed to match,
+so a few "false acceptances" may be equivalent answers; the restriction and the reading suggest these are not the bulk.

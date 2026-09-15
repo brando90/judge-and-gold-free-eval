@@ -1,0 +1,119 @@
+{
+ "part": "b",
+ "judge": "gpt41",
+ "questions": 191,
+ "answers": 382,
+ "label_correct": 7,
+ "conditions": {
+  "hle|ref": {
+   "false_acceptance": [
+    0.0,
+    [
+     0.0,
+     0.0
+    ],
+    375
+   ],
+   "recall": [
+    0.857143,
+    [
+     0.5,
+     1.0
+    ],
+    7
+   ],
+   "agreement": [
+    0.997382
+   ]
+  },
+  "direct|noref": {
+   "false_acceptance": [
+    0.610667,
+    [
+     0.558824,
+     0.661334
+    ],
+    375
+   ],
+   "recall": [
+    0.428571,
+    [
+     0.0,
+     0.857143
+    ],
+    7
+   ],
+   "agreement": [
+    0.390052
+   ]
+  },
+  "direct|ref": {
+   "false_acceptance": [
+    0.173333,
+    [
+     0.133681,
+     0.213725
+    ],
+    375
+   ],
+   "recall": [
+    1.0,
+    [
+     1.0,
+     1.0
+    ],
+    7
+   ],
+   "agreement": [
+    0.829843
+   ]
+  },
+  "solve|noref": {
+   "false_acceptance": [
+    0.696,
+    [
+     0.641151,
+     0.746684
+    ],
+    375
+   ],
+   "recall": [
+    0.857143,
+    [
+     0.5,
+     1.0
+    ],
+    7
+   ],
+   "agreement": [
+    0.314136
+   ]
+  },
+  "solve|ref": {
+   "false_acceptance": [
+    0.258667,
+    [
+     0.21163,
+     0.305866
+    ],
+    375
+   ],
+   "recall": [
+    1.0,
+    [
+     1.0,
+     1.0
+    ],
+    7
+   ],
+   "agreement": [
+    0.746073
+   ]
+  }
+ },
+ "predictions": {
+  "P-R27B1 solve-first with reference: false acceptance at most 5 points above the verbatim HLE judge (point)": "falsified",
+  "P-R27B2 direct with reference: false acceptance at most 5 points above the verbatim HLE judge (point)": "falsified",
+  "P-R27B3 solve-first with reference: recall at least the verbatim HLE judge's minus 5 points (point)": "confirmed"
+ }
+}

@@ -1288,3 +1288,28 @@ try:
     print("wrote round-27 table")
 except (KeyError, TypeError, FileNotFoundError) as e:
     print("[skip round-27 table]", repr(e))
+
+
+# ---------------------------------------------------------------- round 27-B (v3): false acceptance on hard HLE questions
+def _fa(v):
+    return "{:.1f} \\ci{{{:.1f}}}{{{:.1f}}}".format(100 * v[0], 100 * v[1][0], 100 * v[1][1])
+
+
+def _rec(v):
+    return "{}/{}".format(round(v[0] * v[2]), v[2])
+
+
+try:
+    g, s = J("r27b_gpt41.json"), J("r27b_sonnet.json")
+    body = ["\\begin{tabular}{lcccc}", "\\toprule",
+            " & \\multicolumn{2}{c}{GPT-4.1} & \\multicolumn{2}{c}{Sonnet~5} \\\\",
+            "\\cmidrule(lr){2-3}\\cmidrule(lr){4-5}",
+            "Grader & Wrong credited (\\%) & Recall & Wrong credited (\\%) & Recall \\\\", "\\midrule"]
+    for c, label in (("hle|ref", "HLE judge, verbatim (reference)"), ("direct|noref", "Direct, blind"), ("direct|ref", "Direct, reference"),
+                     ("solve|noref", "Solve first, blind"), ("solve|ref", "Solve first, reference")):
+        a, b = g["conditions"][c], s["conditions"][c]
+        body.append(f"{label} & {_fa(a['false_acceptance'])} & {_rec(a['recall'])} & {_fa(b['false_acceptance'])} & {_rec(b['recall'])} \\\\")
+    write("r27b_hle.tex", done(body))
+    print("wrote round-27-B table")
+except (KeyError, TypeError, FileNotFoundError) as e:
+    print("[skip round-27-B table]", repr(e))

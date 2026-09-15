@@ -49,7 +49,7 @@ We show that this premise fails when a question has several correct answers.
 We separate three readings of a reference (an answer key, the only evidence for a judge that cannot verify, or an answer the judge rewards for matching) and test predictions that tell them apart.
 Swapping the reference between two correct answers moves the score of identical text by about 3 to 5 points out of 10, and correct answers that differ from the reference are rejected far more often, even ones the judge accepts without it.
 Where the premise fails, the consequence is large: on factual questions with several answers, benchmark graders run verbatim and open RL-reward verifiers under-credit correct answers by 30 to 67 points.
-Much of this gap comes from telling the grader to match; asking whether an answer is correct shrinks it, and giving the grader every correct answer closes it for LLM graders.
+Much of this gap comes from telling the grader to match; asking whether an answer is correct shrinks it where the judge can answer the question, and giving the grader every correct answer closes it for LLM graders.
 Across eleven LLM judges, two verifiers, and a ledger of every registered prediction, the evidence suggests that on such questions a low reference-guided score often reflects how the grader was instructed rather than what the model answered.
 \end{abstract}
 
@@ -91,7 +91,7 @@ All three predictions hold (\cref{tab:summary}).
 Swapping the reference moves identical text by 3 to 5 points out of 10, and correct answers that differ from the reference are rejected even when the judge accepted them without it, including under prompts that ask only whether an answer is correct.
 The effect has practical weight: run as configured on factual questions with several answers, graders shipped with benchmarks and open RL-reward verifiers under-credit correct answers by 30 to 67 points (\cref{sec:cost}).
 Those benchmarks rarely contain such questions, but the same kind of grader is reused where answers are open, as in RL training data.
-Much of the shortfall comes from instructing the grader to match: asking whether the answer is correct shrinks it, and giving the grader every correct answer removes it for LLM graders (\cref{sec:fix}).
+Much of the shortfall comes from instructing the grader to match. Giving the grader every correct answer removes it for LLM graders; asking whether the answer is correct shrinks it, but on questions beyond the judge it can let the judge overrule a correct reference (\cref{sec:fix}).
 
 \paragraph{Scope.}
 The failure is not about math.
@@ -118,7 +118,7 @@ Question & Rules out & Key evidence & Verdict \\
 \addlinespace[2pt]
 \emph{Consequence} & --- & Shipped benchmark graders and RL verifiers under-credit multi-answer questions heavily (\cref{sec:cost}) & Large where it applies; such questions are rare on those benchmarks \\
 \addlinespace[2pt]
-\emph{Fix} & --- & A full answer list closes the gap for LLM graders; correctness prompts shrink it (\cref{sec:fix}) & Holds for LLM graders, not for one small verifier \\
+\emph{Fix} & --- & A full answer list closes the gap for LLM graders; correctness prompts shrink it but can admit wrong answers on hard questions (\cref{sec:fix}) & Holds for LLM graders, not for one small verifier \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -248,10 +248,15 @@ It does not fix every grader: General-Reasoner's 1.5B verifier credits 67\% of d
 A list is also closed; whether it makes judges reject correct answers it omits is untested.
 
 \paragraph{When the answers cannot be listed.}
-Remove any instruction to match, and ask whether the answer is correct.
+If the judge can answer the questions, remove any instruction to match and ask whether the answer is correct.
 On the 40-task subsample, which has many wrong answers, letting the judge solve the question first gave the smallest grading loss (AUROC $-0.04$ and $-0.05$ against blind) and raised false acceptances by at most 3 points, but still rejected 5 to 7 points more differing correct answers (\cref{app:r26}).
-\pending{[R27-B: solve-first and direct prompts on hard HLE questions.]}
-An instruction that any correct answer deserves full credit and a thinking mode each cut the factual rise in false rejections for Sonnet~5 by half or more, and together left no measurable rise on 40 tasks (\cref{app:r24}).
+An instruction that any correct answer deserves full credit and a thinking mode each cut the factual rise in false rejections for Sonnet~5 by half or more, and together left no measurable rise (\cref{app:r24}).
+
+\paragraph{Questions beyond the judge.}
+There, the instruction to match is what keeps wrong answers out, and removing it can let a judge overrule the reference.
+We sampled 200 HLE questions, whose answers are unique, and graded two models' answers to them, almost all wrong.
+With the reference, the direct and solve-first prompts credited 17\% and 26\% of the answers HLE's official judge marks wrong when GPT-4.1 graded, often after calling the reference wrong,\ph{} but at most 1\% when Sonnet~5 graded (\cref{app:r27}). Those labels come from a judge told to match, but in a sample we read, most of these credits went to a different final answer.\ph{}
+A change of instruction is therefore safe only for the judges and questions on which it has been checked.
 
 \paragraph{What did not help.}
 A registered blind-then-reveal protocol, in which the judge scores blind and then rescores with the reference, left grading below blind for most open judges; keeping the higher of the blind and referenced scores protects grading largely by construction and gives back accuracy when the answer is unique; and the full-credit instruction did little for Qwen2.5 judges up to 7B (\cref{app:mitigation}).
@@ -260,7 +265,7 @@ A registered blind-then-reveal protocol, in which the judge scores blind and the
 \begin{itemize}[leftmargin=1.2em,itemsep=1pt,topsep=2pt]
 \item \textbf{Answers that can be listed:} give the grader every one, introduced by ``any one of the following is a complete correct answer'', and check that a trained verifier follows lists; one of our two did not.
 \item \textbf{A checker exists} (constraints, tests, solvers, proof assistants): grade with it.
-\item \textbf{No list and no checker:} do not tell the grader to match; ask whether the response is correct, and let it solve the question first. This shrinks the harm on questions the judge can answer; \pending{[R27-B caveat for hard questions.]}
+\item \textbf{No list and no checker:} if the judge can answer the questions, do not tell it to match; ask whether the response is correct, and let it solve the question first. On harder questions, first check on known wrong answers that the judge does not overrule the reference; one of our two judges did.
 \item \textbf{Audit:} score a sample blind as well, and read the answers accepted blind but rejected with the reference.
 \end{itemize}
 
@@ -283,7 +288,7 @@ LLM judges favor the first response~\citep{wang2024fair}, longer responses~\cite
 \begin{itemize}[leftmargin=1.2em,itemsep=1pt,topsep=2pt]
 \item \textbf{Labels.} Any-format labels were checked by a frontier model, not by humans; \textsc{MACE}'s answer lists miss 2.3\% to 8.1\% of correct answers; prevalence labels come from LLM annotators with low agreement.
 \item \textbf{Tasks and data.} Constructed pools come from five arithmetic families and one generator, natural data from two \textsc{MACE} domains, and the benchmark study uses one answer per model. The RL-reward share is an estimate combining measurements from different data. Open-ended tasks such as summarization, writing, and agent trajectories are untested.
-\item \textbf{Judges and prompts.} Open judges have at most 14B parameters; the correctness prompts were tested for two judges \pending{[and on hard questions]}; our wordings do not exhaust reference prompts.
+\item \textbf{Judges and prompts.} Open judges have at most 14B parameters; the correctness prompts were tested for two judges, and on hard questions against HLE's own labels, which come from a judge told to match and include only 7 correct answers; our wordings do not exhaust reference prompts.
 \item \textbf{Mechanism and registration.} No experiment manipulates verification directly; the max rule was chosen post hoc; most registrations are timestamped commits, and the verdict rule was applied retroactively (\cref{app:ledger}).
 \end{itemize}
 
@@ -293,7 +298,7 @@ LLM judges favor the first response~\citep{wang2024fair}, longer responses~\cite
 On the unique-answer tasks we study, a reference answer is a useful check.
 When a question has several correct answers, LLM judges favor the one they are shown, even for answers they accept without it.
 Graders shipped with benchmarks and used for RL rewards inherit this failure wherever answers are open, in large part because they are told to match.
-The shortfall largely disappears when the grader sees every correct answer and shrinks when it is asked whether an answer is correct, which suggests that on such questions a low reference-guided score often reflects how the grader was instructed rather than what the model answered.
+The shortfall largely disappears when the grader sees every correct answer and shrinks when a judge that can answer the question is asked whether an answer is correct, which suggests that on such questions a low reference-guided score often reflects how the grader was instructed rather than what the model answered.
 
 \subsection*{AI use statement}
 Generative AI models were the experimental subjects: open and frontier LLMs generated candidate answers and served as the judges and verifiers under study (\cref{sec:setup}, \cref{app:setup}). We used generative AI tools to help write analysis code, draft and edit text, produce figures, search and verify related work, audit the preregistration ledger, and label samples of dataset questions for two prevalence audits; no label was checked by human annotators. Every number in the paper is produced by committed analysis scripts from stored model outputs, and we checked every quoted number against those outputs. We take responsibility for the final content of this work.
