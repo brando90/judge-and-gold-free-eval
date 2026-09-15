@@ -1,0 +1,14 @@
+\begin{tabular}{llccccc}
+\toprule
+ & & \multicolumn{2}{c}{Accuracy minus list (points)} & \multicolumn{3}{c}{Credited (\%): blind $\to$ reference} \\
+\cmidrule(lr){3-4}\cmidrule(lr){5-7}
+Judge type & Judge & Blind & Reference & Differing correct & Matching correct & Wrong \\
+\midrule
+Chain of thought & GPT-4.1 & \begin{tabular}[c]{@{}c@{}}$-0.8$\\{\scriptsize$[-2.4,+0.7]$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$-3.0$\\{\scriptsize$[-4.7,-1.3]$}\end{tabular} & 97.7 $\to$ 94.7 & 98.6 $\to$ 98.6 & 10.7 $\to$ 8.9 \\
+ & Sonnet~5 & \begin{tabular}[c]{@{}c@{}}$-0.5$\\{\scriptsize$[-1.8,+1.0]$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$-6.0$\\{\scriptsize$[-8.7,-3.5]$}\end{tabular} & 98.0 $\to$ 90.1 & 99.3 $\to$ 99.3 & 10.7 $\to$ 7.1 \\
+Verify first & GPT-4.1 & \begin{tabular}[c]{@{}c@{}}$-0.3$\\{\scriptsize$[-1.8,+1.2]$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$-1.5$\\{\scriptsize$[-3.0,+0.0]$}\end{tabular} & 98.0 $\to$ 96.7 & 99.3 $\to$ 98.6 & 12.5 $\to$ 10.7 \\
+ & Sonnet~5 & \begin{tabular}[c]{@{}c@{}}$-0.2$\\{\scriptsize$[-1.3,+1.0]$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$-6.2$\\{\scriptsize$[-8.9,-3.7]$}\end{tabular} & 98.7 $\to$ 90.1 & 99.3 $\to$ 99.3 & 8.9 $\to$ 5.4 \\
+Solve first & GPT-4.1 & \begin{tabular}[c]{@{}c@{}}$-0.3$\\{\scriptsize$[-1.7,+1.0]$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$-0.5$\\{\scriptsize$[-2.0,+1.2]$}\end{tabular} & 98.2 $\to$ 97.5 & 98.6 $\to$ 100.0 & 12.5 $\to$ 12.5 \\
+ & Sonnet~5 & \begin{tabular}[c]{@{}c@{}}$+0.0$\\{\scriptsize$[-1.3,+1.3]$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$-3.4$\\{\scriptsize$[-5.7,-1.2]$}\end{tabular} & 98.2 $\to$ 93.4 & 100.0 $\to$ 100.0 & 12.5 $\to$ 10.7 \\
+\bottomrule
+\end{tabular}

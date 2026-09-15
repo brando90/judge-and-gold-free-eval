@@ -1138,3 +1138,83 @@ try:
     print("wrote round-23 table")
 except (KeyError, TypeError, FileNotFoundError) as e:
     print("[skip round-23 table]", repr(e))
+
+
+# ---------------------------------------------------------------- round 24 (v2): standard graders and fixes
+try:
+    CELLS = (("s41", "SimpleQA grader", "GPT-4.1"), ("h41", "BrowseComp judge", "GPT-4.1"), ("h03", "HLE judge", "o3-mini"),
+             ("sS5", "SimpleQA grader", "Sonnet~5"), ("hS5", "HLE judge", "Sonnet~5"))
+    body = ["\\begin{tabular}{llcccccc}", "\\toprule",
+            " & & \\multicolumn{2}{c}{Accuracy minus list (points)} & \\multicolumn{2}{c}{Differing correct credited (\\%)} & \\multicolumn{2}{c}{Wrong credited (\\%)} \\\\",
+            "\\cmidrule(lr){3-4}\\cmidrule(lr){5-6}\\cmidrule(lr){7-8}",
+            "Prompt & Judge & One reference & Full list & One ref. & Full list & One ref. & Full list \\\\", "\\midrule"]
+    for cell, prompt, judge in CELLS:
+        po = J(f"r24a_{cell}.json")["pooled"]
+        body.append(f"{prompt} & {judge} & {p4s(po['ref_minus_list'])} & {p4s(po['reflist_minus_list'])} & "
+                    f"{100 * po['nonmatch_correct_credited_ref'][0]:.1f} & {100 * po['nonmatch_correct_credited_reflist'][0]:.1f} & "
+                    f"{100 * po['wrong_credited_ref'][0]:.1f} & {100 * po['wrong_credited_reflist'][0]:.1f} \\\\")
+    write("r24_standard.tex", done(body))
+    body = ["\\begin{tabular}{lcccccc}", "\\toprule",
+            " & \\multicolumn{3}{c}{Grading AUROC} & \\multicolumn{3}{c}{Change against blind} \\\\",
+            "\\cmidrule(lr){2-4}\\cmidrule(lr){5-7}",
+            "Judge & Blind & One ref. & Full list & One ref. & Full list & False rejections, full list (pp) \\\\", "\\midrule"]
+    for j, lab in (("sonnet", "Sonnet~5"), ("opus", "Opus~5"), ("gpt41", "GPT-4.1")):
+        d = J(f"r24c_{j}.json")
+        body.append(f"{lab} & {d['G_blind'][0]:.3f} & {d['G_ref'][0]:.3f} & {d['G_reflist'][0]:.3f} & {fs(d['G_ref_minus_blind'], 3)} & "
+                    f"{fs(d['G_reflist_minus_blind'], 3)} & {p4s(d['FR_reflist_minus_blind'])} \\\\")
+    d = J("r24d_think_sentence.json")
+    body += ["\\midrule", "\\multicolumn{7}{@{}l}{\\emph{Sonnet~5, when the answers are not listed: change against blind}}\\\\",
+             " & \\multicolumn{3}{l}{Setting} & AUROC & & False rejections (pp) \\\\"]
+    for key, lab in (("sentence_alone", "Full-credit sentence"), ("thinking_alone", "Adaptive thinking"), ("combined", "Thinking and the sentence")):
+        body.append(f" & \\multicolumn{{3}}{{l}}{{{lab}}} & {fs(d[key]['G_change'], 3)} & & {p4s(d[key]['FR_change'])} \\\\")
+    write("r24_fix.tex", done(body))
+    b = J("r24b_gpt41.json")
+    body = ["\\begin{tabular}{lcccc}", "\\toprule", "Model & Answer list & Blind & One reference & Second reference \\\\", "\\midrule"]
+    GEN = (("meta-llama__Llama-3.1-8B-Instruct", "Llama-3.1-8B"), ("claude-haiku-4-5-20251001", "Haiku~4.5"), ("claude-sonnet-5", "Sonnet~5"), ("claude-opus-5", "Opus~5"))
+    for key, lab in GEN:
+        g = b["generators"][key]
+        body.append(f"{lab} & {100 * g['list'][0]:.1f} & {100 * g['blind'][0]:.1f} & {100 * g['ref'][0]:.1f} & --- \\\\")
+    body.append(f"Pooled, minus list & & {p4s(b['pooled']['blind_minus_list'])} & {p4s(b['pooled']['ref_minus_list'])} & {p4s(b['redraw']['draw2_minus_list'])} \\\\")
+    write("r24_gpt41.tex", done(body))
+    print("wrote round-24 tables")
+except (KeyError, TypeError, FileNotFoundError) as e:
+    print("[skip round-24 tables]", repr(e))
+
+
+# ---------------------------------------------------------------- round 25 (v2): judges that reason before deciding
+try:
+    body = ["\\begin{tabular}{llccccc}", "\\toprule",
+            " & & \\multicolumn{2}{c}{Accuracy minus list (points)} & \\multicolumn{3}{c}{Credited (\\%): blind $\\to$ reference} \\\\",
+            "\\cmidrule(lr){3-4}\\cmidrule(lr){5-7}",
+            "Judge type & Judge & Blind & Reference & Differing correct & Matching correct & Wrong \\\\", "\\midrule"]
+    for tpl, tl in (("cot", "Chain of thought"), ("verify", "Verify first"), ("solve", "Solve first")):
+        for j, jl in (("gpt41", "GPT-4.1"), ("sonnet", "Sonnet~5")):
+            po = J(f"r25_{tpl}_{j}.json")["pooled"]
+            arrow = lambda k: f"{100 * po[k + '_credited_blind'][0]:.1f} $\\to$ {100 * po[k + '_credited_ref'][0]:.1f}"
+            body.append(f"{tl if j == 'gpt41' else ''} & {jl} & {p4s(po['blind_minus_list'])} & {p4s(po['ref_minus_list'])} & "
+                        f"{arrow('nonmatch_correct')} & {arrow('match_correct')} & {arrow('wrong')} \\\\")
+    write("r25_types.tex", done(body))
+    print("wrote round-25 table")
+except (KeyError, TypeError, FileNotFoundError) as e:
+    print("[skip round-25 table]", repr(e))
+
+
+# ---------------------------------------------------------------- v2 prevalence audit (papers/analysis/prevalence_v2)
+try:
+    PV = json.loads((A / "prevalence_v2" / "prevalence_v2_results.json").read_text())
+    body = ["\\begin{tabular}{lrrrrcccc}", "\\toprule",
+            "Dataset & $n$ & Several & Unique & Unclear & Several (\\%) & $\\kappa$ & Both (\\%) & Either (\\%) \\\\", "\\midrule"]
+    for key, lab in (("simpleqa", "SimpleQA"), ("browsecomp", "BrowseComp"), ("hle", "HLE (text, exact answer)"), ("triviaqa", "TriviaQA"),
+                     ("webinstruct", "WebInstruct-verified (RL)")):
+        d = PV[key]
+        r = d["multi_rate"]
+        k = d["agreement_passA_vs_passB"]["kappa_multi_vs_rest"]
+        both = d["both_annotators_multi_lower"]
+        either = d["either_annotator_multi_upper"]
+        fmt = lambda x: "---" if x is None else f"{100 * (x['rate'] if isinstance(x, dict) else x / d['n']):.1f}"
+        body.append(f"{lab} & {d['n']} & {d['multi']} & {d['unique']} & {d['unclear']} & {100 * r['rate']:.1f} {{\\scriptsize$[{100 * r['wilson_ci95'][0]:.1f},{100 * r['wilson_ci95'][1]:.1f}]$}} & "
+                    f"{'---' if k is None else f'{k:.2f}'} & {fmt(both)} & {fmt(either)} \\\\")
+    write("prevalence_v2.tex", done(body))
+    print("wrote prevalence v2 table")
+except (KeyError, TypeError, FileNotFoundError) as e:
+    print("[skip prevalence v2 table]", repr(e))

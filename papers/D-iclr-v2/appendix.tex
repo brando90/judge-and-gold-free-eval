@@ -82,7 +82,7 @@ The answer is \texttt{\textbackslash boxed\{80\}}.
 \section{Preregistration ledger}
 \label{app:ledger}
 
-Every confirmatory prediction was committed before its analysis was run, and for new model calls before the data existed; the verdict rule applied to them was adopted afterwards (below). Three experiments were registered on OSF with third-party timestamps\osf{} (links withheld for review; anonymized copies are in the supplementary material). The rest were committed to the project repository with a timestamp that predates the analysis\pre. Some of these rescored or re-analyzed outputs whose direction of effect was already known, such as the exact scorer (\cref{app:estimator}); the ledger names them. Analyses marked post hoc\ph{} carry no registration weight. The main text marks pre-specified re-analyses of an effect whose direction was already known with $\ddagger$; the appendix labels them \pre{} and the ledger names them. \Cref{tab:ledger} lists every experiment and its outcome as scored. Verdicts follow one rule. \emph{Confirmed} means the 95\% interval excludes zero in the predicted direction, or a registered point prediction holds. \emph{Not confirmed} means the interval includes zero. \emph{Falsified} means the interval excludes zero in the opposite direction, or a point prediction fails. The rule was written into a registration made partway through the project for later experiments, and applied retroactively to all earlier predictions after most of their outcomes were known; several predictions that the registration documents mark as falsified are therefore reported here as not confirmed. The re-derivation moved predictions in both directions. Seven moved from falsified to not confirmed (P-R2B1 to P-R2B3, P-R3D1, P-R3D2, P-2D2, and the Qwen2.5-7B cell of P-RC1). Ten moved against us: P-M2 and P-S5 to falsified, P-FM3 from confirmed to falsified, P-S2, P-MC2, and P-EX2 to split, and P-FR1, P-FK2, P-SC1, and P-SC2 from confirmed to not evaluable. Counting each registered prediction once, the ledger records 138 confirmed, 11 not confirmed, and 17 falsified, of 206. Seventeen predictions registered for several judges or training arms got different verdicts across them (\emph{split}; the table lists each verdict), 18 could not be evaluated, 2 were not scored, and 3 from an August 2026 command-line check are excluded (\cref{app:frontier}).
+Every confirmatory prediction was committed before its analysis was run, and for new model calls before the data existed; the verdict rule applied to them was adopted afterwards (below). Three experiments were registered on OSF with third-party timestamps\osf{} (links withheld for review; anonymized copies are in the supplementary material). The rest were committed to the project repository with a timestamp that predates the analysis\pre. Some of these rescored or re-analyzed outputs whose direction of effect was already known, such as the exact scorer (\cref{app:estimator}); the ledger names them. Analyses marked post hoc\ph{} carry no registration weight. The main text marks pre-specified re-analyses of an effect whose direction was already known with $\ddagger$; the appendix labels them \pre{} and the ledger names them. \Cref{tab:ledger} lists every experiment and its outcome as scored. Verdicts follow one rule. \emph{Confirmed} means the 95\% interval excludes zero in the predicted direction, or a registered point prediction holds. \emph{Not confirmed} means the interval includes zero. \emph{Falsified} means the interval excludes zero in the opposite direction, or a point prediction fails. The rule was written into a registration made partway through the project for later experiments, and applied retroactively to all earlier predictions after most of their outcomes were known; several predictions that the registration documents mark as falsified are therefore reported here as not confirmed. The re-derivation moved predictions in both directions. Seven moved from falsified to not confirmed (P-R2B1 to P-R2B3, P-R3D1, P-R3D2, P-2D2, and the Qwen2.5-7B cell of P-RC1). Ten moved against us: P-M2 and P-S5 to falsified, P-FM3 from confirmed to falsified, P-S2, P-MC2, and P-EX2 to split, and P-FR1, P-FK2, P-SC1, and P-SC2 from confirmed to not evaluable. Counting each registered prediction once, the ledger records 181 confirmed, 14 not confirmed, and 25 falsified, of 260. Seventeen predictions registered for several judges or training arms got different verdicts across them (\emph{split}; the table lists each verdict), 18 could not be evaluated, 2 were not scored, and 3 from an August 2026 command-line check are excluded (\cref{app:frontier}).
 
 {\small
 \setlength{\tabcolsep}{4pt}
@@ -108,7 +108,7 @@ Rotation, Ties pool (\cref{app:rotation}) & commit & Same-sample gain under rota
 Rotation, replication pool (\cref{sec:p1}) & commit & Gain, loss, and gain above answers that match neither reference (\textbf{confirmed}, 12 of 12 cells). \\
 Blind-accepted filter (\cref{sec:p3}) & commit & Rotation gain survives on answers scored $\geq 7$ blind (\textbf{confirmed}, all four sizes); so does the margin (\textbf{confirmed}, four of four sizes, three required). \\
 Synthetic grid (\cref{app:grid,app:mitigation}) & commit & Inflation added by the reference rises with $k$ (\textbf{confirmed}, six judges); reference lowers inflation at $k{=}1$ (\textbf{confirmed}, six judges); margins rise with $k$ (\textbf{falsified}: flat, and falling for Qwen2.5-14B and phi-4); instruction lowers the margin at every $k$ (\textbf{split}: Qwen2.5-14B confirmed; Qwen2.5-1.5B, 3B, and 7B falsified); several references lower it (\textbf{confirmed}); same pattern for Llama-3.1-8B and phi-4 (\textbf{confirmed}); same pattern on a Llama-generated pool (\textbf{falsified}: no $k{=}1$ benefit). Post hoc: paired step and slope estimates. \\
-Instruction, second wording (\cref{sec:p3}) & commit & Same ordering of judges as the first wording (\textbf{confirmed}). \\
+Instruction, second wording (\cref{sec:fix}) & commit & Same ordering of judges as the first wording (\textbf{confirmed}). \\
 Composition dose (\cref{app:composition}) & commit & Inflation rises with the number of matching valid answers and is null with none (\textbf{falsified}: it falls, and is largest with none); the referenced judge picks matching answers more often than blind (\textbf{confirmed}). \\
 Constructed lure test & commit & Two predictions (\textbf{not scored}): closed without judging after its naturalness audit failed in five rounds. \\
 Two-factor composition (\cref{app:composition}) & commit & Lures raise inflation when no answer matches (\textbf{split}: phi-4 confirmed, Qwen2.5-7B not confirmed); removing lures restores a rising dose response (\textbf{not confirmed}, both judges); lures lower the referenced valid-pick rate (\textbf{confirmed}); the selection model reproduces the surface (\textbf{confirmed}; Qwen2.5-7B's rank correlation sits at the 0.80 bar). \\
@@ -128,24 +128,29 @@ Decode cost (\cref{app:mechanism}) & commit & All four predictions are \textbf{s
 Compression weight on gemma (\cref{app:mitigation}) & commit & Lower than both other judges (\textbf{confirmed}, 4 tasks). \\
 Constraint-problem pilot and follow-ups (\cref{app:mathconstraint}) & commit & Solve rate, rotation, margin (\textbf{confirmed}); rotation on all six answer pairs, lure effect, Sonnet~5 (\textbf{confirmed}). Selection harm, four designs: garbled invalid answers (\textbf{falsified}); no room to move, both conditions at zero (\textbf{not evaluable}); the reference's own text among the candidates (\textbf{falsified}); corrected design (\textbf{not confirmed}: right direction for both judges, intervals reach zero, 8 tasks); the corrected design pooled with a second valid solution per item, 16 comparisons (\textbf{split}: Qwen2.5-7B confirmed, $-0.31$ \ci{-0.56}{-0.13}; phi-4 not confirmed, $-0.13$ \ci{-0.31}{0.00}). \\
 Blind-then-reveal on MATH-500 (\cref{app:mitigation}) & commit & Reference raises accuracy over blind (\textbf{confirmed}, without registration weight after a disclosed amendment); the protocol keeps less than half of that benefit (\textbf{falsified}: it keeps nearly all of it). \\
-Judges that write first: MT-Bench template (\cref{sec:p3}) & commit & Rotation gain (\textbf{confirmed}); rotation loss (\textbf{confirmed}); referenced margin above blind at $k{>}1$ (\textbf{confirmed}); accuracy step below zero (\textbf{confirmed}). \\
+Judges that write first: MT-Bench template (\cref{sec:cost}) & commit & Rotation gain (\textbf{confirmed}); rotation loss (\textbf{confirmed}); referenced margin above blind at $k{>}1$ (\textbf{confirmed}); accuracy step below zero (\textbf{confirmed}). \\
 Judges that write first: thinking judge (Qwen3-8B) (\cref{app:rotation}) & commit & Rotation gain (\textbf{not confirmed}); rotation loss (\textbf{not confirmed}); referenced margin above blind at $k{>}1$ (\textbf{not confirmed}); accuracy step below zero (\textbf{falsified}). No measurable anchoring. \\
-Thinking on versus off, same weights (Qwen3-8B; \cref{sec:p3}) & commit & Thinking off: rotation loss (\textbf{confirmed}); rotation gain (\textbf{confirmed}); referenced margin above blind at $k{>}1$ (\textbf{confirmed}). Loss smaller with thinking on (\textbf{confirmed}). \\
-Thinking judge on factual questions (\textsc{MACE}; \cref{sec:p3}) & commit & Referenced margin above blind with thinking on (\textbf{confirmed}) and off (\textbf{confirmed}); smaller with thinking on (\textbf{confirmed}). \\
+Thinking on versus off, same weights (Qwen3-8B; \cref{sec:fix}) & commit & Thinking off: rotation loss (\textbf{confirmed}); rotation gain (\textbf{confirmed}); referenced margin above blind at $k{>}1$ (\textbf{confirmed}). Loss smaller with thinking on (\textbf{confirmed}). \\
+Thinking judge on factual questions (\textsc{MACE}; \cref{sec:fix}) & commit & Referenced margin above blind with thinking on (\textbf{confirmed}) and off (\textbf{confirmed}); smaller with thinking on (\textbf{confirmed}). \\
 Sonnet~5 with and without thinking, CLI (\cref{app:reasoning}) & commit & Score-only arm anchors under rotation (\textbf{confirmed}). Thinking arm has smaller loss (\textbf{confirmed}); thinking arm has fewer false rejections (\textbf{confirmed}); visible-reasoning arm has smaller loss (\textbf{confirmed}). \\
 \textsc{MACE} end to end (\cref{sec:cost,app:reasoning}) & commit & Reference lowers accuracy at $k{>}1$ (\textbf{not confirmed}, both judges); blind-then-reveal beats the reference at $k{>}1$ (\textbf{not confirmed}, both judges); blind-then-reveal at least as accurate pooled over the natural mix (\textbf{falsified}, both judges). \\
 Exact scorer, bare-answer reference, second thinking toggle, grading (\cref{app:estimator,sec:p2,sec:p3}) & commit & Under the exact scorer, rotation gain and loss (\textbf{confirmed}; a re-analysis of an effect whose direction was known); $k{>}1$ accuracy loss for Qwen2.5-7B, Qwen2.5-14B, gemma-2-9b, and Mistral-7B (\textbf{confirmed}, 4 of 4; a re-analysis registered after the original-scorer accuracy readout had been seen); false rejections rise (\textbf{confirmed}). MATH-500: the bare final answer raises accuracy (\textbf{confirmed}, both judges); so does the reference solution (\textbf{confirmed}, both judges). Qwen3-14B: loss with thinking off, smaller with it on, factual margin with thinking on, smaller than with it off, verification higher on arithmetic than on factual questions (\textbf{confirmed}, 5 of 5). Blind verification lower on \textsc{MACE} than on both constructed pools, grading of correct non-matching answers worse on \textsc{MACE} and on the replication pool, overall grading better on \textsc{MACE} (\textbf{confirmed}, 4 of 4). \\
 Sonnet~5 with and without thinking on factual questions (\cref{app:reasoning}) & commit & Score-only arm anchors (\textbf{confirmed}); thinking arm anchors (\textbf{confirmed}); thinking arm anchors less, point estimates (\textbf{confirmed}; paired difference $-0.95$ \ci{-2.45}{+0.63}). \\
 Sonnet~5 with wrong answers (\cref{sec:p2,app:frontier}) & commit & Grading of correct non-matching answers worse with the reference on the replication pool, \textsc{MACE}, and the $k$-pool (\textbf{confirmed}, 3 of 3); false rejections rise on the replication pool and \textsc{MACE} (\textbf{confirmed}, 2 of 2); anchoring margin positive (\textbf{confirmed}). Begun through the CLI and stopped by an account spend limit; a registered amendment re-ran every call through the API before any API data existed, and disclosed that partial CLI readouts had been seen. \\
 Opus~5 on the Sonnet~5 subsamples (\cref{sec:p2,app:acceptance}) & commit & Grading of correct non-matching answers worse with the reference on \textsc{MACE} and the $k$-pool (\textbf{confirmed}, 2 of 2) and on the replication pool (\textbf{not confirmed}); false rejections rise on \textsc{MACE} (\textbf{confirmed}); pooled over the three pools, correct answers scored 10 blind fall to 3 or below with the reference more often when they differ from it (\textbf{confirmed}); at most 5\% of wrong answers scored 10 blind in each pool (\textbf{falsified}: 5.1\% to 8.2\%). \\
-Sonnet~5 with adaptive thinking through the API, \textsc{MACE} (\cref{sec:p3,app:acceptance}) & commit & Grading of correct non-matching answers worse with the reference (\textbf{confirmed}); false rejections rise (\textbf{confirmed}); the fall in AUROC smaller than with thinking disabled (\textbf{confirmed}, point estimate). \\
+Sonnet~5 with adaptive thinking through the API, \textsc{MACE} (\cref{sec:fix,app:acceptance}) & commit & Grading of correct non-matching answers worse with the reference (\textbf{confirmed}); false rejections rise (\textbf{confirmed}); the fall in AUROC smaller than with thinking disabled (\textbf{confirmed}, point estimate). \\
 Second blind call through the same interface (\cref{sec:p3,app:acceptance}) & commit & Of correct non-matching answers scored 10 blind, at most 2\% score 3 or below on a second blind call, and fewer than with the reference: Sonnet~5 (\textbf{confirmed}); Opus~5 (\textbf{confirmed}); each judge on \textsc{MACE} alone (\textbf{confirmed}). \\
-Full-credit sentence, measured by grading (\cref{sec:p3,app:acceptance}) & commit & With the sentence, grading on \textsc{MACE} still worse than blind for Sonnet~5 (\textbf{confirmed}) and Opus~5 (\textbf{confirmed}); the rise in false rejections smaller than without the sentence for Sonnet~5 on \textsc{MACE} (\textbf{confirmed}) and on the replication pool (\textbf{confirmed}; both point estimates). \\
+Full-credit sentence, measured by grading (\cref{sec:fix,app:acceptance}) & commit & With the sentence, grading on \textsc{MACE} still worse than blind for Sonnet~5 (\textbf{confirmed}) and Opus~5 (\textbf{confirmed}); the rise in false rejections smaller than without the sentence for Sonnet~5 on \textsc{MACE} (\textbf{confirmed}) and on the replication pool (\textbf{confirmed}; both point estimates). \\
 Benchmark scores (\cref{sec:cost,app:acceptance}) & commit & Referenced accuracy below answer-list accuracy, pooled over models (\textbf{confirmed}); correct non-matching answers scored 3 or below more often with the reference than blind (\textbf{confirmed}); referenced accuracy below answer-list accuracy for every model with at least 10 such answers (\textbf{confirmed}, 4 of 4). Rankings are reported without a prediction. \\
 Two more benchmark graders (\cref{sec:cost,app:acceptance}) & commit & With Opus~5 and with Haiku~4.5 as the grader: referenced accuracy below answer-list accuracy, pooled (\textbf{confirmed}, both); correct non-matching answers scored 3 or below more often with the reference (\textbf{confirmed}, both); referenced accuracy below the list for every model with at least 10 such answers (\textbf{confirmed}, both, 4 of 4); max-rule accuracy within 5 points of the list and clear of referenced accuracy (\textbf{confirmed}, both); Opus~5's blind accuracy within 5 points of the list (\textbf{confirmed}). \\
 Frontier-model label audit (\cref{sec:setup,app:grid}) & commit & Claude Opus~5's reading agrees with the any-format label on at least 85\% of unboxed replies (\textbf{confirmed}, 91.1\%); it confirms at least 90\% of the replies the rule credits (\textbf{falsified}, 86.2\%); it credits at most 15\% of those the rule rejects (\textbf{confirmed}, 7.4\%). A first run failed at the API before any answer existed; a disclosed amendment removed the temperature setting. \\
 Second reference draw (\cref{sec:cost,app:acceptance}) & commit & For each of Sonnet~5, Opus~5, and Haiku~4.5: referenced accuracy below the answer lists with the second reference (\textbf{confirmed}, 3 of 3); answers that stop matching lose credit (\textbf{confirmed}, 3 of 3); answers that start matching gain credit (\textbf{confirmed}, 3 of 3). \\
 Same-reference regrade (\cref{sec:cost,app:acceptance}) & commit & For each of Sonnet~5, Opus~5, and Haiku~4.5: pooled referenced accuracy within 3 points of the first call (\textbf{confirmed}, 3 of 3); correct answers that stop matching under the second draw are credited more by the regrade than by the second draw (\textbf{confirmed}, 3 of 3); those that start matching are credited more by the second draw than by the regrade (\textbf{confirmed}, 3 of 3). \\
+Benchmark graders, one reference and the full answer list (\cref{sec:cost,sec:fix,app:r24}) & commit & For each of five grader configurations (the SimpleQA grader with GPT-4.1 and Sonnet~5; the BrowseComp/HLE judge with GPT-4.1, o3-mini, and Sonnet~5): accuracy with one reference below the answer lists (\textbf{confirmed}, 5 of 5); with the full list, within 5 points of them (\textbf{confirmed}, 5 of 5); credit for differing correct answers at least 20 points higher with the list (\textbf{confirmed}, 5 of 5); credit for wrong answers at most 3 points higher with the list (\textbf{confirmed} for three; \textbf{falsified} for the BrowseComp/HLE judge with GPT-4.1, $+3.6$, and with o3-mini, $+5.4$). \\
+GPT-4.1 as a benchmark grader (\cref{sec:cost,app:r24}) & commit & Referenced accuracy below the answer lists (\textbf{confirmed}); blind accuracy within 5 points of them (\textbf{confirmed}); answers that stop matching under a second draw lose credit (\textbf{confirmed}); answers that start matching gain credit (\textbf{confirmed}). \\
+Full answer list, measured by grading (\cref{sec:fix,app:r24}) & commit & For Sonnet~5, Opus~5, and GPT-4.1 on the \textsc{MACE} subsample: grading AUROC with the list no more than 0.03 below blind (\textbf{confirmed}, 3 of 3); rise in false rejections at most 5 points (\textbf{confirmed}, 3 of 3); AUROC with the list above AUROC with one reference (\textbf{confirmed}, 3 of 3). \\
+Thinking and the full-credit sentence together (\cref{sec:fix,app:r24}) & commit & Sonnet~5 on the \textsc{MACE} subsample: rise in false rejections below both thinking alone and the sentence alone (\textbf{confirmed}); change in grading AUROC above both (\textbf{confirmed}); false rejections still rise (\textbf{not confirmed}: $-0.2$~pp \ci{-7.2}{+4.6}). \\
+Judges that reason before deciding (\cref{sec:cost,app:r25}) & commit & Chain-of-thought, verify-first, and solve-first prompts with GPT-4.1 and Sonnet~5 on the benchmark pool: referenced accuracy below the answer lists (\textbf{confirmed} for four; \textbf{not confirmed} for verify-first and solve-first GPT-4.1); blind accuracy within 5 points of the lists (\textbf{confirmed}, 6 of 6); credit for differing correct answers at least 10 points lower with the reference (\textbf{falsified}, 6 of 6: 0.7 to 8.6 points). \\
 Partial-answer rotation pilot & commit & A fixed first move scores higher when it matches the move shown as confirmed (\textbf{confirmed}, both judges). Not otherwise reported in this paper. \\
 \end{longtable}
 }
@@ -167,6 +172,46 @@ We sampled 200 questions (seed 0) from each of four datasets that ship one refer
 \end{table}
 
 Curated math sets are almost entirely single-answer. The multi-answer math items are mostly underspecified problems rather than requests for an example: a vector problem asks for ``the value of $x$'' when $-x^2+2x+3=0$ has roots $-1$ (the reference) and $3$; a ticket problem admits several whole-dollar prices; an interest problem is consistent with both simple and compound interest. In NQ-open, 30.0\% of questions admit several correct answers, and 18.5\% after excluding questions whose answer changed over time. The audit also flagged 13 malformed DeepScaleR items and several references that appear to be wrong, which are separate problems from multiplicity.
+
+\paragraph{Benchmarks graded against one reference, and a second annotator family.} A pre-specified extension (protocol committed before any labeling call) sampled 200 questions each from SimpleQA~\citep{wei2024simpleqa}, BrowseComp~\citep{wei2025browsecomp}, text-only exact-answer HLE questions~\citep{phan2025hle}, TriviaQA~\citep{joshi2017triviaqa}, and the WebInstruct-verified RL training set~\citep{ma2025generalreasoner}, with the definitions above. Two annotators from different developers labeled every item independently, Claude Sonnet~5 and GPT-5-mini; Claude Opus~5 adjudicated disagreements until its spending cap, after which the remaining 135 disagreements (106 on BrowseComp, most about whether an item needs deep solving) kept the conservative label (\cref{tab:prevalence-v2}). Questions written for a single answer rarely admit several: 0\% to 4\%. The RL training set reaches 5.5\%, and 18\% by either annotator. Agreement between the two annotators is low ($\kappa \le 0.35$ on the several-versus-other label), so these rates are rough; none was checked by humans.
+
+\begin{table}[htbp]
+\centering
+\caption{Share of sampled questions with several valid answers after adjudication (95\% Wilson interval), agreement between the two annotators on the several-versus-other label, and the share labeled several by both and by either annotator. 200 questions per dataset; LLM annotators, not humans.\pre}
+\label{tab:prevalence-v2}
+\footnotesize
+\begin{adjustbox}{max width=\linewidth}\input{tables/prevalence_v2.tex}\end{adjustbox}
+\end{table}
+
+%==========================================================================================
+\FloatBarrier
+\section{How widely graders rely on one reference}
+\label{app:survey}
+
+We surveyed benchmarks whose official scorer is an LLM judge, evaluation libraries and cloud platforms with a built-in correctness judge, RL reward pipelines that use an LLM verifier, and research papers from 2023 to 2026 that evaluate or train with an LLM judge. Every entry was checked on 14 September 2026 against its primary source (repository code at a pinned commit, official documentation, or the paper); the records, 24 verbatim judge templates, and all quotes are in the supplementary material. An entry counts as \emph{reference-guided} when the judge sees one gold answer, or a closed list of them, and decides correctness from it (\cref{tab:survey}).
+
+\begin{table}[htbp]
+\centering
+\caption{Surveyed graders that give an LLM judge one reference answer. Partly: Arize Phoenix (reference template only in an older release) and Rubrics as Rewards (references write the rubrics).\ph}
+\label{tab:survey}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{L{2.2cm}ccL{7.8cm}}
+\toprule
+Group & Surveyed & One reference & Reference-guided entries \\
+\midrule
+Benchmarks & 16 & 11 & SimpleQA~\citep{wei2024simpleqa}, SimpleQA Verified~\citep{haas2025simpleqaverified}, BrowseComp~\citep{wei2025browsecomp}, HLE~\citep{phan2025hle}, the simple-evals MATH checker~\citep{simpleevals}, MT-Bench~\citep{zheng2023judging}, FreshQA~\citep{vu2023freshllms}, CRAG~\citep{yang2024crag}, MixEval~\citep{ni2024mixeval}, Omni-MATH~\citep{gao2024omnimath}, FRAMES~\citep{krishna2025frames}. Not: TruthfulQA, HealthBench, GAIA, LiveBench, Arena-Hard \\
+Evaluation libraries & 12 & 11 + 1 partly & Inspect AI~\citep{inspectai}, OpenAI Evals~\citep{openaievals}, LangChain~\citep{langchainevals}, openevals~\citep{openevals}, LlamaIndex~\citep{llamaindexcorrectness}, RAGAS~\citep{es2023ragas}, DeepEval~\citep{deepeval}, MLflow~\citep{mlflowjudges}, promptfoo~\citep{promptfoofactuality}, TruLens~\citep{trulens}, OpenCompass~\citep{opencompassjudge}; Phoenix~\citep{phoenixevals} partly \\
+Cloud platforms & 4 & 3 & OpenAI graders~\citep{openaigraders}, Azure AI Foundry~\citep{azurefoundrysimilarity}, AWS Bedrock~\citep{bedrockjudgeprompts}. Not: Vertex AI \\
+RL reward pipelines & 11 & 10 + 1 partly & DeepSeek-R1~\citep{deepseek2025r1}, Kimi k1.5~\citep{kimi2025k15}, Qwen3~\citep{yang2025qwen3}, Seed1.5-Thinking~\citep{seed2025thinking}, General-Reasoner~\citep{ma2025generalreasoner}, RLVR across domains~\citep{su2025rewardbridge}, xVerify~\citep{chen2025xverify}, CompassVerifier~\citep{liu2025compassverifier}, TinyV~\citep{xu2025tinyv}, OpenAI reinforcement fine-tuning~\citep{openairft}; Rubrics as Rewards~\citep{gunjal2025rar} partly \\
+Research papers, 2023--2026 & 34 & 34 & Math and science~\citep{huang2025pitfalls,chernyshev2024umath,lu2025ineqmath,xu2025ugphysics,minimax2025m1,cheng2025guru,bercovich2025llamanemotron,huang2024olympicarena,fang2024mathodyssey}; proofs and competition grading~\citep{petrov2025proofbluff,luong2025imobench,mahdavi2025refgrader,balunovic2025matharena}; code~\citep{zhuo2024icescore,tong2024codejudge}; QA and RAG~\citep{chandak2025answermatching,he2024chinesesimpleqa,ru2024ragchecker,rau2024bergen,refguided2024,kamalloo2023evaluating,thakur2025judging,wang2023evouna}; agents and deep research~\citep{wu2025webwalker,zhou2025browsecompzh,wu2025webdancer,li2025websailor,gao2025asearcher,zheng2025deepresearcher,chen2025browsecompplus,du2025deepresearchbench,li2025webthinker,liu2025webexplorer,tongyi2025deepresearch} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{What the prompts say.} We could read 34 judge prompts in full. Of these, 27 define correctness as matching the reference, 4 partly, and 3 offer it only as an aid. Two say that several answers can be valid, and both give the judge a closed list~\citep{ni2024mixeval,vu2023freshllms}; three more allow different wording but require the reference's content. None tells the judge to credit a correct answer outside the reference. Five declare the reference correct: ``Take it as granted that the Ground Truth is always correct'' (CRAG), ``The reference answer is ALWAYS correct'' (Omni-MATH), ``THE STANDARD ANSWER IS ALWAYS CORRECT AND THE QUESTION IS PERFECTLY VALID. NEVER QUESTION THEM'' (CompassVerifier), ``You can assume that the standard answer is definitely correct'' (OpenCompass), and the HLE and BrowseComp judge's ``precise and unambiguous [correct\_answer]''. Reward prompts follow the same pattern: DeepSeek-R1's rates an answer correct when it ``fully aligns with the reference answer''~\citep{deepseek2025r1}.
+
+\paragraph{Research papers.} Eight of the 34 papers use the judge as an RL reward or data filter. In seven the tasks admit several valid answers, and the judge still sees one reference or a closed list; IMO-ProofBench's grader is told the reference ``demonstrates one valid approach'' and is reported to be ``prone to be overly punitive'' for unconventional correct solutions~\citep{luong2025imobench}, and providing reference code made all three LLM-based evaluators worse on CoNaLa~\citep{tong2024codejudge}. Across NLP conferences, LLM judges appear in 46\% of 2025 NLG papers, up from under 1\% before 2023~\citep{yang2026nlgmeta}; we found no count of reference-guided judges specifically.
 
 %==========================================================================================
 \FloatBarrier
@@ -274,6 +319,35 @@ Qwen3-14B was run with the protocol of \cref{app:reasoning}, thinking off and on
 \section{Mitigations in full}
 \label{app:mitigation}
 
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption{\textbf{What helps: a full-credit sentence reduces the grading harm; an exploratory max rule restores grading at a cost when the answer is unique.} Change against blind judging, except \emph{Reveal $-$ ref.}, which is the registered blind-then-reveal protocol (score blind, then rescore with the reference and an instruction to keep the blind score unless the reference shows the answer is wrong) minus the reference, both with the original scorer. \emph{Sentence}: the full-credit instruction of \cref{sec:fix}. Bold: the Sentence and Max rule cells differ from the Reference cell, and Reveal $-$ ref.\ differs from zero (95\% intervals); ---: not run or not defined. Task counts are in \cref{app:mitigation}. Pre-specified: the API judges' Reference and Sentence values, Qwen2.5-7B's \textsc{MACE} Reference grading, and \textsc{MACE} Reference accuracy (the original scorer gives the same values); MATH-500 Reference accuracy is a re-analysis; every Reveal $-$ ref.\ and Max rule value, and the rest, is post hoc.}
+\label{tab:protocols}
+\setlength{\tabcolsep}{3.1pt}
+\begin{tabular}{@{}llrrrrrr@{}}
+\toprule
+& & \multicolumn{4}{c}{Grading AUROC} & \multicolumn{2}{c}{Accuracy (pp)} \\
+\cmidrule(lr){3-6}\cmidrule(lr){7-8}
+Pool & Judge & Reference & Sentence & Reveal $-$ ref. & Max rule & Reference & Max rule \\
+\midrule
+\multicolumn{8}{@{}l}{\emph{Several correct answers}}\\
+\textsc{MACE} & Sonnet~5 & $-0.15$ & $\mathbf{-0.06}$ & --- & $\mathbf{-0.01}$ & --- & --- \\
+ & Opus~5 & $-0.16$ & $\mathbf{-0.05}$ & --- & $\mathbf{-0.01}$ & --- & --- \\
+ & Qwen2.5-7B & $-0.08$ & --- & $0.00$ & $\mathbf{-0.01}$ & $+2.0$ & $+4.0$ \\
+ & phi-4 & $-0.06$ & --- & $+0.01$ & $\mathbf{-0.01}$ & $+6.1$ & $+6.1$ \\
+$k$-pool, $k{>}1$ & Qwen2.5-7B & $-0.23$ & --- & $\mathbf{+0.11}$ & $\mathbf{+0.00}$ & $-30.3$ & $\mathbf{+3.0}$ \\
+ & Qwen2.5-14B & $-0.17$ & --- & $\mathbf{+0.12}$ & $\mathbf{-0.03}$ & $-3.0$ & $+3.0$ \\
+ & gemma-2-9b & $-0.19$ & --- & $\mathbf{-0.06}$ & $\mathbf{+0.00}$ & $-3.0$ & $+0.0$ \\
+ & phi-4 & $-0.25$ & --- & $\mathbf{+0.04}$ & $\mathbf{-0.01}$ & $-15.2$ & $\mathbf{+3.0}$ \\
+\multicolumn{8}{@{}l}{\emph{One correct answer}}\\
+MATH-500, answer & Qwen2.5-7B & $+0.29$ & --- & --- & $\mathbf{+0.24}$ & $+28.6$ & $\mathbf{+23.8}$ \\
+ & Qwen2.5-14B & $+0.25$ & --- & --- & $\mathbf{+0.22}$ & $+30.6$ & $+29.7$ \\
+MATH-500, solution & Qwen2.5-7B & $+0.29$ & --- & $\mathbf{-0.04}$ & $\mathbf{+0.13}$ & $+30.5$ & $\mathbf{+23.8}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=\textwidth]{figures/fig4_fix.pdf}
@@ -305,7 +379,7 @@ Simple combinations of the blind and referenced scores compete with blind-then-r
 \begin{table}[htbp]
 \centering
 \footnotesize
-\caption{Best-of-64 accuracy change against blind judging (points) for score combinations and blind-then-reveal: $k$-pool at $k{>}1$ (registered labels, 39 tasks), \textsc{MACE} overall, MATH-500. Original scorer. \Cref{tab:protocols} in the main text uses any-format labels for the $k$-pool.\ph}
+\caption{Best-of-64 accuracy change against blind judging (points) for score combinations and blind-then-reveal: $k$-pool at $k{>}1$ (registered labels, 39 tasks), \textsc{MACE} overall, MATH-500. Original scorer. \Cref{tab:protocols} uses any-format labels for the $k$-pool.\ph}
 \label{tab:score-rules}
 \begin{adjustbox}{max width=\linewidth}\input{tables/score_rules.tex}\end{adjustbox}
 \end{table}
@@ -671,6 +745,13 @@ The first Sonnet~5 API scores (\cref{tab:round7}) covered correct answers only. 
 \section{Acceptance, the full-credit sentence, and benchmark scores}
 \label{app:acceptance}
 
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{figures/fig4_benchmark.pdf}
+\caption{\textbf{Shown the reference, every grader scores the models below their answer lists; blind, Sonnet~5 and Opus~5 stay within 3 points of them.} One answer per model on 149 \textsc{MACE} questions with several correct answers, scored by the answer lists and by each judge, blind, with the reference, and under the max rule (dotted); a score of 7 or above counts as correct; vertical lines are 95\% intervals for referenced accuracy; hollow markers use a second reference drawn from each answer list. Opus~5's panel uses 141 questions (136 for hollow markers) because its reasoning ran past the token limit on some referenced calls, which may understate its shortfall. Pre-specified, except Sonnet~5's max rule.}
+\label{fig:benchmark}
+\end{figure}
+
 \paragraph{Opus~5 on the Sonnet~5 subsamples.}
 A pre-specified experiment ran Claude Opus~5 (\texttt{claude-opus-5}) through the Messages API with thinking disabled, with the prompts and 16-candidate subsamples of \cref{app:frontier}: 3,264 calls, no errors, and 10 replies without a score, treated as missing (9 on \textsc{MACE}, cut off at 512 tokens). Grading AUROC for correct non-matching answers changes by $-0.165$ \ci{-0.223}{-0.110} on \textsc{MACE}, $-0.057$ \ci{-0.117}{-0.013} on the $k$-pool, and $-0.015$ \ci{-0.038}{+0.009} on the replication pool, and false rejections on \textsc{MACE} rise by 36.3 points \ci{+26.7}{+46.7}. Pooled over the three pools, 76 of 525 non-matching correct answers scored 10 blind fall to 3 or below with the reference, against 0 of 247 matching ones. We predicted that at most 5\% of wrong answers would score 10 blind in each pool; 5.9\%, 5.1\%, and 8.2\% did (replication, \textsc{MACE}, $k$-pool), so a blind 10 is a slightly weaker sign of verification for Opus~5 than for Sonnet~5 (1.8\% to 3.7\%). Although thinking was disabled and the rubric asks for a score only, Opus~5 wrote visible reasoning before its score on 24\% to 33\% of blind calls and 12\% to 16\% of referenced calls. We parsed the last integer, which was the final score in every reply we inspected; restricting to answers whose two calls both gave a bare score leaves the \textsc{MACE} false-rejection rise essentially unchanged ($+35.3$ against $+35.0$ points).\ph
 
@@ -813,8 +894,70 @@ Graded by Qwen2.5-7B or phi-4, Llama-3.1-8B's 64 stored samples per question on 
 
 %==========================================================================================
 \FloatBarrier
+\section{Benchmark graders and fixes}
+\label{app:r24}
+
+\paragraph{Design.} A pre-specified experiment graded the 596 benchmark answers of \cref{sec:cost} (149 \textsc{MACE} questions, one answer each from Llama-3.1-8B-Instruct, Claude Haiku~4.5, Sonnet~5, and Opus~5; 90.6\% correct by the answer lists) with two graders copied verbatim from their repositories at pinned commits: the SimpleQA grader of \texttt{openai/simple-evals}, which sends a few-shot template to GPT-4.1 (system message ``You are a helpful assistant.'', temperature 0.5) and reads a letter A (correct), B, or C, and the judge prompt of Humanity's Last Exam, which BrowseComp also uses, sent to o3-mini with HLE's structured output or to GPT-4.1 as configured for BrowseComp and read as ``correct: yes/no''. Sonnet~5 (thinking disabled) ran both prompts as a second judge. Each answer was graded with the first reference draw as the gold target and with the full answer list written as ``Any one of the following is a complete correct answer: $a_1$; $a_2$; \dots''. Every call returned a parseable grade, and the official parse and a markdown-robust parse agreed on all of them (\cref{tab:r24-standard}).
+
+\begin{table}[htbp]
+\centering
+\caption{Benchmark graders with one reference and with the full answer list: pooled accuracy minus answer-list accuracy (points, 95\% CI, question bootstrap), and the share of correct answers that differ from the reference (396) and of wrong answers (56) that each condition credits. 149 questions per row.\pre}
+\label{tab:r24-standard}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{adjustbox}{max width=\linewidth}\input{tables/r24_standard.tex}\end{adjustbox}
+\end{table}
+
+The wrong answers credited only with the full list are ``The Democratic Republic of Congo'' (listed as ``Democratic Republic of the Congo'', credited in four configurations), ``Territory of New Guinea'' (listed ``Papua New Guinea''), ``Wales'' (listed ``United Kingdom''), and ``Sudan'' (listed ``South Sudan''); the registered bound of 3 points on extra wrong-answer credit failed for the BrowseComp/HLE judge with GPT-4.1 (2 of 56) and o3-mini (3 of 56).
+
+\paragraph{GPT-4.1 with our rubric.} GPT-4.1, with the logprob-expected score of \cref{app:frontier}, graded the same answers blind, with the first reference, and with a second reference drawn from each list (\cref{tab:r24-gpt41}). Answers that stop matching under the second draw are credited 100\% under the first and 87.5\% under the second (144 answers); answers that start matching, 80.5\% and 99.4\% (174). All four predictions were confirmed.
+
+\begin{table}[htbp]
+\centering
+\caption{GPT-4.1 as a benchmark grader with our rubric: accuracy (\%) by answering model, and pooled accuracy minus the answer lists (points, 95\% CI).\pre}
+\label{tab:r24-gpt41}
+\footnotesize
+\input{tables/r24_gpt41.tex}
+\end{table}
+
+\paragraph{The answer list and prompt changes, measured by grading.} On the 40 \textsc{MACE} subsamples of \cref{app:frontier}, Sonnet~5, Opus~5 (their earlier blind and referenced calls reused), and GPT-4.1 graded every candidate with the full answer list in the reference slot, and Sonnet~5 with adaptive thinking graded them with one reference and the full-credit sentence, its earlier thinking blind calls reused (\cref{tab:r24-fix}). All nine answer-list predictions and two of the three combination predictions were confirmed; the combination left no measurable rise in false rejections, so its third prediction, that the rise would remain, was not confirmed.
+
+\begin{table}[htbp]
+\centering
+\caption{Grading AUROC of correct answers that differ from the reference against wrong answers, blind, with one reference, and with the full answer list, and changes against blind (95\% CI, task bootstrap); below, Sonnet~5 with the full-credit sentence, adaptive thinking, and both, each against its own blind calls. 40 tasks.\pre}
+\label{tab:r24-fix}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{adjustbox}{max width=\linewidth}\input{tables/r24_fix.tex}\end{adjustbox}
+\end{table}
+
+%==========================================================================================
+\FloatBarrier
+\section{Judges that reason before deciding}
+\label{app:r25}
+
+A pre-specified experiment graded the benchmark answers of \cref{sec:cost} with three prompts that ask the judge to reason about correctness, blind and with the first reference, with GPT-4.1 (temperature 0) and Sonnet~5 (thinking disabled), each allowed 1,024 output tokens; none of the prompts says whether a question can have several correct answers. \emph{Chain of thought}: ``Think step by step about whether the response is correct''. \emph{Verify first}: ``1.~Verify: using your own knowledge, check whether the response's final answer is correct for the question as asked. 2.~Compare: check the response against the reference answer. 3.~Decide whether the response is correct.'' \emph{Solve first}: ``First answer the question yourself. Then grade the response, using your own answer and the reference answer.'' Each ends with a line ``correct: yes'' or ``correct: no''; every one of the 7,152 replies had one, and none was cut off (\cref{tab:r25}). We had predicted a drop of at least 10 points in credit for differing correct answers; the drop was 0.7 to 8.6, so that prediction failed for all six.
+
+\begin{table}[htbp]
+\centering
+\caption{Judges that reason before deciding, on 149 benchmark questions: pooled accuracy minus answer-list accuracy (points, 95\% CI), and the share of differing correct (396), matching correct (144), and wrong (56) answers credited blind and with the reference.\pre}
+\label{tab:r25}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{adjustbox}{max width=\linewidth}\input{tables/r25_types.tex}\end{adjustbox}
+\end{table}
+
+%==========================================================================================
+\FloatBarrier
 \section{Reasoning, verification, and a natural multi-answer pool}
 \label{app:reasoning}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.66\textwidth]{figures/figA_thinking.pdf}
+\caption{\textbf{On factual questions, thinking about halves the rise in false rejections.} Rise in false rejections on \textsc{MACE} without and with thinking: Sonnet~5 through the API (score only against adaptive thinking), Qwen3 judges (explanation first against thinking on). 95\% intervals.\pre}
+\label{fig:thinking}
+\end{figure}
 
 \paragraph{Thinking on versus off.}
 This pre-specified experiment reran the Qwen3-8B protocol of \cref{app:rotation} (rubric~$a$ ending in a ``Score: N'' line, temperature 0.6, top-p 0.95, top-k 20, up to 4,096 new tokens) with the chat template's thinking switch off and nothing else changed. The pools are the swap subsample and the 16-sample $k$-subsample of \cref{app:rotation}, plus a \textsc{MACE} subsample: every River or Language task with $k{>}1$ that has both matching and non-matching valid samples, with up to four samples each of matching-valid, non-matching-valid, and invalid answers (81 tasks, 825 samples). Twelve of 1,200 blind thinking-off replies on the $k$-subsample had no parseable score; none did elsewhere. \Cref{tab:toggle} gives the results. A second pre-specified toggle with Qwen3-14B repeats the pattern (\cref{tab:r4-toggle}). With thinking off, the loss under the swap is $-1.98$; with it on, $-0.12$. The \textsc{MACE} margin increase is $+7.07$ off and $+3.13$ on. With thinking on, Qwen3-14B's blind verification AUROC is 0.86 on the arithmetic subsample and 0.81 on the factual one (Qwen3-8B: 0.86 and 0.80).

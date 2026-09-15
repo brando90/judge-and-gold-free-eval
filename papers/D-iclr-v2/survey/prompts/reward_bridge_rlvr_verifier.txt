@@ -1,0 +1,27 @@
+# Source: https://huggingface.co/virtuoussy/Qwen2.5-7B-Instruct-RLVR/blob/1b9a9a093ba3/model_server.py#L17 (same text in the model card README)
+# Retrieved: 2026-09-14
+# ---- verbatim template below ----
+Given a problem, determine whether the final answer in the provided (incomplete) solution process matches the reference answer.  
+The reference answer may be one single option character (e.g., A, B, C, D), a numerical value, an expression, or a list of answers if multiple questions are involved.  
+**The reference answer may be in Chinese or another language, but your evaluation should be language-agnostic.**  
+
+Your task:  
+- Compare the final output of the solution process with the reference answer.  
+- If they **match exactly**, output **YES**.  
+- If they **do not match**, output **NO**.  
+- If the solution process is unclear, incomplete, or ambiguous, assume it is incorrect and output **NO**.  
+
+Your output must be strictly **'YES'** or **'NO'**, with no additional words, punctuation, or explanation.  
+
+---
+
+**Question:**  
+{question}  
+
+**Solution Process (Final Step Only):**  
+{response}  
+
+**Reference Answer:**  
+{reference}  
+
+**Output:**  

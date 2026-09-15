@@ -366,9 +366,8 @@ if all(RA.values()) and MD and tog and t14 and S8f and S19f:
     for jn, keys in (("Qwen2.5-7B", ["repl|Qwen2.5-7B", "kpool|Qwen2.5-7B"]), ("phi-4", ["repl|phi-4", "kpool|phi-4"]),
                      ("Qwen2.5-14B", ["kpool|Qwen2.5-14B"]), ("gemma-2-9b", ["kpool|gemma-2-9b"])):
         rows.append((jn, _open(keys, "nonmatch"), _open(keys, "match"), None))
-    fig = plt.figure(figsize=(5.5, 2.75))
-    a1 = fig.add_axes([0.235, 0.33, 0.27, 0.61])
-    a3 = fig.add_axes([0.745, 0.36, 0.235, 0.52])
+    fig = plt.figure(figsize=(5.5, 2.2))
+    a1 = fig.add_axes([0.20, 0.20, 0.42, 0.72])
     n = len(rows)
     ticks = []
     for pos, r in enumerate(rows):
@@ -395,7 +394,7 @@ if all(RA.values()) and MD and tog and t14 and S8f and S19f:
     a1.set_xticks([0, 20, 40, 60, 80])
     a1.tick_params(axis="x", labelsize=7.4)
     a1.set_xlabel("correct answers accepted blind\nthat score 3 or below (%)", fontsize=7.6, labelpad=1.5)
-    a1.set_title("a   Accepted without a reference", loc="left", fontsize=8.6, fontweight="bold", x=-0.62)
+    a1.set_title("Accepted without a reference", loc="left", fontsize=8.6, fontweight="bold", x=-0.40)
     style(a1, "x")
 
     def barpair(ax, groups, xlim, xticks, xlabel, title, fmt):
@@ -417,20 +416,23 @@ if all(RA.values()) and MD and tog and t14 and S8f and S19f:
         ax.set_title(title, loc="left", fontsize=8.6, fontweight="bold", x=-0.52)
         style(ax, "x")
 
-    neg = lambda v: (-v[0], [-v[1][1], -v[1][0]])
+    fig.legend(handles=[Line2D([], [], marker="o", ls="", mfc=BLUE, mec=BLUE, ms=4.8, label="differs from the reference,\nreference shown"),
+                        Line2D([], [], marker="o", ls="", mfc="white", mec=BLUE, mew=1.1, ms=4.8, label="matches the reference,\nreference shown"),
+                        Line2D([], [], marker="x", ls="", color=ORANGE, mew=1.2, ms=4.4, label="differs, second blind call")],
+               loc="center left", bbox_to_anchor=(0.66, 0.55), ncol=1, frameon=False, fontsize=7.2, handlelength=1.0,
+               handletextpad=0.5, labelspacing=0.9)
+    save(fig, "fig3_acceptance")
+
+    fig = plt.figure(figsize=(3.6, 1.9))
+    a3 = fig.add_axes([0.30, 0.36, 0.62, 0.54])
     frp = lambda v: (100 * v[0], [100 * v[1][0], 100 * v[1][1]])
     barpair(a3, [("Sonnet 5 (API)", frp(S8f["pools"]["mace"]["oracle"]["FR"]), frp(S19f["pools"]["mace"]["oracle"]["FR"])),
                  ("Qwen3-8B", frp(tog["off"]["macesub"]["false_reject_diff"]), frp(tog["on"]["macesub"]["false_reject_diff"])),
                  ("Qwen3-14B", frp(t14["off"]["macesub"]["false_reject_diff"]), frp(t14["on"]["macesub"]["false_reject_diff"]))],
-            (-1.5, 68), [0, 20, 40, 60], "rise in false rejections (pp)", "b   Thinking: factual questions", lambda x: f"+{x:.0f}")
-    fig.legend(handles=[Line2D([], [], marker="o", ls="", mfc=BLUE, mec=BLUE, ms=4.8, label="differs from the reference, reference shown"),
-                        Line2D([], [], marker="o", ls="", mfc="white", mec=BLUE, mew=1.1, ms=4.8, label="matches the reference, reference shown"),
-                        Line2D([], [], marker="x", ls="", color=ORANGE, mew=1.2, ms=4.4, label="differs, second blind call"),
-                        Patch(color=BLUE, label="thinking off (Sonnet 5: score only; Qwen3: explains first)"),
-                        Patch(color=LIGHT, label="thinking on")],
-               loc="lower center", bbox_to_anchor=(0.5, -0.01), ncol=2, frameon=False, fontsize=7.0, handlelength=1.0,
-               columnspacing=1.4, handletextpad=0.4, labelspacing=0.3)
-    save(fig, "fig3_acceptance")
+            (-1.5, 68), [0, 20, 40, 60], "rise in false rejections (pp)", "Thinking: factual questions", lambda x: f"+{x:.0f}")
+    fig.legend(handles=[Patch(color=BLUE, label="thinking off (Sonnet 5: score only; Qwen3: explains first)"), Patch(color=LIGHT, label="thinking on")],
+               loc="lower center", bbox_to_anchor=(0.5, -0.02), ncol=1, frameon=False, fontsize=7.0, handlelength=1.0, handletextpad=0.4, labelspacing=0.3)
+    save(fig, "figA_thinking")
 
 # ============================================================== Figure 3 (mechanism, single panel)
 mi = load("maskident_results.json")
@@ -895,6 +897,8 @@ B24 = load("r24b_gpt41.json")
 C24 = {j: load(f"r24c_{j}.json") for j in ("sonnet", "opus", "gpt41")}
 D24 = load("r24d_think_sentence.json")
 RUB = [("Sonnet 5", load("r20c_leaderboard.json")), ("Opus 5", load("r21a_leaderboard_opus.json")), ("Haiku 4.5", load("r21a_leaderboard_haiku.json"))]
+R25 = [(f"{tl}, {jl}", load(f"r25_{t}_{j}.json")) for t, tl in (("cot", "Chain of thought"), ("verify", "Verify first"), ("solve", "Solve first"))
+       for j, jl in (("gpt41", "GPT-4.1"), ("sonnet", "Sonnet 5"))]
 if all(A24.values()) and B24 and all(C24.values()) and D24 and all(r[1] for r in RUB):
     pts = lambda v: (100 * v[0], [100 * v[1][0], 100 * v[1][1]])
     rows = [("hdr", "Benchmark graders, verbatim prompts")]
@@ -905,9 +909,14 @@ if all(A24.values()) and B24 and all(C24.values()) and D24 and all(r[1] for r in
     for lab, d in RUB:
         rows.append((lab, pts(d["pooled"]["undercount_referenced_minus_list"]), None, pts(d["pooled"]["blind_minus_list"])))
     rows.append(("GPT-4.1", pts(B24["pooled"]["ref_minus_list"]), None, pts(B24["pooled"]["blind_minus_list"])))
-    fig = plt.figure(figsize=(5.5, 2.9))
-    a1 = fig.add_axes([0.285, 0.30, 0.34, 0.64])
-    a2 = fig.add_axes([0.80, 0.42, 0.185, 0.46])
+    if all(r[1] for r in R25):
+        rows.append(("hdr", "Judges that reason before deciding"))
+        for lab, d in R25:
+            rows.append((lab, pts(d["pooled"]["ref_minus_list"]), None, pts(d["pooled"]["blind_minus_list"])))
+    H = 3.05 if len(rows) > 12 else 2.55
+    fig = plt.figure(figsize=(5.5, H))
+    a1 = fig.add_axes([0.285, 0.25 * 2.55 / H, 0.34, 1 - 0.07 * 2.55 / H - 0.25 * 2.55 / H])
+    a2 = fig.add_axes([0.80, 1 - (0.13 + 0.48) * 2.55 / H, 0.185, 0.48 * 2.55 / H])
     n = len(rows)
     ticks = []
     for pos, r in enumerate(rows):
@@ -958,7 +967,7 @@ if all(A24.values()) and B24 and all(C24.values()) and D24 and all(r[1] for r in
                         Line2D([], [], marker="o", ls="", mfc="white", mec=BLUE, mew=1.1, ms=4.4, label="full answer list"),
                         Line2D([], [], marker="x", ls="", color=ORANGE, mew=1.2, ms=4.2, label="blind"),
                         Line2D([], [], marker="^", ls="", mfc=LIGHT, mec=BLUE, ms=4.2, label="thinking + full-credit sentence")],
-               loc="lower center", bbox_to_anchor=(0.5, -0.01), ncol=4, frameon=False, fontsize=7.2, handlelength=1.0,
+               loc="lower center", bbox_to_anchor=(0.5, 0.0), ncol=4, frameon=False, fontsize=7.2, handlelength=1.0,
                columnspacing=1.4, handletextpad=0.4)
     save(fig, "fig4_graders")
 

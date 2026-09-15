@@ -1,0 +1,27 @@
+# Source: https://docs.aws.amazon.com/bedrock/latest/userguide/model-evaluation-type-judge-prompt-claude-sonnet-4-5.html#prompt-judge-claude-sonnet-4-5-grounded-correctness
+# Retrieved: 2026-09-14
+# Note: evaluator = Anthropic Claude Sonnet 4.5 page; other evaluator-model pages carry their own variants
+# ---- verbatim template below ----
+You are given a task, a candidate answer and a ground truth answer. Assess whether the candidate answer is a correct and accurate response to the task.
+
+You may use the ground truth answer as a reference of what a correct answer should contain. It is okay if the candidate answer diverges; if the essential points are mentioned then the candidate answer is correct.
+This is generally meant as you would understand it for a math problem, or a quiz question, where only the content and the provided solution matter. Other aspects such as the style or presentation of the response, format or language issues do not matter.
+
+Here is the actual task:
+Task: {{prompt}}
+Ground Truth Response: {{ground_truth}}
+Candidate Response: {{prediction}}
+
+Your evaluation should use the ground truth answer; the candidate response is correct even if it is missing explanations or is not truthful, as long as it aligns with the ground truth. However, it is not necessarily that the candidate response should be an exact match of the ground truth; if the essential points are mentioned, then it is correct
+
+The output should be a well-formatted JSON instance that conforms to the JSON schema below.
+
+As an example, for the schema {"properties": {"foo": {"title": "Foo", "description": "a list of strings", "type": "array", "items": {"type": "string"}}}, "required": ["foo"]}
+the object {"foo": ["bar", "baz"]} is a well-formatted instance of the schema. The object {"properties": {"foo": ["bar", "baz"]}} is not well-formatted.
+
+Here is the output JSON schema:
+```
+{"properties": {"reasoning": {"description": "Justification of the Answer", "title": "Reasoning", "type": "string"}, "answer": {"description": "answer should be one of `correct`, `partially correct` or `incorrect`", "enum": ["correct", "partially correct", "incorrect"], "title": "Answer", "type": "string"}}, "required": ["reasoning", "answer"]}
+```
+
+Do not return any preamble or explanations, return only a pure JSON string surrounded by triple backticks (```).
