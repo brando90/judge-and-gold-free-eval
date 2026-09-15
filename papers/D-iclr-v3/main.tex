@@ -179,9 +179,10 @@ Does the problem fade as judges improve? On arithmetic, a judge that thinks befo
 \end{figure}
 
 \paragraph{Several correct answers.}
-Correct answers that differ from the reference are rejected more often: under the registered labels, Qwen2.5-7B scores 28\% of them 3 or below with the reference on the replication pool, against 0.4\% blind\reana{} (\cref{app:grid}).
-Their grading AUROC against wrong answers falls by 0.08 to 0.16 for Qwen2.5-7B, Sonnet~5, and Opus~5 on factual questions and by 0.06 for phi-4,\ph{} and by 0.17 to 0.27 for the four open judges on the constructed pools\ph{} (\cref{fig:onevsseveral}b).
-The constructed-pool estimates are post hoc because they use the any-format labels adopted after the registered checker proved too strict. The pre-specified estimate, Qwen2.5-7B on the replication pool under the registered labels, falls by 0.29, and for all four open judges the direction is the same under every labeling, with only the magnitude moving (0.16 to 0.25 with model-read labels, 0.07 to 0.14 on boxed replies; \cref{tab:labelings-gnm}).
+The reference makes judges reject correct answers they would otherwise accept: under the registered labels, Qwen2.5-7B scores 28\% of the differing correct answers 3 or below with the reference, against 0.4\% blind\reana{} (\cref{app:grid}).
+Grading suffers with it. The AUROC that separates those answers from wrong ones falls for every judge we ran, by 0.06 to 0.16 on factual questions and by 0.17 to 0.27 on the constructed pools\ph{} (\cref{fig:onevsseveral}b).
+
+How answers are labeled changes the size of these falls, not their direction (\cref{tab:labelings-gnm}). The constructed-pool estimates use the any-format labels adopted after the registered checker proved too strict, so they are post hoc; the one pre-specified estimate under the registered labels, Qwen2.5-7B on the replication pool, falls by 0.29.
 
 \paragraph{One correct answer.}
 With one correct answer the reference helps, as P2 requires: showing only the final answer raises best-of-64 accuracy on MATH-500 by 28.6 and 30.6~pp for Qwen2.5-7B and 14B,\reana{} as the full solution does, and on \textsc{MACE}'s single-answer questions by 29.4\ph{} and 26.5~pp for Qwen2.5-7B and phi-4 (\cref{fig:onevsseveral}a).
