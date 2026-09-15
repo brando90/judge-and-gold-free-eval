@@ -114,3 +114,11 @@ Interval predictions are confirmed when the 95% interval excludes zero in the pr
 zero, and falsified when it excludes zero in the opposite direction; point predictions are confirmed or falsified. A cell or experiment
 below its completeness threshold is not scored. Any change to settings after the first R24 call is recorded here as a dated amendment
 before its results are analyzed. Total caps: OpenAI USD 31, Anthropic USD 31.
+
+## Amendment 1 (2026-09-14, during the runs, before any R24 analysis)
+
+Cell sS5 (SimpleQA grader, Claude Sonnet 5): spend cap raised from USD 6 to USD 10, and the Anthropic total from USD 31 to USD 35.
+Its ledger showed USD 2.64 after 401 of 1,192 calls (projection about USD 7.8); the registration underestimated the length of the
+SimpleQA few-shot prompt. If the cap stops the run, the same command is re-run with `--cap-usd 10`; the harness resumes and skips
+completed calls. Nothing else changes. Before this amendment we had looked only at run logs, spend ledgers and a parse check of the
+first rows of each output file (counts of parsed grades by condition, error counts); no producer was run on R24 data.
