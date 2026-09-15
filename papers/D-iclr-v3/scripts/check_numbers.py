@@ -23,6 +23,7 @@ text_sources = [D / "registration.md", PAPER / "registration_round2.md",
                 PAPER / "registration_round19.md", PAPER / "registration_round20.md",
                 PAPER / "registration_round21.md", PAPER / "registration_round22.md",
                 PAPER / "registration_round23.md", PAPER / "registration_round24.md", PAPER / "registration_round25.md",
+                PAPER / "registration_round26.md", PAPER / "registration_round27.md",  # v3
                 PAPERS / "analysis" / "prevalence_v2" / "RESULTS.md", PAPER / "survey" / "practice_survey.md",
                 *sorted((PAPER / "tables").glob("*.tex"))]  # generated tables carry JSON-produced numbers; the uncorrected source draft is not a source
 corpus = "\n".join(p.read_text(errors="ignore") for p in text_sources if p.exists())
@@ -65,7 +66,7 @@ bad = 0
 targets = sys.argv[1:] or [str(PAPER / "main.tex"), str(PAPER / "appendix.tex")]
 for name in targets:
     for i, line in enumerate(Path(name).read_text().splitlines(), 1):
-        s = line.split("%")[0] if not line.lstrip().startswith("%") else ""
+        s = re.split(r"(?<!\\)%", line)[0] if not line.lstrip().startswith("%") else ""  # v3: \% is not a comment
         s = re.sub(r"\\(cref|Cref|ref|label|cite[pt]?|input|includegraphics)\{[^}]*\}", "", s)
         s = re.sub(r"(?<=\d),(?=\d{3}\b)", "", s)  # thousands separators: 1,092 -> 1092
         s = re.sub(r"\\(scriptsize|footnotesize|small|setlength|tabcolsep)[^ ]*", "", s)

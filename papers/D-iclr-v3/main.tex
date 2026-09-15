@@ -157,7 +157,7 @@ Our referenced rubric asks the judge to use the reference to check the candidate
 Our registered checkers read only answers inside \texttt{\textbackslash boxed\{\}}, which 38\% to 43\% of replies ignore, so the constructed pools use \emph{any-format labels} that credit a final answer stated in any format. A registered audit by Claude Opus~5 agrees with these labels on 91\% of unboxed replies (\cref{app:grid}). Registered labels, model-read labels, and boxed replies alone give the same sign for every grading AUROC change of the open judges and GPT-4.1; only the size changes.
 
 \paragraph{Measurements and conventions.}
-The \emph{swap change} is the change in score of identical text when the reference moves. The \emph{false-rejection rate} is the share of correct answers that differ from the reference scored 3 or below, and the \emph{grading AUROC} is the per-task AUROC for separating those answers from wrong answers. Changes are referenced minus blind, with task- or question-level bootstrap intervals. Unmarked estimates were pre-specified in a timestamped commit or on OSF; \ph{} marks post hoc estimates and \reana{} pre-specified re-analyses of an effect whose direction was already known. \Cref{app:ledger} lists every registered prediction and its outcome, including failures.
+The \emph{swap change} is the change in score of identical text when the reference moves. The \emph{false-rejection rate} is the share of correct answers that differ from the reference scored 3 or below, and the \emph{grading AUROC} is the per-task AUROC for separating those answers from wrong answers. Changes are referenced minus blind, with task- or question-level bootstrap intervals. Unmarked estimates were pre-specified in a timestamped commit or on OSF; \ph{} marks post hoc estimates and \reana{} pre-specified re-analyses of an effect whose direction was already known. \Cref{app:ledger} summarizes every registered prediction and lists each failure.
 
 \section{Prediction 1: the score follows the reference}
 \label{sec:p1}
@@ -165,7 +165,7 @@ The \emph{swap change} is the change in score of identical text when the referen
 We re-judged the replication pool's byte-identical samples with the reference moved to another correct answer.
 Text the reference moves onto gains 3.0 to 5.3 points under Qwen2.5-7B, phi-4, and Sonnet~5, and text it moves off loses 2.7 to 5.4, while correct text that matches neither reference barely moves (\cref{app:rotation}).\reana{}
 All twelve registered cells went as predicted, and on nine MathConstraint puzzles swapping the reference between two valid solutions moves a fixed candidate by a similar amount (\cref{app:mathconstraint}).
-The swap survives the verbatim MT-Bench template, which drops ``trusted'' and asks for an explanation first. It mostly vanishes when the reference is written as an expression or masked inside a worked solution (\cref{app:mechanism}).
+The swap survives the verbatim MT-Bench template, which drops ``trusted'' and asks for an explanation first (\cref{app:rotation}). It mostly vanishes when the reference is written as an expression or masked inside a worked solution (\cref{app:mechanism}).
 
 \section{Prediction 2: correct answers that differ from the reference are graded worse}
 \label{sec:p2}
@@ -178,7 +178,7 @@ The swap survives the verbatim MT-Bench template, which drops ``trusted'' and as
 \end{figure}
 
 \paragraph{Several correct answers.}
-Correct answers that differ from the reference are rejected more often: Qwen2.5-7B scores 28\% of them 3 or below with the reference on the replication pool, against 0.4\% blind. Their grading AUROC against wrong answers falls by 0.06 to 0.16 on factual questions\ph{} and by 0.17 to 0.27 for the four open judges on the constructed pools\ph{} (\cref{fig:onevsseveral}b). The direction holds under every labeling; boxed replies alone give the smallest falls.
+Correct answers that differ from the reference are rejected more often: Qwen2.5-7B scores 28\% of them 3 or below with the reference on the replication pool, against 0.4\% blind (\cref{app:grid}). Their grading AUROC against wrong answers falls by 0.06 to 0.16 on factual questions\ph{} and by 0.17 to 0.27 for the four open judges on the constructed pools\ph{} (\cref{fig:onevsseveral}b). The direction holds under every labeling; boxed replies alone give the smallest falls.
 
 \paragraph{One correct answer.}
 With one correct answer the reference helps, as every reading allows: showing only the final answer raises best-of-64 accuracy on MATH-500 by about 30 points for Qwen2.5-7B and 14B\reana{} (\cref{fig:onevsseveral}a).
@@ -250,7 +250,7 @@ A list is also closed; whether it makes judges reject correct answers it omits i
 \paragraph{When the answers cannot be listed.}
 If the judge can answer the questions, remove any instruction to match and ask whether the answer is correct.
 On the 40-task subsample, which has many wrong answers, letting the judge solve the question first gave the smallest grading loss (AUROC $-0.04$ and $-0.05$ against blind) and raised false acceptances by at most 3 points, but still rejected 5 to 7 points more differing correct answers (\cref{app:r26}).
-An instruction that any correct answer deserves full credit and a thinking mode each cut the factual rise in false rejections for Sonnet~5 by half or more, and together left no measurable rise (\cref{app:r24}).
+An instruction that any correct answer deserves full credit and a thinking mode each cut the factual rise in false rejections for Sonnet~5 by half or more, and together left no measurable rise (\cref{app:acceptance,app:r24}).
 
 \paragraph{Questions beyond the judge.}
 There, the instruction to match is what keeps wrong answers out, and removing it can let a judge overrule the reference.
