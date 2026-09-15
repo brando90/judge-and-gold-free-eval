@@ -12,6 +12,24 @@
     "solve|noref": 0.708333,
     "solve|ref": 0.229167
    },
+   "false_acceptance_by_answering_model": {
+    "gpt-4.1-mini-2025-04-14": {
+     "wrong": 188,
+     "hle|ref": 0.0,
+     "direct|noref": 0.691489,
+     "direct|ref": 0.207447,
+     "solve|noref": 0.781915,
+     "solve|ref": 0.351064
+    },
+    "claude-haiku-4-5-20251001": {
+     "wrong": 187,
+     "hle|ref": 0.0,
+     "direct|noref": 0.529412,
+     "direct|ref": 0.139037,
+     "solve|noref": 0.609626,
+     "solve|ref": 0.165775
+    }
+   },
    "solve_ref_false_acceptances": 97,
    "solve_ref_fa_reply_says_reference_wrong": [
     40,
@@ -28,6 +46,24 @@
     "direct|ref": 0.005865,
     "solve|noref": 0.234604,
     "solve|ref": 0.01173
+   },
+   "false_acceptance_by_answering_model": {
+    "gpt-4.1-mini-2025-04-14": {
+     "wrong": 193,
+     "hle|ref": 0.0,
+     "direct|noref": 0.103627,
+     "direct|ref": 0.005181,
+     "solve|noref": 0.212435,
+     "solve|ref": 0.005181
+    },
+    "claude-haiku-4-5-20251001": {
+     "wrong": 192,
+     "hle|ref": 0.0,
+     "direct|noref": 0.072917,
+     "direct|ref": 0.005208,
+     "solve|noref": 0.208333,
+     "solve|ref": 0.015625
+    }
    },
    "solve_ref_false_acceptances": 4,
    "solve_ref_fa_reply_says_reference_wrong": [

@@ -120,5 +120,8 @@ Post hoc (`papers/analysis/r27b_posthoc.py`, `r27b_posthoc_gpt41_sonnet.json`; n
 "Answer:" line (336 and 341), referenced FA is 15.2% (direct) and 22.9% (solve first) for GPT-4.1 and 0.6% and 1.2% for Sonnet 5.
 Of GPT-4.1's 97 solve-first false acceptances with the reference, at least 40 (41%) end with a reply saying the reference is wrong (regex
 on the stored last 300 characters, a lower bound). In a reading of 10 of them, most credit a different final answer after the judge's
-own solution disagreed with the reference; two credit replies cut off before an answer line. Labels come from a judge instructed to match,
+own solution disagreed with the reference; two credit replies cut off before an answer line. (Correction: the 10 were a random
+sample of all GPT-4.1 solve-first false acceptances with the reference, not only of those whose reply says the reference is wrong.)
+By answering model, GPT-4.1 credited 20.7% (direct) and 35.1% (solve first) of GPT-4.1-mini's wrong answers against 13.9% and 16.6%
+of Haiku 4.5's; Sonnet 5 credited 0.5% and 0.5% against 0.5% and 1.6% (`false_acceptance_by_answering_model`). Labels come from a judge instructed to match,
 so a few "false acceptances" may be equivalent answers; the restriction and the reading suggest these are not the bulk.

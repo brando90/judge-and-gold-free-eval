@@ -43,6 +43,11 @@ for j in JUDGES:
         d["false_acceptance_answer_line"][c] = round(sum(score(c, pid, i) == 10.0 for pid, i, _ in stated) / len(stated), 6)
     fa = [(pid, i) for pid, i, _ in wrong if score("solve|ref", pid, i) == 10.0]
     says = sum(bool(REF_WRONG.search(cells["solve"][(pid, i, "ref")].get("tail", ""))) for pid, i in fa)
+    d["false_acceptance_by_answering_model"] = {}
+    for g in range(2):
+        w = [(pid, i) for pid, i, j2 in wrong if j2 == g]
+        name = pool[qs[0]]["generators"][g]
+        d["false_acceptance_by_answering_model"][name] = {"wrong": len(w), **{c: round(sum(score(c, pid, i) == 10.0 for pid, i in w) / len(w), 6) for c in CONDS}}
     d["solve_ref_false_acceptances"] = len(fa)
     d["solve_ref_fa_reply_says_reference_wrong"] = [says, round(says / len(fa), 6) if fa else None]
     result["judges"][j] = d
