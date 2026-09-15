@@ -1,0 +1,31 @@
+{
+ "part": "a",
+ "cell": "solve_sonnet",
+ "questions": 149,
+ "differing_rejected": [
+  0.048843,
+  [
+   0.026245,
+   0.074628
+  ],
+  389
+ ],
+ "matching_rejected": [
+  0.0,
+  [
+   0.0,
+   0.0
+  ],
+  144
+ ],
+ "difference": [
+  0.048843,
+  [
+   0.026245,
+   0.074628
+  ]
+ ],
+ "predictions": {
+  "P-R27A1 blind-accepted differing correct answers rejected more often than matching ones (point)": "confirmed"
+ }
+}

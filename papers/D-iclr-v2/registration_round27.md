@@ -51,3 +51,21 @@ Reported without a prediction: blind false acceptance and recall, agreement with
 Point predictions are confirmed or falsified. Caps: generation USD 3 (GPT-4.1-mini, 0.4/1.6) and USD 4 (Haiku 4.5, 1/5); labels USD 6
 (o3-mini, 1.1/4.4); graders USD 6 per GPT-4.1 cell (2/8) and USD 10 per Sonnet 5 cell (3/15). Any change after the first R27-B call is
 recorded here as a dated amendment before its results are analyzed. 14 predictions (8 in R27-A, 6 in R27-B).
+
+## Outcome, R27-A (recorded 2026-09-15; `papers/analysis/r27a_<cell>.json`)
+
+149 questions per cell. Among correct answers credited blind, share rejected with the reference (differing; matching; difference with
+95% interval):
+
+| Cell | Differing | Matching | Difference |
+|---|---|---|---|
+| direct, GPT-4.1 | 22.4% (362) | 0.0% (139) | +22.4 [+17.7, +27.0] |
+| cot, GPT-4.1 | 4.4% (387) | 0.7% (142) | +3.7 [+1.3, +6.2] |
+| verify, GPT-4.1 | 2.1% (388) | 0.7% (143) | +1.4 [−0.7, +3.2] |
+| solve, GPT-4.1 | 1.3% (389) | 0.0% (142) | +1.3 [+0.3, +2.5] |
+| direct, Sonnet 5 | 14.1% (382) | 0.0% (142) | +14.1 [+10.1, +18.4] |
+| cot, Sonnet 5 | 8.5% (388) | 0.7% (143) | +7.8 [+4.4, +11.4] |
+| verify, Sonnet 5 | 9.2% (391) | 0.7% (143) | +8.5 [+4.7, +12.7] |
+| solve, Sonnet 5 | 4.9% (389) | 0.0% (144) | +4.9 [+2.6, +7.5] |
+
+- **P-R27A1:** confirmed in all eight cells (the interval excludes zero in seven; verify-first GPT-4.1 includes zero).

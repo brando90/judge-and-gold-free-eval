@@ -1,0 +1,31 @@
+{
+ "part": "a",
+ "cell": "verify_gpt41",
+ "questions": 149,
+ "differing_rejected": [
+  0.020619,
+  [
+   0.007732,
+   0.035231
+  ],
+  388
+ ],
+ "matching_rejected": [
+  0.006993,
+  [
+   0.0,
+   0.022906
+  ],
+  143
+ ],
+ "difference": [
+  0.013626,
+  [
+   -0.006956,
+   0.031891
+  ]
+ ],
+ "predictions": {
+  "P-R27A1 blind-accepted differing correct answers rejected more often than matching ones (point)": "confirmed"
+ }
+}

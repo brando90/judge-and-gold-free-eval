@@ -1,0 +1,31 @@
+{
+ "part": "a",
+ "cell": "cot_gpt41",
+ "questions": 149,
+ "differing_rejected": [
+  0.043928,
+  [
+   0.02451,
+   0.065282
+  ],
+  387
+ ],
+ "matching_rejected": [
+  0.007042,
+  [
+   0.0,
+   0.023438
+  ],
+  142
+ ],
+ "difference": [
+  0.036885,
+  [
+   0.012703,
+   0.061995
+  ]
+ ],
+ "predictions": {
+  "P-R27A1 blind-accepted differing correct answers rejected more often than matching ones (point)": "confirmed"
+ }
+}
