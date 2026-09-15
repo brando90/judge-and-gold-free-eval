@@ -1,0 +1,47 @@
+{
+ "provider": "openai",
+ "cap_usd": 8.0,
+ "usd": 2.3049745999999995,
+ "calls": 1801,
+ "by_stage": {
+  "connectivity_ping_pre_protocol": {
+   "model": "gpt-5-mini-2025-08-07",
+   "usd": 2.325e-05,
+   "calls": 1,
+   "tokens": {
+    "prompt_tokens": 13,
+    "completion_tokens": 10,
+    "cached_tokens": 0,
+    "reasoning_tokens": 0
+   }
+  },
+  "passB": {
+   "model": "gpt-5-mini-2025-08-07",
+   "usd": 1.2495131000000004,
+   "calls": 1000,
+   "tokens": {
+    "prompt_tokens": 829406,
+    "completion_tokens": 521196,
+    "cached_tokens": 1024,
+    "reasoning_tokens": 439808
+   }
+  },
+  "passB_v1relabel": {
+   "model": "gpt-5-mini-2025-08-07",
+   "usd": 1.0554382499999992,
+   "calls": 800,
+   "tokens": {
+    "prompt_tokens": 614849,
+    "completion_tokens": 450863,
+    "cached_tokens": 0,
+    "reasoning_tokens": 379456
+   }
+  }
+ },
+ "prices_usd_per_million": {
+  "gpt-5-mini-2025-08-07": [
+   0.25,
+   2.0
+  ]
+ }
+}

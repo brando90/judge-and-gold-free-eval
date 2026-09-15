@@ -1,0 +1,49 @@
+{
+ "provider": "anthropic",
+ "cap_usd": 12.0,
+ "usd": 11.8623714,
+ "calls": 1259,
+ "by_stage": {
+  "connectivity_ping_pre_protocol": {
+   "model": "claude-sonnet-5",
+   "usd": 0.000648,
+   "calls": 2,
+   "tokens": {
+    "input_tokens": 32,
+    "output_tokens": 8
+   }
+  },
+  "passA": {
+   "model": "claude-sonnet-5",
+   "usd": 3.188078399999999,
+   "calls": 1002,
+   "tokens": {
+    "input_tokens": 219667,
+    "output_tokens": 145478,
+    "cache_creation_input_tokens": 8456,
+    "cache_read_input_tokens": 1050658
+   }
+  },
+  "adjudication": {
+   "model": "claude-opus-5",
+   "usd": 8.67364500000001,
+   "calls": 255,
+   "tokens": {
+    "input_tokens": 155719,
+    "output_tokens": 77636,
+    "cache_creation_input_tokens": 6360,
+    "cache_read_input_tokens": 263940
+   }
+  }
+ },
+ "prices_usd_per_million": {
+  "claude-sonnet-5": [
+   3.0,
+   15.0
+  ],
+  "claude-opus-5": [
+   15.0,
+   75.0
+  ]
+ }
+}
