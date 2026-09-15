@@ -141,7 +141,7 @@ Curated math sets are almost entirely single-answer. The multi-answer math items
 \section{Preregistration ledger}
 \label{app:ledger}
 
-Every confirmatory prediction was committed before its analysis was run, and for new model calls before the data existed; the verdict rule applied to them was adopted afterwards (below). Three experiments were registered on OSF with third-party timestamps\osf{} (links withheld for review; anonymized copies are in the supplementary material). The rest were committed to the project repository with a timestamp that predates the analysis\pre. Some of these rescored or re-analyzed outputs whose direction of effect was already known, such as the exact scorer (\cref{app:estimator}); the ledger names them. Analyses marked post hoc\ph{} carry no registration weight. The main text marks pre-specified re-analyses of an effect whose direction was already known with $\ddagger$; the appendix labels them \pre{} and the ledger names them. \Cref{tab:ledger} lists every experiment and its outcome as scored. Verdicts follow one rule. \emph{Confirmed} means the 95\% interval excludes zero in the predicted direction, or a registered point prediction holds. \emph{Not confirmed} means the interval includes zero. \emph{Falsified} means the interval excludes zero in the opposite direction, or a point prediction fails. The rule was written into a registration made partway through the project for later experiments, and applied retroactively to all earlier predictions after most of their outcomes were known; several predictions that the registration documents mark as falsified are therefore reported here as not confirmed. The re-derivation moved predictions in both directions. Seven moved from falsified to not confirmed (P-R2B1 to P-R2B3, P-R3D1, P-R3D2, P-2D2, and the Qwen2.5-7B cell of P-RC1). Ten moved against us: P-M2 and P-S5 to falsified, P-FM3 from confirmed to falsified, P-S2, P-MC2, and P-EX2 to split, and P-FR1, P-FK2, P-SC1, and P-SC2 from confirmed to not evaluable. Counting each registered prediction once, the ledger records 181 confirmed, 14 not confirmed, and 25 falsified, of 260. Seventeen predictions registered for several judges or training arms got different verdicts across them (\emph{split}; the table lists each verdict), 18 could not be evaluated, 2 were not scored, and 3 from an August 2026 command-line check are excluded (\cref{app:frontier}).
+Every confirmatory prediction was committed before its analysis was run, and for new model calls before the data existed; the verdict rule applied to them was adopted afterwards (below). Three experiments were registered on OSF with third-party timestamps\osf{} (links withheld for review; anonymized copies are in the supplementary material). The rest were committed to the project repository with a timestamp that predates the analysis\pre. Some of these rescored or re-analyzed outputs whose direction of effect was already known, such as the exact scorer (\cref{app:estimator}); the ledger names them. Analyses marked post hoc\ph{} carry no registration weight. The main text marks pre-specified re-analyses of an effect whose direction was already known with $\ddagger$; the appendix labels them \pre{} and the ledger names them. \Cref{tab:ledger} lists every experiment and its outcome as scored. Verdicts follow one rule. \emph{Confirmed} means the 95\% interval excludes zero in the predicted direction, or a registered point prediction holds. \emph{Not confirmed} means the interval includes zero. \emph{Falsified} means the interval excludes zero in the opposite direction, or a point prediction fails. The rule was written into a registration made partway through the project for later experiments, and applied retroactively to all earlier predictions after most of their outcomes were known; several predictions that the registration documents mark as falsified are therefore reported here as not confirmed. The re-derivation moved predictions in both directions. Seven moved from falsified to not confirmed (P-R2B1 to P-R2B3, P-R3D1, P-R3D2, P-2D2, and the Qwen2.5-7B cell of P-RC1). Ten moved against us: P-M2 and P-S5 to falsified, P-FM3 from confirmed to falsified, P-S2, P-MC2, and P-EX2 to split, and P-FR1, P-FK2, P-SC1, and P-SC2 from confirmed to not evaluable. Counting each registered prediction once, and from round 19 on once per judge or grader configuration, the ledger records 197 confirmed, 14 not confirmed, and 33 falsified, of 284. Seventeen predictions registered for several judges or training arms got different verdicts across them (\emph{split}; the table lists each verdict), 18 could not be evaluated, 2 were not scored, and 3 from an August 2026 command-line check are excluded (\cref{app:frontier}).
 
 {\small
 \setlength{\tabcolsep}{4pt}
@@ -210,6 +210,8 @@ GPT-4.1 as a benchmark grader (\cref{sec:cost,app:r24}) & commit & Referenced ac
 Full answer list, measured by grading (\cref{sec:fix,app:r24}) & commit & For Sonnet~5, Opus~5, and GPT-4.1 on the \textsc{MACE} subsample: grading AUROC with the list no more than 0.03 below blind (\textbf{confirmed}, 3 of 3); rise in false rejections at most 5 points (\textbf{confirmed}, 3 of 3); AUROC with the list above AUROC with one reference (\textbf{confirmed}, 3 of 3). \\
 Thinking and the full-credit sentence together (\cref{sec:fix,app:r24}) & commit & Sonnet~5 on the \textsc{MACE} subsample: rise in false rejections below both thinking alone and the sentence alone (\textbf{confirmed}); change in grading AUROC above both (\textbf{confirmed}); false rejections still rise (\textbf{not confirmed}: $-0.2$~pp \ci{-7.2}{+4.6}). \\
 Judges that reason before deciding (\cref{sec:cost,app:r25}) & commit & Chain-of-thought, verify-first, and solve-first prompts with GPT-4.1 and Sonnet~5 on the benchmark pool: referenced accuracy below the answer lists (\textbf{confirmed} for four; \textbf{not confirmed} for verify-first and solve-first GPT-4.1); blind accuracy within 5 points of the lists (\textbf{confirmed}, 6 of 6); credit for differing correct answers at least 10 points lower with the reference (\textbf{falsified}, 6 of 6: 0.8 to 8.6 points). \\
+Instruction against reasoning (\cref{sec:cost,app:r26}) & commit & For GPT-4.1 and Sonnet~5 on the benchmark pool: a direct correctness prompt with the reference below the answer lists (\textbf{confirmed}, both); the direct prompt blind within 5 points of the lists (\textbf{confirmed} for Sonnet~5; \textbf{falsified} for GPT-4.1, $-5.4$); the direct shortfall within 5 points of chain of thought (\textbf{confirmed} for Sonnet~5; \textbf{falsified} for GPT-4.1, $-17.4$ against $-3.0$); removing the HLE judge's match clause recovers at least 30 points (\textbf{confirmed}, both); and leaves it within 10 points of the lists (\textbf{falsified}, both). \\
+Grading with many wrong answers (\cref{sec:fix,app:r26}) & commit & For GPT-4.1 and Sonnet~5 on the \textsc{MACE} subsample: grading AUROC with the reference no more than 0.05 below blind (\textbf{confirmed} for solve-first; \textbf{falsified} for the direct and verify-first prompts, both judges); false acceptances up at most 5 points (\textbf{confirmed}, all six); AUROC of the HLE judge higher without its match clause (\textbf{confirmed}, both). \\
 Partial-answer rotation pilot & commit & A fixed first move scores higher when it matches the move shown as confirmed (\textbf{confirmed}, both judges). Not otherwise reported in this paper. \\
 \end{longtable}
 }
@@ -455,6 +457,62 @@ Qwen3-14B was run with the protocol of \cref{app:reasoning}, thinking off and on
 \footnotesize
 \setlength{\tabcolsep}{3pt}
 \begin{adjustbox}{max width=\linewidth}\input{tables/r4_toggle.tex}\end{adjustbox}
+
+\end{table}
+
+%==========================================================================================
+\FloatBarrier
+\section{Reasoning, verification, and a natural multi-answer pool}
+\label{app:reasoning}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.66\textwidth]{figures/figA_thinking.pdf}
+\caption{\textbf{On factual questions, thinking about halves the rise in false rejections.} Rise in false rejections on \textsc{MACE} without and with thinking: Sonnet~5 through the API (score only against adaptive thinking), Qwen3 judges (explanation first against thinking on). 95\% intervals.\pre}
+\label{fig:thinking}
+\end{figure}
+
+\paragraph{Thinking on versus off.}
+This pre-specified experiment reran the Qwen3-8B protocol of \cref{app:rotation} (rubric~$a$ ending in a ``Score: N'' line, temperature 0.6, top-p 0.95, top-k 20, up to 4,096 new tokens) with the chat template's thinking switch off and nothing else changed. The pools are the swap subsample and the 16-sample $k$-subsample of \cref{app:rotation}, plus a \textsc{MACE} subsample: every River or Language task with $k{>}1$ that has both matching and non-matching valid samples, with up to four samples each of matching-valid, non-matching-valid, and invalid answers (81 tasks, 825 samples). Twelve of 1,200 blind thinking-off replies on the $k$-subsample had no parseable score; none did elsewhere. \Cref{tab:toggle} gives the results. A second pre-specified toggle with Qwen3-14B repeats the pattern (\cref{tab:r4-toggle}). With thinking off, the loss under the swap is $-1.98$; with it on, $-0.12$. The \textsc{MACE} margin increase is $+7.07$ off and $+3.13$ on. With thinking on, Qwen3-14B's blind verification AUROC is 0.86 on the arithmetic subsample and 0.81 on the factual one (Qwen3-8B: 0.86 and 0.80).
+
+\begin{table}[htbp]
+\centering
+\caption{Qwen3-8B with thinking off and on, same weights and prompt. Swap rows: change in score of identical valid text (points). Margin rows: referenced-minus-blind margin (points). False rejections: share of non-matching valid answers scored 3 or below, referenced minus blind (points). 95\% CI; mean generated tokens.\pre}
+\label{tab:toggle}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{adjustbox}{max width=\linewidth}\input{tables/toggle.tex}\end{adjustbox}
+
+\end{table}
+
+With thinking on, valid swap samples receive 10 in 99.8\% of referenced replies and 96.2\% of blind ones; with thinking off, in 79.2\% and 76.9\%. The thinking judge's arithmetic scores therefore sit at the top of the scale whether or not the reference agrees, which leaves no room for a reference to raise them. A ceiling does not explain the missing loss, however: the same answers keep their scores when the reference moves off them ($+0.01$), although they were free to fall. On \textsc{MACE} its valid answers average 7.96 with the reference and 8.18 blind, away from the ceiling, and the anchoring returns. These diagnostics are post hoc.
+
+\paragraph{Sonnet~5 with and without thinking.}
+A pre-specified three-arm design tested the same contrast on a frontier judge through the Claude command-line tool, with the default system prompt replaced, no tools, and an empty working directory, on 60 replication-pool tasks with one sample each that gains, loses, or keeps neither reference under the swap. The score-only arm, with thinking off, anchors: $+3.57$ \ci{+2.57}{+4.55} for text the reference moves onto, $-2.85$ \ci{-3.85}{-1.92} for text it moves off, and $-0.07$ \ci{-1.18}{+1.10} for text matching neither, with 26.7\% \ci{20.4}{33.3} of correct non-matching answers scored 3 or below. Asking it to reason before a final ``Score: N'' line removes most of this, with thinking off ($+0.28$, $-0.20$ \ci{-0.37}{-0.05}, 0.4\% false rejections) or on ($+0.18$, $-0.32$ \ci{-0.67}{-0.07}, 0.4\%). All four registered predictions were confirmed; the reasoning and thinking arms were completed in a second session that re-ran only the calls that had failed.\pre{}
+A second pre-specified experiment asked the same question on 40 factual \textsc{MACE} tasks, with one matching-correct, one non-matching-correct, and one wrong sample each, blind and referenced. The added margin is $+3.98$ \ci{+2.70}{+5.30} with a score only and $+3.03$ \ci{+1.70}{+4.65} with thinking on (paired difference $-0.95$ \ci{-2.45}{+0.63}), and the share of non-matching correct answers scored 3 or below rises by 17.5 and 12.5 points. Blind, Sonnet~5 ranks both correct answers above the wrong one 94.4\% and 96.9\% of the time, so it anchors on these questions although it can verify them; all three registered predictions were confirmed.\pre
+
+\paragraph{Does acceptance mean verification, and does anchoring shrink where judges verify?}
+Keeping answers a judge scored 7 or above without a reference is a weak test of verification for the open judges: that filter keeps 93\% of correct replication-pool answers for Qwen2.5-7B but also 24\% of wrong ones, and 96\% and 30\% for phi-4 (any-format labels). It is closer to verification for Sonnet~5, which scores 7 or above on 7\% to 16\% of wrong answers in its subsamples, and for GPT-4.1 (12\%). Across the 120 replication tasks, Qwen2.5-7B's swap size (the mean gain of text the reference moves onto and loss of text it moves off, exact scorer) falls as its blind AUROC rises (Spearman $-0.40$ \ci{-0.53}{-0.25}): it is 5.2 and 5.4 points in the lower two thirds of tasks (mean blind AUROC 0.83 and 0.93) and 3.6 points in the top third (0.98). Verification therefore reduces the effect but does not remove it where the judge already separates correct from wrong answers almost perfectly.\ph
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{\textbf{Showing the reference raises the share of correct non-matching answers scored 3 or below, most on factual questions.} Points, referenced minus blind (95\% CI). Rows use different subsets and score readouts, so compare within a row; sources in \cref{tab:fr-sources}. Sonnet~5's two factual cells differ in design: the API cell uses 16-candidate subsamples (40 tasks), the command-line cells one answer per group (40 tasks).}
+\label{tab:false-reject}
+\setlength{\tabcolsep}{4pt}
+\begin{adjustbox}{max width=\linewidth}\input{tables/false_reject.tex}\end{adjustbox}
+\end{table}
+
+\paragraph{End to end on \textsc{MACE}.}
+The last pre-specified experiment measured selection accuracy on the benchmark's natural mix of $k$: all 133 River and Language tasks in the pass-rate band (34 with $k{=}1$, 99 with $k{>}1$), best of 64, rubric-$a$ selection. Blind and referenced scores are the frozen files of \cref{app:mace}, whose blind scores correlate with validity at $0.361$ (Qwen2.5-7B) and $0.477$ (phi-4); blind-then-reveal and the validity gate were run new with the prompts of \cref{app:setup}. We predicted that the reference would lower accuracy at $k{>}1$, that blind-then-reveal would beat it there, and that blind-then-reveal would be at least as accurate over the natural mix. All three predictions failed for both judges (\cref{tab:mace-accuracy}). The anchoring on these questions is large (\cref{app:mace}), but blind judges that verify factual answers this poorly gain more from the reference's help against wrong answers than they lose to its pull away from correct ones.
+
+\begin{table}[htbp]
+\centering
+\caption{\textsc{MACE} River and Language: best-of-64 selection accuracy (\%) by protocol, and differences in points (95\% CI).\pre}
+\label{tab:mace-accuracy}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{adjustbox}{max width=\linewidth}\input{tables/mace_accuracy.tex}\end{adjustbox}
 
 \end{table}
 
@@ -804,59 +862,32 @@ A pre-specified experiment graded the benchmark answers of \cref{sec:cost} with 
 
 %==========================================================================================
 \FloatBarrier
-\section{Reasoning, verification, and a natural multi-answer pool}
-\label{app:reasoning}
+\section{Instruction against reasoning, grading with wrong answers, and RL verifiers}
+\label{app:r26}
 
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.66\textwidth]{figures/figA_thinking.pdf}
-\caption{\textbf{On factual questions, thinking about halves the rise in false rejections.} Rise in false rejections on \textsc{MACE} without and with thinking: Sonnet~5 through the API (score only against adaptive thinking), Qwen3 judges (explanation first against thinking on). 95\% intervals.\pre}
-\label{fig:thinking}
-\end{figure}
-
-\paragraph{Thinking on versus off.}
-This pre-specified experiment reran the Qwen3-8B protocol of \cref{app:rotation} (rubric~$a$ ending in a ``Score: N'' line, temperature 0.6, top-p 0.95, top-k 20, up to 4,096 new tokens) with the chat template's thinking switch off and nothing else changed. The pools are the swap subsample and the 16-sample $k$-subsample of \cref{app:rotation}, plus a \textsc{MACE} subsample: every River or Language task with $k{>}1$ that has both matching and non-matching valid samples, with up to four samples each of matching-valid, non-matching-valid, and invalid answers (81 tasks, 825 samples). Twelve of 1,200 blind thinking-off replies on the $k$-subsample had no parseable score; none did elsewhere. \Cref{tab:toggle} gives the results. A second pre-specified toggle with Qwen3-14B repeats the pattern (\cref{tab:r4-toggle}). With thinking off, the loss under the swap is $-1.98$; with it on, $-0.12$. The \textsc{MACE} margin increase is $+7.07$ off and $+3.13$ on. With thinking on, Qwen3-14B's blind verification AUROC is 0.86 on the arithmetic subsample and 0.81 on the factual one (Qwen3-8B: 0.86 and 0.80).
+\paragraph{Instruction against reasoning.} A pre-specified experiment separated the instruction from written reasoning on the benchmark answers of \cref{sec:cost}. GPT-4.1 (temperature 0) and Sonnet~5 (thinking disabled) graded every answer with a direct prompt, ``Is the response a correct answer to the question?'', asking for a single ``correct: yes'' or ``correct: no'' line, blind and with the reference; with the HLE judge prompt verbatim; and with the same prompt after deleting ``do not argue for any answer different than [correct\_answer], focus only on whether the answers match'' and adding ``A response that gives a different answer that is also correct for the question is correct'' (\cref{tab:r26-instruction}). All settings were the same across prompts, so the verbatim rows differ slightly from \cref{tab:r24-standard}, where GPT-4.1 ran as simple-evals configures it. Without written reasoning, accuracy with the reference falls 17.4 points below the lists for GPT-4.1 and 10.1 for Sonnet~5 (12.1 and 8.4 below blind), against 3.0 and 6.0 with chain of thought; the registered prediction that the two would be within 5 points held for Sonnet~5 and failed for GPT-4.1. Removing the match clause recovers 35.4 and 52.5 points but leaves 31.2 and 12.6, so the registered 10-point bound failed for both.
 
 \begin{table}[htbp]
 \centering
-\caption{Qwen3-8B with thinking off and on, same weights and prompt. Swap rows: change in score of identical valid text (points). Margin rows: referenced-minus-blind margin (points). False rejections: share of non-matching valid answers scored 3 or below, referenced minus blind (points). 95\% CI; mean generated tokens.\pre}
-\label{tab:toggle}
+\caption{Instruction against reasoning on the benchmark pool: accuracy minus answer-list accuracy (points, 95\% CI), and the share of differing correct (396) and wrong (56) answers credited. 149 questions.\pre}
+\label{tab:r26-instruction}
 \footnotesize
 \setlength{\tabcolsep}{3pt}
-\begin{adjustbox}{max width=\linewidth}\input{tables/toggle.tex}\end{adjustbox}
-
+\begin{adjustbox}{max width=\linewidth}\input{tables/r26_instruction.tex}\end{adjustbox}
 \end{table}
 
-With thinking on, valid swap samples receive 10 in 99.8\% of referenced replies and 96.2\% of blind ones; with thinking off, in 79.2\% and 76.9\%. The thinking judge's arithmetic scores therefore sit at the top of the scale whether or not the reference agrees, which leaves no room for a reference to raise them. A ceiling does not explain the missing loss, however: the same answers keep their scores when the reference moves off them ($+0.01$), although they were free to fall. On \textsc{MACE} its valid answers average 7.96 with the reference and 8.18 blind, away from the ceiling, and the anchoring returns. These diagnostics are post hoc.
-
-\paragraph{Sonnet~5 with and without thinking.}
-A pre-specified three-arm design tested the same contrast on a frontier judge through the Claude command-line tool, with the default system prompt replaced, no tools, and an empty working directory, on 60 replication-pool tasks with one sample each that gains, loses, or keeps neither reference under the swap. The score-only arm, with thinking off, anchors: $+3.57$ \ci{+2.57}{+4.55} for text the reference moves onto, $-2.85$ \ci{-3.85}{-1.92} for text it moves off, and $-0.07$ \ci{-1.18}{+1.10} for text matching neither, with 26.7\% \ci{20.4}{33.3} of correct non-matching answers scored 3 or below. Asking it to reason before a final ``Score: N'' line removes most of this, with thinking off ($+0.28$, $-0.20$ \ci{-0.37}{-0.05}, 0.4\% false rejections) or on ($+0.18$, $-0.32$ \ci{-0.67}{-0.07}, 0.4\%). All four registered predictions were confirmed; the reasoning and thinking arms were completed in a second session that re-ran only the calls that had failed.\pre{}
-A second pre-specified experiment asked the same question on 40 factual \textsc{MACE} tasks, with one matching-correct, one non-matching-correct, and one wrong sample each, blind and referenced. The added margin is $+3.98$ \ci{+2.70}{+5.30} with a score only and $+3.03$ \ci{+1.70}{+4.65} with thinking on (paired difference $-0.95$ \ci{-2.45}{+0.63}), and the share of non-matching correct answers scored 3 or below rises by 17.5 and 12.5 points. Blind, Sonnet~5 ranks both correct answers above the wrong one 94.4\% and 96.9\% of the time, so it anchors on these questions although it can verify them; all three registered predictions were confirmed.\pre
-
-\paragraph{Does acceptance mean verification, and does anchoring shrink where judges verify?}
-Keeping answers a judge scored 7 or above without a reference is a weak test of verification for the open judges: that filter keeps 93\% of correct replication-pool answers for Qwen2.5-7B but also 24\% of wrong ones, and 96\% and 30\% for phi-4 (any-format labels). It is closer to verification for Sonnet~5, which scores 7 or above on 7\% to 16\% of wrong answers in its subsamples, and for GPT-4.1 (12\%). Across the 120 replication tasks, Qwen2.5-7B's swap size (the mean gain of text the reference moves onto and loss of text it moves off, exact scorer) falls as its blind AUROC rises (Spearman $-0.40$ \ci{-0.53}{-0.25}): it is 5.2 and 5.4 points in the lower two thirds of tasks (mean blind AUROC 0.83 and 0.93) and 3.6 points in the top third (0.98). Verification therefore reduces the effect but does not remove it where the judge already separates correct from wrong answers almost perfectly.\ph
+\paragraph{Grading with many wrong answers.} On the 40 \textsc{MACE} subsamples, the same judges graded every candidate with the direct, verify-first, and solve-first prompts, blind and with the reference, and with the verbatim and edited HLE judge (\cref{tab:r26-subsample}). With the reference, grading AUROC falls 0.04 to 0.09 under every prompt; only solve-first stays within the registered 0.05 for both judges. False acceptances rise by at most 3.2 points. The verbatim HLE judge rejects 96\% to 100\% of differing correct answers, at chance AUROC; removing its match clause brings AUROC to 0.61 and 0.82. For comparison, the full answer list puts AUROC 0.03 to 0.06 above blind (\cref{tab:r24-fix}).
 
 \begin{table}[htbp]
 \centering
-\small
-\caption{\textbf{Showing the reference raises the share of correct non-matching answers scored 3 or below, most on factual questions.} Points, referenced minus blind (95\% CI). Rows use different subsets and score readouts, so compare within a row; sources in \cref{tab:fr-sources}. Sonnet~5's two factual cells differ in design: the API cell uses 16-candidate subsamples (40 tasks), the command-line cells one answer per group (40 tasks).}
-\label{tab:false-reject}
-\setlength{\tabcolsep}{4pt}
-\begin{adjustbox}{max width=\linewidth}\input{tables/false_reject.tex}\end{adjustbox}
-\end{table}
-
-\paragraph{End to end on \textsc{MACE}.}
-The last pre-specified experiment measured selection accuracy on the benchmark's natural mix of $k$: all 133 River and Language tasks in the pass-rate band (34 with $k{=}1$, 99 with $k{>}1$), best of 64, rubric-$a$ selection. Blind and referenced scores are the frozen files of \cref{app:mace}, whose blind scores correlate with validity at $0.361$ (Qwen2.5-7B) and $0.477$ (phi-4); blind-then-reveal and the validity gate were run new with the prompts of \cref{app:setup}. We predicted that the reference would lower accuracy at $k{>}1$, that blind-then-reveal would beat it there, and that blind-then-reveal would be at least as accurate over the natural mix. All three predictions failed for both judges (\cref{tab:mace-accuracy}). The anchoring on these questions is large (\cref{app:mace}), but blind judges that verify factual answers this poorly gain more from the reference's help against wrong answers than they lose to its pull away from correct ones.
-
-\begin{table}[htbp]
-\centering
-\caption{\textsc{MACE} River and Language: best-of-64 selection accuracy (\%) by protocol, and differences in points (95\% CI).\pre}
-\label{tab:mace-accuracy}
+\caption{Grading on the 40-task \textsc{MACE} subsample: grading AUROC of differing correct answers against wrong answers, blind and with the reference, and changes in AUROC, false rejections, and false acceptances (95\% CI, task bootstrap); last row per judge: the HLE judge with its match clause removed against the verbatim judge.\pre}
+\label{tab:r26-subsample}
 \footnotesize
 \setlength{\tabcolsep}{3pt}
-\begin{adjustbox}{max width=\linewidth}\input{tables/mace_accuracy.tex}\end{adjustbox}
-
+\begin{adjustbox}{max width=\linewidth}\input{tables/r26_subsample.tex}\end{adjustbox}
 \end{table}
+
+\paragraph{Open RL-reward verifiers.} \pending{[R26-C results: General-Reasoner verifier and CompassVerifier-3B, one reference against the full list.]}
 
 %==========================================================================================
 \FloatBarrier

@@ -68,3 +68,13 @@ v2 lives in `papers/D-iclr-v2/`; v1 is not edited again.
 
 ## Status log
 - 2026-09-14: v2 directory created; W1 survey agent launched; OpenAI key verified (GPT-4.1, o3-mini, GPT-5.x available).
+- 2026-09-14: R24 registered (7326f3a), Amendment 1 (5da84d8), outcomes (df517ee): 33 C / 1 NC / 2 F.
+- 2026-09-14: advisor meeting feedback (practical relevance, general framing vs Lean, more judge types) -> R25 registered (099a0a6),
+  outcomes (a330d80): 10 C / 2 NC / 6 F; reasoning-first judges show a much smaller effect.
+- 2026-09-14: survey (35 of 43 graders + 34 papers use one reference) and prevalence v2 (0-4% on single-answer benchmarks, 5.5% RL data)
+  integrated; v2 draft committed (32987b0); main text within 9 pages. QA reviewer and AC critic launched.
+- 2026-09-14: QA review (5 wording blockers) and AC review (7/10: claims outran evidence) applied. R26 registered (686fee9) to answer
+  the AC's gaps: A instruction vs reasoning (direct −17/−10, HLE verbatim −67/−65, HLE minus match clause −31/−13, CoT −3/−6),
+  B grading with many wrong answers (solve-first costs least, AUROC −0.04/−0.05; FA ≤ +3.2 pp; HLE edit +0.13/+0.32), C open RL
+  verifiers (running locally in chunks after three low-memory stops; Amendments 1-3). Sections 7-8 rewritten around the instruction
+  ladder; recipe scoped to evidence; appendix reordered; Figure 4 split into full and zoomed panels. Second QA review launched.

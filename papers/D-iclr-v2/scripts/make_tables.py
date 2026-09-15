@@ -1140,6 +1140,10 @@ except (KeyError, TypeError, FileNotFoundError) as e:
     print("[skip round-23 table]", repr(e))
 
 
+def fs3s(v):  # value above a 3-decimal interval whose bounds keep their sign (e.g. -0.000)
+    return stk(f(v[0], 3), "{\\scriptsize$[" + format(v[1][0], "+.3f") + "," + format(v[1][1], "+.3f") + "]$}")
+
+
 # ---------------------------------------------------------------- round 24 (v2): standard graders and fixes
 try:
     CELLS = (("s41", "SimpleQA grader", "GPT-4.1"), ("h41", "BrowseComp judge", "GPT-4.1"), ("h03", "HLE judge", "o3-mini"),
@@ -1161,7 +1165,7 @@ try:
     for j, lab in (("sonnet", "Sonnet~5"), ("opus", "Opus~5"), ("gpt41", "GPT-4.1")):
         d = J(f"r24c_{j}.json")
         body.append(f"{lab} & {d['G_blind'][0]:.3f} & {d['G_ref'][0]:.3f} & {d['G_reflist'][0]:.3f} & {fs(d['G_ref_minus_blind'], 3)} & "
-                    f"{fs(d['G_reflist_minus_blind'], 3)} & {p4s(d['FR_reflist_minus_blind'])} \\\\")
+                    f"{fs3s(d['G_reflist_minus_blind'])} & {p4s(d['FR_reflist_minus_blind'])} \\\\")
     d = J("r24d_think_sentence.json")
     body += ["\\midrule", "\\multicolumn{7}{@{}l}{\\emph{Sonnet~5, when the answers are not listed: change against blind}}\\\\",
              " & \\multicolumn{3}{l}{Setting} & AUROC & & False rejections (pp) \\\\"]
@@ -1234,6 +1238,11 @@ try:
         body.append("\\addlinespace")
     body[-1] = "\\bottomrule"
     write("r26_instruction.tex", "\n".join(body + ["\\end{tabular}"]) + "\n")
+    print("wrote r26 instruction table")
+except (KeyError, TypeError, FileNotFoundError) as e:
+    print("[skip r26 instruction]", repr(e))
+try:
+    JN = (("gpt41", "GPT-4.1"), ("sonnet", "Sonnet~5"))
     body = ["\\begin{tabular}{llcccc}", "\\toprule",
             "Judge & Prompt & AUROC, blind $\\to$ reference & AUROC change & False rejections change (pp) & False acceptances change (pp) \\\\", "\\midrule"]
     for j, jl in JN:
@@ -1246,6 +1255,10 @@ try:
         body.append("\\addlinespace")
     body[-1] = "\\bottomrule"
     write("r26_subsample.tex", "\n".join(body + ["\\end{tabular}"]) + "\n")
+    print("wrote r26 subsample table")
+except (KeyError, TypeError, FileNotFoundError) as e:
+    print("[skip r26 subsample]", repr(e))
+try:
     body = ["\\begin{tabular}{lcccccc}", "\\toprule",
             " & \\multicolumn{2}{c}{Accuracy minus list (points)} & \\multicolumn{2}{c}{Differing correct credited (\\%)} & \\multicolumn{2}{c}{Wrong credited (\\%)} \\\\",
             "\\cmidrule(lr){2-3}\\cmidrule(lr){4-5}\\cmidrule(lr){6-7}",

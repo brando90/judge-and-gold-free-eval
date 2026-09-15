@@ -962,14 +962,14 @@ if all(A24.values()) and B24 and all(C24.values()) and D24 and all(r[1] for r in
     H = 0.132 * (nt + nl) + 0.95
     fig = plt.figure(figsize=(5.5, H))
     unit = 0.132 / H
-    bottom = 0.50 / H
+    bottom = 0.58 / H
     gap = 0.36 / H
     a2 = fig.add_axes([0.43, bottom, 0.29, unit * nl])
     a1 = fig.add_axes([0.43, bottom + unit * nl + gap, 0.29, unit * nt])
     b = fig.add_axes([0.855, bottom + unit * nl + gap + unit * nt * 0.35, 0.145, unit * nt * 0.55])
     rows_plot(a1, top, 7.8)
     rows_plot(a2, low, 7.8)
-    a2.set_xlim(-36, 3)
+    a2.set_xlim(-38, 3)
     a1.set_xlabel("accuracy minus answer-list accuracy (points)", fontsize=7.8, labelpad=1.0)
     a2.set_xlabel("accuracy minus answer-list accuracy (points)", fontsize=7.8, labelpad=1.0)
     a1.set_title("a   Benchmark scores", loc="left", fontsize=8.8, fontweight="bold", x=-1.3)
