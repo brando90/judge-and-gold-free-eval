@@ -69,3 +69,10 @@ recorded here as a dated amendment before its results are analyzed. 14 predictio
 | solve, Sonnet 5 | 4.9% (389) | 0.0% (144) | +4.9 [+2.6, +7.5] |
 
 - **P-R27A1:** confirmed in all eight cells (the interval excludes zero in seven; verify-first GPT-4.1 includes zero).
+
+## Amendment 1 (2026-09-15, before any R27-B label or grader call)
+
+The first run of `scripts/r27_run.sh` used a Python interpreter without the `anthropic` SDK: the Haiku 4.5 generator failed at import,
+and pool building, labeling and grading then failed for lack of the pool, so no label or grader call was made. GPT-4.1-mini's 200 answers
+were generated as registered; 43 of them reached the 2,048-token limit before an answer line and are kept as generated (they will be
+labeled and graded as given). The driver now calls an explicit interpreter that has both SDKs; nothing else changes.
