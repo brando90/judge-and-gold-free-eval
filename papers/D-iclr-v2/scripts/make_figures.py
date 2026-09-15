@@ -906,9 +906,11 @@ if all(A24.values()) and B24 and all(C24.values()) and D24 and all(r[1] for r in
     top = [("hdr", "Benchmark graders, verbatim prompts")]
     for c, lab in STD:
         top.append((lab, pts(A24[c]["pooled"]["ref_minus_list"]), pts(A24[c]["pooled"]["reflist_minus_list"]), None))
-    if all(R26C.values()):
+    if any(R26C.values()):
         top.append(("hdr", "Open RL-reward verifiers"))
         for v, lab in (("general", "General-Reasoner verifier"), ("compass", "CompassVerifier-3B")):
+            if not R26C[v]:
+                continue
             cd = R26C[v]["conditions"]
             top.append((lab, pts(cd["v|ref"]["minus_list"]), pts(cd["v|reflist"]["minus_list"]), None))
     top.append(("hdr", "Score rubric of this paper"))

@@ -132,3 +132,25 @@ deletes each generation's tensors and calls `torch.mps.empty_cache()` after ever
 watermark, which PyTorch rejected before loading the model; no generation ran). A third low-memory stop came after 154 more General-Reasoner generations,
 so the runs continue in fresh processes of at most 100 generations each (`--limit 100`), which releases all memory between chunks. Decoding (greedy, same model, prompt and token limits) is unchanged; completed generations are
 kept. No R26-C output had been analyzed; we had looked only at run logs and line counts.
+
+## Note on interim inspection (2026-09-14)
+
+To answer a status question from the lead author, we counted credited answers by group in the partial General-Reasoner output at
+1,011 of 1,192 generations (one reference: 5.6% of differing correct answers; full list: 68.3%, with 30.0% of wrong answers). No
+setting was changed afterwards, and the registered producer was run only after the verifier finished.
+
+## Outcome, R26-C General-Reasoner verifier (recorded 2026-09-14; `papers/analysis/r26c_general.json`)
+
+1,192 generations; 12 replies ran to 512 tokens without a "Final Decision" line and score as incorrect under the official rule. 149
+questions complete. One reference: accuracy −62.4 points below the lists [−67.4, −57.4], crediting 5.8% of differing correct answers,
+97.2% of matching correct answers and 8.9% of wrong answers. Full list: −24.2 [−28.7, −20.0], crediting 67.4%, 77.8% and 30.4%.
+- **P-R26C1:** confirmed. **P-R26C2:** falsified (−24.2). **P-R26C3:** confirmed (+61.6 pp [+56.4, +66.6]).
+
+## Outcome, R26-C CompassVerifier-3B (recorded 2026-09-14; `papers/analysis/r26c_compass.json`)
+
+1,192 generations, every reply a single letter (682 A, 510 B), none missing. 149 questions complete. One reference: −66.6 points below
+the lists [−71.8, −61.6], crediting 0.0% of differing correct answers, 99.3% of matching correct answers and 0.0% of wrong answers.
+Full list: −0.2 [−0.8, +0.5], crediting 99.2%, 100.0% and 3.6%.
+- **P-R26C1:** confirmed. **P-R26C2:** confirmed. **P-R26C3:** confirmed (+99.2 pp [+98.3, +100.0]).
+
+R26 totals: 30 predictions; 21 confirmed, 9 falsified (R26-A 6/4, R26-B 10/4, R26-C 5/1).

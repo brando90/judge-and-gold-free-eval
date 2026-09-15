@@ -1,0 +1,86 @@
+{
+ "part": "c",
+ "judge": "compass",
+ "questions": 149,
+ "conditions": {
+  "v|ref": {
+   "minus_list": [
+    -0.666107,
+    [
+     -0.718121,
+     -0.615772
+    ]
+   ],
+   "nonmatch_credited": [
+    0.0,
+    [
+     0.0,
+     0.0
+    ],
+    396
+   ],
+   "match_credited": [
+    0.993056,
+    [
+     0.976744,
+     1.0
+    ],
+    144
+   ],
+   "wrong_credited": [
+    0.0,
+    [
+     0.0,
+     0.0
+    ],
+    56
+   ]
+  },
+  "v|reflist": {
+   "minus_list": [
+    -0.001678,
+    [
+     -0.008389,
+     0.005034
+    ]
+   ],
+   "nonmatch_credited": [
+    0.992424,
+    [
+     0.983463,
+     1.0
+    ],
+    396
+   ],
+   "match_credited": [
+    1.0,
+    [
+     1.0,
+     1.0
+    ],
+    144
+   ],
+   "wrong_credited": [
+    0.035714,
+    [
+     0.0,
+     0.09434
+    ],
+    56
+   ]
+  }
+ },
+ "reflist_minus_ref_nonmatch_credit": [
+  0.992424,
+  [
+   0.983463,
+   1.0
+  ],
+  396
+ ],
+ "predictions": {
+  "P-R26C1 one reference below list (interval)": "confirmed",
+  "P-R26C2 full list within 5 points of list (point)": "confirmed",
+  "P-R26C3 differing-correct credit full list minus one reference >= 20 pp (point)": "confirmed"
+ }
+}

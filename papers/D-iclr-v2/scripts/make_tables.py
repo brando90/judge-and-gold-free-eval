@@ -1264,6 +1264,8 @@ try:
             "\\cmidrule(lr){2-3}\\cmidrule(lr){4-5}\\cmidrule(lr){6-7}",
             "Verifier & One reference & Full list & One ref. & Full list & One ref. & Full list \\\\", "\\midrule"]
     for v, vl in (("general", "General-Reasoner verifier (1.5B)"), ("compass", "CompassVerifier-3B")):
+        if not (A / f"r26c_{v}.json").exists():
+            continue
         d = J(f"r26c_{v}.json")["conditions"]
         r, l = d["v|ref"], d["v|reflist"]
         body.append(f"{vl} & {p4s(r['minus_list'])} & {p4s(l['minus_list'])} & {100 * r['nonmatch_credited'][0]:.1f} & {100 * l['nonmatch_credited'][0]:.1f} & "
