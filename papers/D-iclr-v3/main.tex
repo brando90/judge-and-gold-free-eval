@@ -1,0 +1,315 @@
+% ICLR 2027 submission, v3 (deliberate rewrite of v2, tag paper-d-iclr-v2). Numbers: papers/analysis/*.json (produced by committed scripts)
+% and the registration ledgers. Run scripts/check_numbers.py before committing.
+
+\documentclass{article}
+\usepackage{iclr2027_conference,times}
+\input{math_commands.tex}
+
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor={blue!50!black},citecolor={blue!50!black},urlcolor={blue!50!black}]{hyperref}
+\usepackage{url}
+\usepackage[capitalise,noabbrev]{cleveref}
+\usepackage{caption}
+\captionsetup{font=small,labelfont=bf}
+\captionsetup[table]{skip=4pt}
+\usepackage{enumitem}
+\usepackage{longtable}
+\usepackage{adjustbox}
+\usepackage{xspace}
+\usepackage{placeins}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc}
+
+\newcommand{\sd}{\textsc{sd}\xspace}
+\newcommand{\ci}[2]{{\scriptsize$[#1,#2]$}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+% Registration status. Main text: unmarked = pre-specified (OSF or timestamped commit); dagger = post hoc;
+% double dagger = pre-specified re-analysis of an effect whose direction was known. The appendix keeps the full labels.
+\newcommand{\osf}{\textsuperscript{\textsc{osf}}}
+\newcommand{\pre}{\textsuperscript{\textsc{pre}}}
+\newcommand{\reana}{\textsuperscript{$\ddagger$}}
+\newcommand{\ph}{\textsuperscript{$\dagger$}}
+\newcommand{\pending}[1]{\textcolor{red}{#1}}
+
+\title{The Reference Is Not an Answer Key:\\LLM Judges Favor the Correct Answer They Are Shown}
+
+\author{Anonymous authors\\Paper under double-blind review}
+
+\begin{document}
+\maketitle
+\raggedbottom
+
+\begin{abstract}
+LLM judges often grade with a reference answer, including the graders that ship with SimpleQA, BrowseComp, and Humanity's Last Exam, on the premise that it acts as an answer key: a correct response should score the same whichever correct answer is shown.
+We show that this premise fails when a question has several correct answers.
+We separate three readings of a reference (an answer key, the only evidence for a judge that cannot verify, or an answer the judge rewards for matching) and test predictions that tell them apart.
+Swapping the reference between two correct answers moves the score of identical text by about 3 to 5 points out of 10, and correct answers that differ from the reference are rejected far more often, even ones the judge accepts without it.
+Where the premise fails, the consequence is large: on factual questions with several answers, benchmark graders run verbatim and open RL-reward verifiers under-credit correct answers by 30 to 67 points.
+Much of this gap comes from telling the grader to match; asking whether an answer is correct shrinks it, and giving the grader every correct answer closes it for LLM graders.
+Across eleven LLM judges, two verifiers, and a ledger of every registered prediction, the evidence suggests that on such questions a low reference-guided score often reflects how the grader was instructed rather than what the model answered.
+\end{abstract}
+
+\begin{figure}[!b]
+\centering
+\resizebox{0.8\textwidth}{!}{\input{figures/fig1_concept.tex}}
+\caption{\textbf{A judge's score follows the correct answer it is shown.}
+\textbf{(a)}~A constructed task with two correct answers and one of its candidate replies (abridged; selection rule and full reply in \cref{app:setup}).
+\textbf{(b)}~Qwen2.5-7B scores the same text without a reference and with each correct answer as the reference. The effect over the whole pool is in \cref{sec:p1}.}
+\label{fig:concept}
+\end{figure}
+
+\section{Introduction}
+\label{sec:intro}
+
+Many evaluations grade a model's answer by showing an LLM judge a reference answer.
+The graders that ship with SimpleQA, BrowseComp, and Humanity's Last Exam (HLE) work this way~\citep{wei2024simpleqa,wei2025browsecomp,phan2025hle}, as do most of the evaluation libraries and RL reward pipelines we surveyed (\cref{app:survey}).
+The practice rests on a premise that is rarely stated: the reference acts as an answer key, so a correct response scores the same whichever correct answer is shown.
+When a question has one correct answer the premise is harmless, and references make judges more accurate~\citep{zheng2023judging,refguided2024}.
+
+Many questions have more than one correct answer: name a country where a language is spoken, give an example, find a number that satisfies a set of constraints.
+\Cref{fig:concept} shows what can happen then.
+A judge scores a correct candidate highly without a reference, low when the reference is a different correct answer, and highly again when the reference is the answer the candidate gave.
+The text never changed; only the correct answer the judge was shown did.
+
+\paragraph{Three readings of a reference.}
+If the reference is an \emph{answer key}, the judge checks a candidate against every correct answer, and a correct answer scores the same whichever one is shown.
+Under \emph{verification failure}, the judge cannot tell on its own that a different answer is correct, so the reference is its only evidence.
+Under \emph{agreement}, the judge favors the correct answer that matches the reference even when it can recognize the others, whether because it rewards agreement, because it assumes one intended answer, or because the prompt tells it to use the reference.
+We test three predictions; P1 and P2 rule out the answer key, and P3 tests for an agreement component beyond verification failure.
+\begin{itemize}[leftmargin=1.5em,itemsep=2pt,topsep=2pt]
+\item[\textbf{P1}] \textbf{The score follows the reference.} Swapping which correct answer is the reference moves the score of unchanged text (\cref{sec:p1}).
+\item[\textbf{P2}] \textbf{Correct answers that differ from the reference are graded worse.} With several correct answers they lose ground against wrong answers; with one, every reading allows the reference to help (\cref{sec:p2}).
+\item[\textbf{P3}] \textbf{The effect persists after blind acceptance.} It remains for correct answers the judge already accepts without a reference, which verification failure alone does not predict (\cref{sec:p3}).
+\end{itemize}
+
+\paragraph{What we find.}
+All three predictions hold (\cref{tab:summary}).
+Swapping the reference moves identical text by 3 to 5 points out of 10, and correct answers that differ from the reference are rejected even when the judge accepted them without it, including under prompts that ask only whether an answer is correct.
+The effect has practical weight: run as configured on factual questions with several answers, graders shipped with benchmarks and open RL-reward verifiers under-credit correct answers by 30 to 67 points (\cref{sec:cost}).
+Those benchmarks rarely contain such questions, but the same kind of grader is reused where answers are open, as in RL training data.
+Much of the shortfall comes from instructing the grader to match: asking whether the answer is correct shrinks it, and giving the grader every correct answer removes it for LLM graders (\cref{sec:fix}).
+
+\paragraph{Scope.}
+The failure is not about math.
+Factual answers, agent outputs, and RL rewards on general reasoning data have no formal checker, which is why LLM judges grade them.
+We use arithmetic tasks as a controlled testbed, because a checker lists every correct answer, and factual questions because benchmark graders operate there.
+Prior work comes close without isolating this failure: \citet{fixation2025} measure fixation on the reference's method with flawed solutions, and \citet{judgingref2026} and \citet{krumdick2025nofreelabels} replace the reference with a wrong one.
+
+\begin{table}[t]
+\centering
+\small
+\caption{\textbf{What each prediction tests and what we observed.} Numbers, intervals, and the registered predictions that failed near each row are in the cited sections and the ledger (\cref{app:ledger}).}
+\label{tab:summary}
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular}{L{2.9cm}L{1.9cm}L{4.9cm}L{2.9cm}}
+\toprule
+Question & Rules out & Key evidence & Verdict \\
+\midrule
+\textbf{P1} Does the score follow the reference? & Answer key & Identical text moves 3--5 points when the reference moves to another correct answer (\cref{sec:p1}) & Holds; near zero on arithmetic with a thinking mode \\
+\addlinespace[2pt]
+\textbf{P2} Are differing correct answers graded worse? & Answer key & Their grading against wrong answers drops under every labeling; with one correct answer the reference helps (\cref{sec:p2}) & Holds for all judges but GPT-4.1 on factual questions \\
+\addlinespace[2pt]
+\textbf{P3} Does it persist after blind acceptance? & Verification failure alone & Answers accepted blind are rejected once another correct answer is the reference, also under correctness prompts; a second blind call does not do this (\cref{sec:p3}) & Holds \\
+\addlinespace[2pt]
+\emph{Consequence} & --- & Shipped benchmark graders and RL verifiers under-credit multi-answer questions heavily (\cref{sec:cost}) & Large where it applies; such questions are rare on those benchmarks \\
+\addlinespace[2pt]
+\emph{Fix} & --- & A full answer list closes the gap for LLM graders; correctness prompts shrink it (\cref{sec:fix}) & Holds for LLM graders, not for one small verifier \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{A model of the three readings}
+\label{sec:model}
+
+Let $A^\star$ be the set of correct answers to a question and $a^\star \in A^\star$ the one shown as the reference. Let $b(c)$ be a judge's blind score for candidate $c$, $s(c; a^\star)$ its referenced score, and $v_c \in [0, 1]$ how reliably the judge recognizes $c$ as correct without a reference. We write
+\begin{equation}
+\begin{aligned}
+s(c; a^\star) \;\approx\;& \beta\, b(c) \;+\; \kappa\, \mathbb{I}[\,\mathrm{ans}(c) \in A^\star\,] \;+\; \lambda(v_c)\, \mathbb{I}[\,\mathrm{ans}(c) = a^\star\,] \\
+&+\; \gamma\, \mathbb{I}[\,c \text{ is wrong and contains } a^\star\,] \;+\; \varepsilon .
+\end{aligned}
+\label{eq:model}
+\end{equation}
+An answer key checks candidates against the whole set: $\kappa \ge 0$ and $\lambda = \gamma = 0$. The other two readings reward matching the one answer shown. Under verification failure the bonus vanishes once the judge can recognize the answer itself ($\lambda(v) = \lambda_0(1-v)$); under agreement it does not ($\lambda(1) > 0$).
+With one correct answer, $A^\star = \{a^\star\}$ and the $\kappa$ and $\lambda$ terms coincide, so every reading allows the reference to help (P2$'$).
+With several, both non-key readings predict P1 (swapping $a^\star$ moves fixed text by about $\lambda$) and P2: an answer key ($\kappa > 0$) raises the AUROC of every correct answer against wrong ones, whereas a fall for correct answers that differ from $a^\star$ needs the referenced score to keep only part of the judge's own assessment ($\beta < 1$) or wrong answers containing $a^\star$ to share the bonus ($\gamma > 0$).
+The two non-key readings differ where $v_c$ is high, which P3 tests (\cref{sec:p3}).
+\Cref{eq:model} organizes the predictions; it is not a fitted model. \Cref{sec:cost} suggests that the grader's instruction scales the agreement term $\lambda$.
+
+\section{Setup}
+\label{sec:setup}
+
+\paragraph{Tasks.}
+Our own tasks come from five constraint families (remainder systems, subset sums, Goldbach pairs, divisor counts, digit sums); each stores its full set of correct answers and one member, drawn at random, as the reference.
+The \emph{replication pool} (120 tasks) replicates an exploratory observation on \textsc{RewardBench-2} Ties, and the \emph{$k$-pool} has 75 tasks with exactly $k \in \{1,2,4,8,16\}$ correct answers.
+\textsc{MACE} contributes factual questions with 1, 2, 4, or 6 correct answers from its River and Language domains; the reference is drawn at random from each answer list, and answers are matched to it by normalized string containment (\cref{app:mace}). MATH-500~\citep{hendrycks2021math} supplies unique answers.
+
+\paragraph{Candidates, judges, and prompts.}
+Llama-3.1-8B-Instruct writes 64 samples per task (Qwen2.5-7B for MATH-500). Each sample is judged \emph{blind}, from the question and the candidate, and \emph{referenced}, with the reference under the heading ``Reference answer (trusted)''.
+The core judges are four open models that output a score, Qwen2.5-7B, phi-4, Qwen2.5-14B, and gemma-2-9b (scored as the expected value over the score tokens); Claude Sonnet~5 and Opus~5 through the Anthropic API; and GPT-4.1. Haiku~4.5, o3-mini, and two open RL-reward verifiers also grade benchmark answers (\cref{sec:cost}), and reasoning variants are in \cref{app:reasoning}.
+Our referenced rubric asks the judge to use the reference to check the candidate, which invites comparison; the effect also appears under the verbatim MT-Bench template, under prompts that ask only whether an answer is correct, and for answers the judge accepted blind (\cref{sec:p1,sec:p3,sec:cost}). All prompts are in \cref{app:setup}.
+
+\paragraph{Reading answers.}
+Our registered checkers read only answers inside \texttt{\textbackslash boxed\{\}}, which 38\% to 43\% of replies ignore, so the constructed pools use \emph{any-format labels} that credit a final answer stated in any format. A registered audit by Claude Opus~5 agrees with these labels on 91\% of unboxed replies (\cref{app:grid}). Registered labels, model-read labels, and boxed replies alone give the same sign for every grading AUROC change of the open judges and GPT-4.1; only the size changes.
+
+\paragraph{Measurements and conventions.}
+The \emph{swap change} is the change in score of identical text when the reference moves. The \emph{false-rejection rate} is the share of correct answers that differ from the reference scored 3 or below, and the \emph{grading AUROC} is the per-task AUROC for separating those answers from wrong answers. Changes are referenced minus blind, with task- or question-level bootstrap intervals. Unmarked estimates were pre-specified in a timestamped commit or on OSF; \ph{} marks post hoc estimates and \reana{} pre-specified re-analyses of an effect whose direction was already known. \Cref{app:ledger} lists every registered prediction and its outcome, including failures.
+
+\section{Prediction 1: the score follows the reference}
+\label{sec:p1}
+
+We re-judged the replication pool's byte-identical samples with the reference moved to another correct answer.
+Text the reference moves onto gains 3.0 to 5.3 points under Qwen2.5-7B, phi-4, and Sonnet~5, and text it moves off loses 2.7 to 5.4, while correct text that matches neither reference barely moves (\cref{app:rotation}).\reana{}
+All twelve registered cells went as predicted, and on nine MathConstraint puzzles swapping the reference between two valid solutions moves a fixed candidate by a similar amount (\cref{app:mathconstraint}).
+The swap survives the verbatim MT-Bench template, which drops ``trusted'' and asks for an explanation first. It mostly vanishes when the reference is written as an expression or masked inside a worked solution (\cref{app:mechanism}).
+
+\section{Prediction 2: correct answers that differ from the reference are graded worse}
+\label{sec:p2}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig2_onevsseveral.pdf}
+\caption{\textbf{With one correct answer the reference helps; with several, it lowers grading.} Change from showing the reference (referenced minus blind, per task, 95\% intervals). \textbf{(a)}~Best-of-64 accuracy; on MATH-500 the reference shows only the final answer. \textbf{(b)}~Grading AUROC; constructed pools use any-format labels (grey ticks: boxed replies only), \textsc{MACE} its answer lists. Registration status per value in \cref{app:ledger}.}
+\label{fig:onevsseveral}
+\end{figure}
+
+\paragraph{Several correct answers.}
+Correct answers that differ from the reference are rejected more often: Qwen2.5-7B scores 28\% of them 3 or below with the reference on the replication pool, against 0.4\% blind. Their grading AUROC against wrong answers falls by 0.06 to 0.16 on factual questions\ph{} and by 0.17 to 0.27 for the four open judges on the constructed pools\ph{} (\cref{fig:onevsseveral}b). The direction holds under every labeling; boxed replies alone give the smallest falls.
+
+\paragraph{One correct answer.}
+With one correct answer the reference helps, as every reading allows: showing only the final answer raises best-of-64 accuracy on MATH-500 by about 30 points for Qwen2.5-7B and 14B\reana{} (\cref{fig:onevsseveral}a).
+
+\paragraph{Verdict.}
+P2 holds for Sonnet~5, Opus~5, Qwen2.5-7B, and phi-4 on factual questions and for the four open judges on the constructed pools; GPT-4.1's factual interval includes zero. Selection among sampled answers is less exposed than grading (\cref{app:estimator}).
+
+\section{Prediction 3: the effect persists after blind acceptance}
+\label{sec:p3}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig3_acceptance.pdf}
+\caption{\textbf{The reference rejects correct answers the judge already accepts.}
+Correct answers the judge accepts blind (a blind 10 for Sonnet~5 and Opus~5; for open judges, the blind score that at most 3\% of wrong answers reach). Filled circles: share of those that differ from the reference scored 3 or below once it is shown; open circles: answers that match it; crosses: a second blind call. Pre-specified: the second blind calls and Opus~5's shares; the rest is post hoc.}
+\label{fig:reasoning}
+\end{figure}
+
+\paragraph{Answers the judge accepts without a reference.}
+Of the correct factual answers four judges accept blind that differ from the reference, between 19\% and 83\% score 3 or below once it is shown, and none of those that match it do (\cref{fig:reasoning}).\ph{} This is not score noise: a second blind call through the same interface rejects 2 of the 282 accepted differing answers of the two API judges, against 78 once the reference is shown.
+The same pattern holds under prompts that ask only whether an answer is correct: across four such prompts, GPT-4.1 and Sonnet~5 withdraw credit from 1\% to 22\% of the differing correct answers they accepted blind, and from at most 0.7\% of matching ones\reana{} (\cref{app:r27}).
+
+\paragraph{Verdict.}
+P3 holds for all judges with a usable acceptance test. Verification difficulty may explain part of the effect for some judges, but the remainder, among answers already accepted blind, is consistent with an agreement component; blind acceptance is a proxy for verification, not a direct test of it.
+
+\section{How much it matters, and what sets the size}
+\label{sec:cost}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig4_graders.pdf}
+\caption{\textbf{Graders told to match under-count correct answers; asking whether the answer is correct shrinks the gap, and the full answer list closes it.}
+\textbf{(a)}~Accuracy of four models' answers to 149 \textsc{MACE} questions with several correct answers, minus their answer-list accuracy. Upper: benchmark graders run verbatim with their configured judges (GPT-4.1; o3-mini) and with Sonnet~5, open RL-reward verifiers, and our score rubric. Lower, on a different scale: prompts that ask whether the answer is correct, and the HLE judge with its match clause removed.
+\textbf{(b)}~Grading AUROC change against blind on the 40-task \textsc{MACE} subsample. 95\% intervals; all values pre-specified.}
+\label{fig:graders}
+\end{figure}
+
+\paragraph{Graders shipped with benchmarks.}
+We asked Llama-3.1-8B-Instruct, Claude Haiku~4.5, Sonnet~5, and Opus~5 for one answer to each of 149 \textsc{MACE} questions with several correct answers, and graded the answers with the SimpleQA grader and the judge shared by BrowseComp and HLE, copied from their repositories and run with their configured judge models, and with Sonnet~5 (\cref{app:r24}).
+Shown one reference, the SimpleQA grader credits about half of the correct answers that differ from it and the BrowseComp/HLE judge almost none, so accuracy falls 30 to 34 and 65 to 67 points below the answer lists (\cref{fig:graders}a).
+Two open verifiers used for RL rewards behave like the HLE judge: General-Reasoner's verifier and CompassVerifier-3B credit 6\% and 0\% of those answers (\cref{app:r26}).
+
+\paragraph{Where it matters.}
+These benchmarks were written for single answers: 0\% to 3\% of sampled SimpleQA, BrowseComp, and HLE questions admit several, a lower bound from LLM annotators who agreed poorly (\cref{app:prevalence}), so their own leaderboards move by a few points at most.
+The risk is reuse where answers are open.
+A single-reference verifier rewards the WebInstruct-verified training set, in which 5.5\% to 18\% of questions admit several answers~\citep{ma2025generalreasoner}; if a policy's correct answers there differ from the reference as often as our models' answers do, and the verifier credits them as rarely as it does here, roughly 4\% to 12\% of that set's correct rollouts would go unrewarded, an estimate rather than a measurement.\ph{}
+Graders are also used for proofs and code, where correct outputs differ in method rather than in final answer; there our own effects are small (\cref{app:code}), although IMO-ProofBench's grader is reported to be ``overly punitive'' for unconventional correct proofs~\citep{luong2025imobench}.
+
+\paragraph{What sets the size.}
+The shortfall tracks what the grader is asked (\cref{fig:graders}a, lower panel).
+Told to ``focus only on whether the answers match'', the HLE judge credits almost no differing correct answer, even with o3-mini, a reasoning model.
+Asked instead whether the response is a correct answer, GPT-4.1 and Sonnet~5 fall 17 and 10 points short (5 and 2 points blind), and 0.5 to 6 points when they reason first (\cref{app:r25,app:r26}).
+Removing the match clause from the HLE judge and stating that a different correct answer is correct recovers 35 points for GPT-4.1 and 53 for Sonnet~5; the edited judge still calls the reference ``precise and unambiguous''.
+Written reasoning helps GPT-4.1 but, by our registered test, not Sonnet~5, which keeps a residual pull under every prompt. In the terms of \cref{eq:model}, the instruction appears to scale the agreement term without removing it.
+
+\paragraph{Our rubric and other draws.}
+With our score rubric, four judges put the models 10 to 22 points below the answer lists, and three of them stay within 3 points blind.
+A second reference drawn from the same lists leaves the shortfall about the same but changes which correct answers get credit: credit for answers that stop or start matching moves by 23 to 38 points under the Claude graders, against about 3 on a same-reference regrade (\cref{app:acceptance}).
+
+\section{How to fix it}
+\label{sec:fix}
+
+\paragraph{Give the grader every correct answer.}
+An answer key is the reading under which a reference is harmless.
+Stated as ``any one of the following is a complete correct answer'', the full answer list brings the five benchmark graders and CompassVerifier-3B within a point of the answer lists, while admitting at most 3 more of 56 wrong answers, and brings grading AUROC to blind or above for three judges (\cref{fig:graders}b; \cref{app:r24}).
+It does not fix every grader: General-Reasoner's 1.5B verifier credits 67\% of differing correct answers with the list but also 30\% of wrong ones (\cref{app:r26}).
+A list is also closed; whether it makes judges reject correct answers it omits is untested.
+
+\paragraph{When the answers cannot be listed.}
+Remove any instruction to match, and ask whether the answer is correct.
+On the 40-task subsample, which has many wrong answers, letting the judge solve the question first gave the smallest grading loss (AUROC $-0.04$ and $-0.05$ against blind) and raised false acceptances by at most 3 points, but still rejected 5 to 7 points more differing correct answers (\cref{app:r26}).
+\pending{[R27-B: solve-first and direct prompts on hard HLE questions.]}
+An instruction that any correct answer deserves full credit and a thinking mode each cut the factual rise in false rejections for Sonnet~5 by half or more, and together left no measurable rise on 40 tasks (\cref{app:r24}).
+
+\paragraph{What did not help.}
+A registered blind-then-reveal protocol, in which the judge scores blind and then rescores with the reference, left grading below blind for most open judges; keeping the higher of the blind and referenced scores protects grading largely by construction and gives back accuracy when the answer is unique; and the full-credit instruction did little for Qwen2.5 judges up to 7B (\cref{app:mitigation}).
+
+\paragraph{A recipe.}
+\begin{itemize}[leftmargin=1.2em,itemsep=1pt,topsep=2pt]
+\item \textbf{Answers that can be listed:} give the grader every one, introduced by ``any one of the following is a complete correct answer'', and check that a trained verifier follows lists; one of our two did not.
+\item \textbf{A checker exists} (constraints, tests, solvers, proof assistants): grade with it.
+\item \textbf{No list and no checker:} do not tell the grader to match; ask whether the response is correct, and let it solve the question first. This shrinks the harm on questions the judge can answer; \pending{[R27-B caveat for hard questions.]}
+\item \textbf{Audit:} score a sample blind as well, and read the answers accepted blind but rejected with the reference.
+\end{itemize}
+
+\section{Related work}
+\label{sec:related}
+
+\paragraph{Reference-guided judging.}
+References are the standard remedy for grading math and reasoning with LLM judges~\citep{zheng2023judging,refguided2024,chen2026rethinking}, and judges without them over-credit wrong answers~\citep{generous2026}. Judge models such as JudgeLM and Prometheus, the graders of factuality and hard-exam benchmarks, and answer matching, advocated as an alternative to multiple choice, all check a response against one gold answer~\citep{zhu2023judgelm,kim2024prometheus,wei2024simpleqa,wei2025browsecomp,phan2025hle,chandak2025answermatching}. RL-reward verifiers and their benchmarks likewise pair each question with one reference and are evaluated mainly on equivalent forms of it~\citep{chen2025xverify,liu2025compassverifier,yan2025verifybench}, and false negatives from rule-based checking slow RL~\citep{xu2025tinyv,huang2025pitfalls}.
+Judges depend on the reference being correct~\citep{judgingref2026,krumdick2025nofreelabels}, diverge from humans under reference-based grading~\citep{thakur2024judging}, and favor the reference's solution method~\citep{fixation2025}.
+
+\paragraph{Single references and many correct answers.}
+Reference-based metrics in translation reward outputs that resemble the particular reference~\citep{freitag2020bleu,fomicheva2016reference}. Open-domain question answering under-credits correct answers missing from the gold list or phrased differently~\citep{min2020ambigqa,si2021whatsinaname,bulian2022tomayto,kamalloo2023evaluating}, and benchmarks and answer-equivalence methods target such lists~\citep{amouyal2022qampari,li2024pedants}; in our setting the list is complete and the judge still favors the one answer it is shown.
+
+\paragraph{Judge biases.}
+LLM judges favor the first response~\citep{wang2024fair}, longer responses~\citep{dubois2024lengthcontrolled}, their own outputs~\citep{panickssery2024llm}, and scores shown to them~\citep{kapetanovic2026anchoring}; catalogues and benchmarks of judge reliability~\citep{koo2024benchmarking,ye2025justice,tan2025judgebench} do not vary which correct answer is shown. The agreement reading resembles sycophancy toward a suggested answer~\citep{sharma2023sycophancy,turpin2023unfaithful}; here the suggestion is correct, so deference and correctness conflict only when another answer is also correct. Optimizing against an imperfect evaluator inflates its scores~\citep{gao2022scaling,rafailov2024scaling}.
+
+\section{Limitations}
+\label{sec:limits}
+
+\begin{itemize}[leftmargin=1.2em,itemsep=1pt,topsep=2pt]
+\item \textbf{Labels.} Any-format labels were checked by a frontier model, not by humans; \textsc{MACE}'s answer lists miss 2.3\% to 8.1\% of correct answers; prevalence labels come from LLM annotators with low agreement.
+\item \textbf{Tasks and data.} Constructed pools come from five arithmetic families and one generator, natural data from two \textsc{MACE} domains, and the benchmark study uses one answer per model. The RL-reward share is an estimate combining measurements from different data. Open-ended tasks such as summarization, writing, and agent trajectories are untested.
+\item \textbf{Judges and prompts.} Open judges have at most 14B parameters; the correctness prompts were tested for two judges \pending{[and on hard questions]}; our wordings do not exhaust reference prompts.
+\item \textbf{Mechanism and registration.} No experiment manipulates verification directly; the max rule was chosen post hoc; most registrations are timestamped commits, and the verdict rule was applied retroactively (\cref{app:ledger}).
+\end{itemize}
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+On the unique-answer tasks we study, a reference answer is a useful check.
+When a question has several correct answers, LLM judges favor the one they are shown, even for answers they accept without it.
+Graders shipped with benchmarks and used for RL rewards inherit this failure wherever answers are open, in large part because they are told to match.
+The shortfall largely disappears when the grader sees every correct answer and shrinks when it is asked whether an answer is correct, which suggests that on such questions a low reference-guided score often reflects how the grader was instructed rather than what the model answered.
+
+\subsection*{AI use statement}
+Generative AI models were the experimental subjects: open and frontier LLMs generated candidate answers and served as the judges and verifiers under study (\cref{sec:setup}, \cref{app:setup}). We used generative AI tools to help write analysis code, draft and edit text, produce figures, search and verify related work, audit the preregistration ledger, and label samples of dataset questions for two prevalence audits; no label was checked by human annotators. Every number in the paper is produced by committed analysis scripts from stored model outputs, and we checked every quoted number against those outputs. We take responsibility for the final content of this work.
+
+\subsection*{Ethics statement}
+This work studies a failure of automated evaluation that can make models look worse than they are on questions with several correct answers. We release no new model and no attack on a deployed system. The findings raise a concern for pipelines that use reference-guided judges as reward signals on such questions; our exploratory training runs were inconclusive and did not show a policy learning to copy the reference (extended appendix in the supplement). No human subjects were involved.
+
+\subsection*{Reproducibility statement}
+\Cref{app:setup} specifies every pool, judge, prompt, and scorer, and \cref{app:ledger} lists each prediction with its registration type and outcome. The anonymized supplementary material contains task generators and checkers, candidate pools, the answer labelings, all judge score files, the analysis scripts that produce every number, table, and figure, an extended appendix, and the registration documents with commit hashes replaced by stable tokens.
+
+\bibliography{references}
+\bibliographystyle{iclr2027_conference}
+
+\newpage
+\appendix
+\crefalias{section}{appendix}
+\input{appendix}
+
+\end{document}

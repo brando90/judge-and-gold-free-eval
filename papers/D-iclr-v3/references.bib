@@ -1,0 +1,1531 @@
+% references_verified.bib
+% Verified 2026-09-12 against arXiv abstract pages, ACL Anthology, NeurIPS/ICLR/PMLR proceedings, and Crossref.
+% Convention: published venue used when one exists; arXiv id kept in `eprint` for convenience.
+% Author lists are complete except large technical reports / >18-author papers ("and others").
+
+% =====================================================================
+% PART 1 -- existing keys (kept exactly)
+% =====================================================================
+
+% NOTE: Published (ACL Anthology 2025.findings-emnlp.805) title differs from the arXiv title
+% ("Curse of Knowledge: When Complex Evaluation Context Benefits yet Biases LLM Judges", arXiv:2509.03419).
+% The published-venue title is used below.
+@inproceedings{fixation2025,
+  title     = {Curse of Knowledge: Your Guidance and Provided Knowledge are biasing {LLM} Judges in Complex Evaluation},
+  author    = {Li, Weiyuan and Wang, Xintao and Yuan, Siyu and Xu, Rui and Chen, Jiangjie and Dong, Qingqing and Xiao, Yanghua and Yang, Deqing},
+  booktitle = {Findings of the Association for Computational Linguistics: EMNLP 2025},
+  pages     = {14900--14924},
+  year      = {2025},
+  address   = {Suzhou, China},
+  publisher = {Association for Computational Linguistics},
+  doi       = {10.18653/v1/2025.findings-emnlp.805},
+  eprint    = {2509.03419},
+  archivePrefix = {arXiv}
+}
+
+@misc{judgingref2026,
+  title         = {Judging Against the Reference: Uncovering Knowledge-Driven Failures in {LLM}-Judges on {QA} Evaluation},
+  author        = {Lee, Dongryeol and Hwang, Yerin and Kang, Taegwan and Lee, Minwoo and Chae, Younhyung and Jung, Kyomin},
+  year          = {2026},
+  eprint        = {2601.07506},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CL},
+  howpublished  = {arXiv preprint arXiv:2601.07506}
+}
+
+% NOTE: previously listed as "Anonymous"; real authors taken from the arXiv abstract page.
+@misc{generous2026,
+  title         = {{LLM} Judges Can Be Too Generous When There Is No Reference Answer},
+  author        = {Kranti, Chalamalasetti and Vajjala, Sowmya},
+  year          = {2026},
+  eprint        = {2607.12885},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CL},
+  howpublished  = {arXiv preprint arXiv:2607.12885}
+}
+
+@inproceedings{dobefore2025,
+  title     = {Do Before You Judge: Self-Reference as a Pathway to Better {LLM} Evaluation},
+  author    = {Lin, Wei-Hsiang and Wei, Sheng-Lun and Huang, Hen-Hsen and Chen, Hsin-Hsi},
+  booktitle = {Findings of the Association for Computational Linguistics: EMNLP 2025},
+  pages     = {24651--24672},
+  year      = {2025},
+  address   = {Suzhou, China},
+  publisher = {Association for Computational Linguistics},
+  doi       = {10.18653/v1/2025.findings-emnlp.1342},
+  eprint    = {2509.19880},
+  archivePrefix = {arXiv}
+}
+
+% NOTE: title correction -- the paper is "... Evaluation of Free-Form QA" (not "Free-Form Text")
+% on both arXiv (v3) and the ACL Anthology. Published 2025 at WiNLP (key year kept as 2024 per instructions).
+@inproceedings{refguided2024,
+  title     = {Reference-Guided Verdict: {LLMs}-as-Judges in Automatic Evaluation of Free-Form {QA}},
+  author    = {Badshah, Sher and Sajjad, Hassan},
+  booktitle = {Proceedings of the 9th Widening NLP Workshop},
+  pages     = {251--267},
+  year      = {2025},
+  address   = {Suzhou, China},
+  publisher = {Association for Computational Linguistics},
+  doi       = {10.18653/v1/2025.winlp-main.37},
+  eprint    = {2408.09235},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{zheng2023judging,
+  title     = {Judging {LLM}-as-a-Judge with {MT}-Bench and {Chatbot Arena}},
+  author    = {Zheng, Lianmin and Chiang, Wei-Lin and Sheng, Ying and Zhuang, Siyuan and Wu, Zhanghao and Zhuang, Yonghao and Lin, Zi and Li, Zhuohan and Li, Dacheng and Xing, Eric P. and Zhang, Hao and Gonzalez, Joseph E. and Stoica, Ion},
+  booktitle = {Advances in Neural Information Processing Systems 36 (NeurIPS 2023), Datasets and Benchmarks Track},
+  year      = {2023},
+  eprint    = {2306.05685},
+  archivePrefix = {arXiv}
+}
+
+% NOTE: published at ICLR 2026 (arXiv journal-ref); key year kept as 2025.
+@inproceedings{malik2025rewardbench2,
+  title     = {{RewardBench} 2: Advancing Reward Model Evaluation},
+  author    = {Malik, Saumya and Pyatkin, Valentina and Land, Sander and Morrison, Jacob and Smith, Noah A. and Hajishirzi, Hannaneh and Lambert, Nathan},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2026},
+  eprint    = {2506.01937},
+  archivePrefix = {arXiv}
+}
+
+% NOTE: published at ICML 2023 (PMLR 202); key year kept as 2022.
+@inproceedings{gao2022scaling,
+  title     = {Scaling Laws for Reward Model Overoptimization},
+  author    = {Gao, Leo and Schulman, John and Hilton, Jacob},
+  booktitle = {Proceedings of the 40th International Conference on Machine Learning (ICML)},
+  series    = {Proceedings of Machine Learning Research},
+  volume    = {202},
+  pages     = {10835--10866},
+  year      = {2023},
+  publisher = {PMLR},
+  eprint    = {2210.10760},
+  archivePrefix = {arXiv}
+}
+
+@misc{calver2026,
+  title         = {When Many Answers Are Valid, Voting Fails: Symbolic Verification for Best-of-{K} Causal Reasoning in {LLMs}},
+  author        = {Vaidya, Omatharv Bharat and Jerzak, Connor Thomas and Sprague, Zayne Rea and Yin, Fangcong and Ho, Nhat},
+  year          = {2026},
+  eprint        = {2608.03506},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CL},
+  howpublished  = {arXiv preprint arXiv:2608.03506}
+}
+
+@misc{mace2026,
+  title         = {Evaluating and Calibrating {LLM} Confidence on Questions with Multiple Correct Answers},
+  author        = {Wang, Yuhan and Ni, Shiyu and Ding, Zhikai and Zhan, Zihang and Li, Yuanzi and Bi, Keping},
+  year          = {2026},
+  eprint        = {2602.07842},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CL},
+  howpublished  = {arXiv preprint arXiv:2602.07842}
+}
+
+% NOTE: arXiv paper found (arXiv:2605.08498); code github.com/vireshpati/Math-Constraint.
+@misc{mathconstraint2026,
+  title         = {{MathConstraint}: Automated Generation of Verified Combinatorial Reasoning Instances for {LLMs}},
+  author        = {Pati, Viresh and Li, Zhengyu and Jha, Piyush and Garg, Rahul and Sejpal, Yatharth and Ganesh, Vijay},
+  year          = {2026},
+  eprint        = {2605.08498},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2605.08498}
+}
+
+% =====================================================================
+% PART 2 -- related work
+% =====================================================================
+
+% ---------- LLM-as-a-judge biases ----------
+
+@inproceedings{wang2024fair,
+  title     = {Large Language Models are not Fair Evaluators},
+  author    = {Wang, Peiyi and Li, Lei and Chen, Liang and Cai, Zefan and Zhu, Dawei and Lin, Binghuai and Cao, Yunbo and Liu, Qi and Liu, Tianyu and Sui, Zhifang},
+  booktitle = {Proceedings of the 62nd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)},
+  pages     = {9440--9450},
+  year      = {2024},
+  address   = {Bangkok, Thailand},
+  publisher = {Association for Computational Linguistics},
+  doi       = {10.18653/v1/2024.acl-long.511},
+  eprint    = {2305.17926},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{panickssery2024llm,
+  title     = {{LLM} Evaluators Recognize and Favor Their Own Generations},
+  author    = {Panickssery, Arjun and Bowman, Samuel R. and Feng, Shi},
+  booktitle = {Advances in Neural Information Processing Systems 37 (NeurIPS 2024)},
+  year      = {2024},
+  eprint    = {2404.13076},
+  archivePrefix = {arXiv}
+}
+
+% UNVERIFIED: publication venue. Paper and authors verified on arXiv (v3, Jun 2026); an ICLR 2026
+% OpenReview submission exists (id cXMZbIBR1T) but the acceptance decision could not be confirmed
+% (OpenReview blocked automated access; not found on iclr.cc). Cited as arXiv.
+@misc{zhao2025onetoken,
+  title         = {One Token to Fool {LLM}-as-a-Judge},
+  author        = {Zhao, Yulai and Liu, Haolin and Yu, Dian and Kung, Sunyuan and Chen, Meijia and Mi, Haitao and Yu, Dong},
+  year          = {2025},
+  eprint        = {2507.08794},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG},
+  howpublished  = {arXiv preprint arXiv:2507.08794}
+}
+
+% NOTE: TITLE CHANGED. arXiv:2505.22203 v1 (May 2025) was titled
+% "Pitfalls of Rule- and Model-based Verifiers -- A Case Study on Mathematical Reasoning".
+% v3 (Aug 2026) is retitled as below, with comment "EMNLP 2026 Main Conference" (proceedings not yet available).
+@misc{huang2025pitfalls,
+  title         = {From Accuracy to Robustness: A Study of Rule- and Model-based Verifiers in Mathematical Reasoning},
+  author        = {Huang, Yuzhen and Zeng, Weihao and Zeng, Xingshan and Zhu, Qi and He, Junxian},
+  year          = {2025},
+  eprint        = {2505.22203},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2505.22203}
+}
+
+@inproceedings{tan2025judgebench,
+  title     = {{JudgeBench}: A Benchmark for Evaluating {LLM}-based Judges},
+  author    = {Tan, Sijun and Zhuang, Siyuan and Montgomery, Kyle and Tang, William Y. and Cuadron, Alejandro and Wang, Chenguang and Popa, Raluca Ada and Stoica, Ion},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2025},
+  eprint    = {2410.12784},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{ye2025justice,
+  title     = {Justice or Prejudice? Quantifying Biases in {LLM}-as-a-Judge},
+  author    = {Ye, Jiayi and Wang, Yanbo and Huang, Yue and Chen, Dongping and Zhang, Qihui and Moniz, Nuno and Gao, Tian and Geyer, Werner and Huang, Chao and Chen, Pin-Yu and Chawla, Nitesh V. and Zhang, Xiangliang},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2025},
+  eprint    = {2410.02736},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{thakur2025judging,
+  title     = {Judging the Judges: Evaluating Alignment and Vulnerabilities in {LLMs}-as-Judges},
+  author    = {Thakur, Aman Singh and Choudhary, Kartik and Ramayapally, Venkat Srinik and Vaidyanathan, Sankaran and Hupkes, Dieuwke},
+  booktitle = {Proceedings of the Fourth Workshop on Generation, Evaluation and Metrics (GEM$^2$)},
+  pages     = {404--430},
+  year      = {2025},
+  publisher = {Association for Computational Linguistics},
+  url       = {https://aclanthology.org/2025.gem-1.33/},
+  eprint    = {2406.12624},
+  archivePrefix = {arXiv}
+}
+
+@misc{krumdick2025nofreelabels,
+  title         = {No Free Labels: Limitations of {LLM}-as-a-Judge Without Human Grounding},
+  author        = {Krumdick, Michael and Lovering, Charles and Reddy, Varshini and Ebner, Seth and Tanner, Chris},
+  year          = {2025},
+  eprint        = {2503.05061},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CL},
+  howpublished  = {arXiv preprint arXiv:2503.05061}
+}
+
+% NOTE: arXiv author list includes Balazs Galambosi (4 authors); verify against the COLM camera-ready if citing the venue version.
+@inproceedings{dubois2024lengthcontrolled,
+  title     = {Length-Controlled {AlpacaEval}: A Simple Way to Debias Automatic Evaluators},
+  author    = {Dubois, Yann and Galambosi, Bal{\'a}zs and Liang, Percy and Hashimoto, Tatsunori B.},
+  booktitle = {First Conference on Language Modeling (COLM)},
+  year      = {2024},
+  eprint    = {2404.04475},
+  archivePrefix = {arXiv}
+}
+
+@misc{saito2023verbosity,
+  title         = {Verbosity Bias in Preference Labeling by Large Language Models},
+  author        = {Saito, Keita and Wachi, Akifumi and Wataoka, Koki and Akimoto, Youhei},
+  year          = {2023},
+  eprint        = {2310.10076},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CL},
+  howpublished  = {arXiv preprint arXiv:2310.10076}
+}
+
+% ---------- Judge / reward models and benchmarks ----------
+
+@inproceedings{kim2024prometheus,
+  title     = {Prometheus: Inducing Fine-grained Evaluation Capability in Language Models},
+  author    = {Kim, Seungone and Shin, Jamin and Cho, Yejin and Jang, Joel and Longpre, Shayne and Lee, Hwaran and Yun, Sangdoo and Shin, Seongjin and Kim, Sungdong and Thorne, James and Seo, Minjoon},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2024},
+  eprint    = {2310.08491},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{kim2024prometheus2,
+  title     = {Prometheus 2: An Open Source Language Model Specialized in Evaluating Other Language Models},
+  author    = {Kim, Seungone and Suk, Juyoung and Longpre, Shayne and Lin, Bill Yuchen and Shin, Jamin and Welleck, Sean and Neubig, Graham and Lee, Moontae and Lee, Kyungjae and Seo, Minjoon},
+  booktitle = {Proceedings of the 2024 Conference on Empirical Methods in Natural Language Processing},
+  pages     = {4334--4353},
+  year      = {2024},
+  publisher = {Association for Computational Linguistics},
+  url       = {https://aclanthology.org/2024.emnlp-main.248/},
+  eprint    = {2405.01535},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{lambert2025rewardbench,
+  title     = {{RewardBench}: Evaluating Reward Models for Language Modeling},
+  author    = {Lambert, Nathan and Pyatkin, Valentina and Morrison, Jacob and Miranda, LJ and Lin, Bill Yuchen and Chandu, Khyathi and Dziri, Nouha and Kumar, Sachin and Zick, Tom and Choi, Yejin and Smith, Noah A. and Hajishirzi, Hannaneh},
+  booktitle = {Findings of the Association for Computational Linguistics: NAACL 2025},
+  pages     = {1755--1797},
+  year      = {2025},
+  address   = {Albuquerque, New Mexico},
+  publisher = {Association for Computational Linguistics},
+  url       = {https://aclanthology.org/2025.findings-naacl.96/},
+  eprint    = {2403.13787},
+  archivePrefix = {arXiv}
+}
+
+% ---------- Reward overoptimization, Goodhart, alignment ----------
+
+@inproceedings{rafailov2024scaling,
+  title     = {Scaling Laws for Reward Model Overoptimization in Direct Alignment Algorithms},
+  author    = {Rafailov, Rafael and Chittepu, Yaswanth and Park, Ryan and Sikchi, Harshit and Hejna, Joey and Knox, Bradley and Finn, Chelsea and Niekum, Scott},
+  booktitle = {Advances in Neural Information Processing Systems 37 (NeurIPS 2024)},
+  year      = {2024},
+  eprint    = {2406.02900},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{rafailov2023dpo,
+  title     = {Direct Preference Optimization: Your Language Model is Secretly a Reward Model},
+  author    = {Rafailov, Rafael and Sharma, Archit and Mitchell, Eric and Ermon, Stefano and Manning, Christopher D. and Finn, Chelsea},
+  booktitle = {Advances in Neural Information Processing Systems 36 (NeurIPS 2023)},
+  year      = {2023},
+  eprint    = {2305.18290},
+  archivePrefix = {arXiv}
+}
+
+% NOTE: arXiv/PDF title uses "from"; the NeurIPS proceedings abstract page lists "Learning to summarize with human feedback".
+@inproceedings{stiennon2020learning,
+  title     = {Learning to summarize from human feedback},
+  author    = {Stiennon, Nisan and Ouyang, Long and Wu, Jeff and Ziegler, Daniel M. and Lowe, Ryan and Voss, Chelsea and Radford, Alec and Amodei, Dario and Christiano, Paul},
+  booktitle = {Advances in Neural Information Processing Systems},
+  volume    = {33},
+  pages     = {3008--3021},
+  year      = {2020},
+  eprint    = {2009.01325},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{hu2022lora,
+  title     = {{LoRA}: Low-Rank Adaptation of Large Language Models},
+  author    = {Hu, Edward J. and Shen, Yelong and Wallis, Phillip and Allen-Zhu, Zeyuan and Li, Yuanzhi and Wang, Shean and Wang, Lu and Chen, Weizhu},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2022},
+  eprint    = {2106.09685},
+  archivePrefix = {arXiv}
+}
+
+@misc{manheim2018categorizing,
+  title         = {Categorizing Variants of {Goodhart's} Law},
+  author        = {Manheim, David and Garrabrant, Scott},
+  year          = {2018},
+  eprint        = {1803.04585},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:1803.04585}
+}
+
+% ---------- Anchoring / cognitive bias ----------
+
+@article{tversky1974judgment,
+  title   = {Judgment under Uncertainty: Heuristics and Biases},
+  author  = {Tversky, Amos and Kahneman, Daniel},
+  journal = {Science},
+  volume  = {185},
+  number  = {4157},
+  pages   = {1124--1131},
+  year    = {1974},
+  doi     = {10.1126/science.185.4157.1124}
+}
+
+@inproceedings{echterhoff2024cognitive,
+  title     = {Cognitive Bias in Decision-Making with {LLMs}},
+  author    = {Echterhoff, Jessica and Liu, Yao and Alessa, Abeer and McAuley, Julian and He, Zexue},
+  booktitle = {Findings of the Association for Computational Linguistics: EMNLP 2024},
+  pages     = {12640--12653},
+  year      = {2024},
+  publisher = {Association for Computational Linguistics},
+  url       = {https://aclanthology.org/2024.findings-emnlp.739/},
+  eprint    = {2403.00811},
+  archivePrefix = {arXiv}
+}
+
+@misc{lou2024anchoring,
+  title         = {Anchoring Bias in Large Language Models: An Experimental Study},
+  author        = {Lou, Jiaxu and Sun, Yifan},
+  year          = {2024},
+  eprint        = {2412.06593},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2412.06593}
+}
+
+% ---------- Multiple valid answers / answer equivalence ----------
+
+@inproceedings{min2020ambigqa,
+  title     = {{AmbigQA}: Answering Ambiguous Open-domain Questions},
+  author    = {Min, Sewon and Michael, Julian and Hajishirzi, Hannaneh and Zettlemoyer, Luke},
+  booktitle = {Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP)},
+  pages     = {5783--5797},
+  year      = {2020},
+  publisher = {Association for Computational Linguistics},
+  eprint    = {2004.10645},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{kamalloo2023evaluating,
+  title     = {Evaluating Open-Domain Question Answering in the Era of Large Language Models},
+  author    = {Kamalloo, Ehsan and Dziri, Nouha and Clarke, Charles and Rafiei, Davood},
+  booktitle = {Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)},
+  pages     = {5591--5606},
+  year      = {2023},
+  address   = {Toronto, Canada},
+  publisher = {Association for Computational Linguistics},
+  doi       = {10.18653/v1/2023.acl-long.307},
+  eprint    = {2305.06984},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{bulian2022tomayto,
+  title     = {Tomayto, Tomahto. {B}eyond Token-level Answer Equivalence for Question Answering Evaluation},
+  author    = {Bulian, Jannis and Buck, Christian and Gajewski, Wojciech and B{\"o}rschinger, Benjamin and Schuster, Tal},
+  booktitle = {Proceedings of the 2022 Conference on Empirical Methods in Natural Language Processing},
+  pages     = {291--305},
+  year      = {2022},
+  address   = {Abu Dhabi, United Arab Emirates},
+  publisher = {Association for Computational Linguistics},
+  doi       = {10.18653/v1/2022.emnlp-main.20},
+  eprint    = {2202.07654},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{liu2025compassverifier,
+  title     = {{CompassVerifier}: A Unified and Robust Verifier for {LLMs} Evaluation and Outcome Reward},
+  author    = {Liu, Shudong and Liu, Hongwei and Liu, Junnan and Xiao, Linchen and Gao, Songyang and Lyu, Chengqi and Gu, Yuzhe and Zhang, Wenwei and Wong, Derek F. and Zhang, Songyang and Chen, Kai},
+  booktitle = {Proceedings of the 2025 Conference on Empirical Methods in Natural Language Processing},
+  pages     = {33466--33494},
+  year      = {2025},
+  publisher = {Association for Computational Linguistics},
+  url       = {https://aclanthology.org/2025.emnlp-main.1698/},
+  eprint    = {2508.03686},
+  archivePrefix = {arXiv}
+}
+
+% NOTE: arXiv comment says "Accepted by DASFAA 2026"; proceedings metadata not checked, cited as arXiv.
+@misc{li2025scoringbias,
+  title         = {Evaluating Scoring Bias in {LLM}-as-a-Judge},
+  author        = {Li, Qingquan and Dou, Shaoyu and Shao, Kailai and Chen, Chao and Hu, Haixiang},
+  year          = {2025},
+  eprint        = {2506.22316},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2506.22316}
+}
+
+% ---------- Code / math benchmarks and verification ----------
+
+@misc{chen2021codex,
+  title         = {Evaluating Large Language Models Trained on Code},
+  author        = {Chen, Mark and Tworek, Jerry and Jun, Heewoo and Yuan, Qiming and Pinto, Henrique Ponde de Oliveira and Kaplan, Jared and Edwards, Harri and Burda, Yuri and others},
+  year          = {2021},
+  eprint        = {2107.03374},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2107.03374}
+}
+
+@misc{austin2021mbpp,
+  title         = {Program Synthesis with Large Language Models},
+  author        = {Austin, Jacob and Odena, Augustus and Nye, Maxwell and Bosma, Maarten and Michalewski, Henryk and Dohan, David and Jiang, Ellen and Cai, Carrie and Terry, Michael and Le, Quoc and Sutton, Charles},
+  year          = {2021},
+  eprint        = {2108.07732},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2108.07732}
+}
+
+@inproceedings{liu2023evalplus,
+  title     = {Is Your Code Generated by {ChatGPT} Really Correct? {R}igorous Evaluation of Large Language Models for Code Generation},
+  author    = {Liu, Jiawei and Xia, Chunqiu Steven and Wang, Yuyao and Zhang, Lingming},
+  booktitle = {Advances in Neural Information Processing Systems 36 (NeurIPS 2023)},
+  year      = {2023},
+  eprint    = {2305.01210},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{lightman2024verify,
+  title     = {Let's Verify Step by Step},
+  author    = {Lightman, Hunter and Kosaraju, Vineet and Burda, Yura and Edwards, Harri and Baker, Bowen and Lee, Teddy and Leike, Jan and Schulman, John and Sutskever, Ilya and Cobbe, Karl},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2024},
+  eprint    = {2305.20050},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{hendrycks2021math,
+  title     = {Measuring Mathematical Problem Solving With the {MATH} Dataset},
+  author    = {Hendrycks, Dan and Burns, Collin and Kadavath, Saurav and Arora, Akul and Basart, Steven and Tang, Eric and Song, Dawn and Steinhardt, Jacob},
+  booktitle = {Proceedings of the Neural Information Processing Systems Track on Datasets and Benchmarks},
+  volume    = {1},
+  year      = {2021},
+  eprint    = {2103.03874},
+  archivePrefix = {arXiv}
+}
+
+% ---------- Model technical reports ----------
+
+@misc{yang2024qwen25,
+  title         = {{Qwen2.5} Technical Report},
+  author        = {Yang, An and Yang, Baosong and Zhang, Beichen and Hui, Binyuan and Zheng, Bo and Yu, Bowen and Li, Chengyuan and Liu, Dayiheng and others},
+  year          = {2024},
+  eprint        = {2412.15115},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2412.15115}
+}
+
+@misc{grattafiori2024llama3,
+  title         = {The {Llama} 3 Herd of Models},
+  author        = {Grattafiori, Aaron and Dubey, Abhimanyu and Jauhri, Abhinav and Pandey, Abhinav and Kadian, Abhishek and Al-Dahle, Ahmad and Letman, Aiesha and Mathur, Akhil and others},
+  year          = {2024},
+  eprint        = {2407.21783},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2407.21783}
+}
+
+@misc{abdin2024phi4,
+  title         = {{Phi-4} Technical Report},
+  author        = {Abdin, Marah and Aneja, Jyoti and Behl, Harkirat and Bubeck, S{\'e}bastien and Eldan, Ronen and Gunasekar, Suriya and Harrison, Michael and Hewett, Russell J. and others},
+  year          = {2024},
+  eprint        = {2412.08905},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2412.08905}
+}
+
+@misc{riviere2024gemma2,
+  title         = {{Gemma} 2: Improving Open Language Models at a Practical Size},
+  author        = {Riviere, Morgane and Pathak, Shreya and Sessa, Pier Giuseppe and Hardin, Cassidy and Bhupatiraju, Surya and Hussenot, L{\'e}onard and Mesnard, Thomas and Shahriari, Bobak and others},
+  year          = {2024},
+  eprint        = {2408.00118},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2408.00118}
+}
+
+@misc{jiang2023mistral,
+  title         = {{Mistral} {7B}},
+  author        = {Jiang, Albert Q. and Sablayrolles, Alexandre and Mensch, Arthur and Bamford, Chris and Chaplot, Devendra Singh and de las Casas, Diego and Bressand, Florian and Lengyel, Gianna and Lample, Guillaume and Saulnier, Lucile and Lavaud, L{\'e}lio Renard and Lachaux, Marie-Anne and Stock, Pierre and Le Scao, Teven and Lavril, Thibaut and Wang, Thomas and Lacroix, Timoth{\'e}e and El Sayed, William},
+  year          = {2023},
+  eprint        = {2310.06825},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2310.06825}
+}
+
+@misc{xu2025tinyv,
+  title         = {{TinyV}: Reducing False Negatives in Verification Improves {RL} for {LLM} Reasoning},
+  author        = {Xu, Zhangchen and Li, Yuetai and Jiang, Fengqing and Ramasubramanian, Bhaskar and Niu, Luyao and Lin, Bill Yuchen and Poovendran, Radha},
+  year          = {2025},
+  eprint        = {2505.14625},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.AI},
+  howpublished  = {arXiv preprint arXiv:2505.14625}
+}
+
+% OpenReview shows an ICLR 2026 submission that was withdrawn; cited as arXiv.
+
+@misc{chen2025xverify,
+  title         = {{xVerify}: Efficient Answer Verifier for Reasoning Model Evaluations},
+  author        = {Chen, Ding and Yu, Qingchen and Wang, Pengyuan and Hu, Mengting and Zhang, Wentao and Wang, Zhengren and Tang, Bo and Xiong, Feiyu and others},
+  year          = {2025},
+  eprint        = {2504.10481},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CL},
+  howpublished  = {arXiv preprint arXiv:2504.10481}
+}
+
+% NeurIPS 2025 poster (neurips.cc/virtual/2025/poster/115979); proceedings page numbers not checked.
+
+@inproceedings{ma2025generalreasoner,
+  title         = {{General-Reasoner}: Advancing {LLM} Reasoning Across All Domains},
+  author        = {Ma, Xueguang and Liu, Qian and Jiang, Dongfu and Zhang, Ge and Ma, Zejun and Chen, Wenhu},
+  booktitle     = {Advances in Neural Information Processing Systems 38 (NeurIPS 2025)},
+  year          = {2025},
+  eprint        = {2505.14652},
+  archivePrefix = {arXiv}
+}
+
+% arXiv comment: "ICLR 2026".
+
+@inproceedings{yan2025verifybench,
+  title         = {{VerifyBench}: Benchmarking Reference-based Reward Systems for Large Language Models},
+  author        = {Yan, Yuchen and Jiang, Jin and Ren, Zhenbang and Li, Yijun and Cai, Xudong and Liu, Yang and Xu, Xin and Zhang, Mengdi and others},
+  booktitle     = {International Conference on Learning Representations (ICLR)},
+  year          = {2026},
+  eprint        = {2505.15801},
+  archivePrefix = {arXiv}
+}
+
+@misc{huang2026darl,
+  title         = {{DARL}: Encouraging Diverse Answers for General Reasoning without Verifiers},
+  author        = {Huang, Chongxuan and Lin, Lei and Shi, Xiaodong and Hu, Wenping and Tang, Ruiming},
+  year          = {2026},
+  eprint        = {2601.14700},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2601.14700}
+}
+
+% ICMLA 2026 (accepted, per arXiv comment); proceedings not yet available.
+
+@misc{mazdarani2026beyond,
+  title         = {Beyond the Answer Key: Robustness Evaluation of Large Language Models for Step-Level Mathematical Verification},
+  author        = {Mazdarani, Fateme and Toxtli, Carlos},
+  year          = {2026},
+  eprint        = {2608.28725},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2608.28725},
+  note          = {Accepted to IEEE ICMLA 2026}
+}
+
+% ---------- Judge protocols: reference-free / reference-guided / de-anchoring ----------
+
+@inproceedings{zhang2025reviseval,
+  title         = {{RevisEval}: Improving {LLM}-as-a-Judge via Response-Adapted References},
+  author        = {Zhang, Qiyuan and Wang, Yufei and Yu, Tiezheng and Jiang, Yuxin and Wu, Chuhan and Li, Liangyou and Wang, Yasheng and Jiang, Xin and others},
+  booktitle     = {International Conference on Learning Representations (ICLR)},
+  year          = {2025},
+  eprint        = {2410.05193},
+  archivePrefix = {arXiv}
+}
+
+% arXiv comment: "ICLR 2026 Camera Ready".
+
+@inproceedings{shi2026references,
+  title         = {References Improve {LLM} Alignment in Non-Verifiable Domains},
+  author        = {Shi, Kejian and Liu, Yixin and Wang, Peifeng and Fabbri, Alexander R. and Joty, Shafiq and Cohan, Arman},
+  booktitle     = {International Conference on Learning Representations (ICLR)},
+  year          = {2026},
+  eprint        = {2602.16802},
+  archivePrefix = {arXiv}
+}
+
+% CLOSEST PROTOCOL-LEVEL PRIOR WORK to blind-then-reveal (reference-FREE setting; judge commits/solves before using candidate).
+
+@misc{zhou2026convincing,
+  title         = {More Convincing, Not More Correct: Self-Play Reward Hacking of Reference-Free {LLM} Judges},
+  author        = {Zhou, Chenyu},
+  year          = {2026},
+  eprint        = {2607.05904},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2607.05904}
+}
+
+% arXiv comment: to appear in CIKM '26. Relevant to the "reveal the blind score" step (score anchoring).
+
+@misc{kapetanovic2026anchoring,
+  title         = {Anchoring Bias in {LLM}-as-a-Judge Systems: Prior Scores Compromise Evaluation Independence},
+  author        = {Kapetanovic, Ante and Altwlkany, Kemal and Mercep, Andro and Duricic, Tomislav and Lacic, Emanuel},
+  year          = {2026},
+  eprint        = {2608.25869},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2608.25869},
+  note          = {To appear in CIKM 2026}
+}
+
+@misc{landesberg2026bestofn,
+  title         = {When {LLM} Judge Scores Look Good but Best-of-{N} Decisions Fail},
+  author        = {Landesberg, Eddie},
+  year          = {2026},
+  eprint        = {2603.12520},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2603.12520}
+}
+
+% arXiv comment: "Accepted to AACL 2025"; proceedings metadata not checked.
+
+@misc{badshah2025clev,
+  title         = {{CLEV}: {LLM}-Based Evaluation Through Lightweight Efficient Voting for Free-Form Question-Answering},
+  author        = {Badshah, Sher and Moustafa, Moamen and Sajjad, Hassan},
+  year          = {2025},
+  eprint        = {2503.08542},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2503.08542},
+  note          = {Accepted to AACL 2025}
+}
+
+% ---------- RL data curation / multi-solution problems ----------
+
+@misc{albalak2025bigmath,
+  title         = {{Big-Math}: A Large-Scale, High-Quality Math Dataset for Reinforcement Learning in Language Models},
+  author        = {Albalak, Alon and Phung, Duy and Lile, Nathan and Rafailov, Rafael and Gandhi, Kanishk and Castricato, Louis and Singh, Anikait and Blagden, Chase and others},
+  year          = {2025},
+  eprint        = {2502.17387},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG},
+  howpublished  = {arXiv preprint arXiv:2502.17387}
+}
+
+@misc{he2025skyworkor1,
+  title         = {Skywork Open Reasoner 1 Technical Report},
+  author        = {He, Jujie and Liu, Jiacai and Liu, Chris Yuhao and Yan, Rui and Wang, Chaojie and Cheng, Peng and Zhang, Xiaoyu and Zhang, Fuxiang and others},
+  year          = {2025},
+  eprint        = {2505.22312},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2505.22312}
+}
+
+% ICML 2025 (per ETH SRI Lab publication page); PMLR volume/pages not checked.
+
+@inproceedings{balunovic2025mathconstruct,
+  title         = {{MathConstruct}: Challenging {LLM} Reasoning with Constructive Proofs},
+  author        = {Balunovi{\'c}, Mislav and Dekoninck, Jasper and Jovanovi{\'c}, Nikola and Petrov, Ivo and Vechev, Martin},
+  booktitle     = {Proceedings of the 42nd International Conference on Machine Learning (ICML)},
+  year          = {2025},
+  eprint        = {2502.10197},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{chen2026rethinking,
+  title={Rethinking {LLM} Judges: Chain-of-Thought and Multi-Step Pipelines for Math Grading},
+  author={Chen, Eric and Gulati, Aryan and Miranda, Brando and Tang, Zeyu and Koyejo, Sanmi},
+  booktitle={ICLR 2026 Workshop on Logical Reasoning of Large Language Models},
+  year={2026}
+}
+
+@inproceedings{fomicheva2016reference,
+  title={Reference Bias in Monolingual Machine Translation Evaluation},
+  author={Fomicheva, Marina and Specia, Lucia},
+  booktitle={Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics (Volume 2: Short Papers)},
+  pages={77--82},
+  year={2016}
+}
+
+@inproceedings{freitag2020bleu,
+  title         = {{BLEU} Might Be Guilty but References Are Not Innocent},
+  author        = {Freitag, Markus and Grangier, David and Caswell, Isaac},
+  booktitle     = {Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP)},
+  pages         = {61--71},
+  year          = {2020}
+}
+
+@misc{thakur2024judging,
+  title         = {Judging the Judges: Evaluating Alignment and Vulnerabilities in {LLMs}-as-Judges},
+  author        = {Thakur, Aman Singh and Choudhary, Kartik and Ramayapally, Venkat Srinik and Vaidyanathan, Sankaran and Hupkes, Dieuwke},
+  howpublished  = {arXiv preprint arXiv:2406.12624},
+  year          = {2024}
+}
+
+@inproceedings{si2021whatsinaname,
+  title         = {What's in a Name? {A}nswer Equivalence For Open-Domain Question Answering},
+  author        = {Si, Chenglei and Zhao, Chen and Boyd-Graber, Jordan},
+  booktitle     = {Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing (EMNLP)},
+  pages         = {9623--9629},
+  year          = {2021}
+}
+
+
+
+@inproceedings{zhu2023judgelm,
+  title     = {{JudgeLM}: Fine-tuned Large Language Models are Scalable Judges},
+  author    = {Zhu, Lianghui and Wang, Xinggang and Wang, Xinlong},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2025},
+  note      = {arXiv:2310.17631}
+}
+
+@inproceedings{koo2024benchmarking,
+  title     = {Benchmarking Cognitive Biases in Large Language Models as Evaluators},
+  author    = {Koo, Ryan and Lee, Minhwa and Raheja, Vipul and Park, Jong Inn and Kim, Zae Myung and Kang, Dongyeop},
+  booktitle = {Findings of the Association for Computational Linguistics: ACL 2024},
+  year      = {2024}
+}
+
+@article{wei2024simpleqa,
+  title   = {Measuring short-form factuality in large language models},
+  author  = {Wei, Jason and Karina, Nguyen and Chung, Hyung Won and Jiao, Yunxin Joy and Papay, Spencer and Glaese, Amelia and Schulman, John and Fedus, William},
+  journal = {arXiv preprint arXiv:2411.04368},
+  year    = {2024}
+}
+
+@article{wei2025browsecomp,
+  title   = {{BrowseComp}: A Simple Yet Challenging Benchmark for Browsing Agents},
+  author  = {Wei, Jason and Sun, Zhiqing and Papay, Spencer and McKinney, Scott and Han, Jeffrey and Fulford, Isa and Chung, Hyung Won and Passos, Alex Tachard and Fedus, William and Glaese, Amelia},
+  journal = {arXiv preprint arXiv:2504.12516},
+  year    = {2025}
+}
+
+@article{phan2025hle,
+  title   = {Humanity's Last Exam},
+  author  = {Phan, Long and Gatti, Alice and Han, Ziwen and Li, Nathaniel and Hu, Josephina and others},
+  journal = {arXiv preprint arXiv:2501.14249},
+  year    = {2025}
+}
+% new_refs.bib -- practice survey for "The Reference Is Not an Answer Key" (v2)
+% Metadata checked 2026-09-14 against arXiv abstract pages (citation_* meta tags,
+% journal-ref and comments fields) or the official repository / documentation page.
+% Author lists are copied from arXiv; very long lists are truncated with "and others".
+% Venue fields are filled only where the arXiv comment / journal-ref states the venue.
+%
+% REUSE these keys that already exist in ../references.bib (do not duplicate):
+%   zheng2023judging        MT-Bench / Chatbot Arena (arXiv 2306.05685)
+%   liu2025compassverifier  CompassVerifier (arXiv 2508.03686)
+%   chen2025xverify         xVerify (arXiv 2504.10481)
+%   ma2025generalreasoner   General-Reasoner (arXiv 2505.14652)
+%   xu2025tinyv             TinyV (arXiv 2505.14625)
+%   yan2025verifybench      VerifyBench (arXiv 2505.15801)
+%   wei2024simpleqa         SimpleQA (arXiv 2411.04368)
+%   wei2025browsecomp       BrowseComp (arXiv 2504.12516)
+%   phan2025hle             Humanity's Last Exam (arXiv 2501.14249)
+
+% ------------------------------------------------------------------ benchmarks
+
+@misc{haas2025simpleqaverified,
+  title         = {{SimpleQA Verified}: A Reliable Factuality Benchmark to Measure Parametric Knowledge},
+  author        = {Haas, Lukas and Yona, Gal and D'Antonio, Giovanni and Goldshtein, Sasha and Das, Dipanjan},
+  year          = {2025},
+  eprint        = {2509.07968},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2509.07968}
+}
+
+@misc{vu2023freshllms,
+  title         = {{FreshLLMs}: Refreshing Large Language Models with Search Engine Augmentation},
+  author        = {Vu, Tu and Iyyer, Mohit and Wang, Xuezhi and Constant, Noah and Wei, Jerry and Wei, Jason and Tar, Chris and Sung, Yun-Hsuan and Zhou, Denny and Le, Quoc and Luong, Thang},
+  year          = {2023},
+  eprint        = {2310.03214},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2310.03214}
+}
+
+% arXiv comment: "NeurIPS 2024 Datasets and Benchmarks Track".
+@inproceedings{yang2024crag,
+  title         = {{CRAG} -- Comprehensive {RAG} Benchmark},
+  author        = {Yang, Xiao and Sun, Kai and Xin, Hao and Sun, Yushi and Bhalla, Nikita and Chen, Xiangsen and Choudhary, Sajal and Gui, Rongze Daniel and Jiang, Ziran Will and Jiang, Ziyu and others},
+  booktitle     = {Advances in Neural Information Processing Systems 37 (NeurIPS 2024), Datasets and Benchmarks Track},
+  year          = {2024},
+  eprint        = {2406.04744},
+  archivePrefix = {arXiv}
+}
+
+% arXiv comment: "Accepted to NeurIPS 2024".
+@inproceedings{ni2024mixeval,
+  title         = {{MixEval}: Deriving Wisdom of the Crowd from {LLM} Benchmark Mixtures},
+  author        = {Ni, Jinjie and Xue, Fuzhao and Yue, Xiang and Deng, Yuntian and Shah, Mahir and Jain, Kabir and Neubig, Graham and You, Yang},
+  booktitle     = {Advances in Neural Information Processing Systems 37 (NeurIPS 2024)},
+  year          = {2024},
+  eprint        = {2406.06565},
+  archivePrefix = {arXiv}
+}
+
+@misc{gao2024omnimath,
+  title         = {{Omni-MATH}: A Universal Olympiad Level Mathematic Benchmark For Large Language Models},
+  author        = {Gao, Bofei and Song, Feifan and Yang, Zhe and Cai, Zefan and Miao, Yibo and Dong, Qingxiu and Li, Lei and Ma, Chenghao and Chen, Liang and Xu, Runxin and others},
+  year          = {2024},
+  eprint        = {2410.07985},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2410.07985}
+}
+
+% arXiv comment names the NAACL (Nations of the Americas Chapter) conference; year per NAACL 2025 not otherwise checked.
+@inproceedings{krishna2025frames,
+  title         = {Fact, Fetch, and Reason: A Unified Evaluation of Retrieval-Augmented Generation},
+  author        = {Krishna, Satyapriya and Krishna, Kalpesh and Mohananey, Anhad and Schwarcz, Steven and Stambler, Adam and Upadhyay, Shyam and Faruqui, Manaal},
+  booktitle     = {Annual Conference of the Nations of the Americas Chapter of the Association for Computational Linguistics (NAACL)},
+  year          = {2025},
+  eprint        = {2409.12941},
+  archivePrefix = {arXiv}
+}
+
+% arXiv comment: "ACL 2022 (main conference)".
+@inproceedings{lin2022truthfulqa,
+  title         = {{TruthfulQA}: Measuring How Models Mimic Human Falsehoods},
+  author        = {Lin, Stephanie and Hilton, Jacob and Evans, Owain},
+  booktitle     = {Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (ACL 2022)},
+  year          = {2022},
+  eprint        = {2109.07958},
+  archivePrefix = {arXiv}
+}
+
+@misc{arora2025healthbench,
+  title         = {{HealthBench}: Evaluating Large Language Models Towards Improved Human Health},
+  author        = {Arora, Rahul K. and Wei, Jason and Hicks, Rebecca Soskin and Bowman, Preston and Qui{\~n}onero-Candela, Joaquin and Tsimpourlas, Foivos and Sharman, Michael and Shah, Meghan and Vallone, Andrea and Beutel, Alex and Heidecke, Johannes and Singhal, Karan},
+  year          = {2025},
+  eprint        = {2505.08775},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2505.08775}
+}
+
+@misc{mialon2023gaia,
+  title         = {{GAIA}: a benchmark for General {AI} Assistants},
+  author        = {Mialon, Gr{\'e}goire and Fourrier, Cl{\'e}mentine and Swift, Craig and Wolf, Thomas and LeCun, Yann and Scialom, Thomas},
+  year          = {2023},
+  eprint        = {2311.12983},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2311.12983}
+}
+
+% arXiv comment: "ICLR 2025 Spotlight".
+@inproceedings{white2025livebench,
+  title         = {{LiveBench}: A Challenging, Contamination-Limited {LLM} Benchmark},
+  author        = {White, Colin and Dooley, Samuel and Roberts, Manley and Pal, Arka and Feuer, Ben and Jain, Siddhartha and Shwartz-Ziv, Ravid and Jain, Neel and Saifullah, Khalid and Dey, Sreemanti and others},
+  booktitle     = {International Conference on Learning Representations (ICLR)},
+  year          = {2025},
+  eprint        = {2406.19314},
+  archivePrefix = {arXiv}
+}
+
+@misc{li2024arenahard,
+  title         = {From Crowdsourced Data to High-Quality Benchmarks: {Arena-Hard} and {BenchBuilder} Pipeline},
+  author        = {Li, Tianle and Chiang, Wei-Lin and Frick, Evan and Dunlap, Lisa and Wu, Tianhao and Zhu, Banghua and Gonzalez, Joseph E. and Stoica, Ion},
+  year          = {2024},
+  eprint        = {2406.11939},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2406.11939}
+}
+
+% ------------------------------------------------------------------ RL pipelines
+
+% arXiv journal-ref: Nature volume 645, pages 633-638 (2025).
+@article{deepseek2025r1,
+  title         = {{DeepSeek-R1}: Incentivizing Reasoning Capability in {LLMs} via Reinforcement Learning},
+  author        = {{DeepSeek-AI} and Guo, Daya and Yang, Dejian and Zhang, Haowei and Song, Junxiao and Wang, Peiyi and Zhu, Qihao and Xu, Runxin and others},
+  journal       = {Nature},
+  volume        = {645},
+  pages         = {633--638},
+  year          = {2025},
+  doi           = {10.1038/s41586-025-09422-z},
+  eprint        = {2501.12948},
+  archivePrefix = {arXiv}
+}
+
+@misc{kimi2025k15,
+  title         = {Kimi k1.5: Scaling Reinforcement Learning with {LLMs}},
+  author        = {{Kimi Team} and Du, Angang and Gao, Bofei and Xing, Bowei and Jiang, Changjiu and others},
+  year          = {2025},
+  eprint        = {2501.12599},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2501.12599}
+}
+
+@misc{yang2025qwen3,
+  title         = {{Qwen3} Technical Report},
+  author        = {Yang, An and Li, Anfeng and Yang, Baosong and Zhang, Beichen and Hui, Binyuan and Zheng, Bo and others},
+  year          = {2025},
+  eprint        = {2505.09388},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2505.09388}
+}
+
+@misc{seed2025thinking,
+  title         = {{Seed1.5-Thinking}: Advancing Superb Reasoning Models with Reinforcement Learning},
+  author        = {{ByteDance Seed} and Chen, Jiaze and Fan, Tiantian and Liu, Xin and Liu, Lingjun and others},
+  year          = {2025},
+  eprint        = {2504.13914},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2504.13914}
+}
+
+@misc{su2025rewardbridge,
+  title         = {Crossing the Reward Bridge: Expanding {RL} with Verifiable Rewards Across Diverse Domains},
+  author        = {Su, Yi and Yu, Dian and Song, Linfeng and Li, Juntao and Mi, Haitao and Tu, Zhaopeng and Zhang, Min and Yu, Dong},
+  year          = {2025},
+  eprint        = {2503.23829},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2503.23829}
+}
+
+@misc{gunjal2025rar,
+  title         = {Rubrics as Rewards: Reinforcement Learning Beyond Verifiable Domains},
+  author        = {Gunjal, Anisha and Wang, Anthony and Lau, Elaine and Nath, Vaskar and He, Yunzhong and Liu, Bing and Hendryx, Sean},
+  year          = {2025},
+  eprint        = {2507.17746},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2507.17746}
+}
+
+% ------------------------------------------------------------------ surveys / meta-analyses
+
+@misc{gu2024survey,
+  title         = {A Survey on {LLM}-as-a-Judge},
+  author        = {Gu, Jiawei and Jiang, Xuhui and Shi, Zhichao and Tan, Hexiang and Zhai, Xuehao and Xu, Chengjin and Li, Wei and Shen, Yinghan and Ma, Shengjie and Liu, Honghao and others},
+  year          = {2024},
+  eprint        = {2411.15594},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2411.15594}
+}
+
+@misc{li2024llmsasjudges,
+  title         = {{LLMs}-as-Judges: A Comprehensive Survey on {LLM}-based Evaluation Methods},
+  author        = {Li, Haitao and Dong, Qian and Chen, Junjie and Su, Huixue and Zhou, Yujia and Ai, Qingyao and Ye, Ziyi and Liu, Yiqun},
+  year          = {2024},
+  eprint        = {2412.05579},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2412.05579}
+}
+
+% arXiv comment: "EMNLP 2025".
+@inproceedings{li2025generation,
+  title         = {From Generation to Judgment: Opportunities and Challenges of {LLM}-as-a-judge},
+  author        = {Li, Dawei and Jiang, Bohan and Huang, Liangjie and Beigi, Alimohammad and Zhao, Chengshuai and Tan, Zhen and Bhattacharjee, Amrita and Jiang, Yuxuan and Chen, Canyu and Wu, Tianhao and Shu, Kai and Cheng, Lu and Liu, Huan},
+  booktitle     = {Proceedings of the 2025 Conference on Empirical Methods in Natural Language Processing (EMNLP 2025)},
+  year          = {2025},
+  eprint        = {2411.16594},
+  archivePrefix = {arXiv}
+}
+
+@misc{yang2026nlgmeta,
+  title         = {What Are We Measuring in {NLG}? A Meta-Analysis of Evaluation Trends 2020-2025},
+  author        = {Yang, Jing and Feldhus, Nils and Mohtaj, Salar and Hennig, Leonhard and Wang, Qianli and Metheniti, Eleni and Hakimov, Sherzod and Jakob, Charlott and Solopova, Veronika and Rieck, Konrad and Schlangen, David and M{\"o}ller, Sebastian and Schmitt, Vera},
+  year          = {2026},
+  eprint        = {2601.07648},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2601.07648}
+}
+
+% ------------------------------------------------------------------ libraries (paper where one exists)
+
+@misc{es2023ragas,
+  title         = {{Ragas}: Automated Evaluation of Retrieval Augmented Generation},
+  author        = {Es, Shahul and James, Jithin and Espinosa-Anke, Luis and Schockaert, Steven},
+  year          = {2023},
+  eprint        = {2309.15217},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2309.15217}
+}
+
+@misc{liu2023geval,
+  title         = {{G-Eval}: {NLG} Evaluation using {GPT-4} with Better Human Alignment},
+  author        = {Liu, Yang and Iter, Dan and Xu, Yichong and Wang, Shuohang and Xu, Ruochen and Zhu, Chenguang},
+  year          = {2023},
+  eprint        = {2303.16634},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2303.16634}
+}
+
+% ------------------------------------------------------------------ software and documentation (URL-only)
+
+@misc{simpleevals,
+  author       = {{OpenAI}},
+  year         = {2026},
+  title        = {simple-evals},
+  howpublished = {\url{https://github.com/openai/simple-evals} (commit 652c89d0ca9d)},
+  note         = {Accessed 2026-09-14}
+}
+
+@misc{inspectai,
+  author       = {{UK AI Security Institute}},
+  year         = {2026},
+  title        = {Inspect {AI}: scorer module ({model\_graded\_fact}, {model\_graded\_qa})},
+  howpublished = {\url{https://github.com/UKGovernmentBEIS/inspect_ai} (commit 3f63975a5d1c)},
+  note         = {Accessed 2026-09-14}
+}
+
+@misc{openaievals,
+  author       = {{OpenAI}},
+  year         = {2026},
+  title        = {{OpenAI} Evals: model-graded eval registry (fact, closedqa)},
+  howpublished = {\url{https://github.com/openai/evals} (commit 8eac7a7de521)},
+  note         = {Accessed 2026-09-14}
+}
+
+@misc{langchainevals,
+  author       = {{LangChain}},
+  year         = {2026},
+  title        = {{LangChain} evaluation chains ({langchain\_classic.evaluation})},
+  howpublished = {\url{https://github.com/langchain-ai/langchain} (commit 41d357287c04)},
+  note         = {Accessed 2026-09-14}
+}
+
+@misc{openevals,
+  author       = {{LangChain}},
+  year         = {2026},
+  title        = {openevals},
+  howpublished = {\url{https://github.com/langchain-ai/openevals} (commit de865416a985)},
+  note         = {Accessed 2026-09-14}
+}
+
+@misc{llamaindexcorrectness,
+  author       = {{LlamaIndex}},
+  year         = {2026},
+  title        = {{LlamaIndex} {CorrectnessEvaluator}},
+  howpublished = {\url{https://github.com/run-llama/llama_index} (commit 7169bcd0dca2)},
+  note         = {Accessed 2026-09-14}
+}
+
+@misc{deepeval,
+  author       = {{Confident AI}},
+  year         = {2026},
+  title        = {{DeepEval} {G-Eval} metric documentation},
+  howpublished = {\url{https://deepeval.com/docs/metrics-llm-evals}},
+  note         = {Accessed 2026-09-14}
+}
+
+@misc{mlflowjudges,
+  author       = {{MLflow}},
+  year         = {2026},
+  title        = {{MLflow} {GenAI} judges and answer\_correctness metric},
+  howpublished = {\url{https://github.com/mlflow/mlflow} (commit 25b1af31437b)},
+  note         = {Accessed 2026-09-14}
+}
+
+@misc{promptfoofactuality,
+  author       = {{promptfoo}},
+  year         = {2026},
+  title        = {promptfoo: factuality assertion},
+  howpublished = {\url{https://www.promptfoo.dev/docs/configuration/expected-outputs/model-graded/factuality/}},
+  note         = {Accessed 2026-09-14}
+}
+
+@misc{phoenixevals,
+  author       = {{Arize AI}},
+  year         = {2026},
+  title        = {Arize {Phoenix} evals},
+  howpublished = {\url{https://github.com/Arize-ai/phoenix} (tag arize-phoenix-evals-v0.20.8; commit 72daf48aaedf)},
+  note         = {Accessed 2026-09-14}
+}
+
+@misc{trulens,
+  author       = {{TruEra}},
+  year         = {2026},
+  title        = {{TruLens} ground-truth agreement feedback},
+  howpublished = {\url{https://github.com/truera/trulens} (commit a2387e1a2783)},
+  note         = {Accessed 2026-09-14}
+}
+
+@misc{opencompassjudge,
+  author       = {{OpenCompass Contributors}},
+  year         = {2026},
+  title        = {{OpenCompass}: {LLM} as Judge Evaluation ({GenericLLMEvaluator})},
+  howpublished = {\url{https://github.com/open-compass/opencompass/blob/135ab17186aa/docs/en/advanced_guides/llm_judge.md}},
+  note         = {Accessed 2026-09-14}
+}
+
+@misc{openaigraders,
+  author       = {{OpenAI}},
+  year         = {2026},
+  title        = {{OpenAI} {API} documentation: Graders},
+  howpublished = {\url{https://developers.openai.com/api/docs/guides/graders}},
+  note         = {Accessed 2026-09-14}
+}
+
+@misc{openairft,
+  author       = {{OpenAI}},
+  year         = {2026},
+  title        = {{OpenAI} {API} documentation: Reinforcement fine-tuning},
+  howpublished = {\url{https://developers.openai.com/api/docs/guides/reinforcement-fine-tuning}},
+  note         = {Accessed 2026-09-14}
+}
+
+@misc{azurefoundrysimilarity,
+  author       = {{Microsoft}},
+  year         = {2026},
+  title        = {Microsoft Foundry: Textual similarity evaluators},
+  howpublished = {\url{https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/evaluation-evaluators/textual-similarity-evaluators}},
+  note         = {Accessed 2026-09-14}
+}
+
+@misc{bedrockjudgeprompts,
+  author       = {{Amazon Web Services}},
+  year         = {2026},
+  title        = {Amazon Bedrock User Guide: Built-in metric evaluator prompts for model-as-a-judge evaluation jobs},
+  howpublished = {\url{https://docs.aws.amazon.com/bedrock/latest/userguide/model-evaluation-type-judge-prompt.html}},
+  note         = {Accessed 2026-09-14}
+}
+
+% ==== BEGIN research papers (scope extension) ====
+% Metadata from arXiv abstract pages, checked 2026-09-14.
+
+% arXiv preprint
+@misc{chernyshev2024umath,
+  title         = {{U-MATH: A University-Level Benchmark for Evaluating Mathematical Skills in LLMs}},
+  author        = {Chernyshev, Konstantin and Polshkov, Vitaliy and Artemova, Ekaterina and Myasnikov, Alex and Stepanov, Vlad and Miasnikov, Alexei and Tilga, Sergei},
+  year          = {2024},
+  eprint        = {2412.03205},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2412.03205}
+}
+
+% NeurIPS 2025 (Spotlight) per arXiv comment
+@misc{lu2025ineqmath,
+  title         = {{Solving Inequality Proofs with Large Language Models}},
+  author        = {Lu, Pan and Sheng, Jiayi and Lyu, Luna and Jin, Jikai and Xia, Tony and Gu, Alex and Zou, James},
+  year          = {2025},
+  eprint        = {2506.07927},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2506.07927}
+}
+
+% ICML 2025 per arXiv comment
+@misc{xu2025ugphysics,
+  title         = {{UGPhysics: A Comprehensive Benchmark for Undergraduate Physics Reasoning with Large Language Models}},
+  author        = {Xu, Xin and Xu, Qiyun and Xiao, Tong and Chen, Tianhao and Yan, Yuchen and Zhang, Jiaxin and Diao, Shizhe and Yang, Can and Wang, Yang},
+  year          = {2025},
+  eprint        = {2502.00334},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2502.00334}
+}
+
+% arXiv technical report
+@misc{minimax2025m1,
+  title         = {{MiniMax-M1: Scaling Test-Time Compute Efficiently with Lightning Attention}},
+  author        = {{MiniMax} and Chen, Aili and Li, Aonian and Gong, Bangwei and Jiang, Binyang and Fei, Bo and Yang, Bo and Shan, Boji and Yu, Changqing and others},
+  year          = {2025},
+  eprint        = {2506.13585},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2506.13585}
+}
+
+% arXiv preprint (comment: under review)
+@misc{cheng2025guru,
+  title         = {{Revisiting Reinforcement Learning for LLM Reasoning from A Cross-Domain Perspective}},
+  author        = {Cheng, Zhoujun and Hao, Shibo and Liu, Tianyang and Zhou, Fan and Xie, Yutao and Yao, Feng and Bian, Yuexin and Zhuang, Yonghao and Dey, Nilabjo and Zha, Yuheng and others},
+  year          = {2025},
+  eprint        = {2506.14965},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2506.14965}
+}
+
+% arXiv technical report
+@misc{bercovich2025llamanemotron,
+  title         = {{Llama-Nemotron: Efficient Reasoning Models}},
+  author        = {Bercovich, Akhiad and Levy, Itay and Golan, Izik and Dabbah, Mohammad and El-Yaniv, Ran and Puny, Omri and Galil, Ido and Moshe, Zach and Ronen, Tomer and Nabwani, Najeeb and others},
+  year          = {2025},
+  eprint        = {2505.00949},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2505.00949}
+}
+
+% NeurIPS 2024 per arXiv comment
+@misc{huang2024olympicarena,
+  title         = {{OlympicArena: Benchmarking Multi-discipline Cognitive Reasoning for Superintelligent AI}},
+  author        = {Huang, Zhen and Wang, Zengzhi and Xia, Shijie and Li, Xuefeng and Zou, Haoyang and Xu, Ruijie and Fan, Run-Ze and Ye, Lyumanshan and Chern, Ethan and Ye, Yixin and others},
+  year          = {2024},
+  eprint        = {2406.12753},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2406.12753}
+}
+
+% arXiv preprint
+@misc{fang2024mathodyssey,
+  title         = {{MathOdyssey: Benchmarking Mathematical Problem-Solving Skills in Large Language Models Using Odyssey Math Data}},
+  author        = {Fang, Meng and Wan, Xiangpeng and Lu, Fei and Xing, Fei and Zou, Kai},
+  year          = {2024},
+  eprint        = {2406.18321},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2406.18321}
+}
+
+% arXiv preprint
+@misc{zhou2025verifree,
+  title         = {{Reinforcing General Reasoning without Verifiers}},
+  author        = {Zhou, Xiangxin and Liu, Zichen and Sims, Anya and Wang, Haonan and Pang, Tianyu and Li, Chongxuan and Wang, Liang and Lin, Min and Du, Chao},
+  year          = {2025},
+  eprint        = {2505.21493},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2505.21493}
+}
+
+% arXiv preprint
+@misc{yu2025rlpr,
+  title         = {{RLPR: Extrapolating RLVR to General Domains without Verifiers}},
+  author        = {Yu, Tianyu and Ji, Bo and Wang, Shouli and Yao, Shu and Wang, Zefan and Cui, Ganqu and Yuan, Lifan and Ding, Ning and Yao, Yuan and Liu, Zhiyuan and Sun, Maosong and Chua, Tat-Seng},
+  year          = {2025},
+  eprint        = {2506.18254},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2506.18254}
+}
+
+% arXiv preprint
+@misc{petrov2025proofbluff,
+  title         = {{Proof or Bluff? Evaluating LLMs on 2025 USA Math Olympiad}},
+  author        = {Petrov, Ivo and Dekoninck, Jasper and Baltadzhiev, Lyuben and Drencheva, Maria and Minchev, Kristian and Balunovi{\'c}, Mislav and Jovanovi{\'c}, Nikola and Vechev, Martin},
+  year          = {2025},
+  eprint        = {2503.21934},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2503.21934}
+}
+
+% arXiv preprint
+@misc{ren2025deepseekproverv2,
+  title         = {{DeepSeek-Prover-V2: Advancing Formal Mathematical Reasoning via Reinforcement Learning for Subgoal Decomposition}},
+  author        = {Ren, Z. Z. and Shao, Zhihong and Song, Junxiao and Xin, Huajian and Wang, Haocheng and Zhao, Wanjia and Zhang, Liyue and Fu, Zhe and Zhu, Qihao and Yang, Dejian and others},
+  year          = {2025},
+  eprint        = {2504.21801},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2504.21801}
+}
+
+% arXiv preprint
+@misc{chen2025seedprover,
+  title         = {{Seed-Prover: Deep and Broad Reasoning for Automated Theorem Proving}},
+  author        = {Chen, Luoxin and Gu, Jinming and Huang, Liankai and Huang, Wenhao and Jiang, Zhicheng and Jie, Allan and Jin, Xiaoran and Jin, Xing and Li, Chenggang and Ma, Kaijing and others},
+  year          = {2025},
+  eprint        = {2507.23726},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2507.23726}
+}
+
+% arXiv preprint
+@misc{chandak2025answermatching,
+  title         = {{Answer Matching Outperforms Multiple Choice for Language Model Evaluation}},
+  author        = {Chandak, Nikhil and Goel, Shashwat and Prabhu, Ameya and Hardt, Moritz and Geiping, Jonas},
+  year          = {2025},
+  eprint        = {2507.02856},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2507.02856}
+}
+
+% arXiv preprint
+@misc{he2024chinesesimpleqa,
+  title         = {{Chinese SimpleQA: A Chinese Factuality Evaluation for Large Language Models}},
+  author        = {He, Yancheng and Li, Shilong and Liu, Jiaheng and Tan, Yingshui and Wang, Weixun and Huang, Hui and Bu, Xingyuan and Guo, Hangyu and Hu, Chengwei and Zheng, Boren and Lin, Zhuoran and Liu, Xuepeng and others},
+  year          = {2024},
+  eprint        = {2411.07140},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2411.07140}
+}
+
+% arXiv preprint
+@misc{ru2024ragchecker,
+  title         = {{RAGChecker: A Fine-grained Framework for Diagnosing Retrieval-Augmented Generation}},
+  author        = {Ru, Dongyu and Qiu, Lin and Hu, Xiangkun and Zhang, Tianhang and Shi, Peng and Chang, Shuaichen and Jiayang, Cheng and Wang, Cunxiang and Sun, Shichao and Li, Huanyu and Zhang, Zizhao and Wang, Binjie and others},
+  year          = {2024},
+  eprint        = {2408.08067},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2408.08067}
+}
+
+% arXiv preprint
+@misc{rau2024bergen,
+  title         = {{BERGEN: A Benchmarking Library for Retrieval-Augmented Generation}},
+  author        = {Rau, David and D{\'e}jean, Herv{\'e} and Chirkova, Nadezhda and Formal, Thibault and Wang, Shuai and Nikoulina, Vassilina and Clinchant, St{\'e}phane},
+  year          = {2024},
+  eprint        = {2407.01102},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2407.01102}
+}
+
+% NeurIPS 2023 Datasets and Benchmarks Track (per arXiv comment)
+@misc{wang2023evouna,
+  title         = {{Evaluating Open-QA Evaluation}},
+  author        = {Wang, Cunxiang and Cheng, Sirui and Guo, Qipeng and Yue, Yuanhao and Ding, Bowen and Xu, Zhikun and Wang, Yidong and Hu, Xiangkun and Zhang, Zheng and Zhang, Yue},
+  year          = {2023},
+  eprint        = {2305.12421},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2305.12421}
+}
+
+@misc{wu2025webwalker,
+  title         = {{WebWalker: Benchmarking LLMs in Web Traversal}},
+  author        = {Wu, Jialong and Yin, Wenbiao and Jiang, Yong and Wang, Zhenglin and Xi, Zekun and Fang, Runnan and Zhang, Linhai and He, Yulan and Zhou, Deyu and Xie, Pengjun and others},
+  year          = {2025},
+  eprint        = {2501.07572},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2501.07572}
+}
+
+@misc{zhou2025browsecompzh,
+  title         = {{BrowseComp-ZH: Benchmarking Web Browsing Ability of Large Language Models in Chinese}},
+  author        = {Zhou, Peilin and Leon, Bruce and Ying, Xiang and Zhang, Can and Shao, Yifan and Ye, Qichen and Chong, Dading and Jin, Zhiling and Xie, Chenxuan and Cao, Meng and others},
+  year          = {2025},
+  eprint        = {2504.19314},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2504.19314}
+}
+
+@misc{wu2025webdancer,
+  title         = {{WebDancer: Towards Autonomous Information Seeking Agency}},
+  author        = {Wu, Jialong and Li, Baixuan and Fang, Runnan and Yin, Wenbiao and Zhang, Liwen and Tao, Zhengwei and Zhang, Dingchu and Xi, Zekun and Fu, Gang and Jiang, Yong and others},
+  year          = {2025},
+  eprint        = {2505.22648},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2505.22648}
+}
+
+@misc{li2025websailor,
+  title         = {{WebSailor: Navigating Super-human Reasoning for Web Agent}},
+  author        = {Li, Kuan and Zhang, Zhongwang and Yin, Huifeng and Zhang, Liwen and Ou, Litu and Wu, Jialong and Yin, Wenbiao and Li, Baixuan and Tao, Zhengwei and Wang, Xinyu and others},
+  year          = {2025},
+  eprint        = {2507.02592},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2507.02592}
+}
+
+@misc{gao2025asearcher,
+  title         = {{Beyond Ten Turns: Unlocking Long-Horizon Agentic Search with Large-Scale Asynchronous RL}},
+  author        = {Gao, Jiaxuan and Fu, Wei and Xie, Minyang and Xu, Shusheng and He, Chuyi and Mei, Zhiyu and Zhu, Banghua and Wu, Yi},
+  year          = {2025},
+  eprint        = {2508.07976},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2508.07976}
+}
+
+@misc{zheng2025deepresearcher,
+  title         = {{DeepResearcher: Scaling Deep Research via Reinforcement Learning in Real-world Environments}},
+  author        = {Zheng, Yuxiang and Fu, Dayuan and Hu, Xiangkun and Cai, Xiaojie and Ye, Lyumanshan and Lu, Pengrui and Liu, Pengfei},
+  year          = {2025},
+  eprint        = {2504.03160},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2504.03160}
+}
+
+@misc{chen2025browsecompplus,
+  title         = {{BrowseComp-Plus: A More Fair and Transparent Evaluation Benchmark of Deep-Research Agent}},
+  author        = {Chen, Zijian and Ma, Xueguang and Zhuang, Shengyao and Nie, Ping and Zou, Kai and Liu, Andrew and Green, Joshua and Patel, Kshama and Meng, Ruoxi and Su, Mingyi and others},
+  year          = {2025},
+  eprint        = {2508.06600},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2508.06600}
+}
+
+@misc{du2025deepresearchbench,
+  title         = {{DeepResearch Bench: A Comprehensive Benchmark for Deep Research Agents}},
+  author        = {Du, Mingxuan and Xu, Benfeng and Zhu, Chiwei and Wang, Xiaorui and Mao, Zhendong},
+  year          = {2025},
+  eprint        = {2506.11763},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2506.11763}
+}
+
+% arXiv comment: Accepted by NeurIPS 2025
+@misc{li2025webthinker,
+  title         = {{WebThinker: Empowering Large Reasoning Models with Deep Research Capability}},
+  author        = {Li, Xiaoxi and Jin, Jiajie and Dong, Guanting and Qian, Hongjin and Wu, Yongkang and Wen, Ji-Rong and Zhu, Yutao and Dou, Zhicheng},
+  year          = {2025},
+  eprint        = {2504.21776},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2504.21776}
+}
+
+@misc{liu2025webexplorer,
+  title         = {{WebExplorer: Explore and Evolve for Training Long-Horizon Web Agents}},
+  author        = {Liu, Junteng and Li, Yunji and Zhang, Chi and Li, Jingyang and Chen, Aili and Ji, Ke and Cheng, Weiyu and Wu, Zijia and Du, Chengyu and Xu, Qidi and others},
+  year          = {2025},
+  eprint        = {2509.06501},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2509.06501}
+}
+
+@misc{tongyi2025deepresearch,
+  title         = {{Tongyi DeepResearch Technical Report}},
+  author        = {{Tongyi DeepResearch Team} and Li, Baixuan and Zhang, Bo and Zhang, Dingchu and Huang, Fei and Li, Guangyu and Chen, Guoxin and Yin, Huifeng and Wu, Jialong and Zhou, Jingren and others},
+  year          = {2025},
+  eprint        = {2510.24701},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2510.24701}
+}
+
+% arXiv comment: EMNLP 2025 (main conference)
+@misc{luong2025imobench,
+  title         = {{Towards Robust Mathematical Reasoning}},
+  author        = {Luong, Thang and Hwang, Dawsen and Nguyen, Hoang H. and Ghiasi, Golnaz and Chervonyi, Yuri and Seo, Insuk and Kim, Junsu and Bingham, Garrett and Lee, Jonathan and Mishra, Swaroop and Zhai, Alex and Hu, Clara Huiyi and others},
+  year          = {2025},
+  eprint        = {2511.01846},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2511.01846}
+}
+
+@misc{mahdavi2025refgrader,
+  title         = {{RefGrader: Automated Grading of Mathematical Competition Proofs using Agentic Workflows}},
+  author        = {Mahdavi, Hamed and Mahdavinia, Pouria and Malek, Samira and Mohammadipour, Pegah and Hashemi, Alireza and Daliri, Majid and Farhadi, Alireza and Khasahmadi, Amir and Mireshghallah, Niloofar and Honavar, Vasant},
+  year          = {2025},
+  eprint        = {2510.09021},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2510.09021}
+}
+
+% arXiv comment: Accepted to Findings of EACL 2024
+@misc{zhuo2024icescore,
+  title         = {{ICE-Score: Instructing Large Language Models to Evaluate Code}},
+  author        = {Zhuo, Terry Yue},
+  year          = {2024},
+  eprint        = {2304.14317},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2304.14317}
+}
+
+% arXiv comment: Accepted to EMNLP 2024 (Main, Long Paper)
+@misc{tong2024codejudge,
+  title         = {{CodeJudge: Evaluating Code Generation with Large Language Models}},
+  author        = {Tong, Weixi and Zhang, Tianyi},
+  year          = {2024},
+  eprint        = {2410.02184},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2410.02184}
+}
+
+@misc{balunovic2025matharena,
+  title         = {{MathArena: Evaluating LLMs on Uncontaminated Math Competitions}},
+  author        = {Balunovi{\'c}, Mislav and Dekoninck, Jasper and Petrov, Ivo and Jovanovi{\'c}, Nikola and Vechev, Martin},
+  year          = {2025},
+  eprint        = {2505.23281},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2505.23281}
+}
+
+@misc{yang2024formalmath,
+  title         = {{Formal Mathematical Reasoning: A New Frontier in AI}},
+  author        = {Yang, Kaiyu and Poesia, Gabriel and He, Jingxuan and Li, Wenda and Lauter, Kristin and Chaudhuri, Swarat and Song, Dawn},
+  year          = {2024},
+  eprint        = {2412.16075},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2412.16075}
+}
+
+@misc{wang2025kimina,
+  title         = {{Kimina-Prover Preview: Towards Large Formal Reasoning Models with Reinforcement Learning}},
+  author        = {Wang, Haiming and Unsal, Mert and Lin, Xiaohan and Baksys, Mantas and Liu, Junqi and Santos, Marco Dos and Sung, Flood and Vinyes, Marina and Ying, Zhenzhe and Zhu, Zekai and Lu, Jianqiao and de Saxc{\'e}, Hugues and others},
+  year          = {2025},
+  eprint        = {2504.11354},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2504.11354}
+}
+
+% arXiv comment: Accepted at NeurIPS 2024 Datasets & Benchmarks Track
+@misc{tsoukalas2024putnambench,
+  title         = {{PutnamBench: Evaluating Neural Theorem-Provers on the Putnam Mathematical Competition}},
+  author        = {Tsoukalas, George and Lee, Jasper and Jennings, John and Xin, Jimmy and Ding, Michelle and Jennings, Michael and Thakur, Amitayush and Chaudhuri, Swarat},
+  year          = {2024},
+  eprint        = {2407.11214},
+  archivePrefix = {arXiv},
+  howpublished  = {arXiv preprint arXiv:2407.11214}
+}
+
+% ==== END research papers ====
+
+@article{joshi2017triviaqa,
+  title   = {{TriviaQA}: A Large Scale Distantly Supervised Challenge Dataset for Reading Comprehension},
+  author  = {Joshi, Mandar and Choi, Eunsol and Weld, Daniel S. and Zettlemoyer, Luke},
+  journal = {arXiv preprint arXiv:1705.03551},
+  year    = {2017}
+}
+
+@article{sharma2023sycophancy,
+  title   = {Towards Understanding Sycophancy in Language Models},
+  author  = {Sharma, Mrinank and Tong, Meg and Korbak, Tomasz and Duvenaud, David and Askell, Amanda and Bowman, Samuel R. and Cheng, Newton and Durmus, Esin and Hatfield-Dodds, Zac and Johnston, Scott R. and Kravec, Shauna and Maxwell, Timothy and McCandlish, Sam and Ndousse, Kamal and Rausch, Oliver and Schiefer, Nicholas and Yan, Da and Zhang, Miranda and Perez, Ethan},
+  journal = {arXiv preprint arXiv:2310.13548},
+  year    = {2023}
+}
+
+@inproceedings{turpin2023unfaithful,
+  title     = {Language Models Don't Always Say What They Think: Unfaithful Explanations in Chain-of-Thought Prompting},
+  author    = {Turpin, Miles and Michael, Julian and Perez, Ethan and Bowman, Samuel R.},
+  booktitle = {Advances in Neural Information Processing Systems},
+  year      = {2023}
+}
+
+@article{amouyal2022qampari,
+  title   = {{QAMPARI}: An Open-domain Question Answering Benchmark for Questions with Many Answers from Multiple Paragraphs},
+  author  = {Amouyal, Samuel Joseph and Wolfson, Tomer and Rubin, Ohad and Yoran, Ori and Herzig, Jonathan and Berant, Jonathan},
+  journal = {arXiv preprint arXiv:2205.12665},
+  year    = {2022}
+}
+
+@inproceedings{li2024pedants,
+  title     = {{PEDANTS}: Cheap but Effective and Interpretable Answer Equivalence},
+  author    = {Li, Zongxia and Mondal, Ishani and Liang, Yijun and Nghiem, Huy and Boyd-Graber, Jordan Lee},
+  booktitle = {Findings of the Association for Computational Linguistics: EMNLP 2024},
+  year      = {2024}
+}

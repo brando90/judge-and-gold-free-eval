@@ -1,0 +1,26 @@
+\begin{tabular}{L{8.4cm}L{4.8cm}}
+\toprule
+Quantity & Value (95\% CI) \\
+\midrule
+\multicolumn{2}{l}{\emph{Wrong candidates whose text contains the reference's answer (look-alikes)}} \\
+Replication pool: share of wrong candidates; share of those with no \texttt{\textbackslash boxed\{\}} answer & 23.6\%; 73.3\% \\
+$k$-pool: share of wrong candidates; share of those with no \texttt{\textbackslash boxed\{\}} answer & 26.8\%; 76.9\% \\
+\textsc{MACE} River and Language: share of wrong candidates & 3.1\% \\
+\multicolumn{2}{l}{\emph{$k$-pool accuracy change with look-alikes removed (points): $k{=}1$; $k{>}1$; step}} \\
+Qwen2.5-7B & $+0.0$ {\scriptsize$[+0.0,+0.0]$}; $-15.4$ {\scriptsize$[-28.2,-2.6]$}; step $-15.4$ {\scriptsize$[-28.2,-2.6]$} \\
+Qwen2.5-14B & $+7.1$ {\scriptsize$[+0.0,+21.4]$}; $-5.1$ {\scriptsize$[-15.4,+5.1]$}; step $-12.3$ {\scriptsize$[-31.7,+2.6]$} \\
+gemma-2-9b & $+0.0$ {\scriptsize$[+0.0,+0.0]$}; $-15.4$ {\scriptsize$[-28.2,-5.1]$}; step $-15.4$ {\scriptsize$[-28.2,-5.1]$} \\
+phi-4 & $+0.0$ {\scriptsize$[+0.0,+0.0]$}; $-20.5$ {\scriptsize$[-35.9,-5.1]$}; step $-20.5$ {\scriptsize$[-35.9,-7.6]$} \\
+\multicolumn{2}{l}{\emph{Replication pool with look-alikes removed: AUROC change (non-matching, all); accuracy change (points)}} \\
+Qwen2.5-7B & $-0.24$ {\scriptsize$[-0.27,-0.21]$}, $-0.19$ {\scriptsize$[-0.22,-0.16]$}; $+1.9$ {\scriptsize$[-5.7,+9.5]$} \\
+phi-4 & $-0.20$ {\scriptsize$[-0.23,-0.17]$}, $-0.16$ {\scriptsize$[-0.19,-0.13]$}; $-5.7$ {\scriptsize$[-11.4,-0.9]$} \\
+\textsc{MACE}, Qwen2.5-7B, non-matching AUROC change with look-alikes removed & $-0.07$ {\scriptsize$[-0.14,-0.01]$} \\
+\multicolumn{2}{l}{\emph{GPT-4.1 on the $k$-pool: accuracy change (points) and mean candidates tied at the maximum, blind / reference}} \\
+GPT-4.1, $k{=}1$ & $+4.0$ {\scriptsize$[-6.2,+18.8]$}; ties 13.4 / 23.4 \\
+GPT-4.1, $k{>}1$ & $-1.6$ {\scriptsize$[-7.6,+3.5]$}; ties 9.2 / 15.5 \\
+Sonnet~5 score files, replication pool: correct answers scored; wrong answers scored & 3494 of 3494; 0 of 4186 \\
+\multicolumn{2}{l}{\emph{Sonnet~5 (API) mean score of correct answers, replication pool, blind $\to$ reference}} \\
+Matching the reference & 9.19 {\scriptsize$[+8.90,+9.45]$} $\to$ 9.99 {\scriptsize$[+9.98,+10.00]$} \\
+Differing from the reference & 9.09 {\scriptsize$[+8.91,+9.26]$} $\to$ 6.93 {\scriptsize$[+6.39,+7.44]$} \\
+\bottomrule
+\end{tabular}

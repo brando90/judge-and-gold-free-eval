@@ -1,0 +1,35 @@
+# Source: https://github.com/JinjieNi/MixEval/blob/7c52b41929d4/mix_eval/prompts/judge_prompts.py#L1-L30
+# Retrieved: 2026-09-14
+# Note: first block (close-ended free-form judge) of the Python file
+# ---- verbatim template below ----
+############Judge Prompts for Close-ended Free-form Parser############
+gpt_judge_for_closeended_freeform = lambda prompt, gold_ans, response: [
+{"role": "system", "content": f"In this task, I want you to act as a judge."},
+{"role": "user", "content": f'''You will be provided with a question, its golden answer(s), and the model's answer, while the context of the question is not given here. Your task is to judge how correct the model's answer is based on the golden answer(s), without seeing the context of the question, and then give a correctness score. The correctness score should be one of the below numbers: 0.0 (totally wrong), 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, or 1.0 (totally right). Your should first briefly give your reasoning process regarding how the model's answer conforms to or contradicts the golden answer(s), and then give the correctness score. The correctness score must strictly follow this format: \"[[score]]\", e.g., \"The correctness score: [[0.5]]\". Below are some examples. 
+
+Example 1: 
+Question: Sandy bought 1 million Safe Moon tokens. She has 4 siblings. She wants to keep half of them to herself and divide the remaining tokens among her siblings. After splitting it up, how many more tokens will she have than any of her siblings?
+Golden Answer(s): <answer 1> 375000
+Model's Answer: Sandy will have more tokens than any sibling by 3/8 million.
+Your Judgment: The golden answer states that Sandy will have 375,000 more tokens than any of her siblings, which is a precise numerical value. The model's answer translates this scenario into a fraction of the total, saying Sandy will have more tokens than any sibling by 3/8 million. 1 million tokens * 3/8 = 375,000 tokens. So the model provided an answer in fractional form that, when converted to a numerical value, exactly matches the golden answer's quantity. The correctness score: [[1.0]].
+
+Example 2: 
+Question: what car was used in the movie christine
+Golden Answer: <answer 1> a vintage 1958 Plymouth Fury; <answer 2> 1958 Plymouth Fury
+Model's Answer: Christine.
+Your Judgment: The golden answers specify the car used in the movie "Christine" as a vintage 1958 Plymouth Fury, providing a clear and detailed response including the make, model, and year of the car. The model's answer, though points out the car's alias in the context of the movie "Christine", is not precise and specific enough. The correctness score: [[0.5]].
+
+Example 3: 
+Question: In 2015 Edgar Lungu became prime minister of?
+Golden Answer: <answer 1> Zambia; <answer 2> Zamibia; <answer 3> People of Zambia; <answer 4> Zambian cuisine; <answer 5> Zambians; <answer 6> Culture of Zambia; <answer 7> Etymology of Zambia; <answer 8> Zambia; <answer 9> Health care in Zambia; <answer 10> ISO 3166-1:ZM; <answer 11> Republic Of Zambia; <answer 12> Cuisine of Zambia; <answer 13> Sport in Zambia; <answer 14> Republic of Zambia; <answer 15> Zambian people; <answer 16> Name of Zambia
+Model's Answer: Prime Minister
+Your Judgment: The golden answers provide a detailed list of entities all relating to Zambia, indicating that Edgar Lungu became the leader (specifically, they mentioned "prime minister") of Zambia in 2015. The model's answer, "Prime Minister," merely repeats part of the question without answering it. The correctness score: [[0.0]].
+
+Note that each one of the golden answers is considered correct. Thus if the model's answer matches any one of the golden answers, it should be considered correct. Judge the below case, give the brief reasoning process and the correctness score.
+
+Question: {prompt}
+Golden Answer(s): {gold_ans}
+Model's Answer: {response}
+Your Judgment: 
+'''}
+]
