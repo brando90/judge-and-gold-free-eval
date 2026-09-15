@@ -1,0 +1,198 @@
+{
+ "cell": "verify_gpt41",
+ "questions": 149,
+ "generators": {
+  "meta-llama__Llama-3.1-8B-Instruct": {
+   "list": [
+    0.6913,
+    [
+     0.6174,
+     0.7651
+    ]
+   ],
+   "blind": [
+    0.6846,
+    [
+     0.6107,
+     0.7584
+    ]
+   ],
+   "ref": [
+    0.6846,
+    [
+     0.6107,
+     0.7584
+    ]
+   ]
+  },
+  "claude-haiku-4-5-20251001": {
+   "list": [
+    0.9463,
+    [
+     0.906,
+     0.9799
+    ]
+   ],
+   "blind": [
+    0.9463,
+    [
+     0.9128,
+     0.9799
+    ]
+   ],
+   "ref": [
+    0.8926,
+    [
+     0.8456,
+     0.9396
+    ]
+   ]
+  },
+  "claude-sonnet-5": {
+   "list": [
+    0.9866,
+    [
+     0.9664,
+     1.0
+    ]
+   ],
+   "blind": [
+    0.9799,
+    [
+     0.953,
+     1.0
+    ]
+   ],
+   "ref": [
+    0.9933,
+    [
+     0.9799,
+     1.0
+    ]
+   ]
+  },
+  "claude-opus-5": {
+   "list": [
+    1.0,
+    [
+     1.0,
+     1.0
+    ]
+   ],
+   "blind": [
+    1.0,
+    [
+     1.0,
+     1.0
+    ]
+   ],
+   "ref": [
+    0.9933,
+    [
+     0.9799,
+     1.0
+    ]
+   ]
+  }
+ },
+ "pooled": {
+  "blind_minus_list": [
+   -0.0034,
+   [
+    -0.0185,
+    0.0117
+   ]
+  ],
+  "ref_minus_list": [
+   -0.0151,
+   [
+    -0.0302,
+    0.0
+   ]
+  ],
+  "ref_minus_blind": [
+   -0.0117,
+   [
+    -0.0235,
+    0.0
+   ]
+  ],
+  "nonmatch_correct_credited_blind": [
+   0.9798,
+   [
+    0.9634,
+    0.9928
+   ],
+   396
+  ],
+  "nonmatch_correct_credited_ref": [
+   0.9672,
+   [
+    0.9485,
+    0.9827
+   ],
+   396
+  ],
+  "nonmatch_correct_credited_ref_minus_blind": [
+   -0.0126,
+   [
+    -0.03,
+    0.0053
+   ],
+   396
+  ],
+  "match_correct_credited_blind": [
+   0.9931,
+   [
+    0.9773,
+    1.0
+   ],
+   144
+  ],
+  "match_correct_credited_ref": [
+   0.9861,
+   [
+    0.9671,
+    1.0
+   ],
+   144
+  ],
+  "match_correct_credited_ref_minus_blind": [
+   -0.0069,
+   [
+    -0.0229,
+    0.0
+   ],
+   144
+  ],
+  "wrong_credited_blind": [
+   0.125,
+   [
+    0.0363,
+    0.2295
+   ],
+   56
+  ],
+  "wrong_credited_ref": [
+   0.1071,
+   [
+    0.0339,
+    0.193
+   ],
+   56
+  ],
+  "wrong_credited_ref_minus_blind": [
+   -0.0179,
+   [
+    -0.0806,
+    0.0408
+   ],
+   56
+  ]
+ },
+ "predictions": {
+  "P-R25A1 ref below list (interval)": "not confirmed",
+  "P-R25A2 blind within 5 points of list (point)": "confirmed",
+  "P-R25A3 differing-correct credit ref minus blind <= -10 pp (point)": "falsified"
+ }
+}
