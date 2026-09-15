@@ -292,13 +292,6 @@ A pre-specified experiment measured best-of-64 selection accuracy on the benchma
 
 The ledger calls the swap test \emph{rot\-ation}: the reference is moved to a different correct answer while the candidate text stays fixed. The swap assigns each task the valid alternative that appears most often among its valid samples, so that enough samples match the new reference; the paired same-sample changes in \cref{tab:rotation} compare each sample with itself and are not affected by that choice. An earlier run on an exploratory pool built from \textsc{RewardBench-2} Ties found the effect largest for small Qwen2.5 judges and smaller but present at 14B (extended appendix).
 
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.5\textwidth]{figures/fig1_rotation.pdf}
-\caption{\textbf{The swap over the whole replication pool.} Qwen2.5-7B, phi-4, and Sonnet~5 (API): mean change in score (points out of 10) of identical correct text when the reference moves onto its answer (120 tasks) or off it (93 tasks), and for answers that match neither reference (113 tasks; $+0.12$, $+0.30$, $+0.04$), with 95\% intervals. Qwen2.5-7B uses the exact scorer; phi-4 and Sonnet~5 use the original scorer with rubric~$a$ (\cref{tab:rotation}).\pre}
-\label{fig:rotation-pool}
-\end{figure}
-
 \begin{table}[htbp]
 \centering
 \caption{Change in score of identical text when the reference is swapped (replication pool, 0--10 scale, 95\% CI; original scorer, registered runs; exact-scorer values for Qwen2.5-7B are in the extended appendix). ``Onto'': samples that match the new reference. ``Off'': samples that matched only the old one. ``Neither'': valid samples matching neither. The last row keeps only samples Sonnet~5 scored at least 7 blind (3,194 of 3,494). For the open judges the same filter, applied post hoc, gives $+4.99$ \ci{+4.69}{+5.32} (Qwen2.5-7B, 91\% kept) and $+4.08$ (phi-4, 98\% kept).\pre}
