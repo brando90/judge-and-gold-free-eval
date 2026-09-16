@@ -108,17 +108,16 @@ scored by the checker rather than by bank membership:
 | GPT-5-mini | 6/10 | 10/12 | 30s | $0.0127 | $153 |
 | GPT-4.1 | 5/12 | 12/12 | 14s | $0.0119 | $144 |
 | Haiku 4.5 | 5/11 | 11/12 | 9s | $0.0124 | $150 |
-| Sonnet 5 | 7/7 short items only | 7/12 at 16k tokens | 35s | $0.1200 | $1,451 |
+| Sonnet 5 | 10/11 | 11/12 (1 truncated at 32k) | 35s | $0.2049 | $2,478 |
 
 **Decision: GPT-4.1-mini as the bulk generator.** Highest checker-valid rate of the cheap models,
 the only one tied for fully parseable output, and a quarter to a thirtieth of the cost of every
 alternative. Generation for the full pool is about $39 against Sonnet 5's ~$1,451.
 
-**Sonnet 5 is the most accurate but is not scored comparably.** It answered 7 of 7 items it
-finished, but 5 of 12 hit even a 16k-token cap without reaching the answer tag — always the long
-constructions (768-integer De Bruijn sequence, 231-edge Ramsey colouring, social golfers, two
-`pysms` graphs), because it narrates every constraint check before answering. Its 7/7 is therefore
-on the short items only, a self-selected subset. Those five are re-running at 32k.
+**Sonnet 5 is the most accurate and the most expensive.** At a 32k cap (and with streaming, which
+the SDK requires for long requests) it reaches 10/11 valid, failing only the Ramsey colouring and
+still truncating one item. But at $0.2049/item the full pool costs about $2,478 against the mini's
+$39 — 64x — because it narrates every constraint check before answering.
 
 **A design reason not to pick the strongest generator.** The analyses need candidate pools that mix
 valid and invalid answers: best-of-n selection and valid-versus-invalid discrimination are both
@@ -149,6 +148,31 @@ Until that limit is raised, Anthropic models cannot be candidate generators *or*
 **Selection rule:** pick the cheapest model that produces parseable answers and clears a solve
 floor on the checkable items, measured by the checker rather than by bank match. Report the
 chosen model's solve rate per source, since `mathconstruct` is much harder than `math_constraint`.
+
+---
+
+## 3b. Cluster status (skampere), checked 2026-09-16
+
+| Host | GPUs | Free now | vLLM | Disk free |
+|---|---|---|---|---|
+| skampere1 | 8x A100-80GB | #1, #3, #6 idle | 0.19.0 in `~/miniconda3/envs/rrv` (torch 2.10, transformers 4.57.6) | 1.1T of 56T (98% used) |
+| skampere2 | 8x H200-143GB | #4 idle, #5 nearly | 0.19.0 in `~/miniconda3/envs/rrv` (torch 2.10, transformers 4.57.2) | 689G of 56T (99% used) |
+| skampere3 | — | — | — | unreachable: `Permission denied`; it logs in as `srivatsavadaruru@`, while 1 and 2 use `srivatsavad@` |
+
+**None of the four named judge checkpoints is cached.** The caches hold Qwen3-8B, Qwen3-14B,
+DeepSeek-R1 distills and `Mistral-Small-Instruct-2409`, but not Qwen3-32B, Llama-3.3-70B,
+Mistral-Small-3.1-24B or DeepSeek-V3.1.
+
+**Disk is the binding constraint, not GPUs.** Rough download sizes: Qwen3-32B ~65G (fits either
+host), Llama-3.3-70B ~140G (fits skampere1 only), Mistral-Small-3.1-24B ~48G (fits either),
+**DeepSeek-V3.1 is a 600B+ MoE at ~700G and does not fit on either node** — it needs replacing, or
+serving through a hosted endpoint. Suggested substitute: DeepSeek-R1-Distill-Qwen-32B, or the
+already-cached Qwen3-14B as a cheap fourth cell.
+
+**Scope confirmed: narrow first, expand with time and confidence.** Start with E1 (C0/C1 rotation)
+and E3 (full answer list) on the 189 checkable items, with two judge models and two methods
+(M0 brief justification, M3 solve-then-grade — the two that most differ mechanically). Expand to
+more cells only once the effect is shown to reproduce on this benchmark.
 
 ---
 
