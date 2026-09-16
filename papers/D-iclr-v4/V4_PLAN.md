@@ -102,32 +102,46 @@ different from every reference shown" is decidable in code. Report the other 135
 Llama-3.1-8B, v3's generator, will not solve these problems. Pilot with the supplied prompt,
 scored by the checker rather than by bank membership:
 
-| Model | Checker-valid | Parseable | Median | Cost/item | 12,096-call generation |
+| Model | Checker-valid | Parsed | Median | $/item | 12,096-call generation |
 |---|---|---|---|---|---|
 | **GPT-4.1-mini** | **6/12** | **12/12** | 16s | **$0.0032** | **$39** |
+| GPT-5-mini | 6/10 | 10/12 | 30s | $0.0127 | $153 |
 | GPT-4.1 | 5/12 | 12/12 | 14s | $0.0119 | $144 |
-| GPT-5-mini | 5/9 | 9/12 | 30s | $0.0127 | $153 |
-| Haiku 4.5, Sonnet 5 | blocked — Anthropic workspace limit, resets 2026-10-01 | — | — | — | — |
+| Haiku 4.5 | 5/11 | 11/12 | 9s | $0.0124 | $150 |
+| Sonnet 5 | 7/7 short items only | 7/12 at 16k tokens | 35s | $0.1200 | $1,451 |
 
-**Decision: GPT-4.1-mini.** It wins on every axis measured: the highest checker-valid rate, the
-only model tied for fully parseable output, mid-range latency, and a quarter of the cost of either
-alternative. GPT-5-mini is the weakest choice here — 3 of 12 replies produced no parseable boxed
-answer, and it is both slower and four times dearer than the mini for no gain in solve rate.
+**Decision: GPT-4.1-mini as the bulk generator.** Highest checker-valid rate of the cheap models,
+the only one tied for fully parseable output, and a quarter to a thirtieth of the cost of every
+alternative. Generation for the full pool is about $39 against Sonnet 5's ~$1,451.
 
-A 6/12 solve rate on checkable items is a feature, not a problem: 64 candidates per item will mix
-valid and invalid answers, which is exactly what the grading and best-of-n analyses need. If the
-rate proves too high or low once the full pool is generated, the sampling temperature is the knob.
+**Sonnet 5 is the most accurate but is not scored comparably.** It answered 7 of 7 items it
+finished, but 5 of 12 hit even a 16k-token cap without reaching the answer tag — always the long
+constructions (768-integer De Bruijn sequence, 231-edge Ramsey colouring, social golfers, two
+`pysms` graphs), because it narrates every constraint check before answering. Its 7/7 is therefore
+on the short items only, a self-selected subset. Those five are re-running at 32k.
 
-Two scoring bugs were found and fixed while piloting, both mine:
-* Bank comparison stripped only whitespace, so `0,4,1,3,2` and `[0, 4, 1, 3, 2]` counted as
-  different answers; it was scoring formatting, not correctness.
-* The first sample drew from all 324 items, so only 3 of 10 were checkable. Sampling is now
-  restricted to the 189 checkable items (`--checkable-only`), which is what makes the table above
-  decisive where the first round was not.
+**A design reason not to pick the strongest generator.** The analyses need candidate pools that mix
+valid and invalid answers: best-of-n selection and valid-versus-invalid discrimination are both
+undefined if every candidate is correct. A generator near 50% is more useful here than one near
+100%. Sonnet 5 is still worth a *second*, smaller pool, since `experiment_1.md` analyses generators
+separately, and a strong-generator pool tests whether the reference effect survives when most
+candidates are right.
 
-The first round also measured the harness rather than the models: 4,096 tokens truncated 2 of 10
-replies and three answers came back as LaTeX arrays or `\ldots`. The cap is now 16k and the prompt
-demands a literal flat list. After that fix, parseable answers went from 8/10 to 12/12.
+**Anthropic access is restored.** `ANTHROPIC_API_KEY_1` and `_2` work; `_3` is invalid; the original
+`ANTHROPIC_API_KEY` is the one capped until 2026-10-01. The harness now prefers the numbered keys.
+Claude models are therefore available as judges as well, which matters because Sonnet 5 and Opus 5
+carry v3's strongest P3 evidence (the 2-of-843 second-blind-call control).
+
+**Three harness bugs found and fixed while piloting, all mine:**
+* A 4,096-token cap truncated replies mid-answer; now 16k by default, and `truncated` is recorded so
+  a capped reply is never scored as a wrong answer.
+* The answer extractor required `\boxed{}` *inside* `<FINAL_ANSWER>`; Haiku omits the box on every
+  reply, so 12 of 12 correct answers scored as unparseable. The box is now optional.
+* Only the last 400 characters of each reply were stored, so long constructions pushed the answer
+  tag out of the saved text and could not be recovered on re-score. Now 4,000.
+
+Scoring is by `v4_checkers.py`, not bank membership: a valid-but-unbanked answer would otherwise
+count as wrong, which is the very error this paper is about.
 
 **Blocker:** the Anthropic key is out of budget until **2026-10-01**, after the ICLR deadline.
 Until that limit is raised, Anthropic models cannot be candidate generators *or* judges.

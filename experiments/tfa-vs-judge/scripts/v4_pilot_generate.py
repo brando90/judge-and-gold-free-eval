@@ -49,11 +49,21 @@ def norm(a):
 
 
 def load_key(name):
+    """ANTHROPIC_API_KEY is capped until 2026-10-01; _1 and _2 work, _3 is invalid.
+    Prefer the numbered keys and fall back to the base name."""
     if os.environ.get(name):
         return os.environ[name]
+    want = [name] if name != "ANTHROPIC_API_KEY" else ["ANTHROPIC_API_KEY_1", "ANTHROPIC_API_KEY_2", name]
+    vals = {}
     for line in open(os.path.join(ROOT, ".env")):
-        if line.startswith(name + "="):
-            return line.split("=", 1)[1].strip().strip('"\'')
+        for w in want:
+            if line.startswith(w + "="):
+                v = line.split("=", 1)[1].strip().strip('"\'')
+                if v:
+                    vals.setdefault(w, v)
+    for w in want:
+        if w in vals:
+            return vals[w]
     raise SystemExit(f"no {name}")
 
 
@@ -117,9 +127,14 @@ if os.path.exists(outf):
 
 
 def extract(text):
-    m = re.findall(r"<FINAL_ANSWER>\s*\\boxed\{(.*?)\}\s*</FINAL_ANSWER>", text, re.S)
-    if m:
-        return m[-1].strip()
+    """Take the last <FINAL_ANSWER> tag, with or without a \\boxed{} wrapper inside it.
+    Models often emit the tag but drop the box (Haiku did so on 12 of 12 replies), so
+    requiring the box scored correct answers as unparseable."""
+    tags = re.findall(r"<FINAL_ANSWER>(.*?)</FINAL_ANSWER>", text, re.S)
+    if tags:
+        inner = tags[-1].strip()
+        box = re.findall(r"\\boxed\{(.*)\}", inner, re.S)
+        return (box[-1] if box else inner).strip()
     m = re.findall(r"\\boxed\{(.*?)\}", text, re.S)
     return m[-1].strip() if m else None
 
@@ -150,7 +165,10 @@ def one(r):
                    matched_class=bank.get(norm(ans)) if ans else None,
                    n_classes=len({s["normalized_answer_id"] for s in r["solutions"]}),
                    stop_reason=stop, input_tokens=tin, output_tokens=tout,
-                   seconds=round(time.time() - t0, 1), tail=text[-400:])
+                   seconds=round(time.time() - t0, 1), tail=text[-4000:])
+        # 4,000 chars: long constructions (768-integer De Bruijn sequences, 231-edge Ramsey
+        # colourings) pushed the <FINAL_ANSWER> tag outside a 400-char tail, making correct
+        # replies unrecoverable on re-score.
         with lock:
             spend["usd"] += tin * args.price_in / 1e6 + tout * args.price_out / 1e6
             spend["calls"] += 1
