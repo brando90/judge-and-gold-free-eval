@@ -136,8 +136,24 @@ if args.provider == "anthropic":
     client = anthropic.Anthropic(api_key=load_key("ANTHROPIC_API_KEY"), max_retries=8)
     ERRORS = (anthropic.APIError,)
 else:
+    import httpx
     import openai
-    client = openai.OpenAI(api_key=load_key("OPENAI_API_KEY"), max_retries=8, timeout=900)
+    # timeout=900 caused a 9-minute stall with zero rows written. Diagnosis (macOS `sample`): all
+    # 24 workers parked in ssl__SSLSocket_read on connections that had sent a request and would
+    # never get a response, while a fresh connection from another process answered in 1.1s. The
+    # account was nowhere near a rate limit (149,999,990 of 150M TPM remaining), so these were dead
+    # sockets, and a 15-minute timeout meant every worker sat on one instead of retrying.
+    #
+    # Observed latency: p50 12s, p99 155s, max 158s -- so 300s is generous and still fails fast
+    # enough for a retry to rescue the slot. max_keepalive_connections=0 stops pooled sockets being
+    # reused: 45 ESTABLISHED connections for 24 workers showed stale ones accumulating, which is how
+    # a dead socket gets handed back out. The extra TLS handshake (~100ms) is nothing against a 12s
+    # call.
+    client = openai.OpenAI(
+        api_key=load_key("OPENAI_API_KEY"), max_retries=8, timeout=300.0,
+        http_client=httpx.Client(
+            timeout=httpx.Timeout(300.0, connect=15.0, read=300.0),
+            limits=httpx.Limits(max_connections=args.workers + 4, max_keepalive_connections=0)))
     ERRORS = (openai.APIError,)
 
 # Resume. A unit of work is (question_id, sample index), so an interrupted run picks up exactly the
@@ -168,6 +184,8 @@ def one(unit):
             return None
     r = by_id[qid]
     t0 = time.time()
+    with lock:
+        inflight[unit] = t0
     row = {"question_id": qid, "sample": idx, "model": args.model,
            "temperature": args.temperature, "family": C.family(r)}
     try:
@@ -214,6 +232,9 @@ def one(unit):
             spend["calls"] += 1
     except ERRORS as e:
         row.update(error=f"{type(e).__name__}: {str(e)[:300]}")
+    finally:
+        with lock:
+            inflight.pop(unit, None)
     return row
 
 
@@ -223,6 +244,31 @@ print(f"[v4 pool {args.model}] {len(todo)} of {len(units)} draws remaining "
 
 n = 0
 t_start = time.time()
+inflight = {}          # unit -> start time; lets a stall say WHAT is stuck, not merely that we stalled
+done_evt = threading.Event()
+
+
+def heartbeat():
+    """Log rows written, in-flight count and oldest in-flight age every 60s.
+
+    Without this a stall is invisible -- the job simply stops writing and the cause has to be
+    reconstructed afterwards from socket tables. That is how a dead-socket hang produced three wrong
+    diagnoses (head-of-queue blocking, oversized max_tokens, rate limiting) before macOS `sample`
+    showed 24 threads parked in ssl__SSLSocket_read. An oldest-in-flight age climbing past the ~158s
+    worst observed call is the signature of that failure.
+    """
+    last = -1
+    while not done_evt.wait(60):
+        with lock:
+            ages = sorted(time.time() - t for t in inflight.values())
+            cur = n
+        oldest = f", oldest in-flight {ages[-1]:.0f}s" if ages else ""
+        flag = "   <-- NO PROGRESS SINCE LAST BEAT" if cur == last else ""
+        print(f"  [hb] {cur}/{len(todo)} rows | in-flight {len(ages)}{oldest}{flag}", flush=True)
+        last = cur
+
+
+threading.Thread(target=heartbeat, daemon=True).start()
 # as_completed, not ex.map: map yields in SUBMISSION order, so one call that hangs through its
 # timeout and retries would block every finished row behind it from being written -- on a run this
 # long that risks losing hours of paid work to a single stuck request.

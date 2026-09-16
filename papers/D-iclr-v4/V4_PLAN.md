@@ -185,6 +185,50 @@ the effect is shown to reproduce here.
 
 ---
 
+## 3c. Measured pool properties (gpt-4.1-mini, first ~450 draws)
+
+Generator chosen: **gpt-4.1-mini**, on the same 12 checkable items as every candidate
+(runs/v4_chk): 6/12 valid, 12/12 parsed, $0.0032/call. Cheapest by 4x and no less accurate than
+gpt-4.1 or Haiku 4.5 (5/12 each). Sonnet 5 solves better (10/12) but costs 90x ($4,755 vs $53 for
+the pool) and would yield a pool too uniformly correct to study.
+
+Pool composition, scored by checker rather than by bank lookup:
+
+| Case | Share |
+|---|---|
+| A: valid and in the bank (matches a reference) | 36% of valid |
+| B: valid but unbanked (correct-but-different) | 64% of valid |
+| C: invalid | ~50% of all draws |
+
+The 36/64 split held exactly as the sample grew from 83 to 150 valid draws, so these are stable
+population rates.
+
+### Canonical answers are rediscovered ~2x more often -- a confound to control
+
+Every `origin: "original"` answer sits at index 0 of its item's stored list (206 of 206), and the
+generator matches those far more than chance:
+
+- canonical answers are **14.7%** of available bank slots but **31%** of matches (22 of 71)
+- expected 10.1 at random, sd 2.95 -> **2.17x enrichment, z = 4.02, p = 5.8e-05**
+
+So the reference's *origin* correlates with whether a candidate reproduces it. Sampling a reference
+uniformly from the bank would usually show a generated answer, while the pool preferentially
+rediscovers the canonical one -- which enriches case A when the canonical answer is shown and case B
+when a generated one is. Unstratified, "the judge favours the answer it was shown" would be
+entangled with "canonical answers are easier to rediscover."
+
+**Consequence for the design: the reference-sampling rule must stratify on `origin`,** and every
+analysis of P1/P2 must report it as a covariate. This was not in the original plan.
+
+### Still to verify (needs the full 64 draws/item)
+
+Per-item viability is currently ceiling-limited at ~2.2 draws/item and cannot be read yet. Once the
+pool is complete, count the items that have, simultaneously: >=1 banked valid answer, >=1 unbanked
+valid answer, and >=2 distinct valid answers. That last count is the number of items usable for the
+swap test (P1) and decides whether the design holds.
+
+---
+
 ## 4. Proposed experiment set for v4
 
 Numbers to be fixed at registration; this is the shape, not the commitment.
