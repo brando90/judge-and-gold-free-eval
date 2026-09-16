@@ -148,8 +148,15 @@ def one(r):
     row = {"question_id": r["question_id"], "model": args.model, "source": r["question_id"].split("/")[0]}
     try:
         if args.provider == "anthropic":
-            resp = client.messages.create(model=args.model, max_tokens=args.max_tokens,
-                                          messages=[{"role": "user", "content": render(r)}])
+            # The SDK refuses a non-streaming request whose max_tokens implies >10 minutes of
+            # generation, so stream whenever the cap is large and accumulate the text.
+            if args.max_tokens > 8192:
+                with client.messages.stream(model=args.model, max_tokens=args.max_tokens,
+                                            messages=[{"role": "user", "content": render(r)}]) as s:
+                    resp = s.get_final_message()
+            else:
+                resp = client.messages.create(model=args.model, max_tokens=args.max_tokens,
+                                              messages=[{"role": "user", "content": render(r)}])
             text = "".join(b.text for b in resp.content if b.type == "text")
             tin, tout, stop = resp.usage.input_tokens, resp.usage.output_tokens, resp.stop_reason
         else:
