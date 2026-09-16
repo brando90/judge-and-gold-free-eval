@@ -174,7 +174,7 @@ We re-judged the replication pool's byte-identical samples with the reference mo
 Under Qwen2.5-7B,\reana{} phi-4, and Sonnet~5, text the reference moves onto gains 3 to 5 points and text it moves off loses about as much, while correct text that matches neither reference barely moves (\cref{fig:rotation-pool}).
 All twelve registered cells for Qwen2.5-7B and phi-4 went as predicted; one registered prediction, that the swap would be ordered by numeric distance from the reference, failed (\cref{app:ledger}).
 
-The swap is not an artifact of our wording: it survives the verbatim MT-Bench template, which drops ``trusted'' and asks for an explanation first. On arithmetic it mostly vanishes, however, when the reference is written as an expression or hidden inside a worked solution (\cref{app:rotation,app:mechanism}).
+The swap is not an artifact of our own wording: it survives the verbatim MT-Bench template, which drops ``trusted'' and asks for an explanation first. That template also asks for a comparison (\cref{sec:p3}). On arithmetic it mostly vanishes, however, when the reference is written as an expression or hidden inside a worked solution (\cref{app:rotation,app:mechanism}).
 
 Does the problem fade as judges improve? On arithmetic, thinking before scoring removes most of the swap (\cref{app:reasoning}). On factual questions it does not: thinking only shrinks Sonnet~5's added false rejections, from 36 to 15 points (\cref{app:acceptance}), and o3-mini, a reasoning model, running the HLE grader still credits almost no correct answer that differs from the reference (\cref{sec:cost}).
 
@@ -230,7 +230,7 @@ Of the 843 answers they had accepted, 2 fell to 3 or below on that second call. 
 
 \paragraph{It is not our wording either.}
 Asked only whether the response is correct, with no rubric of ours and no instruction about the reference, GPT-4.1 and Sonnet~5 take back credit from 22\% and 14\% of the answers they had accepted, and from none of the matching ones.\reana{}
-Asked to reason before deciding, they take back 1\% to 9\% (\cref{app:r27}). These prompts have no second blind call to compare against.
+Asked to reason before deciding, they take back 1\% to 9\% (\cref{app:r27}). Those three prompts do tell the judge to use the reference; only the direct prompt says nothing about it. None of them has a second blind call to compare against.
 
 \paragraph{Verdict.}
 P3 holds for all six judges with a usable acceptance test, and on factual questions for four judges from three developers: two with the second blind call as a noise control, and two at a threshold we chose after seeing the data.
@@ -266,7 +266,7 @@ General-Reasoner's single-reference verifier rewards an RL training set~\citep{m
 Of sampled NQ-open questions, 30\% to 44\% admit several under our two labelings.\ph{}
 Benchmarks built from such questions~\citep{malik2025rewardbench2,mace2026} inherit the failure whenever they are graded against one reference.
 Reward signals are the larger risk, because there the judge does not just report a score but shapes a policy, and both verifiers above were built to give RL rewards.
-Our exploratory training runs were inconclusive (extended appendix), so we state this as a concern rather than a demonstrated harm.
+We therefore state this as a concern rather than a demonstrated harm.
 
 \paragraph{What sets the size.}
 The shortfall tracks what the grader is asked (\cref{fig:graders}a, lower panel; \cref{app:r25,app:r26}).
@@ -333,8 +333,8 @@ LLM judges favor the first response~\citep{wang2024fair}, longer responses~\cite
 \label{sec:limits}
 
 \textbf{Labels.} Any-format labels were checked by a frontier model, not by humans, and boxed replies alone give conservative estimates; prevalence labels come from LLM annotators with low agreement ($\kappa \le 0.35$), and HLE labels from HLE's own judge.
-\textbf{Tasks.} Constructed pools come from five arithmetic families and one generator, natural data from two \textsc{MACE} domains. The benchmark study uses one answer per model, with references drawn at random; three graders grade their own answers, which we measure (\cref{app:r27}), and intervals resample questions, not grader calls. Open-ended tasks (summarization, writing, agent trajectories) are untested.
-\textbf{Judges, prompts, and registration.} Open judges have at most 14B parameters, our wordings do not exhaust reference prompts, and the correctness prompts were tested for two judges; only the API judges have a second blind call as a noise control. Whether a judge with tool access, retrieval, or an executable checker anchors the same way is untested (\cref{app:frontier} reports one exploratory command-line run, excluded for confounds). No experiment manipulates verification directly, and most registrations are timestamped commits with a verdict rule adopted afterwards (\cref{app:ledger}).
+\textbf{Tasks.} Constructed pools come from five arithmetic families and one generator, natural data from two \textsc{MACE} domains. The benchmark study uses one answer per model, with references drawn at random; three graders grade their own answers, which we measure (\cref{app:r27}), and intervals resample questions, not grader calls. Open-ended tasks (summarization, writing, agent trajectories) are untested. Our exploratory preference-training runs were inconclusive, so harm to RL training is not demonstrated (extended appendix).
+\textbf{Judges, prompts, and registration.} Open judges have at most 14B parameters, our wordings do not exhaust reference prompts, and the correctness prompts were tested for two judges; only the API judges have a second blind call as a noise control. Whether a judge with tools or retrieval anchors the same way is untested (\cref{app:frontier} reports one exploratory command-line run, excluded for confounds). No experiment manipulates verification directly, and most registrations are timestamped commits with a verdict rule adopted afterwards (\cref{app:ledger}).
 
 \subsection*{AI use statement}
 Generative AI models were the experimental subjects: open and frontier LLMs generated candidate answers and served as the judges and verifiers under study (\cref{sec:setup}, \cref{app:setup}); three Claude models answered the benchmark questions of \cref{sec:cost}, which Claude models, GPT-4.1, and o3-mini graded; GPT-4.1-mini and Claude Haiku~4.5 answered the HLE questions of \cref{sec:fix}, which o3-mini labeled; and Claude Opus~5 read replies for the label audit. One pilot in the extended appendix used a Claude model to generate candidate solutions, each verified by exact checks, and Qwen2.5-14B read unboxed replies for one labeling. We used generative AI tools to help write analysis code, draft and edit text, produce figures, search and verify related work, audit the preregistration ledger, and label samples of dataset questions for two prevalence audits, the first with two passes from one model family and the second with Claude Sonnet~5 and GPT-5-mini adjudicated by Claude Opus~5; no label was checked by human annotators. Every number in the paper is produced by committed analysis scripts from stored model outputs, and we checked every quoted number against those outputs. We take responsibility for the final content of this work.

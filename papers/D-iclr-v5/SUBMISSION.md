@@ -16,7 +16,7 @@ Deadlines (ICLR 2027 author guidelines): abstract registration **Sep 18, 2026 AO
 
 - [x] `latexmk -pdf main.tex` builds with no undefined references; main text ends on or before page 9. (v5: verified — 0 undefined refs, 0 overfull boxes; Limitations closes page 9 and page 10 begins with the AI use statement, matching v3.)
 - [ ] `python scripts/make_figures.py && python scripts/make_tables.py` regenerated from current `papers/analysis/*.json`.
-- [ ] `python scripts/check_numbers.py`: every flagged number checked by hand. As of round 22 the main text flags only 197 and 129 (the ledger sum 129 + 11 + 17 + 17 + 18 + 2 + 3 and its confirmed count); the appendix flags 420 (Figure 1 length rule), 94, 405, 825 and 1,200, each a count checked by hand.
+- [x] `python scripts/check_numbers.py`: every flagged number checked by hand. v5 flags exactly 8, all expected and all checked: the ledger totals, which are hand-maintained rather than script-produced (202 and 290 in the appendix, and 290 where the main text states how many registered predictions the multiplicity caveat covers); 420 (the Figure 1 length rule); +4.69 (a CI bound quoted in a caption); and 7152, 1011 and 1192 (call counts). A fresh AC review flagged the hand-maintained ledger totals as an avoidable target for a paper whose distinguishing strength is the ledger: deriving them in `check_numbers.py` would close it.
 - [x] R3-B visible and thinking arms were completed after the usage limit reset (round 5); nothing pending.
 - [ ] PDF metadata anonymous: `pdfinfo main.pdf` shows no author; no acknowledgments; no OSF links in the PDF.
 - [ ] `supplement.zip` under 100 MB, anonymization audit clean (see `supplement/README.md`).
