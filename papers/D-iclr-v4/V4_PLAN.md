@@ -99,19 +99,24 @@ different from every reference shown" is decidable in code. Report the other 135
 
 ## 3. Generator choice (in progress)
 
-Llama-3.1-8B, v3's generator, will not solve these problems. Pilot on 10 stratified items with
-the supplied prompt:
+Llama-3.1-8B, v3's generator, will not solve these problems. Pilot with the supplied prompt,
+scored by the checker rather than by bank membership:
 
-| Model | Same 12 checkable items | Cost/item | Median |
-|---|---|---|---|
-| GPT-4.1-mini | **6/12 checker-valid**, 12/12 parseable, 0 truncated | **$0.0032** | 16s |
-| GPT-4.1 | 5/12 checker-valid, 12/12 parseable, 0 truncated | $0.0119 | 14s |
-| GPT-5-mini | running (141s median in round 1: slow) | ~$0.018 | 141s |
-| Haiku 4.5, Sonnet 5 | **blocked** — Anthropic workspace limit, resets 2026-10-01 | — | — |
+| Model | Checker-valid | Parseable | Median | Cost/item | 12,096-call generation |
+|---|---|---|---|---|---|
+| **GPT-4.1-mini** | **6/12** | **12/12** | 16s | **$0.0032** | **$39** |
+| GPT-4.1 | 5/12 | 12/12 | 14s | $0.0119 | $144 |
+| GPT-5-mini | 5/9 | 9/12 | 30s | $0.0127 | $153 |
+| Haiku 4.5, Sonnet 5 | blocked — Anthropic workspace limit, resets 2026-10-01 | — | — | — | — |
 
-**Leading choice: GPT-4.1-mini** — same solve rate as GPT-4.1 at about a quarter of the cost and
-comparable latency. Confirm once GPT-5-mini reports; if it is much stronger it may still lose on
-latency, since 64 candidates x 189 items is 12,096 calls.
+**Decision: GPT-4.1-mini.** It wins on every axis measured: the highest checker-valid rate, the
+only model tied for fully parseable output, mid-range latency, and a quarter of the cost of either
+alternative. GPT-5-mini is the weakest choice here — 3 of 12 replies produced no parseable boxed
+answer, and it is both slower and four times dearer than the mini for no gain in solve rate.
+
+A 6/12 solve rate on checkable items is a feature, not a problem: 64 candidates per item will mix
+valid and invalid answers, which is exactly what the grading and best-of-n analyses need. If the
+rate proves too high or low once the full pool is generated, the sampling temperature is the knob.
 
 Two scoring bugs were found and fixed while piloting, both mine:
 * Bank comparison stripped only whitespace, so `0,4,1,3,2` and `[0, 4, 1, 3, 2]` counted as
@@ -126,10 +131,6 @@ demands a literal flat list. After that fix, parseable answers went from 8/10 to
 
 **Blocker:** the Anthropic key is out of budget until **2026-10-01**, after the ICLR deadline.
 Until that limit is raised, Anthropic models cannot be candidate generators *or* judges.
-
-The first pilot measured the harness as much as the models, so it was fixed before re-running:
-16k token cap, an explicit instruction that the boxed answer be a literal flat list (no LaTeX
-environments, no ellipses), and a `truncated` flag so a capped reply is never scored as wrong.
 
 **Selection rule:** pick the cheapest model that produces parseable answers and clears a solve
 floor on the checkable items, measured by the checker rather than by bank match. Report the
