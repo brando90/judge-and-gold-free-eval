@@ -21,8 +21,9 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, "../../.."))
 sys.path.insert(0, HERE)
-import v4_checkers as C        # noqa: E402
-import v4_mc_checkers as MC    # noqa: E402
+import v4_checkers as C        # noqa: E402  189 math_constraint items, pure-Python predicates
+import v4_mc_checkers as MC    # noqa: E402   67 mathconstruct items, upstream check()
+import v4_csp_checkers as CSP  # noqa: E402   61 math_constraint items, upstream verify()
 
 ap = argparse.ArgumentParser()
 ap.add_argument("--in", dest="inp", required=True)
@@ -74,13 +75,20 @@ with open(out_path, "w") as f:
         text = r.get("text") or ""
         ans = extract(text) if text else r.get("answer")
 
+        # This must mirror v4_generate.py's scoring exactly. If the re-scorer and the generator
+        # disagree about which checker owns an item, the pool becomes internally inconsistent --
+        # worse than either being wrong on its own, because the disagreement is invisible.
         if b is None:
             v, why = None, "not_in_bench"
+        elif not ans:
+            v, why = False, "no_answer"
         elif r["question_id"].startswith("math_constraint"):
-            v, why = C.check(b, ans, with_reason=True) if ans else (False, "no_answer")
+            v, why = C.check(b, ans, with_reason=True)
+            if v is None:                 # our predicates miss it -> upstream solver fallback
+                v, why = CSP.check(b, ans, with_reason=True)
         else:
             # Pass the full reply: upstream pulls the LAST \boxed{} out itself and needs that LaTeX.
-            v, why = MC.check(b, ans, raw_text=text, with_reason=True) if ans else (False, "no_answer")
+            v, why = MC.check(b, ans, raw_text=text, with_reason=True)
 
         banked = bool(ans and b and norm(ans) in {norm(s["answer"]) for s in b["solutions"]})
         if r.get("valid") != v:
