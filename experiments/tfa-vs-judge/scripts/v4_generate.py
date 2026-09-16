@@ -227,8 +227,13 @@ def one(unit):
             stop = resp.choices[0].finish_reason
         ans = extract(text)
         bank = {norm(s["answer"]): s["normalized_answer_id"] for s in r["solutions"]}
+        # A reply with no parseable answer is a FAILED draw, not an undecidable one: there is
+        # nothing to submit, so it counts against best-of-n exactly as a wrong answer does. It must
+        # be False here, because v4_rescore.py records False for this case -- and a generator that
+        # disagreed with the re-scorer would leave the pool inconsistent with no trace of why.
+        # The distinction from a genuinely wrong answer is preserved in the reason field.
         if not ans:
-            ok = None
+            ok = False
         elif r["question_id"].startswith("math_constraint"):
             ok = C.check(r, ans)
             if ok is None:                 # solver-backed fallback for items our predicates miss
