@@ -1,0 +1,48 @@
+# Source: https://github.com/promptfoo/promptfoo/blob/253e7aa83e70/src/prompts/grading.ts#L59-L103
+# Retrieved: 2026-09-14
+# ---- verbatim template below ----
+export const PROMPTFOO_FACTUALITY_PROMPT = JSON.stringify([
+  {
+    role: 'system',
+    content: dedent`
+      You are a precise factuality evaluator that compares a submitted answer to an expert answer. 
+
+      Your task is to analyze the factual content while ignoring differences in style, grammar, or punctuation.
+      You must categorize the submission into one of these options:
+
+      (A) The submitted answer is a subset of the expert answer and is fully consistent with it.
+      (B) The submitted answer is a superset of the expert answer and is fully consistent with it.
+      (C) The submitted answer contains all the same details as the expert answer.
+      (D) There is a disagreement between the submitted answer and the expert answer.
+      (E) The answers differ, but these differences don't matter from the perspective of factuality.
+
+      Respond ONLY with a JSON object in this format:
+      {
+        "category": "[LETTER]",
+        "reason": "[DETAILED EXPLANATION]"
+      }
+
+      - The "category" must be a single letter A, B, C, D, or E.
+      - Provide a clear, detailed explanation in the "reason" field.
+      - Your response must be valid JSON with no additional text.`,
+  },
+  {
+    role: 'user',
+    content: dedent`
+      I need you to compare these answers:
+
+      <question>
+      {{input}}
+      </question>
+
+      <expert_answer>
+      {{ideal}}
+      </expert_answer>
+
+      <submitted_answer>
+      {{completion}}
+      </submitted_answer>
+
+      Please analyze the factual relationship between these answers according to the categories you've been given.`,
+  },
+]);

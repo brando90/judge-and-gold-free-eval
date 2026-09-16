@@ -1,0 +1,15 @@
+\begin{tabular}{llcccc}
+\toprule
+Judge & Prompt & Condition & Accuracy minus list (points) & Differing correct credited (\%) & Wrong credited (\%) \\
+\midrule
+GPT-4.1 & Direct yes/no & blind & \begin{tabular}[c]{@{}c@{}}$-5.4$\\{\scriptsize$[-7.7,-3.2]$}\end{tabular} & 91.4 & 12.5 \\
+ & Direct yes/no & reference & \begin{tabular}[c]{@{}c@{}}$-17.4$\\{\scriptsize$[-21.0,-14.1]$}\end{tabular} & 73.2 & 7.1 \\
+ & HLE judge, verbatim & reference & \begin{tabular}[c]{@{}c@{}}$-66.6$\\{\scriptsize$[-71.8,-61.6]$}\end{tabular} & 0.0 & 0.0 \\
+ & HLE judge, match clause removed & reference & \begin{tabular}[c]{@{}c@{}}$-31.2$\\{\scriptsize$[-36.4,-26.3]$}\end{tabular} & 53.3 & 0.0 \\
+\addlinespace
+Sonnet~5 & Direct yes/no & blind & \begin{tabular}[c]{@{}c@{}}$-1.7$\\{\scriptsize$[-3.5,+0.0]$}\end{tabular} & 96.5 & 10.7 \\
+ & Direct yes/no & reference & \begin{tabular}[c]{@{}c@{}}$-10.1$\\{\scriptsize$[-13.3,-6.9]$}\end{tabular} & 83.3 & 10.7 \\
+ & HLE judge, verbatim & reference & \begin{tabular}[c]{@{}c@{}}$-65.1$\\{\scriptsize$[-70.3,-60.1]$}\end{tabular} & 1.8 & 3.6 \\
+ & HLE judge, match clause removed & reference & \begin{tabular}[c]{@{}c@{}}$-12.6$\\{\scriptsize$[-16.3,-9.1]$}\end{tabular} & 80.3 & 7.1 \\
+\bottomrule
+\end{tabular}

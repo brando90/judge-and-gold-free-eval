@@ -1,0 +1,801 @@
+\begin{thebibliography}{105}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Abdin et~al.(2024)Abdin, Aneja, Behl, Bubeck, Eldan, Gunasekar,
+  Harrison, Hewett, et~al.]{abdin2024phi4}
+Marah Abdin, Jyoti Aneja, Harkirat Behl, S{\'e}bastien Bubeck, Ronen Eldan,
+  Suriya Gunasekar, Michael Harrison, Russell~J. Hewett, et~al.
+\newblock {Phi-4} technical report.
+\newblock arXiv preprint arXiv:2412.08905, 2024.
+
+\bibitem[{Amazon Web Services}(2026)]{bedrockjudgeprompts}
+{Amazon Web Services}.
+\newblock Amazon bedrock user guide: Built-in metric evaluator prompts for
+  model-as-a-judge evaluation jobs.
+\newblock
+  \url{https://docs.aws.amazon.com/bedrock/latest/userguide/model-evaluation-type-judge-prompt.html},
+  2026.
+\newblock Accessed 2026-09-14.
+
+\bibitem[Amouyal et~al.(2022)Amouyal, Wolfson, Rubin, Yoran, Herzig, and
+  Berant]{amouyal2022qampari}
+Samuel~Joseph Amouyal, Tomer Wolfson, Ohad Rubin, Ori Yoran, Jonathan Herzig,
+  and Jonathan Berant.
+\newblock {QAMPARI}: An open-domain question answering benchmark for questions
+  with many answers from multiple paragraphs.
+\newblock \emph{arXiv preprint arXiv:2205.12665}, 2022.
+
+\bibitem[{Arize AI}(2026)]{phoenixevals}
+{Arize AI}.
+\newblock Arize {Phoenix} evals.
+\newblock \url{https://github.com/Arize-ai/phoenix} (tag
+  arize-phoenix-evals-v0.20.8; commit 72daf48aaedf), 2026.
+\newblock Accessed 2026-09-14.
+
+\bibitem[Badshah \& Sajjad(2025)Badshah and Sajjad]{refguided2024}
+Sher Badshah and Hassan Sajjad.
+\newblock Reference-guided verdict: {LLMs}-as-judges in automatic evaluation of
+  free-form {QA}.
+\newblock In \emph{Proceedings of the 9th Widening NLP Workshop}, pp.\
+  251--267, Suzhou, China, 2025. Association for Computational Linguistics.
+\newblock \doi{10.18653/v1/2025.winlp-main.37}.
+
+\bibitem[Balunovi{\'c} et~al.(2025)Balunovi{\'c}, Dekoninck, Petrov,
+  Jovanovi{\'c}, and Vechev]{balunovic2025matharena}
+Mislav Balunovi{\'c}, Jasper Dekoninck, Ivo Petrov, Nikola Jovanovi{\'c}, and
+  Martin Vechev.
+\newblock {MathArena: Evaluating LLMs on Uncontaminated Math Competitions}.
+\newblock arXiv preprint arXiv:2505.23281, 2025.
+
+\bibitem[Bercovich et~al.(2025)Bercovich, Levy, Golan, Dabbah, El-Yaniv, Puny,
+  Galil, Moshe, Ronen, Nabwani, et~al.]{bercovich2025llamanemotron}
+Akhiad Bercovich, Itay Levy, Izik Golan, Mohammad Dabbah, Ran El-Yaniv, Omri
+  Puny, Ido Galil, Zach Moshe, Tomer Ronen, Najeeb Nabwani, et~al.
+\newblock {Llama-Nemotron: Efficient Reasoning Models}.
+\newblock arXiv preprint arXiv:2505.00949, 2025.
+
+\bibitem[Bulian et~al.(2022)Bulian, Buck, Gajewski, B{\"o}rschinger, and
+  Schuster]{bulian2022tomayto}
+Jannis Bulian, Christian Buck, Wojciech Gajewski, Benjamin B{\"o}rschinger, and
+  Tal Schuster.
+\newblock Tomayto, tomahto. {B}eyond token-level answer equivalence for
+  question answering evaluation.
+\newblock In \emph{Proceedings of the 2022 Conference on Empirical Methods in
+  Natural Language Processing}, pp.\  291--305, Abu Dhabi, United Arab
+  Emirates, 2022. Association for Computational Linguistics.
+\newblock \doi{10.18653/v1/2022.emnlp-main.20}.
+
+\bibitem[{ByteDance Seed} et~al.(2025){ByteDance Seed}, Chen, Fan, Liu, Liu,
+  et~al.]{seed2025thinking}
+{ByteDance Seed}, Jiaze Chen, Tiantian Fan, Xin Liu, Lingjun Liu, et~al.
+\newblock {Seed1.5-Thinking}: Advancing superb reasoning models with
+  reinforcement learning.
+\newblock arXiv preprint arXiv:2504.13914, 2025.
+
+\bibitem[Chandak et~al.(2025)Chandak, Goel, Prabhu, Hardt, and
+  Geiping]{chandak2025answermatching}
+Nikhil Chandak, Shashwat Goel, Ameya Prabhu, Moritz Hardt, and Jonas Geiping.
+\newblock {Answer Matching Outperforms Multiple Choice for Language Model
+  Evaluation}.
+\newblock arXiv preprint arXiv:2507.02856, 2025.
+
+\bibitem[Chen et~al.(2025{\natexlab{a}})Chen, Yu, Wang, Hu, Zhang, Wang, Tang,
+  Xiong, et~al.]{chen2025xverify}
+Ding Chen, Qingchen Yu, Pengyuan Wang, Mengting Hu, Wentao Zhang, Zhengren
+  Wang, Bo~Tang, Feiyu Xiong, et~al.
+\newblock {xVerify}: Efficient answer verifier for reasoning model evaluations.
+\newblock arXiv preprint arXiv:2504.10481, 2025{\natexlab{a}}.
+
+\bibitem[Chen et~al.(2026)Chen, Gulati, Miranda, Tang, and
+  Koyejo]{chen2026rethinking}
+Eric Chen, Aryan Gulati, Brando Miranda, Zeyu Tang, and Sanmi Koyejo.
+\newblock Rethinking {LLM} judges: Chain-of-thought and multi-step pipelines
+  for math grading.
+\newblock In \emph{ICLR 2026 Workshop on Logical Reasoning of Large Language
+  Models}, 2026.
+
+\bibitem[Chen et~al.(2025{\natexlab{b}})Chen, Ma, Zhuang, Nie, Zou, Liu, Green,
+  Patel, Meng, Su, et~al.]{chen2025browsecompplus}
+Zijian Chen, Xueguang Ma, Shengyao Zhuang, Ping Nie, Kai Zou, Andrew Liu,
+  Joshua Green, Kshama Patel, Ruoxi Meng, Mingyi Su, et~al.
+\newblock {BrowseComp-Plus: A More Fair and Transparent Evaluation Benchmark of
+  Deep-Research Agent}.
+\newblock arXiv preprint arXiv:2508.06600, 2025{\natexlab{b}}.
+
+\bibitem[Cheng et~al.(2025)Cheng, Hao, Liu, Zhou, Xie, Yao, Bian, Zhuang, Dey,
+  Zha, et~al.]{cheng2025guru}
+Zhoujun Cheng, Shibo Hao, Tianyang Liu, Fan Zhou, Yutao Xie, Feng Yao, Yuexin
+  Bian, Yonghao Zhuang, Nilabjo Dey, Yuheng Zha, et~al.
+\newblock {Revisiting Reinforcement Learning for LLM Reasoning from A
+  Cross-Domain Perspective}.
+\newblock arXiv preprint arXiv:2506.14965, 2025.
+
+\bibitem[Chernyshev et~al.(2024)Chernyshev, Polshkov, Artemova, Myasnikov,
+  Stepanov, Miasnikov, and Tilga]{chernyshev2024umath}
+Konstantin Chernyshev, Vitaliy Polshkov, Ekaterina Artemova, Alex Myasnikov,
+  Vlad Stepanov, Alexei Miasnikov, and Sergei Tilga.
+\newblock {U-MATH: A University-Level Benchmark for Evaluating Mathematical
+  Skills in LLMs}.
+\newblock arXiv preprint arXiv:2412.03205, 2024.
+
+\bibitem[{Confident AI}(2026)]{deepeval}
+{Confident AI}.
+\newblock {DeepEval} {G-Eval} metric documentation.
+\newblock \url{https://deepeval.com/docs/metrics-llm-evals}, 2026.
+\newblock Accessed 2026-09-14.
+
+\bibitem[{DeepSeek-AI} et~al.(2025){DeepSeek-AI}, Guo, Yang, Zhang, Song, Wang,
+  Zhu, Xu, et~al.]{deepseek2025r1}
+{DeepSeek-AI}, Daya Guo, Dejian Yang, Haowei Zhang, Junxiao Song, Peiyi Wang,
+  Qihao Zhu, Runxin Xu, et~al.
+\newblock {DeepSeek-R1}: Incentivizing reasoning capability in {LLMs} via
+  reinforcement learning.
+\newblock \emph{Nature}, 645:\penalty0 633--638, 2025.
+\newblock \doi{10.1038/s41586-025-09422-z}.
+
+\bibitem[Du et~al.(2025)Du, Xu, Zhu, Wang, and Mao]{du2025deepresearchbench}
+Mingxuan Du, Benfeng Xu, Chiwei Zhu, Xiaorui Wang, and Zhendong Mao.
+\newblock {DeepResearch Bench: A Comprehensive Benchmark for Deep Research
+  Agents}.
+\newblock arXiv preprint arXiv:2506.11763, 2025.
+
+\bibitem[Dubois et~al.(2024)Dubois, Galambosi, Liang, and
+  Hashimoto]{dubois2024lengthcontrolled}
+Yann Dubois, Bal{\'a}zs Galambosi, Percy Liang, and Tatsunori~B. Hashimoto.
+\newblock Length-controlled {AlpacaEval}: A simple way to debias automatic
+  evaluators.
+\newblock In \emph{First Conference on Language Modeling (COLM)}, 2024.
+
+\bibitem[Es et~al.(2023)Es, James, Espinosa-Anke, and Schockaert]{es2023ragas}
+Shahul Es, Jithin James, Luis Espinosa-Anke, and Steven Schockaert.
+\newblock {Ragas}: Automated evaluation of retrieval augmented generation.
+\newblock arXiv preprint arXiv:2309.15217, 2023.
+
+\bibitem[Fang et~al.(2024)Fang, Wan, Lu, Xing, and Zou]{fang2024mathodyssey}
+Meng Fang, Xiangpeng Wan, Fei Lu, Fei Xing, and Kai Zou.
+\newblock {MathOdyssey: Benchmarking Mathematical Problem-Solving Skills in
+  Large Language Models Using Odyssey Math Data}.
+\newblock arXiv preprint arXiv:2406.18321, 2024.
+
+\bibitem[Fomicheva \& Specia(2016)Fomicheva and Specia]{fomicheva2016reference}
+Marina Fomicheva and Lucia Specia.
+\newblock Reference bias in monolingual machine translation evaluation.
+\newblock In \emph{Proceedings of the 54th Annual Meeting of the Association
+  for Computational Linguistics (Volume 2: Short Papers)}, pp.\  77--82, 2016.
+
+\bibitem[Freitag et~al.(2020)Freitag, Grangier, and Caswell]{freitag2020bleu}
+Markus Freitag, David Grangier, and Isaac Caswell.
+\newblock {BLEU} might be guilty but references are not innocent.
+\newblock In \emph{Proceedings of the 2020 Conference on Empirical Methods in
+  Natural Language Processing (EMNLP)}, pp.\  61--71, 2020.
+
+\bibitem[Gao et~al.(2024)Gao, Song, Yang, Cai, Miao, Dong, Li, Ma, Chen, Xu,
+  et~al.]{gao2024omnimath}
+Bofei Gao, Feifan Song, Zhe Yang, Zefan Cai, Yibo Miao, Qingxiu Dong, Lei Li,
+  Chenghao Ma, Liang Chen, Runxin Xu, et~al.
+\newblock {Omni-MATH}: A universal olympiad level mathematic benchmark for
+  large language models.
+\newblock arXiv preprint arXiv:2410.07985, 2024.
+
+\bibitem[Gao et~al.(2025)Gao, Fu, Xie, Xu, He, Mei, Zhu, and
+  Wu]{gao2025asearcher}
+Jiaxuan Gao, Wei Fu, Minyang Xie, Shusheng Xu, Chuyi He, Zhiyu Mei, Banghua
+  Zhu, and Yi~Wu.
+\newblock {Beyond Ten Turns: Unlocking Long-Horizon Agentic Search with
+  Large-Scale Asynchronous RL}.
+\newblock arXiv preprint arXiv:2508.07976, 2025.
+
+\bibitem[Gao et~al.(2023)Gao, Schulman, and Hilton]{gao2022scaling}
+Leo Gao, John Schulman, and Jacob Hilton.
+\newblock Scaling laws for reward model overoptimization.
+\newblock In \emph{Proceedings of the 40th International Conference on Machine
+  Learning (ICML)}, volume 202 of \emph{Proceedings of Machine Learning
+  Research}, pp.\  10835--10866. PMLR, 2023.
+
+\bibitem[Grattafiori et~al.(2024)Grattafiori, Dubey, Jauhri, Pandey, Kadian,
+  Al-Dahle, Letman, Mathur, et~al.]{grattafiori2024llama3}
+Aaron Grattafiori, Abhimanyu Dubey, Abhinav Jauhri, Abhinav Pandey, Abhishek
+  Kadian, Ahmad Al-Dahle, Aiesha Letman, Akhil Mathur, et~al.
+\newblock The {Llama} 3 herd of models.
+\newblock arXiv preprint arXiv:2407.21783, 2024.
+
+\bibitem[Gunjal et~al.(2025)Gunjal, Wang, Lau, Nath, He, Liu, and
+  Hendryx]{gunjal2025rar}
+Anisha Gunjal, Anthony Wang, Elaine Lau, Vaskar Nath, Yunzhong He, Bing Liu,
+  and Sean Hendryx.
+\newblock Rubrics as rewards: Reinforcement learning beyond verifiable domains.
+\newblock arXiv preprint arXiv:2507.17746, 2025.
+
+\bibitem[Haas et~al.(2025)Haas, Yona, D'Antonio, Goldshtein, and
+  Das]{haas2025simpleqaverified}
+Lukas Haas, Gal Yona, Giovanni D'Antonio, Sasha Goldshtein, and Dipanjan Das.
+\newblock {SimpleQA Verified}: A reliable factuality benchmark to measure
+  parametric knowledge.
+\newblock arXiv preprint arXiv:2509.07968, 2025.
+
+\bibitem[He et~al.(2024)He, Li, Liu, Tan, Wang, Huang, Bu, Guo, Hu, Zheng, Lin,
+  Liu, et~al.]{he2024chinesesimpleqa}
+Yancheng He, Shilong Li, Jiaheng Liu, Yingshui Tan, Weixun Wang, Hui Huang,
+  Xingyuan Bu, Hangyu Guo, Chengwei Hu, Boren Zheng, Zhuoran Lin, Xuepeng Liu,
+  et~al.
+\newblock {Chinese SimpleQA: A Chinese Factuality Evaluation for Large Language
+  Models}.
+\newblock arXiv preprint arXiv:2411.07140, 2024.
+
+\bibitem[Hendrycks et~al.(2021)Hendrycks, Burns, Kadavath, Arora, Basart, Tang,
+  Song, and Steinhardt]{hendrycks2021math}
+Dan Hendrycks, Collin Burns, Saurav Kadavath, Akul Arora, Steven Basart, Eric
+  Tang, Dawn Song, and Jacob Steinhardt.
+\newblock Measuring mathematical problem solving with the {MATH} dataset.
+\newblock In \emph{Proceedings of the Neural Information Processing Systems
+  Track on Datasets and Benchmarks}, volume~1, 2021.
+
+\bibitem[Huang et~al.(2025)Huang, Zeng, Zeng, Zhu, and He]{huang2025pitfalls}
+Yuzhen Huang, Weihao Zeng, Xingshan Zeng, Qi~Zhu, and Junxian He.
+\newblock From accuracy to robustness: A study of rule- and model-based
+  verifiers in mathematical reasoning.
+\newblock arXiv preprint arXiv:2505.22203, 2025.
+
+\bibitem[Huang et~al.(2024)Huang, Wang, Xia, Li, Zou, Xu, Fan, Ye, Chern, Ye,
+  et~al.]{huang2024olympicarena}
+Zhen Huang, Zengzhi Wang, Shijie Xia, Xuefeng Li, Haoyang Zou, Ruijie Xu,
+  Run-Ze Fan, Lyumanshan Ye, Ethan Chern, Yixin Ye, et~al.
+\newblock {OlympicArena: Benchmarking Multi-discipline Cognitive Reasoning for
+  Superintelligent AI}.
+\newblock arXiv preprint arXiv:2406.12753, 2024.
+
+\bibitem[Joshi et~al.(2017)Joshi, Choi, Weld, and
+  Zettlemoyer]{joshi2017triviaqa}
+Mandar Joshi, Eunsol Choi, Daniel~S. Weld, and Luke Zettlemoyer.
+\newblock {TriviaQA}: A large scale distantly supervised challenge dataset for
+  reading comprehension.
+\newblock \emph{arXiv preprint arXiv:1705.03551}, 2017.
+
+\bibitem[Kamalloo et~al.(2023)Kamalloo, Dziri, Clarke, and
+  Rafiei]{kamalloo2023evaluating}
+Ehsan Kamalloo, Nouha Dziri, Charles Clarke, and Davood Rafiei.
+\newblock Evaluating open-domain question answering in the era of large
+  language models.
+\newblock In \emph{Proceedings of the 61st Annual Meeting of the Association
+  for Computational Linguistics (Volume 1: Long Papers)}, pp.\  5591--5606,
+  Toronto, Canada, 2023. Association for Computational Linguistics.
+\newblock \doi{10.18653/v1/2023.acl-long.307}.
+
+\bibitem[Kapetanovic et~al.(2026)Kapetanovic, Altwlkany, Mercep, Duricic, and
+  Lacic]{kapetanovic2026anchoring}
+Ante Kapetanovic, Kemal Altwlkany, Andro Mercep, Tomislav Duricic, and Emanuel
+  Lacic.
+\newblock Anchoring bias in {LLM}-as-a-judge systems: Prior scores compromise
+  evaluation independence.
+\newblock arXiv preprint arXiv:2608.25869, 2026.
+\newblock To appear in CIKM 2026.
+
+\bibitem[Kim et~al.(2024)Kim, Shin, Cho, Jang, Longpre, Lee, Yun, Shin, Kim,
+  Thorne, and Seo]{kim2024prometheus}
+Seungone Kim, Jamin Shin, Yejin Cho, Joel Jang, Shayne Longpre, Hwaran Lee,
+  Sangdoo Yun, Seongjin Shin, Sungdong Kim, James Thorne, and Minjoon Seo.
+\newblock Prometheus: Inducing fine-grained evaluation capability in language
+  models.
+\newblock In \emph{International Conference on Learning Representations
+  (ICLR)}, 2024.
+
+\bibitem[{Kimi Team} et~al.(2025){Kimi Team}, Du, Gao, Xing, Jiang,
+  et~al.]{kimi2025k15}
+{Kimi Team}, Angang Du, Bofei Gao, Bowei Xing, Changjiu Jiang, et~al.
+\newblock Kimi k1.5: Scaling reinforcement learning with {LLMs}.
+\newblock arXiv preprint arXiv:2501.12599, 2025.
+
+\bibitem[Koo et~al.(2024)Koo, Lee, Raheja, Park, Kim, and
+  Kang]{koo2024benchmarking}
+Ryan Koo, Minhwa Lee, Vipul Raheja, Jong~Inn Park, Zae~Myung Kim, and Dongyeop
+  Kang.
+\newblock Benchmarking cognitive biases in large language models as evaluators.
+\newblock In \emph{Findings of the Association for Computational Linguistics:
+  ACL 2024}, 2024.
+
+\bibitem[Kranti \& Vajjala(2026)Kranti and Vajjala]{generous2026}
+Chalamalasetti Kranti and Sowmya Vajjala.
+\newblock {LLM} judges can be too generous when there is no reference answer.
+\newblock arXiv preprint arXiv:2607.12885, 2026.
+
+\bibitem[Krishna et~al.(2025)Krishna, Krishna, Mohananey, Schwarcz, Stambler,
+  Upadhyay, and Faruqui]{krishna2025frames}
+Satyapriya Krishna, Kalpesh Krishna, Anhad Mohananey, Steven Schwarcz, Adam
+  Stambler, Shyam Upadhyay, and Manaal Faruqui.
+\newblock Fact, fetch, and reason: A unified evaluation of retrieval-augmented
+  generation.
+\newblock In \emph{Annual Conference of the Nations of the Americas Chapter of
+  the Association for Computational Linguistics (NAACL)}, 2025.
+
+\bibitem[Krumdick et~al.(2025)Krumdick, Lovering, Reddy, Ebner, and
+  Tanner]{krumdick2025nofreelabels}
+Michael Krumdick, Charles Lovering, Varshini Reddy, Seth Ebner, and Chris
+  Tanner.
+\newblock No free labels: Limitations of {LLM}-as-a-judge without human
+  grounding.
+\newblock arXiv preprint arXiv:2503.05061, 2025.
+
+\bibitem[{LangChain}(2026{\natexlab{a}})]{langchainevals}
+{LangChain}.
+\newblock {LangChain} evaluation chains ({langchain\_classic.evaluation}).
+\newblock \url{https://github.com/langchain-ai/langchain} (commit
+  41d357287c04), 2026{\natexlab{a}}.
+\newblock Accessed 2026-09-14.
+
+\bibitem[{LangChain}(2026{\natexlab{b}})]{openevals}
+{LangChain}.
+\newblock openevals.
+\newblock \url{https://github.com/langchain-ai/openevals} (commit
+  de865416a985), 2026{\natexlab{b}}.
+\newblock Accessed 2026-09-14.
+
+\bibitem[Lee et~al.(2026)Lee, Hwang, Kang, Lee, Chae, and Jung]{judgingref2026}
+Dongryeol Lee, Yerin Hwang, Taegwan Kang, Minwoo Lee, Younhyung Chae, and
+  Kyomin Jung.
+\newblock Judging against the reference: Uncovering knowledge-driven failures
+  in {LLM}-judges on {QA} evaluation.
+\newblock arXiv preprint arXiv:2601.07506, 2026.
+
+\bibitem[Li et~al.(2025{\natexlab{a}})Li, Zhang, Yin, Zhang, Ou, Wu, Yin, Li,
+  Tao, Wang, et~al.]{li2025websailor}
+Kuan Li, Zhongwang Zhang, Huifeng Yin, Liwen Zhang, Litu Ou, Jialong Wu,
+  Wenbiao Yin, Baixuan Li, Zhengwei Tao, Xinyu Wang, et~al.
+\newblock {WebSailor: Navigating Super-human Reasoning for Web Agent}.
+\newblock arXiv preprint arXiv:2507.02592, 2025{\natexlab{a}}.
+
+\bibitem[Li et~al.(2025{\natexlab{b}})Li, Wang, Yuan, Xu, Chen, Dong, Xiao, and
+  Yang]{fixation2025}
+Weiyuan Li, Xintao Wang, Siyu Yuan, Rui Xu, Jiangjie Chen, Qingqing Dong,
+  Yanghua Xiao, and Deqing Yang.
+\newblock Curse of knowledge: Your guidance and provided knowledge are biasing
+  {LLM} judges in complex evaluation.
+\newblock In \emph{Findings of the Association for Computational Linguistics:
+  EMNLP 2025}, pp.\  14900--14924, Suzhou, China, 2025{\natexlab{b}}.
+  Association for Computational Linguistics.
+\newblock \doi{10.18653/v1/2025.findings-emnlp.805}.
+
+\bibitem[Li et~al.(2025{\natexlab{c}})Li, Jin, Dong, Qian, Wu, Wen, Zhu, and
+  Dou]{li2025webthinker}
+Xiaoxi Li, Jiajie Jin, Guanting Dong, Hongjin Qian, Yongkang Wu, Ji-Rong Wen,
+  Yutao Zhu, and Zhicheng Dou.
+\newblock {WebThinker: Empowering Large Reasoning Models with Deep Research
+  Capability}.
+\newblock arXiv preprint arXiv:2504.21776, 2025{\natexlab{c}}.
+
+\bibitem[Li et~al.(2024)Li, Mondal, Liang, Nghiem, and
+  Boyd-Graber]{li2024pedants}
+Zongxia Li, Ishani Mondal, Yijun Liang, Huy Nghiem, and Jordan~Lee Boyd-Graber.
+\newblock {PEDANTS}: Cheap but effective and interpretable answer equivalence.
+\newblock In \emph{Findings of the Association for Computational Linguistics:
+  EMNLP 2024}, 2024.
+
+\bibitem[Liu et~al.(2025{\natexlab{a}})Liu, Li, Zhang, Li, Chen, Ji, Cheng, Wu,
+  Du, Xu, et~al.]{liu2025webexplorer}
+Junteng Liu, Yunji Li, Chi Zhang, Jingyang Li, Aili Chen, Ke~Ji, Weiyu Cheng,
+  Zijia Wu, Chengyu Du, Qidi Xu, et~al.
+\newblock {WebExplorer: Explore and Evolve for Training Long-Horizon Web
+  Agents}.
+\newblock arXiv preprint arXiv:2509.06501, 2025{\natexlab{a}}.
+
+\bibitem[Liu et~al.(2025{\natexlab{b}})Liu, Liu, Liu, Xiao, Gao, Lyu, Gu,
+  Zhang, Wong, Zhang, and Chen]{liu2025compassverifier}
+Shudong Liu, Hongwei Liu, Junnan Liu, Linchen Xiao, Songyang Gao, Chengqi Lyu,
+  Yuzhe Gu, Wenwei Zhang, Derek~F. Wong, Songyang Zhang, and Kai Chen.
+\newblock {CompassVerifier}: A unified and robust verifier for {LLMs}
+  evaluation and outcome reward.
+\newblock In \emph{Proceedings of the 2025 Conference on Empirical Methods in
+  Natural Language Processing}, pp.\  33466--33494. Association for
+  Computational Linguistics, 2025{\natexlab{b}}.
+\newblock URL \url{https://aclanthology.org/2025.emnlp-main.1698/}.
+
+\bibitem[{LlamaIndex}(2026)]{llamaindexcorrectness}
+{LlamaIndex}.
+\newblock {LlamaIndex} {CorrectnessEvaluator}.
+\newblock \url{https://github.com/run-llama/llama_index} (commit 7169bcd0dca2),
+  2026.
+\newblock Accessed 2026-09-14.
+
+\bibitem[Lu et~al.(2025)Lu, Sheng, Lyu, Jin, Xia, Gu, and Zou]{lu2025ineqmath}
+Pan Lu, Jiayi Sheng, Luna Lyu, Jikai Jin, Tony Xia, Alex Gu, and James Zou.
+\newblock {Solving Inequality Proofs with Large Language Models}.
+\newblock arXiv preprint arXiv:2506.07927, 2025.
+
+\bibitem[Luong et~al.(2025)Luong, Hwang, Nguyen, Ghiasi, Chervonyi, Seo, Kim,
+  Bingham, Lee, Mishra, Zhai, Hu, et~al.]{luong2025imobench}
+Thang Luong, Dawsen Hwang, Hoang~H. Nguyen, Golnaz Ghiasi, Yuri Chervonyi,
+  Insuk Seo, Junsu Kim, Garrett Bingham, Jonathan Lee, Swaroop Mishra, Alex
+  Zhai, Clara~Huiyi Hu, et~al.
+\newblock {Towards Robust Mathematical Reasoning}.
+\newblock arXiv preprint arXiv:2511.01846, 2025.
+
+\bibitem[Ma et~al.(2025)Ma, Liu, Jiang, Zhang, Ma, and
+  Chen]{ma2025generalreasoner}
+Xueguang Ma, Qian Liu, Dongfu Jiang, Ge~Zhang, Zejun Ma, and Wenhu Chen.
+\newblock {General-Reasoner}: Advancing {LLM} reasoning across all domains.
+\newblock In \emph{Advances in Neural Information Processing Systems 38
+  (NeurIPS 2025)}, 2025.
+
+\bibitem[Mahdavi et~al.(2025)Mahdavi, Mahdavinia, Malek, Mohammadipour,
+  Hashemi, Daliri, Farhadi, Khasahmadi, Mireshghallah, and
+  Honavar]{mahdavi2025refgrader}
+Hamed Mahdavi, Pouria Mahdavinia, Samira Malek, Pegah Mohammadipour, Alireza
+  Hashemi, Majid Daliri, Alireza Farhadi, Amir Khasahmadi, Niloofar
+  Mireshghallah, and Vasant Honavar.
+\newblock {RefGrader: Automated Grading of Mathematical Competition Proofs
+  using Agentic Workflows}.
+\newblock arXiv preprint arXiv:2510.09021, 2025.
+
+\bibitem[Malik et~al.(2026)Malik, Pyatkin, Land, Morrison, Smith, Hajishirzi,
+  and Lambert]{malik2025rewardbench2}
+Saumya Malik, Valentina Pyatkin, Sander Land, Jacob Morrison, Noah~A. Smith,
+  Hannaneh Hajishirzi, and Nathan Lambert.
+\newblock {RewardBench} 2: Advancing reward model evaluation.
+\newblock In \emph{International Conference on Learning Representations
+  (ICLR)}, 2026.
+
+\bibitem[{Microsoft}(2026)]{azurefoundrysimilarity}
+{Microsoft}.
+\newblock Microsoft foundry: Textual similarity evaluators.
+\newblock
+  \url{https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/evaluation-evaluators/textual-similarity-evaluators},
+  2026.
+\newblock Accessed 2026-09-14.
+
+\bibitem[Min et~al.(2020)Min, Michael, Hajishirzi, and
+  Zettlemoyer]{min2020ambigqa}
+Sewon Min, Julian Michael, Hannaneh Hajishirzi, and Luke Zettlemoyer.
+\newblock {AmbigQA}: Answering ambiguous open-domain questions.
+\newblock In \emph{Proceedings of the 2020 Conference on Empirical Methods in
+  Natural Language Processing (EMNLP)}, pp.\  5783--5797. Association for
+  Computational Linguistics, 2020.
+
+\bibitem[{MiniMax} et~al.(2025){MiniMax}, Chen, Li, Gong, Jiang, Fei, Yang,
+  Shan, Yu, et~al.]{minimax2025m1}
+{MiniMax}, Aili Chen, Aonian Li, Bangwei Gong, Binyang Jiang, Bo~Fei, Bo~Yang,
+  Boji Shan, Changqing Yu, et~al.
+\newblock {MiniMax-M1: Scaling Test-Time Compute Efficiently with Lightning
+  Attention}.
+\newblock arXiv preprint arXiv:2506.13585, 2025.
+
+\bibitem[{MLflow}(2026)]{mlflowjudges}
+{MLflow}.
+\newblock {MLflow} {GenAI} judges and answer\_correctness metric.
+\newblock \url{https://github.com/mlflow/mlflow} (commit 25b1af31437b), 2026.
+\newblock Accessed 2026-09-14.
+
+\bibitem[Ni et~al.(2024)Ni, Xue, Yue, Deng, Shah, Jain, Neubig, and
+  You]{ni2024mixeval}
+Jinjie Ni, Fuzhao Xue, Xiang Yue, Yuntian Deng, Mahir Shah, Kabir Jain, Graham
+  Neubig, and Yang You.
+\newblock {MixEval}: Deriving wisdom of the crowd from {LLM} benchmark
+  mixtures.
+\newblock In \emph{Advances in Neural Information Processing Systems 37
+  (NeurIPS 2024)}, 2024.
+
+\bibitem[{OpenAI}(2026{\natexlab{a}})]{openaievals}
+{OpenAI}.
+\newblock {OpenAI} evals: model-graded eval registry (fact, closedqa).
+\newblock \url{https://github.com/openai/evals} (commit 8eac7a7de521),
+  2026{\natexlab{a}}.
+\newblock Accessed 2026-09-14.
+
+\bibitem[{OpenAI}(2026{\natexlab{b}})]{openaigraders}
+{OpenAI}.
+\newblock {OpenAI} {API} documentation: Graders.
+\newblock \url{https://developers.openai.com/api/docs/guides/graders},
+  2026{\natexlab{b}}.
+\newblock Accessed 2026-09-14.
+
+\bibitem[{OpenAI}(2026{\natexlab{c}})]{openairft}
+{OpenAI}.
+\newblock {OpenAI} {API} documentation: Reinforcement fine-tuning.
+\newblock
+  \url{https://developers.openai.com/api/docs/guides/reinforcement-fine-tuning},
+  2026{\natexlab{c}}.
+\newblock Accessed 2026-09-14.
+
+\bibitem[{OpenAI}(2026{\natexlab{d}})]{simpleevals}
+{OpenAI}.
+\newblock simple-evals.
+\newblock \url{https://github.com/openai/simple-evals} (commit 652c89d0ca9d),
+  2026{\natexlab{d}}.
+\newblock Accessed 2026-09-14.
+
+\bibitem[{OpenCompass Contributors}(2026)]{opencompassjudge}
+{OpenCompass Contributors}.
+\newblock {OpenCompass}: {LLM} as judge evaluation ({GenericLLMEvaluator}).
+\newblock
+  \url{https://github.com/open-compass/opencompass/blob/135ab17186aa/docs/en/advanced_guides/llm_judge.md},
+  2026.
+\newblock Accessed 2026-09-14.
+
+\bibitem[Panickssery et~al.(2024)Panickssery, Bowman, and
+  Feng]{panickssery2024llm}
+Arjun Panickssery, Samuel~R. Bowman, and Shi Feng.
+\newblock {LLM} evaluators recognize and favor their own generations.
+\newblock In \emph{Advances in Neural Information Processing Systems 37
+  (NeurIPS 2024)}, 2024.
+
+\bibitem[Petrov et~al.(2025)Petrov, Dekoninck, Baltadzhiev, Drencheva, Minchev,
+  Balunovi{\'c}, Jovanovi{\'c}, and Vechev]{petrov2025proofbluff}
+Ivo Petrov, Jasper Dekoninck, Lyuben Baltadzhiev, Maria Drencheva, Kristian
+  Minchev, Mislav Balunovi{\'c}, Nikola Jovanovi{\'c}, and Martin Vechev.
+\newblock {Proof or Bluff? Evaluating LLMs on 2025 USA Math Olympiad}.
+\newblock arXiv preprint arXiv:2503.21934, 2025.
+
+\bibitem[Phan et~al.(2025)Phan, Gatti, Han, Li, Hu, et~al.]{phan2025hle}
+Long Phan, Alice Gatti, Ziwen Han, Nathaniel Li, Josephina Hu, et~al.
+\newblock Humanity's last exam.
+\newblock \emph{arXiv preprint arXiv:2501.14249}, 2025.
+
+\bibitem[{promptfoo}(2026)]{promptfoofactuality}
+{promptfoo}.
+\newblock promptfoo: factuality assertion.
+\newblock
+  \url{https://www.promptfoo.dev/docs/configuration/expected-outputs/model-graded/factuality/},
+  2026.
+\newblock Accessed 2026-09-14.
+
+\bibitem[Rafailov et~al.(2024)Rafailov, Chittepu, Park, Sikchi, Hejna, Knox,
+  Finn, and Niekum]{rafailov2024scaling}
+Rafael Rafailov, Yaswanth Chittepu, Ryan Park, Harshit Sikchi, Joey Hejna,
+  Bradley Knox, Chelsea Finn, and Scott Niekum.
+\newblock Scaling laws for reward model overoptimization in direct alignment
+  algorithms.
+\newblock In \emph{Advances in Neural Information Processing Systems 37
+  (NeurIPS 2024)}, 2024.
+
+\bibitem[Rau et~al.(2024)Rau, D{\'e}jean, Chirkova, Formal, Wang, Nikoulina,
+  and Clinchant]{rau2024bergen}
+David Rau, Herv{\'e} D{\'e}jean, Nadezhda Chirkova, Thibault Formal, Shuai
+  Wang, Vassilina Nikoulina, and St{\'e}phane Clinchant.
+\newblock {BERGEN: A Benchmarking Library for Retrieval-Augmented Generation}.
+\newblock arXiv preprint arXiv:2407.01102, 2024.
+
+\bibitem[Riviere et~al.(2024)Riviere, Pathak, Sessa, Hardin, Bhupatiraju,
+  Hussenot, Mesnard, Shahriari, et~al.]{riviere2024gemma2}
+Morgane Riviere, Shreya Pathak, Pier~Giuseppe Sessa, Cassidy Hardin, Surya
+  Bhupatiraju, L{\'e}onard Hussenot, Thomas Mesnard, Bobak Shahriari, et~al.
+\newblock {Gemma} 2: Improving open language models at a practical size.
+\newblock arXiv preprint arXiv:2408.00118, 2024.
+
+\bibitem[Ru et~al.(2024)Ru, Qiu, Hu, Zhang, Shi, Chang, Jiayang, Wang, Sun, Li,
+  Zhang, Wang, et~al.]{ru2024ragchecker}
+Dongyu Ru, Lin Qiu, Xiangkun Hu, Tianhang Zhang, Peng Shi, Shuaichen Chang,
+  Cheng Jiayang, Cunxiang Wang, Shichao Sun, Huanyu Li, Zizhao Zhang, Binjie
+  Wang, et~al.
+\newblock {RAGChecker: A Fine-grained Framework for Diagnosing
+  Retrieval-Augmented Generation}.
+\newblock arXiv preprint arXiv:2408.08067, 2024.
+
+\bibitem[Sharma et~al.(2023)Sharma, Tong, Korbak, Duvenaud, Askell, Bowman,
+  Cheng, Durmus, Hatfield-Dodds, Johnston, Kravec, Maxwell, McCandlish,
+  Ndousse, Rausch, Schiefer, Yan, Zhang, and Perez]{sharma2023sycophancy}
+Mrinank Sharma, Meg Tong, Tomasz Korbak, David Duvenaud, Amanda Askell,
+  Samuel~R. Bowman, Newton Cheng, Esin Durmus, Zac Hatfield-Dodds, Scott~R.
+  Johnston, Shauna Kravec, Timothy Maxwell, Sam McCandlish, Kamal Ndousse,
+  Oliver Rausch, Nicholas Schiefer, Da~Yan, Miranda Zhang, and Ethan Perez.
+\newblock Towards understanding sycophancy in language models.
+\newblock \emph{arXiv preprint arXiv:2310.13548}, 2023.
+
+\bibitem[Si et~al.(2021)Si, Zhao, and Boyd-Graber]{si2021whatsinaname}
+Chenglei Si, Chen Zhao, and Jordan Boyd-Graber.
+\newblock What's in a name? {A}nswer equivalence for open-domain question
+  answering.
+\newblock In \emph{Proceedings of the 2021 Conference on Empirical Methods in
+  Natural Language Processing (EMNLP)}, pp.\  9623--9629, 2021.
+
+\bibitem[Su et~al.(2025)Su, Yu, Song, Li, Mi, Tu, Zhang, and
+  Yu]{su2025rewardbridge}
+Yi~Su, Dian Yu, Linfeng Song, Juntao Li, Haitao Mi, Zhaopeng Tu, Min Zhang, and
+  Dong Yu.
+\newblock Crossing the reward bridge: Expanding {RL} with verifiable rewards
+  across diverse domains.
+\newblock arXiv preprint arXiv:2503.23829, 2025.
+
+\bibitem[Tan et~al.(2025)Tan, Zhuang, Montgomery, Tang, Cuadron, Wang, Popa,
+  and Stoica]{tan2025judgebench}
+Sijun Tan, Siyuan Zhuang, Kyle Montgomery, William~Y. Tang, Alejandro Cuadron,
+  Chenguang Wang, Raluca~Ada Popa, and Ion Stoica.
+\newblock {JudgeBench}: A benchmark for evaluating {LLM}-based judges.
+\newblock In \emph{International Conference on Learning Representations
+  (ICLR)}, 2025.
+
+\bibitem[Thakur et~al.(2024)Thakur, Choudhary, Ramayapally, Vaidyanathan, and
+  Hupkes]{thakur2024judging}
+Aman~Singh Thakur, Kartik Choudhary, Venkat~Srinik Ramayapally, Sankaran
+  Vaidyanathan, and Dieuwke Hupkes.
+\newblock Judging the judges: Evaluating alignment and vulnerabilities in
+  {LLMs}-as-judges.
+\newblock arXiv preprint arXiv:2406.12624, 2024.
+
+\bibitem[Tong \& Zhang(2024)Tong and Zhang]{tong2024codejudge}
+Weixi Tong and Tianyi Zhang.
+\newblock {CodeJudge: Evaluating Code Generation with Large Language Models}.
+\newblock arXiv preprint arXiv:2410.02184, 2024.
+
+\bibitem[{Tongyi DeepResearch Team} et~al.(2025){Tongyi DeepResearch Team}, Li,
+  Zhang, Zhang, Huang, Li, Chen, Yin, Wu, Zhou, et~al.]{tongyi2025deepresearch}
+{Tongyi DeepResearch Team}, Baixuan Li, Bo~Zhang, Dingchu Zhang, Fei Huang,
+  Guangyu Li, Guoxin Chen, Huifeng Yin, Jialong Wu, Jingren Zhou, et~al.
+\newblock {Tongyi DeepResearch Technical Report}.
+\newblock arXiv preprint arXiv:2510.24701, 2025.
+
+\bibitem[{TruEra}(2026)]{trulens}
+{TruEra}.
+\newblock {TruLens} ground-truth agreement feedback.
+\newblock \url{https://github.com/truera/trulens} (commit a2387e1a2783), 2026.
+\newblock Accessed 2026-09-14.
+
+\bibitem[Turpin et~al.(2023)Turpin, Michael, Perez, and
+  Bowman]{turpin2023unfaithful}
+Miles Turpin, Julian Michael, Ethan Perez, and Samuel~R. Bowman.
+\newblock Language models don't always say what they think: Unfaithful
+  explanations in chain-of-thought prompting.
+\newblock In \emph{Advances in Neural Information Processing Systems}, 2023.
+
+\bibitem[{UK AI Security Institute}(2026)]{inspectai}
+{UK AI Security Institute}.
+\newblock Inspect {AI}: scorer module ({model\_graded\_fact},
+  {model\_graded\_qa}).
+\newblock \url{https://github.com/UKGovernmentBEIS/inspect_ai} (commit
+  3f63975a5d1c), 2026.
+\newblock Accessed 2026-09-14.
+
+\bibitem[Vu et~al.(2023)Vu, Iyyer, Wang, Constant, Wei, Wei, Tar, Sung, Zhou,
+  Le, and Luong]{vu2023freshllms}
+Tu~Vu, Mohit Iyyer, Xuezhi Wang, Noah Constant, Jerry Wei, Jason Wei, Chris
+  Tar, Yun-Hsuan Sung, Denny Zhou, Quoc Le, and Thang Luong.
+\newblock {FreshLLMs}: Refreshing large language models with search engine
+  augmentation.
+\newblock arXiv preprint arXiv:2310.03214, 2023.
+
+\bibitem[Wang et~al.(2023)Wang, Cheng, Guo, Yue, Ding, Xu, Wang, Hu, Zhang, and
+  Zhang]{wang2023evouna}
+Cunxiang Wang, Sirui Cheng, Qipeng Guo, Yuanhao Yue, Bowen Ding, Zhikun Xu,
+  Yidong Wang, Xiangkun Hu, Zheng Zhang, and Yue Zhang.
+\newblock {Evaluating Open-QA Evaluation}.
+\newblock arXiv preprint arXiv:2305.12421, 2023.
+
+\bibitem[Wang et~al.(2024)Wang, Li, Chen, Cai, Zhu, Lin, Cao, Liu, Liu, and
+  Sui]{wang2024fair}
+Peiyi Wang, Lei Li, Liang Chen, Zefan Cai, Dawei Zhu, Binghuai Lin, Yunbo Cao,
+  Qi~Liu, Tianyu Liu, and Zhifang Sui.
+\newblock Large language models are not fair evaluators.
+\newblock In \emph{Proceedings of the 62nd Annual Meeting of the Association
+  for Computational Linguistics (Volume 1: Long Papers)}, pp.\  9440--9450,
+  Bangkok, Thailand, 2024. Association for Computational Linguistics.
+\newblock \doi{10.18653/v1/2024.acl-long.511}.
+
+\bibitem[Wang et~al.(2026)Wang, Ni, Ding, Zhan, Li, and Bi]{mace2026}
+Yuhan Wang, Shiyu Ni, Zhikai Ding, Zihang Zhan, Yuanzi Li, and Keping Bi.
+\newblock Evaluating and calibrating {LLM} confidence on questions with
+  multiple correct answers.
+\newblock arXiv preprint arXiv:2602.07842, 2026.
+
+\bibitem[Wei et~al.(2024)Wei, Karina, Chung, Jiao, Papay, Glaese, Schulman, and
+  Fedus]{wei2024simpleqa}
+Jason Wei, Nguyen Karina, Hyung~Won Chung, Yunxin~Joy Jiao, Spencer Papay,
+  Amelia Glaese, John Schulman, and William Fedus.
+\newblock Measuring short-form factuality in large language models.
+\newblock \emph{arXiv preprint arXiv:2411.04368}, 2024.
+
+\bibitem[Wei et~al.(2025)Wei, Sun, Papay, McKinney, Han, Fulford, Chung,
+  Passos, Fedus, and Glaese]{wei2025browsecomp}
+Jason Wei, Zhiqing Sun, Spencer Papay, Scott McKinney, Jeffrey Han, Isa
+  Fulford, Hyung~Won Chung, Alex~Tachard Passos, William Fedus, and Amelia
+  Glaese.
+\newblock {BrowseComp}: A simple yet challenging benchmark for browsing agents.
+\newblock \emph{arXiv preprint arXiv:2504.12516}, 2025.
+
+\bibitem[Wu et~al.(2025{\natexlab{a}})Wu, Li, Fang, Yin, Zhang, Tao, Zhang, Xi,
+  Fu, Jiang, et~al.]{wu2025webdancer}
+Jialong Wu, Baixuan Li, Runnan Fang, Wenbiao Yin, Liwen Zhang, Zhengwei Tao,
+  Dingchu Zhang, Zekun Xi, Gang Fu, Yong Jiang, et~al.
+\newblock {WebDancer: Towards Autonomous Information Seeking Agency}.
+\newblock arXiv preprint arXiv:2505.22648, 2025{\natexlab{a}}.
+
+\bibitem[Wu et~al.(2025{\natexlab{b}})Wu, Yin, Jiang, Wang, Xi, Fang, Zhang,
+  He, Zhou, Xie, et~al.]{wu2025webwalker}
+Jialong Wu, Wenbiao Yin, Yong Jiang, Zhenglin Wang, Zekun Xi, Runnan Fang,
+  Linhai Zhang, Yulan He, Deyu Zhou, Pengjun Xie, et~al.
+\newblock {WebWalker: Benchmarking LLMs in Web Traversal}.
+\newblock arXiv preprint arXiv:2501.07572, 2025{\natexlab{b}}.
+
+\bibitem[Xu et~al.(2025{\natexlab{a}})Xu, Xu, Xiao, Chen, Yan, Zhang, Diao,
+  Yang, and Wang]{xu2025ugphysics}
+Xin Xu, Qiyun Xu, Tong Xiao, Tianhao Chen, Yuchen Yan, Jiaxin Zhang, Shizhe
+  Diao, Can Yang, and Yang Wang.
+\newblock {UGPhysics: A Comprehensive Benchmark for Undergraduate Physics
+  Reasoning with Large Language Models}.
+\newblock arXiv preprint arXiv:2502.00334, 2025{\natexlab{a}}.
+
+\bibitem[Xu et~al.(2025{\natexlab{b}})Xu, Li, Jiang, Ramasubramanian, Niu, Lin,
+  and Poovendran]{xu2025tinyv}
+Zhangchen Xu, Yuetai Li, Fengqing Jiang, Bhaskar Ramasubramanian, Luyao Niu,
+  Bill~Yuchen Lin, and Radha Poovendran.
+\newblock {TinyV}: Reducing false negatives in verification improves {RL} for
+  {LLM} reasoning.
+\newblock arXiv preprint arXiv:2505.14625, 2025{\natexlab{b}}.
+
+\bibitem[Yan et~al.(2026)Yan, Jiang, Ren, Li, Cai, Liu, Xu, Zhang,
+  et~al.]{yan2025verifybench}
+Yuchen Yan, Jin Jiang, Zhenbang Ren, Yijun Li, Xudong Cai, Yang Liu, Xin Xu,
+  Mengdi Zhang, et~al.
+\newblock {VerifyBench}: Benchmarking reference-based reward systems for large
+  language models.
+\newblock In \emph{International Conference on Learning Representations
+  (ICLR)}, 2026.
+
+\bibitem[Yang et~al.(2024{\natexlab{a}})Yang, Yang, Zhang, Hui, Zheng, Yu, Li,
+  Liu, et~al.]{yang2024qwen25}
+An~Yang, Baosong Yang, Beichen Zhang, Binyuan Hui, Bo~Zheng, Bowen Yu,
+  Chengyuan Li, Dayiheng Liu, et~al.
+\newblock {Qwen2.5} technical report.
+\newblock arXiv preprint arXiv:2412.15115, 2024{\natexlab{a}}.
+
+\bibitem[Yang et~al.(2025)Yang, Li, Yang, Zhang, Hui, Zheng,
+  et~al.]{yang2025qwen3}
+An~Yang, Anfeng Li, Baosong Yang, Beichen Zhang, Binyuan Hui, Bo~Zheng, et~al.
+\newblock {Qwen3} technical report.
+\newblock arXiv preprint arXiv:2505.09388, 2025.
+
+\bibitem[Yang et~al.(2024{\natexlab{b}})Yang, Sun, Xin, Sun, Bhalla, Chen,
+  Choudhary, Gui, Jiang, Jiang, et~al.]{yang2024crag}
+Xiao Yang, Kai Sun, Hao Xin, Yushi Sun, Nikita Bhalla, Xiangsen Chen, Sajal
+  Choudhary, Rongze~Daniel Gui, Ziran~Will Jiang, Ziyu Jiang, et~al.
+\newblock {CRAG} -- comprehensive {RAG} benchmark.
+\newblock In \emph{Advances in Neural Information Processing Systems 37
+  (NeurIPS 2024), Datasets and Benchmarks Track}, 2024{\natexlab{b}}.
+
+\bibitem[Ye et~al.(2025)Ye, Wang, Huang, Chen, Zhang, Moniz, Gao, Geyer, Huang,
+  Chen, Chawla, and Zhang]{ye2025justice}
+Jiayi Ye, Yanbo Wang, Yue Huang, Dongping Chen, Qihui Zhang, Nuno Moniz, Tian
+  Gao, Werner Geyer, Chao Huang, Pin-Yu Chen, Nitesh~V. Chawla, and Xiangliang
+  Zhang.
+\newblock Justice or prejudice? quantifying biases in {LLM}-as-a-judge.
+\newblock In \emph{International Conference on Learning Representations
+  (ICLR)}, 2025.
+
+\bibitem[Zheng et~al.(2023)Zheng, Chiang, Sheng, Zhuang, Wu, Zhuang, Lin, Li,
+  Li, Xing, Zhang, Gonzalez, and Stoica]{zheng2023judging}
+Lianmin Zheng, Wei-Lin Chiang, Ying Sheng, Siyuan Zhuang, Zhanghao Wu, Yonghao
+  Zhuang, Zi~Lin, Zhuohan Li, Dacheng Li, Eric~P. Xing, Hao Zhang, Joseph~E.
+  Gonzalez, and Ion Stoica.
+\newblock Judging {LLM}-as-a-judge with {MT}-bench and {Chatbot Arena}.
+\newblock In \emph{Advances in Neural Information Processing Systems 36
+  (NeurIPS 2023), Datasets and Benchmarks Track}, 2023.
+
+\bibitem[Zheng et~al.(2025)Zheng, Fu, Hu, Cai, Ye, Lu, and
+  Liu]{zheng2025deepresearcher}
+Yuxiang Zheng, Dayuan Fu, Xiangkun Hu, Xiaojie Cai, Lyumanshan Ye, Pengrui Lu,
+  and Pengfei Liu.
+\newblock {DeepResearcher: Scaling Deep Research via Reinforcement Learning in
+  Real-world Environments}.
+\newblock arXiv preprint arXiv:2504.03160, 2025.
+
+\bibitem[Zhou et~al.(2025)Zhou, Leon, Ying, Zhang, Shao, Ye, Chong, Jin, Xie,
+  Cao, et~al.]{zhou2025browsecompzh}
+Peilin Zhou, Bruce Leon, Xiang Ying, Can Zhang, Yifan Shao, Qichen Ye, Dading
+  Chong, Zhiling Jin, Chenxuan Xie, Meng Cao, et~al.
+\newblock {BrowseComp-ZH: Benchmarking Web Browsing Ability of Large Language
+  Models in Chinese}.
+\newblock arXiv preprint arXiv:2504.19314, 2025.
+
+\bibitem[Zhu et~al.(2025)Zhu, Wang, and Wang]{zhu2023judgelm}
+Lianghui Zhu, Xinggang Wang, and Xinlong Wang.
+\newblock {JudgeLM}: Fine-tuned large language models are scalable judges.
+\newblock In \emph{International Conference on Learning Representations
+  (ICLR)}, 2025.
+\newblock arXiv:2310.17631.
+
+\bibitem[Zhuo(2024)]{zhuo2024icescore}
+Terry~Yue Zhuo.
+\newblock {ICE-Score: Instructing Large Language Models to Evaluate Code}.
+\newblock arXiv preprint arXiv:2304.14317, 2024.
+
+\end{thebibliography}

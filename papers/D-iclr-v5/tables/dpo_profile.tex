@@ -1,0 +1,12 @@
+\begin{tabular}{lcccccc}
+\toprule
+Policy (items) & Accuracy & Boxed answers & Mean length (chars) & 4-gram repetition & Unboxed and valid & Unboxed and invalid \\
+\midrule
+Base, train (60) & 0.412 & 0.581 & 1492 & 0.080 & 3 & 198 \\
+Reference arm, train (60) & 0.175 & 0.156 & 2476 & 0.062 & 15 & 390 \\
+Reveal arm, train (60) & 0.331 & 0.365 & 3840 & 0.032 & 0 & 305 \\
+Base, held out (120) & 0.457 & 0.613 & 1376 & 0.080 & 13 & 359 \\
+Reference arm, held out (120) & 0.229 & 0.174 & 2187 & 0.064 & 57 & 736 \\
+Reveal arm, held out (120) & 0.408 & 0.455 & 3458 & 0.041 & 4 & 519 \\
+\bottomrule
+\end{tabular}

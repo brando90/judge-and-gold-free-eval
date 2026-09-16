@@ -1,0 +1,13 @@
+\begin{tabular}{llcccccc}
+\toprule
+ & & \multicolumn{2}{c}{Accuracy minus list (points)} & \multicolumn{2}{c}{Differing correct credited (\%)} & \multicolumn{2}{c}{Wrong credited (\%)} \\
+\cmidrule(lr){3-4}\cmidrule(lr){5-6}\cmidrule(lr){7-8}
+Prompt & Judge & One reference & Full list & One ref. & Full list & One ref. & Full list \\
+\midrule
+SimpleQA grader & GPT-4.1 & \begin{tabular}[c]{@{}c@{}}$-30.4$\\{\scriptsize$[-35.4,-25.3]$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$+0.3$\\{\scriptsize$[-0.7,+1.5]$}\end{tabular} & 53.0 & 99.2 & 8.9 & 8.9 \\
+BrowseComp judge & GPT-4.1 & \begin{tabular}[c]{@{}c@{}}$-66.8$\\{\scriptsize$[-71.8,-61.7]$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$-0.2$\\{\scriptsize$[-0.8,+0.5]$}\end{tabular} & 0.0 & 99.2 & 0.0 & 3.6 \\
+HLE judge & o3-mini & \begin{tabular}[c]{@{}c@{}}$-66.6$\\{\scriptsize$[-71.8,-61.6]$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$+0.0$\\{\scriptsize$[-0.8,+0.8]$}\end{tabular} & 0.0 & 99.2 & 0.0 & 5.4 \\
+SimpleQA grader & Sonnet~5 & \begin{tabular}[c]{@{}c@{}}$-34.4$\\{\scriptsize$[-39.9,-29.2]$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$+0.5$\\{\scriptsize$[-0.3,+1.5]$}\end{tabular} & 46.7 & 99.5 & 10.7 & 8.9 \\
+HLE judge & Sonnet~5 & \begin{tabular}[c]{@{}c@{}}$-64.9$\\{\scriptsize$[-70.3,-59.9]$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$+0.2$\\{\scriptsize$[-0.3,+0.7]$}\end{tabular} & 2.3 & 99.7 & 1.8 & 3.6 \\
+\bottomrule
+\end{tabular}
