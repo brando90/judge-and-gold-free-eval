@@ -102,13 +102,27 @@ different from every reference shown" is decidable in code. Report the other 135
 Llama-3.1-8B, v3's generator, will not solve these problems. Pilot on 10 stratified items with
 the supplied prompt:
 
-| Model | Result |
-|---|---|
-| Haiku 4.5 | **blocked** — Anthropic workspace usage limit, resets 2026-10-01 |
-| Sonnet 5 | **blocked** — same |
-| GPT-4.1-mini | 2/10 bank match; 2 replies truncated at 4,096 tokens, 3 returned LaTeX arrays or `\ldots` |
-| GPT-5-mini | running |
-| GPT-4.1 | running (re-pilot) |
+| Model | Same 12 checkable items | Cost/item | Median |
+|---|---|---|---|
+| GPT-4.1-mini | **6/12 checker-valid**, 12/12 parseable, 0 truncated | **$0.0032** | 16s |
+| GPT-4.1 | 5/12 checker-valid, 12/12 parseable, 0 truncated | $0.0119 | 14s |
+| GPT-5-mini | running (141s median in round 1: slow) | ~$0.018 | 141s |
+| Haiku 4.5, Sonnet 5 | **blocked** — Anthropic workspace limit, resets 2026-10-01 | — | — |
+
+**Leading choice: GPT-4.1-mini** — same solve rate as GPT-4.1 at about a quarter of the cost and
+comparable latency. Confirm once GPT-5-mini reports; if it is much stronger it may still lose on
+latency, since 64 candidates x 189 items is 12,096 calls.
+
+Two scoring bugs were found and fixed while piloting, both mine:
+* Bank comparison stripped only whitespace, so `0,4,1,3,2` and `[0, 4, 1, 3, 2]` counted as
+  different answers; it was scoring formatting, not correctness.
+* The first sample drew from all 324 items, so only 3 of 10 were checkable. Sampling is now
+  restricted to the 189 checkable items (`--checkable-only`), which is what makes the table above
+  decisive where the first round was not.
+
+The first round also measured the harness rather than the models: 4,096 tokens truncated 2 of 10
+replies and three answers came back as LaTeX arrays or `\ldots`. The cap is now 16k and the prompt
+demands a literal flat list. After that fix, parseable answers went from 8/10 to 12/12.
 
 **Blocker:** the Anthropic key is out of budget until **2026-10-01**, after the ICLR deadline.
 Until that limit is raised, Anthropic models cannot be candidate generators *or* judges.

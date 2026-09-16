@@ -33,11 +33,18 @@ ap.add_argument("--cap-usd", type=float, default=3.0)
 ap.add_argument("--price-in", type=float, required=True)
 ap.add_argument("--price-out", type=float, required=True)
 ap.add_argument("--out-dir", default="runs/v4_pilot")
+ap.add_argument("--checkable-only", action="store_true", help="sample only items v4_checkers.py can verify")
 ap.add_argument("--dry-run", action="store_true")
 args = ap.parse_args()
 
 
 def norm(a):
+    """Format-insensitive key: compare answers by their integer content when they have one,
+    else by stripped text. Without this, '0,4,1,3,2' and '[0, 4, 1, 3, 2]' look different and
+    bank-match measures formatting rather than correctness."""
+    nums = re.findall(r"-?\d+", str(a))
+    if nums and not re.search(r"[a-zA-Z]{3,}", str(a)):
+        return ",".join(nums)
     return re.sub(r"[\s\$]+", "", str(a)).strip().lower()
 
 
@@ -53,17 +60,23 @@ def load_key(name):
 rows = [json.loads(l) for l in open(BENCH)]
 template = open(PROMPT).read()
 
+if args.checkable_only:
+    sys.path.insert(0, HERE)
+    import v4_checkers as _C
+    rows = [r for r in rows if r["question_id"].startswith("math_constraint") and _C.family(r) in _C.CHECKERS]
+
 # stratified sample: both sources, and within each, short / long answers
 import random
 rng = random.Random(args.seed)
 picked = []
-for pfx in ("mathconstruct", "math_constraint"):
-    sub = [r for r in rows if r["question_id"].startswith(pfx)]
-    sub.sort(key=lambda r: min(len(str(s["answer"])) for s in r["solutions"]))
-    half = args.n_items // 2
+groups = ([rows] if args.checkable_only
+          else [[r for r in rows if r["question_id"].startswith(p)] for p in ("mathconstruct", "math_constraint")])
+per = args.n_items // len(groups)
+for sub in groups:
+    sub = sorted(sub, key=lambda r: min(len(str(s["answer"])) for s in r["solutions"]))
     short, long_ = sub[: len(sub) // 2], sub[len(sub) // 2:]
-    picked += rng.sample(short, min(half - half // 2, len(short)))
-    picked += rng.sample(long_, min(half // 2, len(long_)))
+    picked += rng.sample(short, min(per - per // 2, len(short)))
+    picked += rng.sample(long_, min(per // 2, len(long_)))
 
 STRICT = ("\n\nThe boxed answer must be the literal value in exactly the format above: digits, "
           "commas and brackets only. Do not use LaTeX environments, \\ldots, ellipses, set-builder "
