@@ -47,16 +47,24 @@ ap.add_argument("--dry-run", action="store_true")
 args = ap.parse_args()
 
 sys.path.insert(0, HERE)
-import v4_checkers as C       # our checkers: 189 math_constraint items
-import v4_mc_checkers as MC   # upstream MathConstruct checkers: 67 mathconstruct items
+import v4_checkers as C        # our checkers:            189 math_constraint items
+import v4_mc_checkers as MC    # upstream MathConstruct:   67 mathconstruct items
+import v4_csp_checkers as CSP  # upstream Math-Constraint: 61 more math_constraint items
 
 
 def checkable(r):
-    """256 of 324 items can be graded without the answer bank. The other 68 are math_constraint
-    types whose verification re-solves a pycsp3 model in a JVM subprocess -- a different cost class
-    entirely (~60s timeout per candidate), so they are excluded here rather than in the analysis."""
+    """317 of 324 items can be graded without consulting the answer bank:
+
+        189  math_constraint  v4_checkers.py      pure-Python predicates
+         67  mathconstruct    v4_mc_checkers.py   upstream check()
+         61  math_constraint  v4_csp_checkers.py  upstream verify(), 0.47s/call via pycsp3
+
+    The 7 excluded are low_autocorrelation, whose verifier rejects Math-Constraint's OWN stored
+    solution -- a checker that rejects correct answers is the failure this paper studies, so those
+    items stay unscored rather than scored wrongly.
+    """
     if r["question_id"].startswith("math_constraint"):
-        return C.family(r) in C.CHECKERS
+        return C.family(r) in C.CHECKERS or CSP.covers(r)
     return MC.covers(r)
 
 
@@ -212,12 +220,16 @@ def one(unit):
             stop = resp.choices[0].finish_reason
         ans = extract(text)
         bank = {norm(s["answer"]): s["normalized_answer_id"] for s in r["solutions"]}
-        if r["question_id"].startswith("math_constraint"):
-            ok = C.check(r, ans) if ans else None
+        if not ans:
+            ok = None
+        elif r["question_id"].startswith("math_constraint"):
+            ok = C.check(r, ans)
+            if ok is None:                 # solver-backed fallback for items our predicates miss
+                ok = CSP.check(r, ans)
         else:
             # Pass the full reply: upstream pulls the LAST \boxed{} out itself, and its parser
             # needs that LaTeX. Handing it the bare extracted string loses list-depth information.
-            ok = MC.check(r, ans, raw_text=text) if ans else None
+            ok = MC.check(r, ans, raw_text=text)
         row.update(answer=ans,
                    valid=ok,
                    bank_match=bool(ans and norm(ans) in bank),

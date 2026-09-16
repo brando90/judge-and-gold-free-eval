@@ -227,3 +227,4 @@ experiments/tfa-vs-judge/.venv/
 texput.log
 experiments/tfa-vs-judge/runs/v4_pool/
 experiments/tfa-vs-judge/vendor/mathconstruct/
+experiments/tfa-vs-judge/vendor/math-constraint/

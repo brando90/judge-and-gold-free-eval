@@ -220,6 +220,35 @@ entangled with "canonical answers are easier to rediscover."
 **Consequence for the design: the reference-sampling rule must stratify on `origin`,** and every
 analysis of P1/P2 must report it as a covariate. This was not in the original plan.
 
+### A verifier in the wild that rejects correct answers for not matching the canonical form
+
+Worth reporting in the paper, because it is this paper's thesis occurring in a published benchmark's
+own tooling rather than in an LLM judge.
+
+Math-Constraint's `graph_k_coloring` verifier rejected **52 of 126** stored answers. All 52 are
+genuinely proper colourings within k -- checked directly against the edge list parsed from each
+problem statement, independently of the solver -- and all 52 are accepted once the colour labels are
+relabelled into order of first appearance. The pycsp3 model carries value-precedence
+(symmetry-breaking) constraints, so `[2,0,1,3,...]` is refused where `[0,1,2,3,...]` is accepted:
+the same partition, different names.
+
+The parallel to the judge setting is exact. A correct answer is rejected for differing
+*presentationally* from the reference form, and the rejection is confidently reported as
+"Solution violates constraints (UNSAT)". Anyone scoring candidates with that verifier, unexamined,
+would record 41% of correct colourings as wrong.
+
+We handle it with a relabel-and-retry restricted to types where value identity is a genuine
+symmetry, and gated on a negative control: relabelling preserves the partition, so an improper
+colouring stays improper and no wrong answer can be laundered into a right one.
+
+**A second type is excluded rather than repaired.** `low_autocorrelation` (7 items) rejects
+Math-Constraint's OWN stored solution, not merely ours -- its objective bound appears to be encoded
+as an optimisation rather than a constraint, so re-solving with the sequence fixed returns UNSAT
+even for a known-good answer. Those items stay unscored rather than scored wrongly.
+
+Final coverage: **317 of 324 items** gradeable without consulting the answer bank
+(189 our predicates + 67 upstream MathConstruct + 61 upstream Math-Constraint).
+
 ### Still to verify (needs the full 64 draws/item)
 
 Per-item viability is currently ceiling-limited at ~2.2 draws/item and cannot be read yet. Once the
