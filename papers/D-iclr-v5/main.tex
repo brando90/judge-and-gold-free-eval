@@ -35,7 +35,7 @@
 \newcommand{\ph}{\textsuperscript{$\dagger$}}
 \newcommand{\pending}[1]{\textcolor{red}{#1}}
 
-\title{Reference Anchoring Biases LLM Judges\\to Match Answers Instead of Grading Them}
+\title{Reference Anchoring Biases LLM Judges\\Toward the Answer They Are Shown\\When Several Are Correct}
 
 \author{Anonymous authors\\Paper under double-blind review}
 
@@ -49,7 +49,7 @@ The premise is that the reference acts as an answer key: a correct response shou
 With one correct answer the premise holds and the reference helps, raising best-of-64 accuracy sharply (\cref{sec:p2}); with several, it fails.
 We test it with more than a dozen judges --- open models up to 14B and frontier API judges --- on constructed tasks, MACE, and MATH-500, with a complete preregistration ledger.
 (1) Swapping the reference between two correct answers moves the score of identical text by about 3 to 5 points out of 10.
-(2) Correct answers that differ from the reference are graded worse against wrong answers, in the same direction for the four open judges and GPT-4.1 under every labeling we tried.
+(2) Correct answers that differ from the reference are graded worse against wrong answers, for the four open judges and GPT-4.1 under every labeling we tried.
 (3) Judges take back credit: of 843 answers two frontier judges accepted blind, 117 drop to 3 or below once the reference is shown, against 2 on a repeated blind call.
 Those benchmarks rarely contain such questions, but run verbatim on 149 factual questions that do, with the reference drawn at random, their graders score four models 30 to 67 points below answer-list accuracy.
 Much of this comes from the instruction to match: asked instead whether the answer is correct, judges shrink the gap on questions they can answer, while on harder questions it keeps wrong answers out.
@@ -59,7 +59,7 @@ Where several answers are correct, a low score from a reference-guided judge doe
 
 \begin{figure}[!b]
 \centering
-\resizebox{0.68\textwidth}{!}{\input{figures/fig1_concept.tex}}
+\resizebox{0.64\textwidth}{!}{\input{figures/fig1_concept.tex}}
 \caption{\textbf{A judge's score follows the correct answer it is shown.}
 \textbf{(a)}~A constructed task with two correct answers and one of its candidate replies (abridged; selection rule and full reply in \cref{app:setup}).
 \textbf{(b)}~Qwen2.5-7B scores the same text without a reference and with each correct answer as the reference. The example was selected for a large, clean swap; over the whole pool the swap is about 5 points for this judge (\cref{sec:p1}).}
@@ -94,7 +94,7 @@ P1 and P2 rule out the first; P3 checks that the second is not merely an inabili
 All three predictions hold (\cref{tab:summary}), and the effect matters in practice.
 Run as their authors configure them, on questions with several answers and with a reference drawn at random from each answer list, the graders of SimpleQA, BrowseComp, and HLE credit 0\% to 53\% of correct answers that differ from the reference and score four models 30 to 67 points below their answer-list accuracy (\cref{sec:cost}).
 Much of this comes from the instruction to match: asking whether the answer is correct shrinks the gap where the judge can answer the question, although on harder questions one of our two judges then accepted wrong answers.
-Given the full answer list, the benchmark graders come within a point of answer-list accuracy (\cref{sec:fix}).
+Given the full answer list, the benchmark graders come within a point of answer-list accuracy, though one open verifier stays far short (\cref{sec:fix}).
 Prior work comes close without isolating this failure.
 \citet{fixation2025} name ``solution fixation'' but measure it with flawed solutions rewritten in the reference's style, and \citet{judgingref2026} and \citet{krumdick2025nofreelabels} replace the reference with a wrong one.
 Question-answering evaluation has long under-credited correct answers missing from a gold list~\citep{min2020ambigqa,kamalloo2023evaluating}; here the list is complete and the judge still favors the answer it was shown.
@@ -157,7 +157,7 @@ A registered audit by Claude Opus~5 confirms only 86\% of the answers these labe
 \item \textbf{Grading AUROC:} how well a judge's scores separate those answers from wrong answers, per task (with one correct answer, all correct answers against wrong ones).
 \item \textbf{Best-of-64 accuracy:} the correctness of the highest-scored candidate, averaged over ties.
 \end{itemize}
-Changes are referenced minus blind, per task, with task-level bootstrap intervals; scores are out of 10, and rates and accuracies are in percentage points (pp). By default, constructed pools use any-format labels and open judges the exact scorer of \cref{app:setup,app:estimator}. We do not correct for multiplicity.
+Changes are referenced minus blind, per task, with task-level bootstrap intervals; scores are out of 10, and rates and accuracies are in percentage points (pp). By default, constructed pools use any-format labels and open judges the exact scorer of \cref{app:setup,app:estimator}. We do not correct for multiplicity; the ledger records 290 registered predictions (\cref{app:ledger}).
 Marks apply to effect estimates: unmarked estimates were pre-specified in a timestamped commit or on OSF; \ph{} marks post hoc estimates; \reana{} marks pre-specified re-analyses of an effect whose direction was already known. \Cref{app:ledger} summarizes every registered prediction and lists each failure.
 
 \section{Prediction 1: the score follows the reference}
