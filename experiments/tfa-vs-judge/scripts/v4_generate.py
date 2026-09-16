@@ -157,10 +157,17 @@ else:
     # reused: 45 ESTABLISHED connections for 24 workers showed stale ones accumulating, which is how
     # a dead socket gets handed back out. The extra TLS handshake (~100ms) is nothing against a 12s
     # call.
+    # max_retries=3 / timeout=240, not 8 / 300. The timeout is per ATTEMPT, so 8 retries let a
+    # single dead socket hold a worker for 8 x 300s = 2400s. Measured over 46 heartbeats of pass 1:
+    # oldest-in-flight reached 2574s with only 2 resets, and throughput fell 67.8 -> 54.6 rows/min
+    # (a 2.9 se drop) as wedged slots reached equilibrium -- roughly 19%. Bounded, but avoidable.
+    # 3 x 240s caps a wedged slot at ~720s instead. Observed latency is p99 155s, max 158s, so a
+    # 240s timeout never cuts a legitimate call short, and pass 1 ran 3,300 draws with 0 errors on
+    # 8 retries, so 3 is ample headroom for transient failures.
     client = openai.OpenAI(
-        api_key=load_key("OPENAI_API_KEY"), max_retries=8, timeout=300.0,
+        api_key=load_key("OPENAI_API_KEY"), max_retries=3, timeout=240.0,
         http_client=httpx.Client(
-            timeout=httpx.Timeout(300.0, connect=15.0, read=300.0),
+            timeout=httpx.Timeout(240.0, connect=15.0, read=240.0),
             limits=httpx.Limits(max_connections=args.workers + 4, max_keepalive_connections=0)))
     ERRORS = (openai.APIError,)
 
