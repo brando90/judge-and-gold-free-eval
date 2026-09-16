@@ -199,11 +199,19 @@ def one(unit):
             return None
     r = by_id[qid]
     t0 = time.time()
-    with lock:
-        inflight[unit] = t0
+    # `row` is bound BEFORE the try because the except handler and the return both reference it.
+    # Assigned inside the try, anything raising first would make the handler itself die with
+    # UnboundLocalError, losing the draw behind a misleading traceback. py_compile does not catch
+    # that -- it is a runtime binding error, not a syntax one.
     row = {"question_id": qid, "sample": idx, "model": args.model,
            "temperature": args.temperature, "family": C.family(r)}
+    # Registration goes INSIDE the try so the finally always removes it. Registered before the try,
+    # the entry leaks permanently if anything in between raises, and a leaked entry is
+    # indistinguishable from a wedged worker in the heartbeat -- during pass 1 one entry grew by 60s
+    # on 128 of 136 beats, reaching 133 minutes, far past the max_retries x timeout bound.
     try:
+        with lock:
+            inflight[unit] = t0
         if args.provider == "anthropic":
             # The SDK refuses a non-streaming request whose max_tokens implies >10 minutes of
             # generation, so stream whenever the cap is large.

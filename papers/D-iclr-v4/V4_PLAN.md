@@ -249,6 +249,41 @@ even for a known-good answer. Those items stay unscored rather than scored wrong
 Final coverage: **317 of 324 items** gradeable without consulting the answer bank
 (189 our predicates + 67 upstream MathConstruct + 61 upstream Math-Constraint).
 
+### Measured P1 viability: the swap test runs on ~134 of 256 items, not all of them
+
+Measured at 32.3 draws/item (pass 1, half complete). An earlier note in this plan said this count
+was ceiling-limited and would grow substantially by 64 draws. That was wrong -- it is SATURATING:
+
+| draws/item | items with >=2 distinct valid answers |
+|---|---|
+| 8  | 113 |
+| 16 | 124 |
+| 24 | 130 |
+| 32 | **134** |
+
+Increments +11, +6, +4 -- roughly halving -- which extrapolates to about 140 at 64 draws, not to 256.
+
+The driver is that **98 of 256 items (38%) have no valid answer at all**: gpt-4.1-mini never solves
+them in 32 attempts. Those items yield only invalid candidates (case C) and can support neither
+case A nor case B. A further 24 items produce exactly one distinct valid answer, so they cannot
+support a swap either.
+
+| items | distinct valid answers | usable for |
+|---|---|---|
+| 98 | 0 | case C only |
+| 24 | 1 | A or B, never a swap |
+| 134 | >=2 | **P1 swap test** |
+
+Consequences to carry into the design:
+
+- P1 is powered by ~134-140 items, not 256. That is comparable to v3's pools, so it is workable, but
+  the item count must be reported as-is rather than implied to be the full benchmark.
+- Roughly 38% of generation spend buys case-C-only items. Acceptable here (~$13 of the remaining
+  pass-1 budget) and methodologically cleaner than an adaptive early-stop, which would confound
+  item difficulty with sampling effort.
+- The 98 zero-valid items are not waste for every purpose: they measure judge behaviour when every
+  candidate is wrong, which is a useful control. They are simply unusable for the core comparison.
+
 ### Still to verify (needs the full 64 draws/item)
 
 Per-item viability is currently ceiling-limited at ~2.2 draws/item and cannot be read yet. Once the
