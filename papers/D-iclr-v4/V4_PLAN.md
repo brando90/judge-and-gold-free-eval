@@ -153,26 +153,35 @@ chosen model's solve rate per source, since `mathconstruct` is much harder than 
 
 ## 3b. Cluster status (skampere), checked 2026-09-16
 
-| Host | GPUs | Free now | vLLM | Disk free |
+All three hosts are reachable as `srivatsavad@` (the CSID, per the lab cluster guide — the earlier
+`Permission denied` on skampere3 was just the default username). vLLM 0.19.0 with torch 2.10 is
+already installed in `~/miniconda3/envs/rrv` on skampere1 and skampere2.
+
+| Host | GPUs | Idle now | `rrv` env | `/lfs` free |
 |---|---|---|---|---|
-| skampere1 | 8x A100-80GB | #1, #3, #6 idle | 0.19.0 in `~/miniconda3/envs/rrv` (torch 2.10, transformers 4.57.6) | 1.1T of 56T (98% used) |
-| skampere2 | 8x H200-143GB | #4 idle, #5 nearly | 0.19.0 in `~/miniconda3/envs/rrv` (torch 2.10, transformers 4.57.2) | 689G of 56T (99% used) |
-| skampere3 | — | — | — | unreachable: `Permission denied`; it logs in as `srivatsavadaruru@`, while 1 and 2 use `srivatsavad@` |
+| skampere1 | 8x A100-80GB | #1, #3, #6 | yes (vLLM 0.19.0, torch 2.10, transformers 4.57.6) | 1.1T (98% used) |
+| skampere2 | 8x H200-143GB | #4, #5 | yes (vLLM 0.19.0, torch 2.10, transformers 4.57.2) | 689G (99% used) |
+| skampere3 | 8x B200-183GB | #4, #5, #6 | **no** — needs creating | 141G (100% used) |
 
-**None of the four named judge checkpoints is cached.** The caches hold Qwen3-8B, Qwen3-14B,
-DeepSeek-R1 distills and `Mistral-Small-Instruct-2409`, but not Qwen3-32B, Llama-3.3-70B,
-Mistral-Small-3.1-24B or DeepSeek-V3.1.
+**Weights go on DFS, not LFS.** `/lfs` is 98-100% full on all three hosts, but
+`/dfs/scratch0/srivatsavad` has **11T free** and is shared across nodes, so a model downloaded once
+is visible everywhere. The lab guide calls DFS slower than LFS, so the pattern is: download to DFS,
+and if serving throughput suffers, copy the active model to that host's `/lfs`.
 
-**Disk is the binding constraint, not GPUs.** Rough download sizes: Qwen3-32B ~65G (fits either
-host), Llama-3.3-70B ~140G (fits skampere1 only), Mistral-Small-3.1-24B ~48G (fits either),
-**DeepSeek-V3.1 is a 600B+ MoE at ~700G and does not fit on either node** — it needs replacing, or
-serving through a hosted endpoint. Suggested substitute: DeepSeek-R1-Distill-Qwen-32B, or the
-already-cached Qwen3-14B as a cheap fourth cell.
+This removes the disk blocker. Feasible now: Qwen3-32B (~65G), Mistral-Small-3.1-24B (~48G),
+Llama-3.3-70B (~140G). **DeepSeek-V3.1 (600B+ MoE, ~700G) is still impractical** and needs
+substituting — suggested: DeepSeek-R1-Distill-Qwen-32B, or the already-cached Qwen3-14B.
+
+**In flight:** Qwen3-32B downloading to `/dfs/scratch0/srivatsavad/hf` on skampere1 (pid 3777158,
+log at `/dfs/scratch0/srivatsavad/logs/qwen3_32b_dl.log`).
+
+**Long runs need Kerberos care.** The ticket expires the same day it is issued, so judging runs go
+through `/afs/cs/software/bin/krbtmux` plus `reauth`, per the lab guide. Max 3 GPUs concurrently.
 
 **Scope confirmed: narrow first, expand with time and confidence.** Start with E1 (C0/C1 rotation)
-and E3 (full answer list) on the 189 checkable items, with two judge models and two methods
-(M0 brief justification, M3 solve-then-grade — the two that most differ mechanically). Expand to
-more cells only once the effect is shown to reproduce on this benchmark.
+and E3 (full answer list) on the 189 checkable items, two judge models, two methods (M0 brief
+justification and M3 solve-then-grade — the pair that differs most mechanically). Expand only once
+the effect is shown to reproduce here.
 
 ---
 
