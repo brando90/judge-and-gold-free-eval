@@ -8,13 +8,13 @@ Deadlines (ICLR 2027 author guidelines): abstract registration **Sep 18, 2026 AO
 - **Abstract:** paste the plain-text version of the `abstract` environment (replace `\%` with `%`, `$n$` with n).
 - **Title (v5):** Reference Anchoring Biases LLM Judges to Match Answers Instead of Grading Them
   - Superseded (v3, round 18): The Reference Is Not an Answer Key: LLM Judges Favor the Correct Answer They Are Shown. Retitled in v5 because the v3 title asserted unconditionally what P2 refutes on single-answer questions, where the reference helps.
-- **TL;DR (round 20):** When a question has several correct answers, LLM judges favor the one given as the reference: swapping it moves the score of identical text by several points, correct answers that differ from it are rejected even when the judge accepts them without a reference, and a reference-guided judge under-reports models' benchmark accuracy by 13 to 40 points.
+- **TL;DR (v5):** When a question has several correct answers, LLM judges favor the one given as the reference: swapping it moves the score of identical text by about 3 to 5 points out of 10, correct answers that differ from it are rejected even when the judge accepts them without a reference, and benchmark graders run as shipped score four models 30 to 67 points below their answer-list accuracy. With one correct answer the reference helps instead.
 - **Keywords:** LLM-as-a-judge, reference-guided evaluation, multiple correct answers, anchoring, best-of-n selection, reasoning judges, evaluation reliability, preregistration
 - **Primary area (suggested):** alignment, fairness, safety, privacy, and societal considerations — alternative: datasets and benchmarks / evaluation. Pick whichever area list ICLR 2027 shows that mentions evaluation of foundation models.
 
 ## Before submitting
 
-- [ ] `latexmk -pdf main.tex` builds with no undefined references; main text ends on or before page 9.
+- [x] `latexmk -pdf main.tex` builds with no undefined references; main text ends on or before page 9. (v5: verified — 0 undefined refs, 0 overfull boxes; Limitations closes page 9 and page 10 begins with the AI use statement, matching v3.)
 - [ ] `python scripts/make_figures.py && python scripts/make_tables.py` regenerated from current `papers/analysis/*.json`.
 - [ ] `python scripts/check_numbers.py`: every flagged number checked by hand. As of round 22 the main text flags only 197 and 129 (the ledger sum 129 + 11 + 17 + 17 + 18 + 2 + 3 and its confirmed count); the appendix flags 420 (Figure 1 length rule), 94, 405, 825 and 1,200, each a count checked by hand.
 - [x] R3-B visible and thinking arms were completed after the usage limit reset (round 5); nothing pending.
