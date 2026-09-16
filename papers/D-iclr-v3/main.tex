@@ -178,7 +178,7 @@ All twelve registered cells for Qwen2.5-7B and phi-4 went as predicted; one regi
 
 The swap is not an artifact of our wording: it survives the verbatim MT-Bench template, which drops ``trusted'' and asks for an explanation first. On arithmetic it mostly vanishes, however, when the reference is written as an expression or hidden inside a worked solution (\cref{app:rotation,app:mechanism}).
 
-Does the problem fade as judges improve? On arithmetic, a judge that thinks before scoring removes most of the swap (\cref{app:reasoning}). On factual questions it does not: thinking only shrinks Sonnet~5's added false rejections, from 36 to 15 points (\cref{app:acceptance}), and o3-mini, a reasoning model, running the HLE grader still credits almost no correct answer that differs from the reference (\cref{sec:cost}).
+Does the problem fade as judges improve? On arithmetic, thinking before scoring removes most of the swap (\cref{app:reasoning}). On factual questions it does not: thinking only shrinks Sonnet~5's added false rejections, from 36 to 15 points (\cref{app:acceptance}), and o3-mini, a reasoning model, running the HLE grader still credits almost no correct answer that differs from the reference (\cref{sec:cost}).
 
 \section{Prediction 2: correct answers that differ from the reference are graded worse}
 \label{sec:p2}
@@ -223,8 +223,8 @@ The explanation makes a clear prediction. Suppose a judge reads a correct answer
 The alternative, \emph{agreement}, is that the judge defers to whichever answer it is shown, even when it can see that the candidate is right. Agreement predicts that the judge takes the credit back.
 
 \paragraph{What the judges do.}
-We first fix what counts as acceptance. The API judges almost never give a wrong answer a blind 10, so for them a blind 10 counts as acceptance. The open judges rarely score anything 10, so for them we use the blind score that at most 3\% of wrong answers reach, about Sonnet~5's rate for a blind 10.
-Among the answers that clear that bar on factual questions, judges take the credit back often: between 19\% and 83\% of the accepted answers that differ from the reference fall to 3 or below once it is shown (\cref{fig:reasoning}).\ph{} Not one of the answers that match the reference does.
+An answer counts as accepted when the judge gives it a blind 10, or, for the open judges, the blind score that at most 3\% of wrong answers reach (\cref{fig:reasoning}).
+Sonnet~5 and Opus~5 take back credit from 19\% and 31\% of the accepted answers that differ from the reference, and from none of the 140 that match it; at the open judges' post hoc threshold, phi-4 takes back 42\% and Qwen2.5-7B 83\%.\ph{}
 Verification failure predicts none of this.
 
 \paragraph{It is not noise.}
@@ -297,6 +297,7 @@ If the judge can answer the questions, remove any instruction to match and ask w
 We compared three such prompts on the 40-task \textsc{MACE} subsample, which has many wrong answers.
 Letting the judge solve the question first had the smallest grading loss: AUROC $-0.04$ and $-0.05$ against blind, with wrong answers wrongly credited up by at most 3.2 points.
 It still rejected 5 to 7 points more of the differing correct answers (\cref{app:r26}).
+Telling the judge that any correct answer deserves full credit helps but does not suffice: added to our rubric, it cuts the rise in false rejections on \textsc{MACE} from 36 to 18 points for Sonnet~5 and to 8 for Opus~5 (\cref{app:acceptance}).
 One protocol we registered did not help: scoring blind and then rescoring with the reference left grading below blind for most open judges\ph{} (\cref{app:mitigation}).
 
 \paragraph{Questions beyond the judge.}
@@ -332,7 +333,6 @@ LLM judges favor the first response~\citep{wang2024fair}, longer responses~\cite
 
 \textbf{Labels.} Any-format labels were checked by a frontier model, not by humans, and boxed replies alone give conservative estimates; prevalence labels come from LLM annotators with low agreement ($\kappa \le 0.35$), and the HLE labels from HLE's own judge.
 \textbf{Tasks.} Constructed pools come from five arithmetic families and one generator, natural data from two \textsc{MACE} domains. The benchmark study uses one answer per model, with references drawn at random; three graders grade their own answers, and intervals resample questions, not grader calls. Open-ended tasks (summarization, writing, agent trajectories) are untested.
-\textbf{Consequences.} Whether the failure harms RL training is not established: our exploratory preference-training runs were inconclusive (extended appendix).
 \textbf{Judges, prompts, and registration.} Open judges have at most 14B parameters, our wordings do not exhaust reference prompts, and the correctness prompts were tested for two judges; only the API judges have a second blind call as a noise control. No experiment manipulates verification directly, and most registrations are timestamped commits with a verdict rule adopted afterwards (\cref{app:ledger}).
 
 \subsection*{AI use statement}
