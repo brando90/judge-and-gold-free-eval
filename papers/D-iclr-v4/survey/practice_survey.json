@@ -1,0 +1,3221 @@
+{
+  "summary": {
+    "checked": "2026-09-14",
+    "per_category": {
+      "benchmark": {
+        "n": 16,
+        "reference_guided_llm_judge": {
+          "yes": 11,
+          "no": 5
+        }
+      },
+      "library": {
+        "n": 12,
+        "reference_guided_llm_judge": {
+          "yes": 11,
+          "partially": 1
+        }
+      },
+      "platform": {
+        "n": 4,
+        "reference_guided_llm_judge": {
+          "yes": 3,
+          "no": 1
+        }
+      },
+      "rl_pipeline": {
+        "n": 11,
+        "reference_guided_llm_judge": {
+          "yes": 10,
+          "partially": 1
+        }
+      },
+      "survey": {
+        "n": 4,
+        "reference_guided_llm_judge": {
+          "n/a": 4
+        }
+      }
+    },
+    "verbatim_reference_prompts": 34,
+    "equates_correctness_with_match": {
+      "yes": 27,
+      "partially": 4,
+      "no": 3
+    },
+    "several_valid_answers": {
+      "no": 29,
+      "yes": 2,
+      "partially": 3
+    },
+    "prompt_ids": [
+      "simpleqa",
+      "browsecomp",
+      "simpleevals_math_equality",
+      "hle",
+      "mtbench",
+      "freshqa",
+      "crag",
+      "mixeval",
+      "omnimath",
+      "frames",
+      "inspect_ai",
+      "openai_evals",
+      "langchain",
+      "openevals",
+      "llamaindex",
+      "ragas",
+      "deepeval",
+      "mlflow",
+      "promptfoo",
+      "phoenix",
+      "trulens",
+      "opencompass",
+      "openai_graders",
+      "azure_foundry",
+      "bedrock",
+      "deepseek_r1",
+      "general_reasoner",
+      "reward_bridge",
+      "xverify",
+      "compassverifier",
+      "tinyv",
+      "rubrics_as_rewards",
+      "openai_rft",
+      "langchain_labeled_criteria"
+    ],
+    "research_papers": {
+      "n_records": 47,
+      "n_papers_single_reference_judge": 38,
+      "n_papers_single_reference_judge_not_already_in_main_survey": 34,
+      "n_papers_single_reference_judge_new_verified": 29,
+      "n_papers_single_reference_judge_new_partially_verified": 5,
+      "single_reference_judge_by_domain": {
+        "math RL verifiers": 1,
+        "math benchmark (university level) + judge meta-evaluation": 1,
+        "math benchmark (inequality proofs)": 1,
+        "physics benchmark (answer judging)": 1,
+        "RL for reasoning model (general RL, STEM with ground truth)": 1,
+        "cross-domain RLVR (Guru); science reward via LLM verifier": 1,
+        "RL for reasoning model (scientific reasoning) + SFT data filtering": 1,
+        "olympiad multi-discipline benchmark": 1,
+        "math benchmark": 1,
+        "natural-language proof evaluation": 1,
+        "QA / benchmark evaluation (MMLU-Pro, GPQA-Diamond, MATH free-form)": 1,
+        "factual QA": 1,
+        "RAG evaluation": 1,
+        "RAG evaluation (QA datasets incl. NQ)": 1,
+        "free-form QA (TruthfulQA, TriviaQA, HotpotQA)": 1,
+        "open-domain QA (NQ-open, CuratedTREC)": 1,
+        "factual QA (TriviaQA)": 1,
+        "open-domain QA evaluation (NQ, TriviaQA; EVOUNA)": 1,
+        "web agents / web traversal QA benchmark (WebWalkerQA)": 1,
+        "web browsing benchmark (Chinese)": 1,
+        "web agent RL (information seeking)": 1,
+        "web agent RL (BrowseComp-style)": 1,
+        "agentic search RL": 1,
+        "deep research RL (open-domain QA)": 1,
+        "deep-research agent benchmark (fixed corpus)": 1,
+        "deep research report evaluation (RACE)": 1,
+        "deep research agent (GPQA, GAIA, WebWalkerQA, HLE)": 1,
+        "web agent RL": 1,
+        "deep research agent (industrial report)": 1,
+        "math proof grading": 2,
+        "code generation evaluation": 2,
+        "math competition evaluation (final answers; proofs graded by humans)": 1,
+        "RLVR beyond math": 1,
+        "general RL reward design": 1,
+        "RAG / multi-hop QA": 1,
+        "closed-ended expert QA": 1
+      },
+      "single_reference_judge_several_valid_answers": {
+        "partially": 17,
+        "no": 13,
+        "yes": 7,
+        "n/a": 1
+      },
+      "n_formal_verification_argument": 7,
+      "n_judge_where_no_checker": 24,
+      "unverified_ids": [],
+      "bib_entries_added": 37,
+      "dropped_candidates": [
+        {
+          "id": "tang2024multihoprag",
+          "arxiv_id": "2401.15391",
+          "reason": "No LLM judge for generation: \"our ground truth answers are restricted to simple responses such as “yes\", “no\", entity names, or temporal indicators ... to facilitate the use of a straightforward accuracy metric\"",
+          "checked": "2026-09-14"
+        },
+        {
+          "id": "li2024pedants",
+          "arxiv_id": "2402.11161",
+          "reason": "Proposes a distilled classifier; GPT-4 appears as an answer-correctness judge baseline (\"only black-box llm evaluators (GPT-4) are strong short-form ac judges\"). Not recorded as a single-reference-judge protocol paper; not fully checked.",
+          "checked": "2026-09-14"
+        },
+        {
+          "id": "akter2025nemotroncrossthink",
+          "arxiv_id": "2504.13941",
+          "reason": "Templates used to \"limit the answer-space variability\"; unverifiable samples discarded.",
+          "batch": "A"
+        },
+        {
+          "id": "albalak2025bigmath",
+          "arxiv_id": "2502.17387",
+          "reason": "Explicitly filters for \"uniquely verifiable solutions\".",
+          "batch": "A"
+        },
+        {
+          "id": "he2025skyworkor1",
+          "arxiv_id": "2505.22312",
+          "reason": "n/a",
+          "batch": "A"
+        },
+        {
+          "id": "mistral2025magistral",
+          "arxiv_id": "2506.10910",
+          "reason": "n/a",
+          "batch": "A"
+        },
+        {
+          "id": "jia2025writingzero",
+          "arxiv_id": "2506.00103",
+          "reason": "Writing tasks are subjective by the paper's own description.",
+          "batch": "A"
+        }
+      ],
+      "single_reference_judge_new_by_area": {
+        "math_science": 9,
+        "proof_grading": 4,
+        "qa_rag": 8,
+        "agents_deep_research": 11,
+        "code": 2
+      },
+      "single_reference_judge_new_several_valid_answers": {
+        "partially": 16,
+        "no": 11,
+        "yes": 7
+      },
+      "single_reference_judge_new_used_in_training": 8,
+      "single_reference_judge_new_status": {
+        "verified": 29,
+        "partially verified": 5
+      },
+      "formal_verification_ids": [
+        "balunovic2025mathconstruct",
+        "petrov2025proofbluff",
+        "ren2025deepseekproverv2",
+        "chen2025seedprover",
+        "formal_math_reasoning",
+        "kimina_prover",
+        "putnambench"
+      ],
+      "dropped_during_checking_not_in_json": [
+        "Search-o1 (2501.05366): EM/F1 and Pass@1, no LLM judge",
+        "WebShaper: judge model and reference wording unstated",
+        "Brains vs. Bytes (2504.01995): judges without a reference"
+      ]
+    }
+  },
+  "records": [
+    {
+      "id": "simpleqa",
+      "name": "SimpleQA (OpenAI simple-evals)",
+      "category": "benchmark",
+      "sources": [
+        "https://github.com/openai/simple-evals/blob/652c89d0ca9d/simpleqa_eval.py#L13-L92",
+        "https://github.com/openai/simple-evals/blob/652c89d0ca9d/simple_evals.py#L333-L337"
+      ],
+      "verification": "verified",
+      "default_judge_model": "gpt-4.1-2025-04-14 (grading_sampler in simple_evals.py)",
+      "reference_name": "gold target",
+      "ref_guided_llm_judge": "yes",
+      "prompt_verbatim": true,
+      "quotes": [
+        "These predicted answers are all CORRECT because:\n    - They fully contain the important information in the gold target.\n    - They do not contain any information that contradicts the gold target.",
+        "A factual statement in the answer contradicts the gold target."
+      ],
+      "equates_correctness_with_match": "yes",
+      "several_valid": "no",
+      "several_valid_quote": "None. Only allowance is for partial restatement: \"The gold target may contain more information than the question. In such cases, the predicted answer only needs to contain the information that is in the question.\"",
+      "output_format": "letter A/B/C = CORRECT / INCORRECT / NOT_ATTEMPTED",
+      "prompt_file": "prompts/simpleqa_grader.txt",
+      "checked": "2026-09-14",
+      "notes": ""
+    },
+    {
+      "id": "browsecomp",
+      "name": "BrowseComp (OpenAI simple-evals)",
+      "category": "benchmark",
+      "sources": [
+        "https://github.com/openai/simple-evals/blob/652c89d0ca9d/browsecomp_eval.py#L26-L45"
+      ],
+      "verification": "verified",
+      "default_judge_model": "gpt-4.1-2025-04-14 (grading_sampler in simple_evals.py)",
+      "reference_name": "[correct_answer]",
+      "ref_guided_llm_judge": "yes",
+      "prompt_verbatim": true,
+      "quotes": [
+        "do not argue for any answer different than [correct_answer], focus only on whether the answers match.",
+        "Answer 'no' otherwise, i.e. if there if there is any inconsistency, ambiguity, non-equivalency, or if the extracted answer is incorrect."
+      ],
+      "equates_correctness_with_match": "yes",
+      "several_valid": "no",
+      "several_valid_quote": "Implies uniqueness: \"based on the precise and unambiguous [correct_answer] below.\"",
+      "output_format": "structured: extracted_final_answer, reasoning, correct yes/no, confidence",
+      "prompt_file": "prompts/hle_browsecomp_judge.txt",
+      "notes": "Grader template is copied verbatim from HLE (the file cites hle_eval/run_judge_results.py#L16-L33).",
+      "checked": "2026-09-14"
+    },
+    {
+      "id": "simpleevals_math_equality",
+      "name": "simple-evals MATH equality checker",
+      "category": "benchmark",
+      "sources": [
+        "https://github.com/openai/simple-evals/blob/652c89d0ca9d/common.py#L78",
+        "https://github.com/openai/simple-evals/blob/652c89d0ca9d/math_eval.py#L55",
+        "https://github.com/openai/simple-evals/blob/652c89d0ca9d/simple_evals.py#L347"
+      ],
+      "verification": "verified",
+      "default_judge_model": "gpt-4-turbo-preview (equality_checker)",
+      "reference_name": "Expression 1 (reference answer, row[\"Answer\"]) vs Expression 2 (extracted answer)",
+      "ref_guided_llm_judge": "yes",
+      "prompt_verbatim": true,
+      "quotes": [
+        "Look at the following two expressions (answers to a math problem) and judge whether they are equivalent. Only perform trivial simplifications",
+        "(these are actually equal, don't mark them equivalent if you need to do nontrivial simplifications)"
+      ],
+      "equates_correctness_with_match": "yes",
+      "several_valid": "no",
+      "several_valid_quote": "None; correctness is equivalence to the single reference expression.",
+      "output_format": "Yes/No",
+      "prompt_file": "prompts/simple_evals_math_equality_checker.txt",
+      "notes": "Only MathEval uses check_equality in simple_evals.py at this commit; no AIME eval was found in simple_evals.py.",
+      "checked": "2026-09-14"
+    },
+    {
+      "id": "simpleqa_verified",
+      "name": "SimpleQA Verified (Google DeepMind)",
+      "category": "benchmark",
+      "sources": [
+        "https://arxiv.org/html/2509.07968 (Sec. 3, 3.2 Autorater Improvements)",
+        "https://huggingface.co/datasets/google/simpleqa-verified/blob/main/README.md"
+      ],
+      "verification": "partially verified (paper + dataset README; prompt text lives in a Kaggle notebook that was not fetched)",
+      "default_judge_model": "GPT-4.1 (README: \"model responses are graded with a GPT-4.1 version\")",
+      "reference_name": "gold answer / ground truth answer",
+      "ref_guided_llm_judge": "yes",
+      "prompt_verbatim": false,
+      "quotes": [
+        "We use the same grading scheme and metrics as proposed in Wei et al. (2024a).",
+        "we remove the generic instruction in the prompted autorater (“the predicted answer needs to be correct to the last significant figure in the gold answer”) and instead explicitly specify the range of answers that should be considered correct as part of the ground truth answer."
+      ],
+      "equates_correctness_with_match": "n/a",
+      "several_valid": "n/a",
+      "several_valid_quote": "Prompt text unverified. Paper widens numeric gold answers to explicit ranges, e.g. \"8282 (acceptable range: anything between 8199 and 8365)\".",
+      "output_format": "correct / incorrect / not attempted (per paper and README)",
+      "checked": "2026-09-14",
+      "prompt_file": null,
+      "notes": ""
+    },
+    {
+      "id": "hle",
+      "name": "Humanity's Last Exam (centerforaisafety/hle)",
+      "category": "benchmark",
+      "sources": [
+        "https://github.com/centerforaisafety/hle/blob/73ae974b1844/hle_eval/run_judge_results.py#L16-L33",
+        "https://github.com/centerforaisafety/hle/blob/73ae974b1844/hle_eval/run_judge_results.py#L198",
+        "https://arxiv.org/html/2501.14249 (Sec. 4 evaluation; App. C.1.1)"
+      ],
+      "verification": "verified",
+      "default_judge_model": "o3-mini-2025-01-31 (code default; comment: prev gpt-4o-2024-08-06)",
+      "reference_name": "[correct_answer]",
+      "ref_guided_llm_judge": "yes",
+      "prompt_verbatim": true,
+      "quotes": [
+        "Judge whether the following [response] to [question] is correct or not based on the precise and unambiguous [correct_answer] below.",
+        "do not argue for any answer different than [correct_answer], focus only on whether the answers match."
+      ],
+      "equates_correctness_with_match": "yes",
+      "several_valid": "no",
+      "several_valid_quote": "Implies uniqueness: \"precise and unambiguous [correct_answer]\"; paper: questions \"have specific, unambiguous answers accepted by domain experts.\"",
+      "output_format": "structured: extracted_final_answer, reasoning, correct yes/no, confidence",
+      "prompt_file": "prompts/hle_browsecomp_judge.txt",
+      "checked": "2026-09-14",
+      "notes": ""
+    },
+    {
+      "id": "mtbench",
+      "name": "MT-Bench reference-guided grading (FastChat llm_judge)",
+      "category": "benchmark",
+      "sources": [
+        "https://github.com/lm-sys/FastChat/blob/587d5cfa1609/fastchat/llm_judge/data/judge_prompts.jsonl",
+        "https://github.com/lm-sys/FastChat/blob/587d5cfa1609/fastchat/llm_judge/common.py#L31",
+        "https://github.com/lm-sys/FastChat/blob/587d5cfa1609/fastchat/llm_judge/gen_judgment.py#L183",
+        "https://arxiv.org/html/2306.05685 (Sec. 3.1 Reference-guided grading; Sec. 3.4)"
+      ],
+      "verification": "verified",
+      "default_judge_model": "gpt-4 (--judge-model default)",
+      "reference_name": "reference answer",
+      "ref_guided_llm_judge": "yes",
+      "prompt_verbatim": true,
+      "quotes": [
+        "Begin your evaluation by comparing the assistant's answer with the reference answer. Identify and correct any mistakes.",
+        "Hence, we propose a reference-guided method, in which we first generate LLM judge’s answer independently, and then display it as a reference answer in the judge prompt."
+      ],
+      "equates_correctness_with_match": "yes",
+      "several_valid": "no",
+      "several_valid_quote": "None.",
+      "output_format": "single: 1-10 \"[[rating]]\"; pairwise: [[A]] / [[B]] / [[C]]",
+      "prompt_file": "prompts/mtbench_reference_guided.txt",
+      "notes": "References are used only for NEED_REF_CATS = [\"math\", \"reasoning\", \"coding\", \"arena-hard-200\"]. Per the paper the reference is a GPT-4-generated answer, not a human gold answer.",
+      "checked": "2026-09-14"
+    },
+    {
+      "id": "freshqa",
+      "name": "FreshQA / FreshEval",
+      "category": "benchmark",
+      "sources": [
+        "https://github.com/freshllms/freshqa/blob/7d2d36839919/fresheval_strict.ipynb",
+        "https://github.com/freshllms/freshqa/blob/7d2d36839919/fresheval_relaxed.ipynb",
+        "https://arxiv.org/html/2310.03214 (Appendix B)"
+      ],
+      "verification": "verified",
+      "default_judge_model": "not verified (notebook lists several OpenAI models; paper: few-shot LLM)",
+      "reference_name": "correct_answers / ground-truth answers (a list)",
+      "ref_guided_llm_judge": "yes",
+      "prompt_verbatim": true,
+      "quotes": [
+        "Regarding numerical answers, approximate numbers are generally not accepted unless explicitly included in the ground-truth answers.",
+        "The primary or final answer when standing alone must be accurate."
+      ],
+      "equates_correctness_with_match": "partially",
+      "several_valid": "yes",
+      "several_valid_quote": "Paper: \"the model is conditioned on a given question, a list of valid answers for the question, and a model response\"; demos use \"correct_answers\": [\"117 years old\", \"117\"]. The list is closed.",
+      "output_format": "comment + evaluation: correct / incorrect",
+      "prompt_file": "prompts/fresheval_strict_prefix_and_demos.txt",
+      "checked": "2026-09-14",
+      "notes": ""
+    },
+    {
+      "id": "crag",
+      "name": "Meta CRAG (Comprehensive RAG Benchmark)",
+      "category": "benchmark",
+      "sources": [
+        "https://github.com/facebookresearch/CRAG/blob/ad1518887dd4/prompts/templates.py#L7-L20",
+        "https://github.com/facebookresearch/CRAG/blob/ad1518887dd4/local_evaluation.py#L284"
+      ],
+      "verification": "verified",
+      "default_judge_model": "gpt-4-0125-preview (EVALUATION_MODEL_NAME default)",
+      "reference_name": "Ground Truth",
+      "ref_guided_llm_judge": "yes",
+      "prompt_verbatim": true,
+      "quotes": [
+        "1: Take it as granted that the Ground Truth is always correct.",
+        "4: If the Prediction does not exactly match the Ground Truth, go through the following steps and likely give a score as 0.",
+        "9: If ground truth contains a set of items, prediction must contain exactly same items for the score to be 1."
+      ],
+      "equates_correctness_with_match": "yes",
+      "several_valid": "no",
+      "several_valid_quote": "None; reference asserted to be always correct.",
+      "output_format": "JSON {explanation, score 0/1}",
+      "prompt_file": "prompts/crag_grader.txt",
+      "checked": "2026-09-14",
+      "notes": ""
+    },
+    {
+      "id": "mixeval",
+      "name": "MixEval (free-form model parser)",
+      "category": "benchmark",
+      "sources": [
+        "https://github.com/JinjieNi/MixEval/blob/7c52b41929d4/mix_eval/prompts/judge_prompts.py#L1-L27",
+        "https://arxiv.org/html/2406.06565 (Sec. on model parser; App. G)"
+      ],
+      "verification": "verified",
+      "default_judge_model": "GPT-3.5-Turbo-0125 (paper: \"we use GPT-3.5-Turbo-0125 as the model parser\")",
+      "reference_name": "golden answer(s)",
+      "ref_guided_llm_judge": "yes",
+      "prompt_verbatim": true,
+      "quotes": [
+        "Your task is to judge how correct the model's answer is based on the golden answer(s), without seeing the context of the question, and then give a correctness score.",
+        "Note that each one of the golden answers is considered correct. Thus if the model's answer matches any one of the golden answers, it should be considered correct."
+      ],
+      "equates_correctness_with_match": "yes",
+      "several_valid": "yes",
+      "several_valid_quote": "\"Note that each one of the golden answers is considered correct.\" (closed list: correctness still means matching a listed answer)",
+      "output_format": "score 0.0-1.0 in steps of 0.1, \"[[score]]\"",
+      "prompt_file": "prompts/mixeval_freeform_judge.txt",
+      "checked": "2026-09-14",
+      "notes": ""
+    },
+    {
+      "id": "omnimath",
+      "name": "Omni-MATH (GPT-4o judge and Omni-Judge)",
+      "category": "benchmark",
+      "sources": [
+        "https://github.com/KbsdJames/Omni-MATH/blob/23be225c8e26/GPT_eval/gpt_evaluation_template.txt",
+        "https://huggingface.co/KbsdJames/Omni-Judge/blob/de5bdca15ff3/tokenization_omnijudge.py",
+        "https://arxiv.org/html/2410.07985 (App. H.1, J)"
+      ],
+      "verification": "verified",
+      "default_judge_model": "GPT-4o; open alternative Omni-Judge (Llama-3.1-8B-Instruct tuned on GPT-4o judgments)",
+      "reference_name": "reference answer / ground truth answer",
+      "ref_guided_llm_judge": "yes",
+      "prompt_verbatim": true,
+      "quotes": [
+        "The reference answer is ALWAYS correct. You should carefully judge whether the student gives the same answer as reference answer.",
+        "My job is to assess whether the student's answer captures the same meaning as the reference answer, even when expressed with different wording or format."
+      ],
+      "equates_correctness_with_match": "yes",
+      "several_valid": "no",
+      "several_valid_quote": "None; the same ATTENTION line appears in the Omni-Judge chat template.",
+      "output_format": "markdown report; Equivalence Judgement TRUE/FALSE",
+      "prompt_file": "prompts/omnimath_gpt4o_judge.txt",
+      "checked": "2026-09-14",
+      "notes": ""
+    },
+    {
+      "id": "frames",
+      "name": "FRAMES (Fact, Fetch, and Reason)",
+      "category": "benchmark",
+      "sources": [
+        "https://arxiv.org/html/2409.12941 (Sec. 4 experiments; App. Figure 6 Auto-rating Prompt)"
+      ],
+      "verification": "verified",
+      "default_judge_model": "Gemini-Pro-1.5-0514 (autorating LLM reported in paper)",
+      "reference_name": "Ground Truth Answer",
+      "ref_guided_llm_judge": "yes",
+      "prompt_verbatim": true,
+      "quotes": [
+        "Your task is to determine if the ground truth answer is present in the LLM’s response.",
+        "Consider the substance of the answers – look for equivalent information or correct answers. Do not focus on exact wording unless the exact wording is crucial to the meaning."
+      ],
+      "equates_correctness_with_match": "yes",
+      "several_valid": "partially",
+      "several_valid_quote": "\"look for equivalent information or correct answers\" (ambiguous; the decision rule is still whether \"the meaning and the vital facts of the \\\"Ground Truth Answer\\\" are present\")",
+      "output_format": "Explanation + Decision TRUE/FALSE",
+      "prompt_file": "prompts/frames_autorater.txt",
+      "checked": "2026-09-14",
+      "notes": ""
+    },
+    {
+      "id": "truthfulqa",
+      "name": "TruthfulQA GPT-judge",
+      "category": "benchmark",
+      "sources": [
+        "https://github.com/sylinrl/TruthfulQA/blob/d71c110897f5/README.md#L48",
+        "https://github.com/sylinrl/TruthfulQA/blob/d71c110897f5/data/finetune_truth.jsonl"
+      ],
+      "verification": "verified",
+      "default_judge_model": "fine-tuned GPT-3 curie (\"GPT-judge\"); models not publicly provided",
+      "reference_name": "none in judge input (reference answers are used only by BLEURT/ROUGE/BLEU)",
+      "ref_guided_llm_judge": "no",
+      "prompt_verbatim": true,
+      "quotes": [
+        "The GPT-3 metrics are trained end-to-end to predict human evaluations of truthfulness and informativeness.",
+        "Fine-tuning format: \"Q: What is underneath the Denver Airport?\\nA: The Denver Airport is underneath the city of Denver.\\nTrue:\" -> \" no\""
+      ],
+      "equates_correctness_with_match": "n/a",
+      "several_valid": "n/a",
+      "several_valid_quote": "Judge sees no reference.",
+      "output_format": "yes/no token",
+      "checked": "2026-09-14",
+      "prompt_file": null,
+      "notes": ""
+    },
+    {
+      "id": "healthbench",
+      "name": "HealthBench",
+      "category": "benchmark",
+      "sources": [
+        "https://github.com/openai/simple-evals/blob/652c89d0ca9d/healthbench_eval.py#L40-L60",
+        "https://github.com/openai/simple-evals/blob/652c89d0ca9d/simple_evals.py#L338-L346"
+      ],
+      "verification": "verified",
+      "default_judge_model": "gpt-4.1-2025-04-14 (optional flag: gpt-5.4 low reasoning)",
+      "reference_name": "rubric item (physician-written criteria); no reference answer shown to grader",
+      "ref_guided_llm_judge": "no",
+      "prompt_verbatim": true,
+      "quotes": [
+        "Your job is to look at a conversation and a rubric item, and score the last turn (i.e., the last assistant response, or the completion) in the conversation on how well it follows the rubric item."
+      ],
+      "equates_correctness_with_match": "n/a",
+      "several_valid": "n/a",
+      "several_valid_quote": "Rubric-based, not reference-based.",
+      "output_format": "JSON {explanation, criteria_met: bool} per rubric item",
+      "notes": "Physician ideal/reference completions exist but are graded against rubrics; they are not shown to the grader as a key.",
+      "checked": "2026-09-14",
+      "prompt_file": null
+    },
+    {
+      "id": "gaia",
+      "name": "GAIA",
+      "category": "benchmark",
+      "sources": [
+        "https://huggingface.co/spaces/gaia-benchmark/leaderboard/blob/main/scorer.py"
+      ],
+      "verification": "verified",
+      "default_judge_model": "none (rule-based scorer)",
+      "reference_name": "ground_truth",
+      "ref_guided_llm_judge": "no",
+      "prompt_verbatim": false,
+      "quotes": [
+        "def question_scorer(\n    model_answer: str,\n    ground_truth: str,\n) -> bool:"
+      ],
+      "equates_correctness_with_match": "n/a",
+      "several_valid": "n/a",
+      "several_valid_quote": "Normalized exact match (numbers, lists, strings); no LLM.",
+      "output_format": "bool",
+      "checked": "2026-09-14",
+      "prompt_file": null,
+      "notes": ""
+    },
+    {
+      "id": "livebench",
+      "name": "LiveBench",
+      "category": "benchmark",
+      "sources": [
+        "https://github.com/LiveBench/LiveBench/blob/0edef1710338/README.md#L37",
+        "https://arxiv.org/html/2406.19314"
+      ],
+      "verification": "verified",
+      "default_judge_model": "none",
+      "reference_name": "ground truth",
+      "ref_guided_llm_judge": "no",
+      "prompt_verbatim": false,
+      "quotes": [
+        "Each question has verifiable, objective ground-truth answers, allowing hard questions to be scored accurately and automatically, without the use of an LLM judge."
+      ],
+      "equates_correctness_with_match": "n/a",
+      "several_valid": "n/a",
+      "several_valid_quote": "No judge.",
+      "output_format": "task-specific scoring functions",
+      "checked": "2026-09-14",
+      "prompt_file": null,
+      "notes": ""
+    },
+    {
+      "id": "arenahard",
+      "name": "Arena-Hard-Auto (v0.1 / v2.0)",
+      "category": "benchmark",
+      "sources": [
+        "https://github.com/lmarena/arena-hard-auto/blob/196f6b826783/utils/judge_utils.py#L1",
+        "https://github.com/lmarena/arena-hard-auto/blob/196f6b826783/config/arena-hard-v2.0.yaml",
+        "https://github.com/lmarena/arena-hard-auto/blob/196f6b826783/config/arena-hard-v0.1.yaml"
+      ],
+      "verification": "verified",
+      "default_judge_model": "gpt-4.1 (v2.0 config; README also lists Gemini-2.5); gpt-4-1106-preview (v0.1)",
+      "reference_name": "none (config \"reference: null\"); judge writes its own answer first",
+      "ref_guided_llm_judge": "no",
+      "prompt_verbatim": true,
+      "quotes": [
+        "Begin your evaluation by generating your own answer to the prompt. You must provide your answers before judging any answers.",
+        "When evaluating the assistants' answers, compare both assistants' answers with your answer. You must identify and correct any mistakes or inaccurate information."
+      ],
+      "equates_correctness_with_match": "n/a",
+      "several_valid": "n/a",
+      "several_valid_quote": "The judge's self-generated answer acts as an implicit reference; no gold answer.",
+      "output_format": "pairwise [[A>>B]] ... [[B>>A]]",
+      "notes": "The creative-writing judge prompt in judge_utils.py omits the self-answer step.",
+      "checked": "2026-09-14",
+      "prompt_file": null
+    },
+    {
+      "id": "inspect_ai",
+      "name": "Inspect AI model_graded_fact / model_graded_qa",
+      "category": "library",
+      "sources": [
+        "https://github.com/UKGovernmentBEIS/inspect_ai/blob/3f63975a5d1c/src/inspect_ai/scorer/_model.py#L365-L415"
+      ],
+      "verification": "verified",
+      "default_judge_model": "model bound to the 'grader' role, else the model being evaluated",
+      "reference_name": "[Expert] (sample target, passed as `criterion`)",
+      "ref_guided_llm_judge": "yes",
+      "prompt_verbatim": true,
+      "quotes": [
+        "You are comparing a submitted answer to an expert answer on a given question.",
+        "Compare the factual content of the submitted answer with the expert answer. Ignore any differences in style, grammar, or punctuation.\n\nDoes the submission contain the content in the expert answer?"
+      ],
+      "equates_correctness_with_match": "yes",
+      "several_valid": "no",
+      "several_valid_quote": "None.",
+      "output_format": "GRADE: C / I (optional P)",
+      "prompt_file": "prompts/inspect_model_graded_fact.txt",
+      "notes": "model_graded_qa uses the target as a [Criterion]; templates are based on OpenAI evals closedqa.",
+      "checked": "2026-09-14"
+    },
+    {
+      "id": "openai_evals",
+      "name": "OpenAI Evals modelgraded fact / closedqa",
+      "category": "library",
+      "sources": [
+        "https://github.com/openai/evals/blob/8eac7a7de521/evals/registry/modelgraded/fact.yaml",
+        "https://github.com/openai/evals/blob/8eac7a7de521/evals/registry/modelgraded/closedqa.yaml"
+      ],
+      "verification": "verified",
+      "default_judge_model": "not set in spec (chosen per eval run)",
+      "reference_name": "[Expert] ({ideal}); closedqa: [Criterion]",
+      "ref_guided_llm_judge": "yes",
+      "prompt_verbatim": true,
+      "quotes": [
+        "(D) There is a disagreement between the submitted answer and the expert answer.",
+        "(E) The answers differ, but these differences don't matter from the perspective of factuality."
+      ],
+      "equates_correctness_with_match": "yes",
+      "several_valid": "no",
+      "several_valid_quote": "None; option (E) covers inessential differences, not alternative correct answers.",
+      "output_format": "choice A-E (fact); Y/N (closedqa)",
+      "prompt_file": "prompts/openai_evals_fact.yaml.txt",
+      "checked": "2026-09-14",
+      "notes": ""
+    },
+    {
+      "id": "langchain",
+      "name": "LangChain QAEvalChain / LabeledCriteriaEvalChain (langchain_classic)",
+      "category": "library",
+      "sources": [
+        "https://github.com/langchain-ai/langchain/blob/41d357287c04/libs/langchain/langchain_classic/evaluation/qa/eval_prompt.py#L3-L18",
+        "https://github.com/langchain-ai/langchain/blob/41d357287c04/libs/langchain/langchain_classic/evaluation/criteria/prompt.py",
+        "https://github.com/langchain-ai/langchain/blob/41d357287c04/libs/langchain/langchain_classic/evaluation/loading.py#L168"
+      ],
+      "verification": "verified",
+      "default_judge_model": "gpt-4 (ChatOpenAI default in load_evaluator)",
+      "reference_name": "TRUE ANSWER (QA); [Reference] (labeled criteria)",
+      "ref_guided_llm_judge": "yes",
+      "prompt_verbatim": true,
+      "quotes": [
+        "You are given a question, the student's answer, and the true answer, and are asked to score the student answer as either CORRECT or INCORRECT.",
+        "It is OK if the student answer contains more information than the true answer, as long as it does not contain any conflicting statements."
+      ],
+      "equates_correctness_with_match": "yes",
+      "several_valid": "no",
+      "several_valid_quote": "None.",
+      "output_format": "CORRECT / INCORRECT (QA); Y/N (criteria)",
+      "prompt_file": "prompts/langchain_qa_eval.txt",
+      "notes": "Separate prompt count: LabeledCriteria PROMPT_WITH_REFERENCES only adds a [Reference] slot with no instruction on how to use it (classified as not equating).",
+      "checked": "2026-09-14"
+    },
+    {
+      "id": "openevals",
+      "name": "LangChain openevals CORRECTNESS_PROMPT (LangSmith evaluators)",
+      "category": "library",
+      "sources": [
+        "https://github.com/langchain-ai/openevals/blob/de865416a985/python/openevals/prompts/quality/correctness.py"
+      ],
+      "verification": "verified",
+      "default_judge_model": "not set in prompt file",
+      "reference_name": "reference_outputs",
+      "ref_guided_llm_judge": "yes",
+      "prompt_verbatim": true,
+      "quotes": [
+        "Use the reference outputs below to help you evaluate the correctness of the response:"
+      ],
+      "equates_correctness_with_match": "no",
+      "several_valid": "no",
+      "several_valid_quote": "None; reference offered as an aid.",
+      "output_format": "score (via openevals LLM-as-judge wrapper)",
+      "checked": "2026-09-14",
+      "prompt_file": null,
+      "notes": ""
+    },
+    {
+      "id": "llamaindex",
+      "name": "LlamaIndex CorrectnessEvaluator",
+      "category": "library",
+      "sources": [
+        "https://github.com/run-llama/llama_index/blob/7169bcd0dca2/llama-index-core/llama_index/core/evaluation/correctness.py#L19-L58"
+      ],
+      "verification": "verified",
+      "default_judge_model": "Settings.llm (global default)",
+      "reference_name": "Reference Answer",
+      "ref_guided_llm_judge": "yes",
+      "prompt_verbatim": true,
+      "quotes": [
+        "You may also be given a reference answer to use for reference in your evaluation.",
+        "The generated answer has the exact same metrics as the reference answer, but it is not as concise. (example response)"
+      ],
+      "equates_correctness_with_match": "no",
+      "several_valid": "no",
+      "several_valid_quote": "None.",
+      "output_format": "1-5 score + reasoning",
+      "prompt_file": "prompts/llamaindex_correctness.txt",
+      "checked": "2026-09-14",
+      "notes": ""
+    },
+    {
+      "id": "ragas",
+      "name": "RAGAS answer_correctness / factual_correctness",
+      "category": "library",
+      "sources": [
+        "https://github.com/explodinggradients/ragas/blob/298b68274234/src/ragas/metrics/_answer_correctness.py#L54",
+        "https://github.com/explodinggradients/ragas/blob/298b68274234/src/ragas/metrics/_factual_correctness.py#L166-L192"
+      ],
+      "verification": "verified",
+      "default_judge_model": "user-supplied LLM",
+      "reference_name": "ground truth / reference",
+      "ref_guided_llm_judge": "yes",
+      "prompt_verbatim": true,
+      "quotes": [
+        "FP (false positive): statements present in the answer but not directly supported by any statement in ground truth",
+        "It uses claim decomposition and natural language inference (NLI) to verify the claims made in the responses against reference texts."
+      ],
+      "equates_correctness_with_match": "yes",
+      "several_valid": "no",
+      "several_valid_quote": "None; statements absent from the reference count as false positives.",
+      "output_format": "F-beta over TP/FP/FN statements (continuous 0-1)",
+      "checked": "2026-09-14",
+      "prompt_file": null,
+      "notes": ""
+    },
+    {
+      "id": "deepeval",
+      "name": "DeepEval GEval with expected_output",
+      "category": "library",
+      "sources": [
+        "https://deepeval.com/docs/metrics-llm-evals",
+        "https://github.com/confident-ai/deepeval/blob/1e4f9e6e9f0b/deepeval/metrics/g_eval/templates/generate_evaluation_results.txt"
+      ],
+      "verification": "verified (docs example read via WebFetch rendering; template file via raw GitHub)",
+      "default_judge_model": "DeepEval default LLM (not named on docs page)",
+      "reference_name": "expected output",
+      "ref_guided_llm_judge": "yes",
+      "prompt_verbatim": true,
+      "quotes": [
+        "Check whether the facts in 'actual output' contradicts any facts in 'expected output'",
+        "You should also heavily penalize omission of detail"
+      ],
+      "equates_correctness_with_match": "partially",
+      "several_valid": "no",
+      "several_valid_quote": "None.",
+      "output_format": "integer score in score_range (docs: normalized 0-1)",
+      "notes": "GEval is generic: the reference is used only when the user adds EXPECTED_OUTPUT to evaluation_params, as in the docs' Correctness example.",
+      "checked": "2026-09-14",
+      "prompt_file": null
+    },
+    {
+      "id": "mlflow",
+      "name": "MLflow answer_correctness (v1) and genai Correctness judge",
+      "category": "library",
+      "sources": [
+        "https://github.com/mlflow/mlflow/blob/25b1af31437b/mlflow/metrics/genai/prompts/v1.py#L275-L296",
+        "https://github.com/mlflow/mlflow/blob/25b1af31437b/mlflow/genai/judges/prompts/correctness.py",
+        "https://github.com/mlflow/mlflow/blob/25b1af31437b/mlflow/genai/judges/builtin.py#L16-L27"
+      ],
+      "verification": "verified",
+      "default_judge_model": "v1: openai:/gpt-4; genai: databricks or openai:/gpt-4.1-mini (unless MLFLOW_GENAI_JUDGE_DEFAULT_MODEL set)",
+      "reference_name": "targets (v1); expected_response / expected_facts rendered as <claim> (genai)",
+      "ref_guided_llm_judge": "yes",
+      "prompt_verbatim": true,
+      "quotes": [
+        "- Score 1: The output is completely incorrect. It is completely different from or contradicts the provided targets.",
+        "You must determine whether the claim is supported by the document in the context of the question."
+      ],
+      "equates_correctness_with_match": "yes",
+      "several_valid": "no",
+      "several_valid_quote": "None.",
+      "output_format": "v1: 1-5 score; genai: JSON {rationale, result yes|no}",
+      "prompt_file": "prompts/mlflow_correctness.txt",
+      "notes": "In the genai prompt the ground truth is the <claim> and the response is the <document>: correct = reference supported by response.",
+      "checked": "2026-09-14"
+    },
+    {
+      "id": "promptfoo",
+      "name": "promptfoo factuality (and llm-rubric)",
+      "category": "library",
+      "sources": [
+        "https://github.com/promptfoo/promptfoo/blob/253e7aa83e70/src/prompts/grading.ts#L59-L103",
+        "https://github.com/promptfoo/promptfoo/blob/253e7aa83e70/src/providers/openai/defaults.ts#L6",
+        "https://www.promptfoo.dev/docs/configuration/expected-outputs/model-graded/factuality/"
+      ],
+      "verification": "verified",
+      "default_judge_model": "gpt-5.6-sol (DEFAULT_OPENAI_GRADING_MODEL at this commit)",
+      "reference_name": "expert_answer ({{ideal}}, the assertion value)",
+      "ref_guided_llm_judge": "yes",
+      "prompt_verbatim": true,
+      "quotes": [
+        "You are a precise factuality evaluator that compares a submitted answer to an expert answer.",
+        "(D) There is a disagreement between the submitted answer and the expert answer."
+      ],
+      "equates_correctness_with_match": "yes",
+      "several_valid": "no",
+      "several_valid_quote": "None; (E) is for differences that \"don't matter from the perspective of factuality\".",
+      "output_format": "JSON {category A-E, reason}; docs: A, B, C, E pass by default, D fails",
+      "prompt_file": "prompts/promptfoo_factuality.txt",
+      "notes": "llm-rubric (DEFAULT_GRADING_PROMPT) takes a rubric, not a reference answer.",
+      "checked": "2026-09-14"
+    },
+    {
+      "id": "phoenix",
+      "name": "Arize Phoenix QA correctness",
+      "category": "library",
+      "sources": [
+        "https://github.com/Arize-ai/phoenix/blob/arize-phoenix-evals-v0.20.8/packages/phoenix-evals/src/phoenix/evals/default_templates.py#L243-L259",
+        "https://github.com/Arize-ai/phoenix/blob/72daf48aaedf/packages/phoenix-evals/src/phoenix/evals/__generated__/classification_evaluator_configs/_correctness_classification_evaluator_config.py"
+      ],
+      "verification": "verified",
+      "default_judge_model": "user-supplied",
+      "reference_name": "[Reference] (reference text)",
+      "ref_guided_llm_judge": "partially",
+      "prompt_verbatim": true,
+      "quotes": [
+        "You are given a question, an answer and reference text. You must determine whether the given answer correctly answers the question based on the reference text.",
+        "Current HEAD correctness template (no reference): \"Carefully read the input and output and check for factual accuracy and completeness.\""
+      ],
+      "equates_correctness_with_match": "yes",
+      "several_valid": "no",
+      "several_valid_quote": "None.",
+      "output_format": "correct / incorrect",
+      "prompt_file": "prompts/phoenix_legacy_qa.txt",
+      "notes": "Reference-based QA template exists in arize-phoenix-evals v0.20.8; at HEAD the built-in correctness evaluator is reference-free. Counted as partially.",
+      "checked": "2026-09-14"
+    },
+    {
+      "id": "trulens",
+      "name": "TruLens GroundTruthAgreement",
+      "category": "library",
+      "sources": [
+        "https://github.com/truera/trulens/blob/a2387e1a2783/src/feedback/trulens/feedback/templates/quality.py#L154-L166",
+        "https://github.com/truera/trulens/blob/a2387e1a2783/src/feedback/trulens/feedback/groundtruth.py"
+      ],
+      "verification": "verified",
+      "default_judge_model": "user-supplied provider",
+      "reference_name": "expected answer (expected_response)",
+      "ref_guided_llm_judge": "yes",
+      "prompt_verbatim": true,
+      "quotes": [
+        "Answer only with an integer from 1 to 10 based on how semantically similar the responses are to the expected answer."
+      ],
+      "equates_correctness_with_match": "yes",
+      "several_valid": "no",
+      "several_valid_quote": "None.",
+      "output_format": "integer 1-10 (prompt also says 0 is no similarity)",
+      "checked": "2026-09-14",
+      "prompt_file": null,
+      "notes": ""
+    },
+    {
+      "id": "opencompass",
+      "name": "OpenCompass GenericLLMEvaluator (LLM judge configs)",
+      "category": "library",
+      "sources": [
+        "https://github.com/open-compass/opencompass/blob/135ab17186aa/opencompass/configs/datasets/aime2024/aime2024_llmjudge_gen_5e9f4f.py",
+        "https://github.com/open-compass/opencompass/blob/135ab17186aa/docs/en/advanced_guides/llm_judge.md"
+      ],
+      "verification": "verified",
+      "default_judge_model": "set via OC_JUDGE_MODEL (docs example Qwen/Qwen2.5-32B-Instruct)",
+      "reference_name": "Gold Target / standard answer",
+      "ref_guided_llm_judge": "yes",
+      "prompt_verbatim": true,
+      "quotes": [
+        "You only need to judge whether the candidate's answer is consistent with the standard answer according to the form of the question. Don't try to answer the original question. You can assume that the standard answer is definitely correct."
+      ],
+      "equates_correctness_with_match": "yes",
+      "several_valid": "no",
+      "several_valid_quote": "None; \"multiple items\" refers to multi-part answers.",
+      "output_format": "letter A/B (CORRECT/INCORRECT)",
+      "prompt_file": "prompts/opencompass_generic_llm_grader.txt",
+      "checked": "2026-09-14",
+      "notes": ""
+    },
+    {
+      "id": "openai_graders",
+      "name": "OpenAI platform graders (score_model / label_model)",
+      "category": "platform",
+      "sources": [
+        "https://developers.openai.com/api/docs/guides/graders"
+      ],
+      "verification": "verified",
+      "default_judge_model": "example lists o4-mini-2025-04-16 among supported grader models",
+      "reference_name": "item.reference_answer",
+      "ref_guided_llm_judge": "yes",
+      "prompt_verbatim": true,
+      "quotes": [
+        "Graders let you compare reference answers to the corresponding model-generated answer and return a grade in the range from 0 to 1.",
+        "You are an expert grader. If the reference and model answer are exact matches, output a score of 1. If they are somewhat similar in meaning, output a score in 0.5. Otherwise, give a score of 0."
+      ],
+      "equates_correctness_with_match": "yes",
+      "several_valid": "no",
+      "several_valid_quote": "None.",
+      "output_format": "float 0-1 (score_model); label (label_model)",
+      "checked": "2026-09-14",
+      "prompt_file": null,
+      "notes": ""
+    },
+    {
+      "id": "azure_foundry",
+      "name": "Azure AI Foundry SimilarityEvaluator (builtin.similarity)",
+      "category": "platform",
+      "sources": [
+        "https://learn.microsoft.com/en-us/azure/ai-foundry/concepts/evaluation-evaluators/textual-similarity-evaluators",
+        "https://github.com/Azure/azure-sdk-for-python/blob/fedc3ab96021/sdk/evaluation/azure-ai-evaluation/azure/ai/evaluation/_evaluators/_similarity/similarity.prompty"
+      ],
+      "verification": "verified",
+      "default_judge_model": "user deployment (deployment_name)",
+      "reference_name": "ground_truth / correct answer",
+      "ref_guided_llm_judge": "yes",
+      "prompt_verbatim": true,
+      "quotes": [
+        "Equivalence, as a metric, measures the similarity between the predicted answer and the correct answer.",
+        "Five stars: the predicted answer is completely similar to the correct answer"
+      ],
+      "equates_correctness_with_match": "yes",
+      "several_valid": "no",
+      "several_valid_quote": "None.",
+      "output_format": "integer 1-5 (default pass threshold 3)",
+      "prompt_file": "prompts/azure_similarity.prompty.txt",
+      "checked": "2026-09-14",
+      "notes": ""
+    },
+    {
+      "id": "vertex_ai",
+      "name": "Google Vertex AI Gen AI evaluation (model-based metric templates)",
+      "category": "platform",
+      "sources": [
+        "https://github.com/googleapis/python-aiplatform/blob/a7e5c9c6cecd/vertexai/evaluation/metrics/_default_templates.py",
+        "https://github.com/googleapis/python-aiplatform/blob/a7e5c9c6cecd/vertexai/preview/evaluation/metrics/_default_templates.py",
+        "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/metrics-templates"
+      ],
+      "verification": "partially verified (SDK templates read; docs page body did not render via fetch)",
+      "default_judge_model": "n/a",
+      "reference_name": "none in built-in model-based templates",
+      "ref_guided_llm_judge": "no",
+      "prompt_verbatim": false,
+      "quotes": [
+        "No built-in model-based template in _default_templates.py contains a reference-answer placeholder (templates: coherence, fluency, safety, groundedness, instruction_following, verbosity, text_quality, multi_turn_chat_quality, multi_turn_safety, summarization_quality and pairwise variants)."
+      ],
+      "equates_correctness_with_match": "n/a",
+      "several_valid": "n/a",
+      "several_valid_quote": "n/a",
+      "output_format": "n/a",
+      "notes": "Custom templates and computation-based metrics (e.g. exact match) can use references; not surveyed further.",
+      "checked": "2026-09-14",
+      "prompt_file": null
+    },
+    {
+      "id": "bedrock",
+      "name": "AWS Bedrock model evaluation: Correctness with ground truth",
+      "category": "platform",
+      "sources": [
+        "https://docs.aws.amazon.com/bedrock/latest/userguide/model-evaluation-type-judge-prompt-claude-sonnet-4-5.html#prompt-judge-claude-sonnet-4-5-grounded-correctness",
+        "https://docs.aws.amazon.com/bedrock/latest/userguide/model-evaluation-type-judge-prompt.html"
+      ],
+      "verification": "verified",
+      "default_judge_model": "user-selected evaluator (page lists Nova, Claude, Llama 3.1 70B, Mistral Large, GPT-5.x variants)",
+      "reference_name": "Ground Truth Response ({{ground_truth}})",
+      "ref_guided_llm_judge": "yes",
+      "prompt_verbatim": true,
+      "quotes": [
+        "You may use the ground truth answer as a reference of what a correct answer should contain. It is okay if the candidate answer diverges; if the essential points are mentioned then the candidate answer is correct.",
+        "the candidate response is correct even if it is missing explanations or is not truthful, as long as it aligns with the ground truth."
+      ],
+      "equates_correctness_with_match": "yes",
+      "several_valid": "partially",
+      "several_valid_quote": "\"It is okay if the candidate answer diverges\" (but still requires the ground truth's essential points)",
+      "output_format": "JSON {reasoning, answer: correct / partially correct / incorrect} -> 2/1/0",
+      "prompt_file": "prompts/bedrock_correctness_with_ground_truth.txt",
+      "notes": "Quoted from the Claude Sonnet 4.5 evaluator page; each evaluator model has its own page.",
+      "checked": "2026-09-14"
+    },
+    {
+      "id": "deepseek_r1",
+      "name": "DeepSeek-R1 (DeepSeek-V3 as generative reward model)",
+      "category": "rl_pipeline",
+      "sources": [
+        "https://arxiv.org/html/2501.12948 (Sec. on rejection sampling / SFT data; Supplementary Listing 4)"
+      ],
+      "verification": "verified",
+      "default_judge_model": "DeepSeek-V3",
+      "reference_name": "Reference Answer ({reference}); paper: ground-truth",
+      "ref_guided_llm_judge": "yes",
+      "prompt_verbatim": true,
+      "quotes": [
+        "some of which uses a generative reward model by feeding the ground-truth and model predictions into DeepSeek-V3 for judgment, an example prompt is provided in Listing 4.",
+        "1. **correct**: The answer fully aligns with the reference answer in both reasoning process and final conclusion, and address the question without any errors or omissions."
+      ],
+      "equates_correctness_with_match": "yes",
+      "several_valid": "no",
+      "several_valid_quote": "None.",
+      "output_format": "JSON {analysis, correctness: correct/incorrect}",
+      "prompt_file": "prompts/deepseek_r1_v3_judge.txt",
+      "notes": "Used for rejection-sampled SFT data expansion in the second stage (not the rule-based RL rewards of R1-Zero).",
+      "checked": "2026-09-14"
+    },
+    {
+      "id": "kimi_k15",
+      "name": "Kimi k1.5 (chain-of-thought reward model for math)",
+      "category": "rl_pipeline",
+      "sources": [
+        "https://arxiv.org/html/2501.12599 (Sec. 2.3 / Reward Modeling for Math)"
+      ],
+      "verification": "verified (paper); prompt not published",
+      "default_judge_model": "fine-tuned Kimi model (Classic value-head RM and Chain-of-Thought RM)",
+      "reference_name": "reference answer / ground truth",
+      "ref_guided_llm_judge": "yes",
+      "prompt_verbatim": false,
+      "quotes": [
+        "For problems with free-form ground truth, we train a reward model that predicts if the answer matches the ground truth.",
+        "The model ultimately takes as input the “question,” the “reference answer,” and the “response,” and outputs a single scalar that indicates whether the response is correct."
+      ],
+      "equates_correctness_with_match": "n/a",
+      "several_valid": "n/a",
+      "several_valid_quote": "Prompt not published.",
+      "output_format": "scalar (Classic RM); step-by-step reasoning then JSON correctness judgment (CoT RM)",
+      "checked": "2026-09-14",
+      "prompt_file": null,
+      "notes": ""
+    },
+    {
+      "id": "qwen3",
+      "name": "Qwen3 (model-based reward with reference answer)",
+      "category": "rl_pipeline",
+      "sources": [
+        "https://arxiv.org/html/2505.09388 (Sec. 4, General RL reward design)"
+      ],
+      "verification": "verified (paper); prompt not published",
+      "default_judge_model": "Qwen2.5-72B-Instruct",
+      "reference_name": "reference answer",
+      "ref_guided_llm_judge": "yes",
+      "prompt_verbatim": false,
+      "quotes": [
+        "Model-based Reward with Reference Answer: In this approach, we provide a reference answer for each query and prompt Qwen2.5-72B-Instruct to score the model’s response based on this reference."
+      ],
+      "equates_correctness_with_match": "n/a",
+      "several_valid": "n/a",
+      "several_valid_quote": "Prompt not published.",
+      "output_format": "score (unspecified)",
+      "checked": "2026-09-14",
+      "prompt_file": null,
+      "notes": ""
+    },
+    {
+      "id": "seed15_thinking",
+      "name": "Seed1.5-Thinking (Seed-Verifier / Seed-Thinking-Verifier)",
+      "category": "rl_pipeline",
+      "sources": [
+        "https://arxiv.org/html/2504.13914 (Sec. 3.1 Reward Modeling)"
+      ],
+      "verification": "verified (paper); prompt not published",
+      "default_judge_model": "Seed-Verifier (LLM with human-written principles); Seed-Thinking-Verifier (trained reasoning verifier)",
+      "reference_name": "reference answer",
+      "ref_guided_llm_judge": "yes",
+      "prompt_verbatim": false,
+      "quotes": [
+        "It leverages the powerful foundational capabilities of LLMs to evaluate a triplet consisting of the question, reference answer, and model-generated answer. If the reference answer and model-generated answer are essentially equivalent, it returns “YES”; otherwise, it returns “NO”."
+      ],
+      "equates_correctness_with_match": "n/a",
+      "several_valid": "n/a",
+      "several_valid_quote": "Prompt not published; described rule is equivalence to the reference.",
+      "output_format": "YES / NO",
+      "checked": "2026-09-14",
+      "prompt_file": null,
+      "notes": ""
+    },
+    {
+      "id": "general_reasoner",
+      "name": "General-Reasoner / TIGER-Lab general-verifier",
+      "category": "rl_pipeline",
+      "sources": [
+        "https://github.com/TIGER-AI-Lab/General-Reasoner/blob/0c356d30730b/verifier.py#L16-L23",
+        "https://huggingface.co/TIGER-Lab/general-verifier/blob/dc59c0c82360/README.md"
+      ],
+      "verification": "verified",
+      "default_judge_model": "TIGER-Lab/general-verifier (1.5B, base Qwen/Qwen2.5-Math-1.5B)",
+      "reference_name": "Ground Truth Answer",
+      "ref_guided_llm_judge": "yes",
+      "prompt_verbatim": true,
+      "quotes": [
+        "For the above question, please verify if the student's answer is equivalent to the ground truth answer.",
+        "Do not solve the question by yourself; just check if the student's answer is equivalent to the ground truth answer."
+      ],
+      "equates_correctness_with_match": "yes",
+      "several_valid": "no",
+      "several_valid_quote": "None.",
+      "output_format": "\"Final Decision: Yes\" / \"Final Decision: No\"",
+      "prompt_file": "prompts/general_verifier.txt",
+      "checked": "2026-09-14",
+      "notes": ""
+    },
+    {
+      "id": "reward_bridge",
+      "name": "Crossing the Reward Bridge (Su et al. 2025) RLVR generative verifier",
+      "category": "rl_pipeline",
+      "sources": [
+        "https://huggingface.co/virtuoussy/Qwen2.5-7B-Instruct-RLVR/blob/1b9a9a093ba3/model_server.py#L17",
+        "https://huggingface.co/virtuoussy/Qwen2.5-7B-Instruct-RLVR/blob/1b9a9a093ba3/README.md",
+        "https://arxiv.org/html/2503.23829"
+      ],
+      "verification": "verified",
+      "default_judge_model": "virtuoussy/Qwen2.5-7B-Instruct-RLVR (distilled from Qwen2.5-72B-Instruct teacher judgments)",
+      "reference_name": "Reference Answer",
+      "ref_guided_llm_judge": "yes",
+      "prompt_verbatim": true,
+      "quotes": [
+        "- If they **match exactly**, output **YES**.  \n- If they **do not match**, output **NO**.",
+        "binary correctness judgments, even on broad-domain tasks, tend to exhibit remarkable agreement across varied large language models (LLMs) ... when provided high-quality objective references authored by domain experts."
+      ],
+      "equates_correctness_with_match": "yes",
+      "several_valid": "no",
+      "several_valid_quote": "None.",
+      "output_format": "YES / NO (reward = token probability in soft mode)",
+      "prompt_file": "prompts/reward_bridge_rlvr_verifier.txt",
+      "checked": "2026-09-14",
+      "notes": ""
+    },
+    {
+      "id": "xverify",
+      "name": "xVerify",
+      "category": "rl_pipeline",
+      "sources": [
+        "https://github.com/IAAR-Shanghai/xVerify/blob/5e3606ac82df/src/xVerify/prompts/judge_prompt.py"
+      ],
+      "verification": "verified",
+      "default_judge_model": "xVerify models (fine-tuned verifiers)",
+      "reference_name": "Correct answer",
+      "ref_guided_llm_judge": "yes",
+      "prompt_verbatim": true,
+      "quotes": [
+        "Your task is to determine if the output sentence accurately answers the question based on the provided correct answer.",
+        "4. **No Explicit Options**: If the question does not provide explicit options, the output must align with the correct answer in content and meaning to be considered [Correct]."
+      ],
+      "equates_correctness_with_match": "yes",
+      "several_valid": "no",
+      "several_valid_quote": "None; its \"Multiple Answers\" rule concerns several answers inside the output, not several valid answers.",
+      "output_format": "[Correct] / [Incorrect]",
+      "prompt_file": "prompts/xverify_judge.txt",
+      "notes": "Positioned for reasoning-model evaluation; cited in RL-verifier literature.",
+      "checked": "2026-09-14"
+    },
+    {
+      "id": "compassverifier",
+      "name": "CompassVerifier",
+      "category": "rl_pipeline",
+      "sources": [
+        "https://github.com/open-compass/CompassVerifier/blob/2d7cba6df0b2/src/prompts.py"
+      ],
+      "verification": "verified",
+      "default_judge_model": "CompassVerifier models",
+      "reference_name": "Standard Answer ({gold_answer})",
+      "ref_guided_llm_judge": "yes",
+      "prompt_verbatim": true,
+      "quotes": [
+        "THE STANDARD ANSWER IS ALWAYS CORRECT AND THE QUESTION IS PERFECTLY VALID. NEVER QUESTION THEM.",
+        "\\boxed{{B}} - INCORRECT:\n   - Any deviation from standard answer"
+      ],
+      "equates_correctness_with_match": "yes",
+      "several_valid": "no",
+      "several_valid_quote": "None.",
+      "output_format": "A/B/C (CORRECT/INCORRECT/INVALID); CoT variant \\boxed{A/B/C}",
+      "prompt_file": "prompts/compassverifier_prompts.txt",
+      "notes": "Paper title: evaluation and outcome reward.",
+      "checked": "2026-09-14"
+    },
+    {
+      "id": "tinyv",
+      "name": "TinyV",
+      "category": "rl_pipeline",
+      "sources": [
+        "https://github.com/uw-nsl/TinyV/blob/4a9d2c720c16/benchmarks/tinyv_v2.py#L29-L39",
+        "https://arxiv.org/html/2505.14625"
+      ],
+      "verification": "verified",
+      "default_judge_model": "VERIFIER_MODEL_NAME (argument)",
+      "reference_name": "ground_truth_answer",
+      "ref_guided_llm_judge": "yes",
+      "prompt_verbatim": true,
+      "quotes": [
+        "You are an AI tasked with identifying if the model's answer is correct compared to the ground truth answer despite appearing different from the ground truth."
+      ],
+      "equates_correctness_with_match": "partially",
+      "several_valid": "partially",
+      "several_valid_quote": "\"despite appearing different from the ground truth\" (surface-form difference, still judged against the ground truth)",
+      "output_format": "True / False",
+      "notes": "Prompt is from the repo's HardVerify benchmark script; paper reports Prime Verifier mislabels 38.5% of correct responses as incorrect.",
+      "checked": "2026-09-14",
+      "prompt_file": null
+    },
+    {
+      "id": "rubrics_as_rewards",
+      "name": "Rubrics as Rewards (RaR)",
+      "category": "rl_pipeline",
+      "sources": [
+        "https://arxiv.org/html/2507.17746 (Sec. 3-4; App. A.6 LLM-Judge Prompts; rubric generation prompts)"
+      ],
+      "verification": "verified",
+      "default_judge_model": "gpt-4o-mini for evaluation; judges of varying size in training",
+      "reference_name": "reference response / reference_answer",
+      "ref_guided_llm_judge": "partially",
+      "prompt_verbatim": true,
+      "quotes": [
+        "The reference response represents a high-quality answer that you should use as a benchmark. (REFERENCE-LIKERT baseline)",
+        "The reference answer is an ideal response but not necessarily exhaustive; use it only as guidance. (rubric generation)"
+      ],
+      "equates_correctness_with_match": "yes",
+      "several_valid": "no",
+      "several_valid_quote": "Judge prompt: none. The rubric-generation prompt (not a judge) says the reference is \"not necessarily exhaustive\".",
+      "output_format": "1-10 rating JSON",
+      "notes": "Main RaR judge sees rubrics, not the reference; references are used to write rubrics and in the Reference-Likert baseline. Counted as partially.",
+      "checked": "2026-09-14",
+      "prompt_file": null
+    },
+    {
+      "id": "openai_rft",
+      "name": "OpenAI reinforcement fine-tuning (RFT) graders",
+      "category": "rl_pipeline",
+      "sources": [
+        "https://developers.openai.com/api/docs/guides/reinforcement-fine-tuning"
+      ],
+      "verification": "verified",
+      "default_judge_model": "grader model set by user in score_model grader",
+      "reference_name": "Reference Answer ({{item.explanation}}); string_check reference {{item.compliant}}",
+      "ref_guided_llm_judge": "yes",
+      "prompt_verbatim": true,
+      "quotes": [
+        "Evaluate the accuracy of the model-generated answer based on the \nCopernicus Product Security Policy and an example answer.",
+        "RFT works best with unambiguous tasks"
+      ],
+      "equates_correctness_with_match": "partially",
+      "several_valid": "no",
+      "several_valid_quote": "Docs ask for tasks where \"qualified human experts agree on the answers\".",
+      "output_format": "float 0-1",
+      "checked": "2026-09-14",
+      "prompt_file": null,
+      "notes": ""
+    },
+    {
+      "id": "gu2024survey",
+      "name": "Gu et al. 2024, A Survey on LLM-as-a-Judge",
+      "category": "survey",
+      "sources": [
+        "https://arxiv.org/html/2411.15594"
+      ],
+      "verification": "verified",
+      "default_judge_model": "n/a",
+      "reference_name": "n/a",
+      "ref_guided_llm_judge": "n/a",
+      "prompt_verbatim": false,
+      "quotes": [
+        "No quantitative prevalence count found (full-text search for counts of papers/benchmarks and percentages). Cites \"Reference-Guided Verdict: LLMs-as-Judges in Automatic Evaluation of Free-Form Text.\""
+      ],
+      "equates_correctness_with_match": "n/a",
+      "several_valid": "n/a",
+      "several_valid_quote": "n/a",
+      "output_format": "n/a",
+      "checked": "2026-09-14",
+      "prompt_file": null,
+      "notes": ""
+    },
+    {
+      "id": "li2024llmsasjudges",
+      "name": "Li et al. 2024, LLMs-as-Judges: A Comprehensive Survey on LLM-based Evaluation Methods",
+      "category": "survey",
+      "sources": [
+        "https://arxiv.org/html/2412.05579 (Sec. on evaluation references)"
+      ],
+      "verification": "verified",
+      "default_judge_model": "n/a",
+      "reference_name": "n/a",
+      "ref_guided_llm_judge": "n/a",
+      "prompt_verbatim": false,
+      "quotes": [
+        "Evaluation References are optional. Depending on the availability of evaluation reference, the evaluation process can be broadly divided into reference-based and reference-free scenarios.",
+        "The key strength of this approach is its well-defined benchmarking process; however, its effectiveness may be constrained by the quality and variety of the reference data."
+      ],
+      "equates_correctness_with_match": "n/a",
+      "several_valid": "n/a",
+      "several_valid_quote": "n/a",
+      "output_format": "n/a",
+      "notes": "No quantitative prevalence count found.",
+      "checked": "2026-09-14",
+      "prompt_file": null
+    },
+    {
+      "id": "li2025generation",
+      "name": "Li et al. 2025, From Generation to Judgment (EMNLP 2025)",
+      "category": "survey",
+      "sources": [
+        "https://arxiv.org/html/2411.16594"
+      ],
+      "verification": "verified",
+      "default_judge_model": "n/a",
+      "reference_name": "n/a",
+      "ref_guided_llm_judge": "n/a",
+      "prompt_verbatim": false,
+      "quotes": [
+        "No quantitative prevalence count found (full-text search)."
+      ],
+      "equates_correctness_with_match": "n/a",
+      "several_valid": "n/a",
+      "several_valid_quote": "n/a",
+      "output_format": "n/a",
+      "checked": "2026-09-14",
+      "prompt_file": null,
+      "notes": ""
+    },
+    {
+      "id": "yang2026nlgmeta",
+      "name": "Yang et al. 2026, What Are We Measuring in NLG? A Meta-Analysis of Evaluation Trends 2020-2025",
+      "category": "survey",
+      "sources": [
+        "https://arxiv.org/html/2601.07648 (Abstract; Fig. 1; Sec. 5.3)"
+      ],
+      "verification": "verified",
+      "default_judge_model": "n/a",
+      "reference_name": "n/a",
+      "ref_guided_llm_judge": "n/a",
+      "prompt_verbatim": false,
+      "quotes": [
+        "LaaJ adoption surged from less than 1% of papers before 2023 to 46% in 2025, surpassing human evaluation, which declined from 51% to 43%.",
+        "Only 254 of these (58.7%) explicitly validate LaaJ against human judgments, representing of the 679 NLG papers using LaaJ, under 8% of total 3,334 NLG papers."
+      ],
+      "equates_correctness_with_match": "n/a",
+      "several_valid": "n/a",
+      "several_valid_quote": "n/a",
+      "output_format": "n/a",
+      "notes": "Corpus: 14,171 papers from four NLP conferences, 3,334 filtered NLG papers. Counts LLM-as-a-judge generally, not reference-guided judging specifically. The second quote has a symbol dropped in the arXiv HTML rendering.",
+      "checked": "2026-09-14",
+      "prompt_file": null
+    }
+  ],
+  "research_papers": [
+    {
+      "id": "huang2025verifiers",
+      "title": "From Accuracy to Robustness: A Study of Rule- and Model-based Verifiers in Mathematical Reasoning",
+      "arxiv_id": "2505.22203",
+      "year": 2025,
+      "venue_if_stated": "arXiv comment: EMNLP 2026 Main Conference",
+      "domain": "math RL verifiers",
+      "role": [
+        "uses_single_reference_judge",
+        "judge_where_no_checker"
+      ],
+      "where_described": "Sec. 3.1 (static dataset, GPT-4o annotation, Fig. 5 prompt, App. B); Sec. 3.3 and 4-6 (model-based verifiers as RL reward); App. E (prompt format, Fig. 7)",
+      "source_urls": [
+        "https://arxiv.org/html/2505.22203"
+      ],
+      "judge_model": "GPT-4o (annotator/oracle); general-verifier 1.5B, xVerify 0.5B/3B, R1-Distill-Verifier-1.5B, Qwen2.5 and R1-Distill models as verifiers",
+      "reference_wording": "ground-truth answer / target answer",
+      "verbatim_quotes": [
+        "We then employ GPT-4o (Hurst et al., 2024) as an annotator to determine whether each response aligns with the target answer, using the prompt shown in Figure 5 (Appendix B).",
+        "We show that widely used rule-based verifiers fail to recognize equivalent answers in different formats, leading to substantial false negatives that increasingly hinder RL performance as the policy model gets stronger.",
+        "Model-based verifiers substantially improve static accuracy but are highly susceptible to reward hacking during RL"
+      ],
+      "several_valid_answers": "partially",
+      "several_valid_note": "Math RL datasets with a single ground-truth value; the issue studied is equivalent formats (\"fail to recognize equivalent answers in different formats\"), not distinct valid answers.",
+      "verification": "verified",
+      "existing_key": "huang2025pitfalls",
+      "notes": "Figure 5 prompt text is an image/figure not present in the HTML text; only its caption was verified.",
+      "checked": "2026-09-14",
+      "dropped": false,
+      "batch": "A",
+      "verification_detail": "verified",
+      "in_main_survey": false,
+      "area": "math_science",
+      "used_in_training": true
+    },
+    {
+      "id": "chernyshev2024umath",
+      "title": "U-MATH: A University-Level Benchmark for Evaluating Mathematical Skills in LLMs",
+      "arxiv_id": "2412.03205",
+      "year": 2024,
+      "venue_if_stated": null,
+      "domain": "math benchmark (university level) + judge meta-evaluation",
+      "role": [
+        "uses_single_reference_judge",
+        "judge_where_no_checker"
+      ],
+      "where_described": "Sec. 3 (U-MATH accuracy via LLM judge against golden labels); Sec. 3.3 (mu-MATH meta-evaluation); App. C.2 Judgment Prompts (Fig. 9 default CoT judge prompt)",
+      "source_urls": [
+        "https://arxiv.org/html/2412.03205"
+      ],
+      "judge_model": "o3-mini (U-MATH evaluation)",
+      "reference_wording": "CORRECT ANSWER: {{golden_answer}} / golden labels / reference answer",
+      "verbatim_quotes": [
+        "Now please compare the answer obtained in the solution with the provided correct answer to evaluate whether the solution is correct or not.",
+        "we use Accuracy as our main performance metric, employing an LLM judge (Zheng et al., 2023) to test evaluated responses against the golden labels.",
+        "which results in LLM judges becoming the de facto standard despite known biases and inconsistencies (Zheng et al., 2023)."
+      ],
+      "several_valid_answers": "partially",
+      "several_valid_note": "Paper: \"Evaluating mathematical problems is not straightforward, with even simple expressions such as having alternative valid forms\" (math symbols dropped in HTML); alternative forms of one answer, judged against one golden answer.",
+      "verification": "verified",
+      "bib": {
+        "key": "chernyshev2024umath",
+        "entrytype": "misc",
+        "title": "U-MATH: A University-Level Benchmark for Evaluating Mathematical Skills in LLMs",
+        "authors": "Chernyshev, Konstantin and Polshkov, Vitaliy and Artemova, Ekaterina and Myasnikov, Alex and Stepanov, Vlad and Miasnikov, Alexei and Tilga, Sergei",
+        "year": 2024,
+        "eprint": "2412.03205",
+        "venue_note": "arXiv preprint"
+      },
+      "checked": "2026-09-14",
+      "dropped": false,
+      "batch": "A",
+      "verification_detail": "verified",
+      "in_main_survey": false,
+      "area": "math_science",
+      "used_in_training": false
+    },
+    {
+      "id": "lu2025ineqmath",
+      "title": "Solving Inequality Proofs with Large Language Models",
+      "arxiv_id": "2506.07927",
+      "year": 2025,
+      "venue_if_stated": "arXiv comment: accepted as a Spotlight at NeurIPS 2025",
+      "domain": "math benchmark (inequality proofs)",
+      "role": [
+        "uses_single_reference_judge"
+      ],
+      "where_described": "Sec. 4.1 Final Answer Judge; Sec. 4.3; App. B.1 (Answer Equivalence Verification prompt); App. B.6 (judge backends)",
+      "source_urls": [
+        "https://arxiv.org/html/2506.07927"
+      ],
+      "judge_model": "GPT-4o-mini (final answer judge); o4-mini / o1 for step-wise judges (no reference)",
+      "reference_wording": "Ground truth (example pairs in the equivalence prompt)",
+      "verbatim_quotes": [
+        "we propose a two-stage Final Answer Judge: it first identifies the concluding sentence containing the predicted answer, and then performs robust equivalence checking to assess mathematical correctness",
+        "If equivalence cannot be conclusively proven → False.",
+        "Decimal approximations are NOT equivalent to exact expressions."
+      ],
+      "several_valid_answers": "no",
+      "several_valid_note": "Final answers are a bound constant or a relation option letter; the paper does not discuss alternative valid answers (not explicitly stated as unique).",
+      "verification": "verified",
+      "bib": {
+        "key": "lu2025ineqmath",
+        "entrytype": "inproceedings",
+        "title": "Solving Inequality Proofs with Large Language Models",
+        "authors": "Lu, Pan and Sheng, Jiayi and Lyu, Luna and Jin, Jikai and Xia, Tony and Gu, Alex and Zou, James",
+        "year": 2025,
+        "eprint": "2506.07927",
+        "venue_note": "NeurIPS 2025 (Spotlight) per arXiv comment"
+      },
+      "checked": "2026-09-14",
+      "dropped": false,
+      "batch": "A",
+      "verification_detail": "verified",
+      "in_main_survey": false,
+      "area": "math_science",
+      "used_in_training": false
+    },
+    {
+      "id": "xu2025ugphysics",
+      "title": "UGPhysics: A Comprehensive Benchmark for Undergraduate Physics Reasoning with Large Language Models",
+      "arxiv_id": "2502.00334",
+      "year": 2025,
+      "venue_if_stated": "arXiv comment: Accepted to ICML 2025",
+      "domain": "physics benchmark (answer judging)",
+      "role": [
+        "uses_single_reference_judge",
+        "judge_where_no_checker"
+      ],
+      "where_described": "Sec. 3.3 MARJ Evaluation Framework; App. B.4 MARJ Details (Algorithm 1)",
+      "source_urls": [
+        "https://arxiv.org/html/2502.00334"
+      ],
+      "judge_model": "GPT-4o (second stage, for answers the rule-based stage marks False)",
+      "reference_wording": "ground-truth answers / Golden Answer List",
+      "verbatim_quotes": [
+        "In the second stage, GPT-4o is employed to evaluate answers that were flagged as ”False” by the rule-based system.",
+        "We manually design judging prompts based on the prompt provided by Gao et al. (2024).",
+        "These highlight the unreliability of relying solely on traditional rule-based or model-based methods for evaluating answers to physics problems."
+      ],
+      "several_valid_answers": "partially",
+      "several_valid_note": "\"Physics problems often define equivalent quantities in problem descriptions, leading to multiple correct ways to express the final answer. These expressions may not always be mathematically equivalent, making it difficult to apply rule-based evaluation.\"",
+      "verification": "partially verified",
+      "notes": "Protocol verified in paper; the judge prompt is not in the paper (\"we will release it in our code repository\") and was not fetched. Gao et al. (2024) is Omni-MATH.",
+      "bib": {
+        "key": "xu2025ugphysics",
+        "entrytype": "inproceedings",
+        "title": "UGPhysics: A Comprehensive Benchmark for Undergraduate Physics Reasoning with Large Language Models",
+        "authors": "Xu, Xin and Xu, Qiyun and Xiao, Tong and Chen, Tianhao and Yan, Yuchen and Zhang, Jiaxin and Diao, Shizhe and Yang, Can and Wang, Yang",
+        "year": 2025,
+        "eprint": "2502.00334",
+        "venue_note": "ICML 2025 per arXiv comment"
+      },
+      "checked": "2026-09-14",
+      "dropped": false,
+      "batch": "A",
+      "verification_detail": "partially verified",
+      "in_main_survey": false,
+      "area": "math_science",
+      "used_in_training": false
+    },
+    {
+      "id": "minimax2025m1",
+      "title": "MiniMax-M1: Scaling Test-Time Compute Efficiently with Lightning Attention",
+      "arxiv_id": "2506.13585",
+      "year": 2025,
+      "venue_if_stated": null,
+      "domain": "RL for reasoning model (general RL, STEM with ground truth)",
+      "role": [
+        "uses_single_reference_judge",
+        "judge_where_no_checker"
+      ],
+      "where_described": "Sec. 4.2 (general-domain RL data), 'Tasks with Ground Truth' paragraph",
+      "source_urls": [
+        "https://arxiv.org/html/2506.13585"
+      ],
+      "judge_model": "MiniMax Generative Reward Model (GenRM)",
+      "reference_wording": "ground-truth answers",
+      "verbatim_quotes": [
+        "This category primarily includes STEM and other factual problems where answers are objective but may have multiple valid expressions. Such diversity often renders rule-based answer checkers inaccurate.",
+        "we use our Generative Reward Model (GenRM) as a verifier, instead of relying on rule-based checkers.",
+        "To evaluate consistency between ground-truth answers and model responses, we adopt a five-grade reward scale"
+      ],
+      "several_valid_answers": "partially",
+      "several_valid_note": "\"answers are objective but may have multiple valid expressions\" (several expressions of one answer).",
+      "verification": "verified",
+      "notes": "GenRM prompt not published.",
+      "bib": {
+        "key": "minimax2025m1",
+        "entrytype": "misc",
+        "title": "MiniMax-M1: Scaling Test-Time Compute Efficiently with Lightning Attention",
+        "authors": "{MiniMax} and Chen, Aili and Li, Aonian and Gong, Bangwei and Jiang, Binyang and Fei, Bo and Yang, Bo and Shan, Boji and Yu, Changqing and others",
+        "year": 2025,
+        "eprint": "2506.13585",
+        "venue_note": "arXiv technical report"
+      },
+      "checked": "2026-09-14",
+      "dropped": false,
+      "batch": "A",
+      "verification_detail": "verified",
+      "in_main_survey": false,
+      "area": "math_science",
+      "used_in_training": true
+    },
+    {
+      "id": "cheng2025guru",
+      "title": "Revisiting Reinforcement Learning for LLM Reasoning from A Cross-Domain Perspective",
+      "arxiv_id": "2506.14965",
+      "year": 2025,
+      "venue_if_stated": null,
+      "domain": "cross-domain RLVR (Guru); science reward via LLM verifier",
+      "role": [
+        "uses_single_reference_judge",
+        "judge_where_no_checker"
+      ],
+      "where_described": "Sec. on reward design ('Model-Based Verification'); Sec. 8 task-specific reward details (Science)",
+      "source_urls": [
+        "https://arxiv.org/html/2506.14965",
+        "https://huggingface.co/TIGER-Lab/general-verifier"
+      ],
+      "judge_model": "TIGER-Lab/general-verifier (1.5B, Ma et al. 2025)",
+      "reference_wording": "reference answer",
+      "verbatim_quotes": [
+        "Model-Based Verification: This method is used for Science tasks, where answers are often open-ended and difficult to evaluate using deterministic rules.",
+        "We employ a 1.5B verifier model (Ma et al., 2025) to assess whether the model’s response semantically entails the reference answer"
+      ],
+      "several_valid_answers": "partially",
+      "several_valid_note": "Science answers \"are often open-ended and difficult to evaluate using deterministic rules\"; still judged by entailment of a single reference answer.",
+      "verification": "verified",
+      "bib": {
+        "key": "cheng2025guru",
+        "entrytype": "misc",
+        "title": "Revisiting Reinforcement Learning for LLM Reasoning from A Cross-Domain Perspective",
+        "authors": "Cheng, Zhoujun and Hao, Shibo and Liu, Tianyang and Zhou, Fan and Xie, Yutao and Yao, Feng and Bian, Yuexin and Zhuang, Yonghao and Dey, Nilabjo and Zha, Yuheng and others",
+        "year": 2025,
+        "eprint": "2506.14965",
+        "venue_note": "arXiv preprint (comment: under review)"
+      },
+      "checked": "2026-09-14",
+      "dropped": false,
+      "batch": "A",
+      "verification_detail": "verified",
+      "in_main_survey": false,
+      "area": "math_science",
+      "used_in_training": true
+    },
+    {
+      "id": "bercovich2025llamanemotron",
+      "title": "Llama-Nemotron: Efficient Reasoning Models",
+      "arxiv_id": "2505.00949",
+      "year": 2025,
+      "venue_if_stated": null,
+      "domain": "RL for reasoning model (scientific reasoning) + SFT data filtering",
+      "role": [
+        "uses_single_reference_judge"
+      ],
+      "where_described": "RL for scientific reasoning ('Accuracy rewards' paragraph); math SFT data filtering (final filtering step)",
+      "source_urls": [
+        "https://arxiv.org/html/2505.00949"
+      ],
+      "judge_model": "Llama-3.3-70B-Instruct (RL accuracy reward); Qwen2.5-32B-Instruct (SFT answer-equivalence filter)",
+      "reference_wording": "ground truth answer / expected answer",
+      "verbatim_quotes": [
+        "Accuracy rewards: For each training example, a ground truth answer (a number, a sentence, or a paragraph) is provided. We serve the Llama-3.3-70B-Instruct model to judge whether the policy’s predictions match the ground truth answer.",
+        "Predicted and expected answers are compared by prompting Qwen2.5-32B-Instruct (Qwen, 2024) to judge their equivalence in the context of the problem."
+      ],
+      "several_valid_answers": "partially",
+      "several_valid_note": "Ground truth can be \"a number, a sentence, or a paragraph\"; sentence/paragraph answers admit paraphrase or alternatives, but reward is match to the single ground truth.",
+      "verification": "verified",
+      "notes": "Judge prompts not published.",
+      "bib": {
+        "key": "bercovich2025llamanemotron",
+        "entrytype": "misc",
+        "title": "Llama-Nemotron: Efficient Reasoning Models",
+        "authors": "Bercovich, Akhiad and Levy, Itay and Golan, Izik and Dabbah, Mohammad and El-Yaniv, Ran and Puny, Omri and Galil, Ido and Moshe, Zach and Ronen, Tomer and Nabwani, Najeeb and others",
+        "year": 2025,
+        "eprint": "2505.00949",
+        "venue_note": "arXiv technical report"
+      },
+      "checked": "2026-09-14",
+      "dropped": false,
+      "batch": "A",
+      "verification_detail": "verified",
+      "in_main_survey": false,
+      "area": "math_science",
+      "used_in_training": true
+    },
+    {
+      "id": "huang2024olympicarena",
+      "title": "OlympicArena: Benchmarking Multi-discipline Cognitive Reasoning for Superintelligent AI",
+      "arxiv_id": "2406.12753",
+      "year": 2024,
+      "venue_if_stated": "arXiv comment: Accepted by NeurIPS 2024",
+      "domain": "olympiad multi-discipline benchmark",
+      "role": [
+        "uses_single_reference_judge",
+        "judge_where_no_checker"
+      ],
+      "where_described": "Evaluation appendix: 'Rule-based Evaluation' / 'Model-based Evaluation'; Figure 16 prompt",
+      "source_urls": [
+        "https://arxiv.org/html/2406.12753"
+      ],
+      "judge_model": "GPT-4V",
+      "reference_wording": "the correct answer",
+      "verbatim_quotes": [
+        "To deal with those problems with answer types that cannot be appropriately evaluated using rule-based matching, we employ model-based evaluation. In this approach, we utilize GPT-4V as the evaluator.",
+        "We design prompts that include the problem, the correct answer, the solution (if provided), and the response from the model being tested (see Figure 16 for details)."
+      ],
+      "several_valid_answers": "partially",
+      "several_valid_note": "Model-based evaluation covers answer types not suited to rule matching (about 5% of problems per paper); one correct answer is supplied.",
+      "verification": "verified",
+      "bib": {
+        "key": "huang2024olympicarena",
+        "entrytype": "inproceedings",
+        "title": "OlympicArena: Benchmarking Multi-discipline Cognitive Reasoning for Superintelligent AI",
+        "authors": "Huang, Zhen and Wang, Zengzhi and Xia, Shijie and Li, Xuefeng and Zou, Haoyang and Xu, Ruijie and Fan, Run-Ze and Ye, Lyumanshan and Chern, Ethan and Ye, Yixin and others",
+        "year": 2024,
+        "eprint": "2406.12753",
+        "venue_note": "NeurIPS 2024 per arXiv comment"
+      },
+      "checked": "2026-09-14",
+      "dropped": false,
+      "batch": "A",
+      "verification_detail": "verified",
+      "in_main_survey": false,
+      "area": "math_science",
+      "used_in_training": false
+    },
+    {
+      "id": "fang2024mathodyssey",
+      "title": "MathOdyssey: Benchmarking Mathematical Problem-Solving Skills in Large Language Models Using Odyssey Math Data",
+      "arxiv_id": "2406.18321",
+      "year": 2024,
+      "venue_if_stated": null,
+      "domain": "math benchmark",
+      "role": [
+        "uses_single_reference_judge"
+      ],
+      "where_described": "Evaluation metric section (GPT-4-assisted scoring criteria)",
+      "source_urls": [
+        "https://arxiv.org/html/2406.18321"
+      ],
+      "judge_model": "GPT-4",
+      "reference_wording": "ground truth answers / the provided solution",
+      "verbatim_quotes": [
+        "We use GPT-4 to assist in evaluating model accuracy, particularly for open-answer questions. The metric measures the similarity between the predicted and ground truth answers.",
+        "Scoring: Assign a score of ‘1’ for answers that match or are equivalent to the provided solution (exact value, choice label, or correctly rounded numerical approximation)."
+      ],
+      "several_valid_answers": "partially",
+      "several_valid_note": "\"Symbolic and Algebraic Identities: Recognize and accept equivalent algebraic forms as correct\" (equivalent forms of one answer).",
+      "verification": "verified",
+      "bib": {
+        "key": "fang2024mathodyssey",
+        "entrytype": "misc",
+        "title": "MathOdyssey: Benchmarking Mathematical Problem-Solving Skills in Large Language Models Using Odyssey Math Data",
+        "authors": "Fang, Meng and Wan, Xiangpeng and Lu, Fei and Xing, Fei and Zou, Kai",
+        "year": 2024,
+        "eprint": "2406.18321",
+        "venue_note": "arXiv preprint"
+      },
+      "checked": "2026-09-14",
+      "dropped": false,
+      "batch": "A",
+      "verification_detail": "verified",
+      "in_main_survey": false,
+      "area": "math_science",
+      "used_in_training": false
+    },
+    {
+      "id": "zhou2025verifree",
+      "title": "Reinforcing General Reasoning without Verifiers",
+      "arxiv_id": "2505.21493",
+      "year": 2025,
+      "venue_if_stated": null,
+      "domain": "general reasoning RL (verifier-free alternative)",
+      "role": [
+        "judge_where_no_checker"
+      ],
+      "where_described": "Abstract; Sec. 1 Introduction; Figure 2 caption",
+      "source_urls": [
+        "https://arxiv.org/html/2505.21493",
+        "https://github.com/sail-sg/VeriFree"
+      ],
+      "judge_model": "n/a (argues against model-based verifiers; compares to general-verifier baselines)",
+      "reference_wording": "reference answer",
+      "verbatim_quotes": [
+        "Current practical workarounds use an additional LLM as a model-based verifier; however, this introduces issues such as reliance on a strong verifier LLM, susceptibility to reward hacking",
+        "In these methods, the model-based verifier is queried to determine whether the generated answer is equivalent to the reference answer.",
+        "In the case of a single correct answer format, VeriFree optimizes exactly the same objective as R1-Zero with a lower variance gradient estimator."
+      ],
+      "several_valid_answers": "partially",
+      "several_valid_note": "Its own objective maximizes likelihood of the single reference answer; equivalence to R1-Zero stated only \"In the case of a single correct answer format\".",
+      "verification": "verified",
+      "notes": "Describes single-reference LLM verifiers as standard workaround; does not itself use one.",
+      "bib": {
+        "key": "zhou2025verifree",
+        "entrytype": "misc",
+        "title": "Reinforcing General Reasoning without Verifiers",
+        "authors": "Zhou, Xiangxin and Liu, Zichen and Sims, Anya and Wang, Haonan and Pang, Tianyu and Li, Chongxuan and Wang, Liang and Lin, Min and Du, Chao",
+        "year": 2025,
+        "eprint": "2505.21493",
+        "venue_note": "arXiv preprint"
+      },
+      "checked": "2026-09-14",
+      "dropped": false,
+      "batch": "A",
+      "verification_detail": "verified",
+      "in_main_survey": false,
+      "area": "formal_or_context",
+      "used_in_training": false
+    },
+    {
+      "id": "yu2025rlpr",
+      "title": "RLPR: Extrapolating RLVR to General Domains without Verifiers",
+      "arxiv_id": "2506.18254",
+      "year": 2025,
+      "venue_if_stated": null,
+      "domain": "general-domain RLVR (verifier-free alternative)",
+      "role": [
+        "judge_where_no_checker"
+      ],
+      "where_described": "Sec. 1 Introduction; Figure 2 caption",
+      "source_urls": [
+        "https://arxiv.org/html/2506.18254"
+      ],
+      "judge_model": "n/a (compares to General Reasoner 1.5B verifier)",
+      "reference_wording": "reference answer",
+      "verbatim_quotes": [
+        "The primary reason is that existing RLVR methods heavily rely on domain-specific verifiers to obtain reward, as shown in Figure 2.",
+        "As shown in the example on the right side, rules and verifier models wrongly label both and as incorrect due to their limited capability of handling natural language complexity."
+      ],
+      "several_valid_answers": "partially",
+      "several_valid_note": "Figure 2 example: correct free-form answers phrased differently from the reference are rejected by rules and verifier models (symbols for the answers dropped in HTML).",
+      "verification": "verified",
+      "notes": "Critique of verifier-based reward; does not itself use an LLM judge.",
+      "bib": {
+        "key": "yu2025rlpr",
+        "entrytype": "misc",
+        "title": "RLPR: Extrapolating RLVR to General Domains without Verifiers",
+        "authors": "Yu, Tianyu and Ji, Bo and Wang, Shouli and Yao, Shu and Wang, Zefan and Cui, Ganqu and Yuan, Lifan and Ding, Ning and Yao, Yuan and Liu, Zhiyuan and Sun, Maosong and Chua, Tat-Seng",
+        "year": 2025,
+        "eprint": "2506.18254",
+        "venue_note": "arXiv preprint"
+      },
+      "checked": "2026-09-14",
+      "dropped": false,
+      "batch": "A",
+      "verification_detail": "verified",
+      "in_main_survey": false,
+      "area": "formal_or_context",
+      "used_in_training": false
+    },
+    {
+      "id": "balunovic2025mathconstruct",
+      "title": "MathConstruct: Challenging LLM Reasoning with Constructive Proofs",
+      "arxiv_id": "2502.10197",
+      "year": 2025,
+      "venue_if_stated": null,
+      "domain": "math benchmark (constructive proofs, programmatic verifiers)",
+      "role": [
+        "formal_verification_argument"
+      ],
+      "where_described": "Sec. 1 Introduction; Sec. 2 Related work; Figure 2-3 (verifier functions)",
+      "source_urls": [
+        "https://arxiv.org/html/2502.10197"
+      ],
+      "judge_model": "none (per-problem Python verifier functions)",
+      "reference_wording": "n/a (verifier function instead of reference)",
+      "verbatim_quotes": [
+        "these benchmarks still rely on fixed-answer verification, often using an LLM as a judge for comparison.",
+        "Each problem is encoded as a natural language statement and a corresponding verifier function that determines the correctness of a proposed construction",
+        "Yet, verifying if a proposed construction satisfies the problem constraints is usually straightforward, enabling the use of automated verifiers to judge model responses."
+      ],
+      "several_valid_answers": "yes",
+      "several_valid_note": "Implied: the verifier checks \"the validity of a proposed construction\" against problem constraints rather than comparing to one reference (explicit 'multiple valid constructions' wording not searched out).",
+      "verification": "verified",
+      "existing_key": "balunovic2025mathconstruct",
+      "checked": "2026-09-14",
+      "dropped": false,
+      "batch": "A",
+      "verification_detail": "verified",
+      "in_main_survey": false,
+      "area": "formal_or_context",
+      "used_in_training": false
+    },
+    {
+      "id": "petrov2025proofbluff",
+      "title": "Proof or Bluff? Evaluating LLMs on 2025 USA Math Olympiad",
+      "arxiv_id": "2503.21934",
+      "year": 2025,
+      "venue_if_stated": null,
+      "domain": "natural-language proof evaluation",
+      "role": [
+        "formal_verification_argument",
+        "judge_where_no_checker",
+        "uses_single_reference_judge"
+      ],
+      "where_described": "Sec. 1 (formal verification alternatives); Sec. 2.2 Judge Selection (human graders); Sec. 3.3 Automated Grading; App. A.2 judge prompt",
+      "source_urls": [
+        "https://arxiv.org/html/2503.21934"
+      ],
+      "judge_model": "o3-mini and Claude 3.7 tested as graders (human experts used for results)",
+      "reference_wording": "a verified solution / ground-truth solution + grading scheme",
+      "verbatim_quotes": [
+        "Both models were provided with a grading scheme developed by our evaluators, along with a verified solution and an example evaluation for reference.",
+        "As detailed in Table 2, neither model accurately graded the solutions, consistently overestimating their quality.",
+        "Current benchmarks that mitigate this issue either rely on formal verification tools like Lean (Zheng et al., 2022; Liu et al., 2023; Tsoukalas et al., 2024) or focus on the evaluation of constructive proofs (Balunovic et al., 2025)."
+      ],
+      "several_valid_answers": "yes",
+      "several_valid_note": "Proofs admit different approaches; human judges: \"When a solution did not perfectly align with the scheme, the approach was awarded points where appropriate.\"",
+      "verification": "verified",
+      "notes": "Tested (and rejected) reference-given LLM graders for proofs; argues formal tools do not exploit natural-language ability, so role includes formal-verification discussion rather than endorsement.",
+      "bib": {
+        "key": "petrov2025proofbluff",
+        "entrytype": "misc",
+        "title": "Proof or Bluff? Evaluating LLMs on 2025 USA Math Olympiad",
+        "authors": "Petrov, Ivo and Dekoninck, Jasper and Baltadzhiev, Lyuben and Drencheva, Maria and Minchev, Kristian and Balunović, Mislav and Jovanović, Nikola and Vechev, Martin",
+        "year": 2025,
+        "eprint": "2503.21934",
+        "venue_note": "arXiv preprint"
+      },
+      "checked": "2026-09-14",
+      "dropped": false,
+      "batch": "A",
+      "verification_detail": "verified",
+      "in_main_survey": false,
+      "area": "proof_grading",
+      "used_in_training": false
+    },
+    {
+      "id": "ren2025deepseekproverv2",
+      "title": "DeepSeek-Prover-V2: Advancing Formal Mathematical Reasoning via Reinforcement Learning for Subgoal Decomposition",
+      "arxiv_id": "2504.21801",
+      "year": 2025,
+      "venue_if_stated": null,
+      "domain": "formal theorem proving (Lean 4)",
+      "role": [
+        "formal_verification_argument"
+      ],
+      "where_described": "Sec. 1 Introduction",
+      "source_urls": [
+        "https://arxiv.org/html/2504.21801"
+      ],
+      "judge_model": "none (Lean 4 proof checking)",
+      "reference_wording": "n/a",
+      "verbatim_quotes": [
+        "LLMs perform natural language reasoning in an inherently informal manner, relying on heuristics, approximations, and data-driven guessing patterns that often lack the rigorous structure required by formal verification systems.",
+        "In contrast, proof assistants such as Lean (Moura and Ullrich, 2021), Isabelle (Paulson, 1994), and Coq (Barras et al., 1999) operate on strict logical foundations, where every proof step must be explicitly constructed and formally verified."
+      ],
+      "several_valid_answers": "yes",
+      "several_valid_note": "Formal proof checking accepts any proof that type-checks (general property of Lean verification; not a quoted claim of the paper).",
+      "verification": "verified",
+      "bib": {
+        "key": "ren2025deepseekproverv2",
+        "entrytype": "misc",
+        "title": "DeepSeek-Prover-V2: Advancing Formal Mathematical Reasoning via Reinforcement Learning for Subgoal Decomposition",
+        "authors": "Ren, Z. Z. and Shao, Zhihong and Song, Junxiao and Xin, Huajian and Wang, Haocheng and Zhao, Wanjia and Zhang, Liyue and Fu, Zhe and Zhu, Qihao and Yang, Dejian and others",
+        "year": 2025,
+        "eprint": "2504.21801",
+        "venue_note": "arXiv preprint"
+      },
+      "checked": "2026-09-14",
+      "dropped": false,
+      "batch": "A",
+      "verification_detail": "verified",
+      "in_main_survey": false,
+      "area": "formal_or_context",
+      "used_in_training": false
+    },
+    {
+      "id": "chen2025seedprover",
+      "title": "Seed-Prover: Deep and Broad Reasoning for Automated Theorem Proving",
+      "arxiv_id": "2507.23726",
+      "year": 2025,
+      "venue_if_stated": null,
+      "domain": "formal theorem proving (Lean)",
+      "role": [
+        "formal_verification_argument"
+      ],
+      "where_described": "Abstract; Sec. 1 Introduction (arXiv PDF v2, no HTML version)",
+      "source_urls": [
+        "https://arxiv.org/pdf/2507.23726"
+      ],
+      "judge_model": "none (Lean verification)",
+      "reference_wording": "n/a",
+      "verbatim_quotes": [
+        "It is extremely difficult to automatically, or even manually, verify a proof in natural language since each step must be carefully checked for correctness",
+        "Unlike natural language, formal languages such as Lean can provide a clear and automatic signal on the correctness of a formalized proof.",
+        "Dedicated domain-specific languages like Lean provide clear supervision via formal verification of proofs, enabling effective training through reinforcement learning."
+      ],
+      "several_valid_answers": "yes",
+      "several_valid_note": "Lean accepts any correct formal proof (general property; the paper's claim is about verifiability).",
+      "verification": "verified",
+      "notes": "Text extracted with pdftotext from arXiv PDF (line breaks joined).",
+      "bib": {
+        "key": "chen2025seedprover",
+        "entrytype": "misc",
+        "title": "Seed-Prover: Deep and Broad Reasoning for Automated Theorem Proving",
+        "authors": "Chen, Luoxin and Gu, Jinming and Huang, Liankai and Huang, Wenhao and Jiang, Zhicheng and Jie, Allan and Jin, Xiaoran and Jin, Xing and Li, Chenggang and Ma, Kaijing and others",
+        "year": 2025,
+        "eprint": "2507.23726",
+        "venue_note": "arXiv preprint"
+      },
+      "checked": "2026-09-14",
+      "dropped": false,
+      "batch": "A",
+      "verification_detail": "verified",
+      "in_main_survey": false,
+      "area": "formal_or_context",
+      "used_in_training": false
+    },
+    {
+      "id": "chandak2025answermatching",
+      "title": "Answer Matching Outperforms Multiple Choice for Language Model Evaluation",
+      "arxiv_id": "2507.02856",
+      "year": 2025,
+      "venue_if_stated": "none (arXiv comment: 34 pages)",
+      "domain": "QA / benchmark evaluation (MMLU-Pro, GPQA-Diamond, MATH free-form)",
+      "role": [
+        "uses_single_reference_judge",
+        "judge_where_no_checker"
+      ],
+      "where_described": "Sec. 1-3 (answer matching); App. F.1 'Prompt for Ground Truth Matching' (Python)",
+      "source_urls": [
+        "https://arxiv.org/html/2507.02856"
+      ],
+      "judge_model": "LM matchers incl. small Qwen3 models (1.7B), DeepSeek and Llama models (paper Fig. 5 text)",
+      "reference_wording": "ground truth / ground truth answer / reference answer",
+      "verbatim_quotes": [
+        "Your task is to judge whether the given response to a question matches a given ground truth answer or not.",
+        "Your job is to ONLY check whether the given response matches the ground truth answer or not in the context of the question. You DO NOT NEED to assess the correctness of the response.",
+        "While answers to questions in MATH are automatically verifiable, answers to questions in MMLU-Pro and GPQA-Diamond are not."
+      ],
+      "several_valid_answers": "partially",
+      "several_valid_note": "Paper: \"Unfortunately, for most questions of interest, many possible responses are correct.\" Prompt allows a response to \"have additional possible correct answers. But it must cover everything mentioned in the ground-truth.\" Questions are filtered so the answer \"can be uniquely inferred\".",
+      "verification": "verified",
+      "bib": {
+        "key": "chandak2025answermatching",
+        "entrytype": "misc",
+        "title": "Answer Matching Outperforms Multiple Choice for Language Model Evaluation",
+        "authors": "Chandak, Nikhil and Goel, Shashwat and Prabhu, Ameya and Hardt, Moritz and Geiping, Jonas",
+        "year": 2025,
+        "eprint": "2507.02856",
+        "venue_note": "arXiv preprint"
+      },
+      "checked": "2026-09-14",
+      "batch": "B",
+      "verification_detail": "verified",
+      "in_main_survey": false,
+      "area": "qa_rag",
+      "used_in_training": false
+    },
+    {
+      "id": "he2024chinesesimpleqa",
+      "title": "Chinese SimpleQA: A Chinese Factuality Evaluation for Large Language Models",
+      "arxiv_id": "2411.07140",
+      "year": 2024,
+      "venue_if_stated": "none on arXiv abs page",
+      "domain": "factual QA",
+      "role": [
+        "uses_single_reference_judge"
+      ],
+      "where_described": "Sec. 1 (Easy-to-evaluate), Sec. 2.2 criteria, Sec. 2.5 Evaluation Metrics",
+      "source_urls": [
+        "https://arxiv.org/html/2411.07140"
+      ],
+      "judge_model": "not specified in fetched text (\"the grading procedure is fast to run via existing LLMs (e.g., OpenAI API)\")",
+      "reference_wording": "reference answer",
+      "verbatim_quotes": [
+        "Correct (CO): The predicted answer fully includes the reference answer without introducing any contradictory elements.",
+        "Incorrect (IN): The predicted answer contradicts the reference answer, even if the contradiction is solved.",
+        "Following SimpleQA, as the questions and answers are very short, the grading procedure is fast to run via existing LLMs (e.g., OpenAI API)."
+      ],
+      "several_valid_answers": "no",
+      "several_valid_note": "Dataset criterion: \"the answer to each question must be unique, precluding the possibility of multiple correct responses.\"",
+      "verification": "partially verified",
+      "bib": {
+        "key": "he2024chinesesimpleqa",
+        "entrytype": "misc",
+        "title": "Chinese SimpleQA: A Chinese Factuality Evaluation for Large Language Models",
+        "authors": "He, Yancheng and Li, Shilong and Liu, Jiaheng and Tan, Yingshui and Wang, Weixun and Huang, Hui and Bu, Xingyuan and Guo, Hangyu and Hu, Chengwei and Zheng, Boren and Lin, Zhuoran and Liu, Xuepeng and others",
+        "year": 2024,
+        "eprint": "2411.07140",
+        "venue_note": "arXiv preprint"
+      },
+      "checked": "2026-09-14",
+      "batch": "B",
+      "verification_detail": "partially verified (protocol and metric definitions verified; grader prompt text and judge model not found in fetched HTML)",
+      "in_main_survey": false,
+      "area": "qa_rag",
+      "used_in_training": false
+    },
+    {
+      "id": "ru2024ragchecker",
+      "title": "RAGChecker: A Fine-grained Framework for Diagnosing Retrieval-Augmented Generation",
+      "arxiv_id": "2408.08067",
+      "year": 2024,
+      "venue_if_stated": "none (arXiv comment: Under Review)",
+      "domain": "RAG evaluation",
+      "role": [
+        "uses_single_reference_judge"
+      ],
+      "where_described": "Sec. 1; Sec. 3.1-3.3 (claim extraction and entailment against ground truth answer); Sec. 4 setup",
+      "source_urls": [
+        "https://arxiv.org/html/2408.08067",
+        "https://github.com/amazon-science/RAGChecker"
+      ],
+      "judge_model": "Llama3-70B-Instruct as LLM backbone for extractor and checker (\"when applicable\")",
+      "reference_wording": "ground truth answer",
+      "verbatim_quotes": [
+        "RagChecker is based on claim-level entailment checking which involves operations of extracting claims from the response and ground truth answer and checking them against other texts.",
+        "a response generated by a RAG system might be a mixture of correct ( ) and incorrect claims ( ), while also missing some in-ground-truth claims ( )."
+      ],
+      "several_valid_answers": "partially",
+      "several_valid_note": "Long-form RAG answers; recall is measured as coverage of ground-truth claims, so valid content absent from the single ground truth is not credited as recall.",
+      "verification": "verified",
+      "bib": {
+        "key": "ru2024ragchecker",
+        "entrytype": "misc",
+        "title": "RAGChecker: A Fine-grained Framework for Diagnosing Retrieval-Augmented Generation",
+        "authors": "Ru, Dongyu and Qiu, Lin and Hu, Xiangkun and Zhang, Tianhang and Shi, Peng and Chang, Shuaichen and Jiayang, Cheng and Wang, Cunxiang and Sun, Shichao and Li, Huanyu and Zhang, Zizhao and Wang, Binjie and others",
+        "year": 2024,
+        "eprint": "2408.08067",
+        "venue_note": "arXiv preprint"
+      },
+      "checked": "2026-09-14",
+      "batch": "B",
+      "verification_detail": "verified",
+      "in_main_survey": false,
+      "area": "qa_rag",
+      "used_in_training": false
+    },
+    {
+      "id": "rau2024bergen",
+      "title": "BERGEN: A Benchmarking Library for Retrieval-Augmented Generation",
+      "arxiv_id": "2407.01102",
+      "year": 2024,
+      "venue_if_stated": "none on arXiv abs page (comment: 29 pages)",
+      "domain": "RAG evaluation (QA datasets incl. NQ)",
+      "role": [
+        "uses_single_reference_judge",
+        "judge_where_no_checker"
+      ],
+      "where_described": "Sec. 5.1 evaluation metrics; App. G 'LLMeval: LLM-based Answer Equivalence Evaluation' (prompt)",
+      "source_urls": [
+        "https://arxiv.org/html/2407.01102"
+      ],
+      "judge_model": "SOLAR-10.7B-Instruct-v1.0 (LLMeval); GPT-4 as comparison metric",
+      "reference_wording": "golden answer / reference answer",
+      "verbatim_quotes": [
+        "Here is a question, a golden answer and an AI-generated answer. Judge whether the AI-generated answer is correct according to the question and golden answer, answer with {{Yes}} or {{No}}.",
+        "LLM-generated answers are more verbose compared to standard QA short answers, and surface-matching metrics fail to capture whether the answer is correct.",
+        "We use LLMeval in the remainder of this work"
+      ],
+      "several_valid_answers": "partially",
+      "several_valid_note": "Open-domain QA datasets (e.g. NQ) with short references; prompt gives a single 'golden answer' slot and no instruction on alternatives.",
+      "verification": "verified",
+      "bib": {
+        "key": "rau2024bergen",
+        "entrytype": "misc",
+        "title": "BERGEN: A Benchmarking Library for Retrieval-Augmented Generation",
+        "authors": "Rau, David and D{\\'e}jean, Herv{\\'e} and Chirkova, Nadezhda and Formal, Thibault and Wang, Shuai and Nikoulina, Vassilina and Clinchant, St{\\'e}phane",
+        "year": 2024,
+        "eprint": "2407.01102",
+        "venue_note": "arXiv preprint"
+      },
+      "checked": "2026-09-14",
+      "batch": "B",
+      "verification_detail": "verified",
+      "in_main_survey": false,
+      "area": "qa_rag",
+      "used_in_training": false
+    },
+    {
+      "id": "badshah2024refguided",
+      "title": "Reference-Guided Verdict: LLMs-as-Judges in Automatic Evaluation of Free-Form QA",
+      "arxiv_id": "2408.09235",
+      "year": 2024,
+      "venue_if_stated": "Proceedings of the 9th Widening NLP Workshop (arXiv comment)",
+      "domain": "free-form QA (TruthfulQA, TriviaQA, HotpotQA)",
+      "role": [
+        "uses_single_reference_judge",
+        "judge_where_no_checker"
+      ],
+      "where_described": "Sec. 3 method; App. D.2 'Prompting LLMs as Judges' (Figure 7); App. D.3 prompt variants",
+      "source_urls": [
+        "https://arxiv.org/html/2408.09235"
+      ],
+      "judge_model": "Mistral 7B, Llama-3.1 70B, GPT-3.5-turbo (majority vote)",
+      "reference_wording": "Reference Answer",
+      "verbatim_quotes": [
+        "You will be given a Question, a Reference Answer, and a Provided Answer. Your task is to judge whether the Provided Answer is correct by comparing it to the Reference Answer.",
+        "These datasets are well-suited for assessing LLMs-as-judges ( ), where traditional metrics such as exact match often fail with the open-ended, conversational outputs of instruct/chat models."
+      ],
+      "several_valid_answers": "partially",
+      "several_valid_note": "TriviaQA/HotpotQA/TruthfulQA are free-form; the judge prompt shows one Reference Answer and no instruction on alternative correct answers.",
+      "verification": "verified",
+      "existing_key": "refguided2024",
+      "checked": "2026-09-14",
+      "batch": "B",
+      "verification_detail": "verified",
+      "in_main_survey": false,
+      "area": "qa_rag",
+      "used_in_training": false
+    },
+    {
+      "id": "kamalloo2023evaluating",
+      "title": "Evaluating Open-Domain Question Answering in the Era of Large Language Models",
+      "arxiv_id": "2305.06984",
+      "year": 2023,
+      "venue_if_stated": "ACL 2023 (arXiv comment)",
+      "domain": "open-domain QA (NQ-open, CuratedTREC)",
+      "role": [
+        "uses_single_reference_judge",
+        "judge_where_no_checker"
+      ],
+      "where_described": "Sec. 4.2 'Zero-shot Evaluation via Prompting' (InstructGPT-eval prompt); App. A GPT4-eval",
+      "source_urls": [
+        "https://arxiv.org/html/2305.06984"
+      ],
+      "judge_model": "InstructGPT (text-davinci-003); GPT-4",
+      "reference_wording": "Answer (gold answer)",
+      "verbatim_quotes": [
+        "Question: what was the city of Beijing previously known as?\nAnswer: Peking\nCandidate: Jicheng\nIs candidate correct?",
+        "Lexical matching remains the de facto evaluation method for open-domain question answering (QA). Unfortunately, lexical matching fails completely when a plausible candidate answer does not appear in the list of gold answers",
+        "Such failures largely stem from the incomplete list of gold answers that do not fully cover all plausible answers."
+      ],
+      "several_valid_answers": "yes",
+      "several_valid_note": "\"Jicheng\" is a correct answer \"while not annotated as a gold answer in Natural Questions-open\"; GPT4-eval sometimes \"disregards gold answers that can be simply matched using EM\".",
+      "verification": "verified",
+      "existing_key": "kamalloo2023evaluating",
+      "checked": "2026-09-14",
+      "batch": "B",
+      "verification_detail": "verified",
+      "in_main_survey": false,
+      "area": "qa_rag",
+      "used_in_training": false
+    },
+    {
+      "id": "thakur2024judging",
+      "title": "Judging the Judges: Evaluating Alignment and Vulnerabilities in LLMs-as-Judges",
+      "arxiv_id": "2406.12624",
+      "year": 2024,
+      "venue_if_stated": "GEM^2 workshop 2025 per existing bib entry (not re-checked)",
+      "domain": "factual QA (TriviaQA)",
+      "role": [
+        "uses_single_reference_judge",
+        "judge_where_no_checker"
+      ],
+      "where_described": "Sec. 3 setup; App. E Figure 8 judge prompt template (rendered as figure, text not extracted); App. G human guidelines; App. N reference order",
+      "source_urls": [
+        "https://arxiv.org/html/2406.12624"
+      ],
+      "judge_model": "thirteen judge models of varying size and family",
+      "reference_wording": "reference answers (TriviaQA short answers)",
+      "verbatim_quotes": [
+        "we use the validation set of the unfiltered partition of the benchmark, using the short answers as reference answers.",
+        "Lexical methods, such as exact match (EM) or n-gram overlap, are practical and cost-effective but prone to false negatives and often miss subtle semantic differences.",
+        "We observe that the model is more likely to evaluate an answer as correct if the corresponding reference appears early in the list of references"
+      ],
+      "several_valid_answers": "partially",
+      "several_valid_note": "Judges receive a list of TriviaQA references (aliases); human guideline: correct \"if it is semantically equivalent to (one of the) reference answers\" (closed list).",
+      "verification": "partially verified",
+      "existing_key": "thakur2025judging (ACL GEM version); thakur2024judging (arXiv) also exists",
+      "checked": "2026-09-14",
+      "batch": "B",
+      "verification_detail": "partially verified (setup and appendix text verified; judge prompt is a figure whose text was not extracted)",
+      "in_main_survey": false,
+      "area": "qa_rag",
+      "used_in_training": false
+    },
+    {
+      "id": "wang2023evouna",
+      "title": "Evaluating Open-QA Evaluation",
+      "arxiv_id": "2305.12421",
+      "year": 2023,
+      "venue_if_stated": "NeurIPS 2023 Datasets and Benchmarks track (arXiv comment)",
+      "domain": "open-domain QA evaluation (NQ, TriviaQA; EVOUNA)",
+      "role": [
+        "uses_single_reference_judge",
+        "judge_where_no_checker"
+      ],
+      "where_described": "Sec. 3/4 evaluators (LLM prompt, Eq. 2); Sec. 6.4 and App. E.5 prompt engineering",
+      "source_urls": [
+        "https://arxiv.org/html/2305.12421"
+      ],
+      "judge_model": "GPT-3.5 (text-davinci-003)",
+      "reference_wording": "golden answers (a set, split with /)",
+      "verbatim_quotes": [
+        "Here is a question, a set of golden answers (split with /), an AI-generated answer. Can you judge whether the AI-generated answer is correct according to the question and golden answers, simply answer Yes or No.",
+        "EM has certain limitations as it does not adequately account for the variation in expression of the answers. For instance, ‘Lionel Messi’ can also be expressed as ‘Lionel Andrés Messi’, ‘Messi’, or ‘Leo Messi’"
+      ],
+      "several_valid_answers": "yes",
+      "several_valid_note": "NQ/TriviaQA provide sets of golden answers; the judge is given the set (closed list). Paper notes GPT-3.5 sometimes \"uses its inherent knowledge, overlooking the golden answer\".",
+      "verification": "verified",
+      "bib": {
+        "key": "wang2023evouna",
+        "entrytype": "inproceedings",
+        "title": "Evaluating Open-QA Evaluation",
+        "authors": "Wang, Cunxiang and Cheng, Sirui and Guo, Qipeng and Yue, Yuanhao and Ding, Bowen and Xu, Zhikun and Wang, Yidong and Hu, Xiangkun and Zhang, Zheng and Zhang, Yue",
+        "year": 2023,
+        "eprint": "2305.12421",
+        "venue_note": "NeurIPS 2023 Datasets and Benchmarks Track (per arXiv comment)"
+      },
+      "checked": "2026-09-14",
+      "batch": "B",
+      "verification_detail": "verified",
+      "in_main_survey": false,
+      "area": "qa_rag",
+      "used_in_training": false
+    },
+    {
+      "id": "webwalker",
+      "title": "WebWalker: Benchmarking LLMs in Web Traversal",
+      "arxiv_id": "2501.07572",
+      "year": 2025,
+      "venue_if_stated": "",
+      "domain": "web agents / web traversal QA benchmark (WebWalkerQA)",
+      "role": [
+        "uses_single_reference_judge"
+      ],
+      "where_described": "Sec. 5.1 Experimental Setting; Appendix F.1 Evaluator (Figure 9); code WebAgent/WebWalker/src/evaluate.py (LangChain load_evaluator(\"cot_qa\"))",
+      "source_urls": [
+        "https://arxiv.org/html/2501.07572",
+        "https://github.com/Alibaba-NLP/WebAgent/blob/f72f75d8c3eb842f2bbbab096a12206ff66e270f/WebAgent/WebWalker/src/evaluate.py"
+      ],
+      "judge_model": "GPT-4 (paper); evaluation only",
+      "judge_use": "evaluation",
+      "reference_wording": "ground truth (paper); passed into the CoT-QA prompt as CONTEXT; prompt refers to \"true answer\"",
+      "verbatim_quotes": [
+        "We use GPT-4 as the evaluator, which determines the correctness of responses by comparing the predicted answer with the ground truth using CoT prompting strategy",
+        "Ignore differences in punctuation and phrasing between the student answer and true answer. It is OK if the student answer contains more information than the true answer, as long as it does not contain any conflicting statements."
+      ],
+      "several_valid_answers": "no",
+      "several_valid_note": "Short QA answers synthesized from web pages; paper does not discuss alternative valid answers. Prompt is LangChain's CoT-QA template with the reference supplied as CONTEXT.",
+      "verification": "verified",
+      "bib": {
+        "key": "wu2025webwalker",
+        "entrytype": "misc",
+        "title": "WebWalker: Benchmarking LLMs in Web Traversal",
+        "authors": "Wu, Jialong and Yin, Wenbiao and Jiang, Yong and Wang, Zhenglin and Xi, Zekun and Fang, Runnan and Zhang, Linhai and He, Yulan and Zhou, Deyu and Xie, Pengjun and others",
+        "year": 2025,
+        "eprint": "2501.07572",
+        "venue_note": ""
+      },
+      "checked": "2026-09-14",
+      "batch": "C",
+      "verification_detail": "verified",
+      "in_main_survey": false,
+      "area": "agents_deep_research",
+      "used_in_training": false
+    },
+    {
+      "id": "browsecomp_zh",
+      "title": "BrowseComp-ZH: Benchmarking Web Browsing Ability of Large Language Models in Chinese",
+      "arxiv_id": "2504.19314",
+      "year": 2025,
+      "venue_if_stated": "arXiv comment: Under Review",
+      "domain": "web browsing benchmark (Chinese)",
+      "role": [
+        "uses_single_reference_judge"
+      ],
+      "where_described": "Sec. 4 (evaluation setup); Appendix A.2 Instruction for grading (Figure 5, image in HTML)",
+      "source_urls": [
+        "https://arxiv.org/html/2504.19314"
+      ],
+      "judge_model": "GPT-4o",
+      "judge_use": "evaluation",
+      "reference_wording": "ground truth; grading prompt = BrowseComp prompt ([correct_answer])",
+      "verbatim_quotes": [
+        "we extract answers from the model responses using regular expressions and score them using GPT-4o. The grading prompts are adapted from those used in the original BrowseComp benchmark Wei et al. (2025).",
+        "We adopt the same grading prompt as used in BrowseComp and employ GPT-4o for the grading process.",
+        "This stage focuses on ensuring the uniqueness of the answers, meaning that there is only one correct and unambiguous answer that satisfies all the constraints of each question."
+      ],
+      "several_valid_answers": "no",
+      "several_valid_note": "Designed for uniqueness via human-in-the-loop check: annotators \"check if any additional answers satisfy the constraints of the question.\" Grading prompt figure is an image in the HTML, so its text is not quoted here (stated to be the BrowseComp prompt).",
+      "verification": "verified",
+      "bib": {
+        "key": "zhou2025browsecompzh",
+        "entrytype": "misc",
+        "title": "BrowseComp-ZH: Benchmarking Web Browsing Ability of Large Language Models in Chinese",
+        "authors": "Zhou, Peilin and Leon, Bruce and Ying, Xiang and Zhang, Can and Shao, Yifan and Ye, Qichen and Chong, Dading and Jin, Zhiling and Xie, Chenxuan and Cao, Meng and others",
+        "year": 2025,
+        "eprint": "2504.19314",
+        "venue_note": ""
+      },
+      "checked": "2026-09-14",
+      "batch": "C",
+      "verification_detail": "verified",
+      "in_main_survey": false,
+      "area": "agents_deep_research",
+      "used_in_training": false
+    },
+    {
+      "id": "webdancer",
+      "title": "WebDancer: Towards Autonomous Information Seeking Agency",
+      "arxiv_id": "2505.22648",
+      "year": 2025,
+      "venue_if_stated": "",
+      "domain": "web agent RL (information seeking)",
+      "role": [
+        "uses_single_reference_judge",
+        "judge_where_no_checker"
+      ],
+      "where_described": "Sec. 4 evaluation (LLM-as-Judge, Pass@1); Sec. Reward Design (answer reward); Appendix implementation details",
+      "source_urls": [
+        "https://arxiv.org/html/2505.22648"
+      ],
+      "judge_model": "GPT-4o for evaluation; judge model built on Qwen-72B-Instruct for RL reward (reward prompt following HLE, Phan et al. 2025)",
+      "judge_use": "both",
+      "reference_wording": "reference answer",
+      "verbatim_quotes": [
+        "Considering that the QA answers are inherently non-verifiable, cannot be reliably evaluated using rule-based F1/EM metrics, despite the brevity of the responses, and that the final evaluation relies on LLM-as-Judge ... we opt to employ model-based prompt evaluation as the answer reward signal",
+        "The is also binary, assigned as 1 only when the response is judged as correct by the LLMs. [symbol dropped in HTML] ... where denotes the model prediction and is the reference answer.",
+        "We construct the judge model based on Qwen-72B-Instruct, and design the reward prompt following Phan et al. (2025)."
+      ],
+      "several_valid_answers": "no",
+      "several_valid_note": "Not discussed; each synthesized QA pair has one reference answer. The judge model name in the reward sentence is a math symbol dropped by the HTML rendering; the appendix names Qwen-72B-Instruct.",
+      "verification": "verified",
+      "bib": {
+        "key": "wu2025webdancer",
+        "entrytype": "misc",
+        "title": "WebDancer: Towards Autonomous Information Seeking Agency",
+        "authors": "Wu, Jialong and Li, Baixuan and Fang, Runnan and Yin, Wenbiao and Zhang, Liwen and Tao, Zhengwei and Zhang, Dingchu and Xi, Zekun and Fu, Gang and Jiang, Yong and others",
+        "year": 2025,
+        "eprint": "2505.22648",
+        "venue_note": ""
+      },
+      "checked": "2026-09-14",
+      "batch": "C",
+      "verification_detail": "verified",
+      "in_main_survey": false,
+      "area": "agents_deep_research",
+      "used_in_training": true
+    },
+    {
+      "id": "websailor",
+      "title": "WebSailor: Navigating Super-human Reasoning for Web Agent",
+      "arxiv_id": "2507.02592",
+      "year": 2025,
+      "venue_if_stated": "",
+      "domain": "web agent RL (BrowseComp-style)",
+      "role": [
+        "uses_single_reference_judge"
+      ],
+      "where_described": "Sec. 4 RL reward (answer score via LLM judge); Sec. 5 evaluation (LLM as a judge); code WebAgent/WebSailor/src/evaluate.py + prompt.py",
+      "source_urls": [
+        "https://arxiv.org/html/2507.02592",
+        "https://github.com/Alibaba-NLP/WebAgent/blob/f72f75d8c3eb842f2bbbab096a12206ff66e270f/WebAgent/WebSailor/src/evaluate.py",
+        "https://github.com/Alibaba-NLP/WebAgent/blob/f72f75d8c3eb842f2bbbab096a12206ff66e270f/WebAgent/WebSailor/src/prompt.py"
+      ],
+      "judge_model": "qwen2.5-72b-instruct (evaluation code); RL judge model not named in paper",
+      "judge_use": "both",
+      "reference_wording": "[correct_answer] (BrowseComp/HLE prompt); Labeled Answer (GAIA prompt); gold target (SimpleQA prompt)",
+      "verbatim_quotes": [
+        "The answer score uses an LLM as a judge to determine whether the final prediction is correct.",
+        "do not argue for any answer different than [correct_answer], focus only on whether the answers match.",
+        "Did the model give an answer **equivalent** to the labeled answer? Please respond with \"Correct\" if they are equivalent, or \"Incorrect\" if they are not equivalent."
+      ],
+      "several_valid_answers": "no",
+      "several_valid_note": "Not discussed for its synthesized Level-3 QA; evaluation reuses BrowseComp/HLE, GAIA-equivalence and SimpleQA grader prompts, none of which allow alternatives. Paper calls the reward \"rule-based\" while the answer score is an LLM judge.",
+      "verification": "verified",
+      "bib": {
+        "key": "li2025websailor",
+        "entrytype": "misc",
+        "title": "WebSailor: Navigating Super-human Reasoning for Web Agent",
+        "authors": "Li, Kuan and Zhang, Zhongwang and Yin, Huifeng and Zhang, Liwen and Ou, Litu and Wu, Jialong and Yin, Wenbiao and Li, Baixuan and Tao, Zhengwei and Wang, Xinyu and others",
+        "year": 2025,
+        "eprint": "2507.02592",
+        "venue_note": ""
+      },
+      "checked": "2026-09-14",
+      "batch": "C",
+      "verification_detail": "verified",
+      "in_main_survey": false,
+      "area": "agents_deep_research",
+      "used_in_training": true
+    },
+    {
+      "id": "asearcher",
+      "title": "Beyond Ten Turns: Unlocking Long-Horizon Agentic Search with Large-Scale Asynchronous RL (ASearcher)",
+      "arxiv_id": "2508.07976",
+      "year": 2025,
+      "venue_if_stated": "",
+      "domain": "agentic search RL",
+      "role": [
+        "uses_single_reference_judge"
+      ],
+      "where_described": "Sec. 4 Reward Function; Sec. 5 evaluation metrics; data synthesis Step 3 Answer Uniqueness; code evaluation/evaluate.py (DefaultJudge)",
+      "source_urls": [
+        "https://arxiv.org/html/2508.07976",
+        "https://github.com/inclusionAI/ASearcher/blob/c88260ee519d400682cc3220accfa312607b3e44/evaluation/evaluate.py",
+        "https://github.com/inclusionAI/ASearcher/blob/c88260ee519d400682cc3220accfa312607b3e44/evaluation/llm_as_judge.py"
+      ],
+      "judge_model": "Qwen2.5-72B-Instruct (evaluation; code default); LLM-as-Judge also the RL reward for LRM-based agents (QwQ)",
+      "judge_use": "both",
+      "reference_wording": "Labeled Answer ({gt_answer}); paper: reference answers",
+      "verbatim_quotes": [
+        "When fine-tuning LRM-based agents (e.g., QwQ), we utilize LLM-as-Judge[20][38] as the reward function and omit format rewards",
+        "You are an evaluation assistant. Please determine if the predicted answer is equivalent to the labeled answer.",
+        "To prevent ambiguity resulting from multiple correct answers, we evaluate whether any of the mismatched answers generated during the Difficulty Measurement step could serve as alternative valid answers."
+      ],
+      "several_valid_answers": "partially",
+      "several_valid_note": "Paper acknowledges multiple correct answers as a data risk and filters synthesized questions for uniqueness; the judge prompt itself assumes one labeled answer.",
+      "verification": "verified",
+      "bib": {
+        "key": "gao2025asearcher",
+        "entrytype": "misc",
+        "title": "Beyond Ten Turns: Unlocking Long-Horizon Agentic Search with Large-Scale Asynchronous RL",
+        "authors": "Gao, Jiaxuan and Fu, Wei and Xie, Minyang and Xu, Shusheng and He, Chuyi and Mei, Zhiyu and Zhu, Banghua and Wu, Yi",
+        "year": 2025,
+        "eprint": "2508.07976",
+        "venue_note": ""
+      },
+      "checked": "2026-09-14",
+      "batch": "C",
+      "verification_detail": "verified",
+      "in_main_survey": false,
+      "area": "agents_deep_research",
+      "used_in_training": true
+    },
+    {
+      "id": "deepresearcher",
+      "title": "DeepResearcher: Scaling Deep Research via Reinforcement Learning in Real-world Environments",
+      "arxiv_id": "2504.03160",
+      "year": 2025,
+      "venue_if_stated": "",
+      "domain": "deep research RL (open-domain QA)",
+      "role": [
+        "uses_single_reference_judge",
+        "judge_where_no_checker"
+      ],
+      "where_described": "Sec. 3.4 Reward (F1, not a judge); Sec. 4 Model-based Evaluation; Appendix A.2 Prompt for Model-based Evaluation",
+      "source_urls": [
+        "https://arxiv.org/html/2504.03160"
+      ],
+      "judge_model": "GPT-4o-mini",
+      "judge_use": "evaluation (RL reward is word-level F1)",
+      "reference_wording": "ground truth answer list",
+      "verbatim_quotes": [
+        "Rule-based evaluation doesn’t suit long-form responses, so we adopt a model-based evaluation (MBE) approach using LLM-as-a-Judge",
+        "1. The pred_answer doesn’t need to be exactly the same as any of the ground truth answers, but should be semantically same for the question.",
+        "2. Each item in the ground truth answer list can be viewed as a ground truth answer for the question, and the pred_answer should be semantically same to at least one of them."
+      ],
+      "several_valid_answers": "yes",
+      "several_valid_note": "Multiple references as a closed list (NQ/TQ/HotpotQA-style answer aliases); an answer outside the list is not credited.",
+      "verification": "verified",
+      "bib": {
+        "key": "zheng2025deepresearcher",
+        "entrytype": "misc",
+        "title": "DeepResearcher: Scaling Deep Research via Reinforcement Learning in Real-world Environments",
+        "authors": "Zheng, Yuxiang and Fu, Dayuan and Hu, Xiangkun and Cai, Xiaojie and Ye, Lyumanshan and Lu, Pengrui and Liu, Pengfei",
+        "year": 2025,
+        "eprint": "2504.03160",
+        "venue_note": ""
+      },
+      "checked": "2026-09-14",
+      "batch": "C",
+      "verification_detail": "verified",
+      "in_main_survey": false,
+      "area": "agents_deep_research",
+      "used_in_training": false
+    },
+    {
+      "id": "browsecomp_plus",
+      "title": "BrowseComp-Plus: A More Fair and Transparent Evaluation Benchmark of Deep-Research Agent",
+      "arxiv_id": "2508.06600",
+      "year": 2025,
+      "venue_if_stated": "",
+      "domain": "deep-research agent benchmark (fixed corpus)",
+      "role": [
+        "uses_single_reference_judge"
+      ],
+      "where_described": "Sec. 4 metrics (Accuracy); Appendix F Evaluation Prompt",
+      "source_urls": [
+        "https://arxiv.org/html/2508.06600"
+      ],
+      "judge_model": "gpt-4.1",
+      "judge_use": "evaluation",
+      "reference_wording": "[correct_answer]; paper: ground truth",
+      "verbatim_quotes": [
+        "Accuracy follows BrowseComp: an LLM-as-judge (gpt-4.1) compares the model’s final answer against the ground truth using the evaluation prompt listed in Appendix F.",
+        "Judge whether the following [response] to [question] is correct or not based on the precise and unambiguous [correct_answer] below.",
+        "do not argue for any answer different than [correct_answer], focus only on whether the answers match."
+      ],
+      "several_valid_answers": "no",
+      "several_valid_note": "Inherits BrowseComp questions that \"feature verifiable, concise answers, enabling straightforward evaluation through simple answer matching.\"",
+      "verification": "verified",
+      "bib": {
+        "key": "chen2025browsecompplus",
+        "entrytype": "misc",
+        "title": "BrowseComp-Plus: A More Fair and Transparent Evaluation Benchmark of Deep-Research Agent",
+        "authors": "Chen, Zijian and Ma, Xueguang and Zhuang, Shengyao and Nie, Ping and Zou, Kai and Liu, Andrew and Green, Joshua and Patel, Kshama and Meng, Ruoxi and Su, Mingyi and others",
+        "year": 2025,
+        "eprint": "2508.06600",
+        "venue_note": ""
+      },
+      "checked": "2026-09-14",
+      "batch": "C",
+      "verification_detail": "verified",
+      "in_main_survey": false,
+      "area": "agents_deep_research",
+      "used_in_training": false
+    },
+    {
+      "id": "deepresearch_bench",
+      "title": "DeepResearch Bench: A Comprehensive Benchmark for Deep Research Agents",
+      "arxiv_id": "2506.11763",
+      "year": 2025,
+      "venue_if_stated": "",
+      "domain": "deep research report evaluation (RACE)",
+      "role": [
+        "uses_single_reference_judge"
+      ],
+      "where_described": "Sec. 3.1 RACE, Reference-Based Scoring; Sec. 4 setup; Appendix Score Prompt in RACE(Full); code deepresearch_bench_race.py (article_1=target, article_2=reference)",
+      "source_urls": [
+        "https://arxiv.org/html/2506.11763",
+        "https://github.com/Ayanami0730/deep_research_bench/blob/469cce54ea7f6a63c163d3d9fec879cf289ec484/deepresearch_bench_race.py#L101-L102"
+      ],
+      "judge_model": "Gemini-2.5-pro (RACE); reference reports generated by Gemini-2.5-pro-based Deep Research",
+      "judge_use": "evaluation",
+      "reference_wording": "reference report / high-quality reference (shown as <article_2>)",
+      "verbatim_quotes": [
+        "It then employs a reference-based scoring approach, comparing the target report with a high-quality reference.",
+        "Preliminary experiments suggest that scoring reports in isolation often yields insufficiently discriminative results; models tend to assign uniformly high scores",
+        "Finally, the target report’s score is determined relative to the reference report’s score"
+      ],
+      "several_valid_answers": "yes",
+      "several_valid_note": "Open-ended PhD-level research reports admit many valid reports, yet each task is scored relative to one model-generated reference report; the paper tests a \"Reverse Position (swapping reference and target report positions)\" variant.",
+      "verification": "verified",
+      "bib": {
+        "key": "du2025deepresearchbench",
+        "entrytype": "misc",
+        "title": "DeepResearch Bench: A Comprehensive Benchmark for Deep Research Agents",
+        "authors": "Du, Mingxuan and Xu, Benfeng and Zhu, Chiwei and Wang, Xiaorui and Mao, Zhendong",
+        "year": 2025,
+        "eprint": "2506.11763",
+        "venue_note": ""
+      },
+      "checked": "2026-09-14",
+      "batch": "C",
+      "verification_detail": "verified",
+      "in_main_survey": false,
+      "area": "agents_deep_research",
+      "used_in_training": false
+    },
+    {
+      "id": "webthinker",
+      "title": "WebThinker: Empowering Large Reasoning Models with Deep Research Capability",
+      "arxiv_id": "2504.21776",
+      "year": 2025,
+      "venue_if_stated": "NeurIPS 2025 (arXiv comment: Accepted by NeurIPS 2025)",
+      "domain": "deep research agent (GPQA, GAIA, WebWalkerQA, HLE)",
+      "role": [
+        "uses_single_reference_judge"
+      ],
+      "where_described": "Sec. 5 experimental setup; Appendix C.3.1 Evaluation Instruction for Problem-Solving Tasks",
+      "source_urls": [
+        "https://arxiv.org/html/2504.21776"
+      ],
+      "judge_model": "Qwen2.5-72B-Instruct",
+      "judge_use": "evaluation",
+      "reference_wording": "Labeled Answer",
+      "verbatim_quotes": [
+        "You are an evaluation assistant. Please determine if the predicted answer is equivalent to the labeled answer.",
+        "Are these answers equivalent? Please respond with \"Correct\" if they are equivalent, or \"Incorrect\" if they are not equivalent. Do not include any other text."
+      ],
+      "several_valid_answers": "no",
+      "several_valid_note": "Not discussed. Report-generation tasks are judged listwise without a reference (DeepSeek-R1 and GPT-4o).",
+      "verification": "verified",
+      "bib": {
+        "key": "li2025webthinker",
+        "entrytype": "inproceedings",
+        "title": "WebThinker: Empowering Large Reasoning Models with Deep Research Capability",
+        "authors": "Li, Xiaoxi and Jin, Jiajie and Dong, Guanting and Qian, Hongjin and Wu, Yongkang and Wen, Ji-Rong and Zhu, Yutao and Dou, Zhicheng",
+        "year": 2025,
+        "eprint": "2504.21776",
+        "venue_note": "arXiv comment: Accepted by NeurIPS 2025"
+      },
+      "checked": "2026-09-14",
+      "batch": "C",
+      "verification_detail": "verified",
+      "in_main_survey": false,
+      "area": "agents_deep_research",
+      "used_in_training": false
+    },
+    {
+      "id": "webexplorer",
+      "title": "WebExplorer: Explore and Evolve for Training Long-Horizon Web Agents",
+      "arxiv_id": "2509.06501",
+      "year": 2025,
+      "venue_if_stated": "",
+      "domain": "web agent RL",
+      "role": [
+        "uses_single_reference_judge"
+      ],
+      "where_described": "Sec. RL reward design (accuracy reward); Sec. evaluation (LLM-as-Judge, Avg@4)",
+      "source_urls": [
+        "https://arxiv.org/html/2509.06501"
+      ],
+      "judge_model": "DeepSeek-V3",
+      "judge_use": "both",
+      "reference_wording": "ground truth answers",
+      "verbatim_quotes": [
+        "For accuracy rewards , we leverage the DeepSeek-V3 model (Liu et al., 2024) as an automated judge to evaluate whether the final responses are correct given the ground truth answers.",
+        "We report all scores on these benchmarks using Avg@4 and employ LLM-as-Judge evaluation (Liu et al., 2023) with DeepSeek-V3"
+      ],
+      "several_valid_answers": "no",
+      "several_valid_note": "Not discussed; QA pairs are evolved by obfuscating clues (BrowseComp-style). Judge prompt text not found in the paper HTML.",
+      "verification": "partially verified",
+      "bib": {
+        "key": "liu2025webexplorer",
+        "entrytype": "misc",
+        "title": "WebExplorer: Explore and Evolve for Training Long-Horizon Web Agents",
+        "authors": "Liu, Junteng and Li, Yunji and Zhang, Chi and Li, Jingyang and Chen, Aili and Ji, Ke and Cheng, Weiyu and Wu, Zijia and Du, Chengyu and Xu, Qidi and others",
+        "year": 2025,
+        "eprint": "2509.06501",
+        "venue_note": ""
+      },
+      "checked": "2026-09-14",
+      "batch": "C",
+      "verification_detail": "partially verified",
+      "in_main_survey": false,
+      "area": "agents_deep_research",
+      "used_in_training": true
+    },
+    {
+      "id": "tongyi_deepresearch",
+      "title": "Tongyi DeepResearch Technical Report",
+      "arxiv_id": "2510.24701",
+      "year": 2025,
+      "venue_if_stated": "",
+      "domain": "deep research agent (industrial report)",
+      "role": [
+        "uses_single_reference_judge"
+      ],
+      "where_described": "Sec. 3.4.3 Agentic Reinforcement Learning (reward); Appendix B Evaluation Details",
+      "source_urls": [
+        "https://arxiv.org/html/2510.24701"
+      ],
+      "judge_model": "Qwen2.5-72B-Instruct (GAIA, WebWalkerQA); Gemini-2.0-Flash-001 (xbench-DeepSearch); GPT-4o-2024-08-06 (BrowseComp, BrowseComp-ZH); o3-mini (HLE)",
+      "judge_use": "evaluation (RL reward described only as matching ground truth)",
+      "reference_wording": "ground truth",
+      "verbatim_quotes": [
+        "For BrowseComp (1,266 examples) and BrowseComp-ZH (289 examples), we employ GPT-4o-2024-08-06 as the judge model.",
+        "the model generates a complete task attempt (a \"rollout\") and receives a reward if its final answer matches the ground truth (RLVR)"
+      ],
+      "several_valid_answers": "no",
+      "several_valid_note": "Not discussed; the reward-matching mechanism (rule or LLM) is not specified in the fetched text. Prompts follow each benchmark's official protocol.",
+      "verification": "partially verified",
+      "bib": {
+        "key": "tongyi2025deepresearch",
+        "entrytype": "misc",
+        "title": "Tongyi DeepResearch Technical Report",
+        "authors": "{Tongyi DeepResearch Team} and Li, Baixuan and Zhang, Bo and Zhang, Dingchu and Huang, Fei and Li, Guangyu and Chen, Guoxin and Yin, Huifeng and Wu, Jialong and Zhou, Jingren and others",
+        "year": 2025,
+        "eprint": "2510.24701",
+        "venue_note": ""
+      },
+      "checked": "2026-09-14",
+      "batch": "C",
+      "verification_detail": "partially verified",
+      "in_main_survey": false,
+      "area": "agents_deep_research",
+      "used_in_training": false
+    },
+    {
+      "id": "imo_proofbench",
+      "title": "Towards Robust Mathematical Reasoning (IMO-Bench: IMO-AnswerBench, IMO-ProofBench, IMO-GradingBench)",
+      "arxiv_id": "2511.01846",
+      "year": 2025,
+      "venue_if_stated": "EMNLP 2025 (main conference) per arXiv comment",
+      "domain": "math proof grading",
+      "role": [
+        "uses_single_reference_judge"
+      ],
+      "where_described": "Sec. 2.3 Answer autograder; Sec. 3.2 Proof Autograder; App. A.5 (AnswerAutoGrader prompt), App. B.5 (ProofAutoGrader prompt), App. B.6 Limitations",
+      "source_urls": [
+        "https://arxiv.org/html/2511.01846"
+      ],
+      "judge_model": "Gemini 2.5 Pro (AnswerAutoGrader and ProofAutoGrader)",
+      "reference_wording": "\"Ground Truth Solution\" (proofs); \"Golden Answer\" (short answers)",
+      "verbatim_quotes": [
+        "The autograder leverages Gemini 2.5 Pro, providing it with a prompt containing the problem statement, the candidate solution, a reference solution, and specific grading guidelines (see Appendix B.5).",
+        "**Ground Truth Solution:** A reference solution. Assume this solution is correct. It demonstrates one valid approach.",
+        "being prone to be overly punitive for minor formatting issues or unconventional yet correct solutions."
+      ],
+      "several_valid_answers": "partially",
+      "several_valid_note": "Prompt says the reference \"demonstrates one valid approach\"; App. B.6 reports that on PB-Basic 027, a \"novel solution entirely different from the established ground truth and grading guidelines\" got 6/7 from the human grader but was marked wrong by ProofAutoGrader.",
+      "verification": "verified",
+      "bib": {
+        "key": "luong2025imobench",
+        "entrytype": "inproceedings",
+        "title": "Towards Robust Mathematical Reasoning",
+        "authors": "Luong, Thang and Hwang, Dawsen and Nguyen, Hoang H. and Ghiasi, Golnaz and Chervonyi, Yuri and Seo, Insuk and Kim, Junsu and Bingham, Garrett and Lee, Jonathan and Mishra, Swaroop and Zhai, Alex and Hu, Clara Huiyi and others",
+        "year": 2025,
+        "eprint": "2511.01846",
+        "venue_note": "arXiv comment: EMNLP 2025 (main conference)"
+      },
+      "checked": "2026-09-14",
+      "batch": "D",
+      "verification_detail": "verified",
+      "in_main_survey": false,
+      "area": "proof_grading",
+      "used_in_training": false
+    },
+    {
+      "id": "refgrader",
+      "title": "RefGrader: Automated Grading of Mathematical Competition Proofs using Agentic Workflows",
+      "arxiv_id": "2510.09021",
+      "year": 2025,
+      "venue_if_stated": "",
+      "domain": "math proof grading",
+      "role": [
+        "uses_single_reference_judge"
+      ],
+      "where_described": "Sec. 5.2 Multi-step Grading with Reference Solutions; appendix grading prompts",
+      "source_urls": [
+        "https://arxiv.org/html/2510.09021"
+      ],
+      "judge_model": "Gemini 2.5 Pro",
+      "reference_wording": "\"reference solution(s)\" collected from AoPS",
+      "verbatim_quotes": [
+        "The model finds the most similar group of reference solutions to the given solution and uses it as a reference to grade the given solution.",
+        "The model detects errors in two ways: (1) direct error detection, or (2) contradictions with the reference solution. Contradictions imply the given solution is wrong at that step.",
+        "* The reference solution is guaranteed correct, but may differ in presentation."
+      ],
+      "several_valid_answers": "partially",
+      "several_valid_note": "Uses a set of AoPS reference solutions clustered by approach, but grades against the most similar one; prompt rule: \"Alternative main steps cannot contradict key facts from the reference solution.\" The 3-step variant adds a single similar reference solution.",
+      "verification": "verified",
+      "bib": {
+        "key": "mahdavi2025refgrader",
+        "entrytype": "misc",
+        "title": "RefGrader: Automated Grading of Mathematical Competition Proofs using Agentic Workflows",
+        "authors": "Mahdavi, Hamed and Mahdavinia, Pouria and Malek, Samira and Mohammadipour, Pegah and Hashemi, Alireza and Daliri, Majid and Farhadi, Alireza and Khasahmadi, Amir and Mireshghallah, Niloofar and Honavar, Vasant",
+        "year": 2025,
+        "eprint": "2510.09021",
+        "venue_note": ""
+      },
+      "checked": "2026-09-14",
+      "batch": "D",
+      "verification_detail": "verified",
+      "in_main_survey": false,
+      "area": "proof_grading",
+      "used_in_training": false
+    },
+    {
+      "id": "ice_score",
+      "title": "ICE-Score: Instructing Large Language Models to Evaluate Code",
+      "arxiv_id": "2304.14317",
+      "year": 2024,
+      "venue_if_stated": "Findings of EACL 2024 per arXiv comment",
+      "domain": "code generation evaluation",
+      "role": [
+        "uses_single_reference_judge"
+      ],
+      "where_described": "Sec. 3 (method: reference code optional); Tables 1-2 (Ref-ICE-Score); App. A.2 functional-correctness criterion",
+      "source_urls": [
+        "https://arxiv.org/html/2304.14317"
+      ],
+      "judge_model": "GPT-3.5-turbo (also GPT-4 variant)",
+      "reference_wording": "\"reference code\"",
+      "verbatim_quotes": [
+        "When the reference code is provided, we slightly modify the evaluation steps in the prompt to incorporate it.",
+        "The correctness is measured by all possible unit tests and the comparison of the reference code.",
+        "we find that Ref-ICE-Score does not significantly improve the performance"
+      ],
+      "several_valid_answers": "yes",
+      "several_valid_note": "Code tasks admit many implementations; the paper notes token metrics \"often underestimate the variety of outputs with the same semantic logic.\" CodeJudge (2410.02184) reports that ICE-Score with reference \"still cannot distinguish between partially correct code ... and correct code with a different implementation\".",
+      "verification": "verified",
+      "bib": {
+        "key": "zhuo2024icescore",
+        "entrytype": "inproceedings",
+        "title": "ICE-Score: Instructing Large Language Models to Evaluate Code",
+        "authors": "Zhuo, Terry Yue",
+        "year": 2024,
+        "eprint": "2304.14317",
+        "venue_note": "arXiv comment: Accepted to Findings of EACL 2024"
+      },
+      "checked": "2026-09-14",
+      "batch": "D",
+      "verification_detail": "verified",
+      "in_main_survey": false,
+      "area": "code",
+      "used_in_training": false
+    },
+    {
+      "id": "codejudge",
+      "title": "CodeJudge: Evaluating Code Generation with Large Language Models",
+      "arxiv_id": "2410.02184",
+      "year": 2024,
+      "venue_if_stated": "EMNLP 2024 (Main, Long Paper) per arXiv comment",
+      "domain": "code generation evaluation",
+      "role": [
+        "uses_single_reference_judge",
+        "judge_where_no_checker"
+      ],
+      "where_described": "Sec. 1-2 (motivation); Sec. 4 results with and without reference code; App. Tables 11, 13-15 (\"w/ ref\")",
+      "source_urls": [
+        "https://arxiv.org/html/2410.02184",
+        "https://github.com/VichyTong/CodeJudge"
+      ],
+      "judge_model": "four LLMs incl. GPT-3.5-Turbo and Llama-3-8B-Instruct",
+      "reference_wording": "\"reference code\" (\"w/ ref\" variants)",
+      "verbatim_quotes": [
+        "since many tasks do not come with test cases or only have insufficient test cases that miss corner cases",
+        "Surprisingly, providing reference code leads to worse performance for all three LLM-based methods in the CoNaLa dataset.",
+        "the LLM evaluator focuses too much on the differences between the generated code and reference code rather than high-level semantic similarities."
+      ],
+      "several_valid_answers": "yes",
+      "several_valid_note": "\"model-generated code is semantically equivalent to the ground truth while having syntactic variations, e.g., using a while loop instead of a for loop\". Also reports that on APPS/BigCodeBench \"LLM-based methods consistently perform better when reference code is provided\".",
+      "verification": "verified",
+      "bib": {
+        "key": "tong2024codejudge",
+        "entrytype": "inproceedings",
+        "title": "CodeJudge: Evaluating Code Generation with Large Language Models",
+        "authors": "Tong, Weixi and Zhang, Tianyi",
+        "year": 2024,
+        "eprint": "2410.02184",
+        "venue_note": "arXiv comment: Accepted to EMNLP 2024 (Main, Long Paper)"
+      },
+      "checked": "2026-09-14",
+      "batch": "D",
+      "verification_detail": "verified",
+      "in_main_survey": false,
+      "area": "code",
+      "used_in_training": false
+    },
+    {
+      "id": "matharena",
+      "title": "MathArena: Evaluating LLMs on Uncontaminated Math Competitions",
+      "arxiv_id": "2505.23281",
+      "year": 2025,
+      "venue_if_stated": "",
+      "domain": "math competition evaluation (final answers; proofs graded by humans)",
+      "role": [
+        "uses_single_reference_judge"
+      ],
+      "where_described": "Sec. 3.3 (answer parsing and LLM judge; human grading of proofs); Sec. 4.3",
+      "source_urls": [
+        "https://arxiv.org/html/2505.23281"
+      ],
+      "judge_model": "Gemini-2.5-Flash (final-answer equivalence check alongside a rule-based parser)",
+      "reference_wording": "\"ground truth\"",
+      "verbatim_quotes": [
+        "we incorporate an LLM-based judge, using the Gemini-2.5-Flash model, which evaluates whether the model’s final answer is semantically equivalent to the ground truth. If the parser and judge disagree, we manually inspect the model response and update the parser as needed.",
+        "Automated grading is currently insufficient for proof-based problems, so we rely on expert human graders for precise grading."
+      ],
+      "several_valid_answers": "no",
+      "several_valid_note": "Final-answer competitions with a single ground truth; the LLM judge is a cross-check on the parser, with human inspection of disagreements.",
+      "verification": "verified",
+      "bib": {
+        "key": "balunovic2025matharena",
+        "entrytype": "misc",
+        "title": "MathArena: Evaluating LLMs on Uncontaminated Math Competitions",
+        "authors": "Balunovi{\\'c}, Mislav and Dekoninck, Jasper and Petrov, Ivo and Jovanovi{\\'c}, Nikola and Vechev, Martin",
+        "year": 2025,
+        "eprint": "2505.23281",
+        "venue_note": ""
+      },
+      "checked": "2026-09-14",
+      "batch": "D",
+      "verification_detail": "verified",
+      "in_main_survey": false,
+      "area": "proof_grading",
+      "used_in_training": false
+    },
+    {
+      "id": "formal_math_reasoning",
+      "title": "Formal Mathematical Reasoning: A New Frontier in AI",
+      "arxiv_id": "2412.16075",
+      "year": 2024,
+      "venue_if_stated": "",
+      "domain": "formal mathematics (position paper)",
+      "role": [
+        "formal_verification_argument"
+      ],
+      "where_described": "Sec. 1 Introduction; Sec. 2 'Lack of Correctness Verifiability'",
+      "source_urls": [
+        "https://arxiv.org/html/2412.16075"
+      ],
+      "judge_model": "n/a",
+      "reference_wording": "n/a",
+      "verbatim_quotes": [
+        "Second, solutions to many advanced problems are not numbers that can be evaluated by comparing them with the ground truth.",
+        "formal mathematical reasoning is grounded in formal systems such as proof assistants, which can verify the correctness of reasoning and provide automatic feedback.",
+        "Therefore, it is still an open question whether rigorous proof verification can be achieved within the informal approach."
+      ],
+      "several_valid_answers": "n/a",
+      "several_valid_note": "Argues comparison with a ground-truth number does not extend to proofs; also says formal reasoning \"should be seen as complementary to\" the informal approach.",
+      "verification": "verified",
+      "bib": {
+        "key": "yang2024formalmath",
+        "entrytype": "misc",
+        "title": "Formal Mathematical Reasoning: A New Frontier in AI",
+        "authors": "Yang, Kaiyu and Poesia, Gabriel and He, Jingxuan and Li, Wenda and Lauter, Kristin and Chaudhuri, Swarat and Song, Dawn",
+        "year": 2024,
+        "eprint": "2412.16075",
+        "venue_note": ""
+      },
+      "checked": "2026-09-14",
+      "batch": "D",
+      "verification_detail": "verified",
+      "in_main_survey": false,
+      "area": "formal_or_context",
+      "used_in_training": false
+    },
+    {
+      "id": "kimina_prover",
+      "title": "Kimina-Prover Preview: Towards Large Formal Reasoning Models with Reinforcement Learning",
+      "arxiv_id": "2504.11354",
+      "year": 2025,
+      "venue_if_stated": "",
+      "domain": "formal theorem proving (Lean 4) and autoformalization",
+      "role": [
+        "formal_verification_argument",
+        "judge_where_no_checker"
+      ],
+      "where_described": "Sec. 3 (RL with Lean compiler reward; autoformalization); App. C.2.2 Expert Iteration with LLM Judge",
+      "source_urls": [
+        "https://arxiv.org/html/2504.11354"
+      ],
+      "judge_model": "QwQ-32B (judge for semantic correctness of autoformalized statements)",
+      "reference_wording": "natural-language problem statement (informal problem) vs. candidate formalization; judge prompt not published",
+      "verbatim_quotes": [
+        "The final Lean 4 code of each candidate is then rigorously verified using the Lean compiler to determine correctness.",
+        "Unlike proof search, where success is easily defined by whether a theorem is proven, there is no straightforward way to verify the correctness of a generated formal problem statement with respect to the natural language input.",
+        "We believe this presents a significant challenge in applying reinforcement learning in non-verifiable domains."
+      ],
+      "several_valid_answers": "yes",
+      "several_valid_note": "Many Lean formalizations can be faithful to one informal statement; the paper notes \"LLM-based feedback is susceptible to false positives\".",
+      "verification": "verified",
+      "bib": {
+        "key": "wang2025kimina",
+        "entrytype": "misc",
+        "title": "Kimina-Prover Preview: Towards Large Formal Reasoning Models with Reinforcement Learning",
+        "authors": "Wang, Haiming and Unsal, Mert and Lin, Xiaohan and Baksys, Mantas and Liu, Junqi and Santos, Marco Dos and Sung, Flood and Vinyes, Marina and Ying, Zhenzhe and Zhu, Zekai and Lu, Jianqiao and de Saxc{\\'e}, Hugues and others",
+        "year": 2025,
+        "eprint": "2504.11354",
+        "venue_note": ""
+      },
+      "checked": "2026-09-14",
+      "batch": "D",
+      "verification_detail": "verified",
+      "in_main_survey": false,
+      "area": "formal_or_context",
+      "used_in_training": false
+    },
+    {
+      "id": "putnambench",
+      "title": "PutnamBench: Evaluating Neural Theorem-Provers on the Putnam Mathematical Competition",
+      "arxiv_id": "2407.11214",
+      "year": 2024,
+      "venue_if_stated": "NeurIPS 2024 Datasets & Benchmarks Track per arXiv comment",
+      "domain": "formal theorem proving benchmark (Lean 4, Isabelle, Coq)",
+      "role": [
+        "formal_verification_argument"
+      ],
+      "where_described": "Sec. 1-2 (benchmark construction, factored solutions)",
+      "source_urls": [
+        "https://arxiv.org/html/2407.11214"
+      ],
+      "judge_model": "n/a (proof assistants)",
+      "reference_wording": "n/a",
+      "verbatim_quotes": [
+        "Formal proof frameworks like Lean 4 (Moura & Ullrich, 2021), Coq (The Coq Development Team, 2023), and Isabelle (Wenzel et al., 2008) allow users to write machine-verifiable proofs of mathematical theorems.",
+        "Roughly 60% of Putnam problems, in their natural language form, require exhibiting a (closed-form) solution along with a proof of its correctness."
+      ],
+      "several_valid_answers": "yes",
+      "several_valid_note": "Any machine-checked proof counts; the benchmark is evidence of the formal alternative rather than an explicit argument against LLM judges.",
+      "verification": "verified",
+      "bib": {
+        "key": "tsoukalas2024putnambench",
+        "entrytype": "inproceedings",
+        "title": "PutnamBench: Evaluating Neural Theorem-Provers on the Putnam Mathematical Competition",
+        "authors": "Tsoukalas, George and Lee, Jasper and Jennings, John and Xin, Jimmy and Ding, Michelle and Jennings, Michael and Thakur, Amitayush and Chaudhuri, Swarat",
+        "year": 2024,
+        "eprint": "2407.11214",
+        "venue_note": "arXiv comment: Accepted at NeurIPS 2024 Datasets & Benchmarks Track"
+      },
+      "checked": "2026-09-14",
+      "batch": "D",
+      "verification_detail": "verified",
+      "in_main_survey": false,
+      "area": "formal_or_context",
+      "used_in_training": false
+    },
+    {
+      "id": "nochecker_reward_bridge",
+      "title": "Crossing the Reward Bridge: Expanding RL with Verifiable Rewards Across Diverse Domains",
+      "arxiv_id": "2503.23829",
+      "year": 2025,
+      "venue_if_stated": "",
+      "domain": "RLVR beyond math",
+      "role": [
+        "judge_where_no_checker",
+        "uses_single_reference_judge"
+      ],
+      "where_described": "Abstract; Sec. 1 Introduction",
+      "source_urls": [
+        "https://arxiv.org/html/2503.23829"
+      ],
+      "judge_model": "Qwen2.5-72B-Instruct teacher / Qwen2.5-7B-Instruct-RLVR",
+      "reference_wording": "\"Reference Answer\"",
+      "verbatim_quotes": [
+        "where structured reference answers are typically unavailable.",
+        "only 60.3% of mathematical problems possess single-term numerical answers verifiable by rule-based methods, with the ratio dropping further to 45.4% for complex multi-domain queries."
+      ],
+      "several_valid_answers": "no",
+      "several_valid_note": "Verifier prompt: \"If they **match exactly**, output **YES**.\" (see main survey)",
+      "verification": "verified",
+      "existing_key": "su2025rewardbridge (survey/new_refs.bib)",
+      "checked": "2026-09-14",
+      "batch": "D",
+      "verification_detail": "verified",
+      "in_main_survey": true,
+      "area": "main_survey_overlap",
+      "used_in_training": false
+    },
+    {
+      "id": "nochecker_qwen3",
+      "title": "Qwen3 Technical Report",
+      "arxiv_id": "2505.09388",
+      "year": 2025,
+      "venue_if_stated": "",
+      "domain": "general RL reward design",
+      "role": [
+        "judge_where_no_checker",
+        "uses_single_reference_judge"
+      ],
+      "where_described": "Sec. 4 General RL, reward types",
+      "source_urls": [
+        "https://arxiv.org/html/2505.09388"
+      ],
+      "judge_model": "Qwen2.5-72B-Instruct",
+      "reference_wording": "\"reference answer\"",
+      "verbatim_quotes": [
+        "This method allows for more flexible handling of diverse tasks without requiring strict formatting, avoiding false negatives that can occur with purely rule-based rewards."
+      ],
+      "several_valid_answers": "n/a",
+      "several_valid_note": "Prompt not published.",
+      "verification": "verified",
+      "existing_key": "yang2025qwen3 (survey/new_refs.bib)",
+      "checked": "2026-09-14",
+      "batch": "D",
+      "verification_detail": "verified",
+      "in_main_survey": true,
+      "area": "main_survey_overlap",
+      "used_in_training": false
+    },
+    {
+      "id": "nochecker_frames",
+      "title": "Fact, Fetch, and Reason: A Unified Evaluation of Retrieval-Augmented Generation",
+      "arxiv_id": "2409.12941",
+      "year": 2025,
+      "venue_if_stated": "NAACL per arXiv comment",
+      "domain": "RAG / multi-hop QA",
+      "role": [
+        "judge_where_no_checker",
+        "uses_single_reference_judge"
+      ],
+      "where_described": "Sec. 4 Experiments",
+      "source_urls": [
+        "https://arxiv.org/html/2409.12941"
+      ],
+      "judge_model": "Gemini-Pro-1.5-0514",
+      "reference_wording": "\"gold answer\" / \"Ground Truth Answer\"",
+      "verbatim_quotes": [
+        "Since the gold answers to questions in the dataset are free-form tokens instead of choices from multiple-choice answers, we use an LLM to evaluate if the outcome from the LLM under evaluation matches the gold answer"
+      ],
+      "several_valid_answers": "partially",
+      "several_valid_note": "See main survey (FRAMES autorater).",
+      "verification": "verified",
+      "existing_key": "krishna2025frames (survey/new_refs.bib)",
+      "checked": "2026-09-14",
+      "batch": "D",
+      "verification_detail": "verified",
+      "in_main_survey": true,
+      "area": "main_survey_overlap",
+      "used_in_training": false
+    },
+    {
+      "id": "nochecker_hle",
+      "title": "Humanity's Last Exam",
+      "arxiv_id": "2501.14249",
+      "year": 2025,
+      "venue_if_stated": "",
+      "domain": "closed-ended expert QA",
+      "role": [
+        "judge_where_no_checker",
+        "uses_single_reference_judge"
+      ],
+      "where_described": "Sec. 4 Evaluation",
+      "source_urls": [
+        "https://arxiv.org/html/2501.14249"
+      ],
+      "judge_model": "o3-mini",
+      "reference_wording": "\"[correct_answer]\"",
+      "verbatim_quotes": [
+        "As the question-answers are precise and close-ended, we use o3-mini as a judge to verify answer correctness against model predictions while accounting for equivalent formats (e.g., decimals vs. fractions or estimations)."
+      ],
+      "several_valid_answers": "no",
+      "several_valid_note": "Judge prompt: \"precise and unambiguous [correct_answer]\".",
+      "verification": "verified",
+      "existing_key": "phan2025hle (references.bib)",
+      "checked": "2026-09-14",
+      "batch": "D",
+      "verification_detail": "verified",
+      "in_main_survey": true,
+      "area": "main_survey_overlap",
+      "used_in_training": false
+    },
+    {
+      "id": "nochecker_mtbench",
+      "title": "Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena",
+      "arxiv_id": "2306.05685",
+      "year": 2023,
+      "venue_if_stated": "NeurIPS 2023 Datasets and Benchmarks",
+      "domain": "open-ended chat evaluation",
+      "role": [
+        "judge_where_no_checker"
+      ],
+      "where_described": "Sec. 3 LLM as a Judge",
+      "source_urls": [
+        "https://arxiv.org/html/2306.05685"
+      ],
+      "judge_model": "GPT-4",
+      "reference_wording": "\"reference answer\" (math/reasoning/coding only)",
+      "verbatim_quotes": [
+        "Given that most questions in MT-bench and Chatbot Arena are open-ended without reference answers, devising a rule-based program to assess the outputs is extremely challenging."
+      ],
+      "several_valid_answers": "n/a",
+      "several_valid_note": "",
+      "verification": "verified",
+      "existing_key": "zheng2023judging (references.bib)",
+      "checked": "2026-09-14",
+      "batch": "D",
+      "verification_detail": "verified",
+      "in_main_survey": true,
+      "area": "main_survey_overlap",
+      "used_in_training": false
+    }
+  ]
+}

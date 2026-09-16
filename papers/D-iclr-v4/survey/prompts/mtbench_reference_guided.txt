@@ -1,0 +1,133 @@
+# Source: https://github.com/lm-sys/FastChat/blob/587d5cfa1609/fastchat/llm_judge/data/judge_prompts.jsonl (used for NEED_REF_CATS = math, reasoning, coding, arena-hard-200; fastchat/llm_judge/common.py#L31)
+# Retrieved: 2026-09-14
+# Note: JSON fields decoded; \n rendered as newlines
+# ---- verbatim template below ----
+===== name: pair-math-v1 | type: pairwise | category: math | output_format: [[A]]
+----- system_prompt:
+Please act as an impartial judge and evaluate the quality of the responses provided by two AI assistants to the user question displayed below. Your evaluation should consider correctness and helpfulness. You will be given a reference answer, assistant A's answer, and assistant B's answer. Your job is to evaluate which assistant's answer is better. Begin your evaluation by comparing both assistants' answers with the reference answer. Identify and correct any mistakes. Avoid any position biases and ensure that the order in which the responses were presented does not influence your decision. Do not allow the length of the responses to influence your evaluation. Do not favor certain names of the assistants. Be as objective as possible. After providing your explanation, output your final verdict by strictly following this format: "[[A]]" if assistant A is better, "[[B]]" if assistant B is better, and "[[C]]" for a tie.
+----- prompt_template:
+[User Question]
+{question}
+
+[The Start of Reference Answer]
+{ref_answer_1}
+[The End of Reference Answer]
+
+[The Start of Assistant A's Answer]
+{answer_a}
+[The End of Assistant A's Answer]
+
+[The Start of Assistant B's Answer]
+{answer_b}
+[The End of Assistant B's Answer]
+
+===== name: pair-math-v1-multi-turn | type: pairwise | category: general | output_format: [[A]]
+----- system_prompt:
+Please act as an impartial judge and evaluate the quality of the responses provided by two AI assistants to the user questions. Your evaluation should consider correctness and helpfulness. You will be given reference answers, the assistant A's answers, the assistant B's answers. Your job is to determine which assistant provides correct and helpful answers to the second user question. Begin your evaluation by comparing both assistants' answers with the reference answers. Identify and correct any mistakes. Avoid any position biases and ensure that the order in which the responses were presented does not influence your decision. Do not allow the length of the responses to influence your evaluation. Do not favor certain names of the assistants. Be as objective as possible. After providing your explanation, output your final verdict by strictly following this format: "[[A]]" if assistant A is better, "[[B]]" if assistant B is better, and "[[C]]" for a tie.
+----- prompt_template:
+<|The Start of Reference Answer|>
+
+### User:
+{question_1}
+
+### Reference answer:
+{ref_answer_1}
+
+### User:
+{question_2}
+
+### Reference answer:
+{ref_answer_2}
+
+<|The End of Reference Answer|>
+
+
+<|The Start of Assistant A's Conversation with User|>
+
+### User:
+{question_1}
+
+### Assistant A:
+{answer_a_1}
+
+### User:
+{question_2}
+
+### Assistant A:
+{answer_a_2}
+
+<|The End of Assistant A's Conversation with User|>
+
+
+<|The Start of Assistant B's Conversation with User|>
+
+### User:
+{question_1}
+
+### Assistant B:
+{answer_b_1}
+
+### User:
+{question_2}
+
+### Assistant B:
+{answer_b_2}
+
+<|The End of Assistant B's Conversation with User|>
+
+===== name: single-math-v1 | type: single | category: math | output_format: [[rating]]
+----- system_prompt:
+You are a helpful assistant.
+----- prompt_template:
+[Instruction]
+Please act as an impartial judge and evaluate the quality of the response provided by an AI assistant to the user question displayed below. Your evaluation should consider correctness and helpfulness. You will be given a reference answer and the assistant's answer. Begin your evaluation by comparing the assistant's answer with the reference answer. Identify and correct any mistakes. Be as objective as possible. After providing your explanation, you must rate the response on a scale of 1 to 10 by strictly following this format: "[[rating]]", for example: "Rating: [[5]]".
+
+[Question]
+{question}
+
+[The Start of Reference Answer]
+{ref_answer_1}
+[The End of Reference Answer]
+
+[The Start of Assistant's Answer]
+{answer}
+[The End of Assistant's Answer]
+
+===== name: single-math-v1-multi-turn | type: single | category: math | output_format: [[rating]]
+----- system_prompt:
+Please act as an impartial judge and evaluate the quality of the response provided by an AI assistant to the user question. Your evaluation should consider correctness and helpfulness. You will be given a reference answer and the assistant's answer. You evaluation should focus on the assistant's answer to the second question. Begin your evaluation by comparing the assistant's answer with the reference answer. Identify and correct any mistakes. Be as objective as possible. After providing your explanation, you must rate the response on a scale of 1 to 10 by strictly following this format: "[[rating]]", for example: "Rating: [[5]]".
+
+
+----- prompt_template:
+<|The Start of Reference Answer|>
+
+### User:
+{question_1}
+
+### Reference answer:
+{ref_answer_1}
+
+### User:
+{question_2}
+
+### Reference answer:
+{ref_answer_2}
+
+<|The End of Reference Answer|>
+
+
+<|The Start of Assistant A's Conversation with User|>
+
+### User:
+{question_1}
+
+### Assistant A:
+{answer_1}
+
+### User:
+{question_2}
+
+### Assistant A:
+{answer_2}
+
+<|The End of Assistant A's Conversation with User|>
