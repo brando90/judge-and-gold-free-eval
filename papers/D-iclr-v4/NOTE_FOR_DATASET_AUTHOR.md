@@ -1,8 +1,14 @@
 # MathRefBench: one request, and a validation result you may want
 
-We wrote independent validity checkers for `final_mathrefbench.jsonl`. They **verify 1,279 of 1,279
-stored solutions, with zero failures**, across 189 of the 324 items. Your answers and our checkers
-agree everywhere they meet.
+We can now decide validity programmatically for **256 of the 324 items**, and every stored answer in
+those items checks out — **1,738 of 1,738, zero failures**:
+
+- **189 `math_constraint` items** — checkers we wrote ourselves: 1,279/1,279 stored answers verified.
+- **67 `mathconstruct` items** — MathConstruct's own upstream checkers
+  (`github.com/eth-sri/mathconstruct`), run against your bank: 459/459 verified, 67/67 items.
+
+So your answers and two independent sets of checkers agree everywhere they meet. The
+`mathconstruct` half needs nothing from you; we use upstream directly.
 
 **The ask: the MathConstraint instance generator.** 68 `math_constraint` items give a seed and a
 density in `original_parameters` but not the instance itself, so we cannot reconstruct the
@@ -34,14 +40,17 @@ at least 2, and 306 of 324 hold exactly 7, with 1,874 of 2,198 solutions marked
 candidate can be correct yet unlisted. That is exactly the case our paper is about, and exactly why
 a checker rather than a lookup is required.
 
-## Two notes
+## One note
 
-**MathConstruct's checkers are public** (`github.com/eth-sri/mathconstruct`, per-problem `check`
-methods). We plan to use those for the 67 `mathconstruct` items rather than trusting the bank. If
-the copies in MathRefBench have diverged from upstream, tell us.
-
-**Two of our checkers were wrong when first written and your data caught them** — `number` (we
-required equal sums of squares) and `hadamard` (wrong cyclic-autocorrelation constant). Fixed.
+**Three of our checkers were wrong when first written, and your data caught them.** `number` (we
+required equal sums of squares as well as equal sums) and `hadamard` (wrong cyclic-autocorrelation
+constant) were genuine bugs in our code. A third was a calling mistake against the upstream
+MathConstruct checkers: we fed them the stored `answer` field, which carries JSON artifacts — big
+integers serialized as strings inside lists (`[1023, ..., '288230376151711743']`), fractions as
+`'499999999973376890/158113883'` — and 22 items appeared to fail. Using `rendered_answer` (the
+`\boxed{}` LaTeX) through their own parser gives 67/67. Nothing was wrong with your data; you may
+want to know about the `answer`-field artifact anyway, since it will trip up anyone who reads that
+field directly.
 
 ## What we'll send back
 

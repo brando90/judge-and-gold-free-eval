@@ -47,10 +47,21 @@ ap.add_argument("--dry-run", action="store_true")
 args = ap.parse_args()
 
 sys.path.insert(0, HERE)
-import v4_checkers as C
+import v4_checkers as C       # our checkers: 189 math_constraint items
+import v4_mc_checkers as MC   # upstream MathConstruct checkers: 67 mathconstruct items
+
+
+def checkable(r):
+    """256 of 324 items can be graded without the answer bank. The other 68 are math_constraint
+    types whose verification re-solves a pycsp3 model in a JVM subprocess -- a different cost class
+    entirely (~60s timeout per candidate), so they are excluded here rather than in the analysis."""
+    if r["question_id"].startswith("math_constraint"):
+        return C.family(r) in C.CHECKERS
+    return MC.covers(r)
+
 
 rows = [json.loads(l) for l in open(BENCH)]
-items = [r for r in rows if r["question_id"].startswith("math_constraint") and C.family(r) in C.CHECKERS]
+items = [r for r in rows if checkable(r)]
 items.sort(key=lambda r: r["question_id"])
 if args.limit_items:
     items = items[: args.limit_items]
@@ -183,8 +194,14 @@ def one(unit):
             stop = resp.choices[0].finish_reason
         ans = extract(text)
         bank = {norm(s["answer"]): s["normalized_answer_id"] for s in r["solutions"]}
+        if r["question_id"].startswith("math_constraint"):
+            ok = C.check(r, ans) if ans else None
+        else:
+            # Pass the full reply: upstream pulls the LAST \boxed{} out itself, and its parser
+            # needs that LaTeX. Handing it the bare extracted string loses list-depth information.
+            ok = MC.check(r, ans, raw_text=text) if ans else None
         row.update(answer=ans,
-                   valid=(C.check(r, ans) if ans else None),
+                   valid=ok,
                    bank_match=bool(ans and norm(ans) in bank),
                    matched_class=bank.get(norm(ans)) if ans else None,
                    truncated=(stop in ("length", "max_tokens")),
