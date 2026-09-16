@@ -225,3 +225,4 @@ experiments/tfa-vs-judge/.venv/
 .DS_Store
 **/.DS_Store
 texput.log
+experiments/tfa-vs-judge/runs/v4_pool/
