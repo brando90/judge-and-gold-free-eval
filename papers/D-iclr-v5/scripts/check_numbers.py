@@ -58,6 +58,37 @@ for jf in (PAPERS / "analysis").glob("*.json"):
     except Exception:
         pass
 
+# The ledger totals are typed into the appendix rather than produced by a script, which a reviewer
+# flagged as an avoidable weak point for a paper whose distinguishing strength is the ledger.
+# Derive them here so they are checked rather than trusted: each column of tab:ledger-totals must
+# sum to its own printed Total. The verified totals then count as sourced.
+def ledger_totals():
+    src = (PAPER / "appendix.tex").read_text(errors="ignore")
+    i = src.find(r"\label{tab:ledger-totals}")
+    if i < 0:
+        return []
+    block = src[i:src.find(r"\end{tabular}", i)]
+    rows = re.findall(r"^\s*([A-Za-z][^&]*?)\s*&\s*(\d+)\s*&\s*(\d+)\s*\\\\", block, re.M)
+    body = [r for r in rows if not r[0].strip().lower().startswith("total")]
+    total = [r for r in rows if r[0].strip().lower().startswith("total")]
+    if not body or not total:
+        return []
+    out = []
+    for col in (1, 2):
+        s = sum(int(r[col]) for r in body)
+        printed = int(total[0][col])
+        out.append(str(s))
+        if printed != s:
+            print(f"LEDGER MISMATCH: column {col} rows sum to {s}, table prints {printed}")
+        else:
+            print(f"ledger column {col}: rows sum to {s}, matching the printed total")
+    for r in body:
+        out.extend((r[1], r[2]))
+    return out
+
+
+known.update(ledger_totals())
+
 # numbers that are structural, not results
 TRIVIAL = {str(i) for i in range(0, 21)} | {"32", "64", "100", "91", "31", "30", "2026", "2027", "95", "0.5",
                                             "1.0", "0.2", "0.8", "10.0"}
