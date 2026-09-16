@@ -365,15 +365,30 @@ def family(row):
     return re.split(r"[_0-9]", row["problem_name"])[0]
 
 
-def check(row, answer):
-    """True / False / None for a candidate answer to this item."""
+def check(row, answer, with_reason=False):
+    """True / False / None for a candidate answer to this item.
+
+    None means ONLY "no checker covers this item". It must never mean "the answer was
+    malformed": a checker that raises on a candidate is reporting a wrong-shaped answer
+    (wrong arity, a string where an integer is required), which is an INCORRECT answer, not
+    an undecidable one. Returning None there would quietly drop wrong answers out of the
+    pool and inflate the apparent valid rate. Upstream MathConstruct's parse_and_check
+    treats a checker exception the same way -- as incorrect.
+
+    with_reason=True returns (verdict, reason) so a raised verdict stays auditable. That
+    matters because raised->False is the dangerous direction: if a checker itself were
+    buggy, a CORRECT answer would be marked wrong, which is precisely the failure mode this
+    paper accuses judges of. Every checker here verified all 1,279 stored answers, so this
+    is unlikely -- but it is recorded rather than trusted.
+    """
     f = CHECKERS.get(family(row))
     if f is None or not row["question_id"].startswith("math_constraint"):
-        return None
+        return (None, "no_checker") if with_reason else None
     try:
-        return f(answer, row["original_parameters"])
-    except Exception:
-        return None
+        v = bool(f(answer, row["original_parameters"]))
+        return (v, "ok") if with_reason else v
+    except Exception as e:
+        return (False, f"raised:{type(e).__name__}") if with_reason else False
 
 
 if __name__ == "__main__":

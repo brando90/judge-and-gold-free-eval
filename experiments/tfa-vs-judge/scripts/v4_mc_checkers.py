@@ -78,29 +78,48 @@ def covers(row):
         return False
 
 
-def check(row, answer, raw_text=None):
+def check(row, answer, raw_text=None, with_reason=False):
     """True / False / None for a candidate answer to this item.
 
     Prefer `raw_text` (the model's full reply) -- upstream pulls the LAST \\boxed{} out of it,
     which is what its parser and list-depth matching expect. `answer` is re-wrapped as a fallback.
-    None means 'cannot decide' (not our item, import failed, or the answer would not parse) and is
-    never to be read as 'incorrect'.
+
+    None means ONLY that no checker covers this item, or that the upstream module could not be
+    imported. It must never mean "the answer was malformed". A candidate that fails to parse, or
+    that makes the checker raise, is a WRONG answer -- e.g. usamts-1999-1-2 asks for a product of
+    four integers and a model returned three, raising ValueError. Recording that as undecidable
+    would drop wrong answers out of the pool and inflate the apparent valid rate. Upstream's own
+    parse_and_check returns False for both cases, and this now matches it.
+
+    with_reason=True returns (verdict, reason) so a raised or unparsed verdict stays auditable;
+    raised->False is the dangerous direction, since a buggy checker would mark a CORRECT answer
+    wrong -- the very failure mode this paper studies.
     """
+    def out(v, why):
+        return (v, why) if with_reason else v
+
     if not covers(row):
-        return None
+        return out(None, "no_checker")
     try:
         cls = _cls(module_for(row["problem_name"]))
         # Every benchmark item is an /original. get_original() also sidesteps stored parameters
         # that arrive as strings, e.g. {'n': '10000000000000000000'}.
         prob = (cls.get_original() if row["question_id"].endswith("/original")
                 else cls(**row["original_parameters"]))
-        text = raw_text if raw_text else str(answer)
-        if "\\boxed{" not in text:
-            text = "\\boxed{" + str(answer) + "}"
+    except Exception as e:
+        return out(None, f"infra:{type(e).__name__}")  # genuinely undecidable
+
+    text = raw_text if raw_text else str(answer)
+    if "\\boxed{" not in text:
+        text = "\\boxed{" + str(answer) + "}"
+    try:
         parsed = prob.parse(text)
-        if parsed is None:
-            return None
-        out = prob.check(parsed)
-        return bool(out[0]) if isinstance(out, tuple) else bool(out)
-    except Exception:
-        return None
+    except Exception as e:
+        return out(False, f"noparse:{type(e).__name__}")
+    if parsed is None:
+        return out(False, "noparse:None")
+    try:
+        res = prob.check(parsed)
+        return out(bool(res[0]) if isinstance(res, tuple) else bool(res), "ok")
+    except Exception as e:
+        return out(False, f"raised:{type(e).__name__}")
