@@ -17,8 +17,8 @@ correctness — and scoring by list-matching would reproduce the exact error the
 
 | file | items | size | sha256 (first 16) |
 |---|---|---|---|
-| `papers/D-iclr-v4/datasets/dataset_terra.jsonl` | **278** | 1.4M | `08bacf86f2a21f01` |
-| `papers/D-iclr-v4/datasets/dataset1.jsonl` | 177 | 2.3M | `bfebff361c56f46f` |
+| `papers/D-iclr-v4/datasets/dataset_terra.jsonl` | **317** | 2.0M | `fb8eef845892dd71` |
+| `papers/D-iclr-v4/datasets/dataset1.jsonl` | 317 | 4.7M | `8268ffba1f1a5eb5` |
 | `papers/D-iclr-v4/datasets/dataset2.jsonl` | 110 | 1.6M | `2a1ba9fc975787e2` |
 
 **`dataset_terra.jsonl` is the single-generator pool and the one to prefer.** Datasets 1 and 2 split
@@ -68,6 +68,8 @@ question_id, problem_name, problem, formatting_instructions,
 generator,                 # model that produced the candidates
 draws,                     # samples drawn for this item
 n_distinct_valid,          # how many DIFFERENT correct answers were found
+n_invalid,                 # invalid draws for this item (before dedup by answer text)
+valid_tier,                # "none" | "single" | "multi" -- which experiments the item can serve
 e1_eligible,               # n_distinct_valid >= 2, i.e. usable for the swap test
 references: [ {answer, normalized_answer_id, origin, canonical} ],
 candidates: [ {answer, valid, sample, case, generator} ]
@@ -80,24 +82,34 @@ rather than only in prose.
 
 ---
 
-### Selection rule: >=1 valid candidate
+### Selection rule: none — every generated item is in, annotated by tier
 
-An item is included when it has **at least one valid candidate**. Only E1 (the swap, which grades one
-candidate against two *different* correct references) and E6's depth analysis require >=2 distinct
-valid answers; E2 and E3 — two-thirds of the paper's spine — need just one.
+Both pools now contain **all 317 items the generator was run on**, including the ones where it never
+produced a correct answer. Selection is a *filter at analysis time*, not a property of the file,
+because different experiments need different things and each exclusion silently changes which
+population a result describes. Two rebuilds already happened for exactly that reason (first >=2
+distinct, then >=1 valid); annotating instead of discarding ends the cycle.
 
-An earlier build used >=2 distinct as the selection rule and discarded 64 terra items and 21
-gpt-4.1-mini items that four of the six experiments could have used. Rather than bake the stricter
-rule into selection, every record now carries `n_distinct_valid` and `e1_eligible`, so the strict
-subset is a filter rather than a rebuild:
+Every record carries `valid_tier`, plus the counts it derives from (`n_distinct_valid`, `n_invalid`):
 
-| | >=1 valid (in the dataset) | >=2 distinct (`e1_eligible`) |
-|---|---|---|
-| terra | **278** | 214 |
-| gpt-4.1-mini | **177** | 156 |
+| `valid_tier` | meaning | terra | gpt-4.1-mini | serves |
+|---|---|---|---|---|
+| `multi` | >=2 distinct correct answers | **214** | **156** | everything, incl. E1 swap and E6 depth |
+| `single` | exactly one correct answer | 64 | 21 | E2, E3 — but not the swap |
+| `none` | generator never solved it | 39 | 140 | E5 only (case C without case A/B) |
+| | **total** | **317** | **317** | |
+
+`e1_eligible` is `valid_tier == "multi"` and is kept as a field so the strict subset is a one-line
+filter. The `none` tier is not waste: those are the hardest items in the benchmark, they carry wrong
+answers to measure false acceptance on, and an item that a strong generator cannot solve in 8 draws
+is precisely where a judge has to lean on the reference it was shown.
+
+**One terra item has no candidates at all** — `mathconstruct/usamts-1999-1-2/original` lost every
+draw to the wedged tail that stopped the run at 2,532 of 2,536. It is in the file with an empty
+`candidates` list; drop it in any analysis (`if not r["candidates"]: continue`).
 
 `dataset2.jsonl` (gpt-5.6-sol, 110 items) still uses the old >=2-distinct rule and has not been
-rebuilt.
+rebuilt, so it has no `valid_tier` field.
 
 ---
 
@@ -109,11 +121,11 @@ easy-vs-hard comparison between them also compares gpt-4.1-mini against gpt-5.6-
 
 | | |
 |---|---|
-| Items | **278** (of 317 generated, those with >=1 valid answer; 214 are E1-eligible) |
+| Items | **317** — all generated (214 `multi`, 64 `single`, 39 `none`) |
 | Generator | `gpt-5.6-terra`, temperature 1.0 (explicit), all three cases |
 | Draws per item | 8 (min 7 after a wedged tail was stopped at 2,532 of 2,536 draws) |
-| Candidates | 154 case A, 810 case B, **218 case C** |
-| Distinct valid per item | median 3, mean 3.5, max 8 |
+| Candidates | 154 case A, 810 case B, **358 case C** |
+| Distinct valid per item | median 3, mean 3.0, max 8 (over the 278 that have any: median 3, mean 3.5) |
 | Pool | 2,532 draws, 76% valid, 0 errors, **$106.43** |
 
 **Generator choice.** terra was picked over gpt-5.6-sol despite sol's higher solve rate (90% vs 62%
@@ -127,15 +139,15 @@ probe implied, and the single-generator premise is weaker than intended:
 
 | needs | items |
 |---|---|
-| >=1 valid — E2, E3 | 278/316 |
-| >=2 distinct valid — E1, E6 depth | 214/316 |
-| **>=1 invalid — E5** | **128/316** |
-| **both classes — E6 selection** | **90/316** |
+| >=1 valid — E2, E3 | 278/317 |
+| >=2 distinct valid — E1, E6 depth | 214/317 |
+| **>=1 invalid — E5** | **128/317** |
+| **both classes — E6 selection** | **90/317** |
 
 E1/E2/E3 (the spine) are well powered. **E5 and E6 are not**, on this pool alone.
 
-**Supplementing case C from Dataset 1's gpt-4.1-mini draws** raises E5 to **265/316** and both-class
-to **227/316**, at no additional cost. That reintroduces the generator confound, but confined to
+**Supplementing case C from Dataset 1's gpt-4.1-mini draws** raises E5 to **266/317** and both-class
+to **227/317**, at no additional cost. That reintroduces the generator confound, but confined to
 E5/E6 — the A-vs-B comparison carrying the main claim stays within one generator either way. Every
 candidate records its `generator`, so the split is visible in the data.
 
@@ -149,24 +161,28 @@ the invalid yield by ~14 points once easy items were included.
 
 | | |
 |---|---|
-| Items | **177** (156 are E1-eligible) |
+| Items | **317** — all generated (156 `multi`, 21 `single`, 140 `none`) |
 | Generator | `gpt-4.1-mini-2025-04-14`, temperature 1.0 (explicit) |
 | Draws per item | 64 |
-| Candidates | 245 case A, 2,050 case B, **2,748 case C** |
-| Distinct valid answers per item | median 9, mean 13.0, min 1, max 64 |
-| Case C per item | median 5, mean 13.5, **min 0**, max 62 |
-| References per item | median 7, min 2, max 7 (156 canonical, 911 generated) |
+| Candidates | 245 case A, 2,050 case B, **7,682 case C** |
+| Distinct valid answers per item | median 1, mean 7.2, max 64 (over the 177 that have any: median 9, mean 13.0) |
+| Case C availability | 266/317 items have >=1 distinct invalid answer |
+| References per item | median 7, min 2, max 7 |
 
 **Generation pool:** 20,288 draws across 317 items, 7,331 valid (36%), 0 errors, **$92.20**.
-Selected from that pool are the 177 items with ≥1 valid candidate.
+
+The 140 `none` items are where gpt-4.1-mini failed 64 times out of 64. They carry case C only, which
+makes this pool the project's largest false-acceptance sample and the case-C donor for the terra
+pool.
 
 **Generator choice** was measured on 12 checkable items against four alternatives. gpt-4.1-mini was
 both the cheapest and no less accurate than models 4× dearer (6/12 valid vs 5/12 for gpt-4.1,
 GPT-5-mini and Haiku 4.5), with the best parse rate (12/12). Sonnet 5 solved more (10/12) at **90×
 the cost**, and would have produced a pool too uniformly correct to study.
 
-**Caveat:** case C per item has a **minimum of 0** — some items have no invalid candidates at all,
-so false-acceptance cannot be measured on them. Filter on case-C availability before that analysis.
+**Caveat:** case C per item has a **minimum of 0** — 51 items have no invalid candidate at all, so
+false acceptance cannot be measured on them. Filter on case-C availability before that analysis;
+`n_invalid` is recorded per item for exactly this.
 
 ---
 
@@ -237,17 +253,20 @@ within-generator check, as gpt-4.1-mini produced both valid and invalid candidat
 | | items |
 |---|---|
 | Benchmark total | 324 |
-| Gradeable without the answer key | 317 |
-| Dataset 1 | 156 |
-| Dataset 2 | 110 |
-| Overlap | **0** |
-| **Combined** | **266 (82%)** |
+| Gradeable without the answer key | **317** |
+| terra pool | 317 (278 with >=1 valid, 214 `multi`) |
+| Dataset 1 | 317 (177 with >=1 valid, 156 `multi`) |
+| Dataset 2 | 110 (all >=2 distinct valid) |
+| Items with >=1 valid in terra **or** Dataset 1 | **279** |
 
-The two datasets are **analysed separately and never pooled**: they differ in generator and in draw
-depth, so a cross-dataset comparison would confound item difficulty with generator identity.
+The 7 items short of 324 are the `low_autocorrelation` family, excluded because their verifier
+rejects Math-Constraint's own stored solution (see below). Every remaining item is present in both
+single-generator pools, so coverage is now a property of the *tier*, not of the file.
 
-**The 58 items in neither dataset:** 7 excluded because their verifier is untrustworthy (see below),
-and 51 that no generator we tried could solve twice.
+The pools are **analysed separately and never pooled**: they differ in generator and in draw depth,
+so a cross-pool comparison would confound item difficulty with generator identity. The exception is
+the deliberate, declared one — using Dataset 1's case C to supplement terra's, which is confined to
+E5/E6 and visible in each candidate's `generator` field.
 
 ---
 
@@ -266,11 +285,12 @@ clear the same bar first.
 Upstream code is vendored and pinned: MathConstruct at `3e51d847`, Math-Constraint at `687a6d55`
 (see `experiments/tfa-vs-judge/vendor/PROVENANCE.md`).
 
-Per-dataset breakdown by checker family:
+Per-dataset breakdown by checker family. The terra pool and Dataset 1 now cover the same 317 items,
+so their breakdown is the same:
 
 | | our predicates | CSP verify | upstream MathConstruct |
 |---|---|---|---|
-| Dataset 1 (156) | 116 | 8 | 32 |
+| terra (317) / Dataset 1 (317) | 189 | 61 | 67 |
 | Dataset 2 (110) | 46 | 33 | 31 |
 
 ### Two findings from building the checkers
@@ -323,13 +343,20 @@ python3 scripts/v4_generate.py --model gpt-4.1-mini-2025-04-14 --provider openai
 # 2. re-score every row under one checker version
 python3 scripts/v4_rescore.py --in runs/v4_pool/<pool>.jsonl --out runs/v4_pool/<pool>_scored.jsonl
 
-# 3. assemble a dataset
-python3 scripts/v4_build_dataset2.py --pool runs/v4_pool/<pool>_scored.jsonl \
-    --case-c-pool runs/v4_pool/<case-c-source>.jsonl --out <dataset>.jsonl
+# 3. assemble a dataset -- --min-distinct 0 keeps every generated item, tier-annotated
+python3 scripts/v4_build_dataset2.py --pool runs/v4_pool/terra_scored.jsonl \
+    --case-c-pool runs/v4_pool/terra_scored.jsonl --min-distinct 0 \
+    --out ../../papers/D-iclr-v4/datasets/dataset_terra.jsonl
+
+python3 scripts/v4_build_dataset2.py --pool runs/v4_pool/final_scored.jsonl \
+    --case-c-pool runs/v4_pool/final_scored.jsonl --min-distinct 0 \
+    --out ../../papers/D-iclr-v4/datasets/dataset1.jsonl
 ```
 
 Scoring is a pure function of each row's stored reply, so step 2 can be rerun after any checker
 change without regenerating. `--case-c-pool` defaults to the Dataset 1 pool, which is correct for
-Dataset 2; when rebuilding Dataset 1, point it at Dataset 1's own pool.
+Dataset 2; for a single-generator pool, point it at that pool's own file so case C shares the
+generator. `--min-distinct` still defaults to 2 for backward compatibility — pass 0 to reproduce the
+files above.
 
 Total generation spend across both datasets and all probes: **$398.55**.

@@ -162,6 +162,12 @@ for q in usable:
                     "generator": pool[0].get("model") if pool else None,
                     "draws": d["draws"],
                     "n_distinct_valid": len(d["valid"]),
+                    "n_invalid": len(d["invalid"]),
+                    # "none"   -> generator never solved it; only case C, so E5 only
+                    # "single" -> one correct answer; E2/E3 but not the swap
+                    # "multi"  -> two or more distinct correct answers; everything
+                    "valid_tier": ("none" if not d["valid"] else
+                                   "single" if len(d["valid"]) == 1 else "multi"),
                     "e1_eligible": len(d["valid"]) >= 2,
                     "references": refs, "candidates": cands})
 
