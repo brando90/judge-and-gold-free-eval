@@ -104,9 +104,16 @@ filter. The `none` tier is not waste: those are the hardest items in the benchma
 answers to measure false acceptance on, and an item that a strong generator cannot solve in 8 draws
 is precisely where a judge has to lean on the reference it was shown.
 
-**One terra item has no candidates at all** — `mathconstruct/usamts-1999-1-2/original` lost every
-draw to the wedged tail that stopped the run at 2,532 of 2,536. It is in the file with an empty
-`candidates` list; drop it in any analysis (`if not r["candidates"]: continue`).
+**One terra item has no candidates at all** — `mathconstruct/usamts-1999-1-2/original`. Not a
+missing-draw problem: all 8 draws are in the pool and all 8 finished cleanly (`stop_reason: stop`,
+none truncated, 2,908–6,533 output tokens). terra wrote a full solution every time and never emitted
+an answer in the required format, so all 8 score `reason: no_answer` and the item contributes no
+candidate of any case. It is in the file with an empty `candidates` list; drop it in any analysis
+(`if not r["candidates"]: continue`).
+
+Unparseable draws are not rare and are not the same as wrong draws: 71 of terra's 2,532 rows and 50
+of gpt-4.1-mini's 20,288 have `answer: None`. They score `valid: False` and are excluded from case C
+(which requires an actual answer string to show a judge).
 
 `dataset2.jsonl` (gpt-5.6-sol, 110 items) still uses the old >=2-distinct rule and has not been
 rebuilt, so it has no `valid_tier` field.
