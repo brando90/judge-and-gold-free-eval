@@ -63,7 +63,14 @@ for jf in (PAPERS / "analysis").glob("*.json"):
 # Derive them here so they are checked rather than trusted: each column of tab:ledger-totals must
 # sum to its own printed Total. The verified totals then count as sourced.
 def ledger_totals():
-    src = (PAPER / "appendix.tex").read_text(errors="ignore")
+    # The appendix sits next to this script's parent in the repository, but one level deeper in the
+    # supplement layout (paper/appendix.tex), and may be named on the command line. Try all three, and
+    # degrade quietly rather than raising if none is present.
+    candidates = [PAPER / "appendix.tex", PAPER / "paper" / "appendix.tex"]
+    candidates += [Path(a) for a in sys.argv[1:] if Path(a).name == "appendix.tex"]
+    src = next((c.read_text(errors="ignore") for c in candidates if c.exists()), None)
+    if src is None:
+        return []
     i = src.find(r"\label{tab:ledger-totals}")
     if i < 0:
         return []
