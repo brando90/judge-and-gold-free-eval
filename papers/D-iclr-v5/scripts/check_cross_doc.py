@@ -17,6 +17,12 @@ any matched pair whose multiset of numbers differs. Legitimate condensation show
 prints a report to read rather than a pass/fail: the extended appendix may carry EXTRA numbers, but a
 number in the condensed file that is absent from its twin is a defect.
 
+KNOWN BLIND SPOT: this reads only the two .tex sources and does NOT resolve \\input, so numbers that
+live in generated tables/*.tex are invisible to it. Example: the exact-scorer swap values +5.25 and
+-5.41 ship inside tables/r4_rotation.tex, which appendix_extended.tex \\inputs, yet neither string
+occurs in that file, so quoting them in appendix.tex would be reported as a violation that is not one.
+Before "fixing" a MISSING NUMBER, grep tables/ as well; the number may already ship.
+
 Usage: python3 scripts/check_cross_doc.py [condensed.tex extended.tex]
 """
 
@@ -41,8 +47,45 @@ STRIP = re.compile(r"\\(?:cref|Cref|ref|label|cite[pt]?|input|includegraphics|be
 # the first version of this script miss the very pair it was written to catch: -0.164 vs -0.165.
 KEYSTRIP = re.compile(r"\\[a-zA-Z]+\s*\{[^}]*\}|\\[a-zA-Z]+|Section~\d+ of the paper")
 
+INPUT = re.compile(r"\\input\{([^}]*)\}")
+
+
+def read_expanded(path):
+    """Read a .tex file with one level of \\input substituted in. TRIED AND DELIBERATELY NOT USED.
+
+    The motivation was sound: numbers living in generated tables/*.tex are invisible to the checks
+    below, so quoting +0.12 [-0.07,+0.30] in appendix.tex raised a MISSING NUMBER even though
+    tables/r4_rotation.tex prints it. But wiring this in COST MORE THAN IT BOUGHT. Measured against
+    the controls: the positive control fell from 4 detected defects to 1 (it kept 1011 but lost 28.1,
+    -0.050 and -0.164), and the sign-injection control fell from 1 to 0 -- a flipped $-0.164$ to
+    $+0.164$ went undetected. The reason is that generated tables carry the CORRECT current values,
+    so a stale wrong number in prose is "found" in a table and silently passes.
+
+    That trade is backwards: it removes a cosmetic false positive at the cost of real sensitivity.
+    Kept here, unused, so the next person does not re-derive the idea and re-introduce the hole.
+    If you ever do wire it in, re-run both controls first and require 4 and 1.
+    """
+    src = path.read_text(errors="ignore")
+
+    def sub(m):
+        name = m.group(1).strip()
+        rel = name if name.endswith(".tex") else name + ".tex"
+        # Try the file's own directory first, then the paper directory. Without the fallback a file
+        # analysed out of tree (say a copy in /tmp, which is how you validate this script against an
+        # old commit) resolves NONE of its inputs while the in-tree side resolves all of them, and
+        # the comparison fills with hundreds of spurious "missing" numbers.
+        for cand in (path.parent / rel, PAPER / rel):
+            try:
+                return "\n" + cand.read_text(errors="ignore") + "\n"
+            except OSError:
+                continue
+        return m.group(0)
+
+    return INPUT.sub(sub, src)
+
 
 def sentences(path):
+    # NOT read_expanded: see the note on that function. Resolving \input masked real defects.
     src = path.read_text(errors="ignore")
     src = "\n".join(l for l in src.splitlines() if not l.lstrip().startswith("%"))
     src = re.sub(r"\s+", " ", src)
@@ -94,6 +137,7 @@ def main():
     # sentence has no twin at all -- which is exactly how 1,011 and 28.1 survived the pairing pass.
     # This asks only what appendix.tex actually promises: does every number in it appear SOMEWHERE?
     def all_numbers(path):
+        # NOT read_expanded: see the note on that function. Resolving \input masked real defects.
         src = path.read_text(errors="ignore")
         src = "\n".join(l for l in src.splitlines() if not l.lstrip().startswith("%"))
         src = STRIP.sub(" ", src)
@@ -101,9 +145,12 @@ def main():
         return [m.group().lstrip("+") for m in NUM.finditer(src)]
 
     ca, ea = all_numbers(cond), all_numbers(ext)
-    seen = set(ea) | {x.lstrip("-") for x in ea} | {"-" + x for x in ea}
-    absent = sorted({x for x in ca if x not in seen and x.lstrip("-") not in seen},
-                    key=lambda s: (len(s), s))
+    # Sign-SENSITIVE. An earlier version unioned both signs here to absorb "+0.045" vs "0.045", and
+    # that made the test blind to sign: flipping $-0.164$ to $+0.164$ in the extended appendix --
+    # inverting the paper's central grading result -- still reported clean. all_numbers() already
+    # strips a leading "+", which gives the notation tolerance without discarding direction.
+    seen = set(ea)
+    absent = sorted({x for x in ca if x not in seen}, key=lambda s: (len(s), s))
     raw = cond.read_text(errors="ignore")
     for v in absent:
         i = raw.find(v)
