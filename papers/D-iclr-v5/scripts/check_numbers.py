@@ -24,6 +24,13 @@ text_sources = [D / "registration.md", PAPER / "registration_round2.md",
                 PAPER / "registration_round21.md", PAPER / "registration_round22.md",
                 PAPER / "registration_round23.md", PAPER / "registration_round24.md", PAPER / "registration_round25.md",
                 PAPER / "registration_round26.md", PAPER / "registration_round27.md",  # v3
+                # The post hoc blind-accepted filter quoted in tab:rotation's caption lives here, not in
+                # any JSON: "gainers +4.99 [+4.69, +5.32] vs +4.97 unfiltered (Qwen-7B, 91% retained),
+                # +4.08 vs +4.09 (phi-4, 98% retained)". Without this file, +4.69 was flagged for seven
+                # rounds and cleared by the prose note "a CI bound quoted in a caption", which read as
+                # harmless and nearly got the sentence deleted as unsourced. Clear flags by naming the
+                # source, not by describing them.
+                D / "RESULTS_SUMMARY.md",
                 PAPERS / "analysis" / "prevalence_v2" / "RESULTS.md", PAPER / "survey" / "practice_survey.md",
                 *sorted((PAPER / "tables").glob("*.tex"))]  # generated tables carry JSON-produced numbers; the uncorrected source draft is not a source
 corpus = "\n".join(p.read_text(errors="ignore") for p in text_sources if p.exists())
@@ -66,9 +73,17 @@ def ledger_totals():
     # The appendix sits next to this script's parent in the repository, but one level deeper in the
     # supplement layout (paper/appendix.tex), and may be named on the command line. Try all three, and
     # degrade quietly rather than raising if none is present.
-    candidates = [PAPER / "appendix.tex", PAPER / "paper" / "appendix.tex"]
-    candidates += [Path(a) for a in sys.argv[1:] if Path(a).name == "appendix.tex"]
+    # argv wins OUTRIGHT. Previously the project copy was listed first, so a path passed on the
+    # command line was silently discarded whenever the project copy existed: running the checker on
+    # a deliberately mangled copy still printed "rows sum to 290, matching the printed total",
+    # because it had read a different file. That makes a guard's success indistinguishable from it
+    # checking the wrong document, and the supplement workflow depends on this argument.
+    argv_app = [Path(a) for a in sys.argv[1:] if Path(a).name == "appendix.tex"]
+    candidates = argv_app or [PAPER / "appendix.tex", PAPER / "paper" / "appendix.tex"]
     src = next((c.read_text(errors="ignore") for c in candidates if c.exists()), None)
+    read_from = next((c for c in candidates if c.exists()), None)
+    if read_from is not None:
+        print(f"ledger guards reading: {read_from}")
     if src is None:
         return []
     i = src.find(r"\label{tab:ledger-totals}")
@@ -114,9 +129,17 @@ def ledger_caption():
     when round 30 was, each time under-reporting the paper's own failures. Checking the table against
     itself cannot catch that, so compare the caption's numbers with the row sums.
     """
-    candidates = [PAPER / "appendix.tex", PAPER / "paper" / "appendix.tex"]
-    candidates += [Path(a) for a in sys.argv[1:] if Path(a).name == "appendix.tex"]
+    # argv wins OUTRIGHT. Previously the project copy was listed first, so a path passed on the
+    # command line was silently discarded whenever the project copy existed: running the checker on
+    # a deliberately mangled copy still printed "rows sum to 290, matching the printed total",
+    # because it had read a different file. That makes a guard's success indistinguishable from it
+    # checking the wrong document, and the supplement workflow depends on this argument.
+    argv_app = [Path(a) for a in sys.argv[1:] if Path(a).name == "appendix.tex"]
+    candidates = argv_app or [PAPER / "appendix.tex", PAPER / "paper" / "appendix.tex"]
     src = next((c.read_text(errors="ignore") for c in candidates if c.exists()), None)
+    read_from = next((c for c in candidates if c.exists()), None)
+    if read_from is not None:
+        print(f"ledger guards reading: {read_from}")
     if src is None:
         return
     i = src.find(r"\label{tab:ledger-totals}")

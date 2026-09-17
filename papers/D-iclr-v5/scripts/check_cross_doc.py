@@ -49,6 +49,19 @@ KEYSTRIP = re.compile(r"\\[a-zA-Z]+\s*\{[^}]*\}|\\[a-zA-Z]+|Section~\d+ of the p
 
 INPUT = re.compile(r"\\input\{([^}]*)\}")
 
+# Sentence pairs whose numbers legitimately differ, identified by a substring of the CONDENSED
+# sentence. Four are my sentence splitter running into a tabular preamble rather than prose; one is a
+# genuine reorganisation (the extended appendix states the 88% agreement in a different sentence).
+# The point of the whitelist is that the steady state is ZERO findings, so a new line is signal
+# instead of noise to scroll past -- a report that always prints five things gets read as "fine".
+BENIGN = (
+    "the rule and the model agree on 88",
+    "replication value under the registered checker is pre-specified",
+    "Exact scorer; both judges' scores are new runs",
+    "Sonnet~5 with wrong answers",
+    "Against the plain reference, the sentence raises",
+)
+
 
 def read_expanded(path):
     """Read a .tex file with one level of \\input substituted in. TRIED AND DELIBERATELY NOT USED.
@@ -110,7 +123,10 @@ def key(s):
 
 
 def main():
-    args = sys.argv[1:]
+    # Filter options out of the positional paths. Without this, "--write-baseline" was taken as the
+    # condensed file, Path("--write-baseline") did not exist, and the function returned early on its
+    # "one of the appendices is missing" guard -- silently doing nothing while appearing to succeed.
+    args = [a for a in sys.argv[1:] if not a.startswith("--")]
     cond = Path(args[0]) if args else PAPER / "appendix.tex"
     ext = Path(args[1]) if len(args) > 1 else PAPER / "appendix_extended.tex"
     if not cond.exists() or not ext.exists():
@@ -128,9 +144,21 @@ def main():
             continue
         matched += 1
         want, have = numbers(s), numbers(ext_by_key[k][0])
-        missing = [n for n in want if n not in have]
-        if missing:
-            mismatches.append((missing, s, ext_by_key[k][0]))
+        # SYMMETRIC multiset comparison. A one-way "missing from the twin" test cannot see a value
+        # that is WRONG in one file rather than absent: flipping $-0.164$ to $+0.164$ in appendix.tex
+        # left the direct test clean, because the unsigned token 0.164 occurs in the extended file as
+        # a CI bound. Comparing the pair's multisets both ways is what catches that.
+        only_cond = [n for n in want if want.count(n) > have.count(n)]
+        only_ext = [n for n in have if have.count(n) > want.count(n)]
+        # Flag CONDENSED-only values. A fully symmetric test was tried and reverted: "the extended
+        # file says more" is its normal relationship to the condensed one (fuller tables, extra CI
+        # bounds, inline counts where the condensed delegates to a \cref), so symmetry produced seven
+        # findings that were all extended-only extras -- pure noise, and none of them whitelistable.
+        # Condensed-only still catches a value that is WRONG in either file, because an altered number
+        # leaves its original in the twin: $-0.164$ -> $+0.164$ in appendix.tex surfaces as 0.164
+        # present here and absent there, which is the case the direct test is blind to.
+        if only_cond and not any(b in s for b in BENIGN):
+            mismatches.append((only_cond, only_ext, s, ext_by_key[k][0]))
 
     # The direct test of the claim, and the stronger of the two. Sentence pairing needs a twin to
     # compare against, so it rates a number benign when the twin was reorganised and misses one whose
@@ -163,15 +191,41 @@ def main():
     else:
         print(f"direct test: every number in {cond.name} appears somewhere in {ext.name}")
 
+    # Reverse residue. Everything above runs condensed -> extended, so a number that is wrong in the
+    # extended appendix and has NO condensed twin is invisible to every check here: changing
+    # "3,264 calls" to "3,494 calls" there left both scripts clean. The extended file legitimately
+    # carries many extra numbers, so this is a count to skim once per round, not a pass/fail.
+    extra = sorted({x for x in ea if x not in set(ca)}, key=lambda s: (len(s), s))
+    residue_changed = False
+    base = HERE / "cross_doc_residue.txt"
+    if "--write-baseline" in sys.argv:
+        base.write_text("\n".join(extra) + "\n")
+        print(f"reverse residue: wrote baseline of {len(extra)} extended-only values to {base.name}")
+    elif base.exists():
+        old = [l for l in base.read_text().split("\n") if l]
+        added = [x for x in extra if x not in set(old)]
+        removed = [x for x in old if x not in set(extra)]
+        for x in added:
+            print(f"RESIDUE ADDED: {x} now appears only in {ext.name} and did not before")
+        for x in removed:
+            print(f"RESIDUE REMOVED: {x} no longer appears only in {ext.name}")
+        if added or removed:
+            residue_changed = True
+        else:
+            print(f"reverse residue: {len(extra)} extended-only values, unchanged from the baseline")
+    else:
+        print(f"reverse residue: {len(extra)} extended-only value(s); no baseline yet "
+              f"(run with --write-baseline to create one)")
+
     print(f"cross-doc: matched {matched} sentence pairs between {cond.name} and {ext.name}")
-    for missing, a, b in mismatches:
-        print(f"\nCROSS-DOC MISMATCH: {missing} in {cond.name} but not its twin")
+    for only_cond, only_ext, a, b in mismatches:
+        print(f"\nCROSS-DOC MISMATCH: condensed-only {only_cond}, extended-only {only_ext}")
         print(f"  condensed: {a[:200]}")
         print(f"  extended : {b[:200]}")
     if not mismatches:
         print("cross-doc: every number in the condensed appendix appears in its extended twin")
     print(f"\n{len(mismatches)} sentence pairs disagree", file=sys.stderr)
-    return 1 if mismatches else 0
+    return 1 if (mismatches or residue_changed) else 0
 
 
 if __name__ == "__main__":
