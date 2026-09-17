@@ -113,7 +113,10 @@ TRIVIAL = {str(i) for i in range(0, 21)} | {"32", "64", "100", "91", "31", "30",
                                             "1.0", "0.2", "0.8", "10.0"}
 
 bad = 0
-targets = sys.argv[1:] or [str(PAPER / "main.tex"), str(PAPER / "appendix.tex")]
+# The extended appendix ships in the supplement and was unguarded until round 4, which is how its
+# ledger prose kept a stale total (290) after the paper moved to 321. Scan it whenever it is present.
+targets = sys.argv[1:] or [str(p) for p in (PAPER / "main.tex", PAPER / "appendix.tex",
+                                            PAPER / "appendix_extended.tex") if p.exists()]
 for name in targets:
     for i, line in enumerate(Path(name).read_text().splitlines(), 1):
         s = re.split(r"(?<!\\)%", line)[0] if not line.lstrip().startswith("%") else ""  # v3: \% is not a comment
