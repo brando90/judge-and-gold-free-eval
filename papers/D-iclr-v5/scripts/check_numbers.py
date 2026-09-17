@@ -91,6 +91,9 @@ def ledger_totals():
             print(f"ledger column {col}: rows sum to {s}, matching the printed total")
     for r in body:
         out.extend((r[1], r[2]))
+    # The main text quotes the ledger's size across both columns, so emit the pooled total too:
+    # checking each column against its own total cannot catch a figure equal to one column alone.
+    out.append(str(sum(int(r[c]) for r in body for c in (1, 2))))
     return out
 
 

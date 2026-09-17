@@ -157,7 +157,7 @@ A registered audit by Claude Opus~5 confirms only 86\% of the answers these labe
 \item \textbf{Grading AUROC:} how well a judge's scores separate those answers from wrong answers, per task (with one correct answer, all correct answers against wrong ones).
 \item \textbf{Best-of-64 accuracy:} the correctness of the highest-scored candidate, averaged over ties.
 \end{itemize}
-Changes are referenced minus blind, per task, with task-level bootstrap intervals; scores are out of 10, and rates and accuracies are in percentage points (pp). By default, constructed pools use any-format labels and open judges the exact scorer of \cref{app:setup,app:estimator}. We do not correct for multiplicity; the ledger records 290 registered predictions (\cref{app:ledger}).
+Changes are referenced minus blind, per task, with task-level bootstrap intervals; scores are out of 10, and rates and accuracies are in percentage points (pp). By default, constructed pools use any-format labels and open judges the exact scorer of \cref{app:setup,app:estimator}. We do not correct for multiplicity; the ledger records 304 registered predictions (\cref{app:ledger}).
 Marks apply to effect estimates: unmarked estimates were pre-specified in a timestamped commit or on OSF; \ph{} marks post hoc estimates; \reana{} marks pre-specified re-analyses of an effect whose direction was already known. \Cref{app:ledger} summarizes every registered prediction and lists each failure.
 
 \section{Prediction 1: the score follows the reference}
@@ -174,7 +174,7 @@ We re-judged the replication pool's byte-identical samples with the reference mo
 Under Qwen2.5-7B,\reana{} phi-4, and Sonnet~5, text the reference moves onto gains 3 to 5 points and text it moves off loses about as much, while correct text that matches neither reference barely moves (\cref{fig:rotation-pool}).
 All twelve registered cells for Qwen2.5-7B and phi-4 went as predicted; one registered prediction, that the swap would be ordered by numeric distance from the reference, failed (\cref{app:ledger}).
 
-The swap is not an artifact of our own wording: it survives the verbatim MT-Bench template, which drops ``trusted'' and asks for an explanation first. That template also asks for a comparison (\cref{sec:p3}). On arithmetic it mostly vanishes, however, when the reference is written as an expression or hidden inside a worked solution (\cref{app:rotation,app:mechanism}).
+The swap is not an artifact of our own wording: it survives the verbatim MT-Bench template, which drops ``trusted'' and asks for an explanation first. That template also asks for a comparison. On arithmetic it mostly vanishes, however, when the reference is written as an expression or hidden inside a worked solution (\cref{app:rotation,app:mechanism}).
 
 Does the problem fade as judges improve? On arithmetic, thinking before scoring removes most of the swap (\cref{app:reasoning}). On factual questions it does not: thinking only shrinks Sonnet~5's added false rejections, from 36 to 15 points (\cref{app:acceptance}), and o3-mini, a reasoning model, running the HLE grader still credits almost no correct answer that differs from the reference (\cref{sec:cost}).
 
@@ -261,7 +261,7 @@ Our own score rubric, with four judges, leaves the models 10 to 22 points below 
 \paragraph{Who should care: reuse across a capability boundary.}
 These graders are right for the benchmarks they were written for.
 By adjudicated LLM labels, 0\% to 3\% of sampled SimpleQA, BrowseComp, and HLE questions have several correct answers (\cref{app:prevalence}), so their own leaderboards are probably little affected.
-The failure is about reuse across a capability boundary: a grader written for questions that are beyond its judge, then pointed at questions the judge can answer (\cref{sec:fix}).
+We read the failure as reuse across a capability boundary: a grader written for questions that are beyond its judge, then pointed at questions the judge can answer (\cref{sec:fix}).
 General-Reasoner's single-reference verifier rewards an RL training set~\citep{ma2025generalreasoner} in which, by our labels, 5.5\% of questions admit several answers after adjudication and 18\% by either annotator.
 Of sampled NQ-open questions, 30\% to 44\% admit several under our two labelings.\ph{}
 Benchmarks built from such questions~\citep{malik2025rewardbench2,mace2026} inherit the failure whenever they are graded against one reference.
@@ -305,7 +305,7 @@ A change of instruction is therefore safe only for the judges and questions on w
 \paragraph{Why a reference is given at all.}
 One idea connects the two prescriptions above.
 Where an item has no automated checker, a human answer is what makes it gradeable at all, and the harder the item, the more of the grading the reference does.
-Read that way, how far a judge should lean on the reference depends on what it can already do with the item: where it cannot answer the question, the instruction to match helps keep wrong answers out; where it can, our correctness-prompt results show that instruction lowering grading accuracy without buying anything.
+Read that way, how far a judge should lean on the reference depends on what it can already do with the item: where it cannot answer the question, the instruction to match helps keep wrong answers out; where it can, our correctness-prompt results show that the instruction costs grading accuracy.
 We offer this as a reading of our results rather than a result, since we never manipulate judge capability directly.
 
 \paragraph{A recipe.}
@@ -333,7 +333,7 @@ LLM judges favor the first response~\citep{wang2024fair}, longer responses~\cite
 \label{sec:limits}
 
 \textbf{Labels.} Any-format labels were checked by a frontier model, not by humans, and boxed replies alone give conservative estimates; prevalence labels come from LLM annotators with low agreement ($\kappa \le 0.35$), and HLE labels from HLE's own judge.
-\textbf{Tasks.} Constructed pools come from five arithmetic families and one generator, natural data from two \textsc{MACE} domains. The benchmark study uses one answer per model, with references drawn at random; three graders grade their own answers, which we measure (\cref{app:r27}), and intervals resample questions, not grader calls. Open-ended tasks (summarization, writing, agent trajectories) are untested. Our exploratory preference-training runs were inconclusive, so harm to RL training is not demonstrated (extended appendix).
+\textbf{Tasks.} Constructed pools come from five arithmetic families and one generator, natural data from two \textsc{MACE} domains. The benchmark study uses one answer per model, with references drawn at random; three graders grade their own answers (\cref{app:acceptance}), and intervals resample questions, not grader calls. Open-ended tasks (summarization, writing, agent trajectories) are untested. Our exploratory preference-training runs were inconclusive, so harm to RL training is not demonstrated (extended appendix).
 \textbf{Judges, prompts, and registration.} Open judges have at most 14B parameters, our wordings do not exhaust reference prompts, and the correctness prompts were tested for two judges; only the API judges have a second blind call as a noise control. Whether a judge with tools or retrieval anchors the same way is untested (\cref{app:frontier} reports one exploratory command-line run, excluded for confounds). No experiment manipulates verification directly, and most registrations are timestamped commits with a verdict rule adopted afterwards (\cref{app:ledger}).
 
 \subsection*{AI use statement}
