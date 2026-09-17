@@ -1,11 +1,18 @@
-# Round 30 registration DRAFT: the swap under a neutral prompt (R30-A) and a canonical reference (R30-B)
+# Round 30 registration: the swap under a neutral prompt (R30-A) and a canonical reference (R30-B)
 
-**STATUS: DRAFT. NOT REGISTERED. NO DATA GENERATED.**
+**REGISTERED 2026-09-16, before any R30 model call.**
 
-This document is a specification. It carries no registration weight and nothing in it may be cited in the
-paper. To register it: fix the arms, pools, prompts and caps below, commit it together with the builder and
-the producer it names, and only then make the first model call. Any estimate produced before that commit is post
-hoc and must be marked `†`.
+The arms, pools, prompts, endpoints, predictions and caps below are fixed as written. The builder
+(`experiments/tfa-vs-judge/scripts/r30_build_canonical_pools.py`) and the producer
+(`papers/analysis/r30_analysis.py`) were committed at `2a9ad6a`, before this registration and before any
+call. Both were checked against stored data only, in a temporary workspace that wrote nothing into the
+repository, and the design facts that check revealed are disclosed under R30-B below. No outcome of any R30
+model call has been computed at the time of this commit. Any estimate not specified here is post hoc and
+carries a `†`.
+
+Credentials were checked before registering, with a one-token call per key that used no R30 pool: the
+project's original `ANTHROPIC_API_KEY` is out of budget until 2026-10-01, while `ANTHROPIC_API_KEY_1` and
+`_2` work, and the runs below use `_1` at the authors' direction.
 
 ## Why these two
 
