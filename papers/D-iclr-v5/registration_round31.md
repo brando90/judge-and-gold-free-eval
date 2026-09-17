@@ -91,4 +91,65 @@ its size bounds how much of the effect the instruction contributes.
 
 ## Outcome
 
-To be completed after scoring.
+Run 2026-09-17 after this document was committed (`b72dc8a`, 10:10:00 −07:00). Four cells, 596 calls each,
+**0 errors and 0 ungraded replies**. Spend USD 1.43 (Sonnet 5 0.507 + 0.503; GPT-4.1 0.208 + 0.208), inside
+the USD 2 per-cell cap. Class counts match R30-A exactly: stop 144, start 174, neither 222, invalid 56.
+Scored with `papers/analysis/r30_analysis.py --part a`, unchanged; outputs `papers/analysis/r31a_*.json`.
+Every share was re-derived independently of the producer, without the bootstrap, and agrees to four decimals.
+
+**The swap essentially disappears under counter-instruction.**
+
+| Judge | class | draw 1 | draw 2 | shift (95% CI) | same class, `direct` prompt (R30-A) |
+|---|---|---|---|---|---|
+| Sonnet 5 | stop | 0.986 | 0.979 | $-0.007$ [$-0.031$, $+0.015$] | $-0.132$ |
+| Sonnet 5 | start | 0.977 | 0.989 | $+0.012$ [$-0.011$, $+0.034$] | $+0.178$ |
+| Sonnet 5 | neither | 0.968 | 0.946 | $-0.023$ [$-0.050$, $+0.004$] | $-0.059$ |
+| GPT-4.1 | stop | 0.993 | 0.972 | $-0.021$ [$-0.051$, $+0.007$] | $-0.264$ |
+| GPT-4.1 | start | 0.977 | 0.977 | $+0.000$ [$-0.016$, $+0.018$] | $+0.247$ |
+| GPT-4.1 | neither | 0.968 | 0.968 | $+0.000$ [$-0.012$, $+0.013$] | $-0.032$ |
+
+**Verdicts (8 predictions: 4 confirmed, 4 not confirmed, 0 falsified).**
+
+- **P-R31A1** (stop-matching credited less under draw 2): **not confirmed** for both judges. Both intervals
+  include zero ($-0.007$ [$-0.031$, $+0.015$] and $-0.021$ [$-0.051$, $+0.007$]).
+- **P-R31A2** (start-matching credited more under draw 2): **not confirmed** for both judges. Both intervals
+  include zero ($+0.012$ [$-0.011$, $+0.034$] and $+0.000$ [$-0.016$, $+0.018$]).
+- **P-R31A3** (counter shift smaller than that judge's own `direct` shift): **confirmed** for both judges in
+  both directions, by a wide margin. GPT-4.1 2.1 and 0.0 points against bounds of 26.4 and 24.7; Sonnet 5
+  0.7 and 1.2 against 13.2 and 17.8.
+- **P-R31A4** (placebo moves at most 5 points): **confirmed** for both judges (2.3 and 0.0 points).
+
+**The judges did not simply become permissive, which is the reading this result had to survive.** Wrong
+answers are still rejected, and correct-answer credit rises sharply against the `direct` prompt on the same
+pool:
+
+| Judge | prompt | correct credited | wrong credited |
+|---|---|---|---|
+| Sonnet 5 | direct | 0.878 | 0.107 |
+| Sonnet 5 | counter (draw 1 / 2) | 0.976 / 0.969 | 0.107 / 0.125 |
+| GPT-4.1 | direct | 0.800 | 0.071 |
+| GPT-4.1 | counter (draw 1 / 2) | 0.978 / 0.972 | 0.196 / 0.214 |
+
+Reported without a prediction: accuracy against the answer lists is within **0.2 to 1.7 points** under every
+cell (Sonnet 5 $-0.012$/$-0.017$, GPT-4.1 $-0.002$/$-0.005$), against the 30 to 67 points by which the
+shipped benchmark graders fall short.
+
+**What this settles, read against what was registered.**
+
+The registered failure branch applies in part and must be stated plainly: the swap *is* removable by an
+instruction, so the anchoring is sensitive to what the prompt asks. But it does not make the effect an
+artifact of our wording, and Section 3's claim is not withdrawn, because R30-A already showed the swap is
+large under a prompt that names the reference and gives **no** instruction about it ($-0.264$/$+0.247$ for
+GPT-4.1). The two results are complementary and the pair is a stronger statement than either alone:
+
+- the effect does **not require** an instruction to compare (R30-A), so it is not manufactured by our rubric;
+- it **is eliminated** by an explicit instruction not to compare (R31), so it is not an immovable property of
+  the judge either.
+
+The practical finding belongs in Section 7. Telling the judge that the reference is one of several correct
+answers and not to compare against it closes almost the whole accuracy gap, at a cost that differs by judge:
+nearly free for Sonnet 5 (wrong-answer acceptance 0.107 → 0.107/0.125) and real for GPT-4.1 (0.071 →
+0.196/0.214). That mirrors, and strengthens, the existing correctness-prompt result, which already warns that
+one of two judges then accepts wrong answers.
+
+Ledger: 321 → 329 registered predictions.
