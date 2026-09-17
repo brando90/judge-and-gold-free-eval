@@ -1,9 +1,11 @@
 # Datasets for Paper D v4
 
-Two datasets built from one benchmark, kept separate on purpose. Every number below is measured,
-not estimated. Paths are relative to the repository root.
+Three pools built from one benchmark. `dataset_terra.jsonl` is the single-generator pool and the one
+to prefer; Datasets 1 and 2 predate it and are retained because Dataset 1 is the only pool deep
+enough (64 draws/item) for a full best-of-n curve. Every number below is measured, not estimated.
+Paths are relative to the repository root.
 
-The central property of both: **correctness is decided programmatically, never by matching a stored
+The central property of all three: **correctness is decided programmatically, never by matching a stored
 answer list.** A candidate is valid if a checker says the constructed object satisfies the problem's
 constraints. That matters because the benchmark stores at most 7 reference answers per item while
 these problems admit thousands, so "not in the reference list" carries no information about
@@ -15,8 +17,16 @@ correctness — and scoring by list-matching would reproduce the exact error the
 
 | file | items | size | sha256 (first 16) |
 |---|---|---|---|
+| `papers/D-iclr-v4/datasets/dataset_terra.jsonl` | **214** | 1.2M | `d8e808f5aa98562b` |
 | `papers/D-iclr-v4/datasets/dataset1.jsonl` | 156 | 1.8M | `c2567d5733676384` |
 | `papers/D-iclr-v4/datasets/dataset2.jsonl` | 110 | 1.6M | `2a1ba9fc975787e2` |
+
+**`dataset_terra.jsonl` is the single-generator pool and the one to prefer.** Datasets 1 and 2 split
+the benchmark across two generators (gpt-4.1-mini on the easy items, gpt-5.6-sol on the hard ones),
+which meant no cross-dataset comparison was possible without confounding item difficulty with
+generator identity. The terra pool covers all 317 checkable items with **one** generator at 8 draws
+each, so that confound disappears for the main claims. Datasets 1 and 2 are retained: Dataset 1 is
+the only pool with 64 draws per item and so the only one that supports a full best-of-n curve.
 
 Source benchmark: `datasets/final_mathrefbench.jsonl` (324 items, built from MathConstruct and
 Math-Constraint).
@@ -30,6 +40,7 @@ readable by anyone with access to this repository:
 
 | asset | rows | gzipped |
 |---|---|---|
+| `terra_pool_scored.jsonl.gz` | 2,532 | 0.9M |
 | `dataset1_pool_scored.jsonl.gz` | 20,288 | 42.7M |
 | `dataset2_pool_scored.jsonl.gz` | 1,288 | 0.5M |
 | `MANIFEST.txt` | — | sha256 checksums |
@@ -64,6 +75,50 @@ candidates: [ {answer, valid, sample, case, generator} ]
 list — the population the paper is about), or **C** (invalid). Every candidate records its
 `generator`, so the Dataset 2 case-C provenance difference described below is visible in the data
 rather than only in prose.
+
+---
+
+## Terra pool — the single-generator dataset
+
+One generator, all 317 checkable items, 8 draws each. Built to remove the confound that Datasets 1
+and 2 carry by construction: they use different generators on different item subsets, so any
+easy-vs-hard comparison between them also compares gpt-4.1-mini against gpt-5.6-sol.
+
+| | |
+|---|---|
+| Items | **214** (of 317 generated, those with >=2 distinct valid answers) |
+| Generator | `gpt-5.6-terra`, temperature 1.0 (explicit), all three cases |
+| Draws per item | 8 (min 7 after a wedged tail was stopped at 2,532 of 2,536 draws) |
+| Candidates | 117 case A, 783 case B, **171 case C** |
+| Distinct valid per item | median 4, mean 4.2, max 8 |
+| Pool | 2,532 draws, 76% valid, 0 errors, **$106.43** |
+
+**Generator choice.** terra was picked over gpt-5.6-sol despite sol's higher solve rate (90% vs 62%
+on the hard-item probe) precisely *because* it is weaker: sol produced almost no wrong answers, so
+case C was unmeasurable — 2.0 per item, and zero on 91 of 161 items. terra at 62% valid was expected
+to yield ~38% invalid.
+
+**That expectation did not survive the full item set.** The 62% was measured on the 25 hardest
+items; across all 317, terra came in at **76% valid**. So invalid candidates are scarcer than the
+probe implied, and the single-generator premise is weaker than intended:
+
+| needs | items |
+|---|---|
+| >=1 valid — E2, E3 | 278/316 |
+| >=2 distinct valid — E1, E6 depth | 214/316 |
+| **>=1 invalid — E5** | **128/316** |
+| **both classes — E6 selection** | **90/316** |
+
+E1/E2/E3 (the spine) are well powered. **E5 and E6 are not**, on this pool alone.
+
+**Supplementing case C from Dataset 1's gpt-4.1-mini draws** raises E5 to **265/316** and both-class
+to **227/316**, at no additional cost. That reintroduces the generator confound, but confined to
+E5/E6 — the A-vs-B comparison carrying the main claim stays within one generator either way. Every
+candidate records its `generator`, so the split is visible in the data.
+
+**Lesson worth keeping:** probe coverage on a hard subset does not transfer to the full set. The
+62%-valid figure that motivated choosing terra was measured on the 25 hardest items and overstated
+the invalid yield by ~14 points once easy items were included.
 
 ---
 
