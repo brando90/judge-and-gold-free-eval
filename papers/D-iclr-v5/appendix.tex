@@ -29,6 +29,7 @@ Each section below supports the main-text sections listed. The extended appendix
 \ref{app:r25} & Judges that reason before deciding & \ref{sec:cost} \\
 \ref{app:r26} & Direct prompt, edited HLE judge, grading with many wrong answers, and open RL-reward verifiers & \ref{sec:cost}, \ref{sec:fix} \\
 \ref{app:r27} & P3 under correctness prompts, and hard single-answer questions & \ref{sec:p3}, \ref{sec:fix} \\
+\ref{app:r30} & The swap under a prompt that does not instruct comparison, and a chosen reference & \ref{sec:p1}, \ref{sec:cost} \\
 \ref{app:mitigation} & Blind-then-reveal, the max rule (post hoc), and other mitigations & \ref{sec:p2}, \ref{sec:fix} \\
 \bottomrule
 \end{tabular}
@@ -146,19 +147,19 @@ A round is one dated batch of registered experiments; the registration documents
 \caption{Registered predictions by verdict.}
 \label{tab:ledger-totals}
 \footnotesize
-\begin{tabular}{lcc}
+\begin{tabular}{lccc}
 \toprule
-Verdict & Through round 26 & Round 27 (\cref{app:r27}) \\
+Verdict & Through round 26 & Round 27 (\cref{app:r27}) & Round 30 (\cref{app:r30}) \\
 \midrule
-Confirmed & 202 & 11 \\
-Not confirmed & 14 & 0 \\
-Falsified & 34 & 3 \\
-Split & 17 & 0 \\
-Not evaluable & 18 & 0 \\
-Not scored & 2 & 0 \\
-Excluded (\cref{app:frontier}) & 3 & 0 \\
+Confirmed & 202 & 11 & 14 \\
+Not confirmed & 14 & 0 & 0 \\
+Falsified & 34 & 3 & 2 \\
+Split & 17 & 0 & 1 \\
+Not evaluable & 18 & 0 & 0 \\
+Not scored & 2 & 0 & 0 \\
+Excluded (\cref{app:frontier}) & 3 & 0 & 0 \\
 \midrule
-Total & 290 & 14 \\
+Total & 290 & 14 & 17 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -188,6 +189,8 @@ Two-factor composition & Lures raise inflation when no answer matches (\textbf{s
 Distance gradient & Near, middle, and far thirds ordered (\textbf{falsified}, both judges). \\
 Solution-route rotation (\cref{app:mechanism}) & No score change when only the derivation rotates (\textbf{split}: Qwen2.5-7B falsified, $-0.32$ \ci{-0.56}{-0.08}; phi-4 confirmed, $-0.02$ \ci{-0.04}{0.00}). \\
 \textsc{MACE} (\cref{app:mace}) & Referenced margin positive with blind margin null (\textbf{split}: Qwen2.5-7B confirmed; phi-4 falsified, blind margin $-0.80$ \ci{-1.44}{-0.15}). \\
+Swap under the direct prompt (\cref{app:r30}) & Shift smaller than the same judge's shift under our rubric (\textbf{falsified} for GPT-4.1: $-0.264$ and $+0.247$ against $-0.125$ and $+0.189$; confirmed for Sonnet~5). Answers matching neither reference move at most 5 points (\textbf{falsified} for Sonnet~5: $-5.9$ \ci{-10.7}{-1.1}; confirmed for GPT-4.1). \\
+Chosen reference (\cref{app:r30}) & Shortfall smaller than under the random draw (\textbf{split}: confirmed for the BrowseComp/HLE judge and our rubric in both arms, and for the SimpleQA grader under the modal rule; not confirmed for the SimpleQA grader under the first-listed rule, $+0.045$ \ci{-0.003}{+0.092}). \\
 Frontier CLI judge (\cref{app:frontier}) & \textbf{Excluded} from the counts (3): the calls ran with the interface's default system prompt, tools, and repository context, and extended thinking engaged on 54\% of blind and 8\% of referenced calls. \\
 Frontier API judges (\cref{app:frontier}) & Sonnet~5: \textsc{MACE} referenced margin positive with blind margin null (\textbf{falsified}: blind margin $-1.37$ \ci{-2.05}{-0.67}). GPT-4.1 failed the registered score-resolution screen, so its four inflation predictions are \textbf{not evaluable} (4); its $k$ step on the synthetic grid (\textbf{not confirmed}). \\
 Code exemplar (extended appendix) & Canonical solution adds inflation where the test suite does not (\textbf{split}: Qwen2.5-7B not confirmed; Qwen2.5-14B falsified, it lowers inflation); similarity to the solution raises scores (\textbf{split}: Qwen2.5-7B confirmed; Qwen2.5-14B not confirmed). \\
@@ -520,6 +523,83 @@ Three caveats. (i) At the registered limit of 1,024 output tokens, solve-first r
 \footnotesize
 \input{tables/r27b_hle.tex}
 \end{table}
+
+%==========================================================================================
+\FloatBarrier
+\section{The swap under a prompt that does not instruct comparison, and a chosen reference}
+\label{app:r30}
+
+Two registered experiments answer objections the earlier text conceded without testing: that our effects
+might be prompt-following, since every headline number comes from a prompt that tells the judge to use or
+compare with the reference, and that the size of the benchmark shortfall is a property of drawing the
+reference at random.
+
+\paragraph{The swap under the direct prompt.}
+The direct prompt of \cref{app:r26} names the reference and says nothing about what to do with it; it is the
+only prompt we have with that property. We re-ran the second reference draw of \cref{app:acceptance} under
+it, so the candidate text is byte-identical and only the reference moves. The draw-1 arm is the existing
+run of \cref{app:r26}; only the draw-2 calls are new. Among the 318 of 596 answers whose match group changes
+between draws, credit follows the reference (149 questions, 596 calls per judge, no errors):
+
+\begin{center}\footnotesize
+\begin{tabular}{llccc}
+\toprule
+Judge & Class ($n$) & Draw 1 & Draw 2 & Change \\
+\midrule
+GPT-4.1 & stop matching (144) & 0.986 & 0.722 & $-0.264$ \ci{-0.352}{-0.178} \\
+ & start matching (174) & 0.718 & 0.966 & $+0.247$ \ci{+0.164}{+0.328} \\
+ & matches neither (222) & 0.743 & 0.712 & $-0.032$ \ci{-0.089}{+0.027} \\
+\addlinespace[2pt]
+Sonnet~5 & stop matching (144) & 1.000 & 0.868 & $-0.132$ \ci{-0.198}{-0.076} \\
+ & start matching (174) & 0.810 & 0.989 & $+0.178$ \ci{+0.116}{+0.248} \\
+ & matches neither (222) & 0.851 & 0.793 & $-0.059$ \ci{-0.107}{-0.011} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent Both judges confirm that answers losing the match lose credit and answers gaining it gain credit.
+Two registered predictions failed. We predicted the shift would be smaller than under our rubric, which it
+is for Sonnet~5 ($-0.132$ and $+0.178$ against $-0.382$ and $+0.350$) but not for GPT-4.1, whose shift is
+larger than its rubric shift of $-0.125$ and $+0.189$ (\textbf{falsified}); the two are not
+instrument-matched, since the rubric is a 0--10 score thresholded at 7 and the direct prompt is a binary
+yes or no, so the comparison bounds the instruction's contribution only loosely. We also predicted that
+answers matching neither reference would move by at most 5 points, which holds for GPT-4.1 but not for
+Sonnet~5, whose placebo moves $-5.9$ points with an interval excluding zero (\textbf{falsified}); part of
+Sonnet~5's movement is therefore not specific to the reference.
+
+\paragraph{A chosen reference instead of a drawn one.}
+We rebuilt the benchmark pool with the reference chosen by two pre-specified rules: \emph{first-listed},
+\textsc{MACE}'s own ordering, which uses nothing about our models, and \emph{modal}, the listed answer most
+of the four answering models produce, which is the most favourable reference available. Answers, labels and
+lists are unchanged; only the reference and the match groups differ.
+
+\begin{center}\footnotesize
+\begin{tabular}{llccc}
+\toprule
+Grader & Rule & Chosen $-$ list & Random $-$ list & Differing correct credited \\
+\midrule
+SimpleQA, GPT-4.1 & first-listed & $-0.258$ & $-0.304$ & 0.519 \\
+ & modal & $-0.091$ & $-0.304$ & 0.504 \\
+BrowseComp/HLE, o3-mini & first-listed & $-0.562$ & $-0.666$ & 0.000 \\
+ & modal & $-0.203$ & $-0.666$ & 0.000 \\
+Our rubric, Sonnet~5 & first-listed & $-0.181$ & $-0.223$ & 0.663 \\
+ & modal & $-0.079$ & $-0.223$ & 0.595 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent A chosen reference shrinks the shortfall, by 21.3 points for the SimpleQA grader and 46.3 for the
+HLE judge under the modal rule, and every interval on that difference excludes zero except the SimpleQA
+grader's under the first-listed rule, where it includes zero (\textbf{split}). It never removes the
+shortfall: every grader stays below its answer-list accuracy under both rules.
+
+The narrowing is largely mechanical rather than better grading, and the HLE judge shows this in its purest
+form. It credits 0.000 of the correct answers that differ from its reference under every rule, so its gap
+falls only because fewer answers count as differing, 121 under the modal rule against 396 under the random
+draw, not because it credits any of them. Choosing a canonical reference does not repair a grader that is
+told to match; it makes fewer answers differ. Across all six cells the credited share moves by 0.0 to 5.7
+points where the shortfall moves by 4.2 to 46.3, which is why we report the credited share as the
+design-independent statistic and the accuracy gap as the one that depends on how the reference was picked.
 
 %==========================================================================================
 \FloatBarrier

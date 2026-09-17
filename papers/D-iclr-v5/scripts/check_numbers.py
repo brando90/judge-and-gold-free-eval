@@ -75,25 +75,34 @@ def ledger_totals():
     if i < 0:
         return []
     block = src[i:src.find(r"\end{tabular}", i)]
-    rows = re.findall(r"^\s*([A-Za-z][^&]*?)\s*&\s*(\d+)\s*&\s*(\d+)\s*\\\\", block, re.M)
+    # Any number of verdict columns: the table gains one per round, so do not hardcode two.
+    rows = []
+    for line in block.splitlines():
+        m = re.match(r"^\s*([A-Za-z][^&]*?)\s*&\s*((?:\d+\s*&\s*)*\d+)\s*\\\\", line)
+        if m:
+            rows.append((m.group(1), [int(x) for x in re.findall(r"\d+", m.group(2))]))
     body = [r for r in rows if not r[0].strip().lower().startswith("total")]
     total = [r for r in rows if r[0].strip().lower().startswith("total")]
     if not body or not total:
         return []
+    ncol = len(total[0][1])
+    if any(len(r[1]) != ncol for r in body):
+        print("LEDGER MISMATCH: rows of tab:ledger-totals do not all have the same number of columns")
+        return []
     out = []
-    for col in (1, 2):
-        s = sum(int(r[col]) for r in body)
-        printed = int(total[0][col])
+    for col in range(ncol):
+        s = sum(r[1][col] for r in body)
+        printed = total[0][1][col]
         out.append(str(s))
         if printed != s:
-            print(f"LEDGER MISMATCH: column {col} rows sum to {s}, table prints {printed}")
+            print(f"LEDGER MISMATCH: column {col + 1} rows sum to {s}, table prints {printed}")
         else:
-            print(f"ledger column {col}: rows sum to {s}, matching the printed total")
+            print(f"ledger column {col + 1}: rows sum to {s}, matching the printed total")
     for r in body:
-        out.extend((r[1], r[2]))
-    # The main text quotes the ledger's size across both columns, so emit the pooled total too:
+        out.extend(str(v) for v in r[1])
+    # The main text quotes the ledger's size across all columns, so emit the pooled total too:
     # checking each column against its own total cannot catch a figure equal to one column alone.
-    out.append(str(sum(int(r[c]) for r in body for c in (1, 2))))
+    out.append(str(sum(v for r in body for v in r[1])))
     return out
 
 
