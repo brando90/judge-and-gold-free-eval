@@ -3,8 +3,8 @@
 **STATUS: DRAFT. NOT REGISTERED. NO DATA GENERATED.**
 
 This document is a specification. It carries no registration weight and nothing in it may be cited in the
-paper. To register it: fix the arms, pools, prompts and caps below, commit it together with the two builder
-scripts it names, and only then make the first model call. Any estimate produced before that commit is post
+paper. To register it: fix the arms, pools, prompts and caps below, commit it together with the builder and
+the producer it names, and only then make the first model call. Any estimate produced before that commit is post
 hoc and must be marked `†`.
 
 ## Why these two
@@ -56,8 +56,12 @@ only which correct answer is named as the reference changes.
 **Pool.** `runs/r22/redraw_pool.jsonl` (149 questions, 4 answers each, 596 answers). It already carries `ref`
 (draw 2), `ref_draw1` (draw 1), and the match groups `group` and `group_draw1` for both.
 
-**Builder.** `scripts/r30_build_draw1_pool.py` writes `runs/r30/draw1_pool.jsonl`: the same rows with
-`ref := ref_draw1` and `group := group_draw1`. No other field changes.
+**Builder.** None is needed, and the one an earlier draft of this document named is dropped. The draw-1
+referenced arm already exists: `runs/r26/bench_direct_<judge>/scores.jsonl` was run on
+`runs/r20/mace_gen/pool.jsonl`, whose `ref` is draw 1, and the redraw pool kept all 149 questions (no
+question was dropped for want of an alternative answer), so the two arms cover the same questions and
+answers and the producer joins them on `(problem_id, idx)`. Writing a draw-1 pool and re-running it would
+spend money to reproduce rows we already hold, and would risk the two arms diverging.
 
 **Judges and prompt.** GPT-4.1 (`gpt-4.1-2025-04-14`) and Claude Sonnet 5, with
 `scripts/r26_judges.py --template direct --conds ref` at the R26 settings (no reasoning requested, 1,024
@@ -106,8 +110,22 @@ qualitatively: a large shrink is itself a reportable result.
 lists in `runs/mace_tasks.jsonl` (`valid_answers`).
 
 **Builder.** `scripts/r30_build_canonical_pools.py` writes two pools, recomputing match groups with the
-MACE normalized-containment rule and seeding each grader's score file with its existing blind calls (blind
-scores do not depend on the reference):
+MACE normalized-containment rule of `r20_build_leaderboard_pool.py`:
+
+No blind calls are seeded, and an earlier draft of this document was wrong to say they would be. The shipped
+SimpleQA and BrowseComp/HLE graders have no blind condition at all: `runs/r24/std_*/pool.jsonl` hold only
+`ref` and `reflist` rows, and the HLE template is reference-only by construction. Blind rows exist only for
+our own rubric. Nothing is lost, because this part's baseline is answer-list accuracy, which is the `oracle`
+field of the pool rather than a blind grader run.
+
+**Design facts disclosed before registering.** The builder was run on the stored pool to check it; it makes
+no model call and produces no outcome, but it does reveal how much the two rules move the reference, so we
+disclose it here rather than after the fact. Over the 149 questions: the first-listed rule changes the
+reference for 106 questions and the match group of 217 of the 596 answers; the modal rule changes 112
+references and 357 groups. Match counts order as the design intends, with the modal rule most favourable to
+the grader: 419 matching answers against 205 under first-listed and 174 under the random draw, out of 540
+correct answers. No question needed the modal rule's no-match fallback, so that branch is defensive and
+untested on this pool.
 
 - `runs/r30/canon_first_pool.jsonl` — **first-listed rule**: `ref := valid_answers[0]`. Exogenous: it uses
   MACE's own ordering and nothing about our models. In the full MACE multi-answer set the stored draw equals
