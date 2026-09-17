@@ -358,6 +358,57 @@ are separate datasets, analysed separately and never pooled. Differing depth acr
 datasets is defensible; silently mixing generators inside one reported number is not. The
 mixed-generator confound is the reason for two pools rather than one enlarged pool.
 
+### Dataset 2 built: 110 hard items, combined coverage 266/324
+
+Dataset 1 leaves 161 of 317 items unusable (140 with no valid answer from gpt-4.1-mini, 21 with only
+one distinct answer). Dataset 2 recovers 110 of them with a stronger generator.
+
+**Generator chosen by measurement.** Nine models on the same 25 hard items, 
+valid-per-draw / item-coverage / $-per-draw:
+
+| model | valid/draw | items >=1 valid | $/draw |
+|---|---|---|---|
+| **gpt-5.6-sol** | **90%** | 13/15 | $0.149 |
+| gpt-5.6-terra | 62% | 16/24 | $0.072 |
+| claude-opus-5 | 51% | 14/24 | $0.971 |
+| gpt-5.6-luna | 25% | 7/25 | $0.007 |
+| claude-sonnet-5 | 23% | 9/25 | $0.212 |
+| gpt-5-mini | 10% | 11/25 | $0.020 |
+| haiku-4.5 / gpt-4.1 / gpt-5.4-nano | 2% / 1% / 0% | <=2/25 | - |
+
+sol is both the strongest and cheaper per draw than sonnet-5; opus-5 is dominated outright. Probing
+cost ~$50 and overturned an earlier recommendation of sonnet-5 made before gpt-5-mini and the
+gpt-5.6 family had enough draws to judge.
+
+**Depth chosen by measurement too.** A bootstrap over observed draws put the knee at 3-4 draws per
+item; 4 -> 16 draws costs 4x for +13 items. Ran 8.
+
+**Dataset 2 contents (runs/v4_pool/dataset2.jsonl):** 110 items, 44 case A, 461 case B, 3,966 case C,
+median 5 distinct valid answers per item, **zero overlap** with Dataset 1. Combined: **266 of 324
+items (82%)**.
+
+**Case C is sourced from Dataset 1, and that is a declared confound.** sol is 70% valid on these
+items, so it yields too few wrong answers to measure false acceptance (11 across 46 items at one
+point). Dataset 1 already holds 5,570 distinct invalid answers covering 161/161 of these items --
+genuine failures, already paid for. The alternative, perturbing valid answers into wrong ones, was
+rejected: corruption failed a prospective manipulation check TWICE in this project (R6: 5 of 7
+corrupt prompts never moved their judge; R7: 2 of 9 cells passed, one moved the wrong way), and a
+perturbed correct answer is minimally distant from a correct answer -- the very axis this paper
+measures, so it is the one bias that would flatter our own claim.
+
+The confound is confined to false acceptance; the A-vs-B comparison carrying the main claim is
+unaffected, since both come from one generator. Every candidate records its `generator`. Report
+false acceptance separately per dataset, never pooled. Dataset 1 additionally supports a
+confound-free within-generator check, since gpt-4.1-mini produced both valid and invalid candidates
+on its 156 items.
+
+**Correction.** An earlier note here claimed Dataset 2 has NO natural case A, and that C1_match was
+therefore load-bearing for its existence. That was an artifact of comparing raw answer strings
+against normalised bank keys -- the third formatting-vs-correctness bug in this pipeline, each of
+which silently reclassified correct answers rather than failing. Case A is scarce but real: 44
+answers against 461 case B (8.7%). C1_match remains well motivated, because 8.7% cannot support
+within-item pairing at scale, but the "structurally zero" framing was wrong.
+
 ### Still to verify (needs the full 64 draws/item)
 
 Per-item viability is currently ceiling-limited at ~2.2 draws/item and cannot be read yet. Once the
