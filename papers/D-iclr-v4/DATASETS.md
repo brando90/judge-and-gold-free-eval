@@ -21,11 +21,32 @@ correctness — and scoring by list-matching would reproduce the exact error the
 Source benchmark: `datasets/final_mathrefbench.jsonl` (324 items, built from MathConstruct and
 Math-Constraint).
 
-Raw candidate pools are **not** checked in — they are large (the Dataset 1 scored pool is 157MB) and
-live under the gitignored `experiments/tfa-vs-judge/runs/v4_pool/`:
-`gpt-4.1-mini-2025-04-14.jsonl` / `final_scored.jsonl` (Dataset 1) and
-`gpt-5.6-sol.jsonl` / `poolb_scored.jsonl` (Dataset 2). Each pool row keeps the model's full reply,
-so scoring can be redone without regenerating.
+### Raw candidate pools
+
+The pools are **not** in git — 157MB and 2.4MB, against a 132MB repo, for data that is not part of
+the paper. They are attached to the private release
+**[`paper-d-iclr-v4`](https://github.com/brando90/judge-free-eval/releases/tag/paper-d-iclr-v4)**,
+readable by anyone with access to this repository:
+
+| asset | rows | gzipped |
+|---|---|---|
+| `dataset1_pool_scored.jsonl.gz` | 20,288 | 42.7M |
+| `dataset2_pool_scored.jsonl.gz` | 1,288 | 0.5M |
+| `MANIFEST.txt` | — | sha256 checksums |
+
+```bash
+gh release download paper-d-iclr-v4 --repo brando90/judge-free-eval --dir pools
+shasum -a 256 -c <(awk '/sha256/{print $2"  "f} /\.gz$/{f=$1}' pools/MANIFEST.txt)
+```
+
+Only the **scored** pools are published. The unscored ones
+(`gpt-4.1-mini-2025-04-14.jsonl`, `gpt-5.6-sol.jsonl`) are redundant: the scored files have the same
+rows and the same full reply text, plus the verdict fields, so shipping both would duplicate ~300MB
+of model output for nothing. Locally they all sit under the gitignored
+`experiments/tfa-vs-judge/runs/v4_pool/`.
+
+Every row keeps the model's full reply, so scoring can be redone after any checker change without
+regenerating — which is what makes `v4_rescore.py` cheap.
 
 ### Record format
 
