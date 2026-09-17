@@ -43,6 +43,12 @@ ap.add_argument("--price-in", type=float, required=True)
 ap.add_argument("--price-out", type=float, required=True)
 ap.add_argument("--out-dir", default="runs/v4_pool")
 ap.add_argument("--limit-items", type=int, default=0, help="debug: first N items only")
+ap.add_argument("--timeout", type=float, default=240.0,
+                help="per-attempt HTTP timeout in seconds. 240 suits gpt-4.1-mini (p99 155s), but "
+                     "reasoning models have long tails -- gpt-5.6-sol p99 438s, gpt-5-mini p99 717s "
+                     "-- and a draw that legitimately needs longer is killed and retried up to "
+                     "max_retries times, burning a worker for minutes to produce nothing. Raise it "
+                     "for slow models rather than letting the tail never complete.")
 ap.add_argument("--items-file", default=None,
                 help="restrict to the question_ids listed in this file, one per line. Used to probe "
                      "a targeted subset (e.g. the items a weaker generator never solved) without "
@@ -179,9 +185,9 @@ else:
     # 240s timeout never cuts a legitimate call short, and pass 1 ran 3,300 draws with 0 errors on
     # 8 retries, so 3 is ample headroom for transient failures.
     client = openai.OpenAI(
-        api_key=load_key("OPENAI_API_KEY"), max_retries=3, timeout=240.0,
+        api_key=load_key("OPENAI_API_KEY"), max_retries=3, timeout=args.timeout,
         http_client=httpx.Client(
-            timeout=httpx.Timeout(240.0, connect=15.0, read=240.0),
+            timeout=httpx.Timeout(args.timeout, connect=15.0, read=args.timeout),
             limits=httpx.Limits(max_connections=args.workers + 4, max_keepalive_connections=0)))
     ERRORS = (openai.APIError,)
 
