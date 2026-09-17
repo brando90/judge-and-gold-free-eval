@@ -1,197 +1,234 @@
-# Datasets used in "The Reference Is Not an Answer Key"
+# Datasets for Paper D v4
 
-Every dataset the paper draws on, how it was built, where it lives, and what it was used for.
-Paths are relative to the repository root. Pools we built ourselves come with a programmatic
-oracle: the full set of correct answers is stored with the task, so "correct but different from
-the reference" is decidable without a judge.
+Two datasets built from one benchmark, kept separate on purpose. Every number below is measured,
+not estimated. Paths are relative to the repository root.
 
-Third-party data is used under its own licence and is not redistributed here beyond what the
-anonymized supplement contains. HLE and BrowseComp items carry their benchmarks' canary strings
-and must not be used for training.
-
----
-
-## 1. Constructed pools (ours)
-
-### 1.1 Replication pool — 120 tasks
-
-* **Builder:** `experiments/tfa-vs-judge/scripts/build_replication_pool.py`
-* **Tasks:** `experiments/tfa-vs-judge/runs/repl_main_tasks.jsonl`
-* **What it is:** arithmetic questions with several correct answers, drawn from five constraint
-  families, each verifiable from the answer alone:
-
-  | Family | Question | Answer |
-  |---|---|---|
-  | `crt` | an `x` in a range with `x = a mod m` and `x = b mod n` | integer |
-  | `subset` | a subset of a multiset summing to a target | list of integers |
-  | `goldbach` | an ordered pair of distinct primes summing to an even `N` | pair |
-  | `divcount` | an integer in a range with exactly `k` divisors | integer |
-  | `digitsum` | a `d`-digit multiple of `q` with digit sum `s` | integer |
-
-* **How it was built:** the design was fixed before any model saw a task. Each item stores its
-  full enumerated solution set; the reference is one valid answer sampled from that set. Difficulty
-  was calibrated on a 20-item pilot, which does not enter any analysis, to put Llama-3.1-8B's
-  best-of-64 pass rate in `[0.2, 0.8]` — hard enough that the judge's opinion matters.
-* **Used for:** P1 (the swap), P2 (grading), P3 (acceptance), and the mitigation protocols.
-
-### 1.2 Swapped-reference pool — the same 120 tasks, one field changed
-
-* **Builder:** `experiments/tfa-vs-judge/scripts/build_replrot_pool.py`
-* **What it is:** the replication pool with the reference moved to a *different* correct answer.
-  The candidate texts are byte-identical to the originals; the only change is which valid answer
-  sits in `ref_answer`. This is what makes P1 a within-text comparison.
-* **Selection rule (pinned before judging, and disclosed as pool-aware):** among the valid answers
-  other than the original reference, take the one that appears most often as a boxed answer among
-  that item's oracle-valid samples, ties broken by sorted answer string. Items with no valid
-  non-matching answer present in the pool keep the first alternative and are excluded from the
-  gain/loss readouts by the analysis. Pool-awareness biases nothing *within* an item, because the
-  readout compares the same sample under two references.
-* **Used for:** P1.
-
-### 1.3 k-pool — 75 tasks, k ∈ {1, 2, 4, 8, 16}
-
-* **Builder:** `experiments/tfa-vs-judge/scripts/build_synth_multiplicity.py` (seed `20260824`)
-* **What it is:** task families with *exactly* k correct answers, so answer multiplicity is a dose
-  and the unique-answer control (k = 1) lives inside the same design rather than in a different
-  dataset.
-* **Used for:** the k = 1 control, the dose response, and the mitigations (the full-credit
-  instruction, showing min(3, k) references, blind-then-reveal).
+The central property of both: **correctness is decided programmatically, never by matching a stored
+answer list.** A candidate is valid if a checker says the constructed object satisfies the problem's
+constraints. That matters because the benchmark stores at most 7 reference answers per item while
+these problems admit thousands, so "not in the reference list" carries no information about
+correctness — and scoring by list-matching would reproduce the exact error the paper studies.
 
 ---
 
-## 2. MACE — third-party factual questions
+## Where the data lives
 
-* **Source:** MACE (arXiv:2602.07842), questions whose number of correct answers is fixed by
-  construction at k ∈ {1, 2, 4, 6}.
-* **Builder:** `experiments/tfa-vs-judge/scripts/build_mace_tasks.py` (seed `20260901`)
-* **Why it is here:** every constructed pool above is ours. MACE supplies third-party questions
-  with third-party ground truth, so the central result does not rest only on tasks we wrote.
-* **Domain audit, run before the pool was built.** We measured how often a model names a valid
-  answer missing from the shipped answer list:
+| file | items | size | sha256 (first 16) |
+|---|---|---|---|
+| `papers/D-iclr-v4/datasets/dataset1.jsonl` | 156 | 1.8M | `c2567d5733676384` |
+| `papers/D-iclr-v4/datasets/dataset2.jsonl` | 110 | 1.6M | `2a1ba9fc975787e2` |
 
-  | Domain | Missing-from-list rate | Decision |
-  |---|---|---|
-  | River | 2.3% | included |
-  | Language | 8.1% | included |
-  | Region | 30.8% | excluded |
-  | Office | 33.3% | excluded |
-  | Award | 43.5% | excluded |
-  | Math | 0% (verified by direct computation on all 2,000) | included as a label-noise control |
+Source benchmark: `datasets/final_mathrefbench.jsonl` (324 items, built from MathConstruct and
+Math-Constraint).
 
-  The excluded domains were dropped, not patched.
-* **Population:** River and Language at all four cardinalities, 25 items per (domain, k) cell =
-  200 items, plus 100 Math items as the control. The reference is one valid answer per item, drawn
-  by the same seeded RNG.
-* **Matching rule:** a candidate's answer is its last `\boxed{}` content, or its last 200
-  characters if there is none, lowercased with non-alphanumeric characters removed. It is correct
-  if it equals or contains a normalized list entry, and it matches the reference by the same test
-  against the reference alone. Aliases missing from the list count as wrong, which *lowers*
-  measured rejection of correct answers rather than inflating it.
-* **Used for:** P2 and P3 on factual questions, and as the substrate for the benchmark-grader study.
+Raw candidate pools are **not** checked in — they are large (the Dataset 1 scored pool is 141MB) and
+live under the gitignored `experiments/tfa-vs-judge/runs/v4_pool/`:
+`gpt-4.1-mini-2025-04-14.jsonl` / `final_scored.jsonl` (Dataset 1) and
+`gpt-5.6-sol.jsonl` / `poolb_scored.jsonl` (Dataset 2). Each pool row keeps the model's full reply,
+so scoring can be redone without regenerating.
 
----
+### Record format
 
-## 3. Benchmark answer pool — 149 questions, 596 answers
+One JSON object per item:
 
-* **Generation:** `experiments/tfa-vs-judge/scripts/r20_generate_mace.py`
-* **Pool:** `experiments/tfa-vs-judge/runs/r20/mace_gen/pool.jsonl`
-* **What it is:** the 149 MACE River and Language questions with several correct answers
-  (49 at k=2, 50 at k=4, 50 at k=6), each answered once by four models — Llama-3.1-8B-Instruct (its first stored sample), Claude Haiku 4.5,
-  Sonnet 5, and Opus 5 — giving 596 answers: 396 correct but differing from the reference, 144
-  correct and matching, 56 wrong. Answer-list accuracy is 90.6%.
-* **Prompt:** one answer per question, ending in `\boxed{...}`, the same prompt as the stored MACE
-  candidate pool; 512 output tokens.
-* **Used for:** the shipped-grader study (SimpleQA grader, BrowseComp/HLE judge), the two open
-  RL-reward verifiers, the instruction ladder, and the full-answer-list fix.
+```
+question_id, problem_name, problem, formatting_instructions,
+generator,                 # model that produced the candidates
+draws,                     # samples drawn for this item
+references: [ {answer, normalized_answer_id, origin, canonical} ],
+candidates: [ {answer, valid, sample, case, generator} ]
+```
+
+`case` is **A** (valid, coincides with a stored reference), **B** (valid, absent from the reference
+list — the population the paper is about), or **C** (invalid). Every candidate records its
+`generator`, so the Dataset 2 case-C provenance difference described below is visible in the data
+rather than only in prose.
 
 ---
 
-## 4. Hard single-answer pool — 200 HLE questions, 400 answers
+## Dataset 1 — the main pool
 
-* **Builders:** `experiments/tfa-vs-judge/scripts/r27_generate.py`, then `r27_build_pool.py`
-* **Pool:** `experiments/tfa-vs-judge/runs/r27/hle_pool.jsonl` (not tracked in git)
-* **What it is:** the 200 text-only exact-answer HLE questions sampled for the second prevalence
-  audit, answered once each by GPT-4.1-mini and Claude Haiku 4.5 under HLE's official system
-  prompt (2,048 output tokens).
-* **Labels:** HLE's own judge — its verbatim prompt with o3-mini and structured output — scored
-  each answer against the HLE reference. Only 7 of 400 answers are labeled correct, which is why
-  this pool measures false acceptance and not recall.
-* **Used for:** the hard-question test of the "ask whether it is correct" fix.
-
----
-
-## 5. MATH-500
-
-* **Source:** Hendrycks et al. (2021), 500 competition problems with unique answers.
-* **How it is used:** unchanged. Candidates come from Qwen2.5-7B; the reference is shown either as
-  the full solution or as the final answer alone.
-* **Used for:** the P2′ control — with one correct answer, the reference should help, and it does
-  (best-of-64 accuracy rises about 30 points).
-
----
-
-## 6. Prevalence audits
-
-Two audits estimate how often questions in single-reference benchmarks actually admit several
-correct answers. Neither was validated by human annotators; both are reported with that caveat.
-
-### 6.1 First audit — four datasets, 800 items
-
-* **Sample:** 200 questions per dataset (seed 0) from MATH-500, GSM8K, DeepScaleR, and NQ-open.
-* **Labels:** each item labeled twice, independently, by Claude annotators that did not see each
-  other's labels; disagreements adjudicated by re-reading. Every alternative answer offered for a
-  math item was checked by computation. Equivalent forms of one answer (1/2 and 0.5) count as
-  unique, and "find all" questions whose answer is one set count as unique.
-* **Result:** curated math sets are almost entirely single-answer; NQ-open reaches 30.0%, or 18.5%
-  after excluding questions whose answer changed over time.
-* **Weakness:** both passes come from one model family, so agreement may overstate reliability.
-
-### 6.2 Second audit — five graded-against-one-reference datasets, 1,000 items
-
-* **Data:** `papers/analysis/prevalence_v2/` (protocol committed before any labeling call)
-* **Sample:** 200 questions each (seed 0) from SimpleQA, BrowseComp, text-only exact-answer HLE,
-  TriviaQA, and the WebInstruct-verified RL training set.
-* **Labels:** two annotators from *different* developers — Claude Sonnet 5 and GPT-5-mini — labeled
-  every item independently; Claude Opus 5 adjudicated disagreements until its spending cap, after
-  which 135 remaining disagreements (106 on BrowseComp) kept the conservative label. That fallback
-  can only lower the multi-answer count.
-* **Result:** 0% to 4% for questions written for a single answer; 5.5% for the RL training set
-  (18% by either annotator). Agreement is low (κ ≤ 0.35), so these rates are rough.
-* **Files:** `items_<dataset>.jsonl`, `labels_passA_*.jsonl`, `labels_passB_*.jsonl`,
-  `adjudicated_*.jsonl`, with `analyze.py` and `checks_*.py`.
-
----
-
-## 7. Third-party datasets used in supporting roles
-
-| Dataset | Role |
+| | |
 |---|---|
-| RewardBench-2 Ties | the exploratory observation the replication pool was built to replicate; its own invalid-labels were found ~90% unreliable, which is why it is not a headline substrate |
-| MathConstraint | pilot on solver-verified combinatorial puzzles (extended appendix only) |
-| MBPP | the code experiments: canonical program as reference, test suite as checker (extended appendix only) |
-| TriviaQA | second prevalence audit |
-| WebInstruct-verified | second prevalence audit; the RL training set whose verifier sees one reference |
-| SimpleQA, BrowseComp, HLE | second prevalence audit, and the source of the three shipped graders run verbatim |
-| GSM8K, DeepScaleR, NQ-open | first prevalence audit |
+| Items | **156** |
+| Generator | `gpt-4.1-mini-2025-04-14`, temperature 1.0 (explicit) |
+| Draws per item | 64 |
+| Candidates | 238 case A, 2,036 case B, **2,112 case C** |
+| Distinct valid answers per item | median 10, mean 14.6, min 2, max 64 |
+| Case C per item | median 5, mean 13.5, **min 0**, max 62 |
+| References per item | median 7, min 2, max 7 (156 canonical, 911 generated) |
+
+**Generation pool:** 20,288 draws across 317 items, 7,331 valid (36%), 0 errors, **$92.20**.
+Selected from that pool are the 156 items with ≥2 distinct valid candidates.
+
+**Generator choice** was measured on 12 checkable items against four alternatives. gpt-4.1-mini was
+both the cheapest and no less accurate than models 4× dearer (6/12 valid vs 5/12 for gpt-4.1,
+GPT-5-mini and Haiku 4.5), with the best parse rate (12/12). Sonnet 5 solved more (10/12) at **90×
+the cost**, and would have produced a pool too uniformly correct to study.
+
+**Caveat:** case C per item has a **minimum of 0** — some items have no invalid candidates at all,
+so false-acceptance cannot be measured on them. Filter on case-C availability before that analysis.
 
 ---
 
-## 8. Candidate generation, common to the constructed pools
+## Dataset 2 — the hard pool
 
-* **Generator:** Llama-3.1-8B-Instruct, 64 samples per task at temperature 1 (Qwen2.5-7B for
-  MATH-500).
-* **Prompt:** the final answer inside `\boxed{...}`.
-* **Labels:** the registered checkers read the answer from `\boxed{}`; 38% to 43% of replies ignore
-  the format, so the constructed pools also carry *any-format labels* that accept a final answer
-  stated in any form, plus labels read by Qwen2.5-14B. A registered audit by Claude Opus 5 confirms
-  86% of the answers the any-format rule credits, short of the 90% we predicted. Grading results
-  hold in direction under all four labelings; only their size moves.
+Dataset 1 leaves 161 of 317 items unusable: 140 where gpt-4.1-mini never produced a valid answer in
+64 attempts, and 21 yielding only one distinct answer. Those are the **hard** items, and they are
+where the effect should be strongest: a judge that cannot solve the problem itself has no choice but
+to lean on the reference it was shown. Dataset 2 recovers 110 of them.
+
+| | |
+|---|---|
+| Items | **110** |
+| Generator (cases A, B) | `gpt-5.6-sol`, temperature 1.0 (explicit) |
+| Generator (case C) | `gpt-4.1-mini-2025-04-14` — see below |
+| Draws per item | 8 |
+| Candidates | 44 case A, 461 case B, **3,966 case C** |
+| Distinct valid answers per item | median 5, mean 4.6, min 2, max 8 |
+| Case C per item | median 38, mean 36.1, min 3, max 64 |
+| References per item | median 7, min 2, max 7 (110 canonical, 635 generated) |
+
+**Generation pool:** 1,288 draws across 161 items, 901 valid (70%), 0 errors, **$220.97**.
+
+**Generator choice** was measured, not assumed: nine models on the same 25 hard items.
+
+| model | valid/draw | items ≥1 valid | $/draw |
+|---|---|---|---|
+| **gpt-5.6-sol** | **90%** | 13/15 | $0.149 |
+| gpt-5.6-terra | 62% | 16/24 | $0.072 |
+| claude-opus-5 | 51% | 14/24 | $0.971 |
+| gpt-5.6-luna | 25% | 7/25 | $0.007 |
+| claude-sonnet-5 | 23% | 9/25 | $0.212 |
+| gpt-5-mini | 10% | 11/25 | $0.020 |
+| claude-haiku-4-5 | 2% | 2/25 | $0.007 |
+| gpt-4.1 | 1% | 1/25 | $0.015 |
+| gpt-5.4-nano | 0% | 0/25 | $0.0003 |
+
+sol is both the strongest and cheaper per draw than Sonnet 5; Opus 5 is dominated outright (terra
+beats it on coverage at 1/14th the cost). Probing cost ~$50 and overturned an earlier recommendation
+of Sonnet 5 made before the gpt-5.6 family had enough draws to judge.
+
+**Draw depth** was also measured. A bootstrap over observed draws put the knee at 3–4 draws per
+item; going 4 → 16 costs 4× for +13 items. We ran 8.
+
+### Case C comes from a different generator — a declared confound
+
+gpt-5.6-sol is 70% valid on these items, so it produces too few wrong answers to measure false
+acceptance (11 across 46 items at one point). Dataset 1 already holds 5,570 distinct invalid answers
+covering **161/161** of these items — genuine failures on exactly these problems, already paid for.
+
+The alternative, perturbing valid answers into wrong ones, was rejected. Corruption has failed a
+prospective manipulation check **twice** in this project (Registration 6: 5 of 7 corrupt prompts
+never moved their judge; Registration 7: 2 of 9 cells passed, one moved the *wrong* way). And a
+perturbed correct answer sits minimally distant from a correct answer — which is the very axis this
+paper measures, making it the one bias that would flatter our own claim.
+
+**Consequence for analysis:** the confound is confined to false acceptance. The **A-vs-B comparison
+that carries the main claim is unaffected**, since both come from one generator. Report false
+acceptance separately per dataset, never pooled. Dataset 1 additionally supports a confound-free
+within-generator check, as gpt-4.1-mini produced both valid and invalid candidates there.
 
 ---
 
-## 9. What ships in the supplement
+## Combined coverage
 
-The anonymized supplement contains the task generators and checkers, the candidate pools, every
-answer labeling, all judge score files, and the analysis scripts that produce every number, table
-and figure. BrowseComp items, labels and adjudications are excluded. The R27 HLE pool and its
-grader outputs are in the supplement but not tracked in git.
+| | items |
+|---|---|
+| Benchmark total | 324 |
+| Gradeable without the answer key | 317 |
+| Dataset 1 | 156 |
+| Dataset 2 | 110 |
+| Overlap | **0** |
+| **Combined** | **266 (82%)** |
+
+The two datasets are **analysed separately and never pooled**: they differ in generator and in draw
+depth, so a cross-dataset comparison would confound item difficulty with generator identity.
+
+**The 58 items in neither dataset:** 7 excluded because their verifier is untrustworthy (see below),
+and 51 that no generator we tried could solve twice.
+
+---
+
+## How correctness is decided
+
+Three checkers, each validated against the benchmark's own stored answers before being trusted.
+A checker that rejects known-good answers would manufacture this paper's effect, so each had to
+clear the same bar first.
+
+| checker | items | validation |
+|---|---|---|
+| `scripts/v4_checkers.py` — our predicates | 189 | **1,279/1,279** stored answers accepted |
+| `scripts/v4_mc_checkers.py` — upstream MathConstruct `check()` | 67 | **459/459** |
+| `scripts/v4_csp_checkers.py` — upstream Math-Constraint `verify()` | 61 | **411/411** |
+
+Upstream code is vendored and pinned: MathConstruct at `3e51d847`, Math-Constraint at `687a6d55`
+(see `experiments/tfa-vs-judge/vendor/PROVENANCE.md`).
+
+Per-dataset breakdown by checker family:
+
+| | our predicates | CSP verify | upstream MathConstruct |
+|---|---|---|---|
+| Dataset 1 (156) | 116 | 8 | 32 |
+| Dataset 2 (110) | 46 | 33 | 31 |
+
+### Two findings from building the checkers
+
+**`low_autocorrelation` (7 items) is excluded.** Its upstream verifier rejects Math-Constraint's
+*own* stored solution, not merely ours, so it cannot be trusted to score candidates.
+
+**`graph_k_coloring` needed a symmetry fix.** The verifier rejected 52 of 126 stored answers. All 52
+are proper colourings within k — confirmed directly against the edge list parsed from each problem
+statement, independently of the solver — and all 52 are accepted once colours are relabelled into
+order of first appearance. The pycsp3 model carries value-precedence constraints, so `[2,0,1,3,…]`
+is refused where `[0,1,2,3,…]` is accepted: same partition, different names.
+
+That is this paper's thesis appearing in a published benchmark's own tooling — a correct answer
+confidently rejected as "Solution violates constraints (UNSAT)" for differing *presentationally*
+from the reference form. The relabel retry is restricted to types where value identity is a genuine
+symmetry, and is gated on a negative control: valid answers still accepted 6/6, adjacent-vertex
+colour clashes rejected 6/6, over-k colourings rejected 6/6. Relabelling preserves the partition, so
+it cannot launder a wrong answer into a right one.
+
+---
+
+## A property that shapes the experiment design
+
+**Canonical answers are rediscovered ~2× more often than chance.** Every item's reference bank holds
+one canonical answer (`origin: "original"`, always index 0) plus machine-generated ones. Measured on
+Dataset 1: canonical answers are 14.7% of available reference slots but **31%** of candidate matches
+(22 of 71 vs 10.1 expected, sd 2.95, **z = 4.02, p = 5.8e-05**).
+
+So under uniform sampling, *which* reference we show correlates with *whether* the candidate matches
+it. If judges then score matching answers higher, "judges favour the answer they were shown" becomes
+indistinguishable from "canonical answers are easier to rediscover" — a property of the generator,
+not of judging.
+
+`scripts/v4_reference_sampler.py` removes this by balancing reference `origin` 50/50 by construction
+(uniform sampling would give 14.3%) and balancing position within swap pairs, so origin is not
+confounded with presentation order either.
+
+---
+
+## Reproducing
+
+```bash
+cd experiments/tfa-vs-judge
+
+# 1. generate candidates (Dataset 1 shown; Dataset 2 uses gpt-5.6-sol, 8 draws, poolb_items.txt)
+python3 scripts/v4_generate.py --model gpt-4.1-mini-2025-04-14 --provider openai \
+    --price-in 0.4 --price-out 1.6 --n-samples 64 --workers 64 --cap-usd 140
+
+# 2. re-score every row under one checker version
+python3 scripts/v4_rescore.py --in runs/v4_pool/<pool>.jsonl --out runs/v4_pool/<pool>_scored.jsonl
+
+# 3. assemble a dataset
+python3 scripts/v4_build_dataset2.py --pool runs/v4_pool/<pool>_scored.jsonl \
+    --case-c-pool runs/v4_pool/<case-c-source>.jsonl --out <dataset>.jsonl
+```
+
+Scoring is a pure function of each row's stored reply, so step 2 can be rerun after any checker
+change without regenerating. `--case-c-pool` defaults to the Dataset 1 pool, which is correct for
+Dataset 2; when rebuilding Dataset 1, point it at Dataset 1's own pool.
+
+Total generation spend across both datasets and all probes: **$398.55**.

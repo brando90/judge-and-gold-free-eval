@@ -45,6 +45,11 @@ ap.add_argument("--pool", required=True, help="scored candidate pool (output of 
 ap.add_argument("--bench", default=os.path.join(ROOT, "datasets/final_mathrefbench.jsonl"))
 ap.add_argument("--dataset1", default="runs/v4_pool/final_scored.jsonl",
                 help="Dataset 1 scored pool, used only to report overlap and combined coverage")
+ap.add_argument("--case-c-pool", default=None,
+                help="where invalid (case C) candidates come from. Defaults to --dataset1, which is "
+                     "correct for Dataset 2: its strong generator is ~70%% valid and yields too few "
+                     "wrong answers to measure false acceptance. When building DATASET 1 itself, "
+                     "pass its own pool here so case C shares that dataset's generator.")
 ap.add_argument("--out", default="runs/v4_pool/dataset2.jsonl")
 ap.add_argument("--min-distinct", type=int, default=2)
 ap.add_argument("--dry-run", action="store_true")
@@ -84,7 +89,7 @@ usable.sort()
 # loop for why). Deduplicated by answer text: 64 draws of one wrong answer is one wrong answer.
 case_c = collections.defaultdict(list)
 _seen_c = collections.defaultdict(set)
-for r in load(args.dataset1):
+for r in load(args.case_c_pool or args.dataset1):
     if r.get("error") or r.get("valid") is not False:
         continue
     q, a = r["question_id"], r.get("answer")
