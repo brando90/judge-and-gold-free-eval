@@ -220,6 +220,40 @@ entangled with "canonical answers are easier to rediscover."
 **Consequence for the design: the reference-sampling rule must stratify on `origin`,** and every
 analysis of P1/P2 must report it as a covariate. This was not in the original plan.
 
+**Correction (later measurement).** The 134 figure above used the wrong criterion: it counted items
+with >=2 distinct valid CANDIDATES. But P1 swaps two *bank references*, not two candidates, and every
+item stores >=2 reference classes (median 7). So P1's real constraint is simply "has >=1 valid
+candidate to grade". Measured over 256 items:
+
+| needs | items |
+|---|---|
+| >=2 distinct bank references (to swap the reference) | 256/256 (100%) |
+| >=1 valid candidate to grade | 161/256 (63%) |
+| **P1 swap** (both of the above) | **161/256 (63%)** |
+| >=1 case-B (correct-but-different) | 151/256 (59%) |
+| >=1 case-A (correct and banked) | 94/256 (37%) |
+| **P2 within-item A-vs-B pairing** | **84/256 (33%)** |
+| >=1 case-C (invalid), for false acceptance | 202/256 (79%) |
+| zero valid candidates (unusable for A/B) | 95/256 (37%) |
+
+So P1 is stronger than stated (161, not 134) and **P2 is far weaker (84)**. Case A is the
+bottleneck: reproducing an answer that happens to sit in a 7-entry bank is rare when items admit
+thousands of valid answers.
+
+**Design decision taken in response: C1_match becomes a controlled manipulation.** Rather than
+waiting for a candidate to coincide with a banked answer, we show the judge the candidate's OWN
+verified-correct answer as the reference. P2 then compares C1_match against C1_differ for the same
+candidate -- paired, within-candidate, and available on all 162 items instead of 84. It also removes
+a second problem: the coincidental matches that do occur are biased toward canonical answers
+(2.17x), the very confound the reference sampler exists to neutralise.
+
+The candidate's own answer is a legitimate reference: a checker verifies it correct, and the bank's
+own entries are themselves mostly machine-generated (1,874 of 2,198).
+
+Per-item richness supports this: usable items carry a mean of 32.7 valid candidates (median 40),
+~20 case-A and ~22 case-B where present, so candidate subsampling can be balanced rather than
+arbitrary.
+
 ### A verifier in the wild that rejects correct answers for not matching the canonical form
 
 Worth reporting in the paper, because it is this paper's thesis occurring in a published benchmark's
@@ -249,7 +283,7 @@ even for a known-good answer. Those items stay unscored rather than scored wrong
 Final coverage: **317 of 324 items** gradeable without consulting the answer bank
 (189 our predicates + 67 upstream MathConstruct + 61 upstream Math-Constraint).
 
-### Measured P1 viability: the swap test runs on ~134 of 256 items, not all of them
+### Measured eligibility per prediction (corrected)
 
 Measured at 32.3 draws/item (pass 1, half complete). An earlier note in this plan said this count
 was ceiling-limited and would grow substantially by 64 draws. That was wrong -- it is SATURATING:
