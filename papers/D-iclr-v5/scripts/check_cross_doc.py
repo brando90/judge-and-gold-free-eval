@@ -60,6 +60,12 @@ BENIGN = (
     "Exact scorer; both judges' scores are new runs",
     "Sonnet~5 with wrong answers",
     "Against the plain reference, the sentence raises",
+    # tab:rotation's caption. Both files carry it with identical numbers, but they diverge straight
+    # after it (the condensed \inputs rotation_exact.tex, the extended cites tab:r4-rotation), so the
+    # splitter's chunk runs into different following prose -- 879 comes from the MT-Bench subsample
+    # sentence next to the condensed copy. Verified benign by comparing the two captions' number
+    # multisets directly: identical.
+    "For the open judges the analogous filter",
 )
 
 
@@ -160,7 +166,11 @@ def main():
         if only_cond and not any(b in s for b in BENIGN):
             mismatches.append((only_cond, only_ext, s, ext_by_key[k][0]))
 
-    # The direct test of the claim, and the stronger of the two. Sentence pairing needs a twin to
+    # The direct test of the claim, and the WEAKEST of the three: it asks only whether a number
+    # appears somewhere in a 151 KB file, so it is collision-blind -- a wrong value passes whenever
+    # the right one happens to occur elsewhere. The pairing pass above is what catches a value that
+    # is wrong rather than absent. ("The stronger of the two" was claimed here and is retracted.)
+    # Sentence pairing needs a twin to
     # compare against, so it rates a number benign when the twin was reorganised and misses one whose
     # sentence has no twin at all -- which is exactly how 1,011 and 28.1 survived the pairing pass.
     # This asks only what appendix.tex actually promises: does every number in it appear SOMEWHERE?
@@ -199,6 +209,22 @@ def main():
     residue_changed = False
     base = HERE / "cross_doc_residue.txt"
     if "--write-baseline" in sys.argv:
+        # Regenerating silently is how a corruption gets LAUNDERED, and the instruction to "regenerate
+        # whenever the extended appendix legitimately changes" is exactly what a tired author follows
+        # at 2am while a real defect is live. Demonstrated: corrupt "3,264 calls" to "3,494 calls",
+        # run this flag, and the tree reports clean and exits 0 with the corruption still in place.
+        # So show the diff and require a second, explicit flag. The dangerous state is a baseline
+        # regenerated WHILE a defect is present -- an un-regenerated one is loud and self-announcing.
+        prev = [l for l in base.read_text().split("\n") if l] if base.exists() else []
+        added = [x for x in extra if x not in set(prev)]
+        removed = [x for x in prev if x not in set(extra)]
+        if prev and (added or removed):
+            print(f"baseline would change: +{len(added)} {added[:10]}  -{len(removed)} {removed[:10]}")
+            if "--force-baseline" not in sys.argv:
+                print("REFUSING to overwrite the baseline. Check every value above against the edit "
+                      "you intended; a value you did not expect is a defect you are about to bake in. "
+                      "Re-run with --force-baseline once you have, and commit the baseline ALONE.")
+                return 1
         base.write_text("\n".join(extra) + "\n")
         print(f"reverse residue: wrote baseline of {len(extra)} extended-only values to {base.name}")
     elif base.exists():
