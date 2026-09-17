@@ -106,7 +106,74 @@ def ledger_totals():
     return out
 
 
+def ledger_caption():
+    """Check tab:ledger-failures' caption against tab:ledger-totals.
+
+    The totals table is verified column-by-column above, but its counts are also restated in prose
+    in the caption below it. That prose went stale twice: once when round 27 was folded in and once
+    when round 30 was, each time under-reporting the paper's own failures. Checking the table against
+    itself cannot catch that, so compare the caption's numbers with the row sums.
+    """
+    candidates = [PAPER / "appendix.tex", PAPER / "paper" / "appendix.tex"]
+    candidates += [Path(a) for a in sys.argv[1:] if Path(a).name == "appendix.tex"]
+    src = next((c.read_text(errors="ignore") for c in candidates if c.exists()), None)
+    if src is None:
+        return
+    i = src.find(r"\label{tab:ledger-totals}")
+    if i < 0:
+        return
+    block = src[i:src.find(r"\end{tabular}", i)]
+    sums = {}
+    for line in block.splitlines():
+        m = re.match(r"^\s*([A-Za-z][^&]*?)\s*&\s*((?:\d+\s*&\s*)*\d+)\s*\\\\", line)
+        if m:
+            name = m.group(1).split("(")[0].strip().lower()
+            if not name.startswith("total"):
+                sums[name] = sum(int(x) for x in re.findall(r"\d+", m.group(2)))
+    cap = re.search(r"rows contain\s+(\d+)\s+not confirmed,\s+(\d+)\s+falsified,\s+(\d+)\s+split,"
+                    r"\s+(\d+)\s+not evaluable,\s+and\s+(\d+)\s+not scored", src)
+    if not cap or not sums:
+        return
+    for verdict, stated in zip(("not confirmed", "falsified", "split", "not evaluable", "not scored"),
+                               (int(g) for g in cap.groups())):
+        actual = sums.get(verdict)
+        if actual is None:
+            continue
+        if actual != stated:
+            print(f"LEDGER CAPTION MISMATCH: caption says {stated} {verdict}, rows sum to {actual}")
+        else:
+            print(f"ledger caption: {verdict} = {stated}, matching the rows")
+    m = re.search(r"the\s+(\d+)\s+excluded ones", src)
+    if m and "excluded" in sums and int(m.group(1)) != sums["excluded"]:
+        print(f"LEDGER CAPTION MISMATCH: caption says {m.group(1)} excluded, rows sum to {sums['excluded']}")
+
+    # The extended appendix restates the same counts in its own prose. That sentence is what shipped
+    # stale (290 against the paper's 321), so guard it against the same row sums rather than fixing
+    # only the two copies found so far.
+    ext = next((p.read_text(errors="ignore") for p in
+                (PAPER / "appendix_extended.tex", PAPER / "paper" / "appendix_extended.tex")
+                if p.exists()), None)
+    if ext is None:
+        return
+    e = re.search(r"ledger records\s+(\d+)\s+confirmed,\s+(\d+)\s+not confirmed,\s+and\s+(\d+)\s+falsified,"
+                  r"\s+of\s+(\d+)", ext)
+    if not e:
+        return
+    grand = sum(sums.values())
+    for label, stated, actual in (("confirmed", int(e.group(1)), sums.get("confirmed")),
+                                  ("not confirmed", int(e.group(2)), sums.get("not confirmed")),
+                                  ("falsified", int(e.group(3)), sums.get("falsified")),
+                                  ("total", int(e.group(4)), grand)):
+        if actual is None:
+            continue
+        if stated != actual:
+            print(f"EXTENDED LEDGER MISMATCH: prose says {stated} {label}, rows give {actual}")
+        else:
+            print(f"extended ledger prose: {label} = {stated}, matching the rows")
+
+
 known.update(ledger_totals())
+ledger_caption()
 
 # numbers that are structural, not results
 TRIVIAL = {str(i) for i in range(0, 21)} | {"32", "64", "100", "91", "31", "30", "2026", "2027", "95", "0.5",

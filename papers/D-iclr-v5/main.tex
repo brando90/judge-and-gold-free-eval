@@ -49,7 +49,7 @@ The premise is that the reference acts as an answer key: a correct response shou
 With one correct answer the premise holds and the reference helps, raising best-of-64 accuracy sharply (\cref{sec:p2}); with several, it fails.
 We test it with more than a dozen judges, open models up to 14B and frontier API judges, on constructed tasks, MACE, and MATH-500, with a full preregistration ledger.
 (1) Swapping the reference between two correct answers moves the score of identical text by about 3 to 5 points out of 10.
-(2) Correct answers that differ from the reference are graded worse against wrong answers, for the four open judges and GPT-4.1 under every labeling we tried.
+(2) Correct answers that differ from the reference are graded worse against wrong answers, for the four open judges under every labeling we tried; the API judges fall by less, and one interval includes zero for GPT-4.1 and one for Opus~5.
 (3) Judges take back credit: of 843 answers two frontier judges accepted blind, 117 drop to 3 or below once the reference is shown, against 2 on a repeated blind call.
 Those benchmarks rarely contain such questions. Run verbatim on 149 factual questions that do, with the reference drawn at random, their graders credit 0\% to 53\% of correct answers that differ from it and score four models 30 to 67 points below answer-list accuracy; choosing the reference instead leaves two of those graders 9 to 56 points short.
 Much of this comes from the instruction to match: asked instead whether the answer is correct, judges shrink the gap on questions they can answer.
@@ -92,7 +92,7 @@ P1 and P2 rule out the first; P3 checks that the second is not merely an inabili
 
 \paragraph{What we find.}
 All three predictions hold (\cref{tab:summary}), and the effect matters in practice.
-In the graders of SimpleQA, BrowseComp, and HLE, run as their authors configure them, it opens a wide gap between what a model scores and what its answers are worth (\cref{sec:cost}).
+Run as their authors configure them, the graders of SimpleQA, BrowseComp, and HLE open a wide gap between what a model scores and what its answers are worth (\cref{sec:cost}).
 Much of that gap comes from the instruction to match: asking whether the answer is correct shrinks it where the judge can answer the question, although on harder questions one of our two judges then accepted wrong answers.
 Giving the grader the full answer list nearly closes it, though one open verifier does not follow the list (\cref{sec:fix}).
 Prior work comes close without isolating this failure.
@@ -174,7 +174,7 @@ We re-judged the replication pool's byte-identical samples with the reference mo
 Under Qwen2.5-7B,\reana{} phi-4, and Sonnet~5, text the reference moves onto gains 3 to 5 points and text it moves off loses about as much, while correct text that matches neither reference barely moves (\cref{fig:rotation-pool}).
 All twelve registered cells for Qwen2.5-7B and phi-4 went as predicted; one registered prediction, that the swap would be ordered by numeric distance from the reference, failed (\cref{app:ledger}).
 
-The swap is not an artifact of our own wording: it survives the verbatim MT-Bench template, which drops ``trusted'' and asks for an explanation first. That template also asks for a comparison, so we ran the swap again under a prompt that names the reference and never says to use it. Credit still follows the reference: answers that stop matching it lose 26 points of credit for GPT-4.1 and 13 for Sonnet~5, against $-3$ and $-6$ points of credit for text matching neither reference, which for Sonnet~5 exceeds the 5 points we registered (\cref{app:r30}). On arithmetic it mostly vanishes, however, when the reference is written as an expression or hidden inside a worked solution (\cref{app:rotation,app:mechanism}).
+The swap is not an artifact of our own wording: it survives the verbatim MT-Bench template, which drops ``trusted'' and asks for an explanation first. That template also asks for a comparison, so we ran the swap again under a prompt that names the reference and never says to use it. Credit still follows the reference: answers that stop matching it lose 26 pp of credit for GPT-4.1 and 13 for Sonnet~5, against $-3$ and $-6$ pp for text matching neither reference, which for Sonnet~5 exceeds the 5 pp we registered (\cref{app:r30}). On arithmetic it mostly vanishes, however, when the reference is written as an expression or hidden inside a worked solution (\cref{app:rotation,app:mechanism}).
 
 Does the problem fade as judges improve? On arithmetic, thinking before scoring removes most of the swap (\cref{app:reasoning}). On factual questions it does not: thinking only shrinks Sonnet~5's added false rejections, from 36 to 15 points (\cref{app:acceptance}), and o3-mini, a reasoning model, running the HLE grader still credits almost no correct answer that differs from the reference (\cref{sec:cost}).
 
