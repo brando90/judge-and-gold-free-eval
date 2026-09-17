@@ -21,7 +21,7 @@ correctness — and scoring by list-matching would reproduce the exact error the
 Source benchmark: `datasets/final_mathrefbench.jsonl` (324 items, built from MathConstruct and
 Math-Constraint).
 
-Raw candidate pools are **not** checked in — they are large (the Dataset 1 scored pool is 141MB) and
+Raw candidate pools are **not** checked in — they are large (the Dataset 1 scored pool is 157MB) and
 live under the gitignored `experiments/tfa-vs-judge/runs/v4_pool/`:
 `gpt-4.1-mini-2025-04-14.jsonl` / `final_scored.jsonl` (Dataset 1) and
 `gpt-5.6-sol.jsonl` / `poolb_scored.jsonl` (Dataset 2). Each pool row keeps the model's full reply,
@@ -116,7 +116,9 @@ item; going 4 → 16 costs 4× for +13 items. We ran 8.
 
 gpt-5.6-sol is 70% valid on these items, so it produces too few wrong answers to measure false
 acceptance (11 across 46 items at one point). Dataset 1 already holds 5,570 distinct invalid answers
-covering **161/161** of these items — genuine failures on exactly these problems, already paid for.
+covering **158 of these 161 items** — genuine failures on exactly these problems, already paid for.
+The remaining 3 items have no distinct invalid answer available, so false acceptance is undefined
+there and they must be filtered out of that analysis.
 
 The alternative, perturbing valid answers into wrong ones, was rejected. Corruption has failed a
 prospective manipulation check **twice** in this project (Registration 6: 5 of 7 corrupt prompts
