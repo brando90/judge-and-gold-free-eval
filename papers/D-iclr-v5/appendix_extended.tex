@@ -980,19 +980,25 @@ of the four answering models produce, which is the most favourable reference ava
 lists are unchanged; only the reference and the match groups differ.
 
 \begin{center}\footnotesize
+\setlength{\tabcolsep}{4pt}
 \begin{tabular}{llccc}
 \toprule
-Grader & Rule & Chosen $-$ list & Random $-$ list & Differing correct credited \\
+Grader & Rule & Chosen $-$ list & Chosen $-$ random & Differing correct \\
 \midrule
-SimpleQA, GPT-4.1 & first-listed & $-0.258$ & $-0.304$ & 0.519 \\
- & modal & $-0.091$ & $-0.304$ & 0.504 \\
-BrowseComp/HLE, o3-mini & first-listed & $-0.562$ & $-0.666$ & 0.000 \\
- & modal & $-0.203$ & $-0.666$ & 0.000 \\
-Our rubric, Sonnet~5 & first-listed & $-0.181$ & $-0.223$ & 0.663 \\
- & modal & $-0.079$ & $-0.223$ & 0.595 \\
+SimpleQA, GPT-4.1 & first-listed & $-0.258$ & $+0.045$ \ci{-0.003}{+0.092} & 0.519 \\
+ & modal & $-0.091$ & $+0.213$ \ci{+0.164}{+0.263} & 0.504 \\
+BrowseComp/HLE, o3-mini & first-listed & $-0.562$ & $+0.104$ \ci{+0.035}{+0.173} & 0.000 \\
+ & modal & $-0.203$ & $+0.463$ \ci{+0.406}{+0.522} & 0.000 \\
+Our rubric, Sonnet~5$^{\ast}$ & first-listed & $-0.181$ & $+0.042$ \ci{+0.005}{+0.079} & 0.663 \\
+ & modal & $-0.079$ & $+0.144$ \ci{+0.104}{+0.188} & 0.595 \\
 \bottomrule
 \end{tabular}
 \end{center}
+
+\noindent{\footnotesize The last column is the share of correct answers differing from the reference that the
+grader credits. $^{\ast}$Sonnet~5 grades its own answers here, among those of the four answering models.
+Under the random draw the shortfall is $-0.304$ for the SimpleQA grader, $-0.666$ for the BrowseComp/HLE
+judge and $-0.223$ for our rubric, and the credited share is 0.530, 0.000 and 0.652 respectively.}
 
 \noindent A chosen reference shrinks the shortfall, by 21.3 points for the SimpleQA grader and 46.3 for the
 HLE judge under the modal rule, and every interval on that difference excludes zero except the SimpleQA
@@ -1004,8 +1010,11 @@ form. It credits 0.000 of the correct answers that differ from its reference und
 falls only because fewer answers count as differing, 121 under the modal rule against 396 under the random
 draw, not because it credits any of them. Choosing a canonical reference does not repair a grader that is
 told to match; it makes fewer answers differ. Across all six cells the credited share moves by 0.0 to 5.7
-points where the shortfall moves by 4.2 to 46.3, which is why we report the credited share as the
-design-independent statistic and the accuracy gap as the one that depends on how the reference was picked.
+points where the shortfall moves by 4.2 to 46.3. The two 0.0 cells are the HLE judge, which credits no
+differing correct answer under either rule and so is pinned by the very effect at issue; among the graders
+that credit anything the share moves by 1.1 to 5.7 points. This is why we report the
+credited share as the statistic that moved least between our two reference rules, and the accuracy gap as
+the one that depends on how the reference was picked.
 
 \paragraph{Why a reference is given at all.}
 Section~7 of the paper gives the reading that connects its two prescriptions; here we record why we state it
