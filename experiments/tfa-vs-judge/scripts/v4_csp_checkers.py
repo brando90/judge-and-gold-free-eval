@@ -144,6 +144,15 @@ def check(row, answer, raw_text=None, with_reason=False):
     except Exception as e:
         return out(None, f"infra:{type(e).__name__}")
 
+    # A model may answer "UNSATISFIABLE" -- the candidate prompt explicitly permits it. Every item
+    # in this benchmark carries satisfiable: True, so that is a WRONG answer, not an unverifiable
+    # one. Handled here rather than passed to the solver, which reports it as "solver returned
+    # UNKNOWN": the same verdict, but a label that reads like verifier failure. 1,006 of the 1,010
+    # UNKNOWN verdicts in the pool were exactly this, and the wording cost real time chasing a
+    # phantom reversal of the CSP solve-rate result.
+    if "unsat" in str(answer).lower().replace(" ", ""):
+        return out(False, "claimed_unsat_but_item_is_sat")
+
     parsed = _parse(answer)
     if parsed is None or parsed == "":
         return out(False, "noparse")

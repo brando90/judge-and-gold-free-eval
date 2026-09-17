@@ -43,6 +43,10 @@ ap.add_argument("--price-in", type=float, required=True)
 ap.add_argument("--price-out", type=float, required=True)
 ap.add_argument("--out-dir", default="runs/v4_pool")
 ap.add_argument("--limit-items", type=int, default=0, help="debug: first N items only")
+ap.add_argument("--items-file", default=None,
+                help="restrict to the question_ids listed in this file, one per line. Used to probe "
+                     "a targeted subset (e.g. the items a weaker generator never solved) without "
+                     "regenerating the whole pool.")
 ap.add_argument("--dry-run", action="store_true")
 args = ap.parse_args()
 
@@ -70,6 +74,16 @@ def checkable(r):
 
 rows = [json.loads(l) for l in open(BENCH)]
 items = [r for r in rows if checkable(r)]
+# Applied AFTER checkable(), so a targeted probe can never generate for an item we cannot score.
+if args.items_file:
+    keep = {ln.strip() for ln in open(args.items_file) if ln.strip()}
+    items = [r for r in items if r["question_id"] in keep]
+    missing = keep - {r["question_id"] for r in items}
+    if missing:
+        print(f"[warn] {len(missing)} id(s) in {args.items_file} are not checkable or not in the "
+              f"benchmark and were dropped, e.g. {sorted(missing)[:3]}", flush=True)
+    if not items:
+        raise SystemExit(f"--items-file matched no checkable items: {args.items_file}")
 items.sort(key=lambda r: r["question_id"])
 if args.limit_items:
     items = items[: args.limit_items]
@@ -203,8 +217,12 @@ def one(unit):
     # Assigned inside the try, anything raising first would make the handler itself die with
     # UnboundLocalError, losing the draw behind a misleading traceback. py_compile does not catch
     # that -- it is a runtime binding error, not a syntax one.
+    # Record the temperature we ACTUALLY sent. The Anthropic path cannot pass one on SDK 1.6.0, so
+    # the API default applies; writing args.temperature there would assert a setting we never sent.
     row = {"question_id": qid, "sample": idx, "model": args.model,
-           "temperature": args.temperature, "family": C.family(r)}
+           "temperature": (None if args.provider == "anthropic" else args.temperature),
+           "temperature_source": ("api_default" if args.provider == "anthropic" else "explicit"),
+           "family": C.family(r)}
     # Registration goes INSIDE the try so the finally always removes it. Registered before the try,
     # the entry leaks permanently if anything in between raises, and a leaked entry is
     # indistinguishable from a wedged worker in the heartbeat -- during pass 1 one entry grew by 60s
@@ -213,16 +231,20 @@ def one(unit):
         with lock:
             inflight[unit] = t0
         if args.provider == "anthropic":
-            # The SDK refuses a non-streaming request whose max_tokens implies >10 minutes of
+            # NO temperature argument. anthropic SDK 1.6.0 removed it from BOTH messages.create()
+            # and messages.stream() -- passing it raises TypeError. (The earlier pilot ran on the
+            # 0.x SDK, where it was accepted, so this only surfaced after the 1.x upgrade.)
+            # Anthropic's API default is temperature 1.0, which is what we want for diverse draws,
+            # so omitting it gives the intended behaviour rather than silently sampling greedily.
+            #
+            # The SDK also refuses a non-streaming request whose max_tokens implies >10 minutes of
             # generation, so stream whenever the cap is large.
             if args.max_tokens > 8192:
                 with client.messages.stream(model=args.model, max_tokens=args.max_tokens,
-                                            temperature=args.temperature,
                                             messages=[{"role": "user", "content": render(r)}]) as s:
                     resp = s.get_final_message()
             else:
                 resp = client.messages.create(model=args.model, max_tokens=args.max_tokens,
-                                              temperature=args.temperature,
                                               messages=[{"role": "user", "content": render(r)}])
             text = "".join(b.text for b in resp.content if b.type == "text")
             tin, tout, stop = resp.usage.input_tokens, resp.usage.output_tokens, resp.stop_reason
