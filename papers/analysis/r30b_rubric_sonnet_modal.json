@@ -1,0 +1,86 @@
+{
+ "part": "b",
+ "grader": "rubric-sonnet-5",
+ "arm": "modal",
+ "questions": 149,
+ "questions_in_pool": 149,
+ "reference_changed": 112,
+ "modal_fallbacks": 0,
+ "chosen": {
+  "list": [
+   0.90604,
+   [
+    0.884228,
+    0.927852
+   ]
+  ],
+  "ref": [
+   0.827181,
+   [
+    0.798658,
+    0.855705
+   ]
+  ],
+  "ref_minus_list": [
+   -0.078859,
+   [
+    -0.104027,
+    -0.055369
+   ]
+  ],
+  "nonmatch_correct_credited": [
+   0.595041,
+   [
+    0.5,
+    0.687945
+   ],
+   121
+  ],
+  "wrong_credited": [
+   0.053571,
+   [
+    0.0,
+    0.117647
+   ],
+   56
+  ]
+ },
+ "random_draw": {
+  "ref": [
+   0.682886,
+   [
+    0.635906,
+    0.731544
+   ]
+  ],
+  "ref_minus_list": [
+   -0.223154,
+   [
+    -0.270134,
+    -0.17953
+   ]
+  ],
+  "nonmatch_correct_credited": [
+   0.651515,
+   [
+    0.589551,
+    0.711659
+   ],
+   396
+  ]
+ },
+ "chosen_minus_random": {
+  "ref_minus_list": [
+   0.144295,
+   [
+    0.104027,
+    0.187919
+   ]
+  ]
+ },
+ "status": "scored",
+ "predictions": {
+  "P-R30B1 shortfall smaller than under the random draw (interval)": "confirmed",
+  "P-R30B2 shortfall still below zero (interval)": "confirmed"
+ }
+}

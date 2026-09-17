@@ -1,0 +1,86 @@
+{
+ "part": "b",
+ "grader": "hle-o3mini",
+ "arm": "modal",
+ "questions": 149,
+ "questions_in_pool": 149,
+ "reference_changed": 112,
+ "modal_fallbacks": 0,
+ "chosen": {
+  "list": [
+   0.90604,
+   [
+    0.884228,
+    0.927852
+   ]
+  ],
+  "ref": [
+   0.70302,
+   [
+    0.672819,
+    0.734899
+   ]
+  ],
+  "ref_minus_list": [
+   -0.20302,
+   [
+    -0.233221,
+    -0.172819
+   ]
+  ],
+  "nonmatch_correct_credited": [
+   0.0,
+   [
+    0.0,
+    0.0
+   ],
+   121
+  ],
+  "wrong_credited": [
+   0.017857,
+   [
+    0.0,
+    0.056631
+   ],
+   56
+  ]
+ },
+ "random_draw": {
+  "ref": [
+   0.239933,
+   [
+    0.191275,
+    0.288633
+   ]
+  ],
+  "ref_minus_list": [
+   -0.666107,
+   [
+    -0.718121,
+    -0.615772
+   ]
+  ],
+  "nonmatch_correct_credited": [
+   0.0,
+   [
+    0.0,
+    0.0
+   ],
+   396
+  ]
+ },
+ "chosen_minus_random": {
+  "ref_minus_list": [
+   0.463087,
+   [
+    0.405998,
+    0.521812
+   ]
+  ]
+ },
+ "status": "scored",
+ "predictions": {
+  "P-R30B1 shortfall smaller than under the random draw (interval)": "confirmed",
+  "P-R30B2 shortfall still below zero (interval)": "confirmed"
+ }
+}

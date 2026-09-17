@@ -190,3 +190,70 @@ part's results are analysed, as in rounds 22 and 27.
 this registration, before any call.
 
 **Count.** 8 predictions in R30-A (4 per judge) and 9 in R30-B (3 per grader).
+
+---
+
+## Outcome, R30-A (recorded 2026-09-16; `papers/analysis/r30a_<judge>.json`)
+
+149 of 149 questions complete for both judges, 596 calls each, no errors. The draw-1 arm is the existing
+`runs/r26/bench_direct_<judge>/scores.jsonl`; the draw-2 arm is `runs/r30/a_draw2_<judge>/scores.jsonl`.
+
+Credited share by match-change class, draw 1 → draw 2 (shift, 95% interval):
+
+| Judge | stop matching (144) | start matching (174) | matches neither (222) |
+|---|---|---|---|
+| GPT-4.1 | 0.986 → 0.722 (**−0.264** [−0.352, −0.178]) | 0.718 → 0.966 (**+0.247** [+0.164, +0.328]) | 0.743 → 0.712 (−0.032 [−0.089, +0.027]) |
+| Sonnet 5 | 1.000 → 0.868 (**−0.132** [−0.198, −0.076]) | 0.810 → 0.989 (**+0.178** [+0.116, +0.248]) | 0.851 → 0.793 (−0.059 [−0.107, −0.011]) |
+
+- **P-R30A1:** confirmed for both judges.
+- **P-R30A2:** confirmed for both judges.
+- **P-R30A3:** confirmed for Sonnet 5 (−0.132 / +0.178 against its rubric −0.382 / +0.350); **falsified for
+  GPT-4.1**, whose shift is larger than its rubric shift (−0.264 / +0.247 against −0.125 / +0.189), not
+  smaller. Caveat on this comparison: the rubric comparator is a 0–10 score thresholded at 7, while the
+  direct prompt is a binary yes/no, so the two are not instrument-matched. The comparison bounds the
+  instruction's contribution only loosely and should be reported with that qualification.
+- **P-R30A4:** confirmed for GPT-4.1; **falsified for Sonnet 5**, whose answers matching neither reference
+  also lost credit, by 5.9 points with an interval excluding zero. Not all of Sonnet 5's movement is
+  therefore reference-specific, and the clean reading of the swap is weaker for it than for GPT-4.1.
+
+**What this settles.** Under a prompt that names the reference and never says to use or compare with it,
+credit still follows the reference: about 25 points in each direction for GPT-4.1 and 13 to 18 for Sonnet 5,
+against a placebo that is flat for one judge and small for the other. The instruction-following reading
+cannot account for the effect. This is the answer to the objection the paper previously conceded in §3
+and §5 without testing.
+
+## Outcome, R30-B (recorded 2026-09-16; `papers/analysis/r30b_<grader>_<arm>.json`)
+
+149 of 149 questions per cell, 596 calls each, no errors. Accuracy minus answer-list accuracy under the
+chosen reference, against the random draw, with the difference:
+
+| Grader | Arm | Chosen | Random | Difference | Differing correct credited (chosen / random) |
+|---|---|---|---|---|---|
+| SimpleQA, GPT-4.1 | first-listed | −0.258 | −0.304 | +0.045 [−0.003, +0.092] | 0.519 / 0.530 |
+| SimpleQA, GPT-4.1 | modal | −0.091 | −0.304 | +0.213 [+0.164, +0.263] | 0.504 / 0.530 |
+| BrowseComp/HLE, o3-mini | first-listed | −0.562 | −0.666 | +0.104 [+0.035, +0.173] | 0.000 / 0.000 |
+| BrowseComp/HLE, o3-mini | modal | −0.203 | −0.666 | +0.463 [+0.406, +0.522] | 0.000 / 0.000 |
+| Our rubric, Sonnet 5 | first-listed | −0.181 | −0.223 | +0.042 [+0.005, +0.079] | 0.663 / 0.652 |
+| Our rubric, Sonnet 5 | modal | −0.079 | −0.223 | +0.144 [+0.104, +0.188] | 0.595 / 0.652 |
+
+- **P-R30B1:** confirmed for the HLE judge and for our rubric in both arms; **split for the SimpleQA
+  grader**, whose first-listed interval includes zero (+0.045 [−0.003, +0.092]) and whose modal arm is
+  confirmed. Choosing the first-listed answer does not reliably shrink that grader's shortfall.
+- **P-R30B2:** confirmed in all six cells. Even the modal reference, chosen to be the answer most of the
+  models produce, leaves every grader below its answer-list accuracy.
+- **P-R30B3:** confirmed in all six cells, scored by hand from the tables above. The credited share moves
+  0.0 to 5.7 points between reference rules while the accuracy shortfall moves 4.2 to 46.3.
+
+**What this settles, and an important qualification.** The 30-to-67-point headline is substantially a
+property of drawing the reference at random: a favourable reference cuts the shortfall by two thirds for
+SimpleQA and by 46 points for the HLE judge. It does not remove it. But the narrowing is largely mechanical
+rather than an improvement in grading, and the HLE judge shows this in its purest form: it credits **0.000**
+of the correct answers that differ from the reference under every rule, so its gap narrows only because
+fewer answers are classified as differing (121 under the modal rule against 396 under the random draw), not
+because it grades any of them better. Choosing a canonical reference does not repair a grader that is told
+to match; it conceals the failure by making fewer answers differ. That is why the credited share, not the
+accuracy gap, is the statistic the paper should lead with.
+
+**Tally.** 17 predictions: 14 confirmed, 2 falsified (P-R30A3 for GPT-4.1, P-R30A4 for Sonnet 5), 1 split
+(P-R30B1 for the SimpleQA grader). Spend well inside every cap; the per-cell ledgers are in
+`runs/r30/*/spend.json`.

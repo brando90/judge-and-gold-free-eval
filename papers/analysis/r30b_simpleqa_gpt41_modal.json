@@ -1,0 +1,86 @@
+{
+ "part": "b",
+ "grader": "simpleqa-gpt-4.1",
+ "arm": "modal",
+ "questions": 149,
+ "questions_in_pool": 149,
+ "reference_changed": 112,
+ "modal_fallbacks": 0,
+ "chosen": {
+  "list": [
+   0.90604,
+   [
+    0.884228,
+    0.927852
+   ]
+  ],
+  "ref": [
+   0.815436,
+   [
+    0.786913,
+    0.84396
+   ]
+  ],
+  "ref_minus_list": [
+   -0.090604,
+   [
+    -0.119128,
+    -0.063716
+   ]
+  ],
+  "nonmatch_correct_credited": [
+   0.504132,
+   [
+    0.408448,
+    0.605048
+   ],
+   121
+  ],
+  "wrong_credited": [
+   0.107143,
+   [
+    0.020408,
+    0.210526
+   ],
+   56
+  ]
+ },
+ "random_draw": {
+  "ref": [
+   0.602349,
+   [
+    0.552013,
+    0.652685
+   ]
+  ],
+  "ref_minus_list": [
+   -0.303691,
+   [
+    -0.354027,
+    -0.253356
+   ]
+  ],
+  "nonmatch_correct_credited": [
+   0.530303,
+   [
+    0.471463,
+    0.592946
+   ],
+   396
+  ]
+ },
+ "chosen_minus_random": {
+  "ref_minus_list": [
+   0.213087,
+   [
+    0.16443,
+    0.263423
+   ]
+  ]
+ },
+ "status": "scored",
+ "predictions": {
+  "P-R30B1 shortfall smaller than under the random draw (interval)": "confirmed",
+  "P-R30B2 shortfall still below zero (interval)": "confirmed"
+ }
+}

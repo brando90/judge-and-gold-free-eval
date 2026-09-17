@@ -1,0 +1,120 @@
+{
+ "part": "a",
+ "judge": "claude-sonnet-5",
+ "questions": 149,
+ "questions_in_pool": 149,
+ "stop_matching": {
+  "credited_draw1": [
+   1.0,
+   [
+    1.0,
+    1.0
+   ],
+   144
+  ],
+  "credited_draw2": [
+   0.868056,
+   [
+    0.801584,
+    0.923624
+   ],
+   144
+  ],
+  "shift_draw2_minus_draw1": [
+   -0.131944,
+   [
+    -0.198416,
+    -0.076376
+   ],
+   144
+  ]
+ },
+ "start_matching": {
+  "credited_draw1": [
+   0.810345,
+   [
+    0.73935,
+    0.87672
+   ],
+   174
+  ],
+  "credited_draw2": [
+   0.988506,
+   [
+    0.97076,
+    1.0
+   ],
+   174
+  ],
+  "shift_draw2_minus_draw1": [
+   0.178161,
+   [
+    0.116161,
+    0.248486
+   ],
+   174
+  ]
+ },
+ "matches_neither": {
+  "credited_draw1": [
+   0.851351,
+   [
+    0.791239,
+    0.90826
+   ],
+   222
+  ],
+  "credited_draw2": [
+   0.792793,
+   [
+    0.732051,
+    0.853987
+   ],
+   222
+  ],
+  "shift_draw2_minus_draw1": [
+   -0.058559,
+   [
+    -0.106679,
+    -0.011346
+   ],
+   222
+  ]
+ },
+ "accuracy": {
+  "draw1": [
+   0.805369,
+   [
+    0.768456,
+    0.84396
+   ]
+  ],
+  "draw2": [
+   0.802013,
+   [
+    0.766779,
+    0.837248
+   ]
+  ]
+ },
+ "status": "scored",
+ "predictions": {
+  "P-R30A1 stop-matching answers credited less under draw 2 (interval)": "confirmed",
+  "P-R30A2 start-matching answers credited more under draw 2 (interval)": "confirmed",
+  "P-R30A4 answers matching neither reference move at most 5 points (point)": "falsified",
+  "P-R30A3 shift smaller than this judge's rubric shift (point, scored by hand)": {
+   "observed_stop": -0.131944,
+   "observed_start": 0.178161,
+   "rubric_comparator": {
+    "claude-sonnet-5": {
+     "stop": -0.382,
+     "start": 0.35
+    },
+    "gpt-4.1": {
+     "stop": -0.125,
+     "start": 0.189
+    }
+   }
+  }
+ }
+}
