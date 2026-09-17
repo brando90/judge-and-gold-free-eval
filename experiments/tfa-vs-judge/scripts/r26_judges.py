@@ -22,7 +22,7 @@ ap.add_argument("--pool", required=True)
 ap.add_argument("--out", required=True)
 ap.add_argument("--provider", choices=("anthropic", "openai"), required=True)
 ap.add_argument("--model", required=True)
-ap.add_argument("--template", choices=("direct", "verify", "solve", "hle", "hle_edit"), required=True)
+ap.add_argument("--template", choices=("direct", "counter", "verify", "solve", "hle", "hle_edit"), required=True)
 ap.add_argument("--conds", required=True)
 ap.add_argument("--workers", type=int, default=8)
 ap.add_argument("--cap-usd", type=float, required=True)
@@ -55,6 +55,10 @@ TAIL = "end with a final line of exactly \"correct: yes\" or \"correct: no\"."
 T = {
     ("direct", "ref"): "Is the response a correct answer to the question?\n\nQuestion: {question}\n\nReference answer: {target}\n\nResponse: {response}\n\nDo not explain; " + TAIL.replace("end with a final line", "reply with a single line"),
     ("direct", "noref"): "Is the response a correct answer to the question?\n\nQuestion: {question}\n\nResponse: {response}\n\nDo not explain; " + TAIL.replace("end with a final line", "reply with a single line"),
+    # R31: the counter-instructed swap. Byte-identical to ("direct", "ref") except for the one inserted
+    # sentence telling the judge NOT to use the reference. Keeping everything else fixed is the point:
+    # any difference from the direct arm is attributable to the instruction, not to rewording.
+    ("counter", "ref"): "Is the response a correct answer to the question?\n\nQuestion: {question}\n\nReference answer: {target}\n\nThe reference answer is only one of several correct answers. Do not compare the response to it, and do not treat agreeing or disagreeing with it as evidence; judge only whether the response is itself a correct answer to the question.\n\nResponse: {response}\n\nDo not explain; " + TAIL.replace("end with a final line", "reply with a single line"),
     ("verify", "ref"): ("Grade the response to the question in three steps.\n"
                         "1. Verify: using your own knowledge, check whether the response's final answer is correct for the question as asked.\n"
                         "2. Compare: check the response against the reference answer.\n"
