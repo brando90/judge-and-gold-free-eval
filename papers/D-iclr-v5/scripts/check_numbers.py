@@ -158,8 +158,29 @@ def ledger_caption():
     e = re.search(r"ledger records\s+(\d+)\s+confirmed,\s+(\d+)\s+not confirmed,\s+and\s+(\d+)\s+falsified,"
                   r"\s+of\s+(\d+)", ext)
     if not e:
+        # Fail loudly. A silent return is indistinguishable from success, so rewording the prose
+        # would quietly drop the guard while the other lines still print "matching".
+        print("LEDGER GUARD NOT FOUND: the extended appendix's ledger sentence did not match; guard skipped")
         return
     grand = sum(sums.values())
+    # The same sentence continues with the four remaining verdicts. Split is the count that went
+    # stale last round, so guard it too; require digits rather than a spelled-out number.
+    tail = re.search(r"(\d+)\s+predictions registered for several judges[^.]*?"
+                     r"(\d+)\s+could not be evaluated,\s*(\d+)\s+were not scored, and\s+(\d+)\s+", ext)
+    if tail:
+        for label, stated, actual in (("split", int(tail.group(1)), sums.get("split")),
+                                      ("not evaluable", int(tail.group(2)), sums.get("not evaluable")),
+                                      ("not scored", int(tail.group(3)), sums.get("not scored")),
+                                      ("excluded", int(tail.group(4)), sums.get("excluded"))):
+            if actual is None:
+                continue
+            if stated != actual:
+                print(f"EXTENDED LEDGER MISMATCH: prose says {stated} {label}, rows give {actual}")
+            else:
+                print(f"extended ledger prose: {label} = {stated}, matching the rows")
+    else:
+        print("LEDGER GUARD NOT FOUND: the extended appendix's split/evaluable/scored/excluded counts "
+              "did not match (is a number spelled out as a word?); those four are unguarded")
     for label, stated, actual in (("confirmed", int(e.group(1)), sums.get("confirmed")),
                                   ("not confirmed", int(e.group(2)), sums.get("not confirmed")),
                                   ("falsified", int(e.group(3)), sums.get("falsified")),
