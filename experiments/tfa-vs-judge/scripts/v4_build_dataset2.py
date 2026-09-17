@@ -152,11 +152,18 @@ for q in usable:
     for r in case_c.get(q, []):
         cands.append({"answer": r.get("answer"), "valid": False, "sample": r.get("sample"),
                       "case": "C", "generator": r.get("model")})
+    # n_distinct_valid marks which experiments an item can serve. E2/E3 need >=1 valid candidate;
+    # E1 (the swap, which grades one candidate against two DIFFERENT correct references) and E6's
+    # depth analysis need >=2 distinct valid answers. Recording the count means the stricter subset
+    # is selectable without rebuilding, instead of being baked into the selection rule.
     records.append({"question_id": q, "problem_name": item.get("problem_name"),
                     "problem": item.get("problem"),
                     "formatting_instructions": item.get("formatting_instructions"),
                     "generator": pool[0].get("model") if pool else None,
-                    "draws": d["draws"], "references": refs, "candidates": cands})
+                    "draws": d["draws"],
+                    "n_distinct_valid": len(d["valid"]),
+                    "e1_eligible": len(d["valid"]) >= 2,
+                    "references": refs, "candidates": cands})
 
 # Reporting: how much of the benchmark the two datasets cover together.
 d1 = collections.defaultdict(set)

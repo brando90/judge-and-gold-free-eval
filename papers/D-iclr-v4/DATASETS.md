@@ -17,8 +17,8 @@ correctness — and scoring by list-matching would reproduce the exact error the
 
 | file | items | size | sha256 (first 16) |
 |---|---|---|---|
-| `papers/D-iclr-v4/datasets/dataset_terra.jsonl` | **214** | 1.2M | `d8e808f5aa98562b` |
-| `papers/D-iclr-v4/datasets/dataset1.jsonl` | 156 | 1.8M | `c2567d5733676384` |
+| `papers/D-iclr-v4/datasets/dataset_terra.jsonl` | **278** | 1.4M | `08bacf86f2a21f01` |
+| `papers/D-iclr-v4/datasets/dataset1.jsonl` | 177 | 2.3M | `bfebff361c56f46f` |
 | `papers/D-iclr-v4/datasets/dataset2.jsonl` | 110 | 1.6M | `2a1ba9fc975787e2` |
 
 **`dataset_terra.jsonl` is the single-generator pool and the one to prefer.** Datasets 1 and 2 split
@@ -67,6 +67,8 @@ One JSON object per item:
 question_id, problem_name, problem, formatting_instructions,
 generator,                 # model that produced the candidates
 draws,                     # samples drawn for this item
+n_distinct_valid,          # how many DIFFERENT correct answers were found
+e1_eligible,               # n_distinct_valid >= 2, i.e. usable for the swap test
 references: [ {answer, normalized_answer_id, origin, canonical} ],
 candidates: [ {answer, valid, sample, case, generator} ]
 ```
@@ -78,6 +80,27 @@ rather than only in prose.
 
 ---
 
+### Selection rule: >=1 valid candidate
+
+An item is included when it has **at least one valid candidate**. Only E1 (the swap, which grades one
+candidate against two *different* correct references) and E6's depth analysis require >=2 distinct
+valid answers; E2 and E3 — two-thirds of the paper's spine — need just one.
+
+An earlier build used >=2 distinct as the selection rule and discarded 64 terra items and 21
+gpt-4.1-mini items that four of the six experiments could have used. Rather than bake the stricter
+rule into selection, every record now carries `n_distinct_valid` and `e1_eligible`, so the strict
+subset is a filter rather than a rebuild:
+
+| | >=1 valid (in the dataset) | >=2 distinct (`e1_eligible`) |
+|---|---|---|
+| terra | **278** | 214 |
+| gpt-4.1-mini | **177** | 156 |
+
+`dataset2.jsonl` (gpt-5.6-sol, 110 items) still uses the old >=2-distinct rule and has not been
+rebuilt.
+
+---
+
 ## Terra pool — the single-generator dataset
 
 One generator, all 317 checkable items, 8 draws each. Built to remove the confound that Datasets 1
@@ -86,11 +109,11 @@ easy-vs-hard comparison between them also compares gpt-4.1-mini against gpt-5.6-
 
 | | |
 |---|---|
-| Items | **214** (of 317 generated, those with >=2 distinct valid answers) |
+| Items | **278** (of 317 generated, those with >=1 valid answer; 214 are E1-eligible) |
 | Generator | `gpt-5.6-terra`, temperature 1.0 (explicit), all three cases |
 | Draws per item | 8 (min 7 after a wedged tail was stopped at 2,532 of 2,536 draws) |
-| Candidates | 117 case A, 783 case B, **171 case C** |
-| Distinct valid per item | median 4, mean 4.2, max 8 |
+| Candidates | 154 case A, 810 case B, **218 case C** |
+| Distinct valid per item | median 3, mean 3.5, max 8 |
 | Pool | 2,532 draws, 76% valid, 0 errors, **$106.43** |
 
 **Generator choice.** terra was picked over gpt-5.6-sol despite sol's higher solve rate (90% vs 62%
@@ -126,16 +149,16 @@ the invalid yield by ~14 points once easy items were included.
 
 | | |
 |---|---|
-| Items | **156** |
+| Items | **177** (156 are E1-eligible) |
 | Generator | `gpt-4.1-mini-2025-04-14`, temperature 1.0 (explicit) |
 | Draws per item | 64 |
-| Candidates | 238 case A, 2,036 case B, **2,112 case C** |
-| Distinct valid answers per item | median 10, mean 14.6, min 2, max 64 |
+| Candidates | 245 case A, 2,050 case B, **2,748 case C** |
+| Distinct valid answers per item | median 9, mean 13.0, min 1, max 64 |
 | Case C per item | median 5, mean 13.5, **min 0**, max 62 |
 | References per item | median 7, min 2, max 7 (156 canonical, 911 generated) |
 
 **Generation pool:** 20,288 draws across 317 items, 7,331 valid (36%), 0 errors, **$92.20**.
-Selected from that pool are the 156 items with ≥2 distinct valid candidates.
+Selected from that pool are the 177 items with ≥1 valid candidate.
 
 **Generator choice** was measured on 12 checkable items against four alternatives. gpt-4.1-mini was
 both the cheapest and no less accurate than models 4× dearer (6/12 valid vs 5/12 for gpt-4.1,
