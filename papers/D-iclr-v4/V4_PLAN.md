@@ -318,6 +318,46 @@ Consequences to carry into the design:
 - The 98 zero-valid items are not waste for every purpose: they measure judge behaviour when every
   candidate is wrong, which is a useful control. They are simply unusable for the core comparison.
 
+### Generator for a second, harder dataset (Pool B) -- measured, not assumed
+
+140 of the 317 items have ZERO valid candidates after 64 draws of gpt-4.1-mini. To find out whether
+that is the items or the generator, all four candidate models were probed on the SAME 25 of those
+items (stratified across the three sources), 4 draws each, ~$25 total.
+
+| model | n | valid/draw | items >=1 valid | items >=2 DISTINCT valid | $/draw |
+|---|---|---|---|---|---|
+| gpt-4.1 | 100 | 1% | 1/25 | 0/25 | $0.0151 |
+| **gpt-5-mini** | 100 | **13%** | **8/25** | **3/25** | $0.0203 |
+| haiku-4.5 | 100 | 2% | 2/25 | 0/25 | $0.0071 |
+| claude-sonnet-5 | 100 | 23% | 9/25 | 4/25 | $0.2123 |
+
+Projected to all 140 items: gpt-5-mini ~45 solvable, gpt-4.1 ~6, haiku ~11, sonnet-5 ~50.
+
+**Recommendation: gpt-5-mini.** Its coverage is statistically indistinguishable from sonnet-5 at this
+sample size (8 vs 9 of 25 items; 3 vs 4 reaching >=2 distinct) for roughly a TENTH of the cost --
+$182 vs $1,902 at 64 draws over 140 items. gpt-4.1 and haiku-4.5 are out: they reach >=2 distinct
+valid on zero items.
+
+Two cautions about these numbers. Four draws per item makes the >=2-distinct column a FLOOR, not an
+estimate. And gpt-5-mini's rate wandered 11% -> 9% -> 6% -> 11% -> 13% as n grew; an earlier reading
+of that as monotone decay was overfitting to noise.
+
+### Pool B does not need 64 draws
+
+v3's 64 is the candidate pool size for a SELECTION task -- "Llama-3.1-8B-Instruct writes 64 samples
+per task at temperature 1" (main.tex:139), scored as best-of-64 selection accuracy
+(appendix.tex:259, 286). A larger pool makes selection harder and gives the reference more chances
+to mislead. v3 reports best-of-64 as a single headline number; it does not plot a best-of-n curve.
+
+P1 and P2 grade individual candidates against references, so they need only >=2 distinct valid
+candidates per item, not 64. At gpt-5-mini's 13%, **32 draws** gives ~4.2 valid per solvable item:
+~$91 for all 140 items.
+
+Reporting discipline this imposes: Pool A (gpt-4.1-mini, 64 draws) and Pool B (gpt-5-mini, 32 draws)
+are separate datasets, analysed separately and never pooled. Differing depth across two labelled
+datasets is defensible; silently mixing generators inside one reported number is not. The
+mixed-generator confound is the reason for two pools rather than one enlarged pool.
+
 ### Still to verify (needs the full 64 draws/item)
 
 Per-item viability is currently ceiling-limited at ~2.2 draws/item and cannot be read yet. Once the
