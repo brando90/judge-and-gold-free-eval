@@ -172,7 +172,7 @@ All 12 registered cells for Qwen2.5-7B and phi-4 went as predicted; one register
 
 The swap is not an artifact of our own wording: it survives the verbatim MT-Bench template, which drops ``trusted'' and asks for an explanation first. That template also asks for a comparison, so we ran the swap again under a prompt that names the reference and never says to use it. Credit still follows the reference, where credit is a yes-or-no judgment rather than the 0--10 score above: answers that stop matching it lose 26 pp for GPT-4.1 and 13 for Sonnet~5. Text matching neither reference moves $-6$ pp for Sonnet~5, a larger move than the 5 pp we registered as a bound, and $-3$ pp for GPT-4.1, whose interval includes zero (\cref{app:r30}). Told not to compare, though, both judges' shifts fall within a point of zero (\cref{app:r31}): the pull is what a matching instruction licenses, not something judges do once told the reference is one correct answer among several. On arithmetic it mostly vanishes, however, when the reference is written as an expression or hidden inside a worked solution (\cref{app:rotation,app:mechanism}).
 
-Does the problem fade as judges improve? On arithmetic, thinking before scoring removes most of the swap (\cref{app:reasoning}). On factual questions it does not: thinking only shrinks Sonnet~5's added false rejections, from 36 to 15 points (\cref{app:acceptance}), and o3-mini, a reasoning model, running the HLE grader still credits almost no correct answer that differs from the reference (\cref{sec:cost}).
+Does the problem fade as judges improve? On arithmetic, thinking before scoring removes most of the swap (\cref{app:reasoning}). On factual questions it does not: thinking only shrinks Sonnet~5's added false rejections, from 36 to 15 points (\cref{app:acceptance}), and o3-mini, a reasoning model, running the HLE grader still credits almost no correct answer that differs from the reference (\cref{sec:cost}), under a grader that tells it not to argue for a different answer.
 
 \section{Prediction 2: correct answers that differ from the reference are graded worse}
 \label{sec:p2}
@@ -188,7 +188,7 @@ Does the problem fade as judges improve? On arithmetic, thinking before scoring 
 The reference makes judges reject correct answers they would otherwise accept: under the registered labels, Qwen2.5-7B scores 28\% of the differing correct answers 3 or below with the reference, against 0.4\% blind\reana{} (\cref{app:grid}).
 Grading suffers with it. The AUROC that separates those answers from wrong ones falls by 0.06 to 0.16 for the four judges on factual questions and by 0.17 to 0.27 for the four open judges on the constructed pools (\cref{fig:onevsseveral}b). We registered the factual falls for Qwen2.5-7B, Sonnet~5, and Opus~5 in advance; the constructed-pool falls are post hoc,\ph{} because they use the any-format labels we adopted after the registered checker proved too strict.
 
-Relabeling moves their size, not their sign. All four open judges fall under registered, model-read, and boxed-only labels alike, and the pre-specified estimate under the registered labels, Qwen2.5-7B on the replication pool, falls by 0.29 (\cref{tab:labelings-gnm}); \cref{app:ledger} gives every registered prediction and its outcome.
+Relabeling moves their size, not their sign. All four open judges fall under registered, model-read, and boxed-only labels alike, and the pre-specified estimate under the registered labels, Qwen2.5-7B on the replication pool, falls by 0.29 (\cref{tab:labelings-gnm}); read the fall on boxed replies alone, 0.07 to 0.14, as the conservative bound, since the any-format labels that give the larger numbers over-credit some replies (\cref{app:grid}); \cref{app:ledger} gives every registered prediction and its outcome.
 
 \paragraph{One correct answer.}
 With one correct answer the reference helps, as P2 requires.
@@ -198,7 +198,6 @@ On MATH-500, showing only the final answer raises best-of-64 accuracy by 28.6 an
 P2 holds on factual questions for Sonnet~5, Opus~5, Qwen2.5-7B, and phi-4, and on the constructed pools for the four open judges and Sonnet~5. Two intervals include zero: GPT-4.1 on factual questions, whose falls are small everywhere, and Opus~5 on the replication pool (\cref{app:ledger}). On the constructed pools the API judges fall far less than the open judges.
 
 Selection is less exposed than grading. Best-of-64 accuracy did not fall on \textsc{MACE}'s multi-answer questions, so our registered loss there was not confirmed, and on the $k$-pool the losses concentrate where no correct candidate matches the reference\ph{} (\cref{app:estimator}).
-
 \section{Prediction 3: the effect persists after blind acceptance}
 \label{sec:p3}
 
@@ -257,10 +256,9 @@ Choosing the reference rather than drawing it shrinks the shortfall without remo
 
 \paragraph{Who should care: reuse across a capability boundary.}
 These graders are right for the benchmarks they were written for.
-By adjudicated LLM labels, 0\% to 3\% of sampled SimpleQA, BrowseComp, and HLE questions have several correct answers (\cref{app:prevalence}), so their own leaderboards are probably little affected.
+By adjudicated LLM labels, 0\% to 3\% of sampled SimpleQA, BrowseComp, and HLE questions have several correct answers (\cref{app:prevalence}), so their own leaderboards are probably little affected. Read that as a lower bound: adjudication stopped at a spending cap and the disagreements left over kept the conservative label, and HLE alone reaches 6.0\% if six of them go the other way.
 The failure is reuse across a capability boundary: a grader written for questions beyond its judge, pointed at questions it can answer (\cref{sec:fix}). We offer that as a reading, not an isolated variable: our two settings differ in difficulty and in the number of correct answers at once, and the shortfall below needs only the second.
 General-Reasoner's single-reference verifier rewards an RL training set~\citep{ma2025generalreasoner} in which 5.5\% of questions admit several answers after adjudication, 18\% by either annotator, and 30\% to 44\% of sampled NQ-open questions do.\ph{}
-Benchmarks built from such questions~\citep{malik2025rewardbench2,mace2026} inherit the failure whenever they are graded against one reference.
 Reward signals are the larger risk, since there the judge shapes a policy rather than reporting a score, and both verifiers above were built for RL rewards.
 We therefore state this as a concern rather than a demonstrated harm.
 
@@ -300,7 +298,6 @@ A change of instruction is therefore safe only for the judges and questions on w
 \paragraph{A recipe.}
 \begin{itemize}[leftmargin=1.2em,itemsep=0pt,topsep=1pt,parsep=0pt]
 \item \textbf{Answers that can be listed:} give the grader every one, and check that a trained verifier follows lists; one of our two did not.
-\item \textbf{A checker exists} (constraints, tests, solvers, proof assistants): grade with it.
 \item \textbf{No list and no checker:} if the judge can answer the questions, ask whether the response is correct rather than telling it to match; if not, keep the match instruction and first check that the judge does not overrule the reference on known wrong answers.
 \item \textbf{Audit:} score a sample blind as well and read answers accepted blind but rejected with the reference.
 \end{itemize}
@@ -313,7 +310,7 @@ References are the standard remedy for grading math and reasoning with LLM judge
 Judges depend on the reference being correct~\citep{judgingref2026,krumdick2025nofreelabels}, diverge from humans under reference-based grading~\citep{thakur2024judging}, and favor the reference's solution method~\citep{fixation2025}.
 
 \paragraph{Single references and many correct answers.}
-Reference-based metrics in translation reward outputs resembling the particular reference~\citep{freitag2020bleu,fomicheva2016reference}, and open-domain question answering under-credits correct answers missing from the gold list~\citep{min2020ambigqa,si2021whatsinaname,bulian2022tomayto,kamalloo2023evaluating}, which benchmarks and answer-equivalence methods target~\citep{amouyal2022qampari,li2024pedants}; in our setting the list is complete and the judge still favors the one answer it is shown.
+Translation metrics reward outputs resembling the particular reference, and open-domain question answering has long under-credited correct answers missing from a gold list, which answer-equivalence methods and multi-answer benchmarks target~\citep{min2020ambigqa,kamalloo2023evaluating,amouyal2022qampari,li2024pedants}; in our setting the list is complete and the judge still favors the one answer it is shown (\cref{app:relatedbias}).
 
 \paragraph{Judge biases and optimization.}
 Known judge biases concern position, length, self-preference, and a shown \emph{score}; none varies which correct answer is shown, and the effect here resembles sycophancy except that the suggestion is correct (\cref{app:relatedbias}).
@@ -321,7 +318,7 @@ Known judge biases concern position, length, self-preference, and a shown \emph{
 \section{Limitations}
 \label{sec:limits}
 
-\textbf{Labels.} Any-format labels were checked by a frontier model, not by humans, and boxed replies alone give conservative estimates; prevalence labels come from LLM annotators with low agreement ($\kappa \le 0.35$), and HLE labels from HLE's own judge.
+\textbf{Labels.} Any-format labels were checked by a frontier model, not by humans, and boxed replies alone give conservative estimates; prevalence labels come from LLM annotators with low agreement ($\kappa \le 0.35$), and HLE labels from HLE's own judge, which credits none of the differing correct answers we measure, so some we count as wrongly accepted may be valid alternatives (\cref{app:r27}).
 \textbf{Tasks.} Constructed pools come from five arithmetic families and one generator, natural data from two \textsc{MACE} domains. The benchmark study uses one answer per model, with references drawn at random and, in \cref{app:r30}, chosen; three graders grade their own answers (\cref{app:acceptance}), and intervals resample questions, not grader calls. Open-ended tasks (summarization, writing, agent trajectories) are untested. Our exploratory preference-training runs were inconclusive, so harm to RL training is not demonstrated (extended appendix).
 \textbf{Judges, prompts, and registration.} Open judges have at most 14B parameters, our wordings do not exhaust reference prompts, the correctness prompts were tested for two judges, and only the API judges have a second blind call as a noise control, which the round-30 and round-31 swaps lack. Whether a judge with tools or retrieval anchors the same way is untested (\cref{app:frontier}). No experiment manipulates verification directly, and most registrations are timestamped commits with a verdict rule adopted afterwards (\cref{app:ledger}).
 
