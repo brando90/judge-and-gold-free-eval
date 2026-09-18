@@ -141,7 +141,7 @@ Curated math sets are almost entirely single-answer. The multi-answer math items
 \section{Preregistration ledger}
 \label{app:ledger}
 
-Every confirmatory prediction was committed before its analysis was run, and for new model calls before the data existed; the verdict rule applied to them was adopted afterwards (below). Three experiments were registered on OSF with third-party timestamps\osf{} (links withheld for review; anonymized copies are in the supplementary material). The rest were committed to the project repository with a timestamp that predates the analysis\pre. Some of these rescored or re-analyzed outputs whose direction of effect was already known, such as the exact scorer (\cref{app:estimator}); the ledger names them. Analyses marked post hoc\ph{} carry no registration weight. The main text marks pre-specified re-analyses of an effect whose direction was already known with $\ddagger$; the appendix labels them \pre{} and the ledger names them. \Cref{tab:ledger} lists every experiment and its outcome as scored. Verdicts follow one rule. \emph{Confirmed} means the 95\% interval excludes zero in the predicted direction, or a registered point prediction holds. \emph{Not confirmed} means the interval includes zero. \emph{Falsified} means the interval excludes zero in the opposite direction, or a point prediction fails. The rule was written into a registration made partway through the project for later experiments, and applied retroactively to all earlier predictions after most of their outcomes were known; several predictions that the registration documents mark as falsified are therefore reported here as not confirmed. The re-derivation moved predictions in both directions. Of these, 7 moved from falsified to not confirmed (P-R2B1 to P-R2B3, P-R3D1, P-R3D2, P-2D2, and the Qwen2.5-7B cell of P-RC1). Another 10 moved against us: P-M2 and P-S5 to falsified, P-FM3 from confirmed to falsified, P-S2, P-MC2, and P-EX2 to split, and P-FR1, P-FK2, P-SC1, and P-SC2 from confirmed to not evaluable. Counting each registered prediction once, and from round 19 on once per judge or grader configuration, the ledger records 227 confirmed, 14 not confirmed, and 39 falsified, of 321. 18 predictions registered for several judges or training arms got different verdicts across them (\emph{split}; the table lists each verdict), 18 could not be evaluated, 2 were not scored, and 3 from an August 2026 command-line check are excluded (\cref{app:frontier}). These totals include the 14 predictions of round 27 (\cref{app:r27}) and the 17 of round 30 (\cref{app:r30}); through round 26 alone they were 202 confirmed, 14 not confirmed, and 34 falsified, of 290.
+Every confirmatory prediction was committed before its analysis was run, and for new model calls before the data existed; the verdict rule applied to them was adopted afterwards (below). Three experiments were registered on OSF with third-party timestamps\osf{} (links withheld for review; anonymized copies are in the supplementary material). The rest were committed to the project repository with a timestamp that predates the analysis\pre. Some of these rescored or re-analyzed outputs whose direction of effect was already known, such as the exact scorer (\cref{app:estimator}); the ledger names them. Analyses marked post hoc\ph{} carry no registration weight. The main text marks pre-specified re-analyses of an effect whose direction was already known with $\ddagger$; the appendix labels them \pre{} and the ledger names them. \Cref{tab:ledger} lists every experiment and its outcome as scored. Verdicts follow one rule. \emph{Confirmed} means the 95\% interval excludes zero in the predicted direction, or a registered point prediction holds. \emph{Not confirmed} means the interval includes zero. \emph{Falsified} means the interval excludes zero in the opposite direction, or a point prediction fails. The rule was written into a registration made partway through the project for later experiments, and applied retroactively to all earlier predictions after most of their outcomes were known; several predictions that the registration documents mark as falsified are therefore reported here as not confirmed. The re-derivation moved predictions in both directions. Of these, 7 moved from falsified to not confirmed (P-R2B1 to P-R2B3, P-R3D1, P-R3D2, P-2D2, and the Qwen2.5-7B cell of P-RC1). Another 10 moved against us: P-M2 and P-S5 to falsified, P-FM3 from confirmed to falsified, P-S2, P-MC2, and P-EX2 to split, and P-FR1, P-FK2, P-SC1, and P-SC2 from confirmed to not evaluable. Counting each registered prediction once, and from round 19 on once per judge or grader configuration, the ledger records 231 confirmed, 18 not confirmed, and 39 falsified, of 329. 18 predictions registered for several judges or training arms got different verdicts across them (\emph{split}; the table lists each verdict), 18 could not be evaluated, 2 were not scored, and 3 from an August 2026 command-line check are excluded (\cref{app:frontier}). These totals include the 14 predictions of round 27 (\cref{app:r27}) and the 17 of round 30 (\cref{app:r30}); through round 26 alone they were 202 confirmed, 14 not confirmed, and 34 falsified, of 290. Rounds 28 and 29 were drafted and never run --- an agentic-judge design and a human validation of our labels --- so they register no prediction and enter no total.
 
 {\small
 \setlength{\tabcolsep}{4pt}
@@ -215,6 +215,7 @@ Grading with many wrong answers (Section~7 of the paper; \cref{app:r26}) & commi
 Open RL-reward verifiers (Section~6 of the paper; \cref{app:r26}) & commit & For General-Reasoner's verifier and CompassVerifier-3B on the benchmark pool: accuracy with one reference below the answer lists (\textbf{confirmed}, both); with the full list within 5 points of the lists (\textbf{confirmed} for CompassVerifier-3B; \textbf{falsified} for General-Reasoner's verifier, $-24.2$); credit for differing correct answers at least 20 points higher with the list (\textbf{confirmed}, both). \\
 P3 under correctness prompts, and hard single-answer questions (\cref{app:r27}) & commit & Blind-accepted correct answers that differ from the reference lose credit once it is shown, in each of eight prompt--judge cells (\textbf{confirmed}, all eight; the interval excludes zero in seven and includes zero for verify-first GPT-4.1). On hard single-answer questions, against the verbatim HLE judge: solve-first accepts at most 5 points more wrong answers (\textbf{falsified} for GPT-4.1, $+25.9$; \textbf{confirmed} for Sonnet~5, $+1.0$); the direct prompt the same (\textbf{falsified} for GPT-4.1, $+17.3$; \textbf{confirmed} for Sonnet~5, $+0.5$); solve-first recall at least the HLE judge's minus 5 points (\textbf{confirmed} for GPT-4.1, 7 of 7 against 6 of 7; \textbf{falsified} for Sonnet~5 by one answer, 6 of 7 against 7 of 7). \\
 Swap under the direct prompt, and a chosen reference (\cref{app:r30}) & commit & Under a prompt that names the reference without saying to use it, answers that stop matching it lose credit and answers that start matching it gain credit (\textbf{confirmed}, both judges, both directions); the shift is smaller than that judge's own shift under our rubric (\textbf{confirmed} for Sonnet~5; \textbf{falsified} for GPT-4.1, $-0.264$ and $+0.247$ against $-0.125$ and $+0.189$); answers matching neither reference move at most 5 points (\textbf{confirmed} for GPT-4.1; \textbf{falsified} for Sonnet~5, $-5.9$ \ci{-10.7}{-1.1}). With the reference chosen rather than drawn: the shortfall is smaller than under the random draw (\textbf{split}: confirmed for the BrowseComp/HLE judge and our rubric in both arms and for the SimpleQA grader under the modal rule; not confirmed for the SimpleQA grader under the first-listed rule, $+0.045$ \ci{-0.003}{+0.092}); even the modal reference leaves every grader below its answer-list accuracy (\textbf{confirmed}, all six cells); the credited share moves less between rules than the shortfall does (\textbf{confirmed}, all six cells). \\
+Counter-instructed swap (\cref{app:r31}) & commit & Under a prompt that forbids using the reference: answers that stop matching are credited less under the second draw (\textbf{not confirmed}, both judges, $-0.007$ \ci{-0.031}{+0.015} and $-0.021$ \ci{-0.051}{+0.007}); answers that start matching are credited more (\textbf{not confirmed}, both judges, $+0.012$ \ci{-0.011}{+0.034} and $+0.000$ \ci{-0.016}{+0.018}); the shift is smaller than that judge's own shift under the direct prompt (\textbf{confirmed}, both judges, both directions); answers matching neither reference move at most 5 points (\textbf{confirmed}, both). The swap does not survive an instruction not to use the reference. \\
 Partial-answer rotation pilot & commit & A fixed first move scores higher when it matches the move shown as confirmed (\textbf{confirmed}, both judges). Not otherwise reported in this paper. \\
 \end{longtable}
 }
@@ -1023,6 +1024,72 @@ Section~7 of the paper gives the reading that connects its two prescriptions; he
 as a reading rather than a result. No experiment here manipulates judge capability while holding the number
 of correct answers fixed, and the two settings we contrast, the multi-answer factual questions of
 Section~6 of the paper and the hard single-answer questions of \cref{app:r27}, differ in both at once.
+
+%==========================================================================================
+\FloatBarrier
+\section{The swap under a prompt that forbids using the reference}
+\label{app:r31}
+
+Round 30 showed the swap survives a prompt that names the reference and says nothing about what to do with
+it. It did not test the remaining form of the instruction-following objection: a prompt that tells the judge
+\emph{not} to use the reference. This experiment does, and was registered before any call.
+
+\paragraph{Design.} The template is byte-identical to the direct prompt of \cref{app:r26} except for one
+inserted sentence: ``The reference answer is only one of several correct answers. Do not compare the response
+to it, and do not treat agreeing or disagreeing with it as evidence; judge only whether the response is
+itself a correct answer to the question.'' Any difference from the direct arm is therefore attributable to
+the instruction rather than to rewording. Both draws are new, since this template had never been run. Four
+cells of 596 calls, no errors and no unparseable replies.
+
+\begin{center}\footnotesize
+\begin{tabular}{llccc}
+\toprule
+Judge & Class ($n$) & Draw 1 & Draw 2 & Change \\
+\midrule
+Sonnet~5 & stop matching (144) & 0.986 & 0.979 & $-0.007$ \ci{-0.031}{+0.015} \\
+ & start matching (174) & 0.977 & 0.989 & $+0.012$ \ci{-0.011}{+0.034} \\
+ & matches neither (222) & 0.968 & 0.946 & $-0.023$ \ci{-0.050}{+0.004} \\
+\addlinespace[2pt]
+GPT-4.1 & stop matching (144) & 0.993 & 0.972 & $-0.021$ \ci{-0.051}{+0.007} \\
+ & start matching (174) & 0.977 & 0.977 & $+0.000$ \ci{-0.016}{+0.018} \\
+ & matches neither (222) & 0.968 & 0.968 & $+0.000$ \ci{-0.012}{+0.013} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent The swap does not survive. Every interval includes zero, so both registered directional predictions
+are \textbf{not confirmed} for both judges. Against the direct prompt on the same answers, GPT-4.1's
+stop-matching shift falls from $-0.264$ to $-0.021$ and its start-matching shift from $+0.247$ to $+0.000$;
+Sonnet~5's fall from $-0.132$ and $+0.178$ to $-0.007$ and $+0.012$. We registered that the shift would be
+smaller than each judge's own shift under the direct prompt, and it is, by a wide margin (confirmed for both
+judges in both directions); the placebo moves at most 2.3 points (confirmed).
+
+\paragraph{The judges did not simply become permissive.} That is the reading this result has to survive, and
+it does not hold: wrong answers are still rejected, while credit for correct answers rises sharply against
+the direct prompt on the same pool.
+
+\begin{center}\footnotesize
+\begin{tabular}{lccc}
+\toprule
+Judge & Prompt & Correct credited & Wrong credited \\
+\midrule
+Sonnet~5 & direct & 0.878 & 0.107 \\
+ & forbidden (draw 1 / 2) & 0.976 / 0.969 & 0.107 / 0.125 \\
+\addlinespace[2pt]
+GPT-4.1 & direct & 0.800 & 0.071 \\
+ & forbidden (draw 1 / 2) & 0.978 / 0.972 & 0.196 / 0.214 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent Accuracy lands within 0.2 to 1.7 points of answer-list accuracy in every cell, against the 30 to 67
+points by which the shipped graders fall short (Section~6 of the paper). The cost differs by judge: close to
+free for Sonnet~5, and a real rise in wrong answers credited for GPT-4.1.
+
+\paragraph{What this does and does not settle.} It does not make the effect an artifact of our wording:
+\cref{app:r30} already shows the swap is large under a prompt that names the reference and gives no
+instruction about it. Read together, the two results bound the effect from both sides. It does not require an
+instruction to compare, and it does not survive one forbidding it.
 
 %==========================================================================================
 \FloatBarrier

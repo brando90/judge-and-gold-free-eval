@@ -50,7 +50,7 @@ With one correct answer the premise holds and the reference helps, raising best-
 We test it with more than a dozen judges, open models up to 14B and frontier API judges, on constructed tasks, MACE, and MATH-500, with a full preregistration ledger.
 (1) Swapping the reference between two correct answers moves the score of identical text by about 3 to 5 points out of 10.
 (2) Correct answers that differ from the reference are graded worse against wrong answers, for the four open judges under every labeling we tried.
-(3) Judges take back credit: of 843 answers two frontier judges accepted blind, 117 drop to 3 or below once the reference is shown, against 2 on a repeated blind call.
+(3) Judges take back credit: of 843 differing correct answers two frontier judges accepted blind, 117 drop to 3 or below once the reference is shown, against 2 on a repeated blind call.
 Those benchmarks rarely contain such questions. Run verbatim on 149 factual questions that do, with the reference drawn at random, their graders credit 0\% to 53\% of correct answers that differ from it and score four models 30 to 67 points below answer-list accuracy; choosing the reference instead leaves two of those graders 9 to 56 points short.
 Much of this comes from the instruction to match: asked instead whether the answer is correct, judges shrink the gap on questions they can answer.
 Given the full answer list, the graders come within a point of answer-list accuracy, partly by construction, since those lists define correctness, though one open verifier stays far short.
@@ -153,7 +153,7 @@ A registered audit by Claude Opus~5 confirms only 86\% of the answers these labe
 \item \textbf{Grading AUROC:} how well a judge's scores separate those answers from wrong answers, per task (with one correct answer, all correct answers against wrong ones).
 \item \textbf{Best-of-64 accuracy:} the correctness of the highest-scored candidate, averaged over ties.
 \end{itemize}
-Changes are referenced minus blind, per task, with task-level bootstrap intervals; scores are out of 10, and rates and accuracies are in percentage points (pp). By default, constructed pools use any-format labels and open judges the exact scorer of \cref{app:setup,app:estimator}. We do not correct for multiplicity; the ledger records 321 registered predictions (\cref{app:ledger}).
+Changes are referenced minus blind, per task, with task-level bootstrap intervals; scores are out of 10, and rates and accuracies are in percentage points (pp). By default, constructed pools use any-format labels and open judges the exact scorer of \cref{app:setup,app:estimator}. We do not correct for multiplicity; the ledger records 329 registered predictions (\cref{app:ledger}).
 Marks apply to effect estimates: unmarked estimates were pre-specified in a timestamped commit or on OSF; \ph{} marks post hoc estimates; \reana{} marks pre-specified re-analyses of an effect whose direction was already known. \Cref{app:ledger} summarizes every registered prediction and lists each failure.
 
 \section{Prediction 1: the score follows the reference}
@@ -170,7 +170,7 @@ We re-judged the replication pool's byte-identical samples with the reference mo
 Under Qwen2.5-7B,\reana{} phi-4, and Sonnet~5, text the reference moves onto gains 3 to 5 points and text it moves off loses about as much, while correct text that matches neither reference barely moves (\cref{fig:rotation-pool}).
 All 12 registered cells for Qwen2.5-7B and phi-4 went as predicted; one registered prediction, that the swap would be ordered by numeric distance from the reference, failed (\cref{app:ledger}).
 
-The swap is not an artifact of our own wording: it survives the verbatim MT-Bench template, which drops ``trusted'' and asks for an explanation first. That template also asks for a comparison, so we ran the swap again under a prompt that names the reference and never says to use it. Credit still follows the reference, where credit is a yes-or-no judgment rather than the 0--10 score above: answers that stop matching it lose 26 pp for GPT-4.1 and 13 for Sonnet~5. Text matching neither reference moves $-6$ pp for Sonnet~5, a larger move than the 5 pp we registered as a bound, and $-3$ pp for GPT-4.1, whose interval includes zero (\cref{app:r30}). On arithmetic it mostly vanishes, however, when the reference is written as an expression or hidden inside a worked solution (\cref{app:rotation,app:mechanism}).
+The swap is not an artifact of our own wording: it survives the verbatim MT-Bench template, which drops ``trusted'' and asks for an explanation first. That template also asks for a comparison, so we ran the swap again under a prompt that names the reference and never says to use it. Credit still follows the reference, where credit is a yes-or-no judgment rather than the 0--10 score above: answers that stop matching it lose 26 pp for GPT-4.1 and 13 for Sonnet~5. Text matching neither reference moves $-6$ pp for Sonnet~5, a larger move than the 5 pp we registered as a bound, and $-3$ pp for GPT-4.1, whose interval includes zero (\cref{app:r30}). Told not to compare, though, both judges' shifts fall within a point of zero (\cref{app:r31}): the pull is what a matching instruction licenses, not something judges do once told the reference is one correct answer among several. On arithmetic it mostly vanishes, however, when the reference is written as an expression or hidden inside a worked solution (\cref{app:rotation,app:mechanism}).
 
 Does the problem fade as judges improve? On arithmetic, thinking before scoring removes most of the swap (\cref{app:reasoning}). On factual questions it does not: thinking only shrinks Sonnet~5's added false rejections, from 36 to 15 points (\cref{app:acceptance}), and o3-mini, a reasoning model, running the HLE grader still credits almost no correct answer that differs from the reference (\cref{sec:cost}).
 
@@ -222,7 +222,7 @@ Verification failure predicts none of this.
 
 \paragraph{It is not noise.}
 Scores wander a little between calls, so we asked the same judges again, the same way, still with no reference.
-Of the 843 answers they had accepted, pooled over both judges, 2 fell to 3 or below on that second call. With the reference in front of them, 117 did.
+Of the 843 accepted answers that differ from the reference, pooled over both judges, 2 fell to 3 or below on that second call. With the reference in front of them, 117 did, against none of the 383 that match it.
 
 \paragraph{It is not our wording either.}
 Asked only whether the response is correct, with no rubric of ours and no instruction about the reference, GPT-4.1 and Sonnet~5 take back credit from 22\% and 14\% of the answers they had accepted, and from none of the matching ones.\reana{}
@@ -231,7 +231,7 @@ Asked to reason before deciding, they take back 1\% to 9\% (\cref{app:r27}). Tho
 \paragraph{Verdict.}
 P3 holds for all six judges with a usable acceptance test, and on factual questions for four judges from three developers: two with the second blind call as a noise control, and two at a threshold we chose after seeing the data.
 Verification failure alone therefore cannot explain the effect, although it may explain part of it for some judges.
-Accepting an answer blind is a proxy for verifying it, not proof: a judge can accept an answer without checking it, and Opus~5 gives a blind 10 to 5\% to 8\% of wrong answers (\cref{app:acceptance}).
+Accepting an answer blind is a proxy for verifying it, not proof: a judge can accept an answer without checking it, and Opus~5 gives a blind 10 to 5\% to 8\% of wrong answers (\cref{app:acceptance}) --- a band that covers its 2.7\% to 4.7\% retraction on the constructed pools, so P3's evidence rests on the factual questions.
 And agreement, as we have defined it, still covers a judge that simply assumes the question has one intended answer; P3 does not separate that from rewarding a match.
 
 \section{How much it matters, and what sets the size}
@@ -258,7 +258,7 @@ Choosing the reference rather than drawing it shrinks the shortfall without remo
 \paragraph{Who should care: reuse across a capability boundary.}
 These graders are right for the benchmarks they were written for.
 By adjudicated LLM labels, 0\% to 3\% of sampled SimpleQA, BrowseComp, and HLE questions have several correct answers (\cref{app:prevalence}), so their own leaderboards are probably little affected.
-The failure is reuse across a capability boundary: a grader written for questions beyond its judge, pointed at questions it can answer (\cref{sec:fix}).
+The failure is reuse across a capability boundary: a grader written for questions beyond its judge, pointed at questions it can answer (\cref{sec:fix}). We offer that as a reading, not an isolated variable: our two settings differ in difficulty and in the number of correct answers at once, and the shortfall below needs only the second.
 General-Reasoner's single-reference verifier rewards an RL training set~\citep{ma2025generalreasoner} in which 5.5\% of questions admit several answers after adjudication, 18\% by either annotator, and 30\% to 44\% of sampled NQ-open questions do.\ph{}
 Benchmarks built from such questions~\citep{malik2025rewardbench2,mace2026} inherit the failure whenever they are graded against one reference.
 Reward signals are the larger risk, since there the judge shapes a policy rather than reporting a score, and both verifiers above were built for RL rewards.
@@ -287,6 +287,7 @@ We compared three such prompts on the 40-task \textsc{MACE} subsample, which has
 Letting the judge solve the question first had the smallest grading loss: AUROC $-0.04$ and $-0.05$ against blind, with wrong answers wrongly credited up by at most 3.2 points.
 It still rejected 5 to 7 points more of the differing correct answers (\cref{app:r26}).
 Telling the judge that any correct answer deserves full credit helps but does not suffice: added to our rubric, it cuts the rise in false rejections on \textsc{MACE} from 36 to 18 points for Sonnet~5 and to 8 for Opus~5 (\cref{app:acceptance}).
+Forbidding comparison works better still: accuracy comes within 1.7 points of the lists, though GPT-4.1 then credits 20\% of wrong answers against 7\% (\cref{app:r31}). Read accuracy here with its pool in mind: 90.6\% of these answers are correct, so it tracks recall and hides that cost, which a pool with more wrong answers would expose.
 One protocol we registered did not help: scoring blind and then rescoring with the reference left grading below blind for most open judges\ph{} (\cref{app:mitigation}).
 
 \paragraph{Questions beyond the judge.}
@@ -295,9 +296,6 @@ We took the 200 HLE questions of our prevalence audit (6 labeled as having sever
 With the reference, GPT-4.1 credited 17\% of those answers under the direct prompt and 26\% when it solved first, often after calling the reference wrong.\ph{}
 Sonnet~5 credited at most 1\% (\cref{app:r27}).
 A change of instruction is therefore safe only for the judges and questions on which it has been checked.
-
-\paragraph{Why a reference is given at all.}
-One reading connects the two prescriptions above: how far a judge should lean on the reference plausibly depends on what it can already do with the item. Where it cannot answer the question, the match instruction keeps wrong answers out; where it can, that instruction costs grading accuracy. We offer this as a reading rather than a result (\cref{app:r30}): reference reliance may need to be decided per item, not per benchmark.
 
 \paragraph{A recipe.}
 \begin{itemize}[leftmargin=1.2em,itemsep=0pt,topsep=1pt,parsep=0pt]
@@ -311,21 +309,21 @@ One reading connects the two prescriptions above: how far a judge should lean on
 \label{sec:related}
 
 \paragraph{Reference-guided judging.}
-References are the standard remedy for grading math and reasoning with LLM judges~\citep{zheng2023judging,refguided2024,chen2026rethinking}, and judges without them over-credit wrong answers~\citep{generous2026}. Judge models, benchmark graders, and answer matching all check a response against one gold answer~\citep{zhu2023judgelm,kim2024prometheus,wei2024simpleqa,wei2025browsecomp,phan2025hle,chandak2025answermatching}, as do RL-reward verifiers and their benchmarks~\citep{chen2025xverify,liu2025compassverifier,yan2025verifybench}; false negatives from rule-based checking slow RL~\citep{xu2025tinyv,huang2025pitfalls}.
+References are the standard remedy for grading math and reasoning with LLM judges~\citep{zheng2023judging,refguided2024,chen2026rethinking}, and judges without them over-credit wrong answers~\citep{generous2026}. Judge models, benchmark graders, and answer matching all check a response against one gold answer~\citep{zhu2023judgelm,kim2024prometheus,wei2024simpleqa,wei2025browsecomp,phan2025hle,chandak2025answermatching}, as do RL-reward verifiers~\citep{chen2025xverify,liu2025compassverifier,yan2025verifybench}; false negatives from rule-based checking slow RL~\citep{xu2025tinyv,huang2025pitfalls}.
 Judges depend on the reference being correct~\citep{judgingref2026,krumdick2025nofreelabels}, diverge from humans under reference-based grading~\citep{thakur2024judging}, and favor the reference's solution method~\citep{fixation2025}.
 
 \paragraph{Single references and many correct answers.}
-Reference-based metrics in translation reward outputs resembling the particular reference~\citep{freitag2020bleu,fomicheva2016reference}, and open-domain question answering under-credits correct answers missing from the gold list or phrased differently~\citep{min2020ambigqa,si2021whatsinaname,bulian2022tomayto,kamalloo2023evaluating}, which benchmarks and answer-equivalence methods target~\citep{amouyal2022qampari,li2024pedants}; in our setting the list is complete and the judge still favors the one answer it is shown.
+Reference-based metrics in translation reward outputs resembling the particular reference~\citep{freitag2020bleu,fomicheva2016reference}, and open-domain question answering under-credits correct answers missing from the gold list~\citep{min2020ambigqa,si2021whatsinaname,bulian2022tomayto,kamalloo2023evaluating}, which benchmarks and answer-equivalence methods target~\citep{amouyal2022qampari,li2024pedants}; in our setting the list is complete and the judge still favors the one answer it is shown.
 
 \paragraph{Judge biases and optimization.}
-LLM judges favor the first response~\citep{wang2024fair}, longer responses~\citep{dubois2024lengthcontrolled}, their own outputs~\citep{panickssery2024llm}, and scores shown to them~\citep{kapetanovic2026anchoring}, where the anchor is a score rather than an answer; the concern carries over to rubric-based rewards, where in one surveyed pipeline the reference is used to write the rubric~\citep{gunjal2025rar}. Catalogues and benchmarks of judge reliability~\citep{koo2024benchmarking,ye2025justice,tan2025judgebench} do not vary which correct answer is shown. The effect resembles sycophancy toward a suggested answer~\citep{sharma2023sycophancy,turpin2023unfaithful}, except that the suggestion here is correct. Optimizing against an imperfect evaluator inflates its scores~\citep{gao2022scaling,rafailov2024scaling}.
+Known judge biases concern position, length, self-preference, and a shown \emph{score}; none varies which correct answer is shown, and the effect here resembles sycophancy except that the suggestion is correct (\cref{app:relatedbias}).
 
 \section{Limitations}
 \label{sec:limits}
 
 \textbf{Labels.} Any-format labels were checked by a frontier model, not by humans, and boxed replies alone give conservative estimates; prevalence labels come from LLM annotators with low agreement ($\kappa \le 0.35$), and HLE labels from HLE's own judge.
 \textbf{Tasks.} Constructed pools come from five arithmetic families and one generator, natural data from two \textsc{MACE} domains. The benchmark study uses one answer per model, with references drawn at random and, in \cref{app:r30}, chosen; three graders grade their own answers (\cref{app:acceptance}), and intervals resample questions, not grader calls. Open-ended tasks (summarization, writing, agent trajectories) are untested. Our exploratory preference-training runs were inconclusive, so harm to RL training is not demonstrated (extended appendix).
-\textbf{Judges, prompts, and registration.} Open judges have at most 14B parameters, our wordings do not exhaust reference prompts, the correctness prompts were tested for two judges, and only the API judges have a second blind call as a noise control, which the round-30 swap lacks. Whether a judge with tools or retrieval anchors the same way is untested (\cref{app:frontier}). No experiment manipulates verification directly, and most registrations are timestamped commits with a verdict rule adopted afterwards (\cref{app:ledger}).
+\textbf{Judges, prompts, and registration.} Open judges have at most 14B parameters, our wordings do not exhaust reference prompts, the correctness prompts were tested for two judges, and only the API judges have a second blind call as a noise control, which the round-30 and round-31 swaps lack. Whether a judge with tools or retrieval anchors the same way is untested (\cref{app:frontier}). No experiment manipulates verification directly, and most registrations are timestamped commits with a verdict rule adopted afterwards (\cref{app:ledger}).
 
 \subsection*{AI use statement}
 Generative AI models were the experimental subjects: open and frontier LLMs generated candidate answers and served as the judges and verifiers under study (\cref{sec:setup}, \cref{app:setup}); three Claude models answered the benchmark questions of \cref{sec:cost}, which Claude models, GPT-4.1, and o3-mini graded; GPT-4.1-mini and Claude Haiku~4.5 answered the HLE questions of \cref{sec:fix}, which o3-mini labeled; and Claude Opus~5 read replies for the label audit. One pilot in the extended appendix used a Claude model to generate candidate solutions, each verified by exact checks, and Qwen2.5-14B read unboxed replies for one labeling. We used generative AI tools to help write analysis code, draft and edit text, produce figures, search and verify related work, audit the preregistration ledger, and label samples of dataset questions for two prevalence audits, the first with two passes from one model family and the second with Claude Sonnet~5 and GPT-5-mini adjudicated by Claude Opus~5; no label was checked by human annotators. Every number in the paper is produced by committed analysis scripts from stored model outputs, and we checked every quoted number against those outputs. We take responsibility for the final content of this work.

@@ -30,6 +30,7 @@ Each section below supports the main-text sections listed. The extended appendix
 \ref{app:r26} & Direct prompt, edited HLE judge, grading with many wrong answers, and open RL-reward verifiers & \ref{sec:cost}, \ref{sec:fix} \\
 \ref{app:r27} & P3 under correctness prompts, and hard single-answer questions & \ref{sec:p3}, \ref{sec:fix} \\
 \ref{app:r30} & The swap under a prompt that does not instruct comparison, and a chosen reference & \ref{sec:p1}, \ref{sec:cost}, \ref{sec:fix} \\
+\ref{app:r31} & The swap under a prompt that forbids using the reference & \ref{sec:p1}, \ref{sec:fix} \\
 \ref{app:mitigation} & Blind-then-reveal, the max rule (post hoc), and other mitigations & \ref{sec:p2}, \ref{sec:fix} \\
 \bottomrule
 \end{tabular}
@@ -133,6 +134,13 @@ In this first audit (table in the extended appendix), curated math sets are almo
 
 %==========================================================================================
 \FloatBarrier
+\section{Judge biases and optimization}
+\label{app:relatedbias}
+
+LLM judges favor the first response~\citep{wang2024fair}, longer responses~\citep{dubois2024lengthcontrolled}, their own outputs~\citep{panickssery2024llm}, and scores shown to them~\citep{kapetanovic2026anchoring}, where the anchor is a score rather than an answer; the concern carries over to rubric-based rewards, where in one surveyed pipeline the reference is used to write the rubric~\citep{gunjal2025rar}. Catalogues and benchmarks of judge reliability~\citep{koo2024benchmarking,ye2025justice,tan2025judgebench} do not vary which correct answer is shown. The effect resembles sycophancy toward a suggested answer~\citep{sharma2023sycophancy,turpin2023unfaithful}, except that the suggestion here is correct.
+
+%==========================================================================================
+\FloatBarrier
 \section{Preregistration ledger}
 \label{app:ledger}
 
@@ -140,26 +148,26 @@ Every confirmatory prediction was committed before its analysis was run, and for
 
 Verdicts follow one rule. \emph{Confirmed} means the 95\% interval excludes zero in the predicted direction, or a registered point prediction holds. \emph{Not confirmed} means the interval includes zero. \emph{Falsified} means the interval excludes zero in the opposite direction, or a point prediction fails. The rule was written into a registration made partway through the project for later experiments, and applied retroactively to all earlier predictions after most of their outcomes were known; several predictions that the registration documents mark as falsified are therefore reported here as not confirmed. The re-derivation moved predictions in both directions. Of these, 7 moved from falsified to not confirmed (P-R2B1 to P-R2B3, P-R3D1, P-R3D2, P-2D2, and the Qwen2.5-7B cell of P-RC1). Another 10 moved against us: P-M2 and P-S5 to falsified, P-FM3 from confirmed to falsified, P-S2, P-MC2, and P-EX2 to split, and P-FR1, P-FK2, P-SC1, and P-SC2 from confirmed to not evaluable.
 
-A round is one dated batch of registered experiments; the registration documents in the supplement are numbered by round. Counting each registered prediction once, and from round 19 on once per judge or grader configuration, \cref{tab:ledger-totals} gives the totals. A prediction registered for several judges or training arms that got different verdicts across them is \emph{split}. \Cref{tab:ledger-failures} lists every prediction that was not confirmed, falsified, split, not evaluable, or not scored, and the excluded check; the extended appendix lists every registered experiment, including those whose predictions were all confirmed.
+A round is one dated batch of registered experiments; the registration documents in the supplement are numbered by round. Rounds 28 and 29 were drafted and never run --- an agentic-judge design and a human validation of our labels --- so they register no prediction and enter no total. Counting each registered prediction once, and from round 19 on once per judge or grader configuration, \cref{tab:ledger-totals} gives the totals. A prediction registered for several judges or training arms that got different verdicts across them is \emph{split}. \Cref{tab:ledger-failures} lists every prediction that was not confirmed, falsified, split, not evaluable, or not scored, and the excluded check; the extended appendix lists every registered experiment, including those whose predictions were all confirmed.
 
 \begin{table}[htbp]
 \centering
 \caption{Registered predictions by verdict.}
 \label{tab:ledger-totals}
 \footnotesize
-\begin{tabular}{lccc}
+\begin{tabular}{lcccc}
 \toprule
-Verdict & Through round 26 & Round 27 (\cref{app:r27}) & Round 30 (\cref{app:r30}) \\
+Verdict & To round 26 & R27 (\cref{app:r27}) & R30 (\cref{app:r30}) & R31 (\cref{app:r31}) \\
 \midrule
-Confirmed & 202 & 11 & 14 \\
-Not confirmed & 14 & 0 & 0 \\
-Falsified & 34 & 3 & 2 \\
-Split & 17 & 0 & 1 \\
-Not evaluable & 18 & 0 & 0 \\
-Not scored & 2 & 0 & 0 \\
-Excluded (\cref{app:frontier}) & 3 & 0 & 0 \\
+Confirmed & 202 & 11 & 14 & 4 \\
+Not confirmed & 14 & 0 & 0 & 4 \\
+Falsified & 34 & 3 & 2 & 0 \\
+Split & 17 & 0 & 1 & 0 \\
+Not evaluable & 18 & 0 & 0 & 0 \\
+Not scored & 2 & 0 & 0 & 0 \\
+Excluded (\cref{app:frontier}) & 3 & 0 & 0 & 0 \\
 \midrule
-Total & 290 & 14 & 17 \\
+Total & 290 & 14 & 17 & 8 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -167,7 +175,7 @@ Total & 290 & 14 & 17 \\
 {\footnotesize
 \setlength{\tabcolsep}{4pt}
 \begin{longtable}{L{3.5cm}L{9.5cm}}
-\caption{Every registered prediction that was not confirmed, falsified, split, not evaluable, or not scored, by experiment. Counts in parentheses where one entry covers several predictions. The rows contain 14 not confirmed, 39 falsified, 18 split, 18 not evaluable, and 2 not scored predictions, and the 3 excluded ones.}\label{tab:ledger-failures}\\
+\caption{Every registered prediction that was not confirmed, falsified, split, not evaluable, or not scored, by experiment. Counts in parentheses where one entry covers several predictions. The rows contain 18 not confirmed, 39 falsified, 18 split, 18 not evaluable, and 2 not scored predictions, and the 3 excluded ones.}\label{tab:ledger-failures}\\
 \toprule
 Experiment & Predictions and outcome \\
 \midrule
@@ -189,6 +197,7 @@ Two-factor composition & Lures raise inflation when no answer matches (\textbf{s
 Distance gradient & Near, middle, and far thirds ordered (\textbf{falsified}, both judges). \\
 Solution-route rotation (\cref{app:mechanism}) & No score change when only the derivation rotates (\textbf{split}: Qwen2.5-7B falsified, $-0.32$ \ci{-0.56}{-0.08}; phi-4 confirmed, $-0.02$ \ci{-0.04}{0.00}). \\
 \textsc{MACE} (\cref{app:mace}) & Referenced margin positive with blind margin null (\textbf{split}: Qwen2.5-7B confirmed; phi-4 falsified, blind margin $-0.80$ \ci{-1.44}{-0.15}). \\
+Counter-instructed swap (\cref{app:r31}) & Answers that stop matching are credited less under the second draw (\textbf{not confirmed}, both judges: $-0.007$ \ci{-0.031}{+0.015} for Sonnet~5 and $-0.021$ \ci{-0.051}{+0.007} for GPT-4.1). Answers that start matching are credited more (\textbf{not confirmed}, both judges: $+0.012$ \ci{-0.011}{+0.034} and $+0.000$ \ci{-0.016}{+0.018}). The swap does not survive an instruction not to use the reference. \\
 Swap under the direct prompt (\cref{app:r30}) & Shift smaller than the same judge's shift under our rubric (\textbf{falsified} for GPT-4.1: $-0.264$ and $+0.247$ against $-0.125$ and $+0.189$; confirmed for Sonnet~5). Answers matching neither reference move at most 5 points (\textbf{falsified} for Sonnet~5: $-5.9$ \ci{-10.7}{-1.1}; confirmed for GPT-4.1). \\
 Chosen reference (\cref{app:r30}) & Shortfall smaller than under the random draw (\textbf{split}: confirmed for the BrowseComp/HLE judge and our rubric in both arms, and for the SimpleQA grader under the modal rule; not confirmed for the SimpleQA grader under the first-listed rule, $+0.045$ \ci{-0.003}{+0.092}). \\
 Frontier CLI judge (\cref{app:frontier}) & \textbf{Excluded} from the counts (3): the calls ran with the interface's default system prompt, tools, and repository context, and extended thinking engaged on 54\% of blind and 8\% of referenced calls. \\
@@ -259,7 +268,7 @@ The same experiment added a MATH-500 condition that shows only the final answer,
 
 \begin{table}[htbp]
 \centering
-\caption{MATH-500, 105 problems: best-of-64 selection accuracy (\%) blind, with the reference solution, and with its final answer alone, and the differences (points, 95\% CI). Exact scorer; both judges' scores are new runs, so blind accuracies differ slightly from the original-scorer files (68.6\% and 66.7\% against 67.6\%).\pre}
+\caption{MATH-500, the 105 problems whose pool pass rate lies in $[0.2,0.8]$: best-of-64 selection accuracy (\%) blind, with the reference solution, and with its final answer alone, and the differences (points, 95\% CI). Exact scorer; both judges' scores are new runs, so blind accuracies differ slightly from the original-scorer files (68.6\% and 66.7\% against 67.6\%).\pre}
 \label{tab:r4-math}
 \footnotesize
 \setlength{\tabcolsep}{3pt}
@@ -615,6 +624,72 @@ the one that depends on how the reference was picked.
 reading rather than a result. No experiment here manipulates judge capability while holding the number of
 correct answers fixed, and the two settings we contrast, the multi-answer factual questions of
 \cref{sec:cost} and the hard single-answer questions of \cref{app:r27}, differ in both at once.
+
+%==========================================================================================
+\FloatBarrier
+\section{The swap under a prompt that forbids using the reference}
+\label{app:r31}
+
+Round 30 showed the swap survives a prompt that names the reference and says nothing about what to do with
+it. It did not test the remaining form of the instruction-following objection: a prompt that tells the judge
+\emph{not} to use the reference. This experiment does, and was registered before any call.
+
+\paragraph{Design.} The template is byte-identical to the direct prompt of \cref{app:r26} except for one
+inserted sentence: ``The reference answer is only one of several correct answers. Do not compare the response
+to it, and do not treat agreeing or disagreeing with it as evidence; judge only whether the response is
+itself a correct answer to the question.'' Any difference from the direct arm is therefore attributable to
+the instruction rather than to rewording. Both draws are new, since this template had never been run. Four
+cells of 596 calls, no errors and no unparseable replies.
+
+\begin{center}\footnotesize
+\begin{tabular}{llccc}
+\toprule
+Judge & Class ($n$) & Draw 1 & Draw 2 & Change \\
+\midrule
+Sonnet~5 & stop matching (144) & 0.986 & 0.979 & $-0.007$ \ci{-0.031}{+0.015} \\
+ & start matching (174) & 0.977 & 0.989 & $+0.012$ \ci{-0.011}{+0.034} \\
+ & matches neither (222) & 0.968 & 0.946 & $-0.023$ \ci{-0.050}{+0.004} \\
+\addlinespace[2pt]
+GPT-4.1 & stop matching (144) & 0.993 & 0.972 & $-0.021$ \ci{-0.051}{+0.007} \\
+ & start matching (174) & 0.977 & 0.977 & $+0.000$ \ci{-0.016}{+0.018} \\
+ & matches neither (222) & 0.968 & 0.968 & $+0.000$ \ci{-0.012}{+0.013} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent The swap does not survive. Every interval includes zero, so both registered directional predictions
+are \textbf{not confirmed} for both judges. Against the direct prompt on the same answers, GPT-4.1's
+stop-matching shift falls from $-0.264$ to $-0.021$ and its start-matching shift from $+0.247$ to $+0.000$;
+Sonnet~5's fall from $-0.132$ and $+0.178$ to $-0.007$ and $+0.012$. We registered that the shift would be
+smaller than each judge's own shift under the direct prompt, and it is, by a wide margin (confirmed for both
+judges in both directions); the placebo moves at most 2.3 points (confirmed).
+
+\paragraph{The judges did not simply become permissive.} That is the reading this result has to survive, and
+it does not hold: wrong answers are still rejected, while credit for correct answers rises sharply against
+the direct prompt on the same pool.
+
+\begin{center}\footnotesize
+\begin{tabular}{lccc}
+\toprule
+Judge & Prompt & Correct credited & Wrong credited \\
+\midrule
+Sonnet~5 & direct & 0.878 & 0.107 \\
+ & forbidden (draw 1 / 2) & 0.976 / 0.969 & 0.107 / 0.125 \\
+\addlinespace[2pt]
+GPT-4.1 & direct & 0.800 & 0.071 \\
+ & forbidden (draw 1 / 2) & 0.978 / 0.972 & 0.196 / 0.214 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent Accuracy lands within 0.2 to 1.7 points of answer-list accuracy in every cell, against the 30 to 67
+points by which the shipped graders fall short (\cref{sec:cost}). The cost differs by judge: close to free
+for Sonnet~5, and a real rise in wrong answers credited for GPT-4.1.
+
+\paragraph{What this does and does not settle.} It does not make the effect an artifact of our wording:
+\cref{app:r30} already shows the swap is large under a prompt that names the reference and gives no
+instruction about it. Read together, the two results bound the effect from both sides. It does not require an
+instruction to compare, and it does not survive one forbidding it.
 
 %==========================================================================================
 \FloatBarrier

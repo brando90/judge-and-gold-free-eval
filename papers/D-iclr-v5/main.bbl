@@ -1,4 +1,4 @@
-\begin{thebibliography}{105}
+\begin{thebibliography}{104}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -539,15 +539,6 @@ Long Phan, Alice Gatti, Ziwen Han, Nathaniel Li, Josephina Hu, et~al.
   \url{https://www.promptfoo.dev/docs/configuration/expected-outputs/model-graded/factuality/},
   2026.
 \newblock Accessed 2026-09-14.
-
-\bibitem[Rafailov et~al.(2024)Rafailov, Chittepu, Park, Sikchi, Hejna, Knox,
-  Finn, and Niekum]{rafailov2024scaling}
-Rafael Rafailov, Yaswanth Chittepu, Ryan Park, Harshit Sikchi, Joey Hejna,
-  Bradley Knox, Chelsea Finn, and Scott Niekum.
-\newblock Scaling laws for reward model overoptimization in direct alignment
-  algorithms.
-\newblock In \emph{Advances in Neural Information Processing Systems 37
-  (NeurIPS 2024)}, 2024.
 
 \bibitem[Rau et~al.(2024)Rau, D{\'e}jean, Chirkova, Formal, Wang, Nikoulina,
   and Clinchant]{rau2024bergen}
