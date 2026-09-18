@@ -111,7 +111,7 @@ Question-answering evaluation has long under-credited correct answers missing fr
 Question & Rules out & Key evidence & Verdict \\
 \midrule
 \textbf{P1} Does the score follow the reference? & Answer key & Identical text moves 3--5 points when the reference moves to another correct answer (\cref{sec:p1}) & Holds; near zero on arithmetic for a thinking judge \\
-\textbf{P2} Are differing correct answers graded worse? & Answer key & Their grading against wrong answers drops under every answer labeling; with one correct answer the reference helps (\cref{sec:p2}) & Holds. Small for API judges on arithmetic; interval includes zero for GPT-4.1 (factual) and Opus~5 (one pool) \\
+\textbf{P2} Are differing correct answers graded worse? & Answer key & Their grading against wrong answers drops under every answer labeling; with one correct answer the reference helps (\cref{sec:p2}) & Holds. Small for API judges on arithmetic; interval includes zero for GPT-4.1 (factual) and Opus~5 (replication pool) \\
 \textbf{P3} Does it persist after blind acceptance? & Inability to verify, on its own & Answers accepted blind are rejected once another correct answer is the reference; a repeated blind call almost never does this (\cref{sec:p3}) & Holds for every judge with an acceptance test \\
 \emph{Consequence} & --- & Shipped benchmark graders and RL verifiers under-credit such answers heavily (\cref{sec:cost}) & Large on questions with several answers; those are rare on the shipped benchmarks \\
 \emph{Fix} & --- & A full answer list closes the gap for the benchmark graders; correctness prompts shrink it but can admit wrong answers on hard questions (\cref{sec:fix}) & The list works, except for one 1.5B verifier \\
@@ -240,7 +240,7 @@ And agreement, as we have defined it, still covers a judge that simply assumes t
 \centering
 \includegraphics[width=0.85\textwidth]{figures/fig4_graders.pdf}
 \caption{\textbf{Graders told to match under-count correct answers.} Asking whether the answer is correct shrinks the gap; giving the grader every correct answer closes it for all but one verifier.
-\textbf{(a)}~Four models answered 149 \textsc{MACE} questions that have several correct answers. Each marker shows how far a grader's accuracy falls below \emph{answer-list accuracy}, the accuracy scored against the full lists, when the grader sees one reference drawn at random. The benchmark graders run exactly as shipped, each with the judge it is configured to use (GPT-4.1, or o3-mini for HLE). The lower panel, on a wider scale, asks the same judges whether the answer is correct.
+\textbf{(a)}~Four models answered 149 \textsc{MACE} questions that have several correct answers. Each marker shows how far a grader's accuracy falls below \emph{answer-list accuracy}, the accuracy scored against the full lists, when the grader sees one reference drawn at random. The benchmark graders run exactly as shipped, each with the judge it is configured to use (GPT-4.1, or o3-mini for HLE). The lower panel, on a narrower scale, asks the same judges whether the answer is correct.
 \textbf{(b)}~What the reference does to grading on the 40-task \textsc{MACE} subsample: the change in how well each judge separates correct answers that differ from the reference from wrong ones. 95\% intervals; every value was pre-specified.}
 \label{fig:graders}
 \end{figure}
