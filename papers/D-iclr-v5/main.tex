@@ -172,7 +172,7 @@ All 12 registered cells for Qwen2.5-7B and phi-4 went as predicted; one register
 
 The swap is not an artifact of our own wording: it survives the verbatim MT-Bench template, which drops ``trusted'' and asks for an explanation first. That template also asks for a comparison, so we ran the swap again under a prompt that names the reference and never says to use it. Credit still follows the reference, where credit is a yes-or-no judgment rather than the 0--10 score above: answers that stop matching it lose 26 pp for GPT-4.1 and 13 for Sonnet~5. Text matching neither reference moves $-6$ pp for Sonnet~5, a larger move than the 5 pp we registered as a bound, and $-3$ pp for GPT-4.1, whose interval includes zero (\cref{app:r30}). Told not to compare, though, both judges' shifts fall within a point of zero (\cref{app:r31}): the effect needs no instruction to compare, and an explicit instruction against comparing removes it. On arithmetic it mostly vanishes, however, when the reference is written as an expression or hidden inside a worked solution (\cref{app:rotation,app:mechanism}).
 
-Does the problem fade as judges improve? On arithmetic, thinking before scoring removes most of the swap (\cref{app:reasoning}). On factual questions it does not: thinking only shrinks Sonnet~5's added false rejections, from 36 to 15 points (\cref{app:acceptance}), and o3-mini, a reasoning model, running the HLE grader still credits almost no correct answer that differs from the reference (\cref{sec:cost}), under a grader that tells it not to argue for a different answer.
+Does the problem fade as judges improve? On arithmetic, thinking before scoring removes most of the swap (\cref{app:reasoning}). On factual questions it shrinks the effect without removing it: Sonnet~5's added false rejections fall from 36 to 15 points (\cref{app:acceptance}), and o3-mini, a reasoning model, running the HLE grader still credits almost no correct answer that differs from the reference (\cref{sec:cost}), under a grader that tells it not to argue for a different answer.
 
 \section{Prediction 2: correct answers that differ from the reference are graded worse}
 \label{sec:p2}
@@ -225,7 +225,7 @@ Of the 843 accepted answers that differ from the reference, pooled over both jud
 
 \paragraph{It is not our wording either.}
 Asked only whether the response is correct, with no rubric of ours and no instruction about the reference, GPT-4.1 and Sonnet~5 take back credit from 22\% and 14\% of the answers they had accepted, and from none of the matching ones.\reana{}
-Asked to reason before deciding, they take back 1\% to 9\% (\cref{app:r27}). Those three prompts also tell the judge to use the reference, and none has a second blind call to compare against.
+Asked to reason first, by chain of thought, verify-first, or solve-first, they take back 1\% to 9\% (\cref{app:r27}). Those three, unlike the direct prompt, tell the judge to use the reference, and none has a second blind call to compare against.
 
 \paragraph{Verdict.}
 P3 holds for all six judges with a usable acceptance test, and on factual questions for four judges from three developers: two with the second blind call as a noise control, and two at a threshold we chose after seeing the data.
@@ -310,7 +310,7 @@ References are the standard remedy for grading math and reasoning with LLM judge
 Judges depend on the reference being correct~\citep{judgingref2026,krumdick2025nofreelabels}, diverge from humans under reference-based grading~\citep{thakur2024judging}, and favor the reference's solution method~\citep{fixation2025}.
 
 \paragraph{Single references and many correct answers.}
-Translation metrics reward outputs resembling the particular reference, and open-domain question answering has long under-credited correct answers missing from a gold list, which answer-equivalence methods and multi-answer benchmarks target~\citep{min2020ambigqa,kamalloo2023evaluating,amouyal2022qampari,li2024pedants}; in our setting the list is complete and the judge still favors the one answer it is shown (\cref{app:relatedbias}).
+Translation metrics reward outputs resembling the particular reference, and open-domain question answering has long under-credited correct answers missing from a gold list, which answer-equivalence methods and multi-answer benchmarks target~\citep{min2020ambigqa,kamalloo2023evaluating,amouyal2022qampari,li2024pedants}; on our constructed tasks the list is complete and the judge still favors the one answer it is shown (\cref{app:relatedbias}).
 
 \paragraph{Judge biases and optimization.}
 Known judge biases concern position, length, self-preference, and a shown \emph{score}; none varies which correct answer is shown, and the effect here resembles sycophancy except that the suggestion is correct (\cref{app:relatedbias}).
