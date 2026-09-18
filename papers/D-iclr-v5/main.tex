@@ -131,7 +131,7 @@ MATH-500~\citep{hendrycks2021math} supplies unique answers.
 
 \paragraph{Candidates, judges, and prompts.}
 \begin{itemize}[leftmargin=1.2em,itemsep=0pt,topsep=0pt]
-\item \textbf{Candidates.} Llama-3.1-8B-Instruct~\citep{grattafiori2024llama3} writes 64 samples per task at temperature 1 (Qwen2.5-7B for MATH-500).
+\item \textbf{Candidates.} Llama-3.1-8B-Instruct~\citep{grattafiori2024llama3} writes 64 samples per task at temperature 1 (Qwen2.5-7B for MATH-500); the benchmark study of \cref{sec:cost} instead takes one answer each from four models (\cref{app:setup}).
 \item \textbf{Conditions.} Each sample is judged \emph{blind}, from the question and the candidate, and \emph{referenced}, with the reference under the heading ``Reference answer (trusted)''.
 \item \textbf{Open judges.} Qwen2.5-7B and Qwen2.5-14B~\citep{yang2024qwen25}, phi-4~\citep{abdin2024phi4}, and gemma-2-9b~\citep{riviere2024gemma2} output only a score, of which we use the expected value over the score tokens; a fifth, Mistral-7B, fails a score-resolution screen (\cref{app:setup,app:mitigation}).
 \item \textbf{API judges.} Claude Sonnet~5 and Opus~5, with thinking disabled, score 16-candidate subsamples of each pool that always include a matching correct answer, a differing correct answer, and a wrong answer. GPT-4.1's scores tie too often to rank candidates, so we use it for grading only.
