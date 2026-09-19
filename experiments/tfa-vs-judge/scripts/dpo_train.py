@@ -31,7 +31,12 @@ def to_chat(r):
 
 
 ds = Dataset.from_list([to_chat(r) for r in rows])
-model = AutoModelForCausalLM.from_pretrained(args.model, dtype=torch.bfloat16)
+# transformers >=5 takes dtype=, <5 takes torch_dtype=; accept either so this runs on the
+# training venv as well as the inference one.
+try:
+    model = AutoModelForCausalLM.from_pretrained(args.model, dtype=torch.bfloat16)
+except TypeError:
+    model = AutoModelForCausalLM.from_pretrained(args.model, torch_dtype=torch.bfloat16)
 model.config.use_cache = False
 
 out_dir = f"{args.out}/adapter_{args.cond}"
