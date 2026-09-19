@@ -1,1 +1,254 @@
-{}
+{
+ "replication|Qwen__Qwen2.5-7B-Instruct|a": {
+  "oracle": {
+   "p_valid": 0.9285981697317935,
+   "p_match_given_valid": 0.15303960721914084,
+   "n_items_scored": 93
+  },
+  "blind": {
+   "p_valid": 0.6647900714209847,
+   "p_match_given_valid": 0.18198759920654398,
+   "n_items_scored": 93
+  },
+  "ref": {
+   "p_valid": 0.6230040309461196,
+   "p_match_given_valid": 0.6943569348256571,
+   "n_items_scored": 93
+  },
+  "ref_minus_oracle_match": {
+   "mean": 0.5413173276065162,
+   "ci": [
+    0.47046911937922026,
+    0.6154578480128247
+   ],
+   "n_items": 93
+  },
+  "blind_minus_oracle_match": {
+   "mean": 0.028947991987403107,
+   "ci": [
+    0.006058888877723257,
+    0.05550790975589895
+   ],
+   "n_items": 93
+  },
+  "pool": "replication",
+  "judge": "Qwen__Qwen2.5-7B-Instruct",
+  "rubric": "a"
+ },
+ "replication|microsoft__phi-4|a": {
+  "oracle": {
+   "p_valid": 0.9285981697317935,
+   "p_match_given_valid": 0.15303960721914084,
+   "n_items_scored": 93
+  },
+  "blind": {
+   "p_valid": 0.6179619051904369,
+   "p_match_given_valid": 0.19430704869651141,
+   "n_items_scored": 93
+  },
+  "ref": {
+   "p_valid": 0.6376375828257002,
+   "p_match_given_valid": 0.616151038884783,
+   "n_items_scored": 93
+  },
+  "ref_minus_oracle_match": {
+   "mean": 0.4631114316656422,
+   "ci": [
+    0.38592569603931476,
+    0.5374737387915212
+   ],
+   "n_items": 93
+  },
+  "blind_minus_oracle_match": {
+   "mean": 0.04126744147737056,
+   "ci": [
+    0.021132785267697435,
+    0.06686444374450762
+   ],
+   "n_items": 93
+  },
+  "pool": "replication",
+  "judge": "microsoft__phi-4",
+  "rubric": "a"
+ },
+ "MACE|Qwen__Qwen2.5-7B-Instruct|a": {
+  "oracle": {
+   "p_valid": 0.9625501315603859,
+   "p_match_given_valid": 0.3792845876841797,
+   "n_items_scored": 115
+  },
+  "blind": {
+   "p_valid": 0.7037455788074396,
+   "p_match_given_valid": 0.35654061976586854,
+   "n_items_scored": 115
+  },
+  "ref": {
+   "p_valid": 0.7832728948029585,
+   "p_match_given_valid": 0.8276797168940008,
+   "n_items_scored": 115
+  },
+  "ref_minus_oracle_match": {
+   "mean": 0.448395129209821,
+   "ci": [
+    0.3747483269610131,
+    0.5225511466821857
+   ],
+   "n_items": 115
+  },
+  "blind_minus_oracle_match": {
+   "mean": -0.022743967918311226,
+   "ci": [
+    -0.08016846715900373,
+    0.03635582229699662
+   ],
+   "n_items": 115
+  },
+  "pool": "MACE",
+  "judge": "Qwen__Qwen2.5-7B-Instruct",
+  "rubric": "a"
+ },
+ "MACE|Qwen__Qwen2.5-14B-Instruct|a": {
+  "oracle": {
+   "p_valid": 0.9625501315603859,
+   "p_match_given_valid": 0.3792845876841797,
+   "n_items_scored": 115
+  },
+  "blind": {
+   "p_valid": 0.7299792865553885,
+   "p_match_given_valid": 0.3429832228261544,
+   "n_items_scored": 115
+  },
+  "ref": {
+   "p_valid": 0.7665865225079584,
+   "p_match_given_valid": 0.7772077458808399,
+   "n_items_scored": 115
+  },
+  "ref_minus_oracle_match": {
+   "mean": 0.39792315819666024,
+   "ci": [
+    0.3218369386901534,
+    0.4678142218041512
+   ],
+   "n_items": 115
+  },
+  "blind_minus_oracle_match": {
+   "mean": -0.036301364858025355,
+   "ci": [
+    -0.09329643207927044,
+    0.024712697009705575
+   ],
+   "n_items": 115
+  },
+  "pool": "MACE",
+  "judge": "Qwen__Qwen2.5-14B-Instruct",
+  "rubric": "a"
+ },
+ "MACE|google__gemma-2-9b-it|a": {
+  "oracle": {
+   "p_valid": 0.9625501315603859,
+   "p_match_given_valid": 0.3792845876841797,
+   "n_items_scored": 115
+  },
+  "blind": {
+   "p_valid": 0.6502682641799812,
+   "p_match_given_valid": 0.3635322307666909,
+   "n_items_scored": 115
+  },
+  "ref": {
+   "p_valid": 0.7604605280970567,
+   "p_match_given_valid": 0.7801249353933963,
+   "n_items_scored": 115
+  },
+  "ref_minus_oracle_match": {
+   "mean": 0.40084034770921667,
+   "ci": [
+    0.3263091598910464,
+    0.4759567897038469
+   ],
+   "n_items": 115
+  },
+  "blind_minus_oracle_match": {
+   "mean": -0.015752356917488802,
+   "ci": [
+    -0.06908481965060252,
+    0.036238594327620846
+   ],
+   "n_items": 115
+  },
+  "pool": "MACE",
+  "judge": "google__gemma-2-9b-it",
+  "rubric": "a"
+ },
+ "MACE|microsoft__phi-4|a": {
+  "oracle": {
+   "p_valid": 0.9625501315603859,
+   "p_match_given_valid": 0.3792845876841797,
+   "n_items_scored": 115
+  },
+  "blind": {
+   "p_valid": 0.6943016816704379,
+   "p_match_given_valid": 0.3408653194847352,
+   "n_items_scored": 115
+  },
+  "ref": {
+   "p_valid": 0.7787568538527931,
+   "p_match_given_valid": 0.865552369184432,
+   "n_items_scored": 115
+  },
+  "ref_minus_oracle_match": {
+   "mean": 0.4862677815002523,
+   "ci": [
+    0.41484027424978365,
+    0.5633516743304221
+   ],
+   "n_items": 115
+  },
+  "blind_minus_oracle_match": {
+   "mean": -0.03841926819944455,
+   "ci": [
+    -0.08469895731607119,
+    0.004854797854281944
+   ],
+   "n_items": 115
+  },
+  "pool": "MACE",
+  "judge": "microsoft__phi-4",
+  "rubric": "a"
+ },
+ "MACE|anthropic__claude-sonnet-5|a": {
+  "oracle": {
+   "p_valid": 0.9625501315603859,
+   "p_match_given_valid": 0.3792845876841797,
+   "n_items_scored": 115
+  },
+  "blind": {
+   "p_valid": 0.9450702769625792,
+   "p_match_given_valid": 0.34787303634460365,
+   "n_items_scored": 115
+  },
+  "ref": {
+   "p_valid": 0.9236707521532763,
+   "p_match_given_valid": 0.701640725284336,
+   "n_items_scored": 115
+  },
+  "ref_minus_oracle_match": {
+   "mean": 0.3223561376001562,
+   "ci": [
+    0.2485266799749074,
+    0.39494203795558397
+   ],
+   "n_items": 115
+  },
+  "blind_minus_oracle_match": {
+   "mean": -0.03141155133957608,
+   "ci": [
+    -0.09139906266909101,
+    0.025172853376319606
+   ],
+   "n_items": 115
+  },
+  "pool": "MACE",
+  "judge": "anthropic__claude-sonnet-5",
+  "rubric": "a"
+ }
+}

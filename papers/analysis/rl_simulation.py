@@ -30,8 +30,23 @@ E = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "experi
 
 
 def norm(a):
+    """Arithmetic (synthk) normaliser, as in replrot_analysis.py."""
     import re
     return re.sub(r"[\s\.\,\!\'\"\$]+", "", str(a).strip().casefold()) or None
+
+
+def mnorm(a):
+    """MACE normaliser, verbatim from scripts/r8_build_sonnet_pools.py."""
+    import re
+    return re.sub(r"[^a-z0-9]+", "", (a or "").strip().casefold())
+
+
+def matches(sample, ref_answer, domain):
+    """MACE decides a match by containment on the last 200 chars; arithmetic by equality."""
+    if domain == "mace":
+        a, rn = mnorm(extract_boxed(sample) or sample[-200:]), mnorm(ref_answer)
+        return int(a == rn or (len(rn) > 3 and rn in a))
+    return int(norm(extract_boxed(sample) or sample) == norm(ref_answer))
 
 
 def extract_boxed(text):
@@ -45,10 +60,10 @@ def extract_boxed(text):
     return text[i + 7:j - 1]
 
 
-def load(pool_f, scores_dir, judge, rep):
+def load(pool_f, scores_dir, judge, rep, domain="synthk"):
     pool = [json.loads(l) for l in open(os.path.join(E, pool_f))]
     def sc(cond):
-        p = os.path.join(E, scores_dir, f"synthk__{judge}__{cond}_{rep}.jsonl")
+        p = os.path.join(E, scores_dir, f"{domain}__{judge}__{cond}_{rep}.jsonl")
         return {r["problem_id"]: r["escore"] for r in (json.loads(l) for l in open(p))}
     ref, blind = sc("ref"), sc("noref")
     items = []
@@ -56,11 +71,12 @@ def load(pool_f, scores_dir, judge, rep):
         pid = t["problem_id"]
         if pid not in ref or pid not in blind:
             continue
-        refn = norm(t["ref_answer"])
+        if domain == "mace" and (t.get("k") or 0) < 2:
+            continue                      # match/non-match is undefined with one correct answer
         oracle, match = [], []
         for s, o in zip(t["samples"], t["oracle"]):
             oracle.append(int(o))
-            match.append(int(norm(extract_boxed(s) or s) == refn))
+            match.append(matches(s, t["ref_answer"], domain))
         if sum(oracle) == 0:
             continue                      # nothing correct to converge onto
         items.append(dict(pid=pid, oracle=oracle, match=match,
@@ -132,15 +148,20 @@ def boot(vals, B=2000, tag=""):
 
 
 if __name__ == "__main__":
-    CELLS = [("replication", "runs/bon/bon_repl__meta-llama__Llama-3.1-8B-Instruct.jsonl",
-              "runs/bon_scores_repl", "Qwen__Qwen2.5-7B-Instruct", "a"),
-             ("replication", "runs/bon/bon_repl__meta-llama__Llama-3.1-8B-Instruct.jsonl",
-              "runs/bon_scores_repl", "microsoft__phi-4", "a")]
+    REPL = "runs/bon/bon_repl__meta-llama__Llama-3.1-8B-Instruct.jsonl"
+    MACE = "runs/bon/bon_mace__meta-llama__Llama-3.1-8B-Instruct.jsonl"
+    CELLS = [("replication", REPL, "runs/bon_scores_repl", "Qwen__Qwen2.5-7B-Instruct", "a", "synthk"),
+             ("replication", REPL, "runs/bon_scores_repl", "microsoft__phi-4", "a", "synthk"),
+             ("MACE", MACE, "runs/bon_scores_mace", "Qwen__Qwen2.5-7B-Instruct", "a", "mace"),
+             ("MACE", MACE, "runs/bon_scores_mace", "Qwen__Qwen2.5-14B-Instruct", "a", "mace"),
+             ("MACE", MACE, "runs/bon_scores_mace", "google__gemma-2-9b-it", "a", "mace"),
+             ("MACE", MACE, "runs/bon_scores_mace", "microsoft__phi-4", "a", "mace"),
+             ("MACE", MACE, "runs/bon_scores_mace", "anthropic__claude-sonnet-5", "a", "mace")]
     out = {}
     print("Policy-gradient simulation over STORED judge scores. Not RL training; see header.\n")
     print(f"  {'pool':<12}{'judge':<26}{'reward':<12}{'P(valid)':>10}{'P(match|valid)':>16}{'items':>7}")
-    for pool, pf, sd, judge, rep in CELLS:
-        items = load(pf, sd, judge, rep)
+    for pool, pf, sd, judge, rep, dom in CELLS:
+        items = load(pf, sd, judge, rep, dom)
         row = {}
         got = {}
         for rk in ("oracle", "blind", "ref"):
@@ -158,6 +179,8 @@ if __name__ == "__main__":
             tag = "  (control)" if lbl == "blind" else ""
             print(f"  {'':<12}{'':<26}{'-> ' + lbl + '-oracle':<12}{'':>10}"
                   f"{m:>+10.3f} [{lo:+.3f},{hi:+.3f}]{tag}")
+        row["pool"], row["judge"], row["rubric"] = pool, judge, rep
+        out[f"{pool}|{judge}|{rep}"] = row
         print()
     json.dump(out, open(os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                      "rl_simulation_results.json"), "w"), indent=1)

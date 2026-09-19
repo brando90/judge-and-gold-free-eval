@@ -899,7 +899,7 @@ gives the product, an upper bound on the accuracy a model loses, with the preval
 differing-answer uncertainties propagated by a Jeffreys
 posterior on each and 20{,}000 draws.
 
-The effect is small: at most about a third of a point for SimpleQA and about two points for HLE.
+The effect is small: at most 0.4 points for SimpleQA and 2 points for HLE, matching the figures quoted in the abstract.
 These are ceilings rather than expectations, because the product conditions on the model already
 answering the question correctly and does not multiply by how often it does; the true leaderboard
 delta is smaller by that factor.
@@ -1042,18 +1042,55 @@ real policy. A real policy explores an open output space; this one can only move
 between answers that were already sampled. We report it as a mechanism check and leave the claim in
 \cref{sec:cost} as it stands.
 
-\paragraph{Result.} Rewarded by the exact oracle, a converged policy puts 15.3\% of its valid
-probability mass on the answer that happens to match the reference --- close to the rate at which
-that answer appears among correct candidates. Rewarded by the same judge \emph{with the reference
-shown}, it puts 69.4\% there for Qwen2.5-7B and 61.6\% for phi-4: a rise of $+0.541$
-\ci{+0.470}{+0.615} and $+0.463$ \ci{+0.386}{+0.537} over the oracle policy, paired by item. The
-blind-judge control moves the same quantity by only $+0.029$ \ci{+0.006}{+0.056} and $+0.041$
-\ci{+0.021}{+0.067}. That control is small but not zero, which is expected: the reference is often
-the canonical answer, and a blind judge prefers canonical answers too (extended appendix). The
-referenced signal is an order of magnitude larger than that preference.
+\paragraph{Result.} \Cref{tab:rlsim} gives all seven cells. Rewarded by the exact oracle, a
+converged policy puts 15.3\% of its valid probability mass on the answer that matches the reference
+on the arithmetic pool, and 37.9\% on \textsc{MACE} --- close to the rate at which that answer
+appears among correct candidates. Rewarded by the same judge \emph{with the reference shown}, it
+puts 61.6\% to 86.6\% there. Paired by item, that is a rise of $+0.32$ to $+0.54$ over the oracle
+policy, and every interval excludes zero.
 
-Two further readings. The share of mass on \emph{any} correct answer falls from 0.93 under the
-oracle to 0.62--0.67 under either judge reward, blind or referenced alike, so that loss is ordinary
-grading error and not the reference's doing. And the concentration is what a reward-hacking account
-predicts: the policy is not becoming less correct, it is becoming correct in one particular way ---
-the way the grader was shown.
+The blind-judge control separates the reference from the judge. On \textsc{MACE} it is null for all
+five judges, between $-0.038$ and $-0.016$ with every interval covering zero: nothing but the
+displayed answer moves the policy. On the arithmetic pool it is small but not zero ($+0.029$ and
+$+0.041$), which we read as the reference there often being the obvious answer, which a blind judge
+also prefers. Either way the referenced signal is an order of magnitude larger.
+
+\paragraph{A judge can look clean on grading and still distort a policy.} Sonnet~5 is the case worth
+attention. Its bare anchoring on \textsc{MACE} is $-0.15$ of 10, the smallest of any judge we score,
+and none of the four prompt-level fixes moves it detectably because there is so little to move
+(\cref{tab:panel2-mitig}). By the measurements an evaluation team would normally run, it is the
+clean judge in this paper. As a reward signal it still carries 37.9\% to 70.2\% of the policy's
+valid mass onto the shown answer, $+0.322$ \ci{+0.249}{+0.395}. Grading quality and reward-signal
+safety are not the same property, and the second does not follow from the first.
+
+Two further readings. Under either judge reward the share of mass on \emph{any} correct answer moves
+together --- on \textsc{MACE}, 0.96 under the oracle against 0.65 to 0.94 under blind and referenced
+alike --- so that loss is ordinary grading error, not the reference's doing. And the concentration is
+what a reward-hacking account predicts: the policy is not becoming less correct, it is becoming
+correct in one particular way --- the way the grader was shown.
+
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption{\textbf{A single-reference reward concentrates a policy on the answer it was shown.} Share
+of converged valid probability mass sitting on the reference-matching answer, by reward signal, with
+the paired per-item difference from the oracle policy (95\% intervals). \emph{Blind} is the control:
+the same judge with no reference. Simulation over stored scores on a fixed 64-candidate set, not RL
+training. All post hoc.\ph}
+\label{tab:rlsim}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}llccccc@{}}
+\toprule
+Pool & Judge & Oracle & Blind & Referenced & Ref $-$ oracle & Blind $-$ oracle \\
+\midrule
+Arithmetic & Qwen2.5-7B & $0.153$ & $0.182$ & $0.694$ & $+0.541$ \ci{+0.470}{+0.615} & $+0.029$ \ci{+0.006}{+0.056} \\
+ & phi-4 & $0.153$ & $0.194$ & $0.616$ & $+0.463$ \ci{+0.386}{+0.537} & $+0.041$ \ci{+0.021}{+0.067} \\
+\midrule
+\textsc{MACE} & Qwen2.5-7B & $0.379$ & $0.357$ & $0.828$ & $+0.448$ \ci{+0.375}{+0.523} & $-0.023$ \ci{-0.080}{+0.036} \\
+ & Qwen2.5-14B & $0.379$ & $0.343$ & $0.777$ & $+0.398$ \ci{+0.322}{+0.468} & $-0.036$ \ci{-0.093}{+0.025} \\
+ & gemma-2-9b & $0.379$ & $0.364$ & $0.780$ & $+0.401$ \ci{+0.326}{+0.476} & $-0.016$ \ci{-0.069}{+0.036} \\
+ & phi-4 & $0.379$ & $0.341$ & $0.866$ & $+0.486$ \ci{+0.415}{+0.563} & $-0.038$ \ci{-0.085}{+0.005} \\
+ & Sonnet~5 & $0.379$ & $0.348$ & $0.702$ & $+0.322$ \ci{+0.249}{+0.395} & $-0.031$ \ci{-0.091}{+0.025} \\
+\bottomrule
+\end{tabular}
+\end{table}
