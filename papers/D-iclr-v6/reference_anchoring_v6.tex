@@ -119,6 +119,14 @@ Prior work comes close without isolating this failure.
 \citet{fixation2025} name ``solution fixation'' but measure it with flawed solutions rewritten in the reference's style, and \citet{judgingref2026} and \citet{krumdick2025nofreelabels} replace the reference with a wrong one.
 Question-answering evaluation has long under-credited correct answers missing from a gold list~\citep{min2020ambigqa,kamalloo2023evaluating}; here the list is complete and the judge still favors the answer it was shown.
 
+\paragraph{How to read the paper.}
+Three figures carry the argument, and a reader in a hurry can stop after them.
+\Cref{fig:rotation-pool} is the causal core: the candidate text never changes, the reference moves from one correct answer to another, and the score follows it, while text matching neither reference barely moves.
+\Cref{fig:reasoning} rules out the obvious explanation: answers the judge already accepted with no reference in front of it are taken back once a different correct answer is shown, which a judge that simply could not verify them would have no reason to do.
+\Cref{fig:graders} shows the cost where it is paid, in graders that ship with benchmarks.
+Everything else answers an objection to those three: whether the effect is an artifact of our wording (\cref{sec:p1}), of how we label answers (\cref{app:grid}), of judges that cannot reason (\cref{app:reasoning}), or of a pool we happened to build (\cref{app:holdout}); and what removes it (\cref{sec:fix}).
+Prediction identifiers, rubric variants, and per-labeling tables are in the appendices; the ledger (\cref{app:ledger}) records every registered prediction and its outcome, including those that failed.
+
 \begin{table}[t]
 \centering
 \small
