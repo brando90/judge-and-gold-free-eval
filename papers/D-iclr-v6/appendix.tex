@@ -1094,3 +1094,64 @@ Arithmetic & Qwen2.5-7B & $0.153$ & $0.182$ & $0.694$ & $+0.541$ \ci{+0.470}{+0.
 \bottomrule
 \end{tabular}
 \end{table}
+
+
+\section{Which correct answer best-of-$n$ returns}
+\label{app:bonref}
+
+\Cref{app:rlsim} asks what a reference reward would pull a policy toward. This asks the same
+question of the thing that is actually deployed: best-of-$n$ selection, where a judge scores $n$
+sampled candidates and the highest scorer is returned. No training and no simulation dynamics --
+argmax over stored scores, on the tasks that carry both a matching and a non-matching correct
+answer, so that there is something to choose between.\ph{}
+
+\paragraph{Result.} \Cref{tab:bonref} gives the share of \emph{correct} picks that are the
+particular correct answer the judge was shown. At $n=1$ all three selectors agree by construction,
+which is the sanity check. As the budget grows, the oracle selector stays flat --- 0.18 on
+arithmetic and 0.43 on \textsc{MACE}, the rate at which the matching answer occurs among correct
+candidates --- while the referenced selector climbs monotonically to between 0.78 and 0.98. The
+blind control not only fails to climb, it drifts slightly down ($-0.026$ to $-0.108$ at $n=64$).
+Sampling more candidates does not dilute the effect; it sharpens it, because a larger pool offers
+more chances for the shown answer to appear and be selected.
+
+\paragraph{This explains a null we reported.} Best-of-64 accuracy did not fall on \textsc{MACE}'s
+multi-answer questions, and our registered loss there was not confirmed (\cref{app:estimator}). The
+reason is visible here: accuracy does not fall because the answer returned is still correct. What
+changes is \emph{which} correct answer is returned. A pipeline measuring only accuracy would see
+nothing wrong while its output distribution collapsed onto whichever answer its grader happened to
+hold --- at $n=64$, 94\% and 95\% of the time for the two open judges, against 44\% under an exact
+checker. For a benchmark that reports accuracy this is invisible; for anything that consumes the
+selected outputs, such as distillation or preference data, it is not.
+
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption{\textbf{The more candidates you sample, the more reliably a reference-guided judge returns
+the answer it was shown.} Share of correct best-of-$n$ picks that are the reference-matching correct
+answer (95\% intervals, item bootstrap). \emph{Blind} is the same judge with no reference. At $n=1$
+the three selectors are identical by construction. All post hoc.\ph}
+\label{tab:bonref}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}llccccc@{}}
+\toprule
+Pool & Judge & Reward & $n{=}4$ & $n{=}16$ & $n{=}64$ & $n{=}64$ $-$ oracle \\
+\midrule
+Arithmetic & Qwen2.5-7B & oracle & $0.165$ & $0.183$ & $0.183$ & --- \\
+ & & blind & $0.176$ & $0.163$ & $0.123$ & $-0.060$ \\
+ & & referenced & $0.393$ & $0.578$ & $\mathbf{0.926}$ & $+0.744$ \\
+ & phi-4 & oracle & $0.165$ & $0.183$ & $0.183$ & --- \\
+ & & blind & $0.176$ & $0.188$ & $0.146$ & $-0.037$ \\
+ & & referenced & $0.393$ & $0.788$ & $\mathbf{0.978}$ & $+0.795$ \\
+\midrule
+\textsc{MACE} & Qwen2.5-7B & oracle & $0.423$ & $0.432$ & $0.435$ & --- \\
+ & & blind & $0.382$ & $0.302$ & $0.378$ & $-0.057$ \\
+ & & referenced & $0.630$ & $0.811$ & $\mathbf{0.939}$ & $+0.505$ \\
+ & phi-4 & oracle & $0.423$ & $0.432$ & $0.435$ & --- \\
+ & & blind & $0.337$ & $0.340$ & $0.326$ & $-0.108$ \\
+ & & referenced & $0.605$ & $0.865$ & $\mathbf{0.951}$ & $+0.517$ \\
+ & Sonnet~5 & oracle & $0.423$ & $0.432$ & $0.435$ & --- \\
+ & & blind & $0.402$ & $0.414$ & $0.409$ & $-0.026$ \\
+ & & referenced & $0.526$ & $0.676$ & $\mathbf{0.783}$ & $+0.348$ \\
+\bottomrule
+\end{tabular}
+\end{table}
