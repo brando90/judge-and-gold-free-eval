@@ -140,6 +140,10 @@ ap.add_argument("--hard-frac", type=float, default=0.5,
                 help="fraction of hard-tier items (the pilot's calibration knob)")
 ap.add_argument("--n-main", type=int, default=120)
 ap.add_argument("--n-pilot", type=int, default=20)
+# Added 2026-09-19 for the frozen holdout (registration 32). Defaults reproduce the original
+# pool byte for byte, so nothing prior changes; a new seed + prefix builds an independent pool.
+ap.add_argument("--seed", type=int, default=20260825)
+ap.add_argument("--out-prefix", default="runs/repl")
 args = ap.parse_args()
 
 if args.kstrat:
@@ -224,13 +228,13 @@ if args.kstrat:
           dict(Counter(r["params"]["fam"] for r in rows)))
     raise SystemExit
 
-rng = random.Random(20260825)
+rng = random.Random(args.seed)
 pilot = build(rng, args.n_pilot, args.hard_frac, "pilot")
 main = build(rng, args.n_main, args.hard_frac, "repl")
-with open("runs/repl_pilot_tasks.jsonl", "w") as f:
+with open(f"{args.out_prefix}_pilot_tasks.jsonl", "w") as f:
     for r in pilot:
         f.write(json.dumps(r) + "\n")
-with open("runs/repl_main_tasks.jsonl", "w") as f:
+with open(f"{args.out_prefix}_main_tasks.jsonl", "w") as f:
     for r in main:
         f.write(json.dumps(r) + "\n")
 from collections import Counter

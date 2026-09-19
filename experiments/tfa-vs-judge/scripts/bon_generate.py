@@ -6,7 +6,7 @@ import argparse, json, os
 from vllm import LLM, SamplingParams
 
 ap = argparse.ArgumentParser()
-ap.add_argument("--domain", choices=["math", "code", "mbpp", "ties", "synthk", "replpilot", "repl", "kstrat", "mace"], required=True)
+ap.add_argument("--domain", choices=["math", "code", "mbpp", "ties", "synthk", "replpilot", "repl", "kstrat", "mace", "holdout"], required=True)
 ap.add_argument("--model", default="Qwen/Qwen2.5-7B-Instruct")
 ap.add_argument("--n", type=int, default=64)
 ap.add_argument("--out", default="runs/bon")
@@ -20,9 +20,11 @@ if args.domain == "math":
     def prompt_of(r):
         return ("Solve the following math problem. Show your reasoning step by step, "
                 "then give the final answer in \\boxed{}.\n\n" + r["problem"])
-elif args.domain in ("replpilot", "repl", "kstrat"):
+elif args.domain in ("replpilot", "repl", "kstrat", "holdout"):
     fn = {"replpilot": "runs/repl_pilot_tasks.jsonl", "repl": "runs/repl_main_tasks.jsonl",
-          "kstrat": "runs/kstrat_tasks.jsonl"}[args.domain]
+          "kstrat": "runs/kstrat_tasks.jsonl",
+          # added 2026-09-19 for the registration-32 holdout; identical prompt and sampling
+          "holdout": "runs/holdout_main_tasks.jsonl"}[args.domain]
     tasks = [json.loads(l) for l in open(fn)]
     def prompt_of(r):
         return ("Answer the following question. Think step by step if needed. You MUST end "

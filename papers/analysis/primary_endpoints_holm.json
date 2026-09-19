@@ -35,15 +35,24 @@
   "survives": true
  },
  "E4_grading_auroc": {
-  "estimate": -0.2924,
+  "estimate": -0.2749,
   "ci": [
-   -0.3231,
-   -0.261
+   -0.3054,
+   -0.2445
   ],
   "p": "<0.001",
   "holm_threshold": 0.025,
   "survives": true,
-  "source": "papers/analysis/r8_lenient_results.json pools['repl|all']['Qwen2.5-7B']['strict']['G_nm']"
+  "source": "papers/analysis/r4_results.json grading.repl.G_nm.ref_minus_blind; registered as P-R4D4 in registration_round4.md",
+  "variant_extracted_answer_match": {
+   "estimate": -0.2924,
+   "ci": [
+    -0.3231,
+    -0.261
+   ],
+   "source": "papers/analysis/r8_lenient_results.json pools['repl|all']['Qwen2.5-7B']['strict']['G_nm']"
+  },
+  "note": "phi-4's strict G_nm is -0.2754, numerically close to the registered Qwen2.5-7B readout of -0.2749; the rows are NOT transposed, the two match rules simply land near each other."
  },
  "E5_retraction": {
   "n_accepted": 843,
