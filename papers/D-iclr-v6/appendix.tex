@@ -745,3 +745,142 @@ Keeping the higher of the blind and referenced scores keeps grading AUROC within
 
 \paragraph{The validity gate.}
 A second preregistered protocol multiplies the blind score by a separate call's probability that the candidate is valid, with the reference shown to that call as one valid example. For phi-4 it removes the inflation; for Qwen2.5-7B it raises the $k{=}2$ margin from $+5.02$ to $+6.62$, because the validity call itself anchors.
+
+
+\section{A second judge panel: mitigations, and P1--P3 on two added judges}
+\label{app:panel2}
+
+This section reports a run completed after the main analyses (2026-09-18/19). Every number in it is
+post hoc\ph{} unless named otherwise: no prediction was registered for it, and the totals of
+\cref{tab:ledger-totals} are unchanged. Two judges are new to the panel, Qwen2.5-14B-Instruct and
+gemma-2-9b-it; the others repeat earlier configurations and serve as reproduction checks.
+
+\paragraph{Mitigations.}
+\Cref{tab:panel2-mitig} grades the same candidates under four prompt-level fixes. The effect is the
+paired change in a 0--10 score when a \emph{different} correct answer is shown as the reference,
+on candidates an exact oracle marks correct, with an item-clustered bootstrap (10{,}000 resamples;
+1{,}889 rows per \textsc{MACE} cell and 3{,}987 per replication cell). Three readings matter. The
+fixes shrink the effect where it is large but none removes it: Qwen2.5-7B keeps $-1.22$ of 10 on
+\textsc{MACE} under its best arm. They are pool-dependent: on the replication pool Qwen2.5-7B's
+chain-of-thought and verify-first arms are indistinguishable from no fix at all (paired deltas
+$+0.15$ \ci{-0.04}{+0.33} and $-0.04$ \ci{-0.23}{+0.14}). And verify-first, which asks the judge to
+check the reference before scoring, is \emph{worse} than plain chain-of-thought on every judge
+measured on \textsc{MACE} --- the opposite of the ordering we had expected, and the one prediction
+of this run that a registration would have recorded as falsified. For GPT-4.1 and Sonnet~5 the
+bare effect is only $-0.20$ and $-0.15$, so their arms are uninformative rather than negative.
+
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption{\textbf{Prompt-level fixes shrink the effect but do not remove it.} Paired change in a
+0--10 score when a different correct answer is the reference (95\% intervals). \emph{None}: the bare
+rubric. \emph{Several}: a sentence stating that several answers may be correct. \emph{Forbid}: an
+instruction not to compare. \emph{CoT}: chain-of-thought. \emph{Verify}: verify-first. All post hoc.\ph}
+\label{tab:panel2-mitig}
+\setlength{\tabcolsep}{3pt}
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{@{}llllll@{}}
+\toprule
+Judge & None & Several & Forbid & CoT & Verify \\
+\midrule
+\multicolumn{6}{@{}l}{\emph{\textsc{MACE} (factual, several correct answers)}}\\
+Qwen2.5-7B & $-3.42$ \ci{-3.83}{-3.03} & $-2.45$ \ci{-2.80}{-2.12} & $-2.58$ \ci{-2.90}{-2.26} & $-1.22$ \ci{-1.53}{-0.91} & $-2.06$ \ci{-2.41}{-1.71} \\
+Qwen2.5-14B & $-3.00$ \ci{-3.29}{-2.70} & $-1.33$ \ci{-1.58}{-1.07} & $-1.78$ \ci{-2.07}{-1.48} & $-0.92$ \ci{-1.14}{-0.70} & $-0.93$ \ci{-1.22}{-0.65} \\
+gemma-2-9b & $-2.13$ \ci{-2.52}{-1.77} & $-0.61$ \ci{-0.85}{-0.39} & $-0.11$ \ci{-0.21}{-0.02} & $-0.31$ \ci{-0.49}{-0.14} & $-0.73$ \ci{-1.01}{-0.47} \\
+phi-4 & $-1.08$ \ci{-1.34}{-0.84} & $-0.09$ \ci{-0.24}{+0.06} & $-0.02$ \ci{-0.15}{+0.11} & $-0.07$ \ci{-0.20}{+0.07} & $-0.03$ \ci{-0.24}{+0.19} \\
+GPT-4.1 & $-0.20$ \ci{-0.38}{-0.08} & $-0.01$ \ci{-0.10}{+0.07} & $-0.10$ \ci{-0.20}{-0.01} & $-0.01$ \ci{-0.06}{+0.03} & $-0.01$ \ci{-0.05}{+0.03} \\
+Sonnet~5 & $-0.15$ \ci{-0.27}{-0.05} & $-0.13$ \ci{-0.23}{-0.04} & $-0.06$ \ci{-0.13}{+0.01} & $-0.12$ \ci{-0.23}{-0.03} & $-0.10$ \ci{-0.20}{-0.00} \\
+\midrule
+\multicolumn{6}{@{}l}{\emph{Replication pool (arithmetic, enumerable answers)}}\\
+Qwen2.5-7B & $-1.15$ \ci{-1.26}{-1.04} & $-1.00$ \ci{-1.12}{-0.88} & $-1.05$ \ci{-1.18}{-0.91} & $-1.00$ \ci{-1.17}{-0.83} & $-1.19$ \ci{-1.37}{-1.02} \\
+Qwen2.5-14B & $-1.22$ \ci{-1.34}{-1.10} & $-0.70$ \ci{-0.81}{-0.59} & $-1.07$ \ci{-1.18}{-0.97} & $-0.52$ \ci{-0.63}{-0.42} & $-0.41$ \ci{-0.49}{-0.34} \\
+gemma-2-9b & $-1.31$ \ci{-1.46}{-1.17} & $-0.18$ \ci{-0.23}{-0.12} & $+0.10$ \ci{+0.03}{+0.17} & $-0.12$ \ci{-0.18}{-0.05} & $-0.12$ \ci{-0.19}{-0.06} \\
+phi-4 & $-0.11$ \ci{-0.17}{-0.05} & $+0.04$ \ci{+0.01}{+0.08} & $-0.04$ \ci{-0.08}{-0.01} & $+0.06$ \ci{+0.01}{+0.11} & $-0.02$ \ci{-0.07}{+0.02} \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+\paragraph{P1 on two added judges.}
+We reran the frozen rotation analysis of \cref{app:rotation} with three judges added to its
+registered pair. The registered cells reproduce exactly (Qwen2.5-7B $+4.97$, phi-4 $+4.09$ under
+rubric~$a$), and the added judges behave the same way (\cref{tab:panel2-rot}): text the reference
+moves onto gains, text it moves off loses about as much, and text matching neither reference stays
+within $+0.31$ in all ten cells. The frozen script and its stored results were not modified; the
+extension ran from a copy.
+
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption{\textbf{The swap, with three judges added to the registered pair.} Change in score of
+identical text when the reference is rotated onto it, off it, or onto neither (0--10, 95\%
+intervals). Qwen2.5-7B and phi-4 are the registered judges and reproduce their stored values;
+Sonnet~5, Qwen2.5-14B, and gemma-2-9b are post hoc.\ph}
+\label{tab:panel2-rot}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}llccc@{}}
+\toprule
+Judge & Rubric & Onto & Off & Neither \\
+\midrule
+Qwen2.5-7B\pre & $a$ & $+4.97$ \ci{+4.66}{+5.27} & $-5.04$ \ci{-5.38}{-4.67} & $+0.13$ \ci{-0.04}{+0.31} \\
+ & $b$ & $+6.34$ \ci{+6.10}{+6.60} & $-6.58$ \ci{-6.89}{-6.26} & $+0.10$ \ci{-0.11}{+0.29} \\
+phi-4\pre & $a$ & $+4.09$ \ci{+3.79}{+4.38} & $-3.92$ \ci{-4.26}{-3.59} & $+0.30$ \ci{+0.04}{+0.57} \\
+ & $b$ & $+3.25$ \ci{+2.95}{+3.51} & $-3.18$ \ci{-3.46}{-2.87} & $+0.24$ \ci{+0.01}{+0.47} \\
+Sonnet~5\ph & $a$ & $+3.04$ \ci{+2.48}{+3.60} & $-2.66$ \ci{-3.32}{-2.03} & $+0.04$ \ci{-0.39}{+0.48} \\
+ & $b$ & $+2.54$ \ci{+2.07}{+3.00} & $-2.51$ \ci{-3.14}{-1.93} & $+0.29$ \ci{-0.11}{+0.70} \\
+Qwen2.5-14B\ph & $a$ & $+3.65$ \ci{+3.37}{+3.92} & $-3.52$ \ci{-3.82}{-3.24} & $+0.27$ \ci{+0.09}{+0.46} \\
+ & $b$ & $+4.82$ \ci{+4.37}{+5.24} & $-4.79$ \ci{-5.25}{-4.32} & $+0.21$ \ci{-0.10}{+0.51} \\
+gemma-2-9b\ph & $a$ & $+5.54$ \ci{+5.24}{+5.83} & $-5.33$ \ci{-5.76}{-4.88} & $+0.28$ \ci{+0.01}{+0.56} \\
+ & $b$ & $+5.24$ \ci{+4.97}{+5.51} & $-5.11$ \ci{-5.58}{-4.64} & $+0.21$ \ci{-0.03}{+0.45} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{P2 and P3 on two added judges.}
+\Cref{tab:panel2-p2p3} gives both. For P2 we use the per-task $G_{nm}$ of \cref{app:grid}: the
+AUROC separating correct answers that differ from the reference from wrong ones, referenced minus
+blind. The two registered judges reproduce their stored replication values to four decimals
+($-0.2924$ and $-0.2754$), which is the check that the reimplementation is faithful; the two added
+judges fall about half as far, and every interval excludes zero. The \textsc{MACE} column has no
+stored open-judge value to reproduce against, so its matches are recomputed with the rule of
+\cref{app:mace} and it should be read as corroboration rather than replication. For P3 we count
+correct answers the judge scored 10 with no reference, then ask how many fall to 3 or below once a
+reference is shown. The asymmetry is the result: among answers that \emph{match} the reference,
+not one of the 2{,}998 accepted answers was taken back, in any judge or pool.
+
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption{\textbf{P2 and P3 across the panel.} $G_{nm}$: grading AUROC for correct answers that
+differ from the reference against wrong ones, referenced minus blind (95\% intervals). Reversal:
+of correct answers scored 10 blind, the share that falls to 3 or below once a reference is shown,
+for answers that differ from it and for answers that match it. Qwen2.5-7B and phi-4 reproduce
+stored replication $G_{nm}$ values\pre; all other cells are post hoc.\ph}
+\label{tab:panel2-p2p3}
+\setlength{\tabcolsep}{4pt}
+\begin{adjustbox}{max width=\linewidth}
+\begin{tabular}{@{}lccrrrr@{}}
+\toprule
+& \multicolumn{2}{c}{$G_{nm}$ (ref.\ $-$ blind)} & \multicolumn{2}{c}{Reversal, \textsc{MACE}} & \multicolumn{2}{c}{Reversal, replication} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}
+Judge & Replication & \textsc{MACE} & Differs & Matches & Differs & Matches \\
+\midrule
+Qwen2.5-7B & $-0.292$ \ci{-0.324}{-0.260} & $-0.110$ \ci{-0.153}{-0.065} & 80.5\% (33/41) & 0/44 & 0.0\% (0/421) & 0/421 \\
+phi-4 & $-0.275$ \ci{-0.308}{-0.244} & $-0.092$ \ci{-0.123}{-0.060} & 5.2\% (13/252) & 0/252 & 0.1\% (1/764) & 0/764 \\
+Qwen2.5-14B & $-0.158$ \ci{-0.187}{-0.131} & $-0.061$ \ci{-0.095}{-0.028} & 19.8\% (21/106) & 0/106 & 0.2\% (1/621) & 0/621 \\
+gemma-2-9b & $-0.159$ \ci{-0.182}{-0.137} & $-0.042$ \ci{-0.079}{-0.006} & 15.8\% (44/278) & 0/278 & 4.1\% (29/707) & 0/707 \\
+GPT-4.1 & --- & --- & 0.7\% (2/283) & 0/283 & 1.5\% (11/732) & 0/732 \\
+Sonnet~5 & --- & --- & 1.0\% (3/286) & 0/286 & 1.0\% (8/822) & 0/822 \\
+\bottomrule
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+\paragraph{What we do not claim.}
+Across the four open judges the share of the effect a fix removes rises as the bare effect falls,
+a rank correlation of $-1.00$ for both the several-answers sentence and chain-of-thought (exact
+$p = 0.0417$, $n=4$). We do not report this as a finding. Adding GPT-4.1 and Sonnet~5 collapses it
+to $-0.14$, because ``share removed'' is a ratio on a bare effect of $-0.20$ or $-0.15$ for them;
+and the replication pool cannot test it at all, since its four judges span a 1.14$\times$ range of
+bare severity against \textsc{MACE}'s 3.17$\times$. The gradient is a four-judge, one-pool
+observation, and we leave it as one.

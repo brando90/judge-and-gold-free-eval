@@ -35,7 +35,7 @@
 \newcommand{\ph}{\textsuperscript{$\dagger$}}
 \newcommand{\pending}[1]{\textcolor{red}{#1}}
 
-\title{When Reference Anchoring Biases LLM Judges\\to Match Answers Instead of Grading Them}
+\title{When Several Answers Are Correct,\\LLM Judges Reward the One They Are Shown}
 
 \author{Anonymous authors\\Paper under double-blind review}
 
@@ -45,20 +45,43 @@
 
 \begin{abstract}
 % Structure: assumption (answer key) -> we overturn it -> evidence -> cost -> implication.
-% Deliberately no mitigation claim: every fix was tested only on frontier judges, while the
-% effect is largest on the open ones (phi-4 42%, Qwen2.5-7B 83%). Fixes belong in sec:fix.
+% "text matching neither reference barely moves" (specificity control) rests on the REGISTERED
+% pair alone -- replrot placebo, Qwen2.5-7B +0.13/+0.10 and phi-4 +0.30/+0.24 (rubrics a/b),
+% so the claim needs no post-hoc support. A post-hoc extension to Sonnet 5, Qwen2.5-14B and
+% gemma-2-9b (2026-09-19, replrot_POSTHOC_results.json) agrees: placebo +0.04 to +0.29, all
+% ten cells under +0.31. P-RR1/RR2/RR3 pass in every cell. The frozen replrot_analysis.py and
+% its replrot_results.json were not modified; the extension ran from a copy.
+% "3 to 5 points" is a RUBRIC-A range (7B +4.97, phi-4 +4.09, Sonnet 5 +3.04); rubric b spans
+% +2.54 to +6.34, so do not restate the range without naming the rubric.
+% Mitigation sentence added 2026-09-18, replacing the earlier "no mitigation claim" note: the
+% fixes are now tested on FOUR OPEN judges x MACE + replication x four arms (multiplicity
+% sentence, forbid-comparison, chain-of-thought, verify-first), 1,889-3,987 rows per cell.
+% Scoped to "the judges where it is largest" on purpose: the frontier judges' bare effects
+% (GPT-4.1 -0.204, Sonnet 5 -0.150) leave almost nothing to remove, and none of their eight
+% arms is distinguishable from zero -- uninformative, not negative.
+% The severity gradient is deliberately NOT claimed: rho = -1.00, exact p = 0.0417 across the
+% four open judges, but it collapses to rho = -0.14 once the two frontier judges are added,
+% because "share removed" is a ratio on a near-zero denominator for them.
 % The counter-instruction result (r31) is also kept out: it covers GPT-4.1 and Sonnet 5 only,
 % and costs GPT-4.1 20% wrong-answer credit against 7%. The "you told it to compare" objection
 % is answered instead by running the shipped graders verbatim, in the deployment sentence.
+% Count is the seven SCORING judges only: 4 open (Qwen2.5-7B, Qwen2.5-14B, phi-4, gemma-2-9b)
+% + 3 frontier API (Sonnet 5, Opus 5, GPT-4.1). Excludes Mistral-7B (screened out on score
+% resolution), the benchmark graders (o3-mini, Haiku 4.5 -- they appear as shipped configs, not
+% as judges), and the two RL reward verifiers (not discussed in this abstract).
+% "up to 14B" attaches to the open models only: the API judges' sizes are undisclosed.
 LLM judges grade against a reference answer in 35 of the 43 benchmarks, libraries, and RL reward pipelines we surveyed, including the graders shipped with SimpleQA, BrowseComp, and Humanity's Last Exam.
-Each treats the reference as an answer key: a correct response should score the same whichever correct answer it is shown.
-We show that a low score from these judges reflects disagreement with the displayed answer rather than incorrectness.
-Judges reverse verdicts they have already reached: of 843 correct answers that two frontier judges accepted with no reference in front of them, 117 fall to 3 of 10 or below once a different correct answer is shown, against 2 on a repeated blind call.
-Swapping the reference between two correct answers moves the score of byte-identical text by 3 to 5 points of 10.
-We measure this with 13 judges and verifiers, up to 14B parameters, on constructed tasks, MACE, and MATH-500, against a ledger of 329 registered predictions.
-The cost is visible in deployment: run verbatim on 149 factual questions with several correct answers, the shipped SimpleQA and BrowseComp/HLE graders score four models 30 to 67 percentage points below their accuracy against the full answer lists.
-Where several answers are correct, a low score from a reference-guided judge does not mean the answer is wrong.
-Such questions are rare in benchmarks written for one answer and more frequent in data assembled for RL training, so the failure grows as these graders are reused.
+All 35 treat the reference as an answer key: a correct response should score the same whichever correct answer it is shown.
+
+We show that it does not: these judges reward agreement with the displayed answer, not correctness.
+Swap which correct answer is shown and the score of byte-identical text moves by 3 to 5 points of 10, while text matching neither reference barely moves.
+Judges also take back credit they have already given: of 843 correct answers two frontier judges accepted blind, 117 drop to 3 of 10 or below once a different correct answer appears, against 2 on a second blind call.
+We measure this across seven judges (four open models and three frontier APIs) on constructed tasks, \textsc{MACE}, and MATH-500, against 329 predictions registered before the runs; the effect is far larger on the open judges than the frontier ones.
+
+The cost reaches deployment: we run the shipped SimpleQA and BrowseComp/HLE graders verbatim on 149 factual questions with several correct answers, and they score four models 30 to 67 percentage points below their accuracy against the full answer lists.
+Four prompt-level fixes shrink the effect on the judges where it is largest, but none removes it: telling the judge that several answers may be correct, forbidding comparison, chain-of-thought, and verify-first.
+The best arm moves Qwen2.5-7B from $-3.42$ to $-1.26$ of 10 on factual questions, and from $-1.15$ to only $-1.00$ on arithmetic.
+Where several answers are correct, a low score from a reference-guided judge is not evidence that the answer is wrong, a failure that grows as labs reuse these graders to label RL training data.
 \end{abstract}
 
 \begin{figure}[!b]
