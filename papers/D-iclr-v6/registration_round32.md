@@ -1,6 +1,14 @@
 # Registration 32 — frozen holdout replication of the reference swap
 
-**Status: DRAFT, not yet registered. No judging call has been made against this pool.**
+**Status: REGISTERED by this commit. No judging call had been made against this pool when
+this document and `papers/analysis/holdout_analysis.py` were committed; the commit
+timestamp is the registration. Candidate generation and oracle labelling were complete
+before this point and are reference-independent. An OSF copy may follow; it does not
+change the hypotheses or thresholds below.**
+
+*Amended 2026-09-19, before any data exists, to record the weights-source deviation in
+the Design section. Amending a draft before the timestamp is legitimate; amending after
+would not be.*
 
 Written 2026-09-19, after the v6 manuscript was complete, in response to a reviewer request for
 "one completely locked holdout replication" whose hypotheses, metrics, thresholds and verdict rule
@@ -42,6 +50,18 @@ The rotation design of `app:rotation`, unchanged. For each item we build a rotat
 `ref_answer` is replaced by a different member of the solution set, with `rot_from` recording the
 original. Candidate responses are generated once, by Llama-3.1-8B-Instruct at 64 samples per item,
 and are **byte-identical across the two reference conditions** — only the reference block differs.
+
+**Weights source, recorded before any judging.** The frozen pool's candidates came from
+`meta-llama/Llama-3.1-8B-Instruct`. That repository is gated and this cluster holds no
+HuggingFace credential, so the holdout's candidates are sampled from
+`NousResearch/Meta-Llama-3.1-8B-Instruct`, an ungated mirror of the same release. Its
+`config.json` matches the original on every architectural field (32 layers, hidden 4096,
+intermediate 14336, 32 attention heads, 8 key-value heads, vocab 128256, context 131072,
+rope_theta 500000, bfloat16). We could not checksum the weights against the gated original, so
+this is recorded as a deviation: if the mirror differs from the release in any way, the holdout's
+candidate distribution differs from the frozen pool's by that much. No hypothesis below depends on
+the generator's identity — all five are within-item paired comparisons on identical candidate text
+— but H32-5 is a magnitude threshold and would be affected by a materially different generator.
 
 **Judges.** Qwen2.5-7B-Instruct and microsoft/phi-4, the two judges of the registered rotation,
 scored under rubrics `a` and `b` separately. Four judge × rubric cells.

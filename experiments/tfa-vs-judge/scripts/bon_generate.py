@@ -86,9 +86,10 @@ with open(out, mode) as f:
             row = dict(problem_id=pid, model=args.model, samples=[c.text for c in o.outputs])
             if args.domain == "math":
                 row.update(answer=r["answer"], level=r["level"], subject=r["subject"])
-            elif args.domain in ("ties", "synthk", "replpilot", "repl", "kstrat", "mace"):
+            elif args.domain in ("ties", "synthk", "replpilot", "repl", "kstrat", "mace", "holdout"):
                 row.update(valid_answers=r["valid_answers"], ref_answer=r["ref_answer"],
-                           question=r["problem"], k=r.get("k"), multi_refs=r.get("multi_refs"))
+                           question=r["problem"], k=r.get("k") or r.get("n_solutions"),
+                           multi_refs=r.get("multi_refs"), params=r.get("params"), hard=r.get("hard"))
             else:
                 row.update(test=r["test"], entry_point=r["entry_point"], question=r["prompt"])
             f.write(json.dumps(row) + "\n")

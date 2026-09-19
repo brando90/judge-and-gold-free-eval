@@ -35,9 +35,17 @@ def extract_boxed(text):
         j += 1
     return text[i + 7:j - 1]
 
-tasks = {json.loads(l)["problem_id"]: json.loads(l) for l in open("runs/repl_main_tasks.jsonl")}
-rows = [json.loads(l) for l in open("runs/bon/bon_repl__meta-llama__Llama-3.1-8B-Instruct.jsonl")]
-out = open("runs/bon/bon_replrot__meta-llama__Llama-3.1-8B-Instruct.jsonl", "w")
+# Parameterised 2026-09-19 for the registration-32 holdout. Defaults reproduce the frozen
+# rotated pool byte for byte (verified by diff); the rotation RULE below is untouched.
+import argparse as _ap
+_p = _ap.ArgumentParser()
+_p.add_argument("--tasks", default="runs/repl_main_tasks.jsonl")
+_p.add_argument("--pool", default="runs/bon/bon_repl__meta-llama__Llama-3.1-8B-Instruct.jsonl")
+_p.add_argument("--out", default="runs/bon/bon_replrot__meta-llama__Llama-3.1-8B-Instruct.jsonl")
+_a = _p.parse_args()
+tasks = {json.loads(l)["problem_id"]: json.loads(l) for l in open(_a.tasks)}
+rows = [json.loads(l) for l in open(_a.pool)]
+out = open(_a.out, "w")
 n_pool_aware = n_fallback = 0
 for r in rows:
     t = tasks[r["problem_id"]]
