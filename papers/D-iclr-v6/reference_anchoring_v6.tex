@@ -44,44 +44,37 @@
 \raggedbottom
 
 \begin{abstract}
-% Structure: assumption (answer key) -> we overturn it -> evidence -> cost -> implication.
-% "text matching neither reference barely moves" (specificity control) rests on the REGISTERED
-% pair alone -- replrot placebo, Qwen2.5-7B +0.13/+0.10 and phi-4 +0.30/+0.24 (rubrics a/b),
-% so the claim needs no post-hoc support. A post-hoc extension to Sonnet 5, Qwen2.5-14B and
-% gemma-2-9b (2026-09-19, replrot_POSTHOC_results.json) agrees: placebo +0.04 to +0.29, all
-% ten cells under +0.31. P-RR1/RR2/RR3 pass in every cell. The frozen replrot_analysis.py and
-% its replrot_results.json were not modified; the extension ran from a copy.
-% "3 to 5 points" is a RUBRIC-A range (7B +4.97, phi-4 +4.09, Sonnet 5 +3.04); rubric b spans
-% +2.54 to +6.34, so do not restate the range without naming the rubric.
-% Mitigation sentence added 2026-09-18, replacing the earlier "no mitigation claim" note: the
-% fixes are now tested on FOUR OPEN judges x MACE + replication x four arms (multiplicity
-% sentence, forbid-comparison, chain-of-thought, verify-first), 1,889-3,987 rows per cell.
-% Scoped to "the judges where it is largest" on purpose: the frontier judges' bare effects
-% (GPT-4.1 -0.204, Sonnet 5 -0.150) leave almost nothing to remove, and none of their eight
-% arms is distinguishable from zero -- uninformative, not negative.
-% The severity gradient is deliberately NOT claimed: rho = -1.00, exact p = 0.0417 across the
-% four open judges, but it collapses to rho = -0.14 once the two frontier judges are added,
-% because "share removed" is a ratio on a near-zero denominator for them.
-% The counter-instruction result (r31) is also kept out: it covers GPT-4.1 and Sonnet 5 only,
-% and costs GPT-4.1 20% wrong-answer credit against 7%. The "you told it to compare" objection
-% is answered instead by running the shipped graders verbatim, in the deployment sentence.
-% Count is the seven SCORING judges only: 4 open (Qwen2.5-7B, Qwen2.5-14B, phi-4, gemma-2-9b)
-% + 3 frontier API (Sonnet 5, Opus 5, GPT-4.1). Excludes Mistral-7B (screened out on score
-% resolution), the benchmark graders (o3-mini, Haiku 4.5 -- they appear as shipped configs, not
-% as judges), and the two RL reward verifiers (not discussed in this abstract).
-% "up to 14B" attaches to the open models only: the API judges' sizes are undisclosed.
+% Structure: prevalence -> assumption -> we overturn it -> evidence -> scoped cost -> fixes -> implication.
+% Rev1 (2026-09-19) concern 1, practical significance: the 30-67pp grader gaps are measured on a
+% deliberately multi-answer MACE set, so the prevalence caveat now sits in the SAME sentence, with
+% the leaderboard bound (papers/analysis/leaderboard_impact.json). These are CEILINGS: the product
+% SimpleQA 0.32-0.37 pts [0.07, 1.16], HLE 2.02-2.07 pts [0.85, 4.21], BrowseComp 0.00 [0, 0.87].
+% conditions on the model already answering correctly, not on how often it does.
+% impact = P(multi-answer) x P(a correct answer differs from the reference) x P(grader denies credit).
+% P(differs)=5223/7569=69.0% on MACE k>1; the denial rate is also MACE-measured (app:r24, 149 qs).
+% Both are ASSUMED to transfer; neither is checkable without answer lists the benchmarks do not publish.
+% Sensitivity: if every UNCLEAR question were multi-answer, BrowseComp rises to 37 pts (108/200 of
+% its questions are UNCLEAR), HLE to 20. BrowseComp's 0.00 is a bound its audit cannot tighten.
+% Rev1 concern 2, anchoring vs instruction-following: 'driven in part by the instruction to match'
+% is the honest strength -- forbidding comparison removes the effect for the frontier judges but
+% leaves -2.58 on Qwen2.5-7B (app:panel2), so it is a mixture, not one mechanism.
+% Rev1 concern 5: no RL claim is made here. Do not reinstate one.
+% The 3-to-5 point swap is ARITHMETIC only and rubric-a (7B +4.97, phi-4 +4.09, Sonnet 5 +3.04);
+% rubric b spans +2.54 to +6.34. Do not restate the range without its scope.
+% Seven SCORING judges: 4 open (Qwen2.5-7B, Qwen2.5-14B, phi-4, gemma-2-9b) + 3 frontier API
+% (Sonnet 5, Opus 5, GPT-4.1). The 843/117/2 retraction pair is Sonnet 5 and Opus 5.
 LLM judges grade against a reference answer in 35 of the 43 benchmarks, libraries, and RL reward pipelines we surveyed, including the graders shipped with SimpleQA, BrowseComp, and Humanity's Last Exam.
-All 35 treat the reference as an answer key: a correct response should score the same whichever correct answer it is shown.
+All 35 treat the reference as an answer key: when several answers are correct, which one is shown should not change the score.
 
-We show that it does not: these judges reward agreement with the displayed answer, not correctness.
-Swap which correct answer is shown and the score of byte-identical text moves by 3 to 5 points of 10, while text matching neither reference barely moves.
-Judges also take back credit they have already given: of 843 correct answers two frontier judges accepted blind, 117 drop to 3 of 10 or below once a different correct answer appears, against 2 on a second blind call.
-We measure this across seven judges (four open models and three frontier APIs) on constructed tasks, \textsc{MACE}, and MATH-500, against 329 predictions registered before the runs; the effect is far larger on the open judges than the frontier ones.
+We show that it does. On controlled arithmetic tasks, changing only which correct answer is displayed moves the score of an identical correct response by 3 to 5 points of 10, while responses matching neither reference barely move.
+Correct responses that differ from the reference also become harder to tell apart from genuinely wrong ones.
+This is not only a failure to verify unfamiliar answers: of 843 correct responses that two frontier judges had already accepted with no reference, 117 fall to 3 of 10 or below once a different correct answer is shown, against 2 on a second blind call.
+We measure this across seven judges, four open models and three frontier APIs, on constructed tasks, \textsc{MACE}, and MATH-500.
 
-The cost reaches deployment: we run the shipped SimpleQA and BrowseComp/HLE graders verbatim on 149 factual questions with several correct answers, and they score four models 30 to 67 percentage points below their accuracy against the full answer lists.
-Four prompt-level fixes shrink the effect on the judges where it is largest, but none removes it: telling the judge that several answers may be correct, forbidding comparison, chain-of-thought, and verify-first.
-The best arm moves Qwen2.5-7B from $-3.42$ to $-1.26$ of 10 on factual questions, and from $-1.15$ to only $-1.00$ on arithmetic.
-Where several answers are correct, a low score from a reference-guided judge is not evidence that the answer is wrong, a failure that grows as labs reuse these graders to label RL training data.
+Run verbatim on 149 multi-answer factual questions, the graders shipped with SimpleQA, BrowseComp, and Humanity's Last Exam score four models 30 to 67 percentage points below their accuracy against the full answer lists.
+Such questions are uncommon in those benchmarks themselves: auditing 200 questions from each, 0 to 3\% admit several correct answers, which bounds the effect on their own leaderboards at 0.4 points for SimpleQA and 2 points for Humanity's Last Exam.
+The effect is driven in part by the instruction to match: asking the judge whether the response is correct reduces it, and supplying the full set of valid answers nearly removes it.
+When several answers are valid, single-reference grading measures agreement with the reference rather than correctness.
 \end{abstract}
 
 \begin{figure}[!b]
@@ -283,7 +276,7 @@ Choosing the reference rather than drawing it shrinks the shortfall without remo
 
 \paragraph{Who should care: reuse across a capability boundary.}
 These graders are right for the benchmarks they were written for.
-By adjudicated LLM labels, 0\% to 3\% of sampled SimpleQA, BrowseComp, and HLE questions have several correct answers (\cref{app:prevalence}), so their own leaderboards are probably little affected. Read that as a lower bound: adjudication stopped at a spending cap and the disagreements left over kept the conservative label, and HLE alone reaches 6.0\% if six of them go the other way.
+By adjudicated LLM labels, 0\% to 3\% of sampled SimpleQA, BrowseComp, and HLE questions have several correct answers (\cref{app:prevalence}), so their own leaderboards are probably little affected. Combining that prevalence with the share of correct answers that differ from a drawn reference and with each grader's own denial rate puts the expected shortfall on those leaderboards at $0.3$ points \ci{0.1}{1.0} for SimpleQA and $2.1$ points \ci{0.9}{4.2} for HLE (\cref{tab:panel2-impact}). Read that as a lower bound: adjudication stopped at a spending cap and the disagreements left over kept the conservative label, and HLE alone reaches 6.0\% if six of them go the other way.
 The failure is reuse across a capability boundary: a grader written for questions beyond its judge, pointed at questions it can answer (\cref{sec:fix}). We offer that as a reading, not an isolated variable: our two settings differ in difficulty and in the number of correct answers at once, and the shortfall below needs only the second.
 General-Reasoner's single-reference verifier rewards an RL training set~\citep{ma2025generalreasoner} in which 5.5\% of questions admit several answers after adjudication, 18\% by either annotator, and 30\% to 44\% of sampled NQ-open questions do.\ph{}
 Reward signals are the larger risk, since there the judge shapes a policy rather than reporting a score, and both verifiers above were built for RL rewards.

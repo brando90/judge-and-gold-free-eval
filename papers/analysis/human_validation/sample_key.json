@@ -1,0 +1,2842 @@
+[
+ {
+  "item_id": "mace::mace/language-k4-0::31",
+  "idx": 0,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "mace::mace/language-k6-15::59",
+  "idx": 1,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "repl::repl/goldbach-65::6",
+  "idx": 2,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::simpleqa::simpleqa-750",
+  "idx": 3,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "prev::simpleqa::simpleqa-1203",
+  "idx": 4,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "mace::mace/language-k6-7::3",
+  "idx": 5,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "repl::repl/crt-11::32",
+  "idx": 6,
+  "stratum": "label_agree",
+  "strict": 0,
+  "lenient": 0,
+  "oracle": 0
+ },
+ {
+  "item_id": "mace::mace/language-k6-16::29",
+  "idx": 7,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "prev::webinstruct::webinstruct-28588",
+  "idx": 8,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "repl::repl/goldbach-70::32",
+  "idx": 9,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/goldbach-63::2",
+  "idx": 10,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::triviaqa::triviaqa-13946",
+  "idx": 11,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "repl::repl/crt-13::23",
+  "idx": 12,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::triviaqa::triviaqa-6658",
+  "idx": 13,
+  "stratum": "final_MULTI",
+  "model_label": "MULTI",
+  "passA": "MULTI",
+  "status": "agreement"
+ },
+ {
+  "item_id": "prev::webinstruct::webinstruct-3680",
+  "idx": 14,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "repl::repl/digitsum-111::37",
+  "idx": 15,
+  "stratum": "label_agree",
+  "strict": 0,
+  "lenient": 0,
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/goldbach-64::24",
+  "idx": 16,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::simpleqa::simpleqa-218",
+  "idx": 17,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "repl::repl/crt-5::41",
+  "idx": 18,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::simpleqa::simpleqa-2466",
+  "idx": 19,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "mace::mace/math-k6-20::24",
+  "idx": 20,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "mace::mace/river-k4-5::6",
+  "idx": 21,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "repl::repl/crt-2::31",
+  "idx": 22,
+  "stratum": "label_agree",
+  "strict": 0,
+  "lenient": 0,
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::webinstruct::webinstruct-49906",
+  "idx": 23,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "prev::browsecomp::browsecomp-74",
+  "idx": 24,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "prev::webinstruct::webinstruct-73882",
+  "idx": 25,
+  "stratum": "final_MULTI",
+  "model_label": "MULTI",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "prev::webinstruct::webinstruct-129388",
+  "idx": 26,
+  "stratum": "final_MULTI",
+  "model_label": "MULTI",
+  "passA": "MULTI",
+  "status": "agreement"
+ },
+ {
+  "item_id": "prev::simpleqa::simpleqa-1432",
+  "idx": 27,
+  "stratum": "final_MULTI",
+  "model_label": "MULTI",
+  "passA": "MULTI",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "repl::repl/goldbach-70::44",
+  "idx": 28,
+  "stratum": "label_agree",
+  "strict": 0,
+  "lenient": 0,
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::triviaqa::triviaqa-16503",
+  "idx": 29,
+  "stratum": "final_MULTI",
+  "model_label": "MULTI",
+  "passA": "MULTI",
+  "status": "agreement"
+ },
+ {
+  "item_id": "repl::repl/subset-32::45",
+  "idx": 30,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/subset-25::42",
+  "idx": 31,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "mace::mace/language-k4-15::27",
+  "idx": 32,
+  "stratum": "mace_invalid",
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/subset-45::38",
+  "idx": 33,
+  "stratum": "label_agree",
+  "strict": 1,
+  "lenient": 1,
+  "oracle": 1
+ },
+ {
+  "item_id": "prev::hle::hle-6726146a09e79f4662d109bc",
+  "idx": 34,
+  "stratum": "passes_disagree",
+  "model_label": "UNCLEAR",
+  "passA": "UNIQUE",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "repl::repl/divcount-75::25",
+  "idx": 35,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/digitsum-97::0",
+  "idx": 36,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "mace::mace/language-k4-23::27",
+  "idx": 37,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "prev::webinstruct::webinstruct-215342",
+  "idx": 38,
+  "stratum": "passes_disagree",
+  "model_label": "UNCLEAR",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "repl::repl/crt-22::49",
+  "idx": 39,
+  "stratum": "label_agree",
+  "strict": 0,
+  "lenient": 0,
+  "oracle": 0
+ },
+ {
+  "item_id": "mace::mace/language-k2-13::59",
+  "idx": 40,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "prev::simpleqa::simpleqa-383",
+  "idx": 41,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "repl::repl/digitsum-108::31",
+  "idx": 42,
+  "stratum": "label_agree",
+  "strict": 1,
+  "lenient": 1,
+  "oracle": 1
+ },
+ {
+  "item_id": "repl::repl/divcount-95::59",
+  "idx": 43,
+  "stratum": "label_agree",
+  "strict": 1,
+  "lenient": 1,
+  "oracle": 1
+ },
+ {
+  "item_id": "mace::mace/river-k2-24::35",
+  "idx": 44,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "repl::repl/digitsum-114::23",
+  "idx": 45,
+  "stratum": "label_agree",
+  "strict": 1,
+  "lenient": 1,
+  "oracle": 1
+ },
+ {
+  "item_id": "prev::browsecomp::browsecomp-1240",
+  "idx": 46,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "repl::repl/divcount-87::44",
+  "idx": 47,
+  "stratum": "label_agree",
+  "strict": 1,
+  "lenient": 1,
+  "oracle": 1
+ },
+ {
+  "item_id": "repl::repl/digitsum-103::33",
+  "idx": 48,
+  "stratum": "label_agree",
+  "strict": 0,
+  "lenient": 0,
+  "oracle": 0
+ },
+ {
+  "item_id": "mace::mace/math-k6-5::0",
+  "idx": 49,
+  "stratum": "mace_invalid",
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/digitsum-116::33",
+  "idx": 50,
+  "stratum": "label_agree",
+  "strict": 1,
+  "lenient": 1,
+  "oracle": 1
+ },
+ {
+  "item_id": "repl::repl/crt-20::26",
+  "idx": 51,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/goldbach-51::57",
+  "idx": 52,
+  "stratum": "label_agree",
+  "strict": 1,
+  "lenient": 1,
+  "oracle": 1
+ },
+ {
+  "item_id": "repl::repl/divcount-95::27",
+  "idx": 53,
+  "stratum": "label_agree",
+  "strict": 1,
+  "lenient": 1,
+  "oracle": 1
+ },
+ {
+  "item_id": "repl::repl/digitsum-96::62",
+  "idx": 54,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::triviaqa::triviaqa-17931",
+  "idx": 55,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "repl::repl/goldbach-56::27",
+  "idx": 56,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "mace::mace/river-k4-12::37",
+  "idx": 57,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "repl::repl/divcount-77::42",
+  "idx": 58,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/subset-37::32",
+  "idx": 59,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "mace::mace/language-k2-2::30",
+  "idx": 60,
+  "stratum": "mace_invalid",
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::triviaqa::triviaqa-9031",
+  "idx": 61,
+  "stratum": "final_MULTI",
+  "model_label": "MULTI",
+  "passA": "MULTI",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "prev::triviaqa::triviaqa-4579",
+  "idx": 62,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "mace::mace/math-k6-3::37",
+  "idx": 63,
+  "stratum": "mace_invalid",
+  "oracle": 0
+ },
+ {
+  "item_id": "mace::mace/river-k2-22::45",
+  "idx": 64,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "prev::browsecomp::browsecomp-128",
+  "idx": 65,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "prev::browsecomp::browsecomp-223",
+  "idx": 66,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "mace::mace/language-k6-11::22",
+  "idx": 67,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "prev::webinstruct::webinstruct-25890",
+  "idx": 68,
+  "stratum": "passes_disagree",
+  "model_label": "UNCLEAR",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "prev::browsecomp::browsecomp-451",
+  "idx": 69,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "prev::triviaqa::triviaqa-6118",
+  "idx": 70,
+  "stratum": "final_MULTI",
+  "model_label": "MULTI",
+  "passA": "UNIQUE",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "mace::mace/language-k2-10::8",
+  "idx": 71,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "repl::repl/subset-35::52",
+  "idx": 72,
+  "stratum": "label_agree",
+  "strict": 1,
+  "lenient": 1,
+  "oracle": 1
+ },
+ {
+  "item_id": "repl::repl/goldbach-56::10",
+  "idx": 73,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::webinstruct::webinstruct-61735",
+  "idx": 74,
+  "stratum": "final_MULTI",
+  "model_label": "MULTI",
+  "passA": "MULTI",
+  "status": "agreement"
+ },
+ {
+  "item_id": "mace::mace/math-k6-19::32",
+  "idx": 75,
+  "stratum": "mace_invalid",
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/divcount-75::5",
+  "idx": 76,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/digitsum-98::4",
+  "idx": 77,
+  "stratum": "label_agree",
+  "strict": 1,
+  "lenient": 1,
+  "oracle": 1
+ },
+ {
+  "item_id": "prev::webinstruct::webinstruct-53602",
+  "idx": 78,
+  "stratum": "final_MULTI",
+  "model_label": "MULTI",
+  "passA": "MULTI",
+  "status": "agreement"
+ },
+ {
+  "item_id": "prev::triviaqa::triviaqa-11593",
+  "idx": 79,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "mace::mace/river-k4-9::5",
+  "idx": 80,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "prev::hle::hle-6719ca2ed5ad96a75c350fa9",
+  "idx": 81,
+  "stratum": "passes_disagree",
+  "model_label": "UNCLEAR",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "prev::webinstruct::webinstruct-62551",
+  "idx": 82,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "mace::mace/river-k2-22::24",
+  "idx": 83,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "repl::repl/crt-8::11",
+  "idx": 84,
+  "stratum": "label_agree",
+  "strict": 1,
+  "lenient": 1,
+  "oracle": 1
+ },
+ {
+  "item_id": "prev::hle::hle-67223ac0ca7acfa01f38c284",
+  "idx": 85,
+  "stratum": "final_MULTI",
+  "model_label": "MULTI",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "repl::repl/goldbach-70::13",
+  "idx": 86,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/goldbach-49::50",
+  "idx": 87,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/divcount-84::20",
+  "idx": 88,
+  "stratum": "label_agree",
+  "strict": 1,
+  "lenient": 1,
+  "oracle": 1
+ },
+ {
+  "item_id": "prev::simpleqa::simpleqa-1014",
+  "idx": 89,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "mace::mace/language-k2-16::13",
+  "idx": 90,
+  "stratum": "mace_invalid",
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/goldbach-54::5",
+  "idx": 91,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/divcount-95::41",
+  "idx": 92,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "mace::mace/river-k6-6::18",
+  "idx": 93,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "prev::triviaqa::triviaqa-13068",
+  "idx": 94,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "repl::repl/goldbach-63::5",
+  "idx": 95,
+  "stratum": "label_agree",
+  "strict": 1,
+  "lenient": 1,
+  "oracle": 1
+ },
+ {
+  "item_id": "prev::hle::hle-672f7b5d47d2f4c7ca9ff600",
+  "idx": 96,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "repl::repl/subset-39::29",
+  "idx": 97,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::simpleqa::simpleqa-3626",
+  "idx": 98,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "prev::hle::hle-67361730dba36cc0d595f422",
+  "idx": 99,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "mace::mace/river-k2-1::46",
+  "idx": 100,
+  "stratum": "mace_invalid",
+  "oracle": 0
+ },
+ {
+  "item_id": "mace::mace/river-k2-22::61",
+  "idx": 101,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "repl::repl/subset-27::11",
+  "idx": 102,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "mace::mace/river-k2-22::27",
+  "idx": 103,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "repl::repl/divcount-74::28",
+  "idx": 104,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/divcount-80::24",
+  "idx": 105,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::webinstruct::webinstruct-82889",
+  "idx": 106,
+  "stratum": "passes_disagree",
+  "model_label": "UNCLEAR",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "repl::repl/crt-12::52",
+  "idx": 107,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "mace::mace/river-k2-15::19",
+  "idx": 108,
+  "stratum": "mace_invalid",
+  "oracle": 0
+ },
+ {
+  "item_id": "mace::mace/math-k6-5::50",
+  "idx": 109,
+  "stratum": "mace_invalid",
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::hle::hle-6733e070361b540695504b86",
+  "idx": 110,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "prev::triviaqa::triviaqa-6260",
+  "idx": 111,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "prev::hle::hle-67487e955830790e3687a567",
+  "idx": 112,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "mace::mace/language-k6-22::32",
+  "idx": 113,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "mace::mace/river-k6-1::19",
+  "idx": 114,
+  "stratum": "mace_invalid",
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/crt-5::4",
+  "idx": 115,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/subset-34::33",
+  "idx": 116,
+  "stratum": "label_agree",
+  "strict": 0,
+  "lenient": 0,
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::triviaqa::triviaqa-7992",
+  "idx": 117,
+  "stratum": "final_MULTI",
+  "model_label": "MULTI",
+  "passA": "UNIQUE",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "repl::repl/crt-21::49",
+  "idx": 118,
+  "stratum": "label_agree",
+  "strict": 0,
+  "lenient": 0,
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::webinstruct::webinstruct-141632",
+  "idx": 119,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "prev::triviaqa::triviaqa-407",
+  "idx": 120,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "prev::triviaqa::triviaqa-9865",
+  "idx": 121,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "mace::mace/language-k6-20::35",
+  "idx": 122,
+  "stratum": "mace_invalid",
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::webinstruct::webinstruct-183323",
+  "idx": 123,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "mace::mace/language-k4-8::31",
+  "idx": 124,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "prev::hle::hle-66eb36fbb38dbcd7910ceafc",
+  "idx": 125,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "prev::triviaqa::triviaqa-7310",
+  "idx": 126,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "mace::mace/math-k2-11::14",
+  "idx": 127,
+  "stratum": "mace_invalid",
+  "oracle": 0
+ },
+ {
+  "item_id": "mace::mace/math-k2-11::60",
+  "idx": 128,
+  "stratum": "mace_invalid",
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::hle::hle-6739ec066a53385958bca5e8",
+  "idx": 129,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "repl::repl/digitsum-117::25",
+  "idx": 130,
+  "stratum": "label_agree",
+  "strict": 1,
+  "lenient": 1,
+  "oracle": 1
+ },
+ {
+  "item_id": "repl::repl/subset-27::1",
+  "idx": 131,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/goldbach-62::51",
+  "idx": 132,
+  "stratum": "label_agree",
+  "strict": 0,
+  "lenient": 0,
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::webinstruct::webinstruct-111707",
+  "idx": 133,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "mace::mace/math-k4-24::61",
+  "idx": 134,
+  "stratum": "mace_invalid",
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/goldbach-54::27",
+  "idx": 135,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::simpleqa::simpleqa-4043",
+  "idx": 136,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "prev::webinstruct::webinstruct-163909",
+  "idx": 137,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "repl::repl/subset-43::29",
+  "idx": 138,
+  "stratum": "label_agree",
+  "strict": 0,
+  "lenient": 0,
+  "oracle": 0
+ },
+ {
+  "item_id": "mace::mace/language-k2-4::34",
+  "idx": 139,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "mace::mace/language-k2-24::29",
+  "idx": 140,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "mace::mace/math-k2-16::13",
+  "idx": 141,
+  "stratum": "mace_invalid",
+  "oracle": 0
+ },
+ {
+  "item_id": "mace::mace/river-k4-19::43",
+  "idx": 142,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "mace::mace/math-k4-21::32",
+  "idx": 143,
+  "stratum": "mace_invalid",
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/goldbach-55::6",
+  "idx": 144,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "mace::mace/river-k2-13::22",
+  "idx": 145,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "repl::repl/goldbach-60::32",
+  "idx": 146,
+  "stratum": "label_agree",
+  "strict": 1,
+  "lenient": 1,
+  "oracle": 1
+ },
+ {
+  "item_id": "prev::webinstruct::webinstruct-222687",
+  "idx": 147,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "repl::repl/divcount-93::26",
+  "idx": 148,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/goldbach-65::27",
+  "idx": 149,
+  "stratum": "label_agree",
+  "strict": 1,
+  "lenient": 1,
+  "oracle": 1
+ },
+ {
+  "item_id": "repl::repl/subset-27::0",
+  "idx": 150,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "mace::mace/language-k4-0::45",
+  "idx": 151,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "repl::repl/divcount-72::58",
+  "idx": 152,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "mace::mace/river-k6-5::59",
+  "idx": 153,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "prev::hle::hle-670402f0bae67686d8aef3e8",
+  "idx": 154,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "prev::hle::hle-66fdb51b903727942c52222f",
+  "idx": 155,
+  "stratum": "final_MULTI",
+  "model_label": "MULTI",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "repl::repl/digitsum-110::51",
+  "idx": 156,
+  "stratum": "label_agree",
+  "strict": 0,
+  "lenient": 0,
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::hle::hle-670dc75dcfd3fc87a109a929",
+  "idx": 157,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "prev::hle::hle-66f3ef9802a20e79fb9bfb2e",
+  "idx": 158,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "repl::repl/digitsum-117::46",
+  "idx": 159,
+  "stratum": "label_agree",
+  "strict": 1,
+  "lenient": 1,
+  "oracle": 1
+ },
+ {
+  "item_id": "prev::webinstruct::webinstruct-100989",
+  "idx": 160,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "mace::mace/river-k6-6::5",
+  "idx": 161,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "mace::mace/language-k6-7::31",
+  "idx": 162,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "prev::triviaqa::triviaqa-2263",
+  "idx": 163,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "mace::mace/river-k6-3::7",
+  "idx": 164,
+  "stratum": "mace_invalid",
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::simpleqa::simpleqa-3691",
+  "idx": 165,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "mace::mace/math-k2-12::23",
+  "idx": 166,
+  "stratum": "mace_invalid",
+  "oracle": 0
+ },
+ {
+  "item_id": "mace::mace/language-k4-13::18",
+  "idx": 167,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "repl::repl/digitsum-109::52",
+  "idx": 168,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::simpleqa::simpleqa-606",
+  "idx": 169,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "prev::triviaqa::triviaqa-15408",
+  "idx": 170,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "prev::browsecomp::browsecomp-240",
+  "idx": 171,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "repl::repl/goldbach-65::1",
+  "idx": 172,
+  "stratum": "label_agree",
+  "strict": 0,
+  "lenient": 0,
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::hle::hle-67300670a8a3b9c5fe76c0b8",
+  "idx": 173,
+  "stratum": "final_MULTI",
+  "model_label": "MULTI",
+  "passA": "MULTI",
+  "status": "agreement"
+ },
+ {
+  "item_id": "mace::mace/river-k2-21::6",
+  "idx": 174,
+  "stratum": "mace_invalid",
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/crt-5::45",
+  "idx": 175,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/subset-46::3",
+  "idx": 176,
+  "stratum": "label_agree",
+  "strict": 1,
+  "lenient": 1,
+  "oracle": 1
+ },
+ {
+  "item_id": "prev::simpleqa::simpleqa-2942",
+  "idx": 177,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "prev::triviaqa::triviaqa-14684",
+  "idx": 178,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "prev::webinstruct::webinstruct-102575",
+  "idx": 179,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "repl::repl/divcount-93::19",
+  "idx": 180,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::browsecomp::browsecomp-893",
+  "idx": 181,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "mace::mace/language-k6-23::20",
+  "idx": 182,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "repl::repl/divcount-80::15",
+  "idx": 183,
+  "stratum": "label_agree",
+  "strict": 0,
+  "lenient": 0,
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::hle::hle-67418f4d1cf0c9eba73432cc",
+  "idx": 184,
+  "stratum": "final_MULTI",
+  "model_label": "MULTI",
+  "passA": "MULTI",
+  "status": "agreement"
+ },
+ {
+  "item_id": "prev::triviaqa::triviaqa-10986",
+  "idx": 185,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "repl::repl/subset-28::19",
+  "idx": 186,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "mace::mace/river-k6-18::23",
+  "idx": 187,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "mace::mace/language-k6-6::63",
+  "idx": 188,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "repl::repl/goldbach-53::44",
+  "idx": 189,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "mace::mace/language-k2-21::47",
+  "idx": 190,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "repl::repl/goldbach-66::58",
+  "idx": 191,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::hle::hle-67206ac2f58a25138266a375",
+  "idx": 192,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "prev::triviaqa::triviaqa-7868",
+  "idx": 193,
+  "stratum": "final_MULTI",
+  "model_label": "MULTI",
+  "passA": "MULTI",
+  "status": "agreement"
+ },
+ {
+  "item_id": "prev::browsecomp::browsecomp-906",
+  "idx": 194,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "repl::repl/goldbach-68::27",
+  "idx": 195,
+  "stratum": "label_agree",
+  "strict": 1,
+  "lenient": 1,
+  "oracle": 1
+ },
+ {
+  "item_id": "mace::mace/river-k4-18::16",
+  "idx": 196,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "repl::repl/divcount-86::11",
+  "idx": 197,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/divcount-90::11",
+  "idx": 198,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/goldbach-65::57",
+  "idx": 199,
+  "stratum": "label_agree",
+  "strict": 1,
+  "lenient": 1,
+  "oracle": 1
+ },
+ {
+  "item_id": "prev::browsecomp::browsecomp-118",
+  "idx": 200,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "repl::repl/divcount-84::3",
+  "idx": 201,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::simpleqa::simpleqa-764",
+  "idx": 202,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "MULTI",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "repl::repl/digitsum-109::48",
+  "idx": 203,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::webinstruct::webinstruct-109949",
+  "idx": 204,
+  "stratum": "final_MULTI",
+  "model_label": "MULTI",
+  "passA": "MULTI",
+  "status": "agreement"
+ },
+ {
+  "item_id": "prev::webinstruct::webinstruct-87172",
+  "idx": 205,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "repl::repl/digitsum-113::22",
+  "idx": 206,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "mace::mace/river-k2-10::5",
+  "idx": 207,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "prev::simpleqa::simpleqa-950",
+  "idx": 208,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "mace::mace/language-k6-14::44",
+  "idx": 209,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "repl::repl/digitsum-96::21",
+  "idx": 210,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::webinstruct::webinstruct-21088",
+  "idx": 211,
+  "stratum": "final_MULTI",
+  "model_label": "MULTI",
+  "passA": "MULTI",
+  "status": "agreement"
+ },
+ {
+  "item_id": "prev::simpleqa::simpleqa-2927",
+  "idx": 212,
+  "stratum": "final_MULTI",
+  "model_label": "MULTI",
+  "passA": "MULTI",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "mace::mace/language-k6-15::26",
+  "idx": 213,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "prev::browsecomp::browsecomp-27",
+  "idx": 214,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "repl::repl/digitsum-117::48",
+  "idx": 215,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::browsecomp::browsecomp-418",
+  "idx": 216,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "prev::hle::hle-672db430e9b58e3b2e97b67a",
+  "idx": 217,
+  "stratum": "final_MULTI",
+  "model_label": "MULTI",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "repl::repl/digitsum-119::52",
+  "idx": 218,
+  "stratum": "label_agree",
+  "strict": 1,
+  "lenient": 1,
+  "oracle": 1
+ },
+ {
+  "item_id": "repl::repl/digitsum-104::27",
+  "idx": 219,
+  "stratum": "label_agree",
+  "strict": 0,
+  "lenient": 0,
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::browsecomp::browsecomp-346",
+  "idx": 220,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "mace::mace/math-k6-13::28",
+  "idx": 221,
+  "stratum": "mace_invalid",
+  "oracle": 0
+ },
+ {
+  "item_id": "mace::mace/river-k2-1::17",
+  "idx": 222,
+  "stratum": "mace_invalid",
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::hle::hle-67061eb7f88d4fc2d2f8402a",
+  "idx": 223,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "prev::browsecomp::browsecomp-286",
+  "idx": 224,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "prev::hle::hle-67330386bda81b2106f720dc",
+  "idx": 225,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "repl::repl/subset-31::63",
+  "idx": 226,
+  "stratum": "label_agree",
+  "strict": 1,
+  "lenient": 1,
+  "oracle": 1
+ },
+ {
+  "item_id": "repl::repl/divcount-74::33",
+  "idx": 227,
+  "stratum": "label_agree",
+  "strict": 1,
+  "lenient": 1,
+  "oracle": 1
+ },
+ {
+  "item_id": "prev::triviaqa::triviaqa-3236",
+  "idx": 228,
+  "stratum": "final_MULTI",
+  "model_label": "MULTI",
+  "passA": "UNIQUE",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "mace::mace/math-k4-24::19",
+  "idx": 229,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "mace::mace/language-k2-6::23",
+  "idx": 230,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "mace::mace/language-k2-14::41",
+  "idx": 231,
+  "stratum": "mace_invalid",
+  "oracle": 0
+ },
+ {
+  "item_id": "mace::mace/language-k2-24::13",
+  "idx": 232,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "prev::webinstruct::webinstruct-129146",
+  "idx": 233,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "repl::repl/subset-24::39",
+  "idx": 234,
+  "stratum": "label_agree",
+  "strict": 0,
+  "lenient": 0,
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/crt-17::60",
+  "idx": 235,
+  "stratum": "label_agree",
+  "strict": 1,
+  "lenient": 1,
+  "oracle": 1
+ },
+ {
+  "item_id": "prev::webinstruct::webinstruct-34137",
+  "idx": 236,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "mace::mace/language-k2-16::24",
+  "idx": 237,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "repl::repl/goldbach-71::14",
+  "idx": 238,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::browsecomp::browsecomp-416",
+  "idx": 239,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "mace::mace/language-k6-5::55",
+  "idx": 240,
+  "stratum": "mace_invalid",
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/crt-22::14",
+  "idx": 241,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/subset-34::28",
+  "idx": 242,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "mace::mace/river-k4-8::54",
+  "idx": 243,
+  "stratum": "mace_invalid",
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/subset-44::20",
+  "idx": 244,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "mace::mace/river-k6-19::5",
+  "idx": 245,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "repl::repl/divcount-89::15",
+  "idx": 246,
+  "stratum": "label_agree",
+  "strict": 0,
+  "lenient": 0,
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/goldbach-69::49",
+  "idx": 247,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::browsecomp::browsecomp-147",
+  "idx": 248,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "mace::mace/language-k2-3::54",
+  "idx": 249,
+  "stratum": "mace_invalid",
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::webinstruct::webinstruct-32718",
+  "idx": 250,
+  "stratum": "final_MULTI",
+  "model_label": "MULTI",
+  "passA": "MULTI",
+  "status": "agreement"
+ },
+ {
+  "item_id": "prev::triviaqa::triviaqa-12821",
+  "idx": 251,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "repl::repl/digitsum-105::63",
+  "idx": 252,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/crt-1::21",
+  "idx": 253,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/subset-31::47",
+  "idx": 254,
+  "stratum": "label_agree",
+  "strict": 0,
+  "lenient": 0,
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::browsecomp::browsecomp-513",
+  "idx": 255,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "mace::mace/river-k4-0::22",
+  "idx": 256,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "repl::repl/goldbach-67::20",
+  "idx": 257,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::webinstruct::webinstruct-151963",
+  "idx": 258,
+  "stratum": "final_MULTI",
+  "model_label": "MULTI",
+  "passA": "MULTI",
+  "status": "agreement"
+ },
+ {
+  "item_id": "prev::browsecomp::browsecomp-1175",
+  "idx": 259,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "prev::simpleqa::simpleqa-1019",
+  "idx": 260,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "repl::repl/divcount-91::19",
+  "idx": 261,
+  "stratum": "label_agree",
+  "strict": 1,
+  "lenient": 1,
+  "oracle": 1
+ },
+ {
+  "item_id": "prev::webinstruct::webinstruct-38366",
+  "idx": 262,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "prev::browsecomp::browsecomp-168",
+  "idx": 263,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "prev::simpleqa::simpleqa-2590",
+  "idx": 264,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "repl::repl/subset-34::45",
+  "idx": 265,
+  "stratum": "label_agree",
+  "strict": 0,
+  "lenient": 0,
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::simpleqa::simpleqa-2597",
+  "idx": 266,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "prev::triviaqa::triviaqa-17189",
+  "idx": 267,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "prev::webinstruct::webinstruct-217411",
+  "idx": 268,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "repl::repl/subset-36::5",
+  "idx": 269,
+  "stratum": "label_agree",
+  "strict": 0,
+  "lenient": 0,
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/divcount-77::20",
+  "idx": 270,
+  "stratum": "label_agree",
+  "strict": 1,
+  "lenient": 1,
+  "oracle": 1
+ },
+ {
+  "item_id": "mace::mace/math-k2-0::23",
+  "idx": 271,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "repl::repl/goldbach-59::10",
+  "idx": 272,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/subset-34::38",
+  "idx": 273,
+  "stratum": "label_agree",
+  "strict": 0,
+  "lenient": 0,
+  "oracle": 0
+ },
+ {
+  "item_id": "mace::mace/river-k4-4::21",
+  "idx": 274,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "mace::mace/river-k6-20::35",
+  "idx": 275,
+  "stratum": "mace_invalid",
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/divcount-90::16",
+  "idx": 276,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::hle::hle-67368bceaea0de6b58ec346a",
+  "idx": 277,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "repl::repl/crt-20::34",
+  "idx": 278,
+  "stratum": "label_agree",
+  "strict": 1,
+  "lenient": 1,
+  "oracle": 1
+ },
+ {
+  "item_id": "prev::triviaqa::triviaqa-531",
+  "idx": 279,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "prev::browsecomp::browsecomp-1194",
+  "idx": 280,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "prev::hle::hle-66f4a7ba439f15c2c0752479",
+  "idx": 281,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "prev::triviaqa::triviaqa-14679",
+  "idx": 282,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "repl::repl/crt-16::20",
+  "idx": 283,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "mace::mace/math-k6-19::38",
+  "idx": 284,
+  "stratum": "mace_invalid",
+  "oracle": 0
+ },
+ {
+  "item_id": "mace::mace/math-k4-14::25",
+  "idx": 285,
+  "stratum": "mace_invalid",
+  "oracle": 0
+ },
+ {
+  "item_id": "mace::mace/language-k6-10::16",
+  "idx": 286,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "mace::mace/language-k2-21::34",
+  "idx": 287,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "repl::repl/goldbach-64::18",
+  "idx": 288,
+  "stratum": "label_agree",
+  "strict": 1,
+  "lenient": 1,
+  "oracle": 1
+ },
+ {
+  "item_id": "repl::repl/subset-42::46",
+  "idx": 289,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/goldbach-50::54",
+  "idx": 290,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/divcount-82::48",
+  "idx": 291,
+  "stratum": "label_agree",
+  "strict": 0,
+  "lenient": 0,
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/subset-36::53",
+  "idx": 292,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "mace::mace/river-k4-11::33",
+  "idx": 293,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "mace::mace/river-k2-14::6",
+  "idx": 294,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "prev::simpleqa::simpleqa-4270",
+  "idx": 295,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "mace::mace/math-k2-15::30",
+  "idx": 296,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "repl::repl/goldbach-57::62",
+  "idx": 297,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/crt-16::29",
+  "idx": 298,
+  "stratum": "label_agree",
+  "strict": 0,
+  "lenient": 0,
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/divcount-87::24",
+  "idx": 299,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "mace::mace/math-k2-12::33",
+  "idx": 300,
+  "stratum": "mace_invalid",
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/divcount-72::42",
+  "idx": 301,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/goldbach-71::25",
+  "idx": 302,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::hle::hle-671ff0e5029265f239082aac",
+  "idx": 303,
+  "stratum": "passes_disagree",
+  "model_label": "UNCLEAR",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "prev::browsecomp::browsecomp-617",
+  "idx": 304,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "repl::repl/crt-14::13",
+  "idx": 305,
+  "stratum": "label_agree",
+  "strict": 1,
+  "lenient": 1,
+  "oracle": 1
+ },
+ {
+  "item_id": "repl::repl/digitsum-108::16",
+  "idx": 306,
+  "stratum": "label_agree",
+  "strict": 1,
+  "lenient": 1,
+  "oracle": 1
+ },
+ {
+  "item_id": "repl::repl/divcount-82::42",
+  "idx": 307,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/divcount-78::7",
+  "idx": 308,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "mace::mace/math-k6-18::8",
+  "idx": 309,
+  "stratum": "mace_invalid",
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::webinstruct::webinstruct-191321",
+  "idx": 310,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "prev::browsecomp::browsecomp-187",
+  "idx": 311,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "repl::repl/goldbach-55::1",
+  "idx": 312,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::webinstruct::webinstruct-205795",
+  "idx": 313,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "repl::repl/goldbach-69::12",
+  "idx": 314,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::simpleqa::simpleqa-2656",
+  "idx": 315,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "prev::browsecomp::browsecomp-1128",
+  "idx": 316,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "prev::hle::hle-66fa6641c4f1bf6c2036b745",
+  "idx": 317,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "prev::triviaqa::triviaqa-4815",
+  "idx": 318,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "mace::mace/language-k6-22::37",
+  "idx": 319,
+  "stratum": "mace_invalid",
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/digitsum-99::21",
+  "idx": 320,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/digitsum-109::11",
+  "idx": 321,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "mace::mace/language-k4-14::59",
+  "idx": 322,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "prev::simpleqa::simpleqa-2130",
+  "idx": 323,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "prev::webinstruct::webinstruct-16303",
+  "idx": 324,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "prev::hle::hle-6709df4c3c2174379ffee04b",
+  "idx": 325,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "repl::repl/divcount-83::46",
+  "idx": 326,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::hle::hle-6723d5524a5a9552dc3d8836",
+  "idx": 327,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "mace::mace/river-k4-5::48",
+  "idx": 328,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "repl::repl/divcount-83::0",
+  "idx": 329,
+  "stratum": "label_agree",
+  "strict": 0,
+  "lenient": 0,
+  "oracle": 0
+ },
+ {
+  "item_id": "mace::mace/math-k4-15::63",
+  "idx": 330,
+  "stratum": "mace_invalid",
+  "oracle": 0
+ },
+ {
+  "item_id": "mace::mace/math-k2-18::53",
+  "idx": 331,
+  "stratum": "mace_invalid",
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/goldbach-68::22",
+  "idx": 332,
+  "stratum": "label_agree",
+  "strict": 1,
+  "lenient": 1,
+  "oracle": 1
+ },
+ {
+  "item_id": "mace::mace/math-k4-5::13",
+  "idx": 333,
+  "stratum": "mace_invalid",
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/divcount-75::28",
+  "idx": 334,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/crt-19::60",
+  "idx": 335,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "mace::mace/river-k6-9::10",
+  "idx": 336,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "repl::repl/subset-33::32",
+  "idx": 337,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "mace::mace/language-k4-8::4",
+  "idx": 338,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "mace::mace/math-k2-23::17",
+  "idx": 339,
+  "stratum": "mace_invalid",
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/goldbach-50::28",
+  "idx": 340,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/subset-27::50",
+  "idx": 341,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/subset-29::9",
+  "idx": 342,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "mace::mace/river-k2-7::11",
+  "idx": 343,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "prev::browsecomp::browsecomp-448",
+  "idx": 344,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "prev::triviaqa::triviaqa-16173",
+  "idx": 345,
+  "stratum": "final_MULTI",
+  "model_label": "MULTI",
+  "passA": "UNIQUE",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "mace::mace/language-k6-8::0",
+  "idx": 346,
+  "stratum": "mace_invalid",
+  "oracle": 0
+ },
+ {
+  "item_id": "mace::mace/math-k2-6::60",
+  "idx": 347,
+  "stratum": "mace_invalid",
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::hle::hle-670e00c1289a73b5d2b75215",
+  "idx": 348,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "repl::repl/divcount-86::54",
+  "idx": 349,
+  "stratum": "label_agree",
+  "strict": 0,
+  "lenient": 0,
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::webinstruct::webinstruct-157785",
+  "idx": 350,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "mace::mace/river-k2-8::39",
+  "idx": 351,
+  "stratum": "mace_invalid",
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/subset-31::60",
+  "idx": 352,
+  "stratum": "label_agree",
+  "strict": 1,
+  "lenient": 1,
+  "oracle": 1
+ },
+ {
+  "item_id": "prev::hle::hle-6726b213fce0098db0df41e8",
+  "idx": 353,
+  "stratum": "passes_disagree",
+  "model_label": "UNCLEAR",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "repl::repl/divcount-90::22",
+  "idx": 354,
+  "stratum": "label_agree",
+  "strict": 1,
+  "lenient": 1,
+  "oracle": 1
+ },
+ {
+  "item_id": "prev::triviaqa::triviaqa-15630",
+  "idx": 355,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "prev::browsecomp::browsecomp-164",
+  "idx": 356,
+  "stratum": "passes_agree",
+  "model_label": "UNCLEAR",
+  "passA": "UNCLEAR",
+  "status": "agreement"
+ },
+ {
+  "item_id": "mace::mace/math-k4-4::36",
+  "idx": 357,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "prev::triviaqa::triviaqa-4563",
+  "idx": 358,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "prev::hle::hle-671f1b5bf1d35a8b2b3b9756",
+  "idx": 359,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "prev::hle::hle-6721b2171648dda151c2a7f9",
+  "idx": 360,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "prev::simpleqa::simpleqa-4321",
+  "idx": 361,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "mace::mace/river-k4-21::26",
+  "idx": 362,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "mace::mace/river-k6-10::18",
+  "idx": 363,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "prev::simpleqa::simpleqa-4134",
+  "idx": 364,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "mace::mace/math-k4-5::27",
+  "idx": 365,
+  "stratum": "mace_invalid",
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::hle::hle-6712787d0d05bc73fc008dfe",
+  "idx": 366,
+  "stratum": "final_MULTI",
+  "model_label": "MULTI",
+  "passA": "UNIQUE",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "repl::repl/digitsum-96::35",
+  "idx": 367,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "mace::mace/math-k6-3::32",
+  "idx": 368,
+  "stratum": "mace_invalid",
+  "oracle": 0
+ },
+ {
+  "item_id": "mace::mace/river-k6-14::26",
+  "idx": 369,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "prev::simpleqa::simpleqa-2484",
+  "idx": 370,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "mace::mace/river-k2-22::38",
+  "idx": 371,
+  "stratum": "mace_valid",
+  "oracle": 1
+ },
+ {
+  "item_id": "prev::simpleqa::simpleqa-1929",
+  "idx": 372,
+  "stratum": "passes_agree",
+  "model_label": "UNIQUE",
+  "passA": "UNIQUE",
+  "status": "agreement"
+ },
+ {
+  "item_id": "repl::repl/crt-9::52",
+  "idx": 373,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/crt-16::4",
+  "idx": 374,
+  "stratum": "label_agree",
+  "strict": 1,
+  "lenient": 1,
+  "oracle": 1
+ },
+ {
+  "item_id": "prev::webinstruct::webinstruct-188666",
+  "idx": 375,
+  "stratum": "passes_disagree",
+  "model_label": "UNCLEAR",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "repl::repl/goldbach-67::32",
+  "idx": 376,
+  "stratum": "label_disagree",
+  "strict": 0,
+  "lenient": 1,
+  "oracle": 0
+ },
+ {
+  "item_id": "prev::simpleqa::simpleqa-3671",
+  "idx": 377,
+  "stratum": "passes_disagree",
+  "model_label": "UNIQUE",
+  "passA": "UNCLEAR",
+  "status": "adjudicated"
+ },
+ {
+  "item_id": "repl::repl/crt-23::57",
+  "idx": 378,
+  "stratum": "label_agree",
+  "strict": 0,
+  "lenient": 0,
+  "oracle": 0
+ },
+ {
+  "item_id": "repl::repl/divcount-84::57",
+  "idx": 379,
+  "stratum": "label_agree",
+  "strict": 0,
+  "lenient": 0,
+  "oracle": 0
+ }
+]

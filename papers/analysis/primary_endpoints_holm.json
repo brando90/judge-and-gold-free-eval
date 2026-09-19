@@ -1,0 +1,60 @@
+{
+ "note": "E1-E4 are item-clustered bootstrap endpoints (NBOOT=1000); a 1000-resample bootstrap cannot resolve p below ~1e-3, so we record bounds. E5 is exact.",
+ "family_size": 5,
+ "alpha": 0.05,
+ "E1_swap_gain": {
+  "estimate": 4.965237,
+  "ci": [
+   4.658847,
+   5.268406
+  ],
+  "p": "<0.001",
+  "holm_threshold": 0.01,
+  "survives": true,
+  "cell": "Qwen2.5-7B rubric a",
+  "registration": "P-RR1 predicts sign in 4/4 judge x rubric cells"
+ },
+ "E2_swap_loss": {
+  "estimate": -5.036453,
+  "ci": [
+   -5.377101,
+   -4.668944
+  ],
+  "p": "<0.001",
+  "holm_threshold": 0.0125,
+  "survives": true
+ },
+ "E3_gain_minus_placebo": {
+  "estimate": 4.811667,
+  "ci": [
+   4.43659,
+   5.16518
+  ],
+  "p": "<0.001",
+  "holm_threshold": 0.0167,
+  "survives": true
+ },
+ "E4_grading_auroc": {
+  "estimate": -0.2924,
+  "ci": [
+   -0.3231,
+   -0.261
+  ],
+  "p": "<0.001",
+  "holm_threshold": 0.025,
+  "survives": true,
+  "source": "papers/analysis/r8_lenient_results.json pools['repl|all']['Qwen2.5-7B']['strict']['G_nm']"
+ },
+ "E5_retraction": {
+  "n_accepted": 843,
+  "referenced_le3": 117,
+  "retest_le3": 2,
+  "concordant_both_le3": 2,
+  "discordant": 115,
+  "against_referenced": 115,
+  "p_exact_two_sided": 4.8148e-35,
+  "holm_threshold": 0.05,
+  "survives": true
+ },
+ "all_survive": true
+}

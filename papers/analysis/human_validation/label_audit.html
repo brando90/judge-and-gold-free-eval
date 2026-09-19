@@ -1,0 +1,237 @@
+<title>Judge Label Audit</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap">
+<style>
+:root{
+  --paper:#f4f6f8; --surface:#ffffff; --ink:#12161c; --ink-2:#39424f; --muted:#626d7b;
+  --line:#dde2e8; --line-2:#c8d0d9; --accent:#2f5fd0; --accent-soft:#e7edfb;
+  --good:#1a6f4c; --good-soft:#e2f1ea; --bad:#a8331d; --bad-soft:#fae9e5; --hold:#7d6413; --hold-soft:#f6efd9;
+  --shadow:0 1px 2px rgba(18,22,28,.06),0 8px 24px rgba(18,22,28,.06);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0e1218; --surface:#161c24; --ink:#e8edf3; --ink-2:#c0cad6; --muted:#8996a5;
+  --line:#242d38; --line-2:#33404e; --accent:#7ba2f5; --accent-soft:#1b2740;
+  --good:#5cc396; --good-soft:#12291f; --bad:#ef8f79; --bad-soft:#2d1812;
+  --hold:#d6b455; --hold-soft:#2a2310;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+}}
+:root[data-theme="dark"]{
+  --paper:#0e1218; --surface:#161c24; --ink:#e8edf3; --ink-2:#c0cad6; --muted:#8996a5;
+  --line:#242d38; --line-2:#33404e; --accent:#7ba2f5; --accent-soft:#1b2740;
+  --good:#5cc396; --good-soft:#12291f; --bad:#ef8f79; --bad-soft:#2d1812; --hold:#d6b455; --hold-soft:#2a2310;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
+     font-size:15px;line-height:1.5;margin:0}
+.wrap{max-width:860px;margin:0 auto;padding-inline:18px;padding-block:0 64px}
+
+header.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--paper);
+  border-bottom:1px solid var(--line);padding-block:12px;margin-bottom:22px}
+.bartop{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+h1{font-size:17px;font-weight:600;margin:0;letter-spacing:-.01em}
+.sub{color:var(--muted);font-size:12.5px}
+.meter{margin-top:10px;height:5px;background:var(--line);border-radius:3px;overflow:hidden}
+.meter i{display:block;height:100%;background:var(--accent);width:0;transition:width .25s ease}
+.counts{display:flex;gap:14px;flex-wrap:wrap;margin-top:8px;font-size:12px;color:var(--muted);
+  font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.counts b{color:var(--ink-2);font-weight:500}
+
+.who{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px}
+.who label{font-size:12px;color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+input[type=text]{font:inherit;font-size:13px;padding:5px 9px;border:1px solid var(--line-2);border-radius:5px;
+  background:var(--surface);color:var(--ink);min-width:150px}
+input[type=text]:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);
+  padding:20px;display:flex;flex-direction:column;gap:16px}
+.eyebrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+  font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:11px;color:var(--muted)}
+.chip{border:1px solid var(--line-2);border-radius:99px;padding:2px 9px;letter-spacing:.03em}
+.chip.task{background:var(--accent-soft);border-color:transparent;color:var(--accent)}
+.qlabel{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.q{font-family:"IBM Plex Serif",Georgia,serif;font-size:17px;line-height:1.55;white-space:pre-wrap;
+  overflow-wrap:anywhere}
+.resp{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:13px;line-height:1.6;
+  background:var(--paper);border:1px solid var(--line);border-left:3px solid var(--line-2);
+  border-radius:6px;padding:12px 14px;max-height:340px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere}
+.ref{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:13px;background:var(--accent-soft);
+  border-radius:6px;padding:9px 12px;overflow-wrap:anywhere}
+.ask{font-size:14px;color:var(--ink-2);border-top:1px solid var(--line);padding-top:14px}
+.ask b{color:var(--ink);font-weight:600}
+
+.choices{display:flex;gap:10px;flex-wrap:wrap}
+.choices button{flex:1 1 150px;font:inherit;font-weight:500;padding:13px 12px;border-radius:8px;cursor:pointer;
+  background:var(--surface);color:var(--ink);border:1px solid var(--line-2);display:flex;
+  align-items:center;justify-content:center;gap:8px;transition:transform .06s ease}
+.choices button:active{transform:translateY(1px)}
+.choices button kbd{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--muted);
+  border:1px solid var(--line-2);border-radius:4px;padding:1px 5px}
+.choices button[data-v="yes"]:hover,.choices button[data-v="yes"][aria-pressed="true"]{background:var(--good-soft);border-color:var(--good);color:var(--good)}
+.choices button[data-v="no"]:hover,.choices button[data-v="no"][aria-pressed="true"]{background:var(--bad-soft);border-color:var(--bad);color:var(--bad)}
+.choices button[data-v="unclear"]:hover,.choices button[data-v="unclear"][aria-pressed="true"]{background:var(--hold-soft);border-color:var(--hold);color:var(--hold)}
+.choices button[aria-pressed="true"] kbd{border-color:currentColor;color:inherit}
+
+.nav{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-top:14px;flex-wrap:wrap}
+.nav-left{display:flex;gap:8px}
+.ghost{font:inherit;font-size:13px;padding:8px 13px;border-radius:7px;cursor:pointer;
+  background:transparent;border:1px solid var(--line-2);color:var(--ink-2)}
+.ghost:hover{border-color:var(--accent);color:var(--accent)}
+.ghost.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.ghost.primary:hover{opacity:.92;color:#fff}
+
+details.export{margin-top:26px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:0 18px}
+details.export summary{cursor:pointer;padding:14px 0;font-weight:600;font-size:14px}
+details.export[open] summary{border-bottom:1px solid var(--line);margin-bottom:14px}
+textarea{width:100%;height:190px;font-family:"IBM Plex Mono",monospace;font-size:11.5px;line-height:1.45;
+  border:1px solid var(--line-2);border-radius:6px;padding:10px;background:var(--paper);color:var(--ink);resize:vertical}
+.exrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding-bottom:16px;margin-top:10px}
+.note{font-size:12.5px;color:var(--muted);line-height:1.5}
+.done{text-align:center;padding:40px 20px}
+.done h2{font-family:"IBM Plex Serif",Georgia,serif;font-weight:500;font-size:22px;margin:0 0 8px}
+@media (max-width:520px){.choices button{flex:1 1 100%}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+<header class="bar">
+  <div class="bartop">
+    <h1>Judge Label Audit</h1>
+    <span class="sub" id="pos">loading…</span>
+  </div>
+  <div class="meter"><i id="bar"></i></div>
+  <div class="counts">
+    <span>labeled <b id="cDone">0</b>/<b id="cAll">0</b></span>
+    <span>answers <b id="cA">0</b></span>
+    <span>questions <b id="cB">0</b></span>
+    <span>skipped <b id="cS">0</b></span>
+  </div>
+  <div class="who">
+    <label for="annot">Annotator</label>
+    <input type="text" id="annot" placeholder="your initials" autocomplete="off">
+    <button class="ghost" id="jump">Next unlabeled</button>
+  </div>
+</header>
+
+<main id="stage"></main>
+
+<details class="export">
+  <summary>Export labels</summary>
+  <p class="note">One JSON object per line. Copy this and send it back — your browser can't save files from here.
+     Labels are also kept in this browser under your annotator name, so you can close the tab and return.</p>
+  <textarea id="out" readonly></textarea>
+  <div class="exrow">
+    <button class="ghost primary" id="copy">Copy JSONL</button>
+    <button class="ghost" id="refresh">Refresh</button>
+    <span class="note" id="exnote"></span>
+  </div>
+</details>
+</div>
+
+<script>
+const S={items:[],i:0,labels:{},who:""};
+const $=id=>document.getElementById(id);
+const key=()=>"jla::"+(S.who||"anon");
+
+function load(){ try{const r=localStorage.getItem(key()); S.labels=r?JSON.parse(r):{};}catch(e){S.labels={};} }
+function save(){ try{localStorage.setItem(key(),JSON.stringify(S.labels));}catch(e){} }
+
+const ASK={
+  answer_correct:{
+    q:"Is the candidate's final answer correct for this question?",
+    opts:[["yes","Correct","1"],["no","Incorrect","2"],["unclear","Can't tell","3"]]
+  },
+  multi_answer:{
+    q:"Could a different answer also be fully correct for this question?",
+    opts:[["yes","Yes — several correct","1"],["no","No — one correct","2"],["unclear","Can't tell","3"]]
+  }
+};
+
+function render(){
+  const st=$("stage");
+  if(!S.items.length){ st.innerHTML='<div class="card"><p class="note">Loading sample…</p></div>'; return; }
+  if(S.i>=S.items.length){
+    st.innerHTML='<div class="card done"><h2>All '+S.items.length+' items seen</h2>'+
+      '<p class="note">Open <b>Export labels</b> below, copy the JSONL, and send it back.</p></div>';
+    update(); return;
+  }
+  const it=S.items[S.i], cfg=ASK[it.task], cur=S.labels[it.item_id];
+  const body = it.task==="answer_correct"
+    ? '<div><div class="qlabel">Question</div><div class="q">'+esc(it.question)+'</div></div>'+
+      '<div><div class="qlabel">Candidate response</div><div class="resp">'+esc(it.candidate)+'</div></div>'
+    : '<div><div class="qlabel">Question</div><div class="q">'+esc(it.question)+'</div></div>'+
+      (it.reference?'<div><div class="qlabel">Answer the benchmark lists</div><div class="ref">'+esc(it.reference)+'</div></div>':'');
+  st.innerHTML=
+   '<div class="card">'+
+     '<div class="eyebrow"><span class="chip task">'+(it.task==="answer_correct"?"answer":"question")+'</span>'+
+       '<span class="chip">'+esc(it.domain)+'</span><span>'+esc(it.item_id)+'</span></div>'+
+     body+
+     '<div class="ask"><b>'+cfg.q+'</b></div>'+
+     '<div class="choices">'+cfg.opts.map(([v,lab,k])=>
+        '<button data-v="'+v+'" aria-pressed="'+(cur===v)+'">'+lab+' <kbd>'+k+'</kbd></button>').join("")+
+     '</div>'+
+   '</div>'+
+   '<div class="nav"><div class="nav-left">'+
+     '<button class="ghost" id="prev">← Back</button>'+
+     '<button class="ghost" id="skip">Skip <kbd>s</kbd></button></div>'+
+     '<button class="ghost" id="next">Next →</button></div>';
+  st.querySelectorAll('.choices button').forEach(b=>b.onclick=()=>pick(b.dataset.v));
+  $("prev").onclick=()=>{S.i=Math.max(0,S.i-1);render();};
+  $("next").onclick=()=>{S.i=Math.min(S.items.length,S.i+1);render();};
+  $("skip").onclick=()=>pick("skip");
+  update();
+}
+function esc(s){return String(s==null?"":s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
+
+function pick(v){
+  const it=S.items[S.i]; if(!it) return;
+  S.labels[it.item_id]={v:v,t:Date.now(),task:it.task,domain:it.domain};
+  save(); S.i++; render();
+}
+function update(){
+  const n=S.items.length, vals=Object.values(S.labels);
+  const done=vals.filter(x=>x.v!=="skip").length, sk=vals.filter(x=>x.v==="skip").length;
+  $("cAll").textContent=n; $("cDone").textContent=done; $("cS").textContent=sk;
+  $("cA").textContent=vals.filter(x=>x.task==="answer_correct"&&x.v!=="skip").length;
+  $("cB").textContent=vals.filter(x=>x.task==="multi_answer"&&x.v!=="skip").length;
+  $("bar").style.width=(n?(vals.length/n*100):0)+"%";
+  $("pos").textContent=S.i<n?("item "+(S.i+1)+" of "+n):("complete · "+n+" items");
+  buildOut();
+}
+function buildOut(){
+  const lines=S.items.filter(it=>S.labels[it.item_id]).map(it=>{
+    const L=S.labels[it.item_id];
+    return JSON.stringify({item_id:it.item_id,task:it.task,domain:it.domain,
+      label:L.v,annotator:S.who||"anon",ts:new Date(L.t).toISOString()});
+  });
+  $("out").value=lines.join("\n");
+  $("exnote").textContent=lines.length+" rows";
+}
+function firstUnlabeled(){
+  for(let k=0;k<S.items.length;k++) if(!S.labels[S.items[k].item_id]) return k;
+  return S.items.length;
+}
+
+document.addEventListener("keydown",e=>{
+  if(e.target.tagName==="INPUT"||e.target.tagName==="TEXTAREA") return;
+  if(e.key==="1")pick("yes"); else if(e.key==="2")pick("no"); else if(e.key==="3")pick("unclear");
+  else if(e.key.toLowerCase()==="s")pick("skip");
+  else if(e.key==="ArrowLeft"){S.i=Math.max(0,S.i-1);render();}
+  else if(e.key==="ArrowRight"){S.i=Math.min(S.items.length,S.i+1);render();}
+});
+$("annot").oninput=e=>{S.who=e.target.value.trim(); load(); S.i=firstUnlabeled(); render();};
+$("jump").onclick=()=>{S.i=firstUnlabeled();render();};
+$("refresh").onclick=buildOut;
+$("copy").onclick=async()=>{
+  try{ await navigator.clipboard.writeText($("out").value); $("copy").textContent="Copied"; }
+  catch(err){ $("out").select(); $("copy").textContent="Press ⌘C"; }
+  setTimeout(()=>{$("copy").textContent="Copy JSONL";},1600);
+};
+
+fetch("sample_blind.json").then(r=>r.json()).then(d=>{
+  S.items=d; try{S.who=$("annot").value.trim();}catch(e){}
+  load(); S.i=firstUnlabeled(); render();
+}).catch(err=>{
+  $("stage").innerHTML='<div class="card"><p class="note">Could not load the sample file ('+esc(err.message)+
+    '). Reload the page; if it persists the data file did not publish alongside this page.</p></div>';
+});
+</script>
