@@ -1019,3 +1019,41 @@ phi-4 & $a$ & $+4.40$ \ci{+4.11}{+4.68} & $-4.11$ \ci{-4.44}{-3.78} & $+0.10$ \c
 \bottomrule
 \end{tabular}
 \end{table}
+
+
+\section{What a single-reference reward does to a policy, in simulation}
+\label{app:rlsim}
+
+\Cref{sec:cost} states the reward-signal risk as a concern rather than a demonstrated harm, because
+our preference-training runs were inconclusive. This section adds a mechanism check that is honest
+about its own limits.\ph{}
+
+\paragraph{What this is.} A policy-gradient simulation over scores that already exist. Each
+replication-pool task carries 64 stored candidate responses, an exact oracle label for each, whether
+each matches the shown reference, and each candidate's expected judge score with and without the
+reference. The policy is a softmax over those 64 fixed candidates, trained by \textsc{reinforce}
+against one of three rewards: the exact oracle, the judge with the reference shown, and the judge
+with no reference. The third is the control: any drift it produces comes from the judge's own
+preferences rather than from the displayed answer. Seeds are fixed per item and reward, so the
+numbers below reproduce exactly.
+
+\paragraph{What this is not.} Evidence that RL training on a reference-guided verifier distorts a
+real policy. A real policy explores an open output space; this one can only move probability mass
+between answers that were already sampled. We report it as a mechanism check and leave the claim in
+\cref{sec:cost} as it stands.
+
+\paragraph{Result.} Rewarded by the exact oracle, a converged policy puts 15.3\% of its valid
+probability mass on the answer that happens to match the reference --- close to the rate at which
+that answer appears among correct candidates. Rewarded by the same judge \emph{with the reference
+shown}, it puts 69.4\% there for Qwen2.5-7B and 61.6\% for phi-4: a rise of $+0.541$
+\ci{+0.470}{+0.615} and $+0.463$ \ci{+0.386}{+0.537} over the oracle policy, paired by item. The
+blind-judge control moves the same quantity by only $+0.029$ \ci{+0.006}{+0.056} and $+0.041$
+\ci{+0.021}{+0.067}. That control is small but not zero, which is expected: the reference is often
+the canonical answer, and a blind judge prefers canonical answers too (extended appendix). The
+referenced signal is an order of magnitude larger than that preference.
+
+Two further readings. The share of mass on \emph{any} correct answer falls from 0.93 under the
+oracle to 0.62--0.67 under either judge reward, blind or referenced alike, so that loss is ordinary
+grading error and not the reference's doing. And the concentration is what a reward-hacking account
+predicts: the policy is not becoming less correct, it is becoming correct in one particular way ---
+the way the grader was shown.
