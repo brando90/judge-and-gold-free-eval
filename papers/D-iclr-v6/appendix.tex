@@ -967,3 +967,54 @@ replication and E4 from the registered labels, so none depends on the any-format
 \cref{app:grid} shows moves effect sizes. The remaining ledger entries should be read as robustness
 and exploration rather than as confirmatory tests, and the totals in \cref{tab:ledger-totals} are
 reported in that spirit.
+
+
+\section{A pre-registered holdout replication of the swap}
+\label{app:holdout}
+
+Every rotation result above comes from one 120-item pool. This section reports a replication on
+items that did not exist when the manuscript was written, with hypotheses, thresholds and verdict
+rule fixed in \texttt{registration\_round32.md} and the analysis frozen in
+\texttt{papers/analysis/holdout\_analysis.py}, both committed before the first judging call. It was run
+once and is reported as it came out.\pre
+
+\paragraph{Pool.} 110 constraint items from the same five families and the same builder, drawn on a
+new seed and filtered so that no item shares a family and parameter dictionary with the original
+pool: overlap is 0 of 110. \textsc{digitsum} contributes 14 items rather than 24 because a
+2{,}000-item draw yields only 14 novel instances of that family; the imbalance was registered rather
+than repaired by reusing seen items. Candidates are 64 samples per item from Llama-3.1-8B-Instruct,
+oracle pass rate 39.5\%, with 76 of the 110 items inside the $[0.2, 0.8]$ band the original design
+targeted. Because the weights repository is gated and the cluster holds no credential, the
+candidates were sampled from an ungated mirror of the same release whose configuration matches on
+every architectural field; that substitution is recorded in the registration.
+
+\paragraph{Result.} All five registered hypotheses hold in all four judge~$\times$~rubric cells
+(\cref{tab:holdout}). Text the reference moves onto gains 3.7 to 6.3 points, text it moves off loses
+about as much, and the two contrasts that carry the causal reading behave as registered: the
+gainer-minus-placebo contrast is positive everywhere, and the placebo itself stays within $0.10$ of
+zero in every cell --- tighter than the original run's $+0.10$ to $+0.30$. Point estimates land
+within 0.4 points of the corresponding frozen cells (\cref{tab:rotation}) despite sharing no items.
+
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption{\textbf{The swap replicates on a pre-registered holdout.} Change in score of identical text
+when the reference is rotated onto it, off it, or onto neither (0--10, 95\% intervals, item-clustered
+bootstrap). Registered as H32-1 to H32-5 before any judging call; all five confirmed in all four
+cells. $n$ differs by column because a class enters an item only when that item contains a candidate
+of it.\pre}
+\label{tab:holdout}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}llcccc@{}}
+\toprule
+Judge & Rubric & Onto (H32-1, H32-5) & Off (H32-2) & Neither (H32-4) & Onto $-$ neither (H32-3) \\
+\midrule
+Qwen2.5-7B & $a$ & $+4.88$ \ci{+4.59}{+5.21} & $-5.17$ \ci{-5.54}{-4.80} & $-0.00$ \ci{-0.15}{+0.14} & $+4.87$ \ci{+4.52}{+5.20} \\
+ & $b$ & $+6.32$ \ci{+6.02}{+6.62} & $-6.71$ \ci{-7.02}{-6.39} & $+0.09$ \ci{-0.03}{+0.23} & $+6.20$ \ci{+5.92}{+6.54} \\
+phi-4 & $a$ & $+4.40$ \ci{+4.11}{+4.68} & $-4.11$ \ci{-4.44}{-3.78} & $+0.10$ \ci{-0.09}{+0.28} & $+4.27$ \ci{+3.96}{+4.58} \\
+ & $b$ & $+3.67$ \ci{+3.39}{+3.97} & $-3.68$ \ci{-3.98}{-3.39} & $-0.00$ \ci{-0.15}{+0.18} & $+3.59$ \ci{+3.33}{+3.91} \\
+\midrule
+\multicolumn{6}{@{}l}{\emph{Items contributing: 109 onto, 93 off, 88 neither (of 110).}}\\
+\bottomrule
+\end{tabular}
+\end{table}
