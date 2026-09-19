@@ -1,0 +1,24 @@
+\begin{tabular}{llccccc}
+\toprule
+ & & \multicolumn{3}{c}{Grading AUROC, change against blind} & \multicolumn{2}{c}{False rejections, change against blind (points)} \\
+\cmidrule(lr){3-5}\cmidrule(lr){6-7}
+Judge & Pool & Reference & Sentence & Max rule & Reference & Sentence \\
+\midrule
+Sonnet 5 & \textsc{MACE}, $k{>}1$ & \begin{tabular}[c]{@{}c@{}}$-0.153$\\{\scriptsize$[-0.219,-0.097]$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$-0.065$\\{\scriptsize$[-0.115,-0.019]$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$-0.015$\\{\scriptsize$[-0.042,+0.004]$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$+35.6$\\{\scriptsize$[+24.8,+48.0]$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$+18.1$\\{\scriptsize$[+9.9,+28.0]$}\end{tabular} \\
+ & Replication & \begin{tabular}[c]{@{}c@{}}$-0.037$\\{\scriptsize$[-0.068,-0.011]$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$-0.033$\\{\scriptsize$[-0.065,-0.006]$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$-0.001$\\{\scriptsize$[-0.012,+0.010]$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$+9.2$\\{\scriptsize$[+5.1,+14.6]$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$+6.1$\\{\scriptsize$[+2.4,+10.6]$}\end{tabular} \\
+ & $k$-pool, $k{>}1$ & \begin{tabular}[c]{@{}c@{}}$-0.080$\\{\scriptsize$[-0.120,-0.043]$}\end{tabular} & not run & \begin{tabular}[c]{@{}c@{}}$-0.023$\\{\scriptsize$[-0.048,-0.003]$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$+22.5$\\{\scriptsize$[+11.8,+35.1]$}\end{tabular} & not run \\
+\addlinespace
+Opus 5 & \textsc{MACE}, $k{>}1$ & \begin{tabular}[c]{@{}c@{}}$-0.165$\\{\scriptsize$[-0.223,-0.110]$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$-0.052$\\{\scriptsize$[-0.105,-0.004]$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$-0.008$\\{\scriptsize$[-0.018,+0.000]$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$+36.3$\\{\scriptsize$[+26.7,+46.7]$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$+8.1$\\{\scriptsize$[+2.1,+15.9]$}\end{tabular} \\
+ & Replication & \begin{tabular}[c]{@{}c@{}}$-0.015$\\{\scriptsize$[-0.038,+0.009]$}\end{tabular} & not run & \begin{tabular}[c]{@{}c@{}}$-0.012$\\{\scriptsize$[-0.024,+0.000]$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$+3.6$\\{\scriptsize$[+0.8,+6.9]$}\end{tabular} & not run \\
+ & $k$-pool, $k{>}1$ & \begin{tabular}[c]{@{}c@{}}$-0.057$\\{\scriptsize$[-0.117,-0.013]$}\end{tabular} & not run & \begin{tabular}[c]{@{}c@{}}$-0.027$\\{\scriptsize$[-0.046,-0.009]$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$+8.4$\\{\scriptsize$[+1.0,+20.2]$}\end{tabular} & not run \\
+\midrule
+ & & \multicolumn{2}{c}{Sentence $-$ reference} & Max $-$ reference & \multicolumn{2}{c}{Sentence $-$ reference} \\
+\midrule
+Sonnet 5 & \textsc{MACE}, $k{>}1$ & \multicolumn{2}{c}{\begin{tabular}[c]{@{}c@{}}$+0.088$\\{\scriptsize$[+0.046,+0.136]$}\end{tabular}} & \begin{tabular}[c]{@{}c@{}}$+0.138$\\{\scriptsize$[+0.084,+0.200]$}\end{tabular} & \multicolumn{2}{c}{\begin{tabular}[c]{@{}c@{}}$-17.6$\\{\scriptsize$[-25.4,-10.0]$}\end{tabular}} \\
+ & Replication & \multicolumn{2}{c}{\begin{tabular}[c]{@{}c@{}}$+0.004$\\{\scriptsize$[-0.025,+0.032]$}\end{tabular}} & \begin{tabular}[c]{@{}c@{}}$+0.036$\\{\scriptsize$[+0.014,+0.062]$}\end{tabular} & \multicolumn{2}{c}{\begin{tabular}[c]{@{}c@{}}$-3.1$\\{\scriptsize$[-8.2,+1.6]$}\end{tabular}} \\
+ & $k$-pool, $k{>}1$ & \multicolumn{2}{c}{not run} & \begin{tabular}[c]{@{}c@{}}$+0.057$\\{\scriptsize$[+0.029,+0.089]$}\end{tabular} & \multicolumn{2}{c}{not run} \\
+Opus 5 & \textsc{MACE}, $k{>}1$ & \multicolumn{2}{c}{\begin{tabular}[c]{@{}c@{}}$+0.112$\\{\scriptsize$[+0.070,+0.156]$}\end{tabular}} & \begin{tabular}[c]{@{}c@{}}$+0.157$\\{\scriptsize$[+0.103,+0.217]$}\end{tabular} & \multicolumn{2}{c}{\begin{tabular}[c]{@{}c@{}}$-28.0$\\{\scriptsize$[-37.6,-19.3]$}\end{tabular}} \\
+ & Replication & \multicolumn{2}{c}{not run} & \begin{tabular}[c]{@{}c@{}}$+0.003$\\{\scriptsize$[-0.016,+0.022]$}\end{tabular} & \multicolumn{2}{c}{not run} \\
+ & $k$-pool, $k{>}1$ & \multicolumn{2}{c}{not run} & \begin{tabular}[c]{@{}c@{}}$+0.029$\\{\scriptsize$[-0.008,+0.091]$}\end{tabular} & \multicolumn{2}{c}{not run} \\
+\bottomrule
+\end{tabular}

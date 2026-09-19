@@ -1,0 +1,15 @@
+\begin{tabular}{llcccc}
+\toprule
+Judge & Prompt & AUROC, blind $\to$ reference & AUROC change & False rejections change (pp) & False acceptances change (pp) \\
+\midrule
+GPT-4.1 & Direct yes/no & 0.848 $\to$ 0.759 & \begin{tabular}[c]{@{}c@{}}$-0.089$\\{\scriptsize$[-0.141,-0.038]$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$+23.0$\\{\scriptsize$[+12.3,+34.3]$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$-5.1$\\{\scriptsize$[-11.2,+0.6]$}\end{tabular} \\
+ & Verify first & 0.927 $\to$ 0.859 & \begin{tabular}[c]{@{}c@{}}$-0.068$\\{\scriptsize$[-0.115,-0.026]$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$+10.3$\\{\scriptsize$[+2.7,+19.5]$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$+3.2$\\{\scriptsize$[-0.2,+7.9]$}\end{tabular} \\
+ & Solve first & 0.907 $\to$ 0.868 & \begin{tabular}[c]{@{}c@{}}$-0.040$\\{\scriptsize$[-0.088,-0.002]$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$+4.7$\\{\scriptsize$[+0.4,+10.8]$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$+3.2$\\{\scriptsize$[-2.0,+9.2]$}\end{tabular} \\
+ & HLE edited minus verbatim & 0.485 $\to$ 0.611 & \begin{tabular}[c]{@{}c@{}}$+0.126$\\{\scriptsize$[+0.077,+0.176]$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$-28.5$\\{\scriptsize$[-39.1,-18.1]$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$+3.4$\\{\scriptsize$[+0.0,+8.7]$}\end{tabular} \\
+\addlinespace
+Sonnet~5 & Direct yes/no & 0.862 $\to$ 0.805 & \begin{tabular}[c]{@{}c@{}}$-0.057$\\{\scriptsize$[-0.106,-0.014]$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$+13.8$\\{\scriptsize$[+5.8,+23.6]$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$-2.5$\\{\scriptsize$[-8.9,+3.6]$}\end{tabular} \\
+ & Verify first & 0.908 $\to$ 0.818 & \begin{tabular}[c]{@{}c@{}}$-0.090$\\{\scriptsize$[-0.143,-0.041]$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$+17.1$\\{\scriptsize$[+8.3,+26.8]$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$+0.9$\\{\scriptsize$[-3.2,+4.9]$}\end{tabular} \\
+ & Solve first & 0.913 $\to$ 0.867 & \begin{tabular}[c]{@{}c@{}}$-0.047$\\{\scriptsize$[-0.082,-0.016]$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$+7.4$\\{\scriptsize$[+1.7,+14.7]$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$+1.9$\\{\scriptsize$[+0.0,+5.0]$}\end{tabular} \\
+ & HLE edited minus verbatim & 0.501 $\to$ 0.818 & \begin{tabular}[c]{@{}c@{}}$+0.317$\\{\scriptsize$[+0.263,+0.369]$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$-65.9$\\{\scriptsize$[-76.5,-55.2]$}\end{tabular} & \begin{tabular}[c]{@{}c@{}}$+2.5$\\{\scriptsize$[+0.3,+5.7]$}\end{tabular} \\
+\bottomrule
+\end{tabular}

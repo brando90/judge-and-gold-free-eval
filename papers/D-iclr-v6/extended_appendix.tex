@@ -1,0 +1,52 @@
+\documentclass{article}
+\usepackage{iclr2027_conference,times}
+\input{math_commands.tex}
+
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor={blue!50!black},citecolor={blue!50!black},urlcolor={blue!50!black}]{hyperref}
+\usepackage{url}
+\usepackage[capitalise,noabbrev]{cleveref}
+\usepackage{caption}
+\captionsetup{font=small,labelfont=bf}
+\captionsetup[table]{skip=4pt}
+\usepackage{enumitem}
+\usepackage{longtable}
+\usepackage{adjustbox}
+\usepackage{xspace}
+\usepackage{placeins}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc}
+
+\newcommand{\sd}{\textsc{sd}\xspace}
+\newcommand{\ci}[2]{{\scriptsize$[#1,#2]$}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+% Registration status. Main text: unmarked = pre-specified (OSF or timestamped commit); dagger = post hoc;
+% double dagger = pre-specified re-analysis of an effect whose direction was known. The appendix keeps the full labels.
+\newcommand{\osf}{\textsuperscript{\textsc{osf}}}
+\newcommand{\pre}{\textsuperscript{\textsc{pre}}}
+\newcommand{\reana}{\textsuperscript{$\ddagger$}}
+\newcommand{\ph}{\textsuperscript{$\dagger$}}
+\newcommand{\pending}[1]{\textcolor{red}{#1}}
+
+\title{Extended Appendix: Reference Anchoring Biases LLM Judges\\to Match Answers Instead of Grading Them}
+
+\author{Anonymous authors\\Paper under double-blind review}
+
+\begin{document}
+\maketitle
+\raggedbottom
+
+\noindent This document is the complete appendix of the submission. The appendix in the paper is a condensed version of it with the same numbers; this version keeps every analysis, table, and figure, and the full preregistration ledger. Section, figure, and equation numbers of the paper are cited as text. Registration marks follow the paper: \textsc{osf} and \textsc{pre} mark pre-specified analyses and $\dagger$ post hoc ones.
+
+\appendix
+\crefalias{section}{appendix}
+\input{appendix_extended}
+
+\bibliography{references}
+\bibliographystyle{iclr2027_conference}
+
+\end{document}

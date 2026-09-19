@@ -1,0 +1,35 @@
+# Source: https://github.com/UKGovernmentBEIS/inspect_ai/blob/3f63975a5d1c/src/inspect_ai/scorer/_model.py#L385-L415
+# Retrieved: 2026-09-14
+# Note: template plus default_instructions() that fills {instructions}
+# ---- verbatim template below ----
+DEFAULT_MODEL_GRADED_FACT_TEMPLATE = """
+You are comparing a submitted answer to an expert answer on a given question. Here is the data:
+
+[BEGIN DATA]
+************
+[Question]: {question}
+************
+[Expert]: {criterion}
+************
+[Submission]: {answer}
+************
+[END DATA]
+
+Compare the factual content of the submitted answer with the expert answer. Ignore any differences in style, grammar, or punctuation.
+
+Does the submission contain the content in the expert answer?
+
+{instructions}
+"""
+
+
+def default_instructions(partial_credit: bool) -> str:
+    partial_letter = "P" if partial_credit else ""
+    partial_prompt = '"P" for partially correct answers,' if partial_credit else ""
+    return f"""
+After assessing the submitted answer, reply with 'GRADE: $LETTER' (without quotes) where LETTER is one of C{partial_letter}I.  Please choose ONE option for the grade: either "C" for correct answers, {partial_prompt}or "I" for incorrect answers.
+
+For example, after reviewing a correct answer you might write 'GRADE: C' or after reviewing an incorrect answer you might write 'GRADE: I'.
+
+First, write out in a step by step manner your reasoning about the criterion to be sure that your conclusion is correct. Avoid simply stating the correct answers at the outset. Then, end with your answer formatted as 'GRADE: $LETTER' (without quotes) where LETTER is one of C{partial_letter}I.
+"""

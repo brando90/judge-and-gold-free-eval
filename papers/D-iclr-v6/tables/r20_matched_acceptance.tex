@@ -1,0 +1,22 @@
+\begin{tabular}{llrrrr}
+\toprule
+ & & & & \multicolumn{2}{c}{Accepted: $n$; share $\leq 3$ with ref.} \\
+\cmidrule(lr){5-6}
+Judge & Pool & Threshold & Wrong accepted & Differ & Match \\
+\midrule
+Qwen2.5-7B & Replication & 9.80 & 3.0\% of 3491 & 1747; 19.2\% & 466; 0.4\% \\
+phi-4 & Replication & 9.75 & 2.6\% of 3491 & 1839; 4.6\% & 530; 0.0\% \\
+Qwen2.5-7B & $k$-pool, $k{>}1$ & 9.85 & 2.7\% of 2012 & 699; 25.0\% & 193; 0.0\% \\
+phi-4 & $k$-pool, $k{>}1$ & 9.70 & 2.9\% of 2012 & 714; 15.4\% & 230; 0.0\% \\
+Qwen2.5-14B & $k$-pool, $k{>}1$ & 8.20 & 3.0\% of 2012 & 836; 23.9\% & 235; 0.0\% \\
+gemma-2-9b & $k$-pool, $k{>}1$ & 9.65 & 3.0\% of 2012 & 520; 56.5\% & 135; 0.0\% \\
+\addlinespace
+Qwen2.5-7B & \textsc{MACE}, $k{>}1$ & 9.80 & 2.6\% of 2493 & 527; 83.3\% & 266; 0.0\% \\
+phi-4 & \textsc{MACE}, $k{>}1$ & 9.60 & 2.9\% of 2926 & 775; 41.9\% & 434; 0.0\% \\
+\addlinespace
+Qwen3-8B, thinking off & \textsc{MACE} subsample & 10 & 12.3\% of 260 & 132; 53.8\% & 116; 0.9\% \\
+Qwen3-8B, thinking on & \textsc{MACE} subsample & 10 & 20.8\% of 260 & 227; 23.4\% & 200; 2.0\% \\
+Qwen3-14B, thinking off & \textsc{MACE} subsample & 10 & 11.9\% of 260 & 117; 32.5\% & 76; 0.0\% \\
+Qwen3-14B, thinking on & \textsc{MACE} subsample & 10 & 24.2\% of 260 & 241; 22.0\% & 213; 0.0\% \\
+\bottomrule
+\end{tabular}

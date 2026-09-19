@@ -1,0 +1,12 @@
+# Source: https://github.com/TIGER-AI-Lab/General-Reasoner/blob/0c356d30730b/verifier.py#L16-L23
+# Retrieved: 2026-09-14
+# Note: Python string concatenation as in file
+# ---- verbatim template below ----
+VERIFIER_PROMPT_TEMPLATE = (
+    "User: ### Question: {question}\n\n"
+    "### Ground Truth Answer: {ground_truth}\n\n"
+    "### Student Answer: {student_answer}\n\n"
+    "For the above question, please verify if the student's answer is equivalent to the ground truth answer.\n"
+    "Do not solve the question by yourself; just check if the student's answer is equivalent to the ground truth answer.\n"
+    "If the student's answer is correct, output \"Final Decision: Yes\". If the student's answer is incorrect, output \"Final Decision: No\". Assistant:"
+)

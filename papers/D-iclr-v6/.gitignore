@@ -1,0 +1,9 @@
+supplement/
+supplement.zip
+supplement_hash_map.private.md
+*.aux
+*.log
+*.out
+*.fls
+*.fdb_latexmk
+*.blg
