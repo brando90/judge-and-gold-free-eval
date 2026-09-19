@@ -107,7 +107,13 @@ if some are, and **falsified** if any cell is falsified.
 
 ## Analysis
 
-`papers/analysis/holdout_analysis.py`, committed with this document. It is a copy of the frozen
+`papers/analysis/holdout_analysis.py`, committed with this document.
+
+**External copy.** The text of this registration was posted to OSF on 2026-09-19 as
+`osf.io/npd9u` (Registration 9 of the project `osf.io/kszeu`). That post was made AFTER the
+judging and analysis were complete and does not assert pre-data status: it is a durable
+third-party copy of this document's text, and the pre-data evidence remains the commit that
+carries this file and the frozen analysis script. The paper cites the commit. It is a copy of the frozen
 `replrot_analysis.py` with the pool path and judge list changed and H32-4/H32-5 added; the
 normaliser, extractor, class assignment and bootstrap are byte-identical. It is run **once**, after
 judging completes, and its output is reported whatever it says.

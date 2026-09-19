@@ -413,3 +413,58 @@ P-C3 failed (corrupt cells were safe, not unsafe); P-C4 failed (no corrupt cell 
 nuisance-loaded); P-C5 not scored (no verbosity cell entered). No cell the audit qualified had an
 unsafe outcome. Total API spend $73.90. Producers: corruption_manipulation.py, corruption_verdicts.py,
 corruption_outcome.py (frozen); corruption_mechanism.py (post hoc).
+
+---
+
+## Registration 9: frozen holdout replication of the reference swap (Paper D)
+
+**Status. Read this first.** This OSF record is NOT itself a pre-data registration, and does not
+claim to be. The pre-data registration is commit `73d2340` in the project repository, which contains
+this design, the hypotheses and verdict rule reproduced verbatim below, and the frozen analysis
+`papers/analysis/holdout_analysis.py`. That commit was made when the holdout pool, its candidates
+and its oracle labels existed -- all reference-independent -- and NO judging call had been made
+against either pool. The judging and the analysis were run after it. This OSF record is posted
+afterwards, with the results already known, as a durable third-party copy of that commit's content.
+It therefore carries a timestamp on the TEXT, not on the state of the data. The paper cites the
+commit, not this record, as the registration.
+
+**Why.** Every rotation result in the paper comes from a single 120-item pool. External review asked
+for one completely locked holdout whose hypotheses, metrics, thresholds and verdict rule are fixed
+before any data exists. This is that run.
+
+**Pool.** 110 constraint-satisfaction items across five families (remainder systems, subset sums,
+Goldbach pairs, divisor counts, digit sums), built by the same generator as the original pool on a
+new seed, then filtered so that no item shares a family and parameter dictionary with the original
+pool or its pilot. Overlap after filtering: 0 of 110. digitsum contributes 14 items rather than 24
+because a 2,000-item draw yields only 14 novel instances of that family; the imbalance is registered
+rather than repaired by reusing seen items. Each item stores its full enumerated solution set.
+
+**Design.** For each item a rotated twin replaces ref_answer with a different member of the solution
+set, recording the original as rot_from. Candidate responses are 64 samples per item and are
+byte-identical across the two reference conditions; only the reference block differs. Judges:
+Qwen2.5-7B-Instruct and microsoft/phi-4, under rubrics a and b scored separately, giving four
+judge x rubric cells. Sample classes from the loose-normalised boxed answer: GAINER (oracle-valid,
+equals the rotated reference), LOSER (oracle-valid, equals the original reference), PLACEBO
+(oracle-valid, equals neither). Readout: same-sample delta, rotated-reference score minus
+original-reference score for the identical text, per-item means, item-level cluster bootstrap,
+NBOOT = 1000, numpy default_rng(0).
+
+**Deviation recorded before any judging.** The original pool's generator repository is gated and the
+cluster holds no credential, so candidates were sampled from an ungated mirror of the same release
+whose configuration matches on every architectural field. The weights could not be checksummed
+against the gated original.
+
+**Predictions.** H32-1: GAINER mean > 0 with a 95% interval excluding zero, in all four cells.
+H32-2: LOSER mean < 0 with a 95% interval excluding zero, in all four cells. H32-3: the
+gainer-minus-placebo contrast, paired per item where both classes exist, > 0 with a 95% interval
+excluding zero, in all four cells. H32-4: the PLACEBO mean lies within +/-0.5 points of zero in all
+four cells. H32-5: the GAINER mean is at least +2.0 points in all four cells.
+
+**Verdict rule.** Confirmed: the 95% interval excludes zero in the predicted direction (H32-1 to
+H32-3), or the point estimate satisfies the stated bound (H32-4, H32-5). Not confirmed: the interval
+includes zero, or the bound is not met. Falsified: the interval excludes zero in the direction
+opposite to the prediction. A hypothesis stated across four cells is confirmed only if all four are,
+split if some are, and falsified if any cell is falsified.
+
+**Exploratory, no registration weight.** Per-family splits; blind-margin comparison; any judge or
+rubric beyond the four cells named; the relation between an item's valid-answer count and its delta.

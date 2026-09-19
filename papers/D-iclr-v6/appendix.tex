@@ -158,19 +158,19 @@ A round is one dated batch of registered experiments; the registration documents
 \caption{Registered predictions by verdict.}
 \label{tab:ledger-totals}
 \footnotesize
-\begin{tabular}{lcccc}
+\begin{tabular}{lccccc}
 \toprule
-Verdict & To round 26 & R27 (\cref{app:r27}) & R30 (\cref{app:r30}) & R31 (\cref{app:r31}) \\
+Verdict & To round 26 & R27 (\cref{app:r27}) & R30 (\cref{app:r30}) & R31 (\cref{app:r31}) & R32 (\cref{app:holdout}) \\
 \midrule
-Confirmed & 202 & 11 & 14 & 4 \\
-Not confirmed & 14 & 0 & 0 & 4 \\
-Falsified & 34 & 3 & 2 & 0 \\
-Split & 17 & 0 & 1 & 0 \\
-Not evaluable & 18 & 0 & 0 & 0 \\
-Not scored & 2 & 0 & 0 & 0 \\
-Excluded (\cref{app:frontier}) & 3 & 0 & 0 & 0 \\
+Confirmed & 202 & 11 & 14 & 4 & 5 \\
+Not confirmed & 14 & 0 & 0 & 4 & 0 \\
+Falsified & 34 & 3 & 2 & 0 & 0 \\
+Split & 17 & 0 & 1 & 0 & 0 \\
+Not evaluable & 18 & 0 & 0 & 0 & 0 \\
+Not scored & 2 & 0 & 0 & 0 & 0 \\
+Excluded (\cref{app:frontier}) & 3 & 0 & 0 & 0 & 0 \\
 \midrule
-Total & 290 & 14 & 17 & 8 \\
+Total & 290 & 14 & 17 & 8 & 5 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -976,7 +976,8 @@ Every rotation result above comes from one 120-item pool. This section reports a
 items that did not exist when the manuscript was written, with hypotheses, thresholds and verdict
 rule fixed in \texttt{registration\_round32.md} and the analysis frozen in
 \texttt{papers/analysis/holdout\_analysis.py}, both committed before the first judging call. It was run
-once and is reported as it came out.\pre
+once and is reported as it came out.\pre{} The registration text is also archived at \texttt{osf.io/npd9u},
+posted after the analysis and so carrying no pre-data claim of its own; the pre-data record is the commit.
 
 \paragraph{Pool.} 110 constraint items from the same five families and the same builder, drawn on a
 new seed and filtered so that no item shares a family and parameter dictionary with the original
