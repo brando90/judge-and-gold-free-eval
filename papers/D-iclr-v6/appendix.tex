@@ -1155,3 +1155,81 @@ Arithmetic & Qwen2.5-7B & oracle & $0.165$ & $0.183$ & $0.183$ & --- \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+\section{The KL-regularized optimum, in closed form}
+\label{app:kltilt}
+
+The simulation of \cref{app:rlsim} and the selection result of \cref{app:bonref} both approximate a
+question that has an exact answer. Reinforcement learning from a reward model maximises
+$\mathbb{E}[r] - \beta\,\mathrm{KL}(\pi \,\|\, \pi_{\text{base}})$, whose optimum is analytic:
+$\pi^{*}(y) \propto \pi_{\text{base}}(y)\exp(r(y)/\beta)$. Both terms are already measured --
+$\pi_{\text{base}}$ from how often each answer appears among the 64 stored samples, $r$ from the
+stored judge scores -- so the whole optimisation path can be traced without training anything.
+Sweeping $\beta$ from large (no optimisation) to small (argmax) walks up the KL budget.\ph{}
+
+\paragraph{The method checks out against best-of-$n$.} Best-of-$n$ has an analytic KL of
+$\log n - (n-1)/n$ nats, putting $n=16$ at 1.84. At that budget the closed form gives 0.815, 0.867
+and 0.723 for Qwen2.5-7B, phi-4 and Sonnet~5 on \textsc{MACE}; best-of-16 measured 0.811, 0.865 and
+0.676 (\cref{tab:bonref}). An analytic construction and an empirical selector agree to within two
+points, which is the evidence that neither is an artifact of its own machinery.
+
+\paragraph{What the path shows.} \Cref{tab:kltilt} gives it. We expected the reward-overoptimisation
+shape of \citet{gao2022scaling}: proxy reward climbing while true reward peaks and falls, with the
+reference collapse hidden in the gap. That is not what happens. Over the whole range we can reach,
+accuracy climbs \emph{monotonically} alongside the collapse. At a KL budget of about 1 nat --
+unremarkable for a deployed run -- Qwen2.5-7B on arithmetic goes from 46.1\% to 71.6\% accuracy
+while the share of its correct mass sitting on the single displayed answer goes from 19.6\% to
+77.0\%. On \textsc{MACE}, Sonnet~5 reaches 99.1\% accuracy at 1.6 nats with 69.3\% concentration.
+
+This is worse than the overoptimisation story, not better. Overoptimisation at least eventually
+announces itself: true reward turns over, and a team watching it sees something. Here the metric a
+team actually monitors improves by 24 to 38 points while the answer distribution narrows onto one
+arbitrary member of the correct set. There is no turnover to detect, because the reference-guided
+reward is genuinely informative about correctness \emph{and} about agreement at the same time, and
+only the first is being measured.
+
+The limit of \cref{app:rlsim} still applies: $\pi_{\text{base}}$ ranges over answers that were
+sampled, so this describes how optimisation pressure redistributes existing mass, not what an
+exploring policy would discover. We report it as the sharpest available statement of the mechanism
+and continue to claim no demonstrated harm to a trained policy.
+
+\begin{table}[htbp]
+\centering
+\footnotesize
+\caption{\textbf{Accuracy and reference concentration rise together; nothing warns you.} The
+KL-regularized optimum $\pi^{*} \propto \pi_{\text{base}}\exp(r/\beta)$ computed in closed form from
+stored scores. \emph{Proxy}: mean judge score under $\pi^{*}$. \emph{True}: oracle accuracy.
+\emph{P(ref\,$\vert$\,correct)}: share of correct mass on the displayed answer. All post hoc.\ph}
+\label{tab:kltilt}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}llccccc@{}}
+\toprule
+Pool & Judge & KL (nats) & Proxy & True accuracy & P(ref\,$\vert$\,correct) \\
+\midrule
+Arithmetic & Qwen2.5-7B & $0.00$ (base) & $4.23$ & $0.461$ & $0.196$ \\
+ & & $0.72$ & $7.07$ & $0.622$ & $0.551$ \\
+ & & $1.97$ & $8.83$ & $0.716$ & $0.770$ \\
+ & & $3.30$ & $9.60$ & $0.736$ & $0.929$ \\
+\cmidrule(l){2-6}
+ & phi-4 & $0.00$ (base) & $5.83$ & $0.461$ & $0.196$ \\
+ & & $0.54$ & $8.18$ & $0.605$ & $0.464$ \\
+ & & $1.34$ & $9.31$ & $0.690$ & $0.654$ \\
+ & & $2.72$ & $9.99$ & $0.899$ & $0.896$ \\
+\midrule
+\textsc{MACE} & Qwen2.5-7B & $0.00$ (base) & $3.47$ & $0.614$ & $0.381$ \\
+ & & $0.91$ & $7.37$ & $0.795$ & $0.704$ \\
+ & & $1.76$ & $8.62$ & $0.850$ & $0.815$ \\
+ & & $2.93$ & $9.11$ & $0.870$ & $0.910$ \\
+\cmidrule(l){2-6}
+ & phi-4 & $0.00$ (base) & $4.79$ & $0.614$ & $0.381$ \\
+ & & $0.75$ & $7.90$ & $0.799$ & $0.709$ \\
+ & & $1.65$ & $9.21$ & $0.878$ & $0.867$ \\
+ & & $2.55$ & $9.71$ & $0.928$ & $0.940$ \\
+\cmidrule(l){2-6}
+ & Sonnet~5 & $0.00$ (base) & $3.94$ & $0.614$ & $0.381$ \\
+ & & $1.08$ & $8.86$ & $0.953$ & $0.628$ \\
+ & & $1.62$ & $9.68$ & $0.991$ & $0.693$ \\
+ & & $1.85$ & $9.83$ & $1.000$ & $0.723$ \\
+\bottomrule
+\end{tabular}
+\end{table}
