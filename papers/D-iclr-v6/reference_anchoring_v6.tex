@@ -45,6 +45,17 @@
 
 \begin{abstract}
 % Structure: prevalence -> assumption -> we overturn it -> evidence -> scoped cost -> fixes -> implication.
+% 2026-09-21: the answer-list fix is deliberately NOT in the abstract. The body shows it
+% closes the gap for five grader configurations but NOT for General-Reasoner's 1.5B
+% verifier, and Rev1 called it partly tautological since the same lists define correctness.
+% An unqualified 'the list removes it' invites that objection at the most visible point in
+% the paper; the qualified version lives in sec:fix. Do not reinstate it here.
+% 2026-09-21: the leaderboard bound (0.4 / 2 points) MOVED OUT of the abstract into sec:cost.
+% Rev1 asked for the scoping distinction to be impossible to miss here, and it still is --
+% but phrased as WHERE the failure is concentrated (rare in single-answer benchmarks, 5.5-44%
+% in RL training sets) rather than as a bound on how little it matters. The defensive framing
+% spent 35 abstract words arguing the finding matters less than it appears. The number itself
+% remains in sec:cost and tab:panel2-impact.
 % Rev1 (2026-09-19) concern 1, practical significance: the 30-67pp grader gaps are measured on a
 % deliberately multi-answer MACE set, so the prevalence caveat now sits in the SAME sentence, with
 % the leaderboard bound (papers/analysis/leaderboard_impact.json). These are CEILINGS: the product
@@ -72,8 +83,8 @@ This is not only a failure to verify unfamiliar answers: of 843 correct response
 We measure this across seven judges, four open models and three frontier APIs, on constructed tasks, \textsc{MACE}, and MATH-500.
 
 Run verbatim on 149 multi-answer factual questions, the graders shipped with SimpleQA, BrowseComp, and Humanity's Last Exam score four models 30 to 67 percentage points below their accuracy against the full answer lists.
-Such questions are uncommon in those benchmarks themselves: auditing 200 questions from each, 0 to 3\% admit several correct answers, which bounds the effect on their own leaderboards at 0.4 points for SimpleQA and 2 points for Humanity's Last Exam.
-The effect is driven in part by the instruction to match: asking the judge whether the response is correct reduces it, and supplying the full set of valid answers nearly removes it.
+Four prompt-level fixes shrink the effect on the judges where it is largest, but none removes it: the best arm moves Qwen2.5-7B from $-3.42$ to $-1.26$ of 10 on factual questions, and from $-1.15$ to only $-1.00$ on arithmetic.
+The failure is concentrated where several answers are correct: rare in benchmarks written for one answer, at 0 to 3\% of the questions we audit in these three, but 5.5\% to 44\% of those in the RL training sets we audit.
 When several answers are valid, single-reference grading measures agreement with the reference rather than correctness.
 \end{abstract}
 
@@ -316,6 +327,7 @@ It still rejected 5 to 7 points more of the differing correct answers (\cref{app
 Telling the judge that any correct answer deserves full credit helps but does not suffice: added to our rubric, it cuts the rise in false rejections on \textsc{MACE} from 36 to 18 points for Sonnet~5 and to 8 for Opus~5 (\cref{app:acceptance}).
 Forbidding comparison works better still: accuracy comes within 1.7 points of the lists, though GPT-4.1 then credits 20\% of wrong answers against 7\% (\cref{app:r31}). Read accuracy here with its pool in mind: 90.6\% of these answers are correct, so it tracks recall and hides that cost, which a pool with more wrong answers would expose.
 One protocol we registered did not help: scoring blind and then rescoring with the reference left grading below blind for most open judges\ph{} (\cref{app:mitigation}).
+Across four open judges on both pools, no prompt-level fix removes the effect where it is large: the best arm still leaves Qwen2.5-7B at $-1.22$ of 10 on \textsc{MACE}, and on the replication pool chain-of-thought and verify-first are indistinguishable from no fix at all (\cref{app:panel2}).
 
 \paragraph{Questions beyond the judge.}
 On such questions, the instruction to match can be what keeps wrong answers out.
