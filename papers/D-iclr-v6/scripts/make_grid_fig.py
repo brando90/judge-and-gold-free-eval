@@ -18,9 +18,13 @@ MARKER SHAPE, never by colour. Every cell here is one condition -- a referenced-
 effect -- so every mark is blue, judges take their marker from make_figures.MARK, and the prompt arm
 is encoded by POSITION on the x axis. Nothing in this figure invents a new colour meaning.
 
-PROVENANCE. Values are parsed mechanically out of the committed table in appendix.tex, never
-retyped: transcription is how two errors reached the draft earlier in this project. --verify
-re-reads the producer JSON and fails loudly on any disagreement.
+PROVENANCE. Values come from papers/analysis/panel2_mitigation_results.json, written by
+panel2_mitigation_analysis.py from the stored judge runs. That producer did not exist when this
+figure was first drawn -- the table's 50 cells had been computed ad hoc and typed into appendix.tex
+-- so this script originally parsed the LaTeX table instead. It still can (--from-tex), and the two
+paths are checked against each other, because the table is what a reader sees and a figure that
+disagrees with it would be worse than either. Nothing here is retyped by hand: transcription is how
+two errors reached this draft earlier on.
 
 STATUS. The whole panel-2 grid is POST HOC (app:panel2 says so in its first line). If this is
 promoted to the main text the caption must carry \\ph and the registered rotation result must stay
@@ -98,35 +102,40 @@ def parse_table(tex_path):
     return out
 
 
-def verify(data, results_json):
-    """Cross-check the parsed table against the producer JSON. Loud failure, no silent pass."""
-    f = Path(results_json)
-    if not f.exists():
-        print(f"  VERIFY SKIPPED: {f} not present", file=sys.stderr)
-        return False
-    raw = json.loads(f.read_text())
-    flat = {}
+def parse_json(path):
+    """Read the producer output. Returns {pool: {judge: {arm: (est, lo, hi)}}}.
 
-    def walk(node, path=()):
-        if isinstance(node, dict):
-            for k, v in node.items():
-                walk(v, path + (str(k),))
-        elif isinstance(node, (int, float)):
-            flat[path] = float(node)
-    walk(raw)
-
-    checked = missing = 0
-    for pool, judges in data.items():
+    Cells the producer marks as bare-arm-only (GPT-4.1 and Sonnet 5 on the replication pool) are
+    dropped: a judge with one of five arms cannot be drawn as a line, and half a line would read
+    as a result rather than as an absence.
+    """
+    raw = json.loads(Path(path).read_text())
+    out = {}
+    for pool, judges in raw.items():
+        out[pool] = {}
         for judge, arms in judges.items():
-            for arm, (est, lo, hi) in arms.items():
-                hits = [p for p, v in flat.items() if abs(v - est) < 5e-3
-                        and any(judge.split("-")[0].lower() in seg.lower() for seg in p)]
-                if hits:
-                    checked += 1
-                else:
-                    missing += 1
-    print(f"  verify: {checked} cells found in JSON, {missing} not located by value+judge match")
-    return missing == 0
+            if not all(a in arms for a in ARMS):
+                continue
+            out[pool][judge] = {a: (arms[a]["estimate"], *arms[a]["ci"]) for a in ARMS}
+    return out
+
+
+def cross_check(a, b, la, lb):
+    """Both provenance paths must agree to the printed precision, or we stop."""
+    bad = 0
+    for pool in set(a) | set(b):
+        for judge in set(a.get(pool, {})) | set(b.get(pool, {})):
+            for arm in ARMS:
+                x = a.get(pool, {}).get(judge, {}).get(arm)
+                y = b.get(pool, {}).get(judge, {}).get(arm)
+                if x is None or y is None:
+                    continue
+                if abs(round(x[0], 2) - round(y[0], 2)) > 0.005:
+                    print(f"  MISMATCH {pool}/{judge}/{arm}: {la} {x[0]:.3f} vs {lb} {y[0]:.3f}")
+                    bad += 1
+    print(f"  cross-check {la} vs {lb}: {'OK' if not bad else str(bad) + ' DISAGREE'}")
+    if bad:
+        sys.exit(1)
 
 
 def draw(data, out_stem):
@@ -190,15 +199,25 @@ def draw(data, out_stem):
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("--verify", default=None, help="producer JSON to cross-check against")
+    ap.add_argument("--from-tex", action="store_true",
+                    help="draw from the LaTeX table instead of the producer JSON")
     ap.add_argument("--out", default="fig_grid_candidate")
     a = ap.parse_args()
 
-    data = parse_table(PAPER / "appendix.tex")
+    from_tex = parse_table(PAPER / "appendix.tex")
+    results = ANALYSIS / "panel2_mitigation_results.json"
+    data = from_tex
+    if results.exists():
+        from_json = parse_json(results)
+        cross_check(from_json, from_tex, "JSON", "table")
+        if not a.from_tex:
+            data = from_json
+    else:
+        print(f"  NOTE: {results.name} not present; drawing from the LaTeX table", file=sys.stderr)
+
     n = sum(len(v) for v in data.values())
-    print(f"  parsed {n} judge-pool rows x {len(ARMS)} arms = {n * len(ARMS)} cells")
+    print(f"  {n} judge-pool rows x {len(ARMS)} arms = {n * len(ARMS)} cells "
+          f"(source: {'table' if data is from_tex else 'producer JSON'})")
     for pool in data:
         print(f"    {pool}: {', '.join(sorted(data[pool]))}")
-    if a.verify:
-        verify(data, a.verify)
     draw(data, a.out)

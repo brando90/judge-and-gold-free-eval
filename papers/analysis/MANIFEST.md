@@ -42,6 +42,7 @@ Run producers from `experiments/tfa-vs-judge/`.
 | `exploit_dose_diag.json` | `exploit_dose_diag.py` | valid-pick/judge-gain/true-gain decomposition behind the lure reading (written after P-E1's falsification) |
 | (prints only) | `exploit_dose_attract.py` | fraction of selected invalid samples containing the reference answer text |
 | (prints only) | `distance_gradient_robust.py` | median/trimmed/Spearman robustness behind the distance verdict |
+| `panel2_mitigation_results.json` | `panel2_mitigation_analysis.py` | the second-panel mitigation grid, `tab:panel2-mitig` (6 judges on MACE, 4 on the replication pool, 5 prompt arms), and `fig_grid_candidate` |
 
 ## Notes
 

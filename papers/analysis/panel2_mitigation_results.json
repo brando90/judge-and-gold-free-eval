@@ -1,0 +1,604 @@
+{
+ "MACE": {
+  "Qwen2.5-7B": {
+   "None": {
+    "estimate": -3.419,
+    "ci": [
+     -3.8162,
+     -3.0318
+    ],
+    "n_candidates": 284,
+    "n_items": 120,
+    "source": "QWEN_mace_bare.jsonl",
+    "rows": 1889
+   },
+   "Several": {
+    "estimate": -2.4532,
+    "ci": [
+     -2.8095,
+     -2.1142
+    ],
+    "n_candidates": 299,
+    "n_items": 122,
+    "source": "QWEN_mace_SCAFFOLD.jsonl",
+    "rows": 1889
+   },
+   "Forbid": {
+    "estimate": -2.5777,
+    "ci": [
+     -2.9004,
+     -2.2591
+    ],
+    "n_candidates": 296,
+    "n_items": 122,
+    "source": "QWEN7B_mace_FORBID.jsonl",
+    "rows": 1889
+   },
+   "CoT": {
+    "estimate": -1.2222,
+    "ci": [
+     -1.5338,
+     -0.9044
+    ],
+    "n_candidates": 306,
+    "n_items": 123,
+    "source": "QWEN7B_mace_M1.jsonl",
+    "rows": 1889
+   },
+   "Verify": {
+    "estimate": -2.0639,
+    "ci": [
+     -2.4077,
+     -1.7126
+    ],
+    "n_candidates": 305,
+    "n_items": 123,
+    "source": "QWEN7B_mace_M2.jsonl",
+    "rows": 1889
+   }
+  },
+  "Qwen2.5-14B": {
+   "None": {
+    "estimate": -2.9967,
+    "ci": [
+     -3.291,
+     -2.7024
+    ],
+    "n_candidates": 306,
+    "n_items": 123,
+    "source": "QWEN14B_mace_bare.jsonl",
+    "rows": 1889
+   },
+   "Several": {
+    "estimate": -1.3252,
+    "ci": [
+     -1.5799,
+     -1.0828
+    ],
+    "n_candidates": 306,
+    "n_items": 123,
+    "source": "QWEN14B_mace_SCAFFOLD.jsonl",
+    "rows": 1889
+   },
+   "Forbid": {
+    "estimate": -1.7778,
+    "ci": [
+     -2.0797,
+     -1.4885
+    ],
+    "n_candidates": 306,
+    "n_items": 123,
+    "source": "QWEN14B_mace_FORBID.jsonl",
+    "rows": 1889
+   },
+   "CoT": {
+    "estimate": -0.9199,
+    "ci": [
+     -1.138,
+     -0.6971
+    ],
+    "n_candidates": 306,
+    "n_items": 123,
+    "source": "QWEN14B_mace_M1.jsonl",
+    "rows": 1889
+   },
+   "Verify": {
+    "estimate": -0.933,
+    "ci": [
+     -1.2157,
+     -0.6424
+    ],
+    "n_candidates": 306,
+    "n_items": 123,
+    "source": "QWEN14B_mace_M2.jsonl",
+    "rows": 1889
+   }
+  },
+  "gemma-2-9b": {
+   "None": {
+    "estimate": -2.1344,
+    "ci": [
+     -2.5282,
+     -1.7634
+    ],
+    "n_candidates": 305,
+    "n_items": 123,
+    "source": "GEMMA_mace_bare.jsonl",
+    "rows": 1889
+   },
+   "Several": {
+    "estimate": -0.6144,
+    "ci": [
+     -0.8583,
+     -0.3947
+    ],
+    "n_candidates": 306,
+    "n_items": 123,
+    "source": "GEMMA_mace_SCAFFOLD.jsonl",
+    "rows": 1889
+   },
+   "Forbid": {
+    "estimate": -0.1062,
+    "ci": [
+     -0.2081,
+     -0.0168
+    ],
+    "n_candidates": 306,
+    "n_items": 123,
+    "source": "GEMMA_mace_FORBID.jsonl",
+    "rows": 1889
+   },
+   "CoT": {
+    "estimate": -0.3072,
+    "ci": [
+     -0.4951,
+     -0.1409
+    ],
+    "n_candidates": 306,
+    "n_items": 123,
+    "source": "GEMMA_mace_M1.jsonl",
+    "rows": 1889
+   },
+   "Verify": {
+    "estimate": -0.7288,
+    "ci": [
+     -1.0061,
+     -0.4732
+    ],
+    "n_candidates": 306,
+    "n_items": 123,
+    "source": "GEMMA_mace_M2.jsonl",
+    "rows": 1889
+   }
+  },
+  "phi-4": {
+   "None": {
+    "estimate": -1.0803,
+    "ci": [
+     -1.3384,
+     -0.8449
+    ],
+    "n_candidates": 305,
+    "n_items": 123,
+    "source": "PHI4_mace_bare.jsonl",
+    "rows": 1889
+   },
+   "Several": {
+    "estimate": -0.0866,
+    "ci": [
+     -0.2388,
+     0.0574
+    ],
+    "n_candidates": 306,
+    "n_items": 123,
+    "source": "PHI4_mace_SCAFFOLD.jsonl",
+    "rows": 1889
+   },
+   "Forbid": {
+    "estimate": -0.0163,
+    "ci": [
+     -0.1534,
+     0.1114
+    ],
+    "n_candidates": 306,
+    "n_items": 123,
+    "source": "PHI4_mace_FORBID.jsonl",
+    "rows": 1889
+   },
+   "CoT": {
+    "estimate": -0.0686,
+    "ci": [
+     -0.2031,
+     0.069
+    ],
+    "n_candidates": 306,
+    "n_items": 123,
+    "source": "PHI4_mace_M1.jsonl",
+    "rows": 1889
+   },
+   "Verify": {
+    "estimate": -0.0261,
+    "ci": [
+     -0.2433,
+     0.1815
+    ],
+    "n_candidates": 306,
+    "n_items": 123,
+    "source": "PHI4_mace_M2.jsonl",
+    "rows": 1889
+   }
+  },
+  "GPT-4.1": {
+   "None": {
+    "estimate": -0.2042,
+    "ci": [
+     -0.3835,
+     -0.0773
+    ],
+    "n_candidates": 306,
+    "n_items": 123,
+    "source": "GPT41_mace_r10bare.jsonl",
+    "rows": 1889
+   },
+   "Several": {
+    "estimate": -0.0114,
+    "ci": [
+     -0.1003,
+     0.0631
+    ],
+    "n_candidates": 306,
+    "n_items": 123,
+    "source": "GPT41_mace_r10.jsonl",
+    "rows": 1889
+   },
+   "Forbid": {
+    "estimate": -0.0964,
+    "ci": [
+     -0.198,
+     -0.0104
+    ],
+    "n_candidates": 306,
+    "n_items": 123,
+    "source": "GPT41_mace_FORBID.jsonl",
+    "rows": 1889
+   },
+   "CoT": {
+    "estimate": -0.0131,
+    "ci": [
+     -0.0598,
+     0.0326
+    ],
+    "n_candidates": 306,
+    "n_items": 123,
+    "source": "GPT41_mace_M1.jsonl",
+    "rows": 1889
+   },
+   "Verify": {
+    "estimate": -0.0098,
+    "ci": [
+     -0.0489,
+     0.0283
+    ],
+    "n_candidates": 306,
+    "n_items": 123,
+    "source": "GPT41_mace_M2.jsonl",
+    "rows": 1889
+   }
+  },
+  "Sonnet 5": {
+   "None": {
+    "estimate": -0.1503,
+    "ci": [
+     -0.2618,
+     -0.0488
+    ],
+    "n_candidates": 306,
+    "n_items": 123,
+    "source": "SONNET_mace_bare.jsonl",
+    "rows": 1889
+   },
+   "Several": {
+    "estimate": -0.1307,
+    "ci": [
+     -0.2341,
+     -0.0436
+    ],
+    "n_candidates": 306,
+    "n_items": 123,
+    "source": "SONNET_mace_SCAFFOLD.jsonl",
+    "rows": 1889
+   },
+   "Forbid": {
+    "estimate": -0.0588,
+    "ci": [
+     -0.1324,
+     0.0098
+    ],
+    "n_candidates": 306,
+    "n_items": 123,
+    "source": "SONNET_mace_FORBID.jsonl",
+    "rows": 1889
+   },
+   "CoT": {
+    "estimate": -0.1209,
+    "ci": [
+     -0.2277,
+     -0.0298
+    ],
+    "n_candidates": 306,
+    "n_items": 123,
+    "source": "SONNET_mace_M1.jsonl",
+    "rows": 1889
+   },
+   "Verify": {
+    "estimate": -0.0964,
+    "ci": [
+     -0.2024,
+     -0.0017
+    ],
+    "n_candidates": 306,
+    "n_items": 123,
+    "source": "SONNET_mace_M2.jsonl",
+    "rows": 1889
+   }
+  }
+ },
+ "Replication": {
+  "Qwen2.5-7B": {
+   "None": {
+    "estimate": -1.1513,
+    "ci": [
+     -1.2634,
+     -1.0376
+    ],
+    "n_candidates": 876,
+    "n_items": 118,
+    "source": "QWEN_repl_bare.jsonl",
+    "rows": 3987
+   },
+   "Several": {
+    "estimate": -1.0029,
+    "ci": [
+     -1.1274,
+     -0.8755
+    ],
+    "n_candidates": 876,
+    "n_items": 118,
+    "source": "QWEN7B_repl_SCAFFOLD.jsonl",
+    "rows": 3987
+   },
+   "Forbid": {
+    "estimate": -1.0468,
+    "ci": [
+     -1.1767,
+     -0.9129
+    ],
+    "n_candidates": 876,
+    "n_items": 118,
+    "source": "QWEN7B_repl_FORBID.jsonl",
+    "rows": 3987
+   },
+   "CoT": {
+    "estimate": -1.0034,
+    "ci": [
+     -1.1718,
+     -0.831
+    ],
+    "n_candidates": 875,
+    "n_items": 118,
+    "source": "QWEN7B_repl_M1.jsonl",
+    "rows": 3987
+   },
+   "Verify": {
+    "estimate": -1.1903,
+    "ci": [
+     -1.3658,
+     -1.0194
+    ],
+    "n_candidates": 875,
+    "n_items": 118,
+    "source": "QWEN7B_repl_M2.jsonl",
+    "rows": 3987
+   }
+  },
+  "Qwen2.5-14B": {
+   "None": {
+    "estimate": -1.218,
+    "ci": [
+     -1.3392,
+     -1.1038
+    ],
+    "n_candidates": 876,
+    "n_items": 118,
+    "source": "QWEN14B_repl_bare.jsonl",
+    "rows": 3987
+   },
+   "Several": {
+    "estimate": -0.7003,
+    "ci": [
+     -0.8116,
+     -0.5911
+    ],
+    "n_candidates": 876,
+    "n_items": 118,
+    "source": "QWEN14B_repl_SCAFFOLD.jsonl",
+    "rows": 3987
+   },
+   "Forbid": {
+    "estimate": -1.0736,
+    "ci": [
+     -1.1745,
+     -0.9701
+    ],
+    "n_candidates": 876,
+    "n_items": 118,
+    "source": "QWEN14B_repl_FORBID.jsonl",
+    "rows": 3987
+   },
+   "CoT": {
+    "estimate": -0.5217,
+    "ci": [
+     -0.6312,
+     -0.4121
+    ],
+    "n_candidates": 874,
+    "n_items": 118,
+    "source": "QWEN14B_repl_M1.jsonl",
+    "rows": 3987
+   },
+   "Verify": {
+    "estimate": -0.4098,
+    "ci": [
+     -0.4875,
+     -0.336
+    ],
+    "n_candidates": 876,
+    "n_items": 118,
+    "source": "QWEN14B_repl_M2.jsonl",
+    "rows": 3987
+   }
+  },
+  "gemma-2-9b": {
+   "None": {
+    "estimate": -1.3105,
+    "ci": [
+     -1.4622,
+     -1.1712
+    ],
+    "n_candidates": 876,
+    "n_items": 118,
+    "source": "GEMMA_repl_bare.jsonl",
+    "rows": 3987
+   },
+   "Several": {
+    "estimate": -0.1758,
+    "ci": [
+     -0.2326,
+     -0.1217
+    ],
+    "n_candidates": 876,
+    "n_items": 118,
+    "source": "GEMMA_repl_SCAFFOLD.jsonl",
+    "rows": 3987
+   },
+   "Forbid": {
+    "estimate": 0.097,
+    "ci": [
+     0.03,
+     0.1704
+    ],
+    "n_candidates": 876,
+    "n_items": 118,
+    "source": "GEMMA_repl_FORBID.jsonl",
+    "rows": 3987
+   },
+   "CoT": {
+    "estimate": -0.1159,
+    "ci": [
+     -0.177,
+     -0.0537
+    ],
+    "n_candidates": 876,
+    "n_items": 118,
+    "source": "GEMMA_repl_M1.jsonl",
+    "rows": 3987
+   },
+   "Verify": {
+    "estimate": -0.121,
+    "ci": [
+     -0.1908,
+     -0.0553
+    ],
+    "n_candidates": 876,
+    "n_items": 118,
+    "source": "GEMMA_repl_M2.jsonl",
+    "rows": 3987
+   }
+  },
+  "phi-4": {
+   "None": {
+    "estimate": -0.108,
+    "ci": [
+     -0.1667,
+     -0.051
+    ],
+    "n_candidates": 875,
+    "n_items": 118,
+    "source": "PHI4_repl_bare.jsonl",
+    "rows": 3987
+   },
+   "Several": {
+    "estimate": 0.0377,
+    "ci": [
+     0.0056,
+     0.0769
+    ],
+    "n_candidates": 876,
+    "n_items": 118,
+    "source": "PHI4_repl_SCAFFOLD.jsonl",
+    "rows": 3987
+   },
+   "Forbid": {
+    "estimate": -0.0405,
+    "ci": [
+     -0.0785,
+     -0.0056
+    ],
+    "n_candidates": 876,
+    "n_items": 118,
+    "source": "PHI4_repl_FORBID.jsonl",
+    "rows": 3987
+   },
+   "CoT": {
+    "estimate": 0.0582,
+    "ci": [
+     0.0119,
+     0.1076
+    ],
+    "n_candidates": 859,
+    "n_items": 118,
+    "source": "PHI4_repl_M1.jsonl",
+    "rows": 3987
+   },
+   "Verify": {
+    "estimate": -0.0217,
+    "ci": [
+     -0.065,
+     0.0248
+    ],
+    "n_candidates": 876,
+    "n_items": 118,
+    "source": "PHI4_repl_M2.jsonl",
+    "rows": 3987
+   }
+  },
+  "GPT-4.1": {
+   "None": {
+    "estimate": -0.0245,
+    "ci": [
+     -0.1318,
+     0.0696
+    ],
+    "n_candidates": 876,
+    "n_items": 118,
+    "source": "BRIDGE_gpt41_repl.jsonl",
+    "rows": 3987,
+    "note": "bare arm only; the four mitigation arms were never run for this cell"
+   }
+  },
+  "Sonnet 5": {
+   "None": {
+    "estimate": 0.0588,
+    "ci": [
+     -0.011,
+     0.1333
+    ],
+    "n_candidates": 876,
+    "n_items": 118,
+    "source": "SONNET_repl_bare.jsonl",
+    "rows": 3987,
+    "note": "bare arm only; the four mitigation arms were never run for this cell"
+   }
+  }
+ }
+}
