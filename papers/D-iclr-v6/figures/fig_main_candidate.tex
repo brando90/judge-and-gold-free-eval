@@ -1,0 +1,72 @@
+% Candidate main figure. Three bands: (a) the mechanism, (b) it is not verification failure,
+% (c) the branch -- one correct answer, two grading protocols, a 30-67 point gap.
+% Numbers: (a) runs/r4/scores repl noref/ref + replrot ref, Qwen2.5-7B exact scorer.
+%          (b) papers/analysis/r20a_{sonnet,opus}_retest.json, pooled nonmatch: n=843, ref<=3 117, retest<=3 2.
+%          (c) papers/analysis/r24a_*.json pooled.nonmatch_correct_credited_{ref,reflist}; sec:cost accuracy gaps.
+\definecolor{refblue}{HTML}{4269D0}
+\definecolor{blindorange}{HTML}{C5541A}
+\definecolor{penalred}{HTML}{A51C30}
+\definecolor{okgreen}{HTML}{1A7A4C}
+\begin{tikzpicture}[
+  font=\sffamily\footnotesize,
+  >={Stealth[length=4pt]},
+  panel/.style={font=\sffamily\footnotesize\bfseries, anchor=west},
+  note/.style={font=\sffamily\scriptsize, text=black!70, align=left},
+  box/.style={draw=black!45, rounded corners=2pt, fill=black!3, align=left, inner sep=4pt},
+  refbox/.style={draw=refblue, rounded corners=2pt, fill=refblue!8, align=center, inner sep=2.5pt, minimum width=1.9cm},
+  blindbox/.style={draw=blindorange, rounded corners=2pt, fill=blindorange!8, align=center, inner sep=2.5pt, minimum width=1.9cm},
+  judge/.style={draw=black!70, rounded corners=3pt, fill=black!8, align=center, inner sep=2.5pt, minimum width=0.9cm, minimum height=0.48cm},
+  score/.style={align=center, inner sep=2pt, font=\sffamily\small},
+  proto/.style={rounded corners=3pt, align=center, inner sep=4pt, text width=3.1cm},
+]
+
+% ============================ (a) the mechanism
+\node[panel] at (0,2.70) {a\;\;One candidate, three prompts: the score follows the reference};
+\node[box, text width=4.15cm, anchor=north west] (q) at (0,2.38) {%
+  \textbf{Question.} Give a 2-digit number divisible by 5 whose digits sum to 8.\\[2pt]
+  \textbf{Both correct.} 35 \textsl{and} 80.\\[2pt]
+  \textbf{Candidate} (fixed text): \textsl{``\ldots\ the answer is 80.''}};
+\node[blindbox] (c0) at (6.15,2.05) {no reference};
+\node[refbox]   (c1) at (6.15,1.42) {reference: \textbf{80}};
+\node[refbox]   (c2) at (6.15,0.79) {reference: \textbf{35}};
+\foreach \i in {0,1,2}{\node[judge] (j\i) at (8.15,{2.05-0.63*\i}) {judge};}
+\foreach \i in {0,1,2}{\draw[->,black!60] (c\i) -- (j\i);}
+\node[score, text=blindorange] (s0) at (9.30,2.05) {10.0};
+\node[score, text=refblue]     (s1) at (9.30,1.42) {\textbf{9.3}};
+\node[score, text=penalred]    (s2) at (9.30,0.79) {\textbf{2.9}};
+\foreach \i in {0,1,2}{\draw[->,black!60] (j\i) -- (s\i);}
+\node[note, anchor=north west, text width=5.6cm] at (4.7,0.42)
+  {The text never changes; only which correct answer the judge is shown does.
+   Across 120 such tasks the swap is about 5 points.};
+
+% ============================ (b) not verification failure
+\node[panel] at (0,-0.75) {b\;\;It is not that the judge cannot verify: it takes credit back};
+\node[anchor=north west, text width=3.9cm, text=black!85] at (0,-1.10)
+  {\textbf{843} correct answers two frontier judges \textbf{had already accepted} with no reference in front of them.};
+\def\bx{4.45}
+\node[anchor=west, font=\sffamily\scriptsize, text=black!70] at (\bx,-1.12) {then shown a \emph{different} correct answer:};
+\draw[fill=penalred!85, draw=none] (\bx,-1.62) rectangle ++(3.20,0.30);
+\node[anchor=west, font=\sffamily\footnotesize, text=penalred] at (7.78,-1.47) {\textbf{117} fall to $\le$3 of 10};
+\node[anchor=west, font=\sffamily\scriptsize, text=black!70] at (\bx,-2.02) {asked a second time, still blind:};
+\draw[fill=black!45, draw=none] (\bx,-2.52) rectangle ++(0.055,0.30);
+\node[anchor=west, font=\sffamily\footnotesize, text=black!60] at (7.78,-2.37) {\textbf{2} fall};
+
+% ============================ (c) the branch
+\node[panel] at (0,-3.25) {c\;\;Same answers, same grader: the protocol decides the score};
+\node[box, anchor=north west, text width=2.9cm, fill=black!4] (mid) at (0,-3.62)
+  {A model answer an exact checker calls \textbf{correct}, differing from the one reference drawn.};
+\node[proto, draw=okgreen, fill=okgreen!8, anchor=west] (up) at (4.10,-3.88)
+  {graded against the\\\textbf{full answer list}};
+\node[proto, draw=penalred, fill=penalred!8, anchor=west] (dn) at (4.10,-5.12)
+  {graded against\\\textbf{one drawn reference}};
+\draw[->, okgreen!80!black, thick] (mid.east) .. controls +(0.55,0) and +(-0.55,0) .. (up.west);
+\draw[->, penalred!80!black, thick] (mid.east) .. controls +(0.55,0) and +(-0.55,0) .. (dn.west);
+\node[anchor=west, text=okgreen!65!black, align=left] at (7.95,-3.88)
+  {credited \textbf{99\%+}\\[2pt]{\scriptsize accuracy matches the list}};
+\node[anchor=west, text=penalred, align=left] at (7.95,-5.12)
+  {credited \textbf{0\% to 53\%}\\[2pt]{\scriptsize\textbf{30 to 67 points} lower}};
+\node[note, anchor=north west, text width=11.6cm] at (0,-6.10)
+  {Four models on 149 factual questions with several correct answers, graded by the judges shipped with SimpleQA
+   (GPT-4.1, Sonnet~5) and BrowseComp/HLE (GPT-4.1, o3-mini, Sonnet~5), run as their authors configure them.
+   The only difference between the branches is what the grader was given to compare against.};
+\end{tikzpicture}
