@@ -92,7 +92,7 @@ A reference answer is how an LLM judge is told something it could not work out a
 \resizebox{0.64\textwidth}{!}{\input{figures/fig1_concept.tex}}
 \caption{\textbf{A judge's score follows the correct answer it is shown.}
 \textbf{(a)}~A constructed task with two correct answers and one of its candidate replies (abridged; selection rule and full reply in \cref{app:setup}).
-\textbf{(b)}~Qwen2.5-7B scores the same text without a reference and with each correct answer as the reference. The example was selected for a large, clean swap; over the whole pool the swap is about 5 points for this judge (\cref{sec:p1}).}
+\textbf{(b)}~Qwen2.5-7B scores the same text without a reference and with each correct answer as the reference. The example was selected for a large, clean swap; over the whole pool the swap is about 5 points out of 10 for this judge (\cref{sec:p1}).}
 \label{fig:concept}
 \end{figure}
 
@@ -103,7 +103,7 @@ Ask for a two-digit number that is divisible by 5 and whose digits sum to 8.
 Both 35 and 80 are correct.
 Qwen2.5-7B, shown a candidate that reasons its way to 80, scores it 10.0 out of 10 with no reference, 2.9 when the reference answer is 35, and 9.3 when the reference is 80 (\cref{fig:concept}b).
 The text never changed; only the correct answer the judge was shown did.
-This example swaps more than most, but over 120 such tasks the same judge moves correct text by about 5 points in either direction (\cref{sec:p1}).
+This example swaps more than most, but over 120 such tasks the same judge moves correct text by about 5 points out of 10 in either direction (\cref{sec:p1}).
 
 Reference-guided judging is how many benchmarks are scored.
 The judge used by BrowseComp and Humanity's Last Exam (HLE), for example, is told ``do not argue for any answer different than [correct\_answer]''~\citep{wei2025browsecomp,phan2025hle}.
@@ -122,7 +122,7 @@ P1 and P2 rule out the first; P3 checks that the second is not merely an inabili
 
 \paragraph{What we find.}
 All three predictions hold (\cref{tab:summary}), and the effect matters in practice.
-Run as their authors configure them, the graders of SimpleQA, BrowseComp, and HLE score four models 30 to 67 points below what the full answer lists say their answers are worth (\cref{sec:cost}).
+Run as their authors configure them, the graders of SimpleQA, BrowseComp, and HLE score four models 30 to 67 percentage points below what the full answer lists say their answers are worth (\cref{sec:cost}).
 Much of that gap comes from the instruction to match: asking whether the answer is correct shrinks it where the judge can answer the question, although on harder questions one of our two judges then accepted wrong answers.
 Giving the grader the full answer list nearly closes it, though one open verifier does not follow the list (\cref{sec:fix}).
 Prior work comes close without isolating this failure.
@@ -148,7 +148,7 @@ Prediction identifiers, rubric variants, and per-labeling tables are in the appe
 \toprule
 Question & Rules out & Key evidence & Verdict \\
 \midrule
-\textbf{P1} Does the score follow the reference? & Answer key & Identical text moves 3--5 points when the reference moves to another correct answer (\cref{sec:p1}) & Holds; near zero on arithmetic for a thinking judge \\
+\textbf{P1} Does the score follow the reference? & Answer key & Identical text moves 3--5 points out of 10 when the reference moves to another correct answer (\cref{sec:p1}) & Holds; near zero on arithmetic for a thinking judge \\
 \textbf{P2} Are differing correct answers graded worse? & Answer key & Their grading against wrong answers drops under every answer labeling; with one correct answer the reference helps (\cref{sec:p2}) & Holds. Small for API judges on arithmetic; interval includes zero for GPT-4.1 (factual) and Opus~5 (replication pool) \\
 \textbf{P3} Does it persist after blind acceptance? & Inability to verify, on its own & Answers accepted blind are rejected once another correct answer is the reference; a repeated blind call almost never does this (\cref{sec:p3}) & Holds for every judge with an acceptance test \\
 \emph{Consequence} & --- & Shipped benchmark graders and RL verifiers under-credit such answers heavily (\cref{sec:cost}) & Large on questions with several answers; those are rare on the shipped benchmarks \\
@@ -205,13 +205,13 @@ Marks apply to effect estimates: unmarked estimates were pre-specified in a time
 \end{figure}
 
 We re-judged the replication pool's byte-identical samples with the reference moved to another correct answer.
-Under Qwen2.5-7B,\reana{} phi-4, and Sonnet~5, text the reference moves onto gains 3 to 5 points and text it moves off loses about as much, while correct text that matches neither reference barely moves (\cref{fig:rotation-pool}).
+Under Qwen2.5-7B,\reana{} phi-4, and Sonnet~5, text the reference moves onto gains 3 to 5 points out of 10 and text it moves off loses about as much, while correct text that matches neither reference barely moves (\cref{fig:rotation-pool}).
 All 12 registered cells for Qwen2.5-7B and phi-4 went as predicted; one registered prediction, that the swap would be ordered by numeric distance from the reference, failed (\cref{app:ledger}).
-The swap also replicates on a holdout of 110 items that share no task with this pool, under five hypotheses registered before the first judging call: all five hold in all four judge~$\times$~rubric cells, with text the reference moves onto gaining 3.7 to 6.3 points and text matching neither reference staying within $0.10$ of zero (\cref{app:holdout}).
+The swap also replicates on a holdout of 110 items that share no task with this pool, under five hypotheses registered before the first judging call: all five hold in all four judge~$\times$~rubric cells, with text the reference moves onto gaining 3.7 to 6.3 points out of 10 and text matching neither reference staying within $0.10$ of zero (\cref{app:holdout}).
 
 The swap is not an artifact of our own wording: it survives the verbatim MT-Bench template, which drops ``trusted'' and asks for an explanation first. That template also asks for a comparison, so we ran the swap again under a prompt that names the reference and never says to use it. Credit still follows the reference, where credit is a yes-or-no judgment rather than the 0--10 score above: answers that stop matching it lose 26 pp for GPT-4.1 and 13 for Sonnet~5. Text matching neither reference moves $-6$ pp for Sonnet~5, a larger move than the 5 pp we registered as a bound, and $-3$ pp for GPT-4.1, whose interval includes zero (\cref{app:r30}). Told not to compare, though, every interval includes zero for both judges (\cref{app:r31}): the effect needs no instruction to compare, and an explicit instruction against comparing removes it. On arithmetic it mostly vanishes, however, when the reference is written as an expression or hidden inside a worked solution (\cref{app:rotation,app:mechanism}).
 
-Does the problem fade as judges improve? On arithmetic, thinking before scoring removes most of the swap (\cref{app:reasoning}). On factual questions it shrinks the effect without removing it: Sonnet~5's added false rejections fall from 36 to 15 points (\cref{app:acceptance}), and o3-mini, a reasoning model, running the HLE grader still credits almost no correct answer that differs from the reference (\cref{sec:cost}), under a grader that tells it not to argue for a different answer.
+Does the problem fade as judges improve? On arithmetic, thinking before scoring removes most of the swap (\cref{app:reasoning}). On factual questions it shrinks the effect without removing it: Sonnet~5's added false rejections fall from 36 to 15\,pp (\cref{app:acceptance}), and o3-mini, a reasoning model, running the HLE grader still credits almost no correct answer that differs from the reference (\cref{sec:cost}), under a grader that tells it not to argue for a different answer.
 
 \section{Prediction 2: correct answers that differ from the reference are graded worse}
 \label{sec:p2}
@@ -288,32 +288,32 @@ And agreement, as we have defined it, still covers a judge that simply assumes t
 We took one answer from each of Llama-3.1-8B-Instruct (its first stored sample), Claude Haiku~4.5, Sonnet~5, and Opus~5 to each of 149 \textsc{MACE} questions with several correct answers.
 Every answer was graded with the SimpleQA grader and the judge shared by BrowseComp and HLE, copied from their repositories and run as configured there (GPT-4.1 for SimpleQA and BrowseComp, o3-mini for HLE), and with Sonnet~5 (\cref{app:r24}).
 Each grader saw one reference, drawn at random from the answer list.
-The SimpleQA grader credits 47\% to 53\% of the correct answers that differ from it, so accuracy falls 30 to 34 points below answer-list accuracy. The BrowseComp/HLE judge credits 0\% to 2.3\%, and accuracy falls 65 to 67 points (\cref{fig:graders}a).
+The SimpleQA grader credits 47\% to 53\% of the correct answers that differ from it, so accuracy falls 30 to 34\,pp below answer-list accuracy. The BrowseComp/HLE judge credits 0\% to 2.3\%, and accuracy falls 65 to 67\,pp (\cref{fig:graders}a).
 Two open RL-reward verifiers do the same: given one reference, General-Reasoner's verifier and CompassVerifier-3B credit 6\% and 0\% of these answers (\cref{app:r26}).
-Our own score rubric, with four judges, leaves the models 10 to 22 points below the answer lists (\cref{app:acceptance}).
-Choosing the reference rather than drawing it shrinks the shortfall without removing it: given the answer most of the four models produce, which is the best case for the grader, the SimpleQA grader falls 9 points short and the HLE judge 20; given \textsc{MACE}'s own first-listed answer, 26 and 56. Only one of the four reductions has an interval that includes zero: the SimpleQA grader's, under the first-listed rule. The HLE judge credits none of the answers that differ from its reference under either rule, so its gap narrows almost entirely because fewer answers differ (\cref{app:r30}).
+Our own score rubric, with four judges, leaves the models 10 to 22\,pp below the answer lists (\cref{app:acceptance}).
+Choosing the reference rather than drawing it shrinks the shortfall without removing it: given the answer most of the four models produce, which is the best case for the grader, the SimpleQA grader falls 9\,pp short and the HLE judge 20; given \textsc{MACE}'s own first-listed answer, 26 and 56. Only one of the four reductions has an interval that includes zero: the SimpleQA grader's, under the first-listed rule. The HLE judge credits none of the answers that differ from its reference under either rule, so its gap narrows almost entirely because fewer answers differ (\cref{app:r30}).
 
 \paragraph{Who should care: reuse across a capability boundary.}
 These graders are right for the benchmarks they were written for.
-By adjudicated LLM labels, 0\% to 3\% of sampled SimpleQA, BrowseComp, and HLE questions have several correct answers (\cref{app:prevalence}), so their own leaderboards are probably little affected. Combining that prevalence with the share of correct answers that differ from a drawn reference and with each grader's own denial rate puts the expected shortfall on those leaderboards at $0.3$ points \ci{0.1}{1.0} for SimpleQA and $2.1$ points \ci{0.9}{4.2} for HLE (\cref{tab:panel2-impact}). Read that as a lower bound: adjudication stopped at a spending cap and the disagreements left over kept the conservative label, and HLE alone reaches 6.0\% if six of them go the other way.
+By adjudicated LLM labels, 0\% to 3\% of sampled SimpleQA, BrowseComp, and HLE questions have several correct answers (\cref{app:prevalence}), so their own leaderboards are probably little affected. Combining that prevalence with the share of correct answers that differ from a drawn reference and with each grader's own denial rate puts the expected shortfall on those leaderboards at $0.3$\,pp \ci{0.1}{1.0} for SimpleQA and $2.1$\,pp \ci{0.9}{4.2} for HLE (\cref{tab:panel2-impact}). Read that as a lower bound: adjudication stopped at a spending cap and the disagreements left over kept the conservative label, and HLE alone reaches 6.0\% if six of them go the other way.
 The failure is reuse across a capability boundary: a grader written for questions beyond its judge, pointed at questions it can answer (\cref{sec:fix}). We offer that as a reading, not an isolated variable: our two settings differ in difficulty and in the number of correct answers at once, and the shortfall below needs only the second.
 General-Reasoner's single-reference verifier rewards an RL training set~\citep{ma2025generalreasoner} in which 5.5\% of questions admit several answers after adjudication, 18\% by either annotator, and 30\% to 44\% of sampled NQ-open questions do.\ph{}
 Reward signals are the larger risk, since there the judge shapes a policy rather than reporting a score, and both verifiers above were built for RL rewards.
-We therefore state this as a concern rather than a demonstrated harm. A simulation over stored judge scores shows the mechanism it would act through: across seven judge and pool combinations, a policy rewarded by a single-reference judge concentrates 62\% to 87\% of its correct-answer probability on the one answer the judge was shown, against 15\% and 38\% under an exact oracle, while a blind-judge control is null on \textsc{MACE} for all five judges (\cref{app:rlsim}). Sonnet~5 shows it too, at $+0.32$, although its grading is the least anchored we measure --- a judge can look clean on grading and still concentrate a policy. That is a mechanism check on a fixed candidate set, not a trained policy.\ph{} The same concentration appears in best-of-$n$ selection, which is deployed today: at $n{=}64$ a reference-guided judge returns the answer it was shown for 78\% to 98\% of its correct picks, against 18\% to 44\% under an exact checker, and the share rises monotonically with $n$ (\cref{app:bonref}). This is why best-of-64 accuracy could stay flat while the effect was present: the pick is still correct, but which correct answer it is has collapsed onto the reference.\ph{} The same is visible in the closed-form KL-regularized optimum, which needs no training: at a budget of about 1 nat, accuracy rises by 24 to 38 points while the share of correct mass on the displayed answer rises by 31 to 57, the two moving together with no turnover in accuracy to warn of it (\cref{app:kltilt}).\ph{}
+We therefore state this as a concern rather than a demonstrated harm. A simulation over stored judge scores shows the mechanism it would act through: across seven judge and pool combinations, a policy rewarded by a single-reference judge concentrates 62\% to 87\% of its correct-answer probability on the one answer the judge was shown, against 15\% and 38\% under an exact oracle, while a blind-judge control is null on \textsc{MACE} for all five judges (\cref{app:rlsim}). Sonnet~5 shows it too, at $+0.32$, although its grading is the least anchored we measure --- a judge can look clean on grading and still concentrate a policy. That is a mechanism check on a fixed candidate set, not a trained policy.\ph{} The same concentration appears in best-of-$n$ selection, which is deployed today: at $n{=}64$ a reference-guided judge returns the answer it was shown for 78\% to 98\% of its correct picks, against 18\% to 44\% under an exact checker, and the share rises monotonically with $n$ (\cref{app:bonref}). This is why best-of-64 accuracy could stay flat while the effect was present: the pick is still correct, but which correct answer it is has collapsed onto the reference.\ph{} The same is visible in the closed-form KL-regularized optimum, which needs no training: at a budget of about 1 nat, accuracy rises by 24 to 38\,pp while the share of correct mass on the displayed answer rises by 31 to 57, the two moving together with no turnover in accuracy to warn of it (\cref{app:kltilt}).\ph{}
 
 \paragraph{What sets the size.}
 Told to ``focus only on whether the answers match'', the HLE judge credits almost no differing correct answer, even with o3-mini (\cref{fig:graders}a, lower panel; \cref{app:r25,app:r26}).
-Removing that match clause and adding that a different correct answer is correct recovers 35 points for GPT-4.1 and 53 for Sonnet~5, but leaves 31 and 13, outside our registered bound.
-Asked instead whether the response is a correct answer, GPT-4.1 and Sonnet~5 fall 17 and 10 points short, against 5 and 2 blind; asked to reason first, 0.5 to 6 points, which closes most of GPT-4.1's gap but, by our registered test, not Sonnet~5's.
+Removing that match clause and adding that a different correct answer is correct recovers 35\,pp for GPT-4.1 and 53 for Sonnet~5, but leaves 31 and 13, outside our registered bound.
+Asked instead whether the response is a correct answer, GPT-4.1 and Sonnet~5 fall 17 and 10\,pp short, against 5 and 2 blind; asked to reason first, 0.5 to 6\,pp, which closes most of GPT-4.1's gap but, by our registered test, not Sonnet~5's.
 
 \section{How to fix it}
 \label{sec:fix}
 
 \paragraph{Give the judge every correct answer.}
 An answer key is the reading under which the reference is harmless.
-Stated as ``any one of the following is a complete correct answer'', the full answer list brings all five benchmark-grader configurations within 0.5 points of the answer lists and raises their credit for differing correct answers to 99\% or more (\cref{fig:graders}a).
+Stated as ``any one of the following is a complete correct answer'', the full answer list brings all five benchmark-grader configurations within 0.5\,pp of the answer lists and raises their credit for differing correct answers to 99\% or more (\cref{fig:graders}a).
 That agreement is partly by construction, since the same lists define correctness: what it shows is that the graders follow a list when given one, admitting at most 3 of 56 more wrong answers.
-Our registered bound of 3 points on that extra credit still failed for the BrowseComp/HLE judge with GPT-4.1 and o3-mini.
+Our registered bound of 3\,pp on that extra credit still failed for the BrowseComp/HLE judge with GPT-4.1 and o3-mini.
 With our rubric the list also repairs grading: AUROC is 0.03 to 0.06 above blind for Sonnet~5, Opus~5, and GPT-4.1, although Opus~5's interval touches zero (\cref{fig:graders}b; \cref{app:r24}).
 The list fixes CompassVerifier-3B but not General-Reasoner's 1.5B verifier, which credits 67\% of differing correct answers with the list but also 30\% of wrong ones (\cref{app:r26}).
 A list is still closed: whether it makes judges reject correct answers it omits is untested, and lists can be incomplete (\cref{app:mace}).
@@ -321,10 +321,10 @@ A list is still closed: whether it makes judges reject correct answers it omits 
 \paragraph{When the answers cannot be listed.}
 If the judge can answer the questions, remove any instruction to match and ask whether the answer is correct.
 We compared three such prompts on the 40-task \textsc{MACE} subsample, which has many wrong answers.
-Letting the judge solve the question first had the smallest grading loss: AUROC $-0.04$ and $-0.05$ against blind, with wrong answers wrongly credited up by at most 3.2 points.
-It still rejected 5 to 7 points more of the differing correct answers (\cref{app:r26}).
-Telling the judge that any correct answer deserves full credit helps but does not suffice: added to our rubric, it cuts the rise in false rejections on \textsc{MACE} from 36 to 18 points for Sonnet~5 and to 8 for Opus~5 (\cref{app:acceptance}).
-Forbidding comparison works better still: accuracy comes within 1.7 points of the lists, though GPT-4.1 then credits 20\% of wrong answers against 7\% (\cref{app:r31}). Read accuracy here with its pool in mind: 90.6\% of these answers are correct, so it tracks recall and hides that cost, which a pool with more wrong answers would expose.
+Letting the judge solve the question first had the smallest grading loss: AUROC $-0.04$ and $-0.05$ against blind, with wrong answers wrongly credited up by at most 3.2\,pp.
+It still rejected 5 to 7\,pp more of the differing correct answers (\cref{app:r26}).
+Telling the judge that any correct answer deserves full credit helps but does not suffice: added to our rubric, it cuts the rise in false rejections on \textsc{MACE} from 36 to 18\,pp for Sonnet~5 and to 8 for Opus~5 (\cref{app:acceptance}).
+Forbidding comparison works better still: accuracy comes within 1.7\,pp of the lists, though GPT-4.1 then credits 20\% of wrong answers against 7\% (\cref{app:r31}). Read accuracy here with its pool in mind: 90.6\% of these answers are correct, so it tracks recall and hides that cost, which a pool with more wrong answers would expose.
 One protocol we registered did not help: scoring blind and then rescoring with the reference left grading below blind for most open judges\ph{} (\cref{app:mitigation}).
 Across four open judges on both pools, no prompt-level fix removes the effect where it is large: the best arm still leaves Qwen2.5-7B at $-1.22$ of 10 on \textsc{MACE}, and on the replication pool chain-of-thought and verify-first are indistinguishable from no fix at all (\cref{app:panel2}).
 
