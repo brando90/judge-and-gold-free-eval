@@ -74,18 +74,17 @@
 % rubric b spans +2.54 to +6.34. Do not restate the range without its scope.
 % Seven SCORING judges: 4 open (Qwen2.5-7B, Qwen2.5-14B, phi-4, gemma-2-9b) + 3 frontier API
 % (Sonnet 5, Opus 5, GPT-4.1). The 843/117/2 retraction pair is Sonnet 5 and Opus 5.
-LLM judges grade against a reference answer in 35 of the 43 benchmarks, libraries, and RL reward pipelines we surveyed, including the graders shipped with SimpleQA, BrowseComp, and Humanity's Last Exam.
-All 35 treat the reference as an answer key: when several answers are correct, which one is shown should not change the score.
-
-We show that it does. On controlled arithmetic tasks, changing only which correct answer is displayed moves the score of an identical correct response by 3 to 5 points of 10, while responses matching neither reference barely move.
-Correct responses that differ from the reference also become harder to tell apart from genuinely wrong ones.
-This is not only a failure to verify unfamiliar answers: of 843 correct responses that two frontier judges had already accepted with no reference, 117 fall to 3 of 10 or below once a different correct answer is shown, against 2 on a second blind call.
-We measure this across seven judges, four open models and three frontier APIs, on constructed tasks, \textsc{MACE}, and MATH-500.
-
-Run verbatim on 149 multi-answer factual questions, the graders shipped with SimpleQA, BrowseComp, and Humanity's Last Exam score four models 30 to 67 percentage points below their accuracy against the full answer lists.
-Four prompt-level fixes shrink the effect on the judges where it is largest, but none removes it: the best arm moves Qwen2.5-7B from $-3.42$ to $-1.26$ of 10 on factual questions, and from $-1.15$ to only $-1.00$ on arithmetic.
-The failure is concentrated where several answers are correct: rare in benchmarks written for one answer, at 0 to 3\% of the questions we audit in these three, but 5.5\% to 44\% of those in the RL training sets we audit.
-When several answers are valid, single-reference grading measures agreement with the reference rather than correctness.
+% 2026-09-23: consolidated to ONE paragraph (version B, 245 words) per author direction.
+% Opens with WHY a reference exists -- it supplies information the judge cannot derive --
+% rather than with how common references are, which invited 'so what'. MATH-500 dropped:
+% it is a single-answer control and confused the multi-answer frame. Closing softened from
+% 'measures agreement rather than correctness' to 'rewards agreement MORE THAN correctness',
+% which is what the data support and is not an existential claim.
+% Cut from the longer draft, all recoverable from the body: the P2 discrimination sentence,
+% the seven-judge inventory, the specific mitigation numbers (-3.42 -> -1.26, -1.15 -> -1.00),
+% and the 0-3% audit figure. The 'arithmetic tasks' scope on the 3-to-5 range is KEPT: that
+% range is rubric-a and arithmetic only.
+A reference answer is how an LLM judge is told something it could not work out alone: the correct answer to a question beyond its own competence. That is why 35 of the 43 benchmarks, libraries, and RL reward pipelines we surveyed grade against one, including the graders shipped with SimpleQA, BrowseComp, and Humanity's Last Exam. All 35 treat it as an answer key: when several answers are correct, which one is shown should not change the score. We show that it does. On arithmetic tasks, changing only which correct answer is displayed moves the score of byte-identical text by 3 to 5 points of 10, while text matching neither reference barely moves. Nor is this only a failure to verify unfamiliar answers: of 843 correct responses two frontier judges had already accepted with no reference, 117 fall to 3 of 10 or below once a different correct answer appears, against 2 on a second blind call. The cost reaches deployment. Run verbatim on 149 multi-answer factual questions, the shipped SimpleQA and BrowseComp/HLE graders score four models 30 to 67 percentage points below their accuracy against the full answer lists, and four prompt-level fixes shrink that gap without closing it. The failure is concentrated where several answers are correct: rare in benchmarks written for one answer, but 5.5\% to 44\% of the questions in the RL training sets we audit. When several answers are valid, single-reference grading rewards agreement with the reference more than correctness.
 \end{abstract}
 
 \begin{figure}[!b]
