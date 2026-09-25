@@ -1,0 +1,152 @@
+experiment	glob	note
+# Maps each Paper D experiment to the data under experiments/tfa-vs-judge/runs/ that holds it.
+# TAB-separated: group, glob relative to runs/, one-line note.
+#
+# archive_runs.sh reads this to build the by-experiment/ symlink index on /dfs. The index is a VIEW
+# over a byte-exact mirror -- nothing is moved or renamed, because all 127 analysis producers
+# hardcode paths like runs/r4/scores/... and would break the moment the tree was reorganised.
+#
+# OVERLAP IS DELIBERATE. runs/r2, r3, r4, r5 and r8 are single judging rounds re-read by several
+# experiments, and bon/ is one flat pool directory serving about eight. A file may therefore appear
+# under more than one group. Sizes per group consequently do not sum to the 1.4 GB total.
+#
+# Membership comes from what each producer actually opens, not from directory names.
+# Validate with: python scripts/check_runs_map.py   (fails on a stale glob or an unindexed file)
+#
+# ================================================================ shared candidate pools
+pools	bon/bon_repl__*.jsonl	120 arithmetic constraint tasks (crt/subset/goldbach/divcount/digitsum), 64 Llama-3.1-8B samples each
+pools	bon/bon_replrot__*.jsonl	the same 120 tasks and byte-identical candidates, reference rotated to another correct answer
+pools	bon/bon_replpilot__*.jsonl	20-task pilot
+pools	bon/bon_mace__*.jsonl	300 MACE factual tasks, k in {1,2,4,6}
+pools	bon/bon_kstrat__*.jsonl	75 k-stratified tasks
+pools	bon/bon_synthk__*.jsonl	60 synthetic-k tasks, one pool per generator
+pools	bon/bon_math__*.jsonl	MATH-500, the one-correct-answer control
+pools	bon/bon_sep__*.jsonl	100 answer-format separation tasks
+pools	bon/bon_ties__*.jsonl	RewardBench-2 Ties, 51 tasks
+pools	bon/bon_tiesrot__*.jsonl	Ties, reference rotated
+pools	*_tasks.jsonl	task manifests the pools were built from
+# ================================================================ P1: the score follows the reference
+# sec:p1, fig:rotation-pool, tab:rotation, app:rotation, app:r30, app:r31
+p1-rotation	bon/bon_repl__*.jsonl	pool
+p1-rotation	bon/bon_replrot__*.jsonl	pool, rotated reference
+p1-rotation	bon_scores_repl/*	open + API judges, original reference
+p1-rotation	bon_scores_replrot/*	same judges, rotated reference
+p1-rotation	r4/*	exact-scorer judging, Qwen2.5-7B -- the REGISTERED headline result behind fig1_rotation
+p1-rotation	r3/*	round 3: Sonnet rotation, toggle, MACE accuracy (cross-cut with P2)
+p1-rotation	r30/*	canonical-pool redraw: first-listed vs modal reference
+p1-rotation	r31/*	round-31 counter-template follow-up
+p1-rotation	repl_*_tasks.jsonl	replication task manifests
+# ================================================================ P1 mechanism variants
+# app:mechanism, tab:masking. Is it the reference's CONTENT or merely its presence?
+p1-mechanism	bon/bon_replword__*.jsonl	reference reworded
+p1-mechanism	bon/bon_replexpr__*.jsonl	reference re-expressed
+p1-mechanism	bon/bon_replcipher*__*.jsonl	reference enciphered, three strengths
+p1-mechanism	bon_scores_refword/*	scores, reworded reference
+p1-mechanism	bon_scores_refexpr/*	scores, re-expressed reference
+p1-mechanism	bon_scores_refsolmask/*	scores, worked solution masked
+p1-mechanism	kstrat_worked_refs*.jsonl	worked-reference variants
+# ================================================================ P2: differing correct answers graded worse
+# sec:p2, fig:onevsseveral, tab:labelings-gnm, app:grid, app:estimator
+p2-grading	bon/bon_mace__*.jsonl	pool
+p2-grading	bon_scores_mace/*	MACE grading, open + API judges
+p2-grading	bon/bon_kstrat__*.jsonl	pool
+p2-grading	bon_scores_kstrat/*	k-stratified grading; also carries the m1/m2 mitigation arms
+p2-grading	bon/bon_math__*.jsonl	MATH-500 one-answer control
+p2-grading	r2/*	round 2: realism, MATH M1, subsamples, frozen_math score copies
+p2-grading	r8/*	round 8: lenient labels, Sonnet pools, interface agreement (md5s recorded in registration_round8.md -- keep byte-exact)
+p2-grading	mace_tasks.jsonl	MACE task manifest
+p2-grading	kstrat_tasks.jsonl	k-stratified task manifest
+# ================================================================ P3: persists after blind acceptance
+# sec:p3, fig:reasoning, app:acceptance, tab:r20-retest, tab:r22-redraw
+p3-acceptance	r19/*	Opus and Sonnet-thinking acceptance via API
+p3-acceptance	r20/*	blind-accept then re-show a different correct answer; the 843/117/2 numbers. Also holds mace_gen/pool.jsonl, the 149-question benchmark pool feeding the cost group
+p3-acceptance	r22/*	label audit and reference redraw
+p3-acceptance	r23/*	seeded regrade
+p3-acceptance	r5/*	round 5: Sonnet on MACE, split-half
+# ================================================================ cost: shipped benchmark graders
+# sec:cost, fig:graders, app:r24, app:r25, app:r26, app:r27
+cost-graders	r21/*	leaderboard impact and the max rule
+cost-graders	r24/*	SimpleQA and BrowseComp/HLE graders run verbatim from their repos
+cost-graders	r25/*	prompt types: direct, chain-of-thought, verify-first, solve-first
+cost-graders	r26/*	instruction variants; two open RL-reward verifiers
+cost-graders	r27/*	hard-question P3 and the HLE follow-up
+# ================================================================ frozen pre-registered holdout
+# app:holdout, tab:holdout, registration_round32.md
+holdout	bon/bon_holdout__*.jsonl	110 tasks sharing no family with the replication pool
+holdout	bon/bon_holdoutrot__*.jsonl	same candidates, reference rotated
+holdout	bon_scores_holdout/*	scores, original reference
+holdout	bon_scores_holdoutrot/*	scores, rotated reference
+holdout	holdout_*_tasks.jsonl	holdout task manifest
+# ================================================================ second judge panel (panel 2)
+# app:panel2, tab:panel2-mitig. ALL POST HOC.
+panel2	v4_judge/*	6 judges x 2 pools x 5 prompt arms, 90 files. NOTE: the arm named "bare" (r10bare) still carries a multiplicity disclaimer in its reference block -- see RUNNABLE.md
+panel2	v4_trials/*	trial manifests from v4_build_trials_{mace,repl}.py
+panel2	v4_chk/*	checkpointing
+panel2	v4_pilot*/*	pilots
+panel2	v4_mt_test/*	multi-turn smoke test
+panel2-pool	v4_pool/*	329 MB candidate pool, 11 generator models. An UPSTREAM input: no analysis producer reads it directly, only v4_judge is consumed. Separable to cold storage.
+# ================================================================ RL mechanism (post hoc, zero new data)
+# app:rlsim, app:bonref, app:kltilt -- all three are re-analyses of scores already stored above
+rl-mechanism	bon_scores_repl/*	feeds rl_simulation, bon_reference_selection, kl_tilt
+rl-mechanism	bon_scores_mace/*	same three producers, MACE cells
+rl-mechanism	bon/bon_repl__*.jsonl	pool
+rl-mechanism	bon/bon_mace__*.jsonl	pool
+# ================================================================ extended appendix only
+# present in appendix_extended.tex, not in the condensed appendix
+ext-appendix	bon_scores_synthk/*	synthetic k-grid
+ext-appendix	bon_scores_synthk_llamagen/*	k-grid, Llama-generated candidates
+ext-appendix	bon_scores_ties_full/*	Ties, full set
+ext-appendix	bon_scores_ties_rot/*	Ties, rotated reference
+ext-appendix	bon_scores_sep/*	answer-format continuum
+ext-appendix	bon/bon_mbpp*__*.jsonl	MBPP code pools
+ext-appendix	bon_scores_code/*	code scoring
+ext-appendix	bon_scores_codeexem/*	code exemplar scoring
+ext-appendix	bon_scores_llama/*	cross-family generator control
+ext-appendix	bon_scores_v2/*	v2 scoring, read by bon_curve.py (code/MBPP curve) and ties_p2_margin.py
+ext-appendix	dpo_mv/*	DPO multi-valid training (app:dpo)
+ext-appendix	dpo_mv2/*	DPO multi-valid, second round
+ext-appendix	dpo_mv3/*	DPO multi-valid, third round
+ext-appendix	frontier_judge/*	frontier CLI judge scores
+# ================================================================ supporting controls
+controls	padref/*	padded-reference control
+controls	shortref/*	short-reference control
+controls	postok/*	position/token control
+controls	variants/*	variant sweep
+controls	simcorr_tasks.jsonl	pool whose scores were never produced -- bon_scores_simcorr/ does not exist, judging blocked
+# ================================================================ known-stale, kept for the record
+stale	bon_scores/*	older un-suffixed scoring directory. registration_round2.md documents these as MISALIGNED with the Qwen MATH pool; superseded by r2/frozen_math/. Do not analyse.
+# ================================================================ NOT Paper D
+other-papers	corruption/*	Paper A corruption battery, 176 MB -- the largest non-Paper-D item
+other-papers	bon_scores_corruption/*	Paper A corruption scoring
+other-papers	bon_scores_panel/*	Paper A held-out judge panel
+other-papers	panel_cert/*	Paper A panel certification
+other-papers	cert_out/*	Paper A certificate outputs
+other-papers	critic_panel/*	Paper A critic panel
+other-papers	dpo/*	Paper A DPO gating (NOT the app:dpo runs, which are dpo_mv*)
+other-papers	dpo2/*	Paper A DPO gating
+other-papers	rb2*/*	Paper B reference-matching battery
+other-papers	prm*/*	Paper B completer sweep
+other-papers	all/*	original TFA main sweep, 59 MB
+other-papers	math500/*	TFA paper raw generations
+other-papers	mathfull/*	TFA paper
+other-papers	gsm8k*/*	TFA paper
+other-papers	putnam*/*	TFA paper / PutnamBench
+other-papers	ws3/*	WitnessBench
+other-papers	wsv/*	WitnessBench variants
+other-papers	d2/*	D2 cross-family
+other-papers	swebench*/*	SWE-bench agentic
+other-papers	code/*	code-domain work
+other-papers	code_*/*	code traces and outputs
+other-papers	toolcall/*	tool-calling probe
+other-papers	matrix_out/*	matrix probe
+other-papers	mc_*/*	multiple-choice probes
+other-papers	bon/bon_mc*.jsonl	multiple-choice pool stubs
+other-papers	bon/bon_steplevel*.jsonl	step-level pool stubs
+other-papers	*_out/*	assorted early probe outputs
+# ================================================================ catch-all
+# Every file under runs/ must land in at least one group, or the index would quietly omit it and a
+# reader would conclude it does not exist. check_runs_map.py enforces 100% coverage.
+unsorted	bon/*	any remaining candidate pool
+unsorted	*.json	loose files at the top of runs/
+unsorted	*.jsonl	loose files at the top of runs/
+unsorted	*.md	loose notes at the top of runs/

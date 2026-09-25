@@ -15,12 +15,18 @@ one that admits a hole up front.
 |---|---|---|
 | **1. Build the PDF** | compile the paper from committed sources | **Yes** |
 | **2. Regenerate figures + tables** | 4 figure PDFs, 18 table `.tex` files, from committed JSON | **Yes** — verified |
-| **3. Re-run the analysis** | recompute the JSON from stored judge outputs | **Partly** — about half; every `runs/r2…r31` input is local-only |
+| **3. Re-run the analysis** | recompute the JSON from stored judge outputs | **Partly** from git alone; **fully** with the cluster archive (§6) |
 | **4. Re-run the experiments** | regenerate judge outputs from models | **No** — needs GPUs, API keys, and ~$ spend |
 
 Tier 2 is the meaningful reproduction claim: **every number in the paper's figures and tables is
-recomputed from committed data by committed code.** Tiers 3 and 4 are partial, and §5 lists exactly
-what is missing.
+recomputed from committed data by committed code.**
+
+Tier 3 splits. Git carries 755 of 1,872 run files; the other 1,117 (1.17 GB) live in the cluster
+archive at `skampere1:/dfs/scratch0/srivatsavad/jfe-archive` (§6). With the archive restored, every
+producer that has inputs at all will run. Without it, the producers reading `runs/r2…r31`,
+`runs/v4_judge` and `runs/bon_scores_holdout*` cannot — and that set includes the abstract's
+headline number. §5 lists the gaps that no archive fixes: the 34 artifacts with no producer, and
+the three producers whose inputs do not exist anywhere.
 
 ---
 
@@ -166,10 +172,16 @@ recomputes every cell and diffs against what the paper prints.
 
 ## 5. What is missing, precisely
 
+> **Since 2026-09-25 the raw-data gap below has a fix.** Everything in §5.1 is now mirrored to
+> `skampere1:/dfs/scratch0/srivatsavad/jfe-archive`, with checksums and an experiment index — see
+> §6. The section is kept because it states exactly what a *git clone alone* does and does not give
+> you, which is still what an external reproducer starts from. §§5.2–5.4 are unaffected: an archive
+> cannot supply a producer that was never written.
+
 ### 5.1 Raw data: 60% is local-only by design
 
 `experiments/tfa-vs-judge/.gitignore` contains `runs/*/`, with 755 files force-added back. On the
-author's machine there are **1,873 files (1.4 GB)**; **1,118 files (1.17 GB) are not in git.** The
+author's machine there are **1,872 files (1.48 GB)**; **1,117 files (1.17 GB) are not in git.** The
 ignore comment says the heavy traces are "reproducible from /dfs + slim scores" — i.e. they live on
 the cluster, not in the repo.
 
@@ -270,7 +282,175 @@ Stale tracked build artifacts at `papers/D-iclr-v6/`: `main.pdf` and `main.bbl` 
 
 ---
 
-## 6. QA scripts, and how to read them
+## 6. Where the data lives
+
+Two copies, with different jobs.
+
+**Local working tree** — `experiments/tfa-vs-judge/runs/`, 1,872 files, 1.4 GB. This is what every
+producer reads. Paths here are load-bearing: producers hardcode `runs/r4/scores/...`, so the tree is
+never reorganised in place.
+
+**Cluster archive** — `skampere1:/dfs/scratch0/srivatsavad/jfe-archive/`. This is the copy of
+record for the 1.17 GB git does not carry.
+
+```
+jfe-archive/
+  raw/runs/…                 byte-exact mirror; restores straight into the working tree
+  by-experiment/<group>/…    symlinks into raw/, grouped by experiment (costs a few KB)
+  meta/runs.sha256           sha256 of every file, for verification
+  meta/runs_experiment_map.tsv   the grouping that built by-experiment/
+```
+
+The mirror is what the code needs; the index is what a human needs. **Nothing is moved or renamed**
+— reorganising the tree physically would break all 127 producers at once, so the archive layers a
+view on top instead.
+
+```bash
+kinit srivatsavad@CS.STANFORD.EDU          # required; tickets expire
+cd experiments/tfa-vs-judge
+scripts/archive_runs.sh push       # mirror up, build the index, verify checksums
+scripts/archive_runs.sh index      # rebuild only the index (seconds, after a map change)
+scripts/archive_runs.sh verify     # re-checksum on the remote, diff against local
+scripts/archive_runs.sh restore    # pull back into runs/ (refuses to clobber a non-empty tree)
+```
+
+As of the 2026-09-25 push: **1,872 files verified byte for byte**, 15 groups, 1,756 symlinks, no
+dangling links, and every one of the 1,872 files reachable through the index.
+
+Three transfer details that cost a run each to find, so they are pinned in the script:
+
+- **tar over ssh, not rsync.** macOS ships openrsync, which rejects `--info=progress2` and friends
+  and prints its usage instead of failing — with a pipe in front of it, the exit code you see is
+  the pipe's, so it looks like success.
+- **`COPYFILE_DISABLE=1`.** Many files here carry extended attributes (`ls` shows a trailing `@`),
+  and bsdtar silently emits an AppleDouble `._name` companion for each. The first run put 836 of
+  those on the cluster — 2,708 remote files against 1,872 real ones.
+- **`LC_ALL=C` on every sort.** macOS and GNU `sort` disagree on collation for names containing
+  dots, underscores and mixed case, which describes most filenames in this tree. Without it the
+  local/remote diff reports dozens of phantom mismatches.
+
+Correctness comes from the checksum pass, not from the transfer tool.
+
+### The experiment groups
+
+`scripts/runs_experiment_map.tsv` assigns every file to at least one group;
+`scripts/check_runs_map.py` fails if a glob goes stale or a file ends up unindexed. Overlap is
+deliberate — `runs/r2`–`r8` are single judging rounds re-read by several experiments, and `bon/` is
+one flat pool directory serving about eight — so **the group sizes below do not sum to 1.4 GB.**
+
+| Group | Files | Size | What it is |
+|---|---|---|---|
+| `pools` | 34 | 0.17 GB | shared candidate pools every experiment draws on |
+| `p1-rotation` | 152 | 0.05 GB | the swap: `r4` (registered headline), `bon_scores_repl`/`replrot`, `r3`, `r30`, `r31` |
+| `p1-mechanism` | 31 | 0.06 GB | reference reworded / re-expressed / enciphered / masked |
+| `p2-grading` | 182 | 0.14 GB | MACE, k-stratified, MATH-500 control, `r2`, `r8` |
+| `p3-acceptance` | 58 | 0.01 GB | `r19`, `r20` (the 843/117/2), `r22`, `r23`, `r5` |
+| `cost-graders` | 110 | 0.02 GB | `r21`, `r24`, `r25`, `r26`, `r27` — shipped graders run verbatim |
+| `holdout` | 11 | 0.01 GB | the frozen pre-registered holdout |
+| `panel2` | 121 | 0.20 GB | `v4_judge`, 6 judges × 2 pools × 5 arms |
+| `panel2-pool` | 27 | 0.34 GB | `v4_pool` — upstream input, **no producer reads it**; separable to cold storage |
+| `rl-mechanism` | 80 | 0.02 GB | simulation, best-of-*n*, KL tilt — re-analyses, zero new data |
+| `ext-appendix` | 266 | 0.09 GB | synthetic-k, Ties, separation, code/MBPP, DPO |
+| `controls` | 60 | 0.01 GB | padded / short / position-token reference controls |
+| `stale` | 35 | 0.00 GB | `bon_scores/` — **do not analyse**, see below |
+| `other-papers` | 612 | 0.43 GB | Paper A corruption (176 MB), the TFA paper, WitnessBench, SWE-bench |
+| `unsorted` | 187 | 0.36 GB | loose files at the top of `runs/` and leftover pools |
+
+Two warnings that live in the map itself. `runs/bon_scores/` is **known-stale**:
+`registration_round2.md` records it as misaligned with the Qwen MATH pool, superseded by
+`runs/r2/frozen_math/`. And `registration_round8.md` records md5 hashes for `runs/r8/*` — those
+files must stay byte-exact.
+
+---
+
+## 7. The generations
+
+Every candidate pool was produced by `scripts/bon_generate.py --domain <d> --model <m> --n 64`,
+writing one JSONL row per task. A row carries `problem_id`, `question`, `ref_answer`,
+`valid_answers`, `multi_refs`, `k`, `oracle` (per-sample correctness from an exact checker),
+`samples` (the 64 candidate texts), and the generator `params`.
+
+| Pool | Tasks | Samples/task | Generator |
+|---|---|---|---|
+| `bon_repl__meta-llama__Llama-3.1-8B-Instruct` | 120 | 64 | Llama-3.1-8B-Instruct |
+| `bon_replrot__…` (rotated reference, identical texts) | 120 | 64 | Llama-3.1-8B-Instruct |
+| `bon_replpilot__…` | 20 | 64 | Llama-3.1-8B-Instruct |
+| `bon_replword / replexpr / replcipher{1,2,3}__…` | 120 each | 64 | Llama-3.1-8B-Instruct |
+| `bon_mace__meta-llama__Llama-3.1-8B-Instruct` | 300 | 64 | Llama-3.1-8B-Instruct |
+| `bon_kstrat__meta-llama__Llama-3.1-8B-Instruct` | 75 | 64 | Llama-3.1-8B-Instruct |
+| `bon_synthk__{Qwen2.5-7B, Llama-3.1-8B}` | 60 | 64 | as named |
+| `bon_math__{Llama-3.1-8B, Qwen2.5-7B}` | 500 | 64 | as named |
+| `bon_sep__meta-llama__Llama-3.1-8B-Instruct` | 100 | 64 | Llama-3.1-8B-Instruct |
+| `bon_ties / bon_tiesrot__Qwen2.5-7B` | 51 | 64 | Qwen2.5-7B-Instruct |
+| `bon_mbpp / bon_mbppexem__Qwen2.5-7B` | 378 / 317 | 64 | Qwen2.5-7B-Instruct |
+| `bon_holdout / bon_holdoutrot__NousResearch/Meta-Llama-3.1-8B` | 110 | 64 | NousResearch mirror (the gated Meta repo was unavailable; recorded as a deviation) |
+
+The pools are built first by a task builder — `build_replication_pool.py`, `build_mace_tasks.py`,
+`build_synth_multiplicity.py`, `build_replrot_pool.py` and friends — which writes the
+`*_tasks.jsonl` manifest that `bon_generate.py` then samples against. `build_replication_pool.py`
+takes `--seed` (default 20260825) and `--out-prefix`, and the defaults reproduce the frozen pool
+byte-identically.
+
+---
+
+## 8. From generations to results
+
+Three stages. Stage 1 needs GPUs or paid API calls; stages 2 and 3 are free recomputation.
+
+```
+  task builder          bon_generate.py            judge                analysis producer
+  build_*_tasks.py  ->  runs/bon/bon_*.jsonl   ->  runs/bon_scores_*/   ->  papers/analysis/*.json
+                        (pool: 64 candidates        (per-item scores        (estimates + CIs)
+                         + oracle labels)            under each condition)
+                                                                          ->  make_figures.py
+                                                                              make_tables.py
+```
+
+**Stage 1 — judging.** Three judge runners, by judge type:
+
+```bash
+# open-weights judge, vLLM (needs a GPU)
+python scripts/bon_judge.py --pool runs/bon/bon_repl__meta-llama__Llama-3.1-8B-Instruct.jsonl \
+       --judge Qwen/Qwen2.5-7B-Instruct --cond ref --rep a --domain synthk --out runs/bon_scores_repl
+
+# exact scorer (expected score over the 0-10 token distribution) -- the registered P1 protocol
+python scripts/r4_judge_exact.py --pool runs/bon/bon_repl__…jsonl --name repl \
+       --judge Qwen/Qwen2.5-7B-Instruct --cond ref --domain synthk --out runs/r4/scores
+
+# panel-2 runner, open or API judges, with a hard spend cap
+python scripts/v4_run_judge.py --trials runs/v4_trials/trials_repl.jsonl \
+       --judge Qwen/Qwen2.5-7B-Instruct --rubric r10bare --method M0 --cap-usd 5
+```
+
+`--cond` selects the condition: `noref` (blind), `ref` (reference shown). Rotation is done by
+pointing at the rotated *pool*, not by a flag — `bon_replrot__*.jsonl` holds byte-identical
+candidates with a different `ref_answer`, which is what makes the comparison clean.
+
+Committed shell drivers chain a whole round on one GPU. `scripts/r4_chain_gpu7.sh` is the readable
+example — it pins `CUDA_VISIBLE_DEVICES`, sets `HF_HUB_OFFLINE=1`, and runs repl/replrot/kstrat/mace/math
+across `noref` and `ref`, logging to `logs/r4/`. Others: `bon_chain.sh`, `r25_run.sh`,
+`r26_run_api.sh`, `r24_run_{openai,anthropic}.sh`, `pipeline*.sh`.
+
+**Stage 2 — analysis.** From `experiments/tfa-vs-judge/` (see §4 for the CWD rule):
+
+```bash
+python ../../papers/analysis/replrot_analysis.py        # -> replrot_results.json (tab:rotation, fig1_rotation)
+python ../../papers/analysis/r4_analysis.py             # -> r4_results.json (registered P1)
+python ../../papers/analysis/panel2_mitigation_analysis.py --check   # -> panel2 grid, verified against the paper
+```
+
+**Stage 3 — assets.** `cd papers/D-iclr-v6 && python scripts/make_figures.py && python scripts/make_tables.py`.
+
+### Which stage-1 data you already have
+
+Anything in the `pools`, `p2-grading` (partly), `ext-appendix` and `controls` groups is committed,
+so stages 2 and 3 run from a clone. Everything in `p1-rotation` (`runs/r4`), `p3-acceptance`,
+`cost-graders`, `panel2` and `holdout` is archive-only — fetch it with
+`scripts/archive_runs.sh restore`, or from `/dfs` directly, before those producers will run.
+
+---
+
+## 9. QA scripts, and how to read them
 
 ```bash
 cd papers/D-iclr-v6
@@ -297,13 +477,15 @@ using `--force-baseline`, and commit the baseline alone.
 
 ---
 
-## 7. If you want this to be genuinely reproducible
+## 10. If you want this to be genuinely reproducible
 
 In rough order of value per unit effort:
 
-1. **Archive the untracked runs.** 1.17 GB, which is too big for git but fine for an OSF deposit,
-   Zenodo record, or git-lfs. Without this, the abstract's headline number (`runs/r4`) cannot be
-   checked by anyone but the author. This is the single highest-value fix.
+1. ~~**Archive the untracked runs.**~~ **Done 2026-09-25** — mirrored to
+   `skampere1:/dfs/scratch0/srivatsavad/jfe-archive` with checksums and an experiment index (§6).
+   That makes `runs/r4` and the rest reachable by anyone with cluster access. It does **not** make
+   them reachable by an external reviewer, so if the work is ever submitted or released, the same
+   1.17 GB still needs a public home — an OSF deposit, a Zenodo record, or git-lfs.
 2. **Write producers, or provenance notes, for the 34 orphan JSONs.** Several feed appendix tables.
    `panel2_mitigation_analysis.py` is a worked example of retrofitting one: the estimator was
    recovered from the run files and `--check` proves it reproduces all 50 printed cells.
@@ -317,7 +499,7 @@ In rough order of value per unit effort:
 
 ---
 
-## 8. Provenance notes worth keeping in mind
+## 11. Provenance notes worth keeping in mind
 
 Two findings from the 2026-09-25 audit that affect how the numbers should be read:
 
@@ -325,7 +507,9 @@ Two findings from the 2026-09-25 audit that affect how the numbers should be rea
   `reference_block()` is unconditional and appends, in *every* arm including `r10bare`: *"The
   following is one known-valid reference answer. It is not necessarily the only valid answer."* The
   caption calls that column "the bare rubric"; it already contains a multiplicity disclaimer, and
-  the paper does not disclose this anywhere.
+  the paper does not disclose this anywhere. The exact prompts as sent are stored alongside the
+  trials — `runs/v4_trials/PROMPT_C0.txt`, `PROMPT_C1_match.txt`, `PROMPT_C1_differ.txt` — and the
+  disclaimer is visible in the two reference-shown files.
 - **Consequently two numbers in the paper are protocol-conditional and look contradictory.** On the
   same 120 tasks and byte-identical candidate texts, the match-vs-differ swap for Qwen2.5-7B is
   **+5.11** under the `r4`/`bon` protocol (no disclaimer) and **+1.70** under v4 `r10bare`. For
