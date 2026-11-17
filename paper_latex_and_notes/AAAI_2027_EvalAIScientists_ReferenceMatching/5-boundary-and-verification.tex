@@ -1,0 +1,20 @@
+% !TEX root = 00_main_aaai_2027.tex
+% RQ3 and RQ4 (Boundary conditions, agentic extension, and endpoint verification limits).
+% Provenance: papers/analysis/free_baseline.json, papers/analysis/bit_vs_curve_paired.json, papers/analysis/completer_sweep.json, papers/analysis/within_correct_tost.json.
+\section{Aggregate Boundary and Endpoint Verification}
+\label{sec:boundary-verify}
+
+\paragraph{Prediction 3: When reference matching still ranks models.}
+Because the reference-predictability item effect is identical across models on each task, benchmark-level averaging cancels that shared nuisance and allows \tfa{} to rank models---but strictly within a bounded regime (Appendix~\ref{app:boundary}, Table~\ref{tab:map}).
+Across the four model families, cross-family ranking correlation falls monotonically with benchmark saturation from $\rho = +0.86 \; [+0.35, +1.00]$ on \textsc{Omni-MATH} (seven models) and $+0.60 \; [+0.17, +0.83]$ on \textsc{Putnam-AXIOM} down to $+0.35 \; [-0.15, +0.71]$ on \textsc{MATH-500}, $+0.21 \; [-0.29, +0.61]$ on full \textsc{MATH}, and $-0.25 \; [-0.71, +0.33]$ on \textsc{GSM8K} (under the repaired answer scorer; $-0.19 \; [-0.71, +0.41]$ on \textsc{GSM8K-Platinum}).
+Because pooled cross-family CIs are wide at $11$--$17$ models, the cleaner test is the within-family size-ladder count: all $12$ of $12$ family--benchmark ladders on hard math (\textsc{Putnam-AXIOM}, \textsc{Putnam-Variations}, \textsc{MATH-500}) are positive ($+0.50$ to $+1.00$), whereas $5$ of $12$ ladders invert on saturated sets (Phi on all three saturated sets and OLMo on both \textsc{GSM8K} variants), where shared capability leaves family style offsets to dominate.
+The same boundary extends preliminarily to repository coding agents: on \textsc{SWE-bench Verified}, diff-masked patch-\tfa{} orders the four Qwen2.5-Coder sizes cleanly ($\rho = +1.00$), yet carries zero cross-family signal across eight coder models ($\rho = 0.00$).
+
+\paragraph{Endpoint verification and what beats nothing cheap.}
+Verification signals avoid the reference-predictability confound by consuming only a checkable endpoint, and our class-level advance registration confirmed that every verification signal tracks human soundness where reference matching fails (Figure~\ref{fig:class}).
+Yet within the verification class, no tested machinery outperforms the zero-cost baseline.
+On the $60$-task anchor set, the extracted-answer check achieves $r = +0.92 \; [+0.78, +0.99]$ against blind soundness, whereas our strongest rollout verifier---the $32$-rollout completion curve---reaches $r = +0.79 \; [+0.61, +0.92]$ (Appendix~\ref{app:boundary}, Figure~\ref{fig:sweeps}).
+On paired items, the extracted-answer check beats the completion curve by $\Delta r = +0.13 \; [+0.05, +0.24]$; controlling for answer correctness reduces the completion curve's partial correlation with soundness to $-0.10 \; [-0.30, +0.22]$, while the extracted-answer check given the curve retains $+0.77 \; [+0.55, +0.95]$.
+Our pre-registered completer-strength prediction (\texttt{P-C1}), anticipating washout at $1.5$B and a mid-scale peak, was falsified: across Qwen2.5 $1.5$B--$32$B completers ($n{=}42$ tasks), curve-mean validity stays flat at $+0.78$--$+0.88$ ($+0.82$ with a cross-family \texttt{phi-4} completer) while within-correct correlations remain null ($+0.02$ to $+0.23$; Appendix~\ref{app:verification}).
+Equivalence bounds via two one-sided tests (TOST, $\alpha = 0.05$ on $n{=}48$ correct answers) exclude within-correct effects above $|r| \approx 0.43$ for \tfa{}, $0.41$ for completion at $k{=}0.75$, and $0.31$ for curve mean (and $0.37$ for the referenced LLM judge), leaving moderate effects below $\sim 0.4$ unresolved.
+The $9$-model answer-swap check carries weak directional signal (mean within-model $r = +0.13$, positive in $8/9$ models), confirming the mechanism taxonomy without providing a standalone grader.

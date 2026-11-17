@@ -1,0 +1,58 @@
+% !TEX root = 00_main_aaai_2027.tex
+% Setup and RQ1 (Prediction 1: per-task grading null).
+% Provenance: papers/analysis/canonical_validity.json, papers/analysis/strong_baselines.json, papers/analysis/code_sims.json.
+\section{Evaluation Setup and the Grading Null}
+\label{sec:setup-null}
+
+\paragraph{Models and benchmarks.}
+We evaluate seventeen instruction-tuned models from four base families (Qwen2.5 $0.5$B--$32$B plus Math, Phi-3/4, OLMo-2 $7$B--$32$B, and Mistral/Ministral/Mathstral) across eight benchmarks: \textsc{Omni-MATH}~\citep{gao2024omnimath}, \textsc{Putnam-AXIOM} and \textsc{Putnam-Variations}~\citep{gulati2025putnam}, \textsc{MATH-500} and full \textsc{MATH}~\citep{hendrycks2021math}, \textsc{GSM8K}~\citep{cobbe2021gsm8k}, \textsc{GSM8K-Platinum}, and \textsc{HumanEval}/\textsc{MBPP+}~\citep{chen2021codex,austin2021mbpp,liu2023evalplus}, plus patch-level \tfa{} over eight coder models on \textsc{SWE-bench Verified}.
+Each model generates greedy solutions and is separately teacher-forced on each benchmark's gold solution.
+None of the primary evaluators fit learned parameters on this dataset, so there is no training split; all model-level and task-level metrics are computed directly over fixed evaluation sets, and four stronger similarity baselines added in response to earlier review are explicitly labeled post hoc.
+
+\paragraph{Evaluators and ground truth.}
+We group signals into two classes (Table~\ref{tab:class}).
+\emph{Reference-matching metrics} span prediction-fit metrics that never read the candidate solution---\tfa{} (argmax token hit rate) and gold-token log-probability---and output-similarity metrics that compare candidate text to the reference---TF-IDF cosine, unigram-F1, and sentence-embedding cosine.
+\emph{Verification signals} use the reference only through a checkable endpoint: executed unit tests on code, the zero-cost \emph{extracted-answer check} on math, a Monte-Carlo \emph{completion curve} (truncating a candidate at $k \in \{0, 0.25, 0.50, 0.75\}$ and scoring the fraction of eight completions by Qwen2.5-14B-Instruct reaching the gold final answer~\citep{lightman2023verify,wang2024mathshepherd,luo2024omegaprm}), and an \emph{answer-swap check} (per-token log-probability margin favoring the candidate's answer over an alternative).
+To measure validity rather than mere judge reliability, we rely on executed unit tests on $492$ code solutions and blind human annotations on a uniformly random $60$-task \textsc{MATH-500} \emph{anchor set} graded $0$--$10$ on separated \emph{soundness} and \emph{style} scales (Appendix~\ref{app:rubric}).
+An external hypothesis-blind annotator regraded $n{=}30$ anchor tasks using identical instructions, achieving Pearson $r = 0.83 \; [0.44, 0.97]$ on soundness ($\rho = 0.46$, compressed by ties).
+We treat the extracted-answer check as the zero-cost baseline to beat ($r = +0.92$) and test beyond-correctness discrimination on the $n{=}48$ \emph{within-correct subset} ($n{=}32$ for log-probability).
+
+\begin{table}[t]
+\centering
+\caption{\textbf{No untrained reference-matching metric grades individual solutions: every text-matching signal sits in $[-0.33, +0.14]$ against blind human soundness, whereas the zero-cost extracted-answer check leads at $+0.92$.} Pearson $r$, Spearman $\rho$, within-correct $r$ ($n{=}48$, $n{=}32$ for logprob), and cross-family item variance share on the $60$-task anchor set ($n{=}42$ for logprob); Kendall $\tau_b$ was not saved in the canonical anchor artifact.
+Full $95\%$ CIs, hard/saturated ranking $\rho$, and post-hoc baselines appear in Appendix~\ref{app:verification}.}
+\label{tab:class}
+\scriptsize
+\setlength{\tabcolsep}{1.8pt}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Signal & $r$ & $\rho$ & Within-$r$ & Item \% \\
+\midrule
+Extracted-answer check & $\mathbf{+0.92}$ & --- & (const.) & --- \\
+Completion-curve mean & $+0.79$ & $+0.41$ & $+0.07$ & --- \\
+Completion curve $k{=}0.75$ & $+0.78$ & $+0.46$ & $+0.19$ & --- \\
+\midrule
+\tfa{} argmax & $-0.16$ & $-0.12$ & $+0.21$ & $83$--$92$ \\
+Gold-token logprob & $-0.27$ & $-0.18$ & $+0.15$ & $83$--$91$ \\
+TF-IDF cosine & $-0.08$ & $-0.09$ & $+0.16$ & $69$ \\
+Sentence embeddings & $+0.14$ & $+0.13$ & $-0.01$ & $\sim 70$ \\
+Unigram-F1 & $-0.33$ & $-0.29$ & $+0.06$ & $45$--$55$ \\
+\midrule
+E5 retrieval (post hoc) & $+0.02$ & --- & --- & --- \\
+DeBERTa NLI (post hoc) & $+0.05$ & --- & --- & --- \\
+Symbolic equiv.\ (post hoc) & $+0.59$ & --- & --- & --- \\
+\midrule
+LLM judge (referenced) & $+0.89$ & $+0.43$ & $-0.14$ & --- \\
+LLM critic (GPT) & $+0.91$ & $+0.61$ & $+0.17$ & --- \\
+LLM critic (Claude) & $+0.88$ & $+0.54$ & $+0.03$ & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Prediction 1: Per-task grading null on math and code.}
+No reference-matching metric in our primary battery grades individual solutions (Table~\ref{tab:class}).
+For \tfa{} and gold-token log-probability, this null is structural because neither reads the candidate solution.
+For output-similarity metrics that do read the candidate, the null is empirical: TF-IDF cosine ($r = -0.08 \; [-0.33, +0.18]$), sentence embeddings ($+0.14 \; [-0.08, +0.40]$), and unigram-F1 ($-0.33 \; [-0.58, -0.12]$, uncorrected across five metrics) fail to track human soundness.
+On $492$ executed code solutions, per-model \tfa{} correlation with passing unit tests is $0.00$ (within $[-0.04, +0.06]$ per model), while unigram-F1 ($+0.13 \; [+0.06, +0.21]$) and TF-IDF ($+0.17 \; [+0.10, +0.23]$) remain far below grading utility (sentence embeddings were not run on code).
+Post-hoc tests of stronger untrained matchers yield the same null: E5-base-v2 retrieval cosine reads $+0.02 \; [-0.15, +0.22]$, DeBERTa NLI entailment reads $+0.05 \; [-0.18, +0.25]$, and code abstract-syntax-tree (AST) similarity reads $+0.14 \; [+0.07, +0.21]$ on the $492$ code tasks.
+Only symbolic answer equivalence reaches $+0.59 \; [+0.41, +0.76]$, because it compares extracted final answers rather than full derivations, losing to the $r = +0.92$ extracted-answer check only on \texttt{sympy} parse failures.

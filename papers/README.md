@@ -9,7 +9,7 @@ Reviewers diff paper numbers against the JSONs to the digit — keep it that way
 | Folder | Paper | One-line thesis | Status |
 |---|---|---|---|
 | [`A-certificate/`](A-certificate/) | *Certify Before You Optimize* | A few dozen blind human labels, read through soundness/style partial correlations, predict which judges get gamed before any optimization runs. | Active draft |
-| [`B-reference-matching/`](B-reference-matching/) | *Grading the Answer Key, Not the Student* | Reference-similarity metrics measure the reference's predictability, not the solution; nothing tested beats the free answer-correct bit. | Active draft |
+| [`B-reference-matching/`](B-reference-matching/) | *Grading the Answer Key, Not the Student* | Reference-similarity metrics measure the reference's predictability, not the solution; nothing tested beats the free answer-correct bit. | Active draft ([4-page AAAI-27 workshop edition](../paper_latex_and_notes/AAAI_2027_EvalAIScientists_ReferenceMatching/README.md)) |
 | [`C-benchmark-bug-miner/`](C-benchmark-bug-miner/) | (parked) | Judged unpublishable in review round 3; kept for the record. | Parked |
 | [`D-reference-laws/`](D-reference-laws/) | *When the Answer Key Backfires* | On multi-valid-answer tasks a trusted reference **inflates** best-of-n scores (preregistered); anchoring is causal; blind-then-reveal fixes it. | Most mature — see its [README](D-reference-laws/README.md) for the full experiment runbook |
 

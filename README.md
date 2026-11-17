@@ -35,7 +35,7 @@ layer where every quoted number traces to a committed producer script. The index
 instructions, and house rules are in **[`papers/README.md`](papers/README.md)**:
 
 - **A — Certify Before You Optimize** ([`papers/A-certificate/`](papers/A-certificate/)): a few dozen blind human labels predict which judges get gamed before any optimization runs.
-- **B — Grading the Answer Key, Not the Student** ([`papers/B-reference-matching/`](papers/B-reference-matching/)): reference-similarity metrics measure the reference's predictability, not the solution.
+- **B — Grading the Answer Key, Not the Student** ([`papers/B-reference-matching/`](papers/B-reference-matching/); 4-page AAAI-27 workshop edition in [`paper_latex_and_notes/AAAI_2027_EvalAIScientists_ReferenceMatching/`](paper_latex_and_notes/AAAI_2027_EvalAIScientists_ReferenceMatching/)): reference-similarity metrics measure the reference's predictability, not the solution.
 - **D — When the Answer Key Backfires** ([`papers/D-reference-laws/`](papers/D-reference-laws/)): on multi-valid-answer tasks a trusted reference *inflates* best-of-n scores; blind-then-reveal fixes it. **Its [README](papers/D-reference-laws/README.md) is the full experiment runbook** — no-GPU reproduction of every number, cluster launch, and the registered next experiment ready to run.
 
 ## Artifacts

@@ -1,0 +1,72 @@
+% !TEX root = 00_main_arxiv.tex
+% Post-appendix Supplementary Material S1-S3 (compiled only into 00_main_arxiv.pdf via 00_main_arxiv.tex).
+% Zero disallowed commands (\clearpage/\newpage omitted); zero forward \ref calls from body/core appendices.
+% Anonymized; provenance: papers/B-reference-matching/sections/07_appendix.tex and papers/analysis/*.json.
+
+\setcounter{section}{0}
+\renewcommand{\thesection}{S\arabic{section}}
+\setcounter{table}{0}
+\renewcommand{\thetable}{S\arabic{table}}
+\setcounter{figure}{0}
+\renewcommand{\thefigure}{S\arabic{figure}}
+
+\section*{Supplementary Material: Full Model Grid, Subset Enumeration, and Master Number Ledger}
+
+\section{Model Grid and Per-Benchmark Task Counts}
+\label{sec:supp-grid}
+
+\paragraph{Seventeen instruction-tuned models across four families.}
+The main evaluation grid comprises instruction-tuned checkpoints across four model families: (1) \textbf{Qwen}: Qwen2.5-0.5B, Qwen2.5-1.5B, Qwen2.5-3B, Qwen2.5-7B, Qwen2.5-14B, Qwen2.5-32B, and Qwen2.5-Math-7B; (2) \textbf{Phi}: Phi-3-medium, Phi-3.5-mini, and phi-4; (3) \textbf{OLMo}: OLMo-2-7B, OLMo-2-13B, and OLMo-2-32B; (4) \textbf{Mistral}: Mistral-7B-v0.3, Ministral-8B, Mistral-Small, and Mathstral-7B.
+DeepSeek-Math-7B-Instruct appears in the twelve-model per-token sweep subset outside the seventeen-model boundary map.
+\textsc{SWE-bench Verified} evaluates a separate eight-model grid of repository coding models, including the four-model Qwen2.5-Coder size ladder ($1.5$B, $7$B, $14$B, $32$B).
+
+\paragraph{Scored versus shipped task counts.}
+Evaluated task counts per benchmark are: \textsc{MATH-500}, $500$ tasks ($6{,}000$ model--task pairs across the twelve per-token models; $60$-task blind human anchor set; $20$-task earlier shared block); executed code oracle, $492$ freshly generated \textsc{HumanEval}/\textsc{MBPP+} solutions; full \textsc{MATH}, $600$ scored tasks ($5{,}000$ shipped); \textsc{GSM8K}, $500$ scored ($1{,}319$ shipped); \textsc{GSM8K-Platinum}, $500$ scored ($1{,}209$ shipped); \textsc{Putnam-AXIOM}, $236$ scored ($522$ shipped); \textsc{Putnam-Variations}, $265$ scored; \textsc{Omni-MATH}, $500$ scored in the seven-model Qwen sweep ($\sim 4{,}400$ shipped); and \textsc{SWE-bench Verified}, $500$ tasks.
+
+\section{Analysis Subsets and Master Deferred Ledger}
+\label{sec:supp-subsets}
+
+\paragraph{Subset enumerations.}
+The twelve-model per-token hit-vector subset used for position-weighting and reference interventions contains: Qwen2.5-1.5B-Instruct, Qwen2.5-7B-Instruct, Qwen2.5-14B-Instruct, Qwen2.5-Math-7B-Instruct, OLMo-2-7B-Instruct, OLMo-2-32B-Instruct, Phi-3-medium-4k-instruct, Phi-3.5-mini-instruct, DeepSeek-Math-7B-Instruct, Mathstral-7B, Ministral-8B-Instruct, and Mistral-Small-Instruct.
+The nine-model answer-swap subset comprises the models with saved local solution traces: Qwen2.5-1.5B-Instruct, Qwen2.5-7B-Instruct, Qwen2.5-14B-Instruct, OLMo-2-7B-Instruct, OLMo-2-32B-Instruct, Phi-3-medium-4k-instruct, Phi-3.5-mini-instruct, Ministral-8B-Instruct, and Mistral-Small-Instruct.
+
+\begin{table*}[t]
+\centering
+\caption{\textbf{Master deferred number ledger backing every prose estimate.} All confidence intervals are $95\%$ bootstrap intervals unless explicitly noted as Fisher-$z$ or TOST.}
+\label{tab:supp-deferred}
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Quantity & Measured value \\
+\midrule
+\multicolumn{2}{l}{\emph{Completion curve \& free baseline ($n{=}60$ anchor set)}} \\
+\quad Pearson at $k = 0, 0.25, 0.50, 0.75$ & $+0.54$, $+0.68$, $+0.76$, $+0.78$ \\
+\quad Spearman at $k = 0, 0.25, 0.50, 0.75$ & $+0.47$, $+0.32$, $+0.48$, $+0.46$ \\
+\quad Curve mean Pearson; Spearman & $+0.79$ $[+0.61, +0.92]$; $+0.41$ \\
+\quad Difficulty partial (given $k{=}0$) & $+0.69$ \\
+\quad Paired $\Delta r$, check minus curve & $+0.13$ $[+0.05, +0.24]$ \\
+\quad Curve partial given answer check & $-0.10$ $[-0.30, +0.22]$ \\
+\quad Answer check partial given curve & $+0.77$ $[+0.55, +0.95]$ \\
+\midrule
+\multicolumn{2}{l}{\emph{Reference interventions (\textsc{MATH-500})}} \\
+\quad Answer-line $17$-model contrast & $+0.35 \to +0.02$; $\Delta = +0.33$ $[-0.16, +0.81]$ \\
+\quad Answer-line $12$-model item paired & $+0.14 \to -0.10$; $\Delta = +0.24$ $[+0.12, +0.33]$ \\
+\quad \texttt{P-L1} padded $17$-model $\rho$; mean \tfa{} & $-0.11$ $[-0.57, +0.35]$; $0.464$ \\
+\quad \texttt{P-L1} $12$-model item paired & $+0.14 \to -0.27$; $\Delta = +0.41$ $[+0.35, +0.46]$ \\
+\midrule
+\multicolumn{2}{l}{\emph{Repairs, answer swap, and executed code ($n{=}492$)}} \\
+\quad Entropy-norm.\ \tfa{} (raw; partial) & $-0.11$; $+0.09$ \\
+\quad Position sweep ($\gamma{=}1$; last-$4$) & $+0.15$; $-0.37$ \\
+\quad Answer-swap check ($8/9$ positive) & mean $+0.13$; best $+0.34$ \\
+\quad Code \tfa{} vs.\ pass (per model) & $0.00$ ($[-0.04, +0.06]$) \\
+\quad Code unigram-F1; TF-IDF; AST & $+0.134$ $[+0.055, +0.208]$; $+0.166$ $[+0.098, +0.230]$; $+0.143$ $[+0.070, +0.210]$ \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\section{Reproducibility and Anonymized Artifact Notes}
+\label{sec:supp-repro}
+
+Every anchor-set correlation and interval traces directly to a canonical analysis script (\texttt{canonical\_validity.py}), while code similarity metrics, completer sweeps, variance-decomposition shares, and reference-intervention deltas trace to standalone deterministic analysis scripts in the anonymized supplementary archive.
+Pre-registered predictions carry repository commit timestamps and third-party Open Science Framework timestamps (links withheld for double-blind review).

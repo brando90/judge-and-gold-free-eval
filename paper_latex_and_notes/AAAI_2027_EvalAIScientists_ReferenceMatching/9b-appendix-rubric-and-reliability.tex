@@ -1,0 +1,44 @@
+% !TEX root = 00_main_aaai_2027.tex
+% Core Appendix C: Blind grading rubric, two-rater reliability breakdown, and statistical methodology notes.
+% Provenance: papers/analysis/interrater.json, papers/B-reference-matching/sections/07_appendix.tex.
+\section{Blind Human Rubric, Reliability, and Statistical Notes}
+\label{app:rubric}
+
+\paragraph{Blind human annotation rubric and randomization.}
+All sixty solutions in the \textsc{MATH-500} anchor set were sampled uniformly at random from the seventeen-model greedy outputs and stripped of model identifiers, metric scores, and automated correctness tags.
+Tasks were displayed in randomized order on a dual-scale web annotation form asking for independent $0$--$10$ ratings on two separated axes:
+\begin{itemize}
+\item \emph{Reasoning soundness} (ignore writing polish): ``2 = major logical error or unjustified leap; 5 = partly justified, real gaps; 8 = fully valid, at most minor slips.''
+\item \emph{Writing style} (ignore correctness): ``2 = confusing or rambling; 5 = readable; 8 = clear and well-structured.''
+\end{itemize}
+Annotators also recorded two binary flags per trace: whether the final answer was correct and whether the final answer was correct despite unsound reasoning (lucky-correct).
+
+\paragraph{Two-rater reliability and ceiling caveats.}
+Cross-rater reliability was measured on two samples (Table~\ref{tab:reliability}).
+First, a hypothesis-blind annotator outside the author list independently regraded a random $n{=}30$ subset of the sixty-task anchor set under the identical blinded rubric, yielding soundness Pearson $r = 0.83 \; [0.44, 0.97]$ ($\rho = 0.46$, compressed by ties at score $9$--$10$) and style Pearson $r = 0.48 \; [0.14, 0.71]$ ($\rho = 0.39$), implying single-rater ceilings of $\sqrt{0.83} = 0.91$ for soundness and $\sqrt{0.48} = 0.69$ for style.
+Second, an earlier shared $n{=}20$ block evaluated overall quality and clarity across two raters at $r = 0.80$ ($\rho = 0.70$, implied ceiling $0.89$) and $r = 0.52$ on clarity.
+Because both sample sizes are small and four verified signals ($+0.88$ to $+0.92$) exceed $0.80$ on the full anchor set, implied ceiling lines in Figure~\ref{fig:class} are treated strictly as indicative reference marks rather than tight upper bounds.
+
+\begin{table}[t]
+\centering
+\caption{\textbf{Hypothesis-blind non-author replication agrees with primary soundness labels at $r = 0.83 \; [0.44, 0.97]$ ($n{=}30$).} Soundness and style agreement across the same-rubric external regrade and the earlier $n{=}20$ shared block.}
+\label{tab:reliability}
+\scriptsize
+\setlength{\tabcolsep}{2.2pt}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Sample & $n$ & Sound.\ $r$ [$95\%$ CI] & Style $r$ [$95\%$ CI] & Ceilings \\
+\midrule
+External & $30$ & $0.83$ $[0.44, 0.97]$ & $0.48$ $[0.14, 0.71]$ & $0.91$/$0.69$ \\
+Shared block & $20$ & $0.80$ ($\rho{=}0.70$) & $0.52$ & $0.89$/--- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Multiplicity, seeds, and missing-statistic disclosure.}
+This paper designates three primary endpoints: the per-task reference-matching null (Section~\ref{sec:setup-null}), the cross-family item-variance decomposition (Section~\ref{sec:mechanism}), and the hard-versus-saturated family-ladder counts (Section~\ref{sec:boundary-verify}).
+All secondary contrasts---including individual ladder entries, intervention deltas, single-metric CIs inside the five-metric battery, and post-hoc baseline tests---are reported without multiplicity correction.
+Confidence intervals in \texttt{canonical\_validity.json} use $2{,}000$ task resamples with fixed NumPy seed $0$; code similarity intervals use $4{,}000$ resamples over the $492$ \texttt{(model, task)} pairs; within-correct Fisher-$z$ and TOST bounds use $4{,}000$ resamples.
+Where two seeded runs of the same bootstrap on identical $42$ traces differ in the second decimal place (e.g., \texttt{phi-4} upper CI $0.91$ in full-set reporting vs.\ $0.92$ in matched-set reporting), each table explicitly records its run.
+Kendall's $\tau_b$ was not saved in the canonical anchor-set artifact (\texttt{canonical\_validity.json}) and is therefore marked unmeasured rather than extrapolated; all $p$-values for interval-only estimates are marked \texttt{p-val=n/a} except the prespecified TOST equivalence tests ($\alpha = 0.05$).
+The LLM judges' style partial correlations on the anchor set are negative ($-0.22$ referenced judge, $-0.10$ GPT critic, $-0.11$ Claude critic), confirming that the expensive reference points track reasoning soundness rather than style on these items.

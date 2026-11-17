@@ -225,6 +225,7 @@ experiments/tfa-vs-judge/.venv/
 .DS_Store
 **/.DS_Store
 texput.log
+**/paper_latex_and_notes/**/_build/
 experiments/tfa-vs-judge/runs/v4_pool/
 experiments/tfa-vs-judge/vendor/mathconstruct/
 experiments/tfa-vs-judge/vendor/math-constraint/

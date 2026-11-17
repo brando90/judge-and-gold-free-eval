@@ -1,0 +1,90 @@
+% !TEX root = 00_main_aaai_2027.tex
+% Core Appendix B: Full 95% CIs, post-hoc stronger baselines, completer sweeps (P-C1 + phi-4), TOST bounds, and prediction ledger.
+% Provenance: papers/analysis/canonical_validity.json, strong_baselines.json, completer_sweep.json, pv_completer.json, within_correct_tost.json, within_correct_cis.json.
+\section{Verification Signals, Stronger Baselines, and Prediction Ledger}
+\label{app:verification}
+
+This appendix provides complete $95\%$ bootstrap confidence intervals for Table~\ref{tab:class} (Table~\ref{tab:citwin}), the four post-hoc stronger similarity baselines, the pre-registered completer-size sweep (\texttt{P-C1}) and cross-family \texttt{phi-4} replication (Table~\ref{tab:completer}), TOST equivalence bounds, and the pre-registered prediction ledger (Table~\ref{tab:ledger}).
+
+\begin{table*}[t]
+\centering
+\caption{\textbf{Complete $95\%$ confidence intervals confirm that every untrained reference-matching metric straddles zero or trends negative against human soundness, while the extracted-answer check outperforms completion curves.} Bootstrap $95\%$ CIs ($2{,}000$ task resamples, seed $0$) on the $60$-task \textsc{MATH-500} anchor set ($n{=}42$ for gold-token logprob; within-correct $n{=}48$, $n{=}32$ for logprob); \texttt{p-val=n/a} except TOST bounds below.
+The referenced judge row reports the $95\%$ Fisher-$z$ interval ($[-0.41, +0.15]$) for within-correct $r$ because score concentration degenerated $535$ of $4{,}000$ bootstrap draws.}
+\label{tab:citwin}
+\scriptsize
+\setlength{\tabcolsep}{2.4pt}
+\begin{tabular}{@{}llccccc@{}}
+\toprule
+Signal & Mechanism & $r$ vs.\ soundness [$95\%$ CI] & $\rho$ & Within-corr.\ $r$ [$95\%$ CI] & Hard / sat.\ $\rho$ & Item / fam.\ / resid.\ \% \\
+\midrule
+Extracted-answer check & Verification (endpoint) & $\mathbf{+0.92}$ $[+0.78, +0.99]$ & --- & (constant) & --- & --- \\
+\midrule
+Completion curve ($k{=}0$) & Difficulty probe & $+0.54$ $[+0.24, +0.77]$ & $+0.47$ & $+0.03$ & --- & --- \\
+Completion curve ($k{=}0.25$) & Verification & $+0.68$ $[+0.48, +0.85]$ & $+0.32$ & $-0.02$ & --- & --- \\
+Completion curve ($k{=}0.50$) & Verification & $+0.76$ $[+0.56, +0.91]$ & $+0.48$ & $+0.02$ & --- & --- \\
+Completion curve ($k{=}0.75$) & Verification & $+0.78$ $[+0.60, +0.91]$ & $+0.46$ & $+0.19$ $[-0.19, +0.56]$ & --- & --- \\
+Completion-curve mean & Verification & $+0.79$ $[+0.61, +0.92]$ & $+0.41$ & $+0.07$ $[-0.22, +0.34]$ & --- & --- \\
+\midrule
+\tfa{} (argmax) & Prediction fit & $-0.16$ $[-0.46, +0.13]$ & $-0.12$ & $+0.21$ $[-0.09, +0.48]$ & $+0.60$ / $-0.25$ & $83$--$92$ / $3$--$7$ / $5$--$11$ \\
+Gold-token logprob & Prediction fit & $-0.27$ $[-0.54, +0.04]$ & $-0.18$ & $+0.15$ & $+0.43$ / $-0.23$ & $83$--$91$ / $7$--$11$ / $1$--$6$ \\
+TF-IDF cosine & Weighted similarity & $-0.08$ $[-0.33, +0.18]$ & $-0.09$ & $+0.16$ & $+0.72$ / $+0.12$ & $69$ / $8$ / $23$ \\
+Sentence embeddings & Semantic similarity & $+0.14$ $[-0.08, +0.40]$ & $+0.13$ & $-0.01$ & $+0.87$ / $+0.29$ & $\sim 70$ / $8$ / $21$ \\
+Unigram-F1 & Token overlap & $-0.33$ $[-0.58, -0.12]$ & $-0.29$ & $+0.06$ & $-0.49$ / $+0.18$ & $45$--$55$ / $12$--$15$ / $32$--$41$ \\
+\midrule
+LLM judge (referenced) & Frontier judge & $+0.89$ $[+0.76, +0.97]$ & $+0.43$ & $-0.14$ $[-0.41, +0.15]$ & --- & --- \\
+LLM critic (GPT) & Frontier critic & $+0.91$ $[+0.77, +0.98]$ & $+0.61$ & $+0.17$ & --- & --- \\
+LLM critic (Claude) & Frontier critic & $+0.88$ $[+0.74, +0.97]$ & $+0.54$ & $+0.03$ & --- & --- \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\paragraph{Post-hoc stronger similarity baselines and code tests.}
+In response to earlier review, we evaluated four stronger baselines post hoc (unregistered, exploratory): (1) \emph{E5-base-v2 retrieval cosine} between candidate trace and gold reference on the $60$-task anchor set ($r = +0.02 \; [-0.15, +0.22]$); (2) \emph{DeBERTa-v3 NLI entailment probability} that the gold reference follows from the candidate on the same $60$ tasks ($r = +0.05 \; [-0.18, +0.25]$); (3) \emph{Code AST sequence similarity} against canonical solutions on $492$ executed \textsc{HumanEval}/\textsc{MBPP+} outputs ($r = +0.143 \; [+0.070, +0.210]$ versus $+0.134 \; [+0.055, +0.208]$ for unigram-F1 and $+0.166 \; [+0.098, +0.230]$ for TF-IDF, all $4{,}000$ bootstrap resamples); and (4) \emph{Symbolic final-answer equivalence} via \texttt{sympy} with string fallback ($r = +0.59 \; [+0.41, +0.76]$), which reads only extracted answers and falls below the $+0.92$ extracted-answer check solely on parse failures.
+Unigram-F1's $-0.49$ hard-benchmark inversion in Table~\ref{tab:citwin} is a length confound that reduces to $-0.07$ when output length is controlled.
+
+\paragraph{Completer sweep (\texttt{P-C1}), cross-family replication, and TOST bounds.}
+Table~\ref{tab:completer} details the completer-strength sweep across Qwen2.5 $1.5$B--$32$B ($n{=}42$ tasks covered by per-trace completion pairs, $n{=}32$ within-correct) and the \texttt{phi-4} replication.
+Although completer base solve rates climb from $0.49$ ($1.5$B) to $0.83$ ($32$B), curve-mean soundness correlation remains flat ($+0.78$ to $+0.88$) and within-correct correlation stays null ($+0.02$ to $+0.23$; a $7$B value of $+0.23$ at $n{=}32$ carries Fisher half-width $\pm 0.35$).
+The \texttt{phi-4} completer excludes the $18$ \texttt{phi-4}-generated anchor traces deterministically, leaving zero same-family traces ($r = +0.82 \; [+0.68, +0.91]$ full-set interval, $[+0.68, +0.92]$ matched-set run; Qwen2.5-14B on the same $42$ Qwen-generated traces reads $+0.89 \; [+0.76, +0.97]$; mean process value on excluded traces is $0.776$ vs.\ $0.725$ on matched traces, ruling out selective omission of hard items).
+Controlling for $k{=}0$ problem difficulty leaves a partial correlation of $+0.69$ for curve mean, yet controlling for final-answer correctness drops the curve mean to $-0.10 \; [-0.30, +0.22]$ while the extracted-answer check retains $+0.77 \; [+0.55, +0.95]$ ($n{=}60$).
+Two one-sided equivalence tests (TOST, $\alpha{=}0.05$, $90\%$ Fisher-$z$ bounds at $n{=}48$) give $[-0.03, +0.43]$ for \tfa{} (largest unexcluded $|r| = 0.43$), $[-0.05, +0.41]$ for $k{=}0.75$ ($0.41$), $[-0.17, +0.31]$ for curve mean ($0.31$), and $[-0.37, +0.10]$ for the referenced LLM judge ($0.37$).
+
+\begin{table}[t]
+\centering
+\caption{\textbf{Completion-curve validity is invariant across a twenty-fold completer scale range ($+0.78$--$+0.88$) and across model families (\texttt{phi-4} $+0.82$), falsifying \texttt{P-C1} while confirming correctness mediation.} Pearson $r$ vs.\ human soundness ($95\%$ bootstrap CI), within-correct $r$, and completer base solve rate on \textsc{MATH-500} anchor subsets.}
+\label{tab:completer}
+\scriptsize
+\setlength{\tabcolsep}{1.8pt}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Completer & $n$ ($n_{\text{corr}}$) & Curve mean $r$ [$95\%$ CI] & Within & Base \\
+\midrule
+Qwen2.5-1.5B & $42$ ($32$) & $+0.78$ $[+0.63, +0.89]$ & $+0.06$ & $0.49$ \\
+Qwen2.5-3B & $42$ ($32$) & $+0.80$ $[+0.64, +0.91]$ & $+0.12$ & $0.67$ \\
+Qwen2.5-7B & $42$ ($32$) & $+0.88$ $[+0.73, +0.96]$ & $+0.23$ & $0.75$ \\
+Qwen2.5-14B & $60$ ($48$) & $+0.79$ $[+0.60, +0.92]$ & $+0.07$ & $0.80$ \\
+Qwen2.5-32B & $42$ ($32$) & $+0.87$ $[+0.73, +0.96]$ & $+0.02$ & $0.83$ \\
+\texttt{phi-4} (zero fam.) & $42$ ($32$) & $+0.82$ $[+0.68, +0.91]$ & $+0.02$ & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[t]
+\centering
+\caption{\textbf{Pre-registered prediction ledger: four of six pre-committed predictions landed as called, alongside one sign flip and one informative falsification.} All six directional predictions were committed to the project repository prior to generating the corresponding evaluation data.}
+\label{tab:ledger}
+\scriptsize
+\setlength{\tabcolsep}{1.6pt}
+\begin{tabular}{@{}lllc@{}}
+\toprule
+Prediction & Registered call & Measured outcome & Verdict \\
+\midrule
+Pos.-wt.\ \tfa{} & Null & $+0.13 \to -0.37$ & Miss (flip) \\
+Entropy \tfa{} & Null & $+0.13 \to -0.17$ & Hit \\
+Answer swap & Pos.\ signal & $8/9$ models ($+0.13$) & Hit \\
+Comp.\ curve & Pos.\ signal & $+0.79$ $[+0.61,+0.92]$ & Hit \\
+Sweep \texttt{P-C1} & Mid peak; $1.5$B null & Flat $+0.78$--$+0.88$ & Falsified \\
+Ctrl.\ \texttt{P-L1} & Remains collapsed & $+0.41$ $[+0.35,+0.46]$ & Hit \\
+\bottomrule
+\end{tabular}
+\end{table}

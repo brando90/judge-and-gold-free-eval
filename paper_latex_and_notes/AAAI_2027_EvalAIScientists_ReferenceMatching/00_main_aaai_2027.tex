@@ -1,0 +1,54 @@
+\documentclass[letterpaper]{article} % DO NOT CHANGE THIS
+\usepackage[submission]{aaai2027}  % DO NOT CHANGE THIS
+\usepackage[hyphens]{url}  % DO NOT CHANGE THIS
+\usepackage{graphicx} % DO NOT CHANGE THIS
+\urlstyle{rm} % DO NOT CHANGE THIS
+\def\UrlFont{\rm}  % DO NOT CHANGE THIS
+\usepackage{natbib}  % DO NOT CHANGE THIS AND DO NOT ADD ANY OPTIONS TO IT
+\usepackage{caption} % DO NOT CHANGE THIS AND DO NOT ADD ANY OPTIONS TO IT
+\frenchspacing  % DO NOT CHANGE THIS
+\usepackage{booktabs}
+\usepackage{amsmath,amssymb}
+\pdfinfo{
+/TemplateVersion (2027.1)
+}
+\setcounter{secnumdepth}{1}
+\input{math_commands}
+
+\newif\ifsupplementary
+\ifdefined\withsupplementary
+  \supplementarytrue
+\else
+  \supplementaryfalse
+\fi
+
+\title{Grading the Answer Key, Not the Student:\\
+Reference-Matching Metrics Measure Reference Predictability,\\
+Not Solution Soundness}
+\author{Anonymous Submission}
+\affiliations{}
+
+\begin{document}
+
+\maketitle
+
+\input{1-abstract}
+\input{2-introduction}
+\input{3-setup-and-grading-null}
+\input{4-variance-mechanism}
+\input{5-boundary-and-verification}
+\input{6-discussion-and-conclusion}
+
+\bibliography{00_main}
+
+\FloatBarrier
+\appendix
+\setcounter{secnumdepth}{2}
+\input{8-appendix-boundary-and-interventions}
+\input{9-appendix-verification-and-baselines}
+\input{9b-appendix-rubric-and-reliability}
+\ifsupplementary
+\input{10-supplementary}
+\fi
+
+\end{document}

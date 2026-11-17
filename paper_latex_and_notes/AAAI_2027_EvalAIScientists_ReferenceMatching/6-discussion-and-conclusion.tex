@@ -1,0 +1,20 @@
+% !TEX root = 00_main_aaai_2027.tex
+% Practical metrology rules, limitations, related work, and conclusion (must end cleanly on Page 4).
+\section{Metrology Rules, Limitations, and Conclusion}
+\label{sec:discussion}
+
+\paragraph{Three rules for evaluation metrology.}
+First, \textbf{verify the checkable endpoint before deploying a costlier signal}: wherever final answers or unit tests exist, checking them achieves $r = +0.92$ (or exact behavioral truth on code), and neither untrained text matching nor $32$-rollout completion adds measurable discrimination beyond it on our anchor set.
+Completion curves remain an untested candidate solely where no endpoint is extractable, such as free-form scientific proofs.
+Second, \textbf{never deploy an untrained reference-matching metric as a per-task grader, filter, or reinforcement-learning reward}: text-matching metrics inherit the $83$--$92\%$ reference-predictability share and fail on both math and executed code.
+Third, \textbf{check reference perplexity before trusting aggregate \tfa{} rankings}: compute mean gold bits-per-character in one forward pass, reject saturated sets or short answer-line keys, and publish reference perplexity alongside accuracy so readers can verify that references carry diagnostic information.
+
+\paragraph{Related work and scope limitations.}
+Our study characterizes \tfa{}~\citep{gulati2025putnam} relative to compression-based scaling laws~\citep{huang2024compression,schaeffer2025pretraining,koh2025rbridge}, text-matching critiques~\citep{yuan2021bartscore,freitag2020bleu,fomicheva2016reference}, LLM-judge style biases~\citep{wu2023style,dubois2024length,singhal2023long}, and rollout process verifiers~\citep{lightman2023verify,wang2024mathshepherd,luo2024omegaprm}.
+Important limitations bound our negative map: our human anchor covers $n{=}60$ \textsc{MATH-500} tasks graded primarily by one author (with $n{=}30$ external hypothesis-blind replication), leaving within-correct effects below $|r| \approx 0.4$ statistically unresolved; variance shares use one fixed-effects estimator; the \textsc{SWE-bench Verified} coder ladder spans four models; and task-trained semantic similarity models or at-scale LLM semantic judges remain untested.
+
+\paragraph{Conclusion.}
+Reference-based evaluation is governed by mechanism, not by a smooth cost-versus-quality tradeoff.
+Untrained reference-matching metrics grade the answer key---$83$--$92\%$ shared cross-family item predictability---and rank models only in aggregate when references are information-dense and benchmarks remain unsaturated.
+Signals that verify checkable endpoints avoid this nuisance completely, yet on extractable tasks nothing tested outperforms the zero-cost extracted-answer check.
+Overall, four of six pre-registered directional predictions held as specified while one sign flip and one falsification corroborated the same reference-predictability mechanism, urging benchmark builders in autonomous science to replace text resemblance with verifiable endpoints and pre-reported reference perplexity.

@@ -1,0 +1,18 @@
+% !TEX root = 00_main_aaai_2027.tex
+% CS197 move 1..6 comments record section architecture; provenance cites anonymized canonical analysis files.
+\begin{abstract}
+% CS197 move 1: problem motivation (failure mode) -- automated grading of scientific and mathematical reasoning relies on gold references.
+Evaluating scientific and mathematical reasoning at scale often pairs a benchmark's worked gold reference with a cheap reference-matching metric instead of paying a frontier large language model (LLM) judge or a human expert.
+% CS197 move 2: assumption (setup bit) -- reference similarity degrades gracefully along a single cost-versus-quality spectrum.
+This practice assumes that reference-matching metrics approximate human grading quality with added noise along a single cost-versus-quality spectrum.
+% CS197 move 3: contribution (bit flip) -- mechanism replaces cost; matching measures reference predictability rather than candidate soundness.
+We show across seventeen instruction-tuned models from four families on eight math and code benchmarks plus an agentic repository setting that untested reference-matching metrics measure how predictable the reference text is rather than whether a candidate solution is sound.
+% CS197 move 4: instantiation (bit flip instantiation) -- contrast five primary and four post-hoc matching signals against endpoint verification on blind human grades and executed tests.
+Anchored to sixty blind human-graded \textsc{MATH-500} solutions (with an external hypothesis-blind second rater agreeing at Pearson $r = 0.83$) and $492$ executed code solutions, we separate reference-matching metrics from endpoint verification signals via cross-family variance decomposition and causal reference interventions.
+% CS197 move 5a: evaluation (per-solution null & mechanism) -- provenance: papers/analysis/canonical_validity.json, papers/analysis/decomp_cis.json, papers/analysis/strong_baselines.json.
+Every untrained text-matching metric we tested, from teacher-forced accuracy (\tfa) and token log-probability to retrieval embeddings and entailment, sits in $[-0.33, +0.14]$ against human reasoning soundness ($0.00$ to $+0.17$ against executed code tests), because $83$--$92\%$ of \tfa{} per-solution variance is a cross-family item effect reflecting reference perplexity ($r = -0.895$).
+% CS197 move 5b: evaluation (boundary & endpoint baseline) -- provenance: papers/analysis/free_baseline.json, papers/analysis/bit_vs_curve_paired.json, papers/analysis/padref_delta_itemlevel.json.
+Averaging cancels this shared item effect so \tfa{} ranks models on hard olympiad sets (cross-family $\rho = +0.86$), yet collapses under length-matched boilerplate controls (paired item-bootstrap $\Delta\rho = +0.41 \; [+0.35, +0.46]$) and inverts on saturated sets, while an extracted-answer check achieves $r = +0.92 \; [+0.78, +0.99]$ and outperforms a thirty-two-rollout completion curve ($\Delta r = +0.13 \; [+0.05, +0.24]$).
+% CS197 move 6: implication (north star) -- shift automated evaluation from text matching to endpoint verification and reference-perplexity auditing.
+Benchmark evaluation should treat gold references as checkable endpoints for verifiers rather than similarity targets for untrained scorers, and leaderboards using \tfa{} should report reference perplexity alongside accuracy.
+\end{abstract}

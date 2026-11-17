@@ -1,0 +1,40 @@
+% !TEX root = 00_main_aaai_2027.tex
+% RQ2 (Prediction 2: reference-predictability variance mechanism and causal interventions).
+% Provenance: papers/analysis/decomp_cis.json, papers/analysis/answerline_delta_itemlevel.json, papers/analysis/padref_delta_itemlevel.json.
+\section{Why Matching Fails: Variance Belongs to the Reference}
+\label{sec:mechanism}
+
+\paragraph{Prediction 2: Cross-family variance decomposition.}
+Decomposing model-centered \tfa{} scores across $11$--$15$ models from four families reveals that $83$--$92\%$ of per-solution variance is an identical \emph{item effect} across families (Table~\ref{tab:decomp}).
+The item effect is estimated as the unweighted cross-family mean of model-centered \tfa{} scores, with $95\%$ item-bootstrap confidence intervals (widths $0.03$--$0.04$) and leave-one-model-out jackknife ranges.
+Deleting any single model shifts the item share by at most $0.055$ (\textsc{GSM8K} $0.800$--$0.883$; \textsc{MATH-500} $0.887$--$0.913$), establishing that the component is a property of the benchmark reference rather than any single model family.
+While difficulty and reference compressibility are entangled inside this item component, removing model and item effects leaves only $5$--$11\%$ residual variance per solution, and nothing in our data links that residual to solution soundness.
+An additional $3$--$7\%$ belongs to family-specific style, growing more than twofold from \textsc{Putnam-AXIOM} ($2.9\%$) to \textsc{GSM8K} ($7.2\%$).
+The same decomposition structure holds on executed code ($78\%$ item, $8\%$ family, $14\%$ residual) and in similarity metrics ($69\%$ TF-IDF, $\sim 70\%$ embeddings, $45$--$55\%$ unigram-F1).
+As a pooled corollary across $6{,}000$ model--task pairs on \textsc{MATH-500}, \tfa{} correlates with reference bits-per-character at $r = -0.895$ ($80\%$ of pooled variance; Appendix~\ref{app:boundary}, Figure~\ref{fig:mechanism}).
+
+\begin{table}[t]
+\centering
+\caption{\textbf{Between $83\%$ and $92\%$ of per-solution \tfa{} variance beyond model level is an item effect shared across four model families.} Fixed-effects sum-of-squares shares with $95\%$ item-bootstrap CIs and leave-one-model-out jackknife ranges; $p$-values are not applicable (\texttt{p-val=n/a}; interval estimation).}
+\label{tab:decomp}
+\scriptsize
+\setlength{\tabcolsep}{2.5pt}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Benchmark (grid) & Item share [$95\%$ CI] & Jackknife & Fam.\ style \\
+\midrule
+\textsc{MATH-500} ($15{\times}500$) & $0.896$ $[0.881, 0.910]$ & $0.887$--$0.913$ & --- \\
+Full \textsc{MATH} ($14{\times}600$) & $0.828$ $[0.811, 0.845]$ & $0.818$--$0.846$ & $6.5\%$ \\
+\textsc{Putnam-AXIOM} ($14{\times}236$) & $0.917$ $[0.898, 0.932]$ & $0.909$--$0.937$ & $2.9\%$ \\
+\textsc{GSM8K} ($11{\times}500$) & $0.828$ $[0.807, 0.848]$ & $0.800$--$0.883$ & $7.2\%$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Causal interventions and failed repairs.}
+Across benchmarks, \tfa{} model-ranking correlation co-varies with mean reference perplexity ($+0.89$) and saturation ($-0.81$).
+To break observational confounding, we intervened directly on the \textsc{MATH-500} references.
+Replacing each worked derivation with the single line ``The final answer is [answer]'' drops $17$-model ranking Spearman from $+0.35$ to $+0.02$ ($\Delta\rho = +0.33 \; [-0.16, +0.81]$ across models), and yields a decisive item-level paired-bootstrap drop of $\Delta\rho = +0.24 \; [+0.12, +0.33]$ across the $12$ models with per-item records ($+0.14 \to -0.10$, conditioning on fixed models).
+To test whether length shrinkage alone caused this collapse, our pre-registered length-matched control (\texttt{P-L1}) replaced each worked derivation with identical content-free boilerplate matched to mean reference length plus the answer line.
+Although mean \tfa{} remains high ($0.464$ across $17$ models), ranking stays collapsed at $\rho = -0.11 \; [-0.57, +0.35]$ ($17$ models), with a certified $12$-model item-bootstrap worked-minus-padded gap of $+0.41 \; [+0.35, +0.46]$ ($+0.14 \to -0.27$).
+Finally, targeted repairs cannot rescue matching: up-weighting late reference tokens by $(\mathrm{pos}/n)^\gamma$ over $12$ per-token models decays ranking from $+0.13$ to $-0.37$ at last-$4$ tokens (missing our registered null call with a sign flip; Appendix~\ref{app:boundary}, Figure~\ref{fig:sweeps}), and residualizing reference perplexity reduces ranking to $-0.17$ while leaving per-task validity null (Appendix~\ref{app:verification}, Table~\ref{tab:ledger}).
