@@ -17,9 +17,21 @@
 make -C paper_latex_and_notes/AAAI_2027_EvalAIScientists_ReferenceMatching
 ```
 
-- `00_main_aaai_2027.pdf` — Venue PDF (`\supplementaryfalse`): 4 main-body pages (`Conclusion` ends on Page 4, `References` begins on Page 5) + ~5.5–6.0 pages of core appendices (`A–C`), committed alongside sources.
-- `00_main_arxiv.pdf` — arXiv companion PDF (`\def\withsupplementary{1}` via `00_main_arxiv.tex`): identical body/references/core appendices + post-appendix Supplementary `S1–S3` (`10-supplementary.tex`).
+- `00_main_aaai_2027.pdf` — Venue PDF (`\supplementaryfalse`): 8 pages total (main body ends with `Conclusion` on Page 4, `References` span Pages 4–5, and Core Appendices `A–C` span Pages 5–8, well within the 1.5x cap), committed alongside sources.
+- `00_main_arxiv.pdf` — arXiv companion PDF (`\def\withsupplementary{1}` via `00_main_arxiv.tex`): 10 pages total (identical body/references/core appendices + post-appendix Supplementary `S1–S3` from `10-supplementary.tex` on Pages 9–10).
 - Figures regenerate deterministically from `papers/analysis/canonical_validity.json`, `papers/analysis/free_baseline.json`, and `experiments/tfa-vs-judge/runs/tfa_bpc_math500.jsonl` via `scripts/generate_plots.py`.
+
+## OpenReview Submission Packet
+
+- **Portal URL:** <https://openreview.net/group?id=AAAI.org/2027/Workshop/EvalAIScientists> (deadline `11-20-2026 06:00 UTC`).
+- **Title:** `Grading the Answer Key, Not the Student: Reference-Matching Metrics Measure Reference Predictability, Not Solution Soundness`
+- **Track:** Position / Critique & Negative-Result paper (`2–4` main-body pages excluding references).
+- **TL;DR (237 chars):** `Untrained reference-matching metrics (including Teacher-Forced Accuracy) fail per-solution grading because 83-92% of variance is reference predictability; zero-cost endpoint checks (+0.92) beat rollout verifiers (+0.79).`
+- **Keywords:** `evaluation methodology`, `teacher-forced accuracy`, `reference-based metrics`, `construct validity`, `LLM-as-a-judge`, `benchmark metrology`
+- **Abstract (single paragraph, matches `1-abstract.tex`):**
+  > Evaluating scientific and mathematical reasoning at scale often pairs a benchmark's worked gold reference with a cheap reference-matching metric instead of paying a frontier large language model (LLM) judge or a human expert. This practice assumes that reference-matching metrics approximate human grading quality with added noise along a single cost-versus-quality spectrum. We show across seventeen instruction-tuned models from four families on eight math and code benchmarks plus an agentic repository setting that untested reference-matching metrics measure how predictable the reference text is rather than whether a candidate solution is sound. Anchored to sixty blind human-graded MATH-500 solutions (with an external hypothesis-blind second rater agreeing at Pearson r = 0.83) and 492 executed code solutions, we separate reference-matching metrics from endpoint verification signals via cross-family variance decomposition and causal reference interventions. Every untrained text-matching metric we tested, from teacher-forced accuracy (TFA) and token log-probability to retrieval embeddings and entailment, sits in [-0.33, +0.14] against human reasoning soundness (0.00 to +0.17 against executed code tests), because 83-92% of TFA per-solution variance is a cross-family item effect reflecting reference perplexity (r = -0.895). Averaging cancels this shared item effect so TFA ranks models on hard olympiad sets (cross-family rho = +0.86), yet collapses under length-matched boilerplate controls (paired item-bootstrap Delta rho = +0.41 [+0.35, +0.46]) and inverts on saturated sets, while an extracted-answer check achieves r = +0.92 [+0.78, +0.99] and outperforms a thirty-two-rollout completion curve (Delta r = +0.13 [+0.05, +0.24]). Benchmark evaluation should treat gold references as checkable endpoints for verifiers rather than similarity targets for untrained scorers, and leaderboards using TFA should report reference perplexity alongside accuracy.
+- **PDF to upload:** `paper_latex_and_notes/AAAI_2027_EvalAIScientists_ReferenceMatching/00_main_aaai_2027.pdf` (double-blind `Anonymous submission`).
+- **Candidate co-authors to confirm before final Submit:** Brando Miranda (`brando9@stanford.edu`), Srivatsava Daruru (`vatsava@gmail.com`), Daneshvar Amrollahi (`daneshva@stanford.edu`), Aryan Gulati (`aryanguls@gmail.com`), Sanmi Koyejo (`sanmi@stanford.edu`).
 
 ## Provenance
 
