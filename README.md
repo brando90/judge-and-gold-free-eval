@@ -1,4 +1,4 @@
-# judge-free-eval
+# judge-and-gold-free-eval (formerly judge-free-eval)
 
 **When can a cheap, judge-free signal evaluate reasoning?**
 
