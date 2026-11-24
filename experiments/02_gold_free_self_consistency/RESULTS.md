@@ -49,7 +49,28 @@ where confident-wrong consensus is most common).
   so keys changed under trivial rewrites. With it: P1 passes (0.0005, Spearman 0.9998) and fallback to plain
   strings drops from 6.5% to 0.9%; **P2 and P5 still fail** (plurality agreement 0.682, precision 0.880 at
   SCP >= 0.5), SC E1 0.960, E2 0.955, E3 0.836. Verdict stays NO.
-- The prereg verdict is NO because of P2 and P5 (and P1 on the original set). It is not driven by SC versus the judges.
+- The prereg decision rule gives NO because P2 (a P1-P3 property) fails, and P1 also failed on the original set; P5 failing is reported but is not by itself a NO trigger. The NO is not driven by SC versus the judges, and "Versus LLM judges: YES" is a descriptive comparison on the 176-problem subset, not the prereg YES (which also needs the properties).
+
+## P2 in detail (exploratory, from `results*/results.json`)
+Plurality-answer agreement between two random halves of the 64 samples is 0.995 when the problem has SCP >= 0.5
+and 0.47 when SCP < 0.5; 9.2% of problems have a tie for the plurality answer. So the P2 failure is
+concentrated where the model has no consensus, and SC is stable where it is confident. The prereg line
+(0.90 pooled) is still failed, and the tie convention (lowest cluster id) is not order-neutral.
+
+## Independent review (2026-11-24)
+Route: Brando's plan router (plan-rr on skampere1). Vals Codex was off, Vals Claude and both Stanford plans were
+gated (limit event, unconfirmed sign-in, missing no-extra-usage check), the STAIR key refused the longer
+prompt or hit its daily small-job gate, and Cursor timed out. It ran on the **Koyejo-lab OpenAI key, model gpt-6.1-sol**
+(small pay-per-call cap, one job). Real points, now reflected above or listed here:
+- Verdict wording (fixed above).
+- Alignment control is a pooled AUROC, which difficulty alone could inflate. The within-problem AUROC of the 14B ref
+  judge is 0.915 (E1 table), which would be about 0.5 if judge files were misaligned to samples, so alignment holds.
+- Canonical-key equality replaces pairwise Math-Verify equivalence (D1); keys round numbers, so rare merges or splits are
+  possible and no audit against pairwise verification was run.
+- SC selection is not exactly plurality vote when a problem has no repeated answer (all SC = 0, argmax picks sample 0,
+  which may be an unboxed sample). Not quantified; expected rare. To quantify in the next run.
+- Per-judge E1/E2 numbers, pass@4/16 and threshold tables are in `results*/tables.md` and `results.json`, not repeated here.
+- The reviewer saw script excerpts only (size limit of the route), found no path by which gold or judge scores reach SC.
 
 ## Caveats
 - The 176-problem judge subset is the committed "in-band" set, so absolute SC numbers there (0.96) are higher
