@@ -32,7 +32,7 @@ Context (gold-needing, not rivals): the four ref judges reach AUROC 0.915 to 0.9
 |---|---|---|
 | P1 surface-form invariance, original rewrites (strip trailing period, `$`-wrap, dfrac) | mean abs change 0.033, Spearman 0.973 (plain string matcher: 0.139) | FAIL |
 | P1b held-out rewrites (frac to a/b, add .0, commute sum, sqrt n) | 0.0002, Spearman 0.9997 | pass |
-| P2 repeat stability: SCP split-half Spearman / plurality answer agreement (need >= 0.90 each) | 0.955 / 0.694 | FAIL |
+| P2 repeat stability: SCP split-half Spearman / plurality answer agreement (need >= 0.90 each) | 0.958 / 0.682 | FAIL |
 | P3 monotone in evidence: AUROC at n_ref = 4, 8, 16, 32, 63 | 0.781, 0.817, 0.846, 0.868, 0.884 | pass |
 | P4 bug detection (injected wrong answer scores below the original) | 484 of 484 (near-tautological by construction) | pass |
 | P5 confident wrongness: precision at SCP >= 0.5 (need >= 0.90) / coverage; ECE | 0.876 / 0.402; 0.062 | FAIL |
@@ -80,7 +80,7 @@ prompt or hit its daily small-job gate, and Cursor timed out. It ran on the **Ko
 - SC selection is plurality voting (majority@64); the contribution is using agreement as a gold-free metric with
   properties, not the voting idea itself.
 - Judge repeat stability is partly model noise (noref 1.5B replicas correlate 0.68); SC split-half item
-  Spearman is 0.957, similar to the better judges.
+  Spearman is 0.958, similar to the better judges.
 - Figures (grid on): `results*/auroc.png`, `results*/calibration.png`. Raw: `results*/results.json`, `tables.md`.
 
 ## Next (3 days, check Wed 2026-11-25 10:00 onward)
