@@ -1,5 +1,21 @@
 # judge-and-gold-free-eval (formerly judge-free-eval)
 
+> **Goal (Brando, 2026-11-24).** Find a metric that **replaces the gold reference / target metrics**
+> (human labels, boxed-answer accuracy, pass@k). Replacing LLM judges too is a bonus. **The more
+> trustworthy the better**: a candidate must pass falsifiable sanity properties (invariance,
+> monotonicity, repeat stability, bug detection, no confident wrongness), not only correlate with
+> humans or gold. The project idea: human agreement alone is not sufficient to trust a metric;
+> foundational properties are needed too (and humans and boxed accuracy can be checked against them).
+>
+> **Current state.** First pilot: [`experiments/02_gold_free_self_consistency/`](experiments/02_gold_free_self_consistency/)
+> (self-consistency agreement, no judge and no gold). Its PREREG was committed before any run;
+> [`RESULTS.md`](experiments/02_gold_free_self_consistency/RESULTS.md) has the verdict. The earlier
+> TFA study below is experiment 01 in spirit (it lives in `experiments/tfa-vs-judge/`).
+>
+> **Rules.** No branches: commit to main. One numbered folder per experiment, each with README, PREREG
+> committed before running, scripts, results, RESULTS.md. The metric must say what it needs
+> (gold, judge, humans) in every table.
+
 **When can a cheap, judge-free signal evaluate reasoning?**
 
 Evaluating reasoning at scale currently means paying a frontier LLM judge on every response. This
