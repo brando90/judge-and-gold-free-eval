@@ -10,14 +10,16 @@ Resumes: problems already in the output file are skipped.
 import argparse, json, os
 
 ap = argparse.ArgumentParser()
-ap.add_argument("--model", required=True)
+ap.add_argument("--model", required=True, help="HF id or a local snapshot directory")
+ap.add_argument("--name", default=None, help="HF id used in the output file name and the Qwen3 check (when --model is a path)")
 ap.add_argument("--tasks", default="bon_math_tasks.jsonl")
 ap.add_argument("--n", type=int, default=16)
 ap.add_argument("--out", default="gen")
 ap.add_argument("--util", type=float, default=0.35)
 args = ap.parse_args()
 os.makedirs(args.out, exist_ok=True)
-out = f"{args.out}/bon_math__{args.model.replace('/', '__')}.jsonl"
+name = args.name or args.model
+out = f"{args.out}/bon_math__{name.replace('/', '__')}.jsonl"
 
 tasks = [json.loads(l) for l in open(args.tasks)]
 done = set()
@@ -36,7 +38,7 @@ from transformers import AutoTokenizer
 from vllm import LLM, SamplingParams
 
 tok = AutoTokenizer.from_pretrained(args.model)
-kw = {"enable_thinking": False} if "Qwen3" in args.model else {}
+kw = {"enable_thinking": False} if "Qwen3" in name else {}
 
 
 def prompt_of(r):
