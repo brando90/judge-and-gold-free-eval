@@ -1,0 +1,773 @@
+{
+ "models": [
+  "llama31_8b",
+  "qwen25_7b",
+  "qwen3_4b",
+  "qwen3_1p7b",
+  "dsmath_7b_rl",
+  "mistral_7b"
+ ],
+ "labels": {
+  "llama31_8b": "Llama-3.1-8B-Instruct",
+  "qwen25_7b": "Qwen2.5-7B-Instruct",
+  "qwen3_4b": "Qwen3-4B (non-thinking)",
+  "qwen3_1p7b": "Qwen3-1.7B (non-thinking)",
+  "dsmath_7b_rl": "DeepSeek-Math-7B-RL",
+  "mistral_7b": "Mistral-7B-Instruct-v0.2"
+ },
+ "missing": [],
+ "n": 16,
+ "model_level": {
+  "llama31_8b": {
+   "sc": 0.28075,
+   "scp": 0.4225,
+   "scb": 0.36248560995011303,
+   "pass1": 0.37675,
+   "maj": 0.604,
+   "passk": 0.774,
+   "boxed": 0.722875
+  },
+  "qwen25_7b": {
+   "sc": 0.6800166666666666,
+   "scp": 0.763125,
+   "scb": 0.7377118121573766,
+   "pass1": 0.720625,
+   "maj": 0.834,
+   "passk": 0.902,
+   "boxed": 0.91025
+  },
+  "qwen3_4b": {
+   "sc": 0.6618666666666666,
+   "scp": 0.720375,
+   "scb": 0.8791310862491417,
+   "pass1": 0.702,
+   "maj": 0.81,
+   "passk": 0.846,
+   "boxed": 0.766625
+  },
+  "qwen3_1p7b": {
+   "sc": 0.5797,
+   "scp": 0.65875,
+   "scb": 0.7732677858539927,
+   "pass1": 0.63275,
+   "maj": 0.764,
+   "passk": 0.82,
+   "boxed": 0.747375
+  },
+  "dsmath_7b_rl": {
+   "sc": 0.04848333333333334,
+   "scp": 0.18425,
+   "scb": 0.5296248541463852,
+   "pass1": 0.144875,
+   "maj": 0.514,
+   "passk": 0.622,
+   "boxed": 0.2625
+  },
+  "mistral_7b": {
+   "sc": 0.06191666666666667,
+   "scp": 0.18675,
+   "scb": 0.0716057054057054,
+   "pass1": 0.10225,
+   "maj": 0.202,
+   "passk": 0.426,
+   "boxed": 0.834
+  }
+ },
+ "model_level_raw_matcher": {
+  "llama31_8b": {
+   "sc": 0.2809,
+   "scp": 0.423,
+   "scb": 0.3626479391692374,
+   "pass1": 0.37675,
+   "maj": 0.604,
+   "passk": 0.774,
+   "boxed": 0.722875
+  },
+  "qwen25_7b": {
+   "sc": 0.6800166666666666,
+   "scp": 0.763125,
+   "scb": 0.7377118121573766,
+   "pass1": 0.720625,
+   "maj": 0.834,
+   "passk": 0.902,
+   "boxed": 0.91025
+  },
+  "qwen3_4b": {
+   "sc": 0.6618666666666666,
+   "scp": 0.720375,
+   "scb": 0.8791310862491417,
+   "pass1": 0.702,
+   "maj": 0.81,
+   "passk": 0.846,
+   "boxed": 0.766625
+  },
+  "qwen3_1p7b": {
+   "sc": 0.5797,
+   "scp": 0.65875,
+   "scb": 0.7732677858539927,
+   "pass1": 0.63275,
+   "maj": 0.764,
+   "passk": 0.82,
+   "boxed": 0.747375
+  },
+  "dsmath_7b_rl": {
+   "sc": 0.04848333333333334,
+   "scp": 0.18425,
+   "scb": 0.5296248541463852,
+   "pass1": 0.144875,
+   "maj": 0.514,
+   "passk": 0.622,
+   "boxed": 0.2625
+  },
+  "mistral_7b": {
+   "sc": 0.06210000000000001,
+   "scp": 0.18675,
+   "scb": 0.07184309024309024,
+   "pass1": 0.10225,
+   "maj": 0.202,
+   "passk": 0.426,
+   "boxed": 0.834
+  }
+ },
+ "E1": {
+  "sc": {
+   "D": 1,
+   "tau": 0.8666666666666666,
+   "spearman": 0.942857142857143,
+   "pearson": 0.9965652647534657
+  },
+  "scp": {
+   "D": 1,
+   "tau": 0.8666666666666666,
+   "spearman": 0.942857142857143,
+   "pearson": 0.9981459614649363
+  },
+  "scb": {
+   "D": 3,
+   "tau": 0.6,
+   "spearman": 0.7714285714285715,
+   "pearson": 0.8554460730560318
+  },
+  "maj": {
+   "D": 0,
+   "tau": 0.9999999999999999,
+   "spearman": 1.0,
+   "pearson": 0.9272924636617916
+  },
+  "passk": {
+   "D": 0,
+   "tau": 0.9999999999999999,
+   "spearman": 1.0,
+   "pearson": 0.9204538304785609
+  },
+  "boxed": {
+   "D": 4,
+   "tau": 0.4666666666666666,
+   "spearman": 0.4285714285714286,
+   "pearson": 0.5265875308713216
+  }
+ },
+ "E1_discordant_pairs": [
+  {
+   "a": "dsmath_7b_rl",
+   "b": "mistral_7b",
+   "pass1_gap": 0.04262500000000001,
+   "sc_gap": 0.013433333333333332
+  }
+ ],
+ "E1_boot": {
+  "sc": {
+   "P_D_le_3": 1.0,
+   "P_D_le_2": 1.0,
+   "D_mean": 1.0225,
+   "tau_ci": [
+    0.7333333333333333,
+    0.8666666666666666
+   ]
+  },
+  "scp": {
+   "P_D_le_3": 1.0,
+   "P_D_le_2": 1.0,
+   "D_mean": 0.641,
+   "tau_ci": [
+    0.8666666666666666,
+    0.9999999999999999
+   ]
+  },
+  "scb": {
+   "P_D_le_3": 1.0,
+   "P_D_le_2": 0.021,
+   "D_mean": 2.979,
+   "tau_ci": [
+    0.6,
+    0.6
+   ]
+  },
+  "maj": {
+   "P_D_le_3": 1.0,
+   "P_D_le_2": 1.0,
+   "D_mean": 0.032,
+   "tau_ci": [
+    0.8666666666666666,
+    0.9999999999999999
+   ]
+  },
+  "passk": {
+   "P_D_le_3": 1.0,
+   "P_D_le_2": 1.0,
+   "D_mean": 0.0185,
+   "tau_ci": [
+    0.9999999999999999,
+    0.9999999999999999
+   ]
+  },
+  "boxed": {
+   "P_D_le_3": 0.0,
+   "P_D_le_2": 0.0,
+   "D_mean": 4.0435,
+   "tau_ci": [
+    0.3333333333333333,
+    0.4666666666666666
+   ]
+  }
+ },
+ "E1_pair_concordance_prob": {
+  "llama31_8b|qwen25_7b": 1.0,
+  "llama31_8b|qwen3_4b": 1.0,
+  "llama31_8b|qwen3_1p7b": 1.0,
+  "llama31_8b|dsmath_7b_rl": 1.0,
+  "llama31_8b|mistral_7b": 1.0,
+  "qwen25_7b|qwen3_4b": 0.9695,
+  "qwen25_7b|qwen3_1p7b": 1.0,
+  "qwen25_7b|dsmath_7b_rl": 1.0,
+  "qwen25_7b|mistral_7b": 1.0,
+  "qwen3_4b|qwen3_1p7b": 1.0,
+  "qwen3_4b|dsmath_7b_rl": 1.0,
+  "qwen3_4b|mistral_7b": 1.0,
+  "qwen3_1p7b|dsmath_7b_rl": 1.0,
+  "qwen3_1p7b|mistral_7b": 1.0,
+  "dsmath_7b_rl|mistral_7b": 0.007
+ },
+ "E1_verdict": {
+  "verdict": "YES",
+  "D": 1,
+  "max_discordant_pass1_gap": 0.04262500000000001,
+  "boot_P_D_le_3": 1.0,
+  "boxed_control_D": 4,
+  "boxed_control_beats_or_ties_sc": false
+ },
+ "E2": {
+  "pearson_sc_pass1": 0.9965652647534657,
+  "gaps": {
+   "llama31_8b": {
+    "sc_minus_pass1": -0.09599999999999997,
+    "scp_minus_pass1": 0.04575000000000001
+   },
+   "qwen25_7b": {
+    "sc_minus_pass1": -0.04060833333333336,
+    "scp_minus_pass1": 0.04250000000000009
+   },
+   "qwen3_4b": {
+    "sc_minus_pass1": -0.040133333333333354,
+    "scp_minus_pass1": 0.01837500000000003
+   },
+   "qwen3_1p7b": {
+    "sc_minus_pass1": -0.05305000000000004,
+    "scp_minus_pass1": 0.025999999999999912
+   },
+   "dsmath_7b_rl": {
+    "sc_minus_pass1": -0.09639166666666667,
+    "scp_minus_pass1": 0.03937499999999999
+   },
+   "mistral_7b": {
+    "sc_minus_pass1": -0.040333333333333325,
+    "scp_minus_pass1": 0.0845
+   }
+  }
+ },
+ "E3": {
+  "llama31_8b": {
+   "coverage": 0.4,
+   "precision": 0.93,
+   "passes": true
+  },
+  "qwen25_7b": {
+   "coverage": 0.794,
+   "precision": 0.9496221662468514,
+   "passes": true
+  },
+  "qwen3_4b": {
+   "coverage": 0.728,
+   "precision": 0.978021978021978,
+   "passes": true
+  },
+  "qwen3_1p7b": {
+   "coverage": 0.684,
+   "precision": 0.9473684210526315,
+   "passes": true
+  },
+  "dsmath_7b_rl": {
+   "coverage": 0.068,
+   "precision": 0.9411764705882353,
+   "passes": true
+  },
+  "mistral_7b": {
+   "coverage": 0.062,
+   "precision": 0.7419354838709677,
+   "passes": false
+  }
+ },
+ "E4": {
+  "sc_half_vs_sc_half_tau": 0.9999999999999999,
+  "sc_half_vs_pass1_other_half_tau": 0.8666666666666666,
+  "pass1_half_vs_half_tau": 0.9999999999999999
+ },
+ "E5": {
+  "levels_1_2": {
+   "tau": 0.8666666666666666,
+   "D": 1,
+   "pass1": {
+    "llama31_8b": 0.6381578947368421,
+    "qwen25_7b": 0.9060150375939849,
+    "qwen3_4b": 0.9097744360902256,
+    "qwen3_1p7b": 0.8656015037593985,
+    "dsmath_7b_rl": 0.2387218045112782,
+    "mistral_7b": 0.2175751879699248
+   },
+   "sc": {
+    "llama31_8b": 0.5277568922305764,
+    "qwen25_7b": 0.8760651629072681,
+    "qwen3_4b": 0.8867794486215539,
+    "qwen3_1p7b": 0.8372180451127819,
+    "dsmath_7b_rl": 0.08051378446115287,
+    "mistral_7b": 0.11911027568922306
+   }
+  },
+  "levels_4_5": {
+   "tau": 0.8666666666666666,
+   "D": 1,
+   "pass1": {
+    "llama31_8b": 0.21779580152671757,
+    "qwen25_7b": 0.5837309160305344,
+    "qwen3_4b": 0.5443702290076335,
+    "qwen3_1p7b": 0.4713740458015267,
+    "dsmath_7b_rl": 0.0825381679389313,
+    "mistral_7b": 0.045562977099236644
+   },
+   "sc": {
+    "llama31_8b": 0.14325699745547074,
+    "qwen25_7b": 0.5361641221374047,
+    "qwen3_4b": 0.4884860050890585,
+    "qwen3_1p7b": 0.405852417302799,
+    "dsmath_7b_rl": 0.027798982188295164,
+    "mistral_7b": 0.03460559796437659
+   }
+  }
+ },
+ "llama_oracle_agreement": 0.95446875,
+ "llama_n64": {
+  "sc": 0.29117361111111106,
+  "pass1": 0.387375
+ },
+ "A1": {
+  "llama31_8b@16": {
+   "max_sc_zero_share": 0.172,
+   "selected_unboxed_share": 0.114,
+   "acc_rule_a": 0.6,
+   "acc_rule_b": 0.604,
+   "diff_b_minus_a": 0.004,
+   "diff_ci": [
+    0.0,
+    0.01
+   ],
+   "all_unboxed_share": 0.002
+  },
+  "llama31_8b@64": {
+   "max_sc_zero_share": 0.032,
+   "selected_unboxed_share": 0.026,
+   "acc_rule_a": 0.648,
+   "acc_rule_b": 0.648,
+   "diff_b_minus_a": 0.0,
+   "diff_ci": [
+    0.0,
+    0.0
+   ],
+   "all_unboxed_share": 0.0
+  },
+  "qwen25_7b@16": {
+   "max_sc_zero_share": 0.024,
+   "selected_unboxed_share": 0.02,
+   "acc_rule_a": 0.834,
+   "acc_rule_b": 0.834,
+   "diff_b_minus_a": 0.0,
+   "diff_ci": [
+    0.0,
+    0.0
+   ],
+   "all_unboxed_share": 0.004
+  },
+  "qwen3_4b@16": {
+   "max_sc_zero_share": 0.142,
+   "selected_unboxed_share": 0.14,
+   "acc_rule_a": 0.794,
+   "acc_rule_b": 0.81,
+   "diff_b_minus_a": 0.016,
+   "diff_ci": [
+    0.006,
+    0.028
+   ],
+   "all_unboxed_share": 0.094
+  },
+  "qwen3_1p7b@16": {
+   "max_sc_zero_share": 0.152,
+   "selected_unboxed_share": 0.15,
+   "acc_rule_a": 0.748,
+   "acc_rule_b": 0.764,
+   "diff_b_minus_a": 0.016,
+   "diff_ci": [
+    0.006,
+    0.028
+   ],
+   "all_unboxed_share": 0.092
+  },
+  "dsmath_7b_rl@16": {
+   "max_sc_zero_share": 0.354,
+   "selected_unboxed_share": 0.306,
+   "acc_rule_a": 0.454,
+   "acc_rule_b": 0.514,
+   "diff_b_minus_a": 0.06,
+   "diff_ci": [
+    0.04,
+    0.082
+   ],
+   "all_unboxed_share": 0.05
+  },
+  "mistral_7b@16": {
+   "max_sc_zero_share": 0.344,
+   "selected_unboxed_share": 0.088,
+   "acc_rule_a": 0.202,
+   "acc_rule_b": 0.202,
+   "diff_b_minus_a": 0.0,
+   "diff_ci": [
+    0.0,
+    0.0
+   ],
+   "all_unboxed_share": 0.0
+  }
+ },
+ "A1_ranking": {
+  "D_vs_pass1_rule_a": 0,
+  "D_vs_pass1_rule_b": 0,
+  "order_a": [
+   "qwen25_7b",
+   "qwen3_4b",
+   "qwen3_1p7b",
+   "llama31_8b",
+   "dsmath_7b_rl",
+   "mistral_7b"
+  ],
+  "order_b": [
+   "qwen25_7b",
+   "qwen3_4b",
+   "qwen3_1p7b",
+   "llama31_8b",
+   "dsmath_7b_rl",
+   "mistral_7b"
+  ]
+ },
+ "A1_pass": false,
+ "A2": {
+  "llama31_8b": {
+   "problems": 60,
+   "pairs_compared": 982,
+   "unparseable_pairs": 0,
+   "timeouts": 0,
+   "both_equal": 23,
+   "both_different": 958,
+   "key_equal_verify_not": 0,
+   "key_different_verify_equal": 1,
+   "disagreement_rate": 0.0010183299389002036,
+   "examples_of_disagreement": [
+    {
+     "problem": "test/algebra/873.json",
+     "a": "33",
+     "b": "c = 33",
+     "verify_equal": true,
+     "key_equal": false
+    }
+   ],
+   "mean_abs_dSCP": 0.0010416666666666667,
+   "sc_key": 0.24611111111111109,
+   "sc_pairwise": 0.2476388888888889
+  },
+  "qwen25_7b": {
+   "problems": 60,
+   "pairs_compared": 876,
+   "unparseable_pairs": 0,
+   "timeouts": 0,
+   "both_equal": 8,
+   "both_different": 866,
+   "key_equal_verify_not": 0,
+   "key_different_verify_equal": 2,
+   "disagreement_rate": 0.00228310502283105,
+   "examples_of_disagreement": [
+    {
+     "problem": "test/algebra/1349.json",
+     "a": "Evelyn",
+     "b": "\\text{Evelyn}",
+     "verify_equal": true,
+     "key_equal": false
+    },
+    {
+     "problem": "test/prealgebra/1233.json",
+     "a": "10",
+     "b": "10\\%",
+     "verify_equal": true,
+     "key_equal": false
+    }
+   ],
+   "mean_abs_dSCP": 0.007291666666666667,
+   "sc_key": 0.4238888888888888,
+   "sc_pairwise": 0.43402777777777773
+  },
+  "qwen3_4b": {
+   "problems": 60,
+   "pairs_compared": 174,
+   "unparseable_pairs": 0,
+   "timeouts": 0,
+   "both_equal": 10,
+   "both_different": 159,
+   "key_equal_verify_not": 0,
+   "key_different_verify_equal": 5,
+   "disagreement_rate": 0.028735632183908046,
+   "examples_of_disagreement": [
+    {
+     "problem": "test/precalculus/990.json",
+     "a": "6 - 5i",
+     "b": "w = 6 - 5i",
+     "verify_equal": true,
+     "key_equal": false
+    },
+    {
+     "problem": "test/precalculus/24313.json",
+     "a": "\\cot x",
+     "b": "\\frac{\\cos x}{\\sin x}",
+     "verify_equal": true,
+     "key_equal": false
+    },
+    {
+     "problem": "test/algebra/1143.json",
+     "a": "17",
+     "b": "a^2 = 17",
+     "verify_equal": true,
+     "key_equal": false
+    },
+    {
+     "problem": "test/algebra/634.json",
+     "a": "4",
+     "b": "r = 4",
+     "verify_equal": true,
+     "key_equal": false
+    },
+    {
+     "problem": "test/intermediate_algebra/1992.json",
+     "a": "(0, 36) \\setminus \\{9\\}",
+     "b": "(0, 9) \\cup (9, 36)",
+     "verify_equal": true,
+     "key_equal": false
+    }
+   ],
+   "mean_abs_dSCP": 0.007291666666666667,
+   "sc_key": 0.5029166666666667,
+   "sc_pairwise": 0.5133333333333333
+  },
+  "qwen3_1p7b": {
+   "problems": 60,
+   "pairs_compared": 178,
+   "unparseable_pairs": 0,
+   "timeouts": 0,
+   "both_equal": 6,
+   "both_different": 167,
+   "key_equal_verify_not": 0,
+   "key_different_verify_equal": 5,
+   "disagreement_rate": 0.028089887640449437,
+   "examples_of_disagreement": [
+    {
+     "problem": "test/intermediate_algebra/623.json",
+     "a": "0",
+     "b": "a + b = 0 + 0 = 0",
+     "verify_equal": true,
+     "key_equal": false
+    },
+    {
+     "problem": "test/precalculus/1300.json",
+     "a": "\\begin{pmatrix} -\\frac{1}{3} \\ \\frac{2}{3} \\ \\frac{5}{3} \\end{pmatrix}",
+     "b": "\\mathbf{v} = \\begin{pmatrix} -\\frac{1}{3} \\ \\frac{2}{3} \\ \\frac{5}{3} \\end{pmatrix}",
+     "verify_equal": true,
+     "key_equal": false
+    },
+    {
+     "problem": "test/algebra/1082.json",
+     "a": "23",
+     "b": "9 + 8 + 6 = 23",
+     "verify_equal": true,
+     "key_equal": false
+    },
+    {
+     "problem": "test/precalculus/541.json",
+     "a": "( \\frac{3}{2}, -13 )",
+     "b": "(m, b) = ( \\frac{3}{2}, -13 )",
+     "verify_equal": true,
+     "key_equal": false
+    },
+    {
+     "problem": "test/precalculus/452.json",
+     "a": "\\text{(E) Hyperbola}",
+     "b": "\\text{(E)} \\text{ Hyperbola}",
+     "verify_equal": true,
+     "key_equal": false
+    }
+   ],
+   "mean_abs_dSCP": 0.005208333333333333,
+   "sc_key": 0.48277777777777775,
+   "sc_pairwise": 0.49041666666666667
+  },
+  "dsmath_7b_rl": {
+   "problems": 60,
+   "pairs_compared": 370,
+   "unparseable_pairs": 0,
+   "timeouts": 0,
+   "both_equal": 8,
+   "both_different": 358,
+   "key_equal_verify_not": 0,
+   "key_different_verify_equal": 4,
+   "disagreement_rate": 0.010810810810810811,
+   "examples_of_disagreement": [
+    {
+     "problem": "test/prealgebra/105.json",
+     "a": "East",
+     "b": "\\text{East}",
+     "verify_equal": true,
+     "key_equal": false
+    },
+    {
+     "problem": "test/prealgebra/105.json",
+     "a": "\\text{East}",
+     "b": "east",
+     "verify_equal": true,
+     "key_equal": false
+    },
+    {
+     "problem": "test/precalculus/499.json",
+     "a": "[ \\frac{\\pi^2}{4} ]",
+     "b": "\\{\\frac{\\pi^2}{4}\\}",
+     "verify_equal": true,
+     "key_equal": false
+    },
+    {
+     "problem": "test/precalculus/499.json",
+     "a": "[\\frac{\\pi^2}{4}]",
+     "b": "\\{\\frac{\\pi^2}{4}\\}",
+     "verify_equal": true,
+     "key_equal": false
+    }
+   ],
+   "mean_abs_dSCP": 0.00625,
+   "sc_key": 0.029999999999999995,
+   "sc_pairwise": 0.03291666666666667
+  },
+  "mistral_7b": {
+   "problems": 60,
+   "pairs_compared": 3743,
+   "unparseable_pairs": 0,
+   "timeouts": 0,
+   "both_equal": 31,
+   "both_different": 3686,
+   "key_equal_verify_not": 0,
+   "key_different_verify_equal": 26,
+   "disagreement_rate": 0.006946299759551162,
+   "examples_of_disagreement": [
+    {
+     "problem": "test/geometry/434.json",
+     "a": "124",
+     "b": "x = 124^{\\circ}",
+     "verify_equal": true,
+     "key_equal": false
+    },
+    {
+     "problem": "test/geometry/434.json",
+     "a": "124 degrees",
+     "b": "x = 124^{\\circ}",
+     "verify_equal": true,
+     "key_equal": false
+    },
+    {
+     "problem": "test/geometry/434.json",
+     "a": "124^{\\circ}",
+     "b": "x = 124^{\\circ}",
+     "verify_equal": true,
+     "key_equal": false
+    },
+    {
+     "problem": "test/geometry/967.json",
+     "a": "360 + 72 = 432 degrees",
+     "b": "360^{\\circ} \\times 3 = 1080^{\\circ}",
+     "verify_equal": true,
+     "key_equal": false
+    },
+    {
+     "problem": "test/precalculus/285.json",
+     "a": "4",
+     "b": "n=4",
+     "verify_equal": true,
+     "key_equal": false
+    },
+    {
+     "problem": "test/algebra/769.json",
+     "a": "61",
+     "b": "N = 61",
+     "verify_equal": true,
+     "key_equal": false
+    },
+    {
+     "problem": "test/counting_and_probability/1114.json",
+     "a": "1/3",
+     "b": "\\frac{12}{36} = \\frac{1}{3}",
+     "verify_equal": true,
+     "key_equal": false
+    },
+    {
+     "problem": "test/counting_and_probability/1114.json",
+     "a": "\\frac{12}{36} = \\frac{1}{3}",
+     "b": "\\frac{1}{3}",
+     "verify_equal": true,
+     "key_equal": false
+    }
+   ],
+   "mean_abs_dSCP": 0.015625,
+   "sc_key": 0.06944444444444445,
+   "sc_pairwise": 0.07916666666666668
+  }
+ },
+ "A2_ranking": {
+  "D_between_key_and_pairwise_order": 0,
+  "order_key": [
+   "qwen3_4b",
+   "qwen3_1p7b",
+   "qwen25_7b",
+   "llama31_8b",
+   "mistral_7b",
+   "dsmath_7b_rl"
+  ],
+  "order_pairwise": [
+   "qwen3_4b",
+   "qwen3_1p7b",
+   "qwen25_7b",
+   "llama31_8b",
+   "mistral_7b",
+   "dsmath_7b_rl"
+  ]
+ },
+ "A2_pass": false,
+ "A2_overall_disagreement_rate": 0.006800569349992092
+}

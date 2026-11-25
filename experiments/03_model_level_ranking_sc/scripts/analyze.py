@@ -428,6 +428,8 @@ def main():
             elif ke and not e: key_eq_ver_ne += 1
             else: key_ne_ver_eq += 1
         npairs = agree_eq + agree_ne + key_eq_ver_ne + key_ne_ver_eq
+        examples = [dict(problem=pids[pi], a=s1, b=s2, verify_equal=bool(eq[(pi, s1, s2)]), key_equal=canon_key('norm', s1) == canon_key('norm', s2))
+                    for (pi, s1, s2) in eq if bool(eq[(pi, s1, s2)]) != (canon_key('norm', s1) == canon_key('norm', s2))][:8]
         # partitions by pairwise connected components
         dscp, sck, scp_ = [], [], []
         for pi in pick:
@@ -446,7 +448,7 @@ def main():
         A2[m] = dict(problems=len(pick), pairs_compared=npairs, unparseable_pairs=unp, timeouts=tmo, both_equal=agree_eq, both_different=agree_ne,
                      key_equal_verify_not=key_eq_ver_ne, key_different_verify_equal=key_ne_ver_eq,
                      disagreement_rate=(key_eq_ver_ne + key_ne_ver_eq) / npairs if npairs else None,
-                     mean_abs_dSCP=float(np.mean(dscp)), sc_key=float(np.mean(sck)), sc_pairwise=float(np.mean(scp_)))
+                     examples_of_disagreement=examples, mean_abs_dSCP=float(np.mean(dscp)), sc_key=float(np.mean(sck)), sc_pairwise=float(np.mean(scp_)))
         per_model_sc_key[m] = float(np.mean(sck)); per_model_sc_pair[m] = float(np.mean(scp_))
         print(f"A2 {m} done {time.time()-t0:.0f}s", flush=True)
     R["A2"] = A2
