@@ -14,7 +14,7 @@ DeepSeek-Math-7B-RL, DeepSeek-Math-7B-Instruct, Llama-3.1-8B-Instruct (first 16 
 1. **Part A (6 old models, no new sampling):** SC_fr vs pass@1_fr: D = 0/15, Kendall tau 1.000, bootstrap P(D<=3) = 1.00. Verdict YES.
 2. **DeepSeek-Math-7B-RL vs Mistral-7B flips to concordant:** SC_fr 0.494 vs 0.069 (was 0.048 vs 0.062), pass@1_fr 0.506 vs 0.105; bootstrap P(concordant) = 1.00.
    The cause: 66% of DeepSeek-Math-RL samples end "The answer is: $X$" with no box. The fallback lifts its pass@1 from 0.145 to 0.506 as well.
-3. **Part B (10 models: the 6 plus 4 new):** D = 1/45, tau 0.956 (bootstrap 95% CI of tau on the 6 is [0.87, 1.00]; P(tau >= 0.733) = 1.00). Verdict YES. The one discordant pair is Qwen3-4B vs Qwen3-8B, pass@1_fr 0.710 vs 0.714 (gap 0.004), SC_fr 0.680 vs 0.678.
+3. **Part B (10 models: the 6 plus 4 new):** D = 1/45, tau 0.956 (bootstrap 95% CI of tau [0.87, 1.00]; P(tau >= 0.733) = 1.00). Verdict YES. The one discordant pair is Qwen3-4B vs Qwen3-8B, pass@1_fr 0.710 vs 0.714 (gap 0.004), SC_fr 0.680 vs 0.678.
 4. **Level:** Pearson of SC_fr with pass@1_fr over the 10 models is 0.995; SC_fr reads 0.012 to 0.089 below pass@1_fr (not a calibrated accuracy, but close here).
 5. **Close pairs:** pass@1_fr gaps under 0.05: 1 pair among the 6 (Qwen2.5-7B vs Qwen3-4B, 0.014); 4 among the 10, of which 3 are concordant (Llama-3.1-8B vs DeepSeek-Math-7B-Instruct 0.016, Qwen2.5-7B vs Qwen3-4B 0.014, Qwen2.5-7B vs Qwen3-8B 0.010; Qwen3-4B vs Qwen3-8B 0.004 is discordant).
 
@@ -61,7 +61,7 @@ SC_fr vs strict pass@1 reads NO only because strict pass@1 puts DeepSeek-Math-RL
 ## Deviations
 - Gemma-2-9B and Phi-3-mini (examples in the task) were not run: the host has Gemma-2-9B only as a base model and Phi-3-mini-128k has config.json only. Llama-3-8B-Instruct and DeepSeek-Math-7B-Instruct replace them. (Stated in PREREG before sampling.)
 - Qwen3.5-4B failed to start on the first launch (vLLM spawn start method needs a `__main__` guard); `scripts/generate_spawn.py` fixes it; all models were then relaunched with `scripts/run_gen.sh` (resumable). No result depends on the failed launch.
-- PREREG said "4 models"; a 5th (DeepSeek-Math-7B-Instruct counts as the 4th) is not added: the 4 are the 4 above. The Part B group has 10 models, not 11 (6 + 4).
+- Part B has 10 models (6 old + 4 new), not 11.
 
 ## Next step (Sat 2026-11-28)
 Second benchmark with the same 10 models and the same fallback: GSM8K or Minerva-style problems (different answer formats), plus 3 more models with pass@1_fr between 0.55 and 0.70 to put several pairs inside 0.05, and a thinking-mode Qwen3 run. Decision rule as in PREREG.
