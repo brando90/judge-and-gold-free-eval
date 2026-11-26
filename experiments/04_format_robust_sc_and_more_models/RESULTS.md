@@ -1,5 +1,15 @@
 # RESULTS: experiment 04, format-robust SC and 4 more models (2026-11-25)
 
+## Paper-ready
+
+Format-robust SC needs no gold answer, no human label, and no judge. The primary target, format-robust pass@1, uses the same extractor and the gold answer.
+
+**Part A (six models, no new sampling): YES.** $D = 0$ of 15, $\tau = 1.000$, $P(D \le 3) = 1.00$. DeepSeek-Math-7B-RL versus Mistral-7B-Instruct-v0.2 is concordant (format-robust SC $0.494$ vs $0.069$; format-robust pass@1 $0.506$ vs $0.105$).
+
+**Part B (ten models): YES.** $D = 1$ of 45, $\tau = 0.956$, Spearman $\rho = 0.988$, $P(\tau \ge 0.733) = 1.00$. The discordant pair is Qwen3-4B versus Qwen3-8B, format-robust pass@1 gap $0.004$.
+
+Sources: `results/results.json`, `results/tables.md`. The joint paper section is [`../../RESULTS.md`](../../RESULTS.md). The sections below are the lab record.
+
 **Takeaway: YES (by the rule frozen in PREREG.md, commit 56947c5).** Self-consistency (SC) with a last-expression fallback, which needs no
 gold answer, human label or judge, ranks 10 models on MATH-500 like gold pass@1 computed with the same fallback: 1 discordant pair of 45,
 a gap of 0.004 in pass@1. DeepSeek-Math-7B-RL vs Mistral-7B becomes concordant. The old "wrong pair" in experiment 03 was mostly the

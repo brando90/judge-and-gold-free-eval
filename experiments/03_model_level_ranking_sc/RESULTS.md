@@ -1,5 +1,9 @@
 # RESULTS: experiment 03, model-level ranking by self-consistency (SC) vs gold accuracy
 
+## Paper-ready
+
+**Verdict: YES.** Model-level SC, which needs no gold answer, no human label, and no judge, orders the six models as gold pass@1 does: $D = 1$ of 15, Kendall $\tau = 0.867$, Spearman $\rho = 0.943$, Pearson $r = 0.997$, $P(D \le 3) = 1.00$, $\tau$ 95% interval $[0.73, 0.87]$. The discordant pair is DeepSeek-Math-7B-RL versus Mistral-7B-Instruct-v0.2, pass@1 gap $0.043$ (exact $0.042625$ in `results/results.json`, `E1_discordant_pairs`). The joint paper section for experiments 03 and 04, with the table and paths, is [`../../RESULTS.md`](../../RESULTS.md). The sections below are the lab record.
+
 Dated 2026-11-25 (Wed). PREREG.md was committed before any sampling (cc1a7a3). Harness: vLLM (bf16, T=1.0, top_p=0.95,
 max 1024 new tokens, seed 0, same prompt as `tfa-vs-judge/scripts/bon_generate.py`, `scripts/generate.py`) on skampere1 A100s
 for 5 new models, Llama-3.1-8B-Instruct from the committed experiment-02 samples; analysis `scripts/analyze.py`

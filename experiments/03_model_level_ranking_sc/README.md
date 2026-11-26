@@ -3,6 +3,8 @@
 Dated 2026-11-25. Follows 02 (item-level SC on one model). Goal block (Brando, 2026-11-24): a metric that replaces the gold
 reference metrics (human labels, boxed accuracy, pass@k) and is trustworthy; replacing judges is a bonus.
 
+Paper-ready verdict (numbers only from `results/`): **YES**, $D = 1$ of 15, $\tau = 0.867$, one discordant pass@1 gap $0.043$. Joint writeup: [`../../RESULTS.md`](../../RESULTS.md). Lab record: [`RESULTS.md`](RESULTS.md).
+
 - Question: does SC (no gold, no human, no judge) rank 6 models on the same 500 MATH-500 problems like gold pass@1?
   Plus two audits from 02's review: the argmax-picks-unboxed-sample case, and canonical keys vs pairwise Math-Verify.
 - Files: `PREREG.md` (committed before any sampling), `scripts/generate.py` + `scripts/run_gen.sh` (vLLM sampling, 5 new
