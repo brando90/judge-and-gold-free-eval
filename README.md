@@ -289,9 +289,10 @@ failure mode an overseer must not have.
 
 ```
 RESULTS.md                              paper results, experiments 03 and 04
-NEXT.md                                 proposed experiment 05 (GSM8K, same ten models)
+NEXT.md                                 experiment 05 protocol (GSM8K, same ten models)
 experiments/03_model_level_ranking_sc/  model-level SC vs pass@1 (MATH-500)
 experiments/04_format_robust_sc_and_more_models/  format-robust SC, Parts A and B
+experiments/05_gsm8k_format_robust_sc/  format-robust SC on GSM8K (preregistered, not sampled)
 papers/                                 the papers phase (see papers/README.md)
   A-certificate/  B-reference-matching/  D-reference-laws/   paper sources + PDFs
   analysis/                               canonical number layer: JSON artifacts + committed producers (MANIFEST.md)
